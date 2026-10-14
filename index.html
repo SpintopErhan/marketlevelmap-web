@@ -10,9 +10,9 @@
 <style>
 :root{color-scheme:dark;--bg:#10161d;--fg:#edf2f4;--muted:#9aaab5;--line:#28343d;--accent:#4fd6c3;--panel:#151e27;--glow:rgba(79,214,195,.07)}
 :root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06)}
-@media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#536873;--line:#d5dfdc;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06)}}
+@media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#d5dfdc;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06)}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;min-height:100svh;display:flex;flex-direction:column}header,footer{width:min(1200px,100%);margin:auto;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px}header{margin-top:0;margin-bottom:0}
-.controls{display:flex;align-items:center;gap:16px}
+.controls{display:flex;align-items:center;gap:10px}
 .logo{height:32px;width:auto;display:block}
 .logo-header{height:28px}
 .logo-main{height:clamp(52px,9vw,100px);width:auto;display:block;margin:8px 0 4px}
@@ -21,9 +21,15 @@
 :root[data-theme="light"] .logo-light{display:block}
 :root[data-theme="light"] .logo-dark{display:none}
 @media(prefers-color-scheme:light){:root:not([data-theme]) .logo-light{display:block}:root:not([data-theme]) .logo-dark{display:none}}
-.theme,.lang{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
-select{font:inherit;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer}
-select:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.lang label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+select{font:inherit;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:999px;min-height:40px;padding:8px 28px 8px 13px;cursor:pointer}
+select:focus-visible,.theme-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.theme-toggle{position:relative;display:flex;align-items:center;justify-content:space-between;width:78px;height:40px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--muted);cursor:pointer}
+.theme-toggle svg{position:relative;z-index:1;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.toggle-thumb{position:absolute;top:4px;left:4px;width:30px;height:30px;border-radius:50%;background:var(--accent);transform:translateX(var(--toggle-thumb-x,36px));transition:transform .2s ease}
+:root{--toggle-thumb-x:36px}
+:root[data-theme="light"]{--toggle-thumb-x:0px}
+@media(prefers-color-scheme:light){:root:not([data-theme]){--toggle-thumb-x:0px}}
 main{width:min(1120px,100%);margin:auto;padding:72px 40px 90px;position:relative;isolation:isolate}
 .grid{position:absolute;inset:0;z-index:-1;opacity:.35;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at 80% 50%,black,transparent 65%);pointer-events:none}
 .eyebrow{display:flex;gap:12px;align-items:center;color:var(--accent);font-size:11px;letter-spacing:3px;font-weight:600;text-transform:uppercase}
@@ -37,7 +43,7 @@ h2{font-weight:450;font-size:clamp(30px,4vw,46px);letter-spacing:-1.2px;margin:0
 footer{border-top:1px solid var(--line);margin-bottom:0;color:var(--muted);font-size:11px;line-height:1.7}
 footer p{margin:0}
 footer .note{text-align:right;max-width:410px}
-@media(max-width:600px){header,footer{padding:22px 24px}header{align-items:center;gap:14px}.logo-header{height:24px}.controls{flex-direction:row;align-items:center;gap:8px}.theme label,.lang label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}select{width:104px;max-width:104px;min-height:42px;padding:7px 9px;font-size:14px}main{padding:60px 24px}.logo-main{height:clamp(44px,14vw,80px)}.rule{margin:32px 0 22px}footer{flex-direction:column;align-items:flex-start;gap:10px}footer .note{text-align:left}.topics{gap:12px 18px}}
+@media(max-width:600px){header,footer{padding:22px 24px}header{align-items:center;gap:14px}.logo-header{height:24px}.controls{flex-direction:row;align-items:center;gap:8px}select{min-height:40px;padding:8px 25px 8px 12px;font-size:14px}.theme-toggle{width:74px;height:40px}.toggle-thumb{transform:translateX(var(--toggle-thumb-x,32px))}:root{--toggle-thumb-x:32px}:root[data-theme="light"]{--toggle-thumb-x:0px}@media(prefers-color-scheme:light){:root:not([data-theme]){--toggle-thumb-x:0px}}main{padding:60px 24px}.logo-main{height:clamp(44px,14vw,80px)}.rule{margin:32px 0 22px}footer{flex-direction:column;align-items:flex-start;gap:10px}footer .note{text-align:left}.topics{gap:12px 18px}}
 </style>
 <script>
 try{const theme=localStorage.getItem("mlm-theme");if(theme==="light"||theme==="dark")document.documentElement.dataset.theme=theme}catch(e){}
@@ -51,8 +57,12 @@ try{const lang=localStorage.getItem("mlm-lang");if(lang==="en"||lang==="tr")docu
 <img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap">
 </div>
 <div class="controls" aria-label="Site preferences">
-<div class="lang"><label for="lang">Dil</label><select id="lang" aria-label="Dil"><option value="tr">Türkçe</option><option value="en">English</option></select></div>
-<div class="theme"><label for="theme">Görünüm</label><select id="theme" aria-label="Renk teması"><option value="system">Sistem</option><option value="dark">Koyu</option><option value="light">Açık</option></select></div>
+<div class="lang"><label for="lang">Dil</label><select id="lang" aria-label="Dil"><option value="tr">TR</option><option value="en">EN</option></select></div>
+<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Koyu temaya geç" aria-pressed="false">
+<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+<span class="toggle-thumb" aria-hidden="true"></span>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg>
+</button>
 </div>
 </header>
 <main>
@@ -77,10 +87,8 @@ const i18n = {
     title: "MarketLevelMap — Yakında",
     desc: "MarketLevelMap — Structure-Based Market Analysis. Yapısal piyasa analizleri ve grafik bültenleri yakında burada.",
     langLabel: "Dil",
-    themeLabel: "Görünüm",
-    themeSystem: "Sistem",
-    themeDark: "Koyu",
-    themeLight: "Açık",
+    themeToDark: "Koyu temaya geç",
+    themeToLight: "Açık temaya geç",
     eyebrow: "Hazırlanıyor",
     heading: "Yakında burada.",
     intro: "Piyasanın yapısını grafiklerle keşfedin.<br>Yapısal analizleri ve tarihli piyasa bültenlerini bir araya getiren platformumuz hazırlanıyor.",
@@ -91,10 +99,8 @@ const i18n = {
     title: "MarketLevelMap — Coming Soon",
     desc: "MarketLevelMap — Structure-Based Market Analysis. Structural market analyses and chart bulletins coming soon.",
     langLabel: "Language",
-    themeLabel: "Appearance",
-    themeSystem: "System",
-    themeDark: "Dark",
-    themeLight: "Light",
+    themeToDark: "Switch to dark theme",
+    themeToLight: "Switch to light theme",
     eyebrow: "Coming Soon",
     heading: "Coming soon.",
     intro: "Discover market structure through charts.<br>Our platform bringing together structural analyses and dated market bulletins is being prepared.",
@@ -110,11 +116,7 @@ function applyLang(lang) {
   const meta = document.querySelector('meta[name="description"]');
   if (meta) meta.content = t.desc;
   document.querySelector('label[for="lang"]').textContent = t.langLabel;
-  document.querySelector('label[for="theme"]').textContent = t.themeLabel;
-  const themeSelect = document.getElementById("theme");
-  themeSelect.options[0].text = t.themeSystem;
-  themeSelect.options[1].text = t.themeDark;
-  themeSelect.options[2].text = t.themeLight;
+  updateThemeToggle();
   document.getElementById("eyebrow").textContent = t.eyebrow;
   document.getElementById("heading").textContent = t.heading;
   document.getElementById("intro").innerHTML = t.intro;
@@ -125,7 +127,7 @@ function applyLang(lang) {
 }
 
 const langPicker = document.getElementById("lang");
-const themePicker = document.getElementById("theme");
+const themeToggle = document.getElementById("theme-toggle");
 
 // Init language
 let initialLang = document.documentElement.lang || "tr";
@@ -138,11 +140,22 @@ langPicker.addEventListener("change", function() {
 });
 
 // Theme
-themePicker.value = document.documentElement.dataset.theme || "system";
-themePicker.addEventListener("change", function() {
-  if (this.value === "system") { delete document.documentElement.dataset.theme; }
-  else { document.documentElement.dataset.theme = this.value; }
-  try { localStorage.setItem("mlm-theme", this.value); } catch(e) {}
+function isDarkTheme() {
+  if (document.documentElement.dataset.theme) return document.documentElement.dataset.theme === "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+function updateThemeToggle() {
+  const dark = isDarkTheme();
+  const t = i18n[document.documentElement.lang] || i18n.tr;
+  themeToggle.setAttribute("aria-pressed", String(dark));
+  themeToggle.setAttribute("aria-label", dark ? t.themeToLight : t.themeToDark);
+  themeToggle.title = dark ? t.themeToLight : t.themeToDark;
+}
+themeToggle.addEventListener("click", function() {
+  const next = isDarkTheme() ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("mlm-theme", next); } catch(e) {}
+  updateThemeToggle();
 });
 </script>
 </body>
