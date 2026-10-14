@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
-<meta name="description" content="MarketLevelMap — Structure-Based Market Analysis. Yapısal piyasa analizleri ve grafik bültenleri yakında burada.">
+<meta name="description" content="MarketLevelMap — Structure-Based Market Analysis.">
 <title>MarketLevelMap — Yakında</title>
 <link rel="icon" type="image/svg+xml" href="assets/MarketLevelMap-symbol-color.svg">
 <style>
@@ -12,19 +12,36 @@
 :root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#536873;--line:#d5dfdc;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06)}
 @media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#536873;--line:#d5dfdc;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06)}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;min-height:100svh;display:flex;flex-direction:column}header,footer{width:min(1200px,100%);margin:auto;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px}header{margin-top:0;margin-bottom:0}
+.controls{display:flex;align-items:center;gap:16px}
 .logo{height:32px;width:auto;display:block}
 .logo-header{height:28px}
-.logo-main{height:clamp(48px,8vw,92px);width:auto;display:block;margin:12px 0 8px}
+.logo-main{height:clamp(52px,9vw,100px);width:auto;display:block;margin:8px 0 4px}
 .logo-light{display:none}
 .logo-dark{display:block}
 :root[data-theme="light"] .logo-light{display:block}
 :root[data-theme="light"] .logo-dark{display:none}
 @media(prefers-color-scheme:light){:root:not([data-theme]) .logo-light{display:block}:root:not([data-theme]) .logo-dark{display:none}}
-.theme{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}select{font:inherit;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer}select:focus-visible{outline:2px solid var(--accent);outline-offset:4px}main{width:min(1120px,100%);margin:auto;padding:80px 40px 90px;position:relative;isolation:isolate}.grid{position:absolute;inset:0;z-index:-1;opacity:.35;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at 80% 50%,black,transparent 65%);pointer-events:none}.eyebrow{display:flex;gap:12px;align-items:center;color:var(--accent);font-size:11px;letter-spacing:3px;font-weight:600;text-transform:uppercase}.eyebrow:before{content:"";width:32px;height:1px;background:var(--accent)}.tagline{color:var(--muted);font-size:clamp(15px,2vw,21px);letter-spacing:.02em;margin:0}.rule{height:1px;width:80px;background:var(--accent);margin:48px 0 32px}h2{font-weight:450;font-size:clamp(30px,4vw,46px);letter-spacing:-1.2px;margin:0 0 16px}.intro{color:var(--muted);line-height:1.8;font-size:16px;max-width:540px;margin:0}.topics{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:36px;color:var(--muted);font-size:12px}.topics span{display:flex;align-items:center;gap:8px}.topics span:before{content:"";width:4px;height:4px;background:var(--accent);border-radius:50%}footer{border-top:1px solid var(--line);margin-bottom:0;color:var(--muted);font-size:11px;line-height:1.7}footer p{margin:0}footer .note{text-align:right;max-width:410px}
-@media(max-width:600px){header,footer{padding:22px 24px}header{align-items:flex-start}.logo-header{height:24px}.theme label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}select{max-width:100px}main{padding:68px 24px}.logo-main{height:clamp(40px,12vw,72px)}.rule{margin:36px 0 26px}footer{flex-direction:column;align-items:flex-start;gap:10px}footer .note{text-align:left}.topics{gap:12px 18px}}
+.theme,.lang{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+select{font:inherit;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer}
+select:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+main{width:min(1120px,100%);margin:auto;padding:72px 40px 90px;position:relative;isolation:isolate}
+.grid{position:absolute;inset:0;z-index:-1;opacity:.35;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at 80% 50%,black,transparent 65%);pointer-events:none}
+.eyebrow{display:flex;gap:12px;align-items:center;color:var(--accent);font-size:11px;letter-spacing:3px;font-weight:600;text-transform:uppercase}
+.eyebrow:before{content:"";width:32px;height:1px;background:var(--accent)}
+.rule{height:1px;width:80px;background:var(--accent);margin:40px 0 28px}
+h2{font-weight:450;font-size:clamp(30px,4vw,46px);letter-spacing:-1.2px;margin:0 0 16px}
+.intro{color:var(--muted);line-height:1.8;font-size:16px;max-width:540px;margin:0}
+.topics{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:36px;color:var(--muted);font-size:12px}
+.topics span{display:flex;align-items:center;gap:8px}
+.topics span:before{content:"";width:4px;height:4px;background:var(--accent);border-radius:50%}
+footer{border-top:1px solid var(--line);margin-bottom:0;color:var(--muted);font-size:11px;line-height:1.7}
+footer p{margin:0}
+footer .note{text-align:right;max-width:410px}
+@media(max-width:600px){header,footer{padding:22px 24px}header{align-items:flex-start}.logo-header{height:24px}.controls{flex-direction:column;align-items:flex-end;gap:8px}.theme label,.lang label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}select{max-width:110px}main{padding:60px 24px}.logo-main{height:clamp(44px,14vw,80px)}.rule{margin:32px 0 22px}footer{flex-direction:column;align-items:flex-start;gap:10px}footer .note{text-align:left}.topics{gap:12px 18px}}
 </style>
 <script>
 try{const theme=localStorage.getItem("mlm-theme");if(theme==="light"||theme==="dark")document.documentElement.dataset.theme=theme}catch(e){}
+try{const lang=localStorage.getItem("mlm-lang");if(lang==="en"||lang==="tr")document.documentElement.lang=lang}catch(e){}
 </script>
 </head>
 <body>
@@ -33,31 +50,99 @@ try{const theme=localStorage.getItem("mlm-theme");if(theme==="light"||theme==="d
 <img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap">
 <img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap">
 </div>
+<div class="controls">
+<div class="lang"><label for="lang">Dil</label><select id="lang" aria-label="Dil"><option value="tr">Türkçe</option><option value="en">English</option></select></div>
 <div class="theme"><label for="theme">Görünüm</label><select id="theme" aria-label="Renk teması"><option value="system">Sistem</option><option value="dark">Koyu</option><option value="light">Açık</option></select></div>
+</div>
 </header>
 <main>
 <div class="grid" aria-hidden="true"></div>
-<div class="eyebrow">Hazırlanıyor</div>
+<div class="eyebrow" id="eyebrow">Hazırlanıyor</div>
 <div class="hero-logo">
 <img class="logo logo-main logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap">
 <img class="logo logo-main logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap">
 </div>
-<p class="tagline" lang="en">Structure-Based Market Analysis</p>
 <div class="rule" aria-hidden="true"></div>
-<h2>Yakında burada.</h2>
-<p class="intro">Piyasanın yapısını grafiklerle keşfedin.<br>Yapısal analizleri ve tarihli piyasa bültenlerini bir araya getiren platformumuz hazırlanıyor.</p>
-<div class="topics" aria-label="İçerikler"><span>Yapısal analiz</span><span>Grafik bültenleri</span><span>Çoklu zaman dilimi</span></div>
+<h2 id="heading">Yakında burada.</h2>
+<p class="intro" id="intro">Piyasanın yapısını grafiklerle keşfedin.<br>Yapısal analizleri ve tarihli piyasa bültenlerini bir araya getiren platformumuz hazırlanıyor.</p>
+<div class="topics" id="topics" aria-label="İçerikler"><span>Yapısal analiz</span><span>Grafik bültenleri</span><span>Çoklu zaman dilimi</span></div>
 </main>
 <footer>
 <p>© 2026 MarketLevelMap</p>
-<p class="note">İçerikler genel bilgilendirme amaçlıdır.<br>Yatırım tavsiyesi değildir.</p>
+<p class="note" id="note">İçerikler genel bilgilendirme amaçlıdır.<br>Yatırım tavsiyesi değildir.</p>
 </footer>
 <script>
-const picker=document.getElementById("theme");
-picker.value=document.documentElement.dataset.theme||"system";
-picker.addEventListener("change",function(){
-if(this.value==="system"){delete document.documentElement.dataset.theme}else{document.documentElement.dataset.theme=this.value}
-try{localStorage.setItem("mlm-theme",this.value)}catch(e){}
+const i18n = {
+  tr: {
+    title: "MarketLevelMap — Yakında",
+    desc: "MarketLevelMap — Structure-Based Market Analysis. Yapısal piyasa analizleri ve grafik bültenleri yakında burada.",
+    langLabel: "Dil",
+    themeLabel: "Görünüm",
+    themeSystem: "Sistem",
+    themeDark: "Koyu",
+    themeLight: "Açık",
+    eyebrow: "Hazırlanıyor",
+    heading: "Yakında burada.",
+    intro: "Piyasanın yapısını grafiklerle keşfedin.<br>Yapısal analizleri ve tarihli piyasa bültenlerini bir araya getiren platformumuz hazırlanıyor.",
+    topics: ["Yapısal analiz", "Grafik bültenleri", "Çoklu zaman dilimi"],
+    note: "İçerikler genel bilgilendirme amaçlıdır.<br>Yatırım tavsiyesi değildir."
+  },
+  en: {
+    title: "MarketLevelMap — Coming Soon",
+    desc: "MarketLevelMap — Structure-Based Market Analysis. Structural market analyses and chart bulletins coming soon.",
+    langLabel: "Language",
+    themeLabel: "Appearance",
+    themeSystem: "System",
+    themeDark: "Dark",
+    themeLight: "Light",
+    eyebrow: "Coming Soon",
+    heading: "Coming soon.",
+    intro: "Discover market structure through charts.<br>Our platform bringing together structural analyses and dated market bulletins is being prepared.",
+    topics: ["Structural analysis", "Chart bulletins", "Multiple timeframes"],
+    note: "Content is for general information purposes only.<br>Not investment advice."
+  }
+};
+
+function applyLang(lang) {
+  const t = i18n[lang] || i18n.tr;
+  document.documentElement.lang = lang;
+  document.title = t.title;
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta) meta.content = t.desc;
+  document.querySelector('label[for="lang"]').textContent = t.langLabel;
+  document.querySelector('label[for="theme"]').textContent = t.themeLabel;
+  const themeSelect = document.getElementById("theme");
+  themeSelect.options[0].text = t.themeSystem;
+  themeSelect.options[1].text = t.themeDark;
+  themeSelect.options[2].text = t.themeLight;
+  document.getElementById("eyebrow").textContent = t.eyebrow;
+  document.getElementById("heading").textContent = t.heading;
+  document.getElementById("intro").innerHTML = t.intro;
+  const topicsEl = document.getElementById("topics");
+  topicsEl.innerHTML = t.topics.map(s => `<span>${s}</span>`).join("");
+  document.getElementById("note").innerHTML = t.note;
+  try { localStorage.setItem("mlm-lang", lang); } catch(e) {}
+}
+
+const langPicker = document.getElementById("lang");
+const themePicker = document.getElementById("theme");
+
+// Init language
+let initialLang = document.documentElement.lang || "tr";
+if (!i18n[initialLang]) initialLang = "tr";
+langPicker.value = initialLang;
+applyLang(initialLang);
+
+langPicker.addEventListener("change", function() {
+  applyLang(this.value);
+});
+
+// Theme
+themePicker.value = document.documentElement.dataset.theme || "system";
+themePicker.addEventListener("change", function() {
+  if (this.value === "system") { delete document.documentElement.dataset.theme; }
+  else { document.documentElement.dataset.theme = this.value; }
+  try { localStorage.setItem("mlm-theme", this.value); } catch(e) {}
 });
 </script>
 </body>
