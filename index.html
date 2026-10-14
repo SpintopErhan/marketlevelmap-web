@@ -1,166 +1,68 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
 <meta name="description" content="MarketLevelMap — Structure-Based Market Analysis.">
-<title>MarketLevelMap — Yakında</title>
+<title>MarketLevelMap — Market Bulletins</title>
 <link rel="icon" type="image/svg+xml" href="assets/MarketLevelMap-symbol-color.svg">
 <style>
-:root{color-scheme:dark;--bg:#10161d;--fg:#edf2f4;--muted:#9aaab5;--line:#28343d;--accent:#4fd6c3;--panel:#151e27;--glow:rgba(79,214,195,.07);--toggle-active:#182d36;--sun-icon:var(--accent);--moon-icon:#fff}
-:root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06);--sun-icon:#fff;--moon-icon:var(--accent)}
-@media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#d5dfdc;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06);--sun-icon:#fff;--moon-icon:var(--accent)}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;min-height:100svh;display:flex;flex-direction:column}header,footer{width:min(1200px,100%);margin:auto;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px}header{margin-top:0;margin-bottom:0}
-.controls{display:flex;align-items:center;gap:10px}
-.logo{height:32px;width:auto;display:block}
-.logo-header{height:28px}
-.logo-main{height:clamp(52px,9vw,100px);width:auto;display:block;margin:8px 0 4px}
-.logo-light{display:none}
-.logo-dark{display:block}
-:root[data-theme="light"] .logo-light{display:block}
-:root[data-theme="light"] .logo-dark{display:none}
-@media(prefers-color-scheme:light){:root:not([data-theme]) .logo-light{display:block}:root:not([data-theme]) .logo-dark{display:none}}
-.lang{position:relative}
-.lang label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-.lang:after{content:"";position:absolute;right:13px;top:50%;width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;color:var(--fg);transform:translateY(-68%) rotate(45deg);pointer-events:none}
-select{font:inherit;appearance:none;-webkit-appearance:none;background-color:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:999px;min-height:40px;padding:8px 28px 8px 13px;cursor:pointer}
-select:focus-visible,.theme-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
-.theme-toggle{position:relative;display:flex;align-items:center;justify-content:space-between;width:78px;height:40px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--muted);cursor:pointer}
-.theme-toggle svg{position:relative;z-index:1;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.theme-toggle svg:first-child{color:var(--sun-icon)}
-.theme-toggle svg:last-child{color:var(--moon-icon)}
-.toggle-thumb{position:absolute;top:4px;left:4px;width:30px;height:30px;border-radius:50%;background:var(--toggle-active);transform:translateX(var(--toggle-thumb-x,36px));transition:transform .2s ease}
-:root{--toggle-thumb-x:36px}
-:root[data-theme="light"]{--toggle-thumb-x:0px}
-@media(prefers-color-scheme:light){:root:not([data-theme]){--toggle-thumb-x:0px}}
-main{width:min(1120px,100%);margin:auto;padding:72px 40px 90px;position:relative;isolation:isolate}
-.grid{position:absolute;inset:0;z-index:-1;opacity:.35;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at 80% 50%,black,transparent 65%);pointer-events:none}
-.eyebrow{display:flex;gap:12px;align-items:center;color:var(--accent);font-size:11px;letter-spacing:3px;font-weight:600;text-transform:uppercase}
-.eyebrow:before{content:"";width:32px;height:1px;background:var(--accent)}
-.rule{height:1px;width:80px;background:var(--accent);margin:40px 0 28px}
-h2{font-weight:450;font-size:clamp(30px,4vw,46px);letter-spacing:-1.2px;margin:0 0 16px}
-.intro{color:var(--muted);line-height:1.8;font-size:16px;max-width:540px;margin:0}
-.topics{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:36px;color:var(--muted);font-size:12px}
-.topics span{display:flex;align-items:center;gap:8px}
-.topics span:before{content:"";width:4px;height:4px;background:var(--accent);border-radius:50%}
-footer{border-top:1px solid var(--line);margin-bottom:0;color:var(--muted);font-size:11px;line-height:1.7}
-footer p{margin:0}
-footer .note{text-align:right;max-width:410px}
-@media(max-width:600px){header,footer{padding:22px 24px}header{align-items:center;gap:8px}.logo-header{height:20px}.controls{flex-direction:row;align-items:center;gap:5px}select{width:54px;min-height:20px;height:20px;padding:1px 16px 1px 7px;font-size:10px;line-height:1}.lang:after{right:7px;width:5px;height:5px;border-width:1px}.theme-toggle{width:42px;height:20px;padding:2px 5px}.theme-toggle svg{width:10px;height:10px}.toggle-thumb{top:2px;left:2px;width:16px;height:16px;transform:translateX(var(--toggle-thumb-x,22px))}:root{--toggle-thumb-x:22px}:root[data-theme="light"]{--toggle-thumb-x:0px}@media(prefers-color-scheme:light){:root:not([data-theme]){--toggle-thumb-x:0px}}main{padding:60px 24px}.logo-main{height:clamp(44px,14vw,80px)}.rule{margin:32px 0 22px}footer{flex-direction:column;align-items:flex-start;gap:10px}footer .note{text-align:left}.topics{gap:12px 18px}}
+:root{color-scheme:dark;--bg:#10161d;--fg:#edf2f4;--muted:#9aaab5;--line:#28343d;--accent:#4fd6c3;--panel:#151e27;--panel-2:#18222c;--shadow:0 14px 34px rgba(0,0,0,.16);--toggle-active:#edf2f4;--sun-icon:var(--accent);--moon-icon:#10161d}
+:root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent)}
+@media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.45}button,select,input{font:inherit}button{color:inherit}
+.shell{width:min(1240px,100%);margin:auto;padding:0 40px}header{height:84px;display:flex;align-items:center;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line)}.logo{display:block;width:auto}.logo-header{height:28px}.logo-light{display:none}:root[data-theme="light"] .logo-light{display:block}:root[data-theme="light"] .logo-dark{display:none}@media(prefers-color-scheme:light){:root:not([data-theme]) .logo-light{display:block}:root:not([data-theme]) .logo-dark{display:none}}
+.nav{display:flex;align-items:center;gap:22px}.nav a{font-size:13px;text-decoration:none;color:var(--muted)}.nav a:first-child{color:var(--fg)}.controls{display:flex;align-items:center;gap:8px;margin-left:8px}.lang{position:relative}.lang label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.lang:after{content:"";position:absolute;right:11px;top:50%;width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;color:var(--fg);transform:translateY(-67%) rotate(45deg);pointer-events:none}select{appearance:none;-webkit-appearance:none;min-height:36px;padding:7px 28px 7px 12px;background:var(--panel);border:1px solid var(--line);border-radius:999px;color:var(--fg);cursor:pointer}.theme-toggle{position:relative;display:flex;align-items:center;justify-content:space-between;width:70px;height:36px;padding:3px 7px;border:1px solid var(--line);border-radius:999px;background:var(--panel);cursor:pointer}.theme-toggle svg{position:relative;z-index:1;width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.theme-toggle svg:first-child{color:var(--sun-icon)}.theme-toggle svg:last-child{color:var(--moon-icon)}.toggle-thumb{position:absolute;top:3px;left:3px;width:28px;height:28px;border-radius:50%;background:var(--toggle-active);transform:translateX(var(--toggle-x,34px));transition:transform .2s ease}:root{--toggle-x:34px}:root[data-theme="light"]{--toggle-x:0}@media(prefers-color-scheme:light){:root:not([data-theme]){--toggle-x:0}}
+main{padding:52px 0 80px}.eyebrow{display:flex;align-items:center;gap:10px;color:var(--accent);font-size:11px;letter-spacing:2.4px;font-weight:700;text-transform:uppercase}.eyebrow:before{content:"";width:26px;height:1px;background:currentColor}.intro{display:flex;align-items:end;justify-content:space-between;gap:24px;margin:15px 0 34px}.intro h1{margin:0;font-size:clamp(30px,4.2vw,50px);font-weight:500;letter-spacing:-1.7px}.intro p{max-width:430px;margin:0;color:var(--muted);font-size:14px;line-height:1.7}.section-label{font-size:11px;letter-spacing:1.8px;font-weight:700;text-transform:uppercase;color:var(--muted)}
+.featured{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);border:1px solid var(--line);background:var(--panel);box-shadow:var(--shadow);border-radius:16px;overflow:hidden}.chart{position:relative;min-height:310px;background:#0f171e;overflow:hidden}.chart:before{content:"";position:absolute;inset:0;opacity:.24;background-image:linear-gradient(#49606d 1px,transparent 1px),linear-gradient(90deg,#49606d 1px,transparent 1px);background-size:54px 54px}.chart svg{position:absolute;inset:0;width:100%;height:100%}.chart-tag{position:absolute;z-index:2;top:18px;left:18px;padding:6px 10px;border-radius:999px;background:rgba(16,22,29,.72);border:1px solid rgba(237,242,244,.18);color:#edf2f4;font-size:11px;letter-spacing:.7px}.chart-time{position:absolute;z-index:2;bottom:16px;left:18px;color:#b8c8ce;font-size:11px}.feature-copy{padding:34px;display:flex;flex-direction:column}.feature-copy h2{font-size:26px;margin:10px 0 12px;font-weight:500;letter-spacing:-.7px}.feature-copy p{margin:0;color:var(--muted);font-size:14px;line-height:1.75}.metadata{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:26px 0}.metadata span{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}.metadata strong{font-size:13px;font-weight:500}.open-link{margin-top:auto;display:inline-flex;align-items:center;gap:8px;color:var(--fg);font-size:13px;font-weight:600;text-decoration:none}.open-link:after{content:"→";color:var(--accent);font-size:18px}
+.filterbar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:66px 0 22px}.filterbar h2{font-size:21px;font-weight:500;margin:5px 0 0}.filters{display:flex;align-items:center;gap:8px}.search{position:relative}.search input{width:190px;min-height:37px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--fg);padding:8px 13px 8px 31px;outline:none}.search:before{content:"⌕";position:absolute;z-index:1;left:12px;top:7px;color:var(--muted);font-size:19px}.filter-btn{min-height:37px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:12px;cursor:pointer}.filter-btn.active{border-color:var(--accent);color:var(--accent)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{position:relative;display:flex;flex-direction:column;min-width:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel);transition:transform .18s ease,border-color .18s ease}.card:hover{transform:translateY(-3px);border-color:var(--accent)}.card-chart{height:152px;background:#111a22;position:relative;overflow:hidden}.card-chart:before{content:"";position:absolute;inset:0;opacity:.2;background-image:linear-gradient(#49606d 1px,transparent 1px),linear-gradient(90deg,#49606d 1px,transparent 1px);background-size:35px 35px}.card-chart svg{position:absolute;inset:0;width:100%;height:100%}.card-body{padding:16px}.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.coin{font-size:16px;font-weight:600;letter-spacing:.1px}.tf{font-size:10px;letter-spacing:1px;color:var(--accent);font-weight:700}.card p{margin:10px 0 0;color:var(--muted);font-size:12px;line-height:1.55}.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:11px;color:var(--muted)}.favorite{position:absolute;z-index:2;top:10px;right:10px;width:30px;height:30px;border:1px solid rgba(237,242,244,.18);background:rgba(16,22,29,.65);color:#fff;border-radius:50%;cursor:pointer}.favorite.active{color:var(--accent)}.favorite.active::after{content:"";position:absolute;inset:6px;border-radius:50%;background:rgba(79,214,195,.14)}
+.empty{display:none;border:1px dashed var(--line);border-radius:12px;padding:30px;color:var(--muted);text-align:center;grid-column:1/-1}
+.archive{margin-top:70px;display:grid;grid-template-columns:1fr 1fr;gap:16px}.archive-item{display:flex;justify-content:space-between;gap:16px;padding:18px 0;border-top:1px solid var(--line);text-decoration:none;color:inherit}.archive-item strong{font-size:14px;font-weight:500}.archive-item span{font-size:12px;color:var(--muted)}footer{border-top:1px solid var(--line);padding:24px 0 46px;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:11px}footer p{margin:0;line-height:1.75}.risk-link{border:0;background:none;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit}
+dialog{max-width:470px;padding:0;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--fg);box-shadow:var(--shadow)}dialog::backdrop{background:rgba(4,8,11,.66);backdrop-filter:blur(3px)}.modal-inner{padding:30px}.modal-inner h2{margin:10px 0 12px;font-size:25px;font-weight:500}.modal-inner p{margin:0;color:var(--muted);font-size:13px;line-height:1.75}.modal-actions{display:flex;justify-content:flex-end;margin-top:24px}.primary{border:0;background:var(--accent);color:#071b1b;font-weight:700;border-radius:999px;padding:10px 16px;cursor:pointer}
+@media(max-width:800px){.shell{padding:0 24px}header{height:70px}.nav>a{display:none}.intro{display:block}.intro p{margin-top:14px}.featured{grid-template-columns:1fr}.chart{min-height:270px}.feature-copy{padding:25px}.cards{grid-template-columns:repeat(2,1fr)}.filterbar{align-items:flex-end}.filters{flex-wrap:wrap;justify-content:flex-end}}
+@media(max-width:520px){.shell{padding:0 18px}.logo-header{height:20px}.controls{gap:5px;margin-left:0}select{width:52px;min-height:20px;height:20px;padding:1px 16px 1px 7px;font-size:10px;line-height:1}.lang:after{right:7px;width:5px;height:5px;border-width:1px}.theme-toggle{width:42px;height:20px;padding:2px 5px}.theme-toggle svg{width:10px;height:10px}.toggle-thumb{top:2px;left:2px;width:16px;height:16px;transform:translateX(var(--toggle-x,22px))}:root{--toggle-x:22px}:root[data-theme="light"]{--toggle-x:0}@media(prefers-color-scheme:light){:root:not([data-theme]){--toggle-x:0}}main{padding:38px 0 56px}.intro h1{font-size:32px;letter-spacing:-1.2px}.featured{border-radius:12px}.chart{min-height:224px}.feature-copy h2{font-size:23px}.metadata{gap:10px;margin:22px 0}.filterbar{display:block;margin:48px 0 18px}.filters{justify-content:flex-start;margin-top:16px}.search{width:100%}.search input{width:100%}.cards{grid-template-columns:1fr}.card-chart{height:164px}.archive{grid-template-columns:1fr;margin-top:52px}.archive-item{padding:15px 0}footer{display:block;padding:22px 0 34px}footer p+ p{margin-top:14px}}
 </style>
 <script>
-try{const theme=localStorage.getItem("mlm-theme");if(theme==="light"||theme==="dark")document.documentElement.dataset.theme=theme}catch(e){}
-try{const lang=localStorage.getItem("mlm-lang");if(lang==="en"||lang==="tr")document.documentElement.lang=lang}catch(e){}
+try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
 </script>
 </head>
 <body>
-<header>
-<div class="wordmark">
-<img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap">
-<img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap">
-</div>
-<div class="controls" aria-label="Site preferences">
-<div class="lang"><label for="lang">Dil</label><select id="lang" aria-label="Dil"><option value="tr">TR</option><option value="en">EN</option></select></div>
-<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Koyu temaya geç" aria-pressed="false">
-<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
-<span class="toggle-thumb" aria-hidden="true"></span>
-<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg>
-</button>
-</div>
-</header>
-<main>
-<div class="grid" aria-hidden="true"></div>
-<div class="eyebrow" id="eyebrow">Hazırlanıyor</div>
-<div class="hero-logo">
-<img class="logo logo-main logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap">
-<img class="logo logo-main logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap">
-</div>
-<div class="rule" aria-hidden="true"></div>
-<h2 id="heading">Yakında burada.</h2>
-<p class="intro" id="intro">Piyasanın yapısını grafiklerle keşfedin.<br>Yapısal analizleri ve tarihli piyasa bültenlerini bir araya getiren platformumuz hazırlanıyor.</p>
-<div class="topics" id="topics" aria-label="İçerikler"><span>Yapısal analiz</span><span>Grafik bültenleri</span><span>Çoklu zaman dilimi</span></div>
+<div class="shell"><header>
+<a href="#" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
+<nav class="nav" aria-label="Primary navigation"><a href="#latest">Latest bulletins</a><a href="#archive">Archive</a><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<main class="shell">
+<div class="eyebrow">Market bulletins</div>
+<div class="intro"><h1>Read the market<br>through its structure.</h1><p>Dated chart bulletins built around structure, key levels and market context. This preview uses illustrative data only.</p></div>
+<section class="featured" aria-labelledby="featured-title">
+<div class="chart"><span class="chart-tag">BTCUSDT · 4H</span><span class="chart-time">Illustrative chart · 14 October 2026 · 16:00 UTC</span><svg viewBox="0 0 700 380" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#4fd6c3" stop-opacity=".28"/><stop offset="1" stop-color="#4fd6c3" stop-opacity="0"/></linearGradient></defs><path d="M0 275 L38 260 L68 278 L98 224 L136 238 L168 193 L205 212 L244 154 L280 183 L321 116 L356 141 L396 104 L438 128 L480 78 L522 92 L558 64 L606 91 L644 47 L700 63 V380 H0Z" fill="url(#fill)"/><path d="M0 275 L38 260 L68 278 L98 224 L136 238 L168 193 L205 212 L244 154 L280 183 L321 116 L356 141 L396 104 L438 128 L480 78 L522 92 L558 64 L606 91 L644 47 L700 63" fill="none" stroke="#4fd6c3" stroke-width="3"/><path d="M0 102 H700" stroke="#e8b46a" stroke-width="1.5" stroke-dasharray="6 6"/><path d="M0 195 H700" stroke="#7d9eb0" stroke-width="1" stroke-dasharray="5 7"/><text x="18" y="95" fill="#e8b46a" font-size="12">RESISTANCE</text><text x="18" y="188" fill="#a1bdc9" font-size="12">KEY LEVEL</text></svg></div>
+<div class="feature-copy"><div class="section-label">Latest publication</div><h2 id="featured-title">BTC holds above the weekly structure.</h2><p>Price remains above the nearest higher-timeframe support while consolidating below an established resistance area.</p><div class="metadata"><div><span>Published</span><strong>14 Oct 2026 · 16:00 UTC</strong></div><div><span>Last updated</span><strong>14 Oct 2026 · 16:00 UTC</strong></div></div><a class="open-link" href="#latest">Open bulletin</a></div>
+</section>
+<section id="latest"><div class="filterbar"><div><div class="section-label">Browse</div><h2>Latest chart bulletins</h2></div><div class="filters"><div class="search"><input id="search" type="search" placeholder="Search a coin" aria-label="Search a coin"></div><button class="filter-btn active" data-filter="all">All</button><button class="filter-btn" data-filter="favorites">Favorites</button></div></div>
+<div class="cards" id="cards">
+<article class="card" data-coin="btc"><button class="favorite" aria-label="Add BTCUSDT to favorites">☆</button><div class="card-chart"><svg viewBox="0 0 360 170" preserveAspectRatio="none"><path d="M0 128 L32 122 L60 137 L88 99 L116 110 L152 72 L184 91 L215 54 L250 68 L280 40 L310 56 L360 28 V170 H0Z" fill="#4fd6c3" opacity=".18"/><path d="M0 128 L32 122 L60 137 L88 99 L116 110 L152 72 L184 91 L215 54 L250 68 L280 40 L310 56 L360 28" fill="none" stroke="#4fd6c3" stroke-width="2.5"/></svg></div><div class="card-body"><div class="card-top"><span class="coin">BTCUSDT</span><span class="tf">4H</span></div><p>Higher-timeframe structure remains constructive above support.</p><div class="card-footer"><span>14 Oct 2026</span><span>Updated 16:00</span></div></div></article>
+<article class="card" data-coin="eth"><button class="favorite" aria-label="Add ETHUSDT to favorites">☆</button><div class="card-chart"><svg viewBox="0 0 360 170" preserveAspectRatio="none"><path d="M0 46 L34 58 L67 49 L101 83 L134 70 L164 112 L198 91 L230 131 L264 103 L299 145 L329 117 L360 125 V170 H0Z" fill="#e8b46a" opacity=".16"/><path d="M0 46 L34 58 L67 49 L101 83 L134 70 L164 112 L198 91 L230 131 L264 103 L299 145 L329 117 L360 125" fill="none" stroke="#e8b46a" stroke-width="2.5"/></svg></div><div class="card-body"><div class="card-top"><span class="coin">ETHUSDT</span><span class="tf">1D</span></div><p>Compression continues beneath the nearest resistance cluster.</p><div class="card-footer"><span>14 Oct 2026</span><span>Updated 12:00</span></div></div></article>
+<article class="card" data-coin="sol"><button class="favorite" aria-label="Add SOLUSDT to favorites">☆</button><div class="card-chart"><svg viewBox="0 0 360 170" preserveAspectRatio="none"><path d="M0 112 L36 96 L70 121 L104 85 L137 98 L170 67 L203 86 L238 53 L272 62 L307 38 L336 54 L360 32 V170 H0Z" fill="#9d91e8" opacity=".18"/><path d="M0 112 L36 96 L70 121 L104 85 L137 98 L170 67 L203 86 L238 53 L272 62 L307 38 L336 54 L360 32" fill="none" stroke="#9d91e8" stroke-width="2.5"/></svg></div><div class="card-body"><div class="card-top"><span class="coin">SOLUSDT</span><span class="tf">1H</span></div><p>Price is testing the upper boundary of its local range.</p><div class="card-footer"><span>14 Oct 2026</span><span>Updated 15:00</span></div></div></article>
+<article class="card" data-coin="avax"><button class="favorite" aria-label="Add AVAXUSDT to favorites">☆</button><div class="card-chart"><svg viewBox="0 0 360 170" preserveAspectRatio="none"><path d="M0 132 L30 115 L66 122 L96 86 L127 94 L162 63 L196 78 L230 57 L267 76 L300 49 L330 69 L360 51 V170 H0Z" fill="#e48d8d" opacity=".18"/><path d="M0 132 L30 115 L66 122 L96 86 L127 94 L162 63 L196 78 L230 57 L267 76 L300 49 L330 69 L360 51" fill="none" stroke="#e48d8d" stroke-width="2.5"/></svg></div><div class="card-body"><div class="card-top"><span class="coin">AVAXUSDT</span><span class="tf">4H</span></div><p>Local demand is holding after a structural reclaim.</p><div class="card-footer"><span>13 Oct 2026</span><span>Updated 20:00</span></div></div></article>
+<article class="card" data-coin="xrp"><button class="favorite" aria-label="Add XRPUSDT to favorites">☆</button><div class="card-chart"><svg viewBox="0 0 360 170" preserveAspectRatio="none"><path d="M0 73 L31 88 L62 65 L95 98 L129 80 L160 107 L192 86 L222 115 L256 93 L290 112 L326 89 L360 101 V170 H0Z" fill="#7d9eb0" opacity=".19"/><path d="M0 73 L31 88 L62 65 L95 98 L129 80 L160 107 L192 86 L222 115 L256 93 L290 112 L326 89 L360 101" fill="none" stroke="#7d9eb0" stroke-width="2.5"/></svg></div><div class="card-body"><div class="card-top"><span class="coin">XRPUSDT</span><span class="tf">1D</span></div><p>Price continues to rotate around the nearest major level.</p><div class="card-footer"><span>13 Oct 2026</span><span>Updated 12:00</span></div></div></article>
+<article class="card" data-coin="btc"><button class="favorite" aria-label="Add BTCUSDT to favorites">☆</button><div class="card-chart"><svg viewBox="0 0 360 170" preserveAspectRatio="none"><path d="M0 128 L33 106 L68 118 L102 82 L136 96 L168 66 L199 85 L233 47 L269 59 L302 37 L336 49 L360 29 V170 H0Z" fill="#4fd6c3" opacity=".18"/><path d="M0 128 L33 106 L68 118 L102 82 L136 96 L168 66 L199 85 L233 47 L269 59 L302 37 L336 49 L360 29" fill="none" stroke="#4fd6c3" stroke-width="2.5"/></svg></div><div class="card-body"><div class="card-top"><span class="coin">BTCUSDT</span><span class="tf">1W</span></div><p>Weekly levels remain unchanged; macro structure is intact.</p><div class="card-footer"><span>12 Oct 2026</span><span>Updated 00:00</span></div></div></article>
+<div class="empty" id="empty">No bulletins match this filter.</div></div></section>
+<section class="archive" id="archive" aria-labelledby="archive-heading"><div><div class="section-label">Archive</div><h2 id="archive-heading" style="font-weight:500;margin:6px 0 0">Earlier publications</h2></div><div><a class="archive-item" href="#latest"><strong>13 October 2026</strong><span>5 bulletins →</span></a><a class="archive-item" href="#latest"><strong>12 October 2026</strong><span>8 bulletins →</span></a><a class="archive-item" href="#latest"><strong>11 October 2026</strong><span>6 bulletins →</span></a></div></section>
 </main>
-<footer>
-<p>© 2026 MarketLevelMap</p>
-<p class="note" id="note">İçerikler genel bilgilendirme amaçlıdır.<br>Yatırım tavsiyesi değildir.</p>
-</footer>
+<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p>Content is for general information purposes only.<br><button class="risk-link" id="risk-link">Not investment advice.</button></p></footer></div>
+<dialog id="disclaimer"><form method="dialog" class="modal-inner"><div class="eyebrow">Important notice</div><h2>General information only.</h2><p>MarketLevelMap content is provided for informational and educational purposes. It is not investment advice, a recommendation, or a solicitation to buy or sell any asset. You remain responsible for your own decisions.</p><div class="modal-actions"><button class="primary" value="accept">I understand</button></div></form></dialog>
 <script>
-const i18n = {
-  tr: {
-    title: "MarketLevelMap — Yakında",
-    desc: "MarketLevelMap — Structure-Based Market Analysis. Yapısal piyasa analizleri ve grafik bültenleri yakında burada.",
-    langLabel: "Dil",
-    themeToDark: "Koyu temaya geç",
-    themeToLight: "Açık temaya geç",
-    eyebrow: "Hazırlanıyor",
-    heading: "Yakında burada.",
-    intro: "Piyasanın yapısını grafiklerle keşfedin.<br>Yapısal analizleri ve tarihli piyasa bültenlerini bir araya getiren platformumuz hazırlanıyor.",
-    topics: ["Yapısal analiz", "Grafik bültenleri", "Çoklu zaman dilimi"],
-    note: "İçerikler genel bilgilendirme amaçlıdır.<br>Yatırım tavsiyesi değildir."
-  },
-  en: {
-    title: "MarketLevelMap — Coming Soon",
-    desc: "MarketLevelMap — Structure-Based Market Analysis. Structural market analyses and chart bulletins coming soon.",
-    langLabel: "Language",
-    themeToDark: "Switch to dark theme",
-    themeToLight: "Switch to light theme",
-    eyebrow: "Coming Soon",
-    heading: "Coming soon.",
-    intro: "Discover market structure through charts.<br>Our platform bringing together structural analyses and dated market bulletins is being prepared.",
-    topics: ["Structural analysis", "Chart bulletins", "Multiple timeframes"],
-    note: "Content is for general information purposes only.<br>Not investment advice."
-  }
-};
-
-function applyLang(lang) {
-  const t = i18n[lang] || i18n.tr;
-  document.documentElement.lang = lang;
-  document.title = t.title;
-  const meta = document.querySelector('meta[name="description"]');
-  if (meta) meta.content = t.desc;
-  document.querySelector('label[for="lang"]').textContent = t.langLabel;
-  updateThemeToggle();
-  document.getElementById("eyebrow").textContent = t.eyebrow;
-  document.getElementById("heading").textContent = t.heading;
-  document.getElementById("intro").innerHTML = t.intro;
-  const topicsEl = document.getElementById("topics");
-  topicsEl.innerHTML = t.topics.map(s => `<span>${s}</span>`).join("");
-  document.getElementById("note").innerHTML = t.note;
-  try { localStorage.setItem("mlm-lang", lang); } catch(e) {}
-}
-
-const langPicker = document.getElementById("lang");
-const themeToggle = document.getElementById("theme-toggle");
-
-// Init language
-let initialLang = document.documentElement.lang || "tr";
-if (!i18n[initialLang]) initialLang = "tr";
-langPicker.value = initialLang;
-applyLang(initialLang);
-
-langPicker.addEventListener("change", function() {
-  applyLang(this.value);
-});
-
-// Theme
-function isDarkTheme() {
-  if (document.documentElement.dataset.theme) return document.documentElement.dataset.theme === "dark";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-function updateThemeToggle() {
-  const dark = isDarkTheme();
-  const t = i18n[document.documentElement.lang] || i18n.tr;
-  themeToggle.setAttribute("aria-pressed", String(dark));
-  themeToggle.setAttribute("aria-label", dark ? t.themeToLight : t.themeToDark);
-  themeToggle.title = dark ? t.themeToLight : t.themeToDark;
-}
-themeToggle.addEventListener("click", function() {
-  const next = isDarkTheme() ? "light" : "dark";
-  document.documentElement.dataset.theme = next;
-  try { localStorage.setItem("mlm-theme", next); } catch(e) {}
-  updateThemeToggle();
-});
+var lang=document.getElementById("lang"),toggle=document.getElementById("theme-toggle"),search=document.getElementById("search"),cards=[].slice.call(document.querySelectorAll(".card")),empty=document.getElementById("empty"),filter="all";
+function isDark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches}
+function syncTheme(){var dark=isDark();toggle.setAttribute("aria-pressed",String(dark));toggle.setAttribute("aria-label",dark?"Switch to light theme":"Switch to dark theme")}
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=isDark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+lang.addEventListener("change",function(){document.documentElement.lang=this.value});
+document.querySelectorAll(".favorite").forEach(function(button){button.addEventListener("click",function(){button.classList.toggle("active");button.textContent=button.classList.contains("active")?"★":"☆";applyFilters()})});
+document.querySelectorAll("[data-filter]").forEach(function(button){button.addEventListener("click",function(){filter=button.dataset.filter;document.querySelectorAll("[data-filter]").forEach(function(b){b.classList.toggle("active",b===button)});applyFilters()})});
+search.addEventListener("input",applyFilters);
+function applyFilters(){var query=search.value.toLowerCase().trim(),shown=0;cards.forEach(function(card){var match=card.dataset.coin.indexOf(query)>-1&&!(filter==="favorites"&&!card.querySelector(".favorite").classList.contains("active"));card.style.display=match?"flex":"none";if(match)shown++});empty.style.display=shown?"none":"block"}
+var dialog=document.getElementById("disclaimer");document.getElementById("risk-link").addEventListener("click",function(){dialog.showModal()});try{if(!localStorage.getItem("mlm-disclaimer"))dialog.showModal()}catch(e){}dialog.addEventListener("close",function(){try{localStorage.setItem("mlm-disclaimer","accepted")}catch(e){}});
 </script>
-</body>
-</html>
+</body></html>
