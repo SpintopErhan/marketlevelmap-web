@@ -9,7 +9,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/MarketLevelMap-symbol-color.svg">
 <style>
 :root{color-scheme:dark;--bg:#10161d;--fg:#edf2f4;--muted:#9aaab5;--line:#28343d;--accent:#4fd6c3;--panel:#151e27;--glow:rgba(79,214,195,.07)}
-:root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#536873;--line:#d5dfdc;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06)}
+:root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06)}
 @media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#536873;--line:#d5dfdc;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06)}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;min-height:100svh;display:flex;flex-direction:column}header,footer{width:min(1200px,100%);margin:auto;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px}header{margin-top:0;margin-bottom:0}
 .controls{display:flex;align-items:center;gap:16px}
@@ -37,7 +37,7 @@ h2{font-weight:450;font-size:clamp(30px,4vw,46px);letter-spacing:-1.2px;margin:0
 footer{border-top:1px solid var(--line);margin-bottom:0;color:var(--muted);font-size:11px;line-height:1.7}
 footer p{margin:0}
 footer .note{text-align:right;max-width:410px}
-@media(max-width:600px){header,footer{padding:22px 24px}header{align-items:flex-start}.logo-header{height:24px}.controls{flex-direction:column;align-items:flex-end;gap:8px}.theme label,.lang label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}select{max-width:110px}main{padding:60px 24px}.logo-main{height:clamp(44px,14vw,80px)}.rule{margin:32px 0 22px}footer{flex-direction:column;align-items:flex-start;gap:10px}footer .note{text-align:left}.topics{gap:12px 18px}}
+@media(max-width:600px){header,footer{padding:22px 24px}header{align-items:center;gap:14px}.logo-header{height:24px}.controls{flex-direction:row;align-items:center;gap:8px}.theme label,.lang label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}select{width:104px;max-width:104px;min-height:42px;padding:7px 9px;font-size:14px}main{padding:60px 24px}.logo-main{height:clamp(44px,14vw,80px)}.rule{margin:32px 0 22px}footer{flex-direction:column;align-items:flex-start;gap:10px}footer .note{text-align:left}.topics{gap:12px 18px}}
 </style>
 <script>
 try{const theme=localStorage.getItem("mlm-theme");if(theme==="light"||theme==="dark")document.documentElement.dataset.theme=theme}catch(e){}
@@ -50,7 +50,7 @@ try{const lang=localStorage.getItem("mlm-lang");if(lang==="en"||lang==="tr")docu
 <img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap">
 <img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap">
 </div>
-<div class="controls">
+<div class="controls" aria-label="Site preferences">
 <div class="lang"><label for="lang">Dil</label><select id="lang" aria-label="Dil"><option value="tr">Türkçe</option><option value="en">English</option></select></div>
 <div class="theme"><label for="theme">Görünüm</label><select id="theme" aria-label="Renk teması"><option value="system">Sistem</option><option value="dark">Koyu</option><option value="light">Açık</option></select></div>
 </div>
