@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="MarketLevelMap — Structure-Based Market Analysis. Yapısal piyasa analizleri ve grafik bültenleri yakında burada.">
+<title>MarketLevelMap — Yakında</title>
+<style>
+:root{color-scheme:dark;--bg:#10161d;--fg:#edf2f4;--muted:#9aaab5;--line:#28343d;--accent:#4fd6c3;--panel:#151e27;--glow:rgba(79,214,195,.07)}
+:root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#536873;--line:#d5dfdc;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06)}
+@media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#536873;--line:#d5dfdc;--accent:#087a6c;--panel:#eaf0ed;--glow:rgba(8,122,108,.06)}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;min-height:100svh;display:flex;flex-direction:column}header,footer{width:min(1200px,100%);margin:auto;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px}header{margin-top:0;margin-bottom:0}.wordmark{font-size:19px;font-weight:500;letter-spacing:-.7px}.wordmark span{color:var(--accent)}.theme{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}select{font:inherit;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer}select:focus-visible{outline:2px solid var(--accent);outline-offset:4px}main{width:min(1120px,100%);margin:auto;padding:80px 40px 90px;position:relative;isolation:isolate}.grid{position:absolute;inset:0;z-index:-1;opacity:.35;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at 80% 50%,black,transparent 65%);pointer-events:none}.eyebrow{display:flex;gap:12px;align-items:center;color:var(--accent);font-size:11px;letter-spacing:3px;font-weight:600;text-transform:uppercase}.eyebrow:before{content:"";width:32px;height:1px;background:var(--accent)}h1{font-weight:400;font-size:clamp(34px,6.4vw,78px);letter-spacing:-.055em;line-height:1.12;margin:28px 0 12px;overflow-wrap:anywhere}h1 span{color:var(--accent)}.tagline{color:var(--muted);font-size:clamp(15px,2vw,21px);letter-spacing:.02em;margin:0}.rule{height:1px;width:80px;background:var(--accent);margin:48px 0 32px}h2{font-weight:450;font-size:clamp(30px,4vw,46px);letter-spacing:-1.2px;margin:0 0 16px}.intro{color:var(--muted);line-height:1.8;font-size:16px;max-width:540px;margin:0}.topics{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:36px;color:var(--muted);font-size:12px}.topics span{display:flex;align-items:center;gap:8px}.topics span:before{content:"";width:4px;height:4px;background:var(--accent);border-radius:50%}footer{border-top:1px solid var(--line);margin-bottom:0;color:var(--muted);font-size:11px;line-height:1.7}footer p{margin:0}footer .note{text-align:right;max-width:410px}
+@media(max-width:600px){header,footer{padding:22px 24px}header{align-items:flex-start}.wordmark{font-size:16px}.theme label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}select{max-width:100px}main{padding:68px 24px}h1{font-size:clamp(30px,8.8vw,52px)}.rule{margin:36px 0 26px}footer{flex-direction:column;align-items:flex-start;gap:10px}footer .note{text-align:left}.topics{gap:12px 18px}}
+</style>
+<script>
+try{const theme=localStorage.getItem("mlm-theme");if(theme==="light"||theme==="dark")document.documentElement.dataset.theme=theme}catch(e){}
+</script>
+</head>
+<body>
+<header>
+<div class="wordmark">Market<span>Level</span>Map</div>
+<div class="theme"><label for="theme">Görünüm</label><select id="theme" aria-label="Renk teması"><option value="system">Sistem</option><option value="dark">Koyu</option><option value="light">Açık</option></select></div>
+</header>
+<main>
+<div class="grid" aria-hidden="true"></div>
+<div class="eyebrow">Hazırlanıyor</div>
+<h1>Market<span>Level</span>Map</h1>
+<p class="tagline" lang="en">Structure-Based Market Analysis</p>
+<div class="rule" aria-hidden="true"></div>
+<h2>Yakında burada.</h2>
+<p class="intro">Piyasanın yapısını grafiklerle keşfedin.<br>Yapısal analizleri ve tarihli piyasa bültenlerini bir araya getiren platformumuz hazırlanıyor.</p>
+<div class="topics" aria-label="İçerikler"><span>Yapısal analiz</span><span>Grafik bültenleri</span><span>Çoklu zaman dilimi</span></div>
+</main>
+<footer>
+<p>© 2026 MarketLevelMap</p>
+<p class="note">İçerikler genel bilgilendirme amaçlıdır.<br>Yatırım tavsiyesi değildir.</p>
+</footer>
+<script>
+const picker=document.getElementById("theme");
+picker.value=document.documentElement.dataset.theme||"system";
+picker.addEventListener("change",function(){
+if(this.value==="system"){delete document.documentElement.dataset.theme}else{document.documentElement.dataset.theme=this.value}
+try{localStorage.setItem("mlm-theme",this.value)}catch(e){}
+});
+</script>
+</body>
+</html>
