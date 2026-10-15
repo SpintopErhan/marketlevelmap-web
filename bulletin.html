@@ -29,4 +29,25 @@ document.querySelectorAll(".tab").forEach(function(b){b.addEventListener("click"
 document.getElementById("expand-chart").addEventListener("click",function(){var chart=document.querySelector(".chart");if(chart.requestFullscreen)chart.requestFullscreen()});
 document.getElementById("download-chart").addEventListener("click",function(){var svg=document.getElementById("chart-svg"),copy=svg.cloneNode(true),data=new Blob([new XMLSerializer().serializeToString(copy)],{type:"image/svg+xml"}),url=URL.createObjectURL(data),a=document.createElement("a");a.href=url;a.download=asset+"-chart.svg";a.click();URL.revokeObjectURL(url)});
 function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}document.getElementById("toggle").addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}});
+</script>
+<script>
+/* Active PNGs and analysis notes are served through the Pages R2 reader. */
+(async function(){
+  try{
+    var response=await fetch("/api/publication",{cache:"no-store"});
+    if(!response.ok)return;
+    var publication=await response.json(),rows=(publication.entries||[]).filter(function(entry){return entry.image&&(entry.graphicKey||"").split(":")[1]===asset});
+    if(!rows.length)return;
+    rows.sort(function(a,b){return a.graphicKey.localeCompare(b.graphicKey)});
+    var style=document.createElement("style");style.textContent=".chart .live-chart{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block;background:#101820}";document.head.appendChild(style);
+    var chart=document.querySelector(".chart"),tabRoot=document.querySelector(".tabs"),note=document.getElementById("note"),date=document.getElementById("date"),updated=document.querySelector(".updated"),download=document.getElementById("download-chart");
+    chart.innerHTML='<img class="live-chart" alt="'+asset+' market chart">';var image=chart.querySelector("img");tabRoot.innerHTML="";
+    function select(entry,button){
+      var tf=entry.graphicKey.split(":")[2].toUpperCase();image.src=entry.image.url;image.alt=asset+" "+tf+" market chart";chartTitle.textContent=asset+" · "+tf;date.textContent=(publication.activatedAt||"").replace("T"," ").replace("Z"," UTC");updated.textContent="Published "+date.textContent+"\\nLast updated "+date.textContent;tabRoot.querySelectorAll(".tab").forEach(function(tab){tab.classList.toggle("active",tab===button)});
+      download.onclick=function(){var link=document.createElement("a");link.href=entry.image.url;link.download=asset+"_"+tf+"_MarketLevelMap.png";link.click()};
+      if(entry.analysisComment){fetch(entry.analysisComment.url,{cache:"no-store"}).then(function(result){return result.ok?result.text():""}).then(function(text){if(text)note.textContent=text.replace(/^#+\\s*/gm,"").trim()})}
+    }
+    rows.forEach(function(entry,index){var button=document.createElement("button");button.type="button";button.className="tab";button.textContent=entry.graphicKey.split(":")[2].toUpperCase();button.onclick=function(){select(entry,button)};tabRoot.appendChild(button);if(index===0)select(entry,button)});
+  }catch(_){/* Keep the design preview if no active R2 publication can be read. */}
+})();
 </script></body></html>
