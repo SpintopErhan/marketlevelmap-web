@@ -63,4 +63,28 @@ search.addEventListener("input",applyFilters);
 function applyFilters(){var query=search.value.toLowerCase().trim(),shown=0;cards.forEach(function(card){var match=card.dataset.coin.indexOf(query)>-1&&!(filter==="favorites"&&!card.querySelector(".favorite").classList.contains("active"));card.style.display=match?"flex":"none";if(match)shown++});empty.style.display=shown?"none":"block"}
 var dialog=document.getElementById("disclaimer");document.getElementById("risk-link").addEventListener("click",function(){dialog.showModal()});try{if(!localStorage.getItem("mlm-disclaimer"))dialog.showModal()}catch(e){}dialog.addEventListener("close",function(){try{localStorage.setItem("mlm-disclaimer","accepted")}catch(e){}});
 </script>
+<script>
+/* The R2 reader returns only entries referenced by the current active pointer. */
+(async function(){
+  try{
+    var response=await fetch("/api/publication",{cache:"no-store"});
+    if(!response.ok)return;
+    var publication=await response.json(),entries=publication.entries||[],byAsset={};
+    entries.forEach(function(entry){var pair=(entry.graphicKey||"").split(":")[1];if(!pair||!entry.image)return;(byAsset[pair]||(byAsset[pair]=[])).push(entry)});
+    var assets=Object.keys(byAsset).sort();if(!assets.length)return;
+    var style=document.createElement("style");style.textContent=".card-chart .live-chart{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;display:block;background:#101820}";document.head.appendChild(style);
+    var root=document.getElementById("cards");root.innerHTML="";
+    assets.forEach(function(asset){
+      var rows=byAsset[asset].sort(function(a,b){return a.graphicKey.localeCompare(b.graphicKey)}),first=rows[0],article=document.createElement("article");
+      article.className="card";article.dataset.coin=asset.replace(/USDT$/,"" ).toLowerCase();
+      article.innerHTML='<button class="favorite" aria-label="Add '+asset+' to favorites">☆</button><div class="card-chart"><img class="live-chart" alt="'+asset+' market chart"></div><div class="card-tabs"></div><div class="card-body"><div class="card-top"><span class="coin">'+asset+'</span><span class="tf"></span></div><p>Active market bulletin.</p><div class="card-footer"><span>Published</span><span></span></div><a class="read-bulletin" href="bulletin.html?asset='+encodeURIComponent(asset)+'">Read bulletin <span>→</span></a></div>';
+      var image=article.querySelector(".live-chart"),tabs=article.querySelector(".card-tabs"),timeframe=article.querySelector(".tf"),updated=article.querySelector(".card-footer span:last-child");
+      function choose(entry,button){image.src=entry.image.url;image.alt=asset+" "+entry.graphicKey.split(":")[2].toUpperCase()+" market chart";timeframe.textContent=entry.graphicKey.split(":")[2].toUpperCase();updated.textContent=(publication.activatedAt||"").replace("T"," ").replace("Z"," UTC");tabs.querySelectorAll(".card-tab").forEach(function(tab){tab.classList.toggle("active",tab===button)})}
+      rows.forEach(function(entry,index){var button=document.createElement("button");button.type="button";button.className="card-tab";button.textContent=entry.graphicKey.split(":")[2].toUpperCase();button.onclick=function(){choose(entry,button)};tabs.appendChild(button);if(index===0)choose(entry,button)});
+      article.querySelector(".favorite").onclick=function(){this.classList.toggle("active");this.textContent=this.classList.contains("active")?"★":"☆";applyFilters()};root.appendChild(article);
+    });
+    cards=[].slice.call(document.querySelectorAll(".card"));applyFilters();
+  }catch(_){/* The static preview remains available until an active publication exists. */}
+})();
+</script>
 </body></html>
