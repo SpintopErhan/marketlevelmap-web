@@ -49,7 +49,7 @@ async function fromCoinbase(symbols, attempts) {
     if (base === symbol || !base) return null;
     for (const quote of ["USDT", "USD"]) {
       const stats = await get(`${COINBASE}/products/${base}-${quote}/stats`, attempts);
-      if (stats && Number(stats.last) > 0) return { s: symbol, c: stats.last, o: stats.open };
+      if (stats && Number(stats.last) > 0) return { s: symbol, c: stats.last, o: stats.open, pair: `${base}-${quote}` };
     }
     return null;
   }));
