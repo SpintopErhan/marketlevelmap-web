@@ -11,12 +11,12 @@ main{padding:36px 0 80px}.back{font-size:12px;color:var(--muted);text-decoration
 footer{border-top:1px solid var(--line);padding:25px 0 42px;color:var(--muted);font-size:11px;display:flex;justify-content:space-between;gap:20px}footer p{margin:0;line-height:1.7}
 @media(max-width:800px){.shell{padding:0 24px}.detail-grid{grid-template-columns:1fr}.chart{height:340px}.nav>a{display:none}}@media(max-width:520px){.shell{padding:0 18px}.nav{gap:10px}.nav>a:last-of-type{display:inline;font-size:10px;white-space:nowrap}header{height:66px}.logo{height:20px}.controls{gap:5px;margin-left:0}select{width:52px;min-height:20px;height:20px;padding:1px 16px 1px 7px;font-size:10px}.lang:after{right:7px;width:5px;height:5px;border-width:1px}.toggle{width:42px;height:20px;padding:2px 5px}.toggle svg{width:10px;height:10px}.thumb{top:2px;left:2px;width:16px;height:16px;transform:translateX(var(--x,22px))}:root{--x:22px}:root[data-theme="light"]{--x:0}@media(prefers-color-scheme:light){:root:not([data-theme]){--x:0}}main{padding-top:26px}.headline{display:block;margin:21px 0}.updated{text-align:left;padding-top:12px}.tabs{overflow:auto}.tab{padding:11px 13px;white-space:nowrap}.chart{height:250px}.chart-head{padding:15px}.chart-footer{padding:12px 15px}.detail-grid{gap:14px}footer{display:block}footer p+p{margin-top:12px}}
 .chart-actions button:disabled{opacity:.45;cursor:default}
-#chart-zoom{width:max-content;max-width:96vw;max-height:94vh;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--fg)}
+#chart-zoom{width:96vw;max-width:96vw;max-height:94vh;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--fg)}
 #chart-zoom::backdrop{background:rgba(0,0,0,.82)}
 .zoom-heading{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:12px 16px}
 .zoom-heading button{background:transparent;border:1px solid var(--line);border-radius:6px;color:var(--fg);padding:8px 12px;cursor:pointer}
-.zoom-scroll{max-width:94vw;max-height:calc(94vh - 64px);overflow:auto;overscroll-behavior:contain}
-#zoom-image{display:block;width:auto;height:auto;max-width:none}
+.zoom-scroll{width:100%;height:calc(90dvh - 64px);max-height:calc(94vh - 64px);overflow:auto;overscroll-behavior:contain;touch-action:none}
+#zoom-image{display:block;width:auto;height:auto;max-width:none;user-select:none;-webkit-user-drag:none}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script></head>
 <body><div class="shell"><header><a href="index.html" aria-label="MarketLevelMap home"><img class="logo light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a><nav class="nav"><a href="index.html">Bulletins</a><a href="weekly-events.html">Weekly events</a><div class="controls"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="toggle" id="toggle" type="button" aria-label="Toggle theme"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><i class="thumb"></i><svg viewBox="0 0 24 24"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"/></svg></button></div></nav></header></div>
@@ -34,22 +34,52 @@ var q=new URLSearchParams(location.search),asset=(q.get("asset")||"BTCUSDT").toU
 var values={BTCUSDT:["66,000–67,000","70,000–72,000"],ETHUSDT:["4,200–4,300","4,600–4,750"],SOLUSDT:["168–176","198–210"],AVAXUSDT:["27.80–29.20","32.60–34.20"],XRPUSDT:["2.35–2.42","2.61–2.70"]},v=values[asset]||["—","—"];document.getElementById("support").textContent=v[0];document.getElementById("resistance").textContent=v[1];
 var paths={ "1H":"M0 315 L42 289 L79 310 L117 251 L156 267 L198 216 L239 239 L281 173 L321 199 L362 139 L405 161 L448 119 L493 144 L536 86 L580 112 L625 66 L671 94 L720 51 L760 73 L800 43", "4H":"M0 286 L55 248 L105 269 L151 205 L199 227 L248 181 L300 207 L351 145 L406 172 L461 112 L517 139 L574 97 L631 126 L690 67 L746 95 L800 71", "1D":"M0 112 L52 132 L105 94 L158 157 L210 128 L263 185 L316 146 L369 209 L421 172 L474 232 L529 198 L583 247 L635 213 L689 268 L744 237 L800 255", "1W":"M0 284 L63 252 L124 265 L185 210 L244 231 L305 174 L365 196 L426 143 L486 163 L548 105 L610 132 L671 79 L733 104 L800 57"};
 document.querySelectorAll(".tab").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll(".tab").forEach(function(x){x.classList.toggle("active",x===b)});var tf=b.dataset.tf,p=paths[tf],area=document.getElementById("area");document.getElementById("line").setAttribute("d",p);area.setAttribute("d",p+" V440 H0Z");chartTitle.textContent=asset+" · "+tf})});
-document.getElementById("expand-chart").addEventListener("click",function(){var chart=document.querySelector(".chart");if(chart.requestFullscreen)chart.requestFullscreen()});
+document.getElementById("expand-chart").addEventListener("click",function(){openChartZoom(true,this)});
 // Full-resolution PNG viewer: no download and no preview-image substitution.
 var zoomButton=document.getElementById("zoom-chart"),zoomDialog=document.getElementById("chart-zoom"),zoomImage=document.getElementById("zoom-image");
 zoomButton.disabled=true;
-zoomButton.addEventListener("click",function(){
+zoomButton.addEventListener("click",function(){openChartZoom(false,this)});
+var zoomScroller=zoomDialog.querySelector(".zoom-scroll"),zoomScale=1,zoomMinScale=0.1,zoomGesture=null,zoomOpener=zoomButton;
+function openChartZoom(fit,opener){
   var current=document.querySelector(".chart .live-chart");
   if(!current||!current.complete||!current.naturalWidth)return;
+  zoomOpener=opener;
+  zoomMinScale=Math.min(1,(window.innerWidth*0.94)/current.naturalWidth,(window.innerHeight*0.85-64)/current.naturalHeight);
+  zoomMinScale=Math.max(0.01,zoomMinScale);
+  zoomScale=fit?zoomMinScale:1;
+  zoomImage.style.width=(current.naturalWidth*zoomScale)+"px";
   zoomImage.src=current.currentSrc||current.src;
   zoomImage.alt=current.alt;
   document.getElementById("zoom-title").textContent=chartTitle.textContent;
   document.getElementById("close-chart-zoom").textContent=document.getElementById("lang").value==="tr"?"Kapat ×":"Close ×";
   zoomDialog.showModal();
-});
+  zoomScroller.scrollLeft=0;zoomScroller.scrollTop=0;
+}
+function zoomTouches(event){
+  var rect=zoomScroller.getBoundingClientRect(),a=event.touches[0],b=event.touches[1]||a;
+  return {x:(a.clientX+b.clientX)/2-rect.left,y:(a.clientY+b.clientY)/2-rect.top,distance:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),count:event.touches.length};
+}
+function beginChartGesture(event){
+  if(!event.touches.length){zoomGesture=null;return}
+  var p=zoomTouches(event);
+  zoomGesture={...p,scale:zoomScale,left:zoomScroller.scrollLeft,top:zoomScroller.scrollTop};
+}
+zoomScroller.addEventListener("touchstart",function(event){event.preventDefault();beginChartGesture(event)},{passive:false});
+zoomScroller.addEventListener("touchmove",function(event){
+  event.preventDefault();
+  if(!zoomGesture||zoomGesture.count!==event.touches.length){beginChartGesture(event);return}
+  var p=zoomTouches(event),g=zoomGesture;
+  zoomScale=g.count>=2&&g.distance>0?Math.min(4,Math.max(zoomMinScale,g.scale*p.distance/g.distance)):g.scale;
+  zoomImage.style.width=(zoomImage.naturalWidth*zoomScale)+"px";
+  var ratio=zoomScale/g.scale;
+  zoomScroller.scrollLeft=(g.left+g.x)*ratio-p.x;
+  zoomScroller.scrollTop=(g.top+g.y)*ratio-p.y;
+},{passive:false});
+zoomScroller.addEventListener("touchend",beginChartGesture,{passive:true});
+zoomScroller.addEventListener("touchcancel",function(){zoomGesture=null},{passive:true});
 document.getElementById("close-chart-zoom").addEventListener("click",function(){zoomDialog.close()});
 zoomDialog.addEventListener("click",function(event){if(event.target===zoomDialog){var box=zoomDialog.getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)zoomDialog.close()}});
-zoomDialog.addEventListener("close",function(){zoomImage.removeAttribute("src");zoomButton.focus()});
+zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.removeAttribute("src");zoomOpener.focus()});
 function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}document.getElementById("toggle").addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}});
 </script>
 <script>
