@@ -98,7 +98,7 @@ main:not([data-state="live"]) .asset-stats{display:none}
 @media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:dense}.stat-range{grid-column:1/-1}}
 @media(max-width:520px){.stats-head{display:block}.stats-source{display:block;margin-top:4px;text-align:left}.stat{padding:12px 14px}.stat strong{font-size:16px}}
 </style>
-<script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=d6f00e0e" defer></script></head>
+<script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=d6f00e0e" defer></script><script src="assets/market-cache.js?v=b54ddd88"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Bültenler" aria-current="page">Bulletins</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="archive.html" data-tr="Arşiv">Archive</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -242,12 +242,16 @@ function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){ret
 /* Market summary. Binance's public stream is opened from the visitor's browser (24h ticker plus the
    current weekly and monthly candles), because Binance refuses requests coming from Cloudflare.
    Where the browser cannot reach Binance either, /api/stats answers from Coinbase (cached a minute at
-   the edge) and is refreshed every 5 minutes while the tab is visible. */
+   the edge) and is refreshed every 5 minutes while the tab is visible.
+   MarketCache (assets/market-cache.js) lets the summary appear at once: the last figures this browser
+   saw (e.g. on the homepage strip) are shown first, and if Binance was unreachable recently the page
+   goes straight to Coinbase. */
 (function(){
   var box=document.getElementById("asset-stats"),sourceLabel=document.getElementById("stats-source"),NAMES={binance:"Binance",coinbase:"Coinbase"};
   var STREAMS=["wss://data-stream.binance.vision/stream?streams=","wss://stream.binance.com:9443/stream?streams="],REFRESH=300000;
   if(!box||!/^[A-Z0-9]{2,20}$/.test(asset))return;
-  var data=null,live=false,socket=null,streamIndex=0,timer=null,paintTimer=null,retryDelay=2000,fallback=false;
+  var data=null,live=false,socket=null,streamIndex=0,timer=null,paintTimer=null,retryDelay=2000,fallback=false,cache=window.MarketCache||null;
+  function remember(){if(!cache||!data)return;cache.putTicker(asset,{c:data.last,o:data.open24h,h:data.high24h,l:data.low24h,q:data.volumeQuote,quote:data.quote,source:data.source});cache.putOpens(asset,data.weekOpen,data.monthOpen,data.source)}
   function field(name){return box.querySelector('[data-stat="'+name+'"]')}
   function words(){return copy[document.getElementById("lang").value]||copy.en}
   function locale(){return document.documentElement.lang==="tr"?"tr-TR":"en-US"}
@@ -269,7 +273,7 @@ function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){ret
     sourceLabel.textContent=(live?w.statsSourceLive:w.statsSource).replace("{source}",NAMES[data.source]||data.source).replace("{time}",time);
     box.hidden=false;
   }
-  function schedulePaint(){if(!paintTimer)paintTimer=setTimeout(function(){paintTimer=null;render()},1000)}
+  function schedulePaint(){if(!paintTimer)paintTimer=setTimeout(function(){paintTimer=null;render();remember()},1000)}
 
   // Binance stream: <symbol>@ticker (24h figures) and the current 1w / 1M klines (their open prices).
   function connect(){
@@ -279,19 +283,19 @@ function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){ret
     var giveUp=setTimeout(function(){if(!ready)try{ws.close()}catch(e){}},6000);
     ws.onmessage=function(event){
       var m;try{m=JSON.parse(event.data)}catch(e){return}var d=m&&m.data;if(!d)return;
-      if(!data||data.source!=="binance")data={source:"binance",quote:"USDT",weekOpen:null,monthOpen:null};
+      if(!data||data.source!=="binance"){var known=cache?cache.getOpens(asset,"binance"):{};data={source:"binance",quote:"USDT",weekOpen:known.weekOpen||null,monthOpen:known.monthOpen||null}}
       if(d.e==="24hrTicker"){data.last=d.c;data.open24h=d.o;data.high24h=d.h;data.low24h=d.l;data.volumeQuote=d.q;data.at=new Date().toISOString();
-        if(!ready){ready=true;live=true;retryDelay=2000;clearTimeout(giveUp);clearTimeout(timer);render()}else schedulePaint()}
+        if(!ready){ready=true;live=true;retryDelay=2000;clearTimeout(giveUp);clearTimeout(timer);if(cache)cache.markBinance(true);render();remember()}else schedulePaint()}
       else if(d.e==="kline"&&d.k){if(d.k.i==="1w")data.weekOpen=d.k.o;else if(d.k.i==="1M")data.monthOpen=d.k.o;if(ready)schedulePaint()}
     };
     ws.onerror=function(){try{ws.close()}catch(e){}};
     ws.onclose=function(){clearTimeout(giveUp);if(socket===ws)socket=null;if(document.hidden)return;if(ready){timer=setTimeout(connect,retryDelay);retryDelay=Math.min(30000,retryDelay*2)}else failed()};
   }
-  function failed(){streamIndex++;if(streamIndex<STREAMS.length)return connect();streamIndex=0;fallback=true;live=false;load()}
+  function failed(){streamIndex++;if(streamIndex<STREAMS.length)return connect();streamIndex=0;fallback=true;live=false;if(cache)cache.markBinance(false);load()}
 
   // Fallback: Coinbase figures through our endpoint.
   function schedule(){clearTimeout(timer);if(!document.hidden&&fallback)timer=setTimeout(load,REFRESH)}
-  function load(){fetch("/api/stats?symbol="+encodeURIComponent(asset),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){if(body&&Number(body.last)>0){data=body;render()}}).catch(function(){}).then(schedule)}
+  function load(){fetch("/api/stats?symbol="+encodeURIComponent(asset),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){if(body&&Number(body.last)>0&&!live){data=body;render();remember()}}).catch(function(){}).then(schedule)}
 
   document.addEventListener("visibilitychange",function(){
     clearTimeout(timer);
@@ -299,6 +303,10 @@ function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){ret
     if(fallback){if(data&&Date.now()-Date.parse(data.at)>REFRESH)load();else schedule()}else connect();
   });
   new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  // Last figures this browser saw for the asset (homepage strip or an earlier visit), shown until live data arrives.
+  var seen=cache&&cache.getTicker(asset,15*60000);
+  if(seen&&Number(seen.c)>0){var opens=cache.getOpens(asset,seen.source);data={source:seen.source,quote:seen.quote,last:seen.c,open24h:seen.o,high24h:seen.h,low24h:seen.l,volumeQuote:seen.q,weekOpen:opens.weekOpen,monthOpen:opens.monthOpen,at:new Date(seen.at).toISOString()};render()}
+  if(cache&&cache.binanceBlocked()){fallback=true;load();return}
   connect();
   // A blocked connection can take several seconds to fail; show the Coinbase figures meanwhile.
   setTimeout(function(){if(!live&&!data)load()},2500);

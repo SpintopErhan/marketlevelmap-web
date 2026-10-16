@@ -66,3 +66,11 @@ without Binance data and refreshed every 5 minutes while the tab is visible.
 Pages link `assets/site.css` and `assets/disclaimer.js` with a `?v=` content hash so browsers pick up new
 versions. After editing either file, update the hash in all four HTML pages, e.g.
 `sha1sum assets/site.css | cut -c1-8`.
+
+## Browser-side market cache
+
+`assets/market-cache.js` (linked with a `?v=` hash like the other shared assets) keeps, in the visitor's
+`localStorage`: the latest 24h figures per symbol (written by the homepage strip and the bulletin summary),
+this week's/month's opening prices, and whether both Binance streams failed in the last 30 minutes. Pages
+paint cached figures (≤15 minutes old, labelled with their time) immediately, and skip Binance while it is
+marked unreachable so blocked visitors go straight to Coinbase.
