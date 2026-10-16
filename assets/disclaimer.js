@@ -8,7 +8,7 @@
       title:"Information and Risk Notice",
       body:[
         "Charts, analyses, bulletins and other content published on MarketLevelMap are provided for general information purposes only. They do not constitute investment advice, personalised investment recommendations or a recommendation to buy or sell any asset. The content has not been prepared with regard to your personal financial situation or risk preferences.",
-        "Charts and analyses are static publications that reflect the data and assessment times stated on them. They do not provide live market data and are not updated automatically as prices move. The zones, levels and scenarios shown carry no certainty about future price movements and no guarantee of returns.",
+        "The price strip on the homepage shows live prices from Binance. Charts and analyses, however, are static publications that reflect the data and assessment times stated on them; they are not updated automatically as prices move. The zones, levels and scenarios shown carry no certainty about future price movements and no guarantee of returns.",
         "The data sources used may contain errors, omissions or delays. The accuracy, completeness and timeliness of the content are not guaranteed. Past price movements and analysis results are not an indication of future results.",
         "Crypto assets carry significant risks, including high price volatility and the loss of the entire amount invested. Do not make investment decisions based solely on the content of this site; verify information with independent sources and, where appropriate, seek professional advice from authorised institutions."
       ],
@@ -20,7 +20,7 @@
       title:"Bilgilendirme ve Risk Bildirimi",
       body:[
         "MarketLevelMap’te yayımlanan grafikler, analizler, bültenler ve diğer içerikler genel bilgilendirme amacı taşır; yatırım danışmanlığı, kişiye özel yatırım tavsiyesi veya herhangi bir varlık için alım-satım önerisi niteliğinde değildir. İçerikler, kişisel mali durumunuz ve risk tercihleriniz dikkate alınarak hazırlanmamıştır.",
-        "Grafikler ve analizler, üzerlerinde belirtilen veri ve değerlendirme zamanlarını yansıtan statik yayınlardır; canlı piyasa verisi sunmaz ve yeni fiyat hareketleriyle otomatik olarak güncellenmez. Gösterilen bölgeler, seviyeler ve senaryolar gelecekteki fiyat hareketlerine ilişkin kesinlik veya getiri garantisi taşımaz.",
+        "Ana sayfadaki fiyat şeridi, Binance’ten alınan anlık fiyatları gösterir. Grafikler ve analizler ise üzerlerinde belirtilen veri ve değerlendirme zamanlarını yansıtan statik yayınlardır; yeni fiyat hareketleriyle otomatik olarak güncellenmez. Gösterilen bölgeler, seviyeler ve senaryolar gelecekteki fiyat hareketlerine ilişkin kesinlik veya getiri garantisi taşımaz.",
         "Kullanılan veri kaynaklarında hata, eksiklik veya gecikme bulunabilir. İçeriklerin doğruluğu, eksiksizliği ve güncelliği garanti edilmez. Geçmiş fiyat hareketleri ve analiz sonuçları gelecekteki sonuçların göstergesi değildir.",
         "Kripto varlıklar yüksek fiyat oynaklığı ve yatırılan tutarın tamamının kaybedilmesi dâhil önemli riskler taşır. Yatırım kararlarınızı yalnızca bu sitedeki içeriklere dayanarak vermeyin; bilgileri bağımsız kaynaklardan doğrulayın ve gerektiğinde yetkili kuruluşlardan profesyonel danışmanlık alın."
       ],
