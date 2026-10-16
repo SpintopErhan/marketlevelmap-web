@@ -56,7 +56,10 @@ with `prices: []` and the upstream status codes in `attempts`.
 `/api/stats?symbol=BTCUSDT` (`functions/api/stats.js`) returns the last price, 24h open/high/low and quote
 volume, and this week's (Monday 00:00 UTC) and month's opening prices — from Binance, or from Coinbase
 (USD pair, else USDT; opens from the latest daily candles) where Binance refuses the request. Cached for 60 seconds per
-symbol; the bulletin page fetches it once per view and every 5 minutes while the tab is visible.
+symbol. Binance refuses requests coming from Cloudflare, so the bulletin page first opens Binance's public
+stream from the visitor's browser (`<symbol>@ticker`, `@kline_1w`, `@kline_1M`) and shows live Binance figures;
+`/api/stats` (in practice Coinbase) is used only when the browser cannot reach Binance — shown after 2.5 s
+without Binance data and refreshed every 5 minutes while the tab is visible.
 
 ## Shared assets and browser caches
 
