@@ -38,3 +38,10 @@ the bulletin page:
 links preview the asset's active chart for the method in the query string — `/bulletin?asset=BTCUSDT&method=pa`
 for Price Action, Critical Zones otherwise. The method must be a query parameter: a `#pa` fragment is never
 sent to the server, so link previews cannot see it. Other pages use `assets/og-image.png`.
+
+## Live price strip (homepage)
+
+The strip shows the assets of the active publication. The first prices come from `/api/prices`
+(`functions/api/prices.js`), which calls Binance's public REST API from Cloudflare and caches each symbol set
+for 3 seconds. The browser then opens Binance's public market-data WebSocket for per-second updates; if
+the visitor's network blocks Binance, the strip keeps refreshing from `/api/prices` every 5 seconds.
