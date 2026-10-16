@@ -47,7 +47,7 @@ for 3 seconds. The browser then opens a public WebSocket directly — Binance, o
 where Binance is blocked — so live updates never go through Cloudflare and use no Functions quota. Only if no
 stream can be opened does the strip refresh from `/api/prices`, every 15 seconds.
 Binance refuses requests from some countries (e.g. the Netherlands, the US) — including from the Cloudflare
-location serving those visitors — so `/api/prices` falls back to Coinbase's public API (USDT pair, else USD)
+location serving those visitors — so `/api/prices` falls back to Coinbase's public API (USD pair — Coinbase's liquid market — else USDT)
 and reports `source: "coinbase"`; the strip's source label follows. When both fail it still answers 200
 with `prices: []` and the upstream status codes in `attempts`.
 
@@ -55,5 +55,11 @@ with `prices: []` and the upstream status codes in `attempts`.
 
 `/api/stats?symbol=BTCUSDT` (`functions/api/stats.js`) returns the last price, 24h open/high/low and quote
 volume, and this week's (Monday 00:00 UTC) and month's opening prices — from Binance, or from Coinbase
-(USDT pair, else USD; opens from daily candles) where Binance refuses the request. Cached for 60 seconds per
+(USD pair, else USDT; opens from the latest daily candles) where Binance refuses the request. Cached for 60 seconds per
 symbol; the bulletin page fetches it once per view and every 5 minutes while the tab is visible.
+
+## Shared assets and browser caches
+
+Pages link `assets/site.css` and `assets/disclaimer.js` with a `?v=` content hash so browsers pick up new
+versions. After editing either file, update the hash in all four HTML pages, e.g.
+`sha1sum assets/site.css | cut -c1-8`.
