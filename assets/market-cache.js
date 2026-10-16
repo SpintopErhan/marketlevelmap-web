@@ -13,8 +13,10 @@ var MarketCache=(function(){
   window.addEventListener("pagehide",function(){if(flushTimer){clearTimeout(flushTimer);flush()}});
   return {
     // t: {c: last, o: 24h open, h: 24h high, l: 24h low, q: 24h quote volume, quote, source}
-    putTicker:function(symbol,t){var s=load(),prev=s.tickers[symbol]||{},next={at:Date.now()};["c","o","h","l","q","quote","source"].forEach(function(k){next[k]=t[k]!=null&&t[k]!==""?String(t[k]):prev[k]});s.tickers[symbol]=next;save()},
-    getTicker:function(symbol,maxAge){var t=load().tickers[symbol];return t&&Date.now()-t.at<maxAge?t:null},
+    // Fields missing from an update keep their previous value, but only from the same source:
+    // Binance (USDT) and Coinbase (USD) figures are never mixed in one entry.
+    putTicker:function(symbol,t){var s=load(),prev=s.tickers[symbol]||{},next={at:Date.now()};if(prev.source!==t.source)prev={};["c","o","h","l","q","quote","source"].forEach(function(k){next[k]=t[k]!=null&&t[k]!==""?String(t[k]):prev[k]});s.tickers[symbol]=next;save()},
+    getTicker:function(symbol,maxAge){var t=load().tickers[symbol];return t&&Date.now()-t.at<maxAge&&Number(t.c)>0&&Number(t.q)>0&&Number(t.h)>0&&Number(t.l)>0?t:null},
     putOpens:function(symbol,weekOpen,monthOpen,source){var s=load(),now=Date.now(),o=s.opens[symbol]||{};if(weekOpen){o.week=weekStart(now);o.weekOpen=String(weekOpen)}if(monthOpen){o.month=monthStart(now);o.monthOpen=String(monthOpen)}o.source=source;s.opens[symbol]=o;save()},
     getOpens:function(symbol,source){var o=load().opens[symbol],now=Date.now();if(!o||o.source!==source)return{};return{weekOpen:o.week===weekStart(now)?o.weekOpen:null,monthOpen:o.month===monthStart(now)?o.monthOpen:null}},
     binanceBlocked:function(){var b=load().binanceBlockedAt;return !!b&&Date.now()-b<BLOCK_MS},
