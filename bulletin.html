@@ -171,10 +171,11 @@ function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){ret
     updated.innerHTML='<span data-i18n="published"></span> '+escapeHtml(stamp)+'\n<span data-i18n="lastUpdated"></span> '+escapeHtml(stamp);
     var groups=groupByMethod(rows),host=document.getElementById("methods");
     var switcher=document.createElement("div");switcher.className="method-switch";switcher.setAttribute("role","tablist");switcher.setAttribute("aria-label","Analysis methods");host.appendChild(switcher);
-    function showMethod(method,updateHash){
+    // The method lives in the query string (?method=pa) so servers and link previews can see it; #pa is still read for older links.
+    function showMethod(method,updateUrl){
       switcher.querySelectorAll("button").forEach(function(b){var on=b.dataset.method===method;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1});
       host.querySelectorAll(".method").forEach(function(sec){sec.hidden=sec.dataset.method!==method});
-      if(updateHash)try{history.replaceState(null,"","#"+method)}catch(e){}
+      if(updateUrl)try{var next=new URL(location.href);next.searchParams.set("method",method);next.hash="";history.replaceState(null,"",next.toString())}catch(e){}
     }
     groups.forEach(function(g){
       var tab=document.createElement("button");tab.type="button";tab.setAttribute("role","tab");tab.dataset.method=g.method;tab.id="tab-"+g.method;tab.setAttribute("aria-controls","method-"+g.method);
@@ -202,7 +203,7 @@ function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){ret
       g.rows.forEach(function(entry,index){var button=document.createElement("button");button.type="button";button.className="tab";button.setAttribute("role","tab");button.textContent=timeframeOf(entry).toUpperCase();button.onclick=function(){select(entry,button)};tabs.appendChild(button);if(index===0)select(entry,button)});
       host.appendChild(section);
     });
-    var wanted=location.hash.replace("#","");showMethod(groups.some(function(g){return g.method===wanted})?wanted:groups[0].method,false);
+    var wanted=new URLSearchParams(location.search).get("method")||location.hash.replace("#","");showMethod(groups.some(function(g){return g.method===wanted})?wanted:groups[0].method,true);
     switcher.addEventListener("keydown",function(event){if(event.key!=="ArrowRight"&&event.key!=="ArrowLeft")return;var list=[].slice.call(switcher.querySelectorAll("button")),i=list.indexOf(document.activeElement);if(i<0)return;var next=list[(i+(event.key==="ArrowRight"?1:list.length-1))%list.length];next.click();next.focus()});
     page.dataset.state="live";
     applyLanguage(document.getElementById("lang").value);
