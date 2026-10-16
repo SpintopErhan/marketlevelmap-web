@@ -1,0 +1,39 @@
+/* Shared by every page: theme tokens, page width, header and footer.
+   Page-specific styles stay in each page's <style>, which loads after this file. */
+:root{color-scheme:dark;--bg:#10161d;--fg:#edf2f4;--muted:#9aaab5;--line:#28343d;--accent:#4fd6c3;--panel:#151e27;--panel-2:#18222c;--shadow:0 14px 34px rgba(0,0,0,.16);--toggle-active:#edf2f4;--sun-icon:var(--accent);--moon-icon:#10161d;--cz:#e8a765;--pa:#4fd6c3;--toggle-x:17px}
+:root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent);--cz:#a8601c;--pa:#087a6c;--toggle-x:0}
+@media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent);--cz:#a8601c;--pa:#087a6c;--toggle-x:0}}
+
+.shell{width:min(1240px,100%);margin:auto;padding:0 40px}
+
+/* Header */
+header{height:84px;display:flex;align-items:center;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line)}
+.logo{display:block;width:auto}
+.logo-header{height:40px}
+.logo-light{display:none}
+:root[data-theme="light"] .logo-light{display:block}
+:root[data-theme="light"] .logo-dark{display:none}
+@media(prefers-color-scheme:light){:root:not([data-theme]) .logo-light{display:block}:root:not([data-theme]) .logo-dark{display:none}}
+.nav{display:flex;align-items:center;gap:22px}
+.nav a{font-size:13px;text-decoration:none;color:var(--muted)}
+.nav-links{display:flex;align-items:center;gap:22px;line-height:1.2}
+.nav .nav-links a{color:var(--muted)}
+.nav .nav-links a:hover,.nav .nav-links a[aria-current="page"]{color:var(--fg)}
+.controls{display:flex;align-items:center;gap:8px;margin-left:8px}
+.lang{position:relative;display:flex}
+.lang label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.lang:after{content:"";position:absolute;right:6px;top:50%;width:4px;height:4px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;color:var(--fg);transform:translateY(-67%) rotate(45deg);pointer-events:none}
+.lang select{appearance:none;-webkit-appearance:none;min-height:18px;height:18px;padding:0 14px 0 6px;font-family:inherit;font-size:10px;line-height:1;background:var(--panel);border:1px solid var(--line);border-radius:999px;color:var(--fg);cursor:pointer}
+.theme-toggle{position:relative;display:flex;align-items:center;justify-content:space-between;width:35px;height:18px;padding:1px 4px;border:1px solid var(--line);border-radius:999px;background:var(--panel);cursor:pointer}
+.theme-toggle svg{position:relative;z-index:1;width:8px;height:8px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.theme-toggle svg:first-child{color:var(--sun-icon)}
+.theme-toggle svg:last-child{color:var(--moon-icon)}
+.toggle-thumb{position:absolute;top:1px;left:1px;width:14px;height:14px;border-radius:50%;background:var(--toggle-active);transform:translateX(var(--toggle-x));transition:transform .2s ease}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:24px 0 46px;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:11px}
+footer p{margin:0;line-height:1.75}
+
+@media(max-width:800px){.shell{padding:0 24px}header{height:70px}}
+/* Phones: page links get their own row under the logo */
+@media(max-width:520px){.shell{padding:0 18px}header{display:grid;grid-template-columns:1fr auto;align-items:center;height:auto;padding-top:16px;row-gap:12px}.logo-header{height:28px}.nav{display:contents}.controls{grid-column:2;grid-row:1;gap:5px;margin-left:0}.nav-links{grid-column:1/-1;grid-row:2;gap:20px;overflow-x:auto}.nav .nav-links a{padding:2px 0 10px;border-bottom:2px solid transparent;font-size:12px;white-space:nowrap}.nav .nav-links a[aria-current="page"]{border-bottom-color:var(--accent)}footer{display:block;padding:22px 0 34px}footer p+p{margin-top:14px}}

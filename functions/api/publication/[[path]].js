@@ -32,6 +32,35 @@ function publicEntry(entry) {
   };
 }
 
+// The chart's own time: an explicit field written by the publisher wins; otherwise the
+// image's R2 custom metadata; otherwise the time the image was uploaded to R2.
+const TIME_FIELDS = ["dataAsOf", "analysisTime", "chartTime", "generatedAt", "renderedAt", "createdAt"];
+
+function explicitTime(source) {
+  if (!source) return null;
+  for (const field of TIME_FIELDS) {
+    const value = source[field];
+    if (typeof value === "string" && !Number.isNaN(Date.parse(value))) return new Date(value).toISOString();
+  }
+  return null;
+}
+
+async function chartTime(bucket, entry) {
+  const declared = explicitTime(entry) || explicitTime(entry.image);
+  if (declared) return { at: declared, source: "publication" };
+  if (!entry.image?.objectKey) return null;
+  try {
+    const head = await bucket.head(entry.image.objectKey);
+    if (!head) return null;
+    const fromMetadata = explicitTime(head.customMetadata);
+    if (fromMetadata) return { at: fromMetadata, source: "metadata" };
+    if (head.uploaded) return { at: head.uploaded.toISOString(), source: "upload" };
+  } catch (_) {
+    // A missing time must not break the publication index.
+  }
+  return null;
+}
+
 async function activePointer(bucket) {
   const object = await bucket.get(ACTIVE_POINTER_KEY);
   if (!object) return null;
@@ -46,9 +75,9 @@ async function activePointer(bucket) {
   }
 }
 
-function mediaHeaders(object) {
+function mediaHeaders(object, declaredType) {
   const headers = new Headers();
-  headers.set("Content-Type", object.httpMetadata?.contentType || "application/octet-stream");
+  headers.set("Content-Type", object.httpMetadata?.contentType || declaredType || "application/octet-stream");
   headers.set("Cache-Control", "public, max-age=300");
   if (object.etag) headers.set("ETag", object.etag);
   return headers;
@@ -68,7 +97,10 @@ export async function onRequestGet(context) {
       schemaVersion: pointer.schemaVersion,
       sitePublicationId: pointer.sitePublicationId,
       activatedAt: pointer.activatedAt,
-      entries: pointer.entries.map(publicEntry),
+      entries: await Promise.all(pointer.entries.map(async (entry) => ({
+        ...publicEntry(entry),
+        chartTime: await chartTime(bucket, entry),
+      }))),
     });
   }
   if (path.length !== 2 || !["image", "comment"].includes(path[0])) {
@@ -79,5 +111,5 @@ export async function onRequestGet(context) {
   if (!resource?.objectKey) return json({ error: "Publication resource is not active." }, 404);
   const object = await bucket.get(resource.objectKey);
   if (!object) return json({ error: "Publication resource is unavailable." }, 404);
-  return new Response(object.body, { headers: mediaHeaders(object) });
+  return new Response(object.body, { headers: mediaHeaders(object, resource.mediaType) });
 }
