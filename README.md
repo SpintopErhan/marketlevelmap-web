@@ -20,3 +20,20 @@ safe image/comment URLs. `/api/publication/image/<publicationId>` and
 `/api/publication/comment/<publicationId>` serve only objects referenced by the
 current pointer. R2 remains private; browser clients never receive the R2 writer
 credential.
+
+## Chart times
+
+Each entry returned by `/api/publication` carries `chartTime: { at, source }`, shown under the chart on
+the bulletin page:
+
+- `source: "publication"` — taken from the entry (or its `image`) in `active.json`. The publisher should
+  write the chart's data/assessment time as an ISO-8601 field named `dataAsOf` (also accepted:
+  `analysisTime`, `chartTime`, `generatedAt`, `renderedAt`, `createdAt`). Shown as "Chart data as of".
+- `source: "metadata"` — the same field names in the image object's R2 custom metadata.
+- `source: "upload"` — fallback: when the image was uploaded to R2. Shown as "Chart uploaded".
+
+## Link previews
+
+`functions/_middleware.js` adds description, Open Graph and Twitter tags to every HTML page. Bulletin
+links (`/bulletin?asset=BTCUSDT`) use the asset's active Critical Zones chart as the preview image;
+other pages use `assets/og-image.png`.
