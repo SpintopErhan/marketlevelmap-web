@@ -45,3 +45,7 @@ The strip shows the assets of the active publication. The first prices come from
 (`functions/api/prices.js`), which calls Binance's public REST API from Cloudflare and caches each symbol set
 for 3 seconds. The browser then opens Binance's public market-data WebSocket for per-second updates; if
 the visitor's network blocks Binance, the strip keeps refreshing from `/api/prices` every 5 seconds.
+Binance refuses requests from some countries (e.g. the Netherlands, the US) — including from the Cloudflare
+location serving those visitors — so `/api/prices` falls back to Coinbase's public API (USDT pair, else USD)
+and reports `source: "coinbase"`; the strip's source label follows. When both fail it still answers 200
+with `prices: []` and the upstream status codes in `attempts`.
