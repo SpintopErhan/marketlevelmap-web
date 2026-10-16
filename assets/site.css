@@ -1,8 +1,8 @@
 /* Shared by every page: theme tokens, page width, header and footer.
    Page-specific styles stay in each page's <style>, which loads after this file. */
-:root{color-scheme:dark;--bg:#10161d;--fg:#edf2f4;--muted:#9aaab5;--line:#28343d;--accent:#4fd6c3;--panel:#151e27;--panel-2:#18222c;--shadow:0 14px 34px rgba(0,0,0,.16);--toggle-active:#edf2f4;--sun-icon:var(--accent);--moon-icon:#10161d;--cz:#e8a765;--pa:#4fd6c3;--toggle-x:17px}
-:root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent);--cz:#a8601c;--pa:#087a6c;--toggle-x:0}
-@media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent);--cz:#a8601c;--pa:#087a6c;--toggle-x:0}}
+:root{color-scheme:dark;--bg:#10161d;--fg:#edf2f4;--muted:#9aaab5;--line:#28343d;--accent:#4fd6c3;--panel:#151e27;--panel-2:#18222c;--shadow:0 14px 34px rgba(0,0,0,.16);--toggle-active:#edf2f4;--sun-icon:var(--accent);--moon-icon:#10161d;--cz:#e8a765;--pa:#4fd6c3;--toggle-x:17px;--up:#3ccf91;--down:#ef6b73}
+:root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent);--cz:#a8601c;--pa:#087a6c;--toggle-x:0;--up:#12825a;--down:#c2393f}
+@media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent);--cz:#a8601c;--pa:#087a6c;--toggle-x:0;--up:#12825a;--down:#c2393f}}
 
 .shell{width:min(1240px,100%);margin:auto;padding:0 40px}
 

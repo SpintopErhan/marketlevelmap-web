@@ -50,3 +50,10 @@ Binance refuses requests from some countries (e.g. the Netherlands, the US) — 
 location serving those visitors — so `/api/prices` falls back to Coinbase's public API (USDT pair, else USD)
 and reports `source: "coinbase"`; the strip's source label follows. When both fail it still answers 200
 with `prices: []` and the upstream status codes in `attempts`.
+
+## Market summary (bulletin page)
+
+`/api/stats?symbol=BTCUSDT` (`functions/api/stats.js`) returns the last price, 24h open/high/low and quote
+volume, and this week's (Monday 00:00 UTC) and month's opening prices — from Binance, or from Coinbase
+(USDT pair, else USD; opens from daily candles) where Binance refuses the request. Cached for 60 seconds per
+symbol; the bulletin page fetches it once per view and every 5 minutes while the tab is visible.
