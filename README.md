@@ -35,5 +35,6 @@ the bulletin page:
 ## Link previews
 
 `functions/_middleware.js` adds description, Open Graph and Twitter tags to every HTML page. Bulletin
-links (`/bulletin?asset=BTCUSDT`) use the asset's active Critical Zones chart as the preview image;
-other pages use `assets/og-image.png`.
+links preview the asset's active chart for the method in the query string — `/bulletin?asset=BTCUSDT&method=pa`
+for Price Action, Critical Zones otherwise. The method must be a query parameter: a `#pa` fragment is never
+sent to the server, so link previews cannot see it. Other pages use `assets/og-image.png`.

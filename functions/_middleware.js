@@ -20,8 +20,19 @@ function pageKey(pathname) {
   return path === "" ? "/" : path;
 }
 
-// Image of the asset's active chart, Critical Zones first. Null when the asset has no active bulletin.
-async function bulletinImage(env, asset) {
+const METHOD_NAMES = { cz: "Critical Zones", pa: "Price Action" };
+
+// Same rule as the pages: which evaluation method a chart belongs to.
+function methodOf(graphicKey) {
+  const key = (graphicKey || "").toLowerCase();
+  if (/cz|critical/.test(key)) return "cz";
+  if (/(^|[^a-z])pa([^a-z]|$)|price[ _-]?action/.test(key)) return "pa";
+  return "";
+}
+
+// Image of the asset's active chart for the requested method (Critical Zones by default).
+// Null when the asset has no active bulletin.
+async function bulletinImage(env, asset, method) {
   const bucket = env.MARKETLEVELMAP_PUBLIC;
   if (!bucket) return null;
   try {
@@ -29,8 +40,10 @@ async function bulletinImage(env, asset) {
     if (!object) return null;
     const pointer = await object.json();
     const rows = (pointer?.entries || []).filter((entry) => entry.image && (entry.graphicKey || "").split(":")[1] === asset);
-    rows.sort((a, b) => (/cz|critical/i.test(b.graphicKey) - /cz|critical/i.test(a.graphicKey)) || a.graphicKey.localeCompare(b.graphicKey));
-    return rows.length ? `/api/publication/image/${encodeURIComponent(rows[0].publicationId)}` : null;
+    const wanted = method || "cz";
+    rows.sort((a, b) => ((methodOf(b.graphicKey) === wanted) - (methodOf(a.graphicKey) === wanted)) || a.graphicKey.localeCompare(b.graphicKey));
+    if (!rows.length) return null;
+    return { url: `/api/publication/image/${encodeURIComponent(rows[0].publicationId)}`, method: methodOf(rows[0].graphicKey) };
   } catch (_) {
     return null;
   }
@@ -50,11 +63,15 @@ export async function onRequest(context) {
     let image = "/assets/og-image.png";
     if (key === "/bulletin") {
       const asset = (url.searchParams.get("asset") || "").toUpperCase();
-      const chart = /^[A-Z0-9]{2,20}$/.test(asset) ? await bulletinImage(context.env, asset) : null;
+      const requested = (url.searchParams.get("method") || "").toLowerCase();
+      const chart = /^[A-Z0-9]{2,20}$/.test(asset) ? await bulletinImage(context.env, asset, METHOD_NAMES[requested] ? requested : "") : null;
       if (chart) {
-        title = `${asset} bulletin · ${SITE}`;
-        description = `Critical Zones and Price Action charts for ${asset}. Structure-based market analysis.`;
-        image = chart;
+        const name = METHOD_NAMES[chart.method];
+        title = name ? `${asset} ${name} bulletin · ${SITE}` : `${asset} bulletin · ${SITE}`;
+        description = name
+          ? `${name} charts for ${asset}. Structure-based market analysis.`
+          : `Critical Zones and Price Action charts for ${asset}. Structure-based market analysis.`;
+        image = chart.url;
       }
     }
 
