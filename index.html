@@ -150,10 +150,12 @@ var startTicker=(function(){
   var box=document.getElementById("ticker"),track=document.getElementById("ticker-items"),items={},symbols=[],socket=null,streamIndex=0,retryTimer=null,pollTimer=null,polling=false,coinbasePairs={};
   var reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches,loopWidth=0,copies=1,holdUntil=0,hovering=false,lastFrame=0,offset=0;
   function locale(){return document.documentElement.lang==="tr"?"tr-TR":"en-US"}
-  function formatPrice(value){var n=Number(value),digits=n>=10?2:n>=1?4:6;return n.toLocaleString(locale(),{minimumFractionDigits:digits,maximumFractionDigits:digits})}
+  // Decimals are fixed per asset from its first price, so a price moving across 10 or 1 (e.g. AVAX near 10)
+  // does not flip between "10.01" and "9.9900" on every tick.
+  function formatPrice(value,item){var n=Number(value);if(item.digits==null)item.digits=n>=10?2:n>=1?4:6;return n.toLocaleString(locale(),{minimumFractionDigits:item.digits,maximumFractionDigits:item.digits})}
   function paint(item){
     var d=item.data;if(!d)return;
-    var close=Number(d.c),open=Number(d.o),change=open?(close-open)/open*100:0,price=formatPrice(close),text=(change>=0?"+":"")+change.toLocaleString(locale(),{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
+    var close=Number(d.c),open=Number(d.o),change=open?(close-open)/open*100:0,price=formatPrice(close,item),text=(change>=0?"+":"")+change.toLocaleString(locale(),{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
     var appeared=false;
     item.nodes.forEach(function(n){n.price.textContent=price;n.change.textContent=text;n.change.className="ticker-change "+(change>=0?"up":"down");if(n.el.hidden){n.el.hidden=false;appeared=true}});
     box.hidden=false;

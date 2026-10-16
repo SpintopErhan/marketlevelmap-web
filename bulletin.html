@@ -255,7 +255,9 @@ function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){ret
   function field(name){return box.querySelector('[data-stat="'+name+'"]')}
   function words(){return copy[document.getElementById("lang").value]||copy.en}
   function locale(){return document.documentElement.lang==="tr"?"tr-TR":"en-US"}
-  function price(value){var n=Number(value),digits=n>=10?2:n>=1?4:6;return n.toLocaleString(locale(),{minimumFractionDigits:digits,maximumFractionDigits:digits})}
+  // Decimals fixed from the first price shown, so they do not flip when the price crosses 10 or 1.
+  var digits=null;
+  function price(value){var n=Number(value);if(digits==null)digits=Number(data&&data.last)>=10?2:Number(data&&data.last)>=1?4:6;return n.toLocaleString(locale(),{minimumFractionDigits:digits,maximumFractionDigits:digits})}
   function change(el,from,to,label){
     var a=Number(from),b=Number(to);el.textContent="";if(!(a>0&&b>0))return;
     var r=(b-a)/a,mark=document.createElement("b");mark.className=r>=0?"up":"down";
