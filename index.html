@@ -81,6 +81,30 @@ main{padding:52px 0 80px}
 .empty{display:none;border:1px dashed var(--line);border-radius:12px;padding:30px;color:var(--muted);text-align:center;grid-column:1/-1}
 @media(max-width:800px){.intro{display:block}.intro p{margin-top:14px}.featured{grid-template-columns:1fr}.chart{min-height:270px}.feature-copy{padding:25px}.cards{grid-template-columns:repeat(2,1fr)}.filterbar{align-items:flex-end}.filters{flex-wrap:wrap;justify-content:flex-end}}
 @media(max-width:520px){main{padding:38px 0 56px}.intro h1{font-size:32px;letter-spacing:-1.2px}.featured{border-radius:12px}.chart{min-height:224px}.feature-copy h2{font-size:23px}.metadata{gap:10px;margin:22px 0}.filterbar{display:block;margin:48px 0 18px}.filters{justify-content:flex-start;margin-top:16px}.search{width:100%}.search input{width:100%}.cards{grid-template-columns:1fr}.card-chart{height:164px}}
+
+/* Live price strip (homepage only) */
+:root{--up:#3ccf91;--down:#ef6b73}
+:root[data-theme="light"]{--up:#12825a;--down:#c2393f}
+@media(prefers-color-scheme:light){:root:not([data-theme]){--up:#12825a;--down:#c2393f}}
+.ticker{display:flex;align-items:center;gap:16px;margin-top:14px;padding:8px 16px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:12px;line-height:1.3}
+.ticker[hidden]{display:none}
+.ticker-live{display:inline-flex;align-items:center;gap:6px;flex:none;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.ticker-live i{width:6px;height:6px;border-radius:50%;background:var(--up);animation:ticker-pulse 2s ease-in-out infinite}
+@keyframes ticker-pulse{50%{opacity:.35}}
+.ticker-items{display:flex;flex:1;min-width:0;gap:22px;overflow-x:auto;scrollbar-width:none}
+.ticker-items::-webkit-scrollbar{display:none}
+.ticker-item{display:inline-flex;align-items:baseline;gap:7px;padding:2px 4px;border-radius:6px;color:var(--fg);text-decoration:none;white-space:nowrap;transition:background-color .6s ease}
+.ticker-item[hidden]{display:none}
+.ticker-item:hover b{color:var(--fg)}
+.ticker-item b{color:var(--muted);font-size:11px;font-weight:600}
+.ticker-price{font-variant-numeric:tabular-nums;font-weight:600}
+.ticker-change{font-size:11px;font-variant-numeric:tabular-nums}
+.ticker-change.up{color:var(--up)}.ticker-change.down{color:var(--down)}
+.ticker-item.tick-up{background:color-mix(in srgb,var(--up) 16%,transparent);transition:none}
+.ticker-item.tick-down{background:color-mix(in srgb,var(--down) 16%,transparent);transition:none}
+.ticker-source{flex:none;color:var(--muted);font-size:10px}
+@media(prefers-reduced-motion:reduce){.ticker-live i{animation:none}.ticker-item,.ticker-item.tick-up,.ticker-item.tick-down{transition:none;background:none}}
+@media(max-width:520px){.ticker{flex-wrap:wrap;gap:8px 12px;border-radius:12px;padding:10px 12px}.ticker-items{order:3;flex-basis:100%}.ticker-source{margin-left:auto}}
 </style>
 <script>
 try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
@@ -90,7 +114,8 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <div class="shell"><header>
 <a href="#" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Bültenler" aria-current="page">Bulletins</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="archive.html" data-tr="Arşiv">Archive</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
-</header></div>
+</header>
+<div class="ticker" id="ticker" aria-label="Live prices" hidden><span class="ticker-live"><i></i><span data-tr="Canlı">Live</span></span><div class="ticker-items" id="ticker-items"></div><span class="ticker-source" data-tr="Kaynak: Binance">Source: Binance</span></div></div>
 <main class="shell">
 <section id="latest"><div class="filterbar"><div class="filters"><div class="search"><input id="search" type="search" placeholder="Search an asset" aria-label="Search an asset"></div><button class="filter-btn active" data-filter="all">All</button><button class="filter-btn" data-filter="cz" data-method="cz" title="Critical Zones">CZ</button><button class="filter-btn" data-filter="pa" data-method="pa" title="Price Action">PA</button><button class="filter-btn" data-filter="favorites">Favorites</button></div></div>
 <div class="cards" id="cards" data-publication-state="loading">
@@ -98,7 +123,7 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <div class="empty" id="empty">No bulletins match this filter.</div></div></section>
 
 </main>
-<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Grafikler belirtilen tarihe ait statik analizlerdir ve canlı güncellenmez. Kripto varlıklar yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Charts are static analyses as of the stated date and are not updated live. Crypto assets carry high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Fiyat şeridi anlık fiyatı gösterir; grafikler belirtilen tarihe ait statik analizlerdir ve canlı güncellenmez. Kripto varlıklar yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. The price strip shows live prices; charts are static analyses as of the stated date and are not updated live. Crypto assets carry high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 
 <script>
 var copy={en:{title:"MarketLevelMap — Market Bulletins",nav:"Weekly events",search:"Search an asset",all:"All",fav:"Favorites",read:"Read bulletin",published:"Published",empty:"No bulletins match this filter.",archive:"Earlier publications",notice:"General information only.",understand:"I understand",risk:"Not investment advice."},tr:{title:"MarketLevelMap — Piyasa Bültenleri",nav:"Haftalık olaylar",search:"Varlık ara",all:"Tümü",fav:"Favoriler",read:"Bülteni oku",published:"Yayınlandı",empty:"Bu filtreyle eşleşen bülten yok.",archive:"Önceki yayınlar",notice:"Yalnızca genel bilgilendirme.",understand:"Anladım",risk:"Yatırım tavsiyesi değildir."}};
@@ -112,6 +137,56 @@ lang.addEventListener("change",function(){document.documentElement.lang=this.val
 document.querySelectorAll("[data-filter]").forEach(function(button){button.addEventListener("click",function(){filter=button.dataset.filter;document.querySelectorAll("[data-filter]").forEach(function(b){b.classList.toggle("active",b===button)});applyFilters()})});
 search.addEventListener("input",applyFilters);
 function applyFilters(){var query=search.value.toLowerCase().trim(),method=filter==="cz"||filter==="pa"?filter:"",shown=0;cards.forEach(function(card){var match=card.dataset.coin.indexOf(query)>-1&&!(filter==="favorites"&&!card.querySelector(".favorite").classList.contains("active"))&&(!method||!!card.querySelector('.card-method[data-method="'+method+'"]'));if(match&&card.focusMethod)card.focusMethod(method);card.style.display=match?"flex":"none";if(match)shown++});empty.style.display=shown?"none":"block"}
+</script>
+<script>
+/* Live price strip: the visitor's browser reads Binance's public market-data stream (no key, no server).
+   Hidden until the first price arrives and again if the stream cannot be reached. Homepage only. */
+var startTicker=(function(){
+  var ENDPOINTS=["wss://data-stream.binance.vision/stream?streams=","wss://stream.binance.com:9443/stream?streams="];
+  var box=document.getElementById("ticker"),list=document.getElementById("ticker-items"),items={},symbols=[],socket=null,failures=0,retryTimer=null,paused=false;
+  function locale(){return document.documentElement.lang==="tr"?"tr-TR":"en-US"}
+  function formatPrice(value){var n=Number(value),digits=n>=10?2:n>=1?4:6;return n.toLocaleString(locale(),{minimumFractionDigits:digits,maximumFractionDigits:digits})}
+  function paint(item){
+    var d=item.data;if(!d)return;
+    var close=Number(d.c),open=Number(d.o),change=open?(close-open)/open*100:0;
+    item.price.textContent=formatPrice(close);
+    item.change.textContent=(change>=0?"+":"")+change.toLocaleString(locale(),{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
+    item.change.className="ticker-change "+(change>=0?"up":"down");
+    item.el.hidden=false;box.hidden=false;
+  }
+  function update(d){
+    var item=items[d.s];if(!item)return;
+    var previous=item.data&&Number(item.data.c);item.data=d;paint(item);
+    if(previous&&previous!==Number(d.c)){var cls=Number(d.c)>previous?"tick-up":"tick-down";item.el.classList.remove("tick-up","tick-down");void item.el.offsetWidth;item.el.classList.add(cls);setTimeout(function(){item.el.classList.remove(cls)},120)}
+  }
+  function connect(){
+    if(paused||socket||!symbols.length)return;
+    var url=ENDPOINTS[failures%ENDPOINTS.length]+symbols.map(function(s){return s.toLowerCase()+"@miniTicker"}).join("/"),received=false;
+    try{socket=new WebSocket(url)}catch(e){socket=null;failures++;return retry()}
+    socket.onmessage=function(event){received=true;failures=0;try{var message=JSON.parse(event.data),d=message.data||message;if(d&&d.s)update(d)}catch(e){}};
+    socket.onerror=function(){try{socket.close()}catch(e){}};
+    socket.onclose=function(){socket=null;if(!received)failures++;retry()};
+  }
+  function retry(){
+    clearTimeout(retryTimer);if(paused)return;
+    if(failures>=6){box.hidden=true;return}
+    retryTimer=setTimeout(connect,Math.min(30000,2000*Math.pow(2,failures)));
+  }
+  document.addEventListener("visibilitychange",function(){
+    paused=document.hidden;
+    if(paused){clearTimeout(retryTimer);if(socket){var s=socket;socket=null;s.onclose=null;s.close()}}else{failures=0;connect()}
+  });
+  new MutationObserver(function(){Object.keys(items).forEach(function(k){paint(items[k])})}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  return function(assets){
+    symbols=assets.filter(function(a){return /^[A-Z0-9]{2,20}$/.test(a)});list.textContent="";items={};
+    symbols.forEach(function(symbol){
+      var el=document.createElement("a");el.className="ticker-item";el.hidden=true;el.href="bulletin.html?asset="+encodeURIComponent(symbol)+"&method=cz";
+      el.innerHTML='<b></b><span class="ticker-price"></span><span class="ticker-change"></span>';el.firstChild.textContent=symbol.replace(/USDT$/,"");
+      list.appendChild(el);items[symbol]={el:el,price:el.querySelector(".ticker-price"),change:el.querySelector(".ticker-change"),data:null};
+    });
+    paused=document.hidden;connect();
+  };
+})();
 </script>
 <script>
 /* CZ Short and Price Action charts are separate evaluation methods; keep them apart (same rules as bulletin.html). */
@@ -140,7 +215,7 @@ function groupByMethod(rows){
     if(!response.ok){showUnavailable();return;}
     var publication=await response.json(),entries=publication.entries||[],byAsset={};
     entries.forEach(function(entry){var pair=(entry.graphicKey||"").split(":")[1];if(!pair||!entry.image)return;(byAsset[pair]||(byAsset[pair]=[])).push(entry)});
-    var assets=Object.keys(byAsset).sort();if(!assets.length){showUnavailable();return;}
+    var assets=Object.keys(byAsset).sort();if(!assets.length){showUnavailable();return;}startTicker(assets);
     var style=document.createElement("style");style.textContent=".card-chart .live-chart{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;display:block;background:#101820}";document.head.appendChild(style);
     root.innerHTML="";
     assets.forEach(function(asset){
