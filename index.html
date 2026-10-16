@@ -211,6 +211,22 @@ var startTicker=(function(){
     ws.onerror=function(){try{ws.close()}catch(e){}};
     ws.onclose=function(){clearTimeout(giveUp);if(socket===ws)socket=null;if(document.hidden)return;if(ready){retryTimer=setTimeout(connect,retryDelay);retryDelay=Math.min(30000,retryDelay*2)}else streamFailed()};
   }
+  // Binance was unreachable from this browser recently, so the strip started on Coinbase. Check Binance
+  // quietly in the background (the visitor may have changed network) and switch back if it answers.
+  function probeBinance(host){
+    var binance=STREAMS.filter(function(s){return s.kind==="binance"}),probe;
+    if(host>=binance.length)return;
+    try{probe=new WebSocket(binance[host].url+symbols[0].toLowerCase()+"@miniTicker")}catch(e){return probeBinance(host+1)}
+    var done=false,giveUp=setTimeout(function(){if(!done)try{probe.close()}catch(e){}},6000);
+    probe.onmessage=function(){
+      if(done)return;done=true;clearTimeout(giveUp);try{probe.close()}catch(e){}
+      MarketCache.markBinance(true);clearTimeout(retryTimer);clearTimeout(pollTimer);polling=false;
+      if(socket){var old=socket;socket=null;old.onclose=null;try{old.close()}catch(e){}}
+      streamIndex=STREAMS.indexOf(binance[host]);connect();
+    };
+    probe.onerror=function(){try{probe.close()}catch(e){}};
+    probe.onclose=function(){clearTimeout(giveUp);if(!done){done=true;probeBinance(host+1)}};
+  }
   // Try the next stream; after the last one, fall back to /api/prices.
   function streamFailed(){
     streamIndex++;
@@ -268,7 +284,7 @@ var startTicker=(function(){
     track.textContent="";track.appendChild(makeRow(false));
     // Paint the last known prices from this browser at once; live data replaces them within a second.
     if(window.MarketCache){var cachedSource=null;symbols.forEach(function(symbol){var t=MarketCache.getTicker(symbol,15*60000);if(t){cachedSource=cachedSource||t.source;update({s:symbol,c:t.c,o:t.o},false)}});if(cachedSource)setSource(cachedSource);
-      if(MarketCache.binanceBlocked())streamIndex=STREAMS.map(function(s){return s.kind}).indexOf("coinbase")}
+      if(MarketCache.binanceBlocked()){streamIndex=STREAMS.map(function(s){return s.kind}).indexOf("coinbase");probeBinance(0)}}
     snapshot();connect();requestAnimationFrame(frame);
   };
 })();

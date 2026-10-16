@@ -287,13 +287,13 @@ function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){ret
       var m;try{m=JSON.parse(event.data)}catch(e){return}var d=m&&m.data;if(!d)return;
       if(!data||data.source!=="binance"){var known=cache?cache.getOpens(asset,"binance"):{};data={source:"binance",quote:"USDT",weekOpen:known.weekOpen||null,monthOpen:known.monthOpen||null}}
       if(d.e==="24hrTicker"){data.last=d.c;data.open24h=d.o;data.high24h=d.h;data.low24h=d.l;data.volumeQuote=d.q;data.at=new Date().toISOString();
-        if(!ready){ready=true;live=true;retryDelay=2000;clearTimeout(giveUp);clearTimeout(timer);if(cache)cache.markBinance(true);render();remember()}else schedulePaint()}
+        if(!ready){ready=true;live=true;fallback=false;retryDelay=2000;clearTimeout(giveUp);clearTimeout(timer);if(cache)cache.markBinance(true);render();remember()}else schedulePaint()}
       else if(d.e==="kline"&&d.k){if(d.k.i==="1w")data.weekOpen=d.k.o;else if(d.k.i==="1M")data.monthOpen=d.k.o;if(ready)schedulePaint()}
     };
     ws.onerror=function(){try{ws.close()}catch(e){}};
     ws.onclose=function(){clearTimeout(giveUp);if(socket===ws)socket=null;if(document.hidden)return;if(ready){timer=setTimeout(connect,retryDelay);retryDelay=Math.min(30000,retryDelay*2)}else failed()};
   }
-  function failed(){streamIndex++;if(streamIndex<STREAMS.length)return connect();streamIndex=0;fallback=true;live=false;if(cache)cache.markBinance(false);load()}
+  function failed(){streamIndex++;if(streamIndex<STREAMS.length)return connect();streamIndex=0;fallback=true;live=false;if(cache)cache.markBinance(false);if(data&&data.source==="coinbase"&&Date.now()-Date.parse(data.at)<60000)schedule();else load()}
 
   // Fallback: Coinbase figures through our endpoint.
   function schedule(){clearTimeout(timer);if(!document.hidden&&fallback)timer=setTimeout(load,REFRESH)}
@@ -308,7 +308,9 @@ function escapeHtml(text){return String(text).replace(/[&<>"']/g,function(c){ret
   // Last figures this browser saw for the asset (homepage strip or an earlier visit), shown until live data arrives.
   var seen=cache&&cache.getTicker(asset,15*60000);
   if(seen&&Number(seen.c)>0){var opens=cache.getOpens(asset,seen.source);data={source:seen.source,quote:seen.quote,last:seen.c,open24h:seen.o,high24h:seen.h,low24h:seen.l,volumeQuote:seen.q,weekOpen:opens.weekOpen,monthOpen:opens.monthOpen,at:new Date(seen.at).toISOString()};render()}
-  if(cache&&cache.binanceBlocked()){fallback=true;load();return}
+  // Binance was unreachable from this browser recently (e.g. on another network): show Coinbase figures at
+  // once, but still try Binance; it takes over as soon as it answers.
+  if(cache&&cache.binanceBlocked())load();
   connect();
   // A blocked connection can take several seconds to fail; show the Coinbase figures meanwhile.
   setTimeout(function(){if(!live&&!data)load()},2500);

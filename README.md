@@ -72,5 +72,6 @@ versions. After editing either file, update the hash in all four HTML pages, e.g
 `assets/market-cache.js` (linked with a `?v=` hash like the other shared assets) keeps, in the visitor's
 `localStorage`: the latest 24h figures per symbol (written by the homepage strip and the bulletin summary),
 this week's/month's opening prices, and whether both Binance streams failed in the last 30 minutes. Pages
-paint cached figures (≤15 minutes old, labelled with their time) immediately, and skip Binance while it is
-marked unreachable so blocked visitors go straight to Coinbase.
+paint cached figures (≤15 minutes old, labelled with their time) immediately. While Binance is marked
+unreachable they start on Coinbase without waiting, but still try Binance in the background and switch to it
+(clearing the mark) as soon as it answers — e.g. after moving from a blocked Wi-Fi to mobile data.
