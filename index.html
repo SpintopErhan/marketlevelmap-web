@@ -117,7 +117,7 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <a href="#" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Bültenler" aria-current="page">Bulletins</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="archive.html" data-tr="Arşiv">Archive</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header>
-<div class="ticker" id="ticker" aria-label="Live prices" hidden><span class="ticker-live"><i></i><span data-tr="Canlı">Live</span></span><div class="ticker-items" id="ticker-items"></div><span class="ticker-source" data-tr="Kaynak: Binance">Source: Binance</span></div></div>
+<div class="ticker" id="ticker" aria-label="Live prices" hidden><span class="ticker-live"><i></i><span data-tr="Canlı">Live</span></span><div class="ticker-items" id="ticker-items"></div><span class="ticker-source" id="ticker-source" data-en="Source: Binance" data-tr="Kaynak: Binance">Source: Binance</span></div></div>
 <main class="shell">
 <section id="latest"><div class="filterbar"><div class="filters"><div class="search"><input id="search" type="search" placeholder="Search an asset" aria-label="Search an asset"></div><button class="filter-btn active" data-filter="all">All</button><button class="filter-btn" data-filter="cz" data-method="cz" title="Critical Zones">CZ</button><button class="filter-btn" data-filter="pa" data-method="pa" title="Price Action">PA</button><button class="filter-btn" data-filter="favorites">Favorites</button></div></div>
 <div class="cards" id="cards" data-publication-state="loading">
@@ -166,8 +166,11 @@ var startTicker=(function(){
     var previous=item.data&&Number(item.data.c);item.data={c:d.c,o:d.o};paint(item);
     if(flash&&previous&&previous!==Number(d.c)){var cls=Number(d.c)>previous?"tick-up":"tick-down";item.nodes.forEach(function(n){n.el.classList.remove("tick-up","tick-down");void n.el.offsetWidth;n.el.classList.add(cls);setTimeout(function(){n.el.classList.remove(cls)},120)})}
   }
+  // Binance is not reachable from every country; /api/prices then answers from Coinbase and the label follows.
+  var sourceLabel=document.getElementById("ticker-source"),SOURCE_NAMES={binance:"Binance",coinbase:"Coinbase"};
+  function setSource(source){var name=SOURCE_NAMES[source];if(!name)return;sourceLabel.dataset.en="Source: "+name;sourceLabel.dataset.tr="Kaynak: "+name;sourceLabel.textContent=document.documentElement.lang==="tr"?sourceLabel.dataset.tr:sourceLabel.dataset.en}
   function snapshot(){
-    return fetch("/api/prices?symbols="+symbols.join(","),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){(body&&body.prices||[]).forEach(function(d){update(d,polling)});return !!(body&&body.prices&&body.prices.length)}).catch(function(){return false});
+    return fetch("/api/prices?symbols="+symbols.join(","),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){if(body&&body.prices&&body.prices.length)setSource(body.source);(body&&body.prices||[]).forEach(function(d){update(d,polling)});return !!(body&&body.prices&&body.prices.length)}).catch(function(){return false});
   }
   function startPolling(){if(polling)return;polling=true;schedulePoll()}
   function schedulePoll(){clearTimeout(pollTimer);if(!document.hidden)pollTimer=setTimeout(function(){snapshot().then(schedulePoll)},POLL_MS)}
@@ -176,7 +179,7 @@ var startTicker=(function(){
     var url=STREAMS[streamFailures%STREAMS.length]+symbols.map(function(s){return s.toLowerCase()+"@miniTicker"}).join("/"),received=false,ws;
     try{ws=socket=new WebSocket(url)}catch(e){socket=null;return streamFailed()}
     var giveUp=setTimeout(function(){if(!received)try{ws.close()}catch(e){}},6000);
-    ws.onmessage=function(event){if(!received){received=true;streamFailures=0;clearTimeout(giveUp)}try{var m=JSON.parse(event.data),d=m.data||m;if(d&&d.s)update(d,true)}catch(e){}};
+    ws.onmessage=function(event){if(!received){received=true;streamFailures=0;clearTimeout(giveUp);setSource("binance")}try{var m=JSON.parse(event.data),d=m.data||m;if(d&&d.s)update(d,true)}catch(e){}};
     ws.onerror=function(){try{ws.close()}catch(e){}};
     ws.onclose=function(){clearTimeout(giveUp);if(socket===ws)socket=null;if(document.hidden)return;if(received){retryTimer=setTimeout(connect,2000)}else streamFailed()};
   }
