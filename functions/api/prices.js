@@ -36,7 +36,7 @@ async function fromBinance(symbols, attempts) {
   for (const base of BINANCE) {
     const rows = await get(`${base}/api/v3/ticker/24hr?${query}`, attempts);
     if (Array.isArray(rows) && rows.length) {
-      return rows.filter((row) => row && SYMBOL.test(row.symbol)).map((row) => ({ s: row.symbol, c: row.lastPrice, o: row.openPrice }));
+      return rows.filter((row) => row && SYMBOL.test(row.symbol)).map((row) => ({ s: row.symbol, c: row.lastPrice, o: row.openPrice, h: row.highPrice, l: row.lowPrice, q: row.quoteVolume, quote: "USDT" }));
     }
   }
   return null;
@@ -49,7 +49,9 @@ async function fromCoinbase(symbols, attempts) {
     if (base === symbol || !base) return null;
     for (const quote of ["USD", "USDT"]) {
       const stats = await get(`${COINBASE}/products/${base}-${quote}/stats`, attempts);
-      if (stats && Number(stats.last) > 0) return { s: symbol, c: stats.last, o: stats.open, pair: `${base}-${quote}` };
+      if (stats && Number(stats.last) > 0) {
+        return { s: symbol, c: stats.last, o: stats.open, h: stats.high, l: stats.low, q: String(Number(stats.volume) * Number(stats.last)), quote, pair: `${base}-${quote}` };
+      }
     }
     return null;
   }));

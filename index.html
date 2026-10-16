@@ -108,7 +108,7 @@ main{padding:52px 0 80px}
 <script>
 try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
 </script>
-<script src="assets/disclaimer.js?v=d6f00e0e" defer></script></head>
+<script src="assets/disclaimer.js?v=d6f00e0e" defer></script><script src="assets/market-cache.js?v=b54ddd88"></script></head>
 <body>
 <div class="shell"><header>
 <a href="#" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
@@ -160,8 +160,11 @@ var startTicker=(function(){
     // The loop width depends on which items are visible; re-measure once new items show up.
     if(appeared){clearTimeout(layout.t);layout.t=setTimeout(layout,60)}
   }
-  function update(d,flash){
+  // d: {s, c: last, o: 24h open, h, l, q: 24h quote volume, quote}. Every update is also kept in
+  // MarketCache so bulletin pages and the next visit can show it straight away.
+  function update(d,flash,source){
     var item=items[d.s];if(!item||!(Number(d.c)>0))return;
+    if(source&&window.MarketCache)MarketCache.putTicker(d.s,{c:d.c,o:d.o,h:d.h,l:d.l,q:d.q,quote:d.quote,source:source});
     var previous=item.data&&Number(item.data.c);item.data={c:d.c,o:d.o};paint(item);
     if(flash&&previous&&previous!==Number(d.c)){var cls=Number(d.c)>previous?"tick-up":"tick-down";item.nodes.forEach(function(n){n.el.classList.remove("tick-up","tick-down");void n.el.offsetWidth;n.el.classList.add(cls);setTimeout(function(){n.el.classList.remove(cls)},120)})}
   }
@@ -171,7 +174,7 @@ var startTicker=(function(){
   function snapshot(){
     return fetch("/api/prices?symbols="+symbols.join(","),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){
       var prices=body&&body.prices||[];if(prices.length&&!socket)setSource(body.source);
-      prices.forEach(function(d){if(d.pair)coinbasePairs[d.s]=d.pair;update(d,polling)});return prices.length>0;
+      prices.forEach(function(d){if(d.pair)coinbasePairs[d.s]=d.pair;update(d,polling,body.source)});return prices.length>0;
     }).catch(function(){return false});
   }
   function startPolling(){if(polling)return;polling=true;schedulePoll()}
@@ -179,7 +182,7 @@ var startTicker=(function(){
 
   // Coinbase sends a message per trade; repaint at most once a second.
   var pending={},paintTimer=null;
-  function queue(d){pending[d.s]=d;if(!paintTimer)paintTimer=setTimeout(function(){paintTimer=null;var batch=pending;pending={};Object.keys(batch).forEach(function(k){update(batch[k],true)})},COINBASE_PAINT_MS)}
+  function queue(d){pending[d.s]=d;if(!paintTimer)paintTimer=setTimeout(function(){paintTimer=null;var batch=pending;pending={};Object.keys(batch).forEach(function(k){update(batch[k],true,"coinbase")})},COINBASE_PAINT_MS)}
   var rejectedPairs={},retryDelay=2000;
   function coinbaseProducts(){var bySymbol={};symbols.forEach(function(sym){var id=coinbasePairs[sym]||sym.replace(/USDT$/,"")+"-USD";if(!rejectedPairs[id])bySymbol[sym]=id});return bySymbol}
 
@@ -188,7 +191,7 @@ var startTicker=(function(){
     var stream=STREAMS[streamIndex],ws,ready=false,products=null,symbolOf={};
     var url=stream.kind==="binance"?stream.url+symbols.map(function(s){return s.toLowerCase()+"@miniTicker"}).join("/"):stream.url;
     try{ws=socket=new WebSocket(url)}catch(e){socket=null;return streamFailed()}
-    function opened(){if(ready)return;ready=true;clearTimeout(giveUp);setSource(stream.kind)}
+    function opened(){if(ready)return;ready=true;clearTimeout(giveUp);setSource(stream.kind);if(stream.kind==="binance"&&window.MarketCache)MarketCache.markBinance(true)}
     var giveUp=setTimeout(function(){if(!ready)try{ws.close()}catch(e){}},6000);
     ws.onopen=function(){
       if(stream.kind!=="coinbase")return;
@@ -198,16 +201,21 @@ var startTicker=(function(){
     };
     ws.onmessage=function(event){
       var m;try{m=JSON.parse(event.data)}catch(e){return}
-      if(stream.kind==="binance"){var d=m.data||m;if(d&&d.s){opened();retryDelay=2000;update(d,true)}return}
+      if(stream.kind==="binance"){var d=m.data||m;if(d&&d.s){opened();retryDelay=2000;d.quote="USDT";update(d,true,"binance")}return}
       if(m.type==="subscriptions")opened();
-      else if(m.type==="ticker"&&symbolOf[m.product_id]){opened();retryDelay=2000;queue({s:symbolOf[m.product_id],c:m.price,o:m.open_24h})}
+      else if(m.type==="ticker"&&symbolOf[m.product_id]){opened();retryDelay=2000;queue({s:symbolOf[m.product_id],c:m.price,o:m.open_24h,h:m.high_24h,l:m.low_24h,q:Number(m.volume_24h)*Number(m.price),quote:m.product_id.split("-")[1]})}
       else if(m.type==="error"){var why=String(m.reason||"")+" "+String(m.message||"");Object.keys(symbolOf).forEach(function(id){if(why.indexOf(id)>-1)rejectedPairs[id]=true})}
     };
     ws.onerror=function(){try{ws.close()}catch(e){}};
     ws.onclose=function(){clearTimeout(giveUp);if(socket===ws)socket=null;if(document.hidden)return;if(ready){retryTimer=setTimeout(connect,retryDelay);retryDelay=Math.min(30000,retryDelay*2)}else streamFailed()};
   }
   // Try the next stream; after the last one, fall back to /api/prices.
-  function streamFailed(){streamIndex++;if(streamIndex>=STREAMS.length){streamIndex=0;startPolling()}else connect()}
+  function streamFailed(){
+    streamIndex++;
+    // Both Binance hosts failed from this browser: remember it so the next pages go straight to Coinbase.
+    if(STREAMS[streamIndex-1].kind==="binance"&&(!STREAMS[streamIndex]||STREAMS[streamIndex].kind!=="binance")&&window.MarketCache)MarketCache.markBinance(false);
+    if(streamIndex>=STREAMS.length){streamIndex=0;startPolling()}else connect();
+  }
   document.addEventListener("visibilitychange",function(){
     clearTimeout(retryTimer);clearTimeout(pollTimer);
     if(document.hidden){if(socket){var ws=socket;socket=null;ws.onclose=null;ws.close()}return}
@@ -256,6 +264,9 @@ var startTicker=(function(){
     symbols=assets.filter(function(a){return /^[A-Z0-9]{2,20}$/.test(a)});if(!symbols.length)return;
     items={};symbols.forEach(function(symbol){items[symbol]={nodes:[],data:null}});
     track.textContent="";track.appendChild(makeRow(false));
+    // Paint the last known prices from this browser at once; live data replaces them within a second.
+    if(window.MarketCache){var cachedSource=null;symbols.forEach(function(symbol){var t=MarketCache.getTicker(symbol,15*60000);if(t){cachedSource=cachedSource||t.source;update({s:symbol,c:t.c,o:t.o},false)}});if(cachedSource)setSource(cachedSource);
+      if(MarketCache.binanceBlocked())streamIndex=STREAMS.map(function(s){return s.kind}).indexOf("coinbase")}
     snapshot();connect();requestAnimationFrame(frame);
   };
 })();
