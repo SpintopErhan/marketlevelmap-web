@@ -143,12 +143,14 @@ function applyFilters(){var query=search.value.toLowerCase().trim(),method=filte
 <script>
 /* Live price strip (homepage only).
    1. A snapshot from /api/prices (our Cloudflare function, edge-cached) paints prices straight away.
-   2. The browser then opens Binance's public market-data stream for per-second updates.
-   3. If the visitor's network blocks Binance, the strip keeps updating from /api/prices every few seconds.
+   2. The browser then opens a public price stream directly: Binance, or Coinbase where Binance is blocked
+      (e.g. the Netherlands, the US). Live updates never go through Cloudflare, so they cost no quota.
+   3. Only if no stream can be opened does the strip refresh from /api/prices, every 15 seconds.
    The row scrolls on its own in an endless loop; hovering, touching or scrolling it by hand pauses it. */
 var startTicker=(function(){
-  var STREAMS=["wss://data-stream.binance.vision/stream?streams=","wss://stream.binance.com:9443/stream?streams="],POLL_MS=5000,SPEED=28,RESUME_MS=3000;
-  var box=document.getElementById("ticker"),track=document.getElementById("ticker-items"),items={},symbols=[],socket=null,streamFailures=0,retryTimer=null,pollTimer=null,polling=false;
+  var STREAMS=[{kind:"binance",url:"wss://data-stream.binance.vision/stream?streams="},{kind:"binance",url:"wss://stream.binance.com:9443/stream?streams="},{kind:"coinbase",url:"wss://ws-feed.exchange.coinbase.com"}];
+  var POLL_MS=15000,SPEED=28,RESUME_MS=3000,COINBASE_PAINT_MS=1000;
+  var box=document.getElementById("ticker"),track=document.getElementById("ticker-items"),items={},symbols=[],socket=null,streamIndex=0,retryTimer=null,pollTimer=null,polling=false,coinbasePairs={};
   var reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches,loopWidth=0,copies=1,holdUntil=0,hovering=false,lastFrame=0,offset=0;
   function locale(){return document.documentElement.lang==="tr"?"tr-TR":"en-US"}
   function formatPrice(value){var n=Number(value),digits=n>=10?2:n>=1?4:6;return n.toLocaleString(locale(),{minimumFractionDigits:digits,maximumFractionDigits:digits})}
@@ -166,25 +168,49 @@ var startTicker=(function(){
     var previous=item.data&&Number(item.data.c);item.data={c:d.c,o:d.o};paint(item);
     if(flash&&previous&&previous!==Number(d.c)){var cls=Number(d.c)>previous?"tick-up":"tick-down";item.nodes.forEach(function(n){n.el.classList.remove("tick-up","tick-down");void n.el.offsetWidth;n.el.classList.add(cls);setTimeout(function(){n.el.classList.remove(cls)},120)})}
   }
-  // Binance is not reachable from every country; /api/prices then answers from Coinbase and the label follows.
+  // The label names whichever source the prices currently come from.
   var sourceLabel=document.getElementById("ticker-source"),SOURCE_NAMES={binance:"Binance",coinbase:"Coinbase"};
   function setSource(source){var name=SOURCE_NAMES[source];if(!name)return;sourceLabel.dataset.en="Source: "+name;sourceLabel.dataset.tr="Kaynak: "+name;sourceLabel.textContent=document.documentElement.lang==="tr"?sourceLabel.dataset.tr:sourceLabel.dataset.en}
   function snapshot(){
-    return fetch("/api/prices?symbols="+symbols.join(","),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){if(body&&body.prices&&body.prices.length)setSource(body.source);(body&&body.prices||[]).forEach(function(d){update(d,polling)});return !!(body&&body.prices&&body.prices.length)}).catch(function(){return false});
+    return fetch("/api/prices?symbols="+symbols.join(","),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){
+      var prices=body&&body.prices||[];if(prices.length&&!socket)setSource(body.source);
+      prices.forEach(function(d){if(d.pair)coinbasePairs[d.s]=d.pair;update(d,polling)});return prices.length>0;
+    }).catch(function(){return false});
   }
   function startPolling(){if(polling)return;polling=true;schedulePoll()}
   function schedulePoll(){clearTimeout(pollTimer);if(!document.hidden)pollTimer=setTimeout(function(){snapshot().then(schedulePoll)},POLL_MS)}
+
+  // Coinbase sends a message per trade; repaint at most once a second.
+  var pending={},paintTimer=null;
+  function queue(d){pending[d.s]=d;if(!paintTimer)paintTimer=setTimeout(function(){paintTimer=null;var batch=pending;pending={};Object.keys(batch).forEach(function(k){update(batch[k],true)})},COINBASE_PAINT_MS)}
+  var rejectedPairs={},retryDelay=2000;
+  function coinbaseProducts(){var bySymbol={};symbols.forEach(function(sym){var id=coinbasePairs[sym]||sym.replace(/USDT$/,"")+"-USD";if(!rejectedPairs[id])bySymbol[sym]=id});return bySymbol}
+
   function connect(){
     if(document.hidden||socket||polling||!symbols.length)return;
-    var url=STREAMS[streamFailures%STREAMS.length]+symbols.map(function(s){return s.toLowerCase()+"@miniTicker"}).join("/"),received=false,ws;
+    var stream=STREAMS[streamIndex],ws,ready=false,products=null,symbolOf={};
+    var url=stream.kind==="binance"?stream.url+symbols.map(function(s){return s.toLowerCase()+"@miniTicker"}).join("/"):stream.url;
     try{ws=socket=new WebSocket(url)}catch(e){socket=null;return streamFailed()}
-    var giveUp=setTimeout(function(){if(!received)try{ws.close()}catch(e){}},6000);
-    ws.onmessage=function(event){if(!received){received=true;streamFailures=0;clearTimeout(giveUp);setSource("binance")}try{var m=JSON.parse(event.data),d=m.data||m;if(d&&d.s)update(d,true)}catch(e){}};
+    function opened(){if(ready)return;ready=true;clearTimeout(giveUp);setSource(stream.kind)}
+    var giveUp=setTimeout(function(){if(!ready)try{ws.close()}catch(e){}},6000);
+    ws.onopen=function(){
+      if(stream.kind!=="coinbase")return;
+      products=coinbaseProducts();Object.keys(products).forEach(function(sym){symbolOf[products[sym]]=sym});
+      // One subscription per product: an unknown pair is rejected on its own without dropping the others.
+      Object.keys(symbolOf).forEach(function(id){ws.send(JSON.stringify({type:"subscribe",product_ids:[id],channels:["ticker"]}))});
+    };
+    ws.onmessage=function(event){
+      var m;try{m=JSON.parse(event.data)}catch(e){return}
+      if(stream.kind==="binance"){var d=m.data||m;if(d&&d.s){opened();retryDelay=2000;update(d,true)}return}
+      if(m.type==="subscriptions")opened();
+      else if(m.type==="ticker"&&symbolOf[m.product_id]){opened();retryDelay=2000;queue({s:symbolOf[m.product_id],c:m.price,o:m.open_24h})}
+      else if(m.type==="error"){var why=String(m.reason||"")+" "+String(m.message||"");Object.keys(symbolOf).forEach(function(id){if(why.indexOf(id)>-1)rejectedPairs[id]=true})}
+    };
     ws.onerror=function(){try{ws.close()}catch(e){}};
-    ws.onclose=function(){clearTimeout(giveUp);if(socket===ws)socket=null;if(document.hidden)return;if(received){retryTimer=setTimeout(connect,2000)}else streamFailed()};
+    ws.onclose=function(){clearTimeout(giveUp);if(socket===ws)socket=null;if(document.hidden)return;if(ready){retryTimer=setTimeout(connect,retryDelay);retryDelay=Math.min(30000,retryDelay*2)}else streamFailed()};
   }
-  // Both Binance stream hosts unreachable: keep the strip alive from our own endpoint.
-  function streamFailed(){streamFailures++;if(streamFailures>=STREAMS.length)startPolling();else connect()}
+  // Try the next stream; after the last one, fall back to /api/prices.
+  function streamFailed(){streamIndex++;if(streamIndex>=STREAMS.length){streamIndex=0;startPolling()}else connect()}
   document.addEventListener("visibilitychange",function(){
     clearTimeout(retryTimer);clearTimeout(pollTimer);
     if(document.hidden){if(socket){var ws=socket;socket=null;ws.onclose=null;ws.close()}return}
