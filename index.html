@@ -91,7 +91,9 @@ main{padding:52px 0 80px}
 .ticker-live{display:inline-flex;align-items:center;gap:6px;flex:none;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
 .ticker-live i{width:6px;height:6px;border-radius:50%;background:var(--up);animation:ticker-pulse 2s ease-in-out infinite}
 @keyframes ticker-pulse{50%{opacity:.35}}
-.ticker-items{display:flex;flex:1;min-width:0;gap:22px;overflow-x:auto;scrollbar-width:none}
+.ticker-items{display:flex;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.ticker-items.is-looping{-webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent)}
+.ticker-row{display:flex;flex:none;gap:22px;padding-right:22px}
 .ticker-items::-webkit-scrollbar{display:none}
 .ticker-item{display:inline-flex;align-items:baseline;gap:7px;padding:2px 4px;border-radius:6px;color:var(--fg);text-decoration:none;white-space:nowrap;transition:background-color .6s ease}
 .ticker-item[hidden]{display:none}
@@ -139,52 +141,96 @@ search.addEventListener("input",applyFilters);
 function applyFilters(){var query=search.value.toLowerCase().trim(),method=filter==="cz"||filter==="pa"?filter:"",shown=0;cards.forEach(function(card){var match=card.dataset.coin.indexOf(query)>-1&&!(filter==="favorites"&&!card.querySelector(".favorite").classList.contains("active"))&&(!method||!!card.querySelector('.card-method[data-method="'+method+'"]'));if(match&&card.focusMethod)card.focusMethod(method);card.style.display=match?"flex":"none";if(match)shown++});empty.style.display=shown?"none":"block"}
 </script>
 <script>
-/* Live price strip: the visitor's browser reads Binance's public market-data stream (no key, no server).
-   Hidden until the first price arrives and again if the stream cannot be reached. Homepage only. */
+/* Live price strip (homepage only).
+   1. A snapshot from /api/prices (our Cloudflare function, edge-cached) paints prices straight away.
+   2. The browser then opens Binance's public market-data stream for per-second updates.
+   3. If the visitor's network blocks Binance, the strip keeps updating from /api/prices every few seconds.
+   The row scrolls on its own in an endless loop; hovering, touching or scrolling it by hand pauses it. */
 var startTicker=(function(){
-  var ENDPOINTS=["wss://data-stream.binance.vision/stream?streams=","wss://stream.binance.com:9443/stream?streams="];
-  var box=document.getElementById("ticker"),list=document.getElementById("ticker-items"),items={},symbols=[],socket=null,failures=0,retryTimer=null,paused=false;
+  var STREAMS=["wss://data-stream.binance.vision/stream?streams=","wss://stream.binance.com:9443/stream?streams="],POLL_MS=5000,SPEED=28,RESUME_MS=3000;
+  var box=document.getElementById("ticker"),track=document.getElementById("ticker-items"),items={},symbols=[],socket=null,streamFailures=0,retryTimer=null,pollTimer=null,polling=false;
+  var reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches,loopWidth=0,copies=1,holdUntil=0,hovering=false,lastFrame=0,offset=0;
   function locale(){return document.documentElement.lang==="tr"?"tr-TR":"en-US"}
   function formatPrice(value){var n=Number(value),digits=n>=10?2:n>=1?4:6;return n.toLocaleString(locale(),{minimumFractionDigits:digits,maximumFractionDigits:digits})}
   function paint(item){
     var d=item.data;if(!d)return;
-    var close=Number(d.c),open=Number(d.o),change=open?(close-open)/open*100:0;
-    item.price.textContent=formatPrice(close);
-    item.change.textContent=(change>=0?"+":"")+change.toLocaleString(locale(),{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
-    item.change.className="ticker-change "+(change>=0?"up":"down");
-    item.el.hidden=false;box.hidden=false;
+    var close=Number(d.c),open=Number(d.o),change=open?(close-open)/open*100:0,price=formatPrice(close),text=(change>=0?"+":"")+change.toLocaleString(locale(),{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
+    var appeared=false;
+    item.nodes.forEach(function(n){n.price.textContent=price;n.change.textContent=text;n.change.className="ticker-change "+(change>=0?"up":"down");if(n.el.hidden){n.el.hidden=false;appeared=true}});
+    box.hidden=false;
+    // The loop width depends on which items are visible; re-measure once new items show up.
+    if(appeared){clearTimeout(layout.t);layout.t=setTimeout(layout,60)}
   }
-  function update(d){
-    var item=items[d.s];if(!item)return;
-    var previous=item.data&&Number(item.data.c);item.data=d;paint(item);
-    if(previous&&previous!==Number(d.c)){var cls=Number(d.c)>previous?"tick-up":"tick-down";item.el.classList.remove("tick-up","tick-down");void item.el.offsetWidth;item.el.classList.add(cls);setTimeout(function(){item.el.classList.remove(cls)},120)}
+  function update(d,flash){
+    var item=items[d.s];if(!item||!(Number(d.c)>0))return;
+    var previous=item.data&&Number(item.data.c);item.data={c:d.c,o:d.o};paint(item);
+    if(flash&&previous&&previous!==Number(d.c)){var cls=Number(d.c)>previous?"tick-up":"tick-down";item.nodes.forEach(function(n){n.el.classList.remove("tick-up","tick-down");void n.el.offsetWidth;n.el.classList.add(cls);setTimeout(function(){n.el.classList.remove(cls)},120)})}
   }
+  function snapshot(){
+    return fetch("/api/prices?symbols="+symbols.join(","),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){(body&&body.prices||[]).forEach(function(d){update(d,polling)});return !!(body&&body.prices&&body.prices.length)}).catch(function(){return false});
+  }
+  function startPolling(){if(polling)return;polling=true;schedulePoll()}
+  function schedulePoll(){clearTimeout(pollTimer);if(!document.hidden)pollTimer=setTimeout(function(){snapshot().then(schedulePoll)},POLL_MS)}
   function connect(){
-    if(paused||socket||!symbols.length)return;
-    var url=ENDPOINTS[failures%ENDPOINTS.length]+symbols.map(function(s){return s.toLowerCase()+"@miniTicker"}).join("/"),received=false;
-    try{socket=new WebSocket(url)}catch(e){socket=null;failures++;return retry()}
-    socket.onmessage=function(event){received=true;failures=0;try{var message=JSON.parse(event.data),d=message.data||message;if(d&&d.s)update(d)}catch(e){}};
-    socket.onerror=function(){try{socket.close()}catch(e){}};
-    socket.onclose=function(){socket=null;if(!received)failures++;retry()};
+    if(document.hidden||socket||polling||!symbols.length)return;
+    var url=STREAMS[streamFailures%STREAMS.length]+symbols.map(function(s){return s.toLowerCase()+"@miniTicker"}).join("/"),received=false,ws;
+    try{ws=socket=new WebSocket(url)}catch(e){socket=null;return streamFailed()}
+    var giveUp=setTimeout(function(){if(!received)try{ws.close()}catch(e){}},6000);
+    ws.onmessage=function(event){if(!received){received=true;streamFailures=0;clearTimeout(giveUp)}try{var m=JSON.parse(event.data),d=m.data||m;if(d&&d.s)update(d,true)}catch(e){}};
+    ws.onerror=function(){try{ws.close()}catch(e){}};
+    ws.onclose=function(){clearTimeout(giveUp);if(socket===ws)socket=null;if(document.hidden)return;if(received){retryTimer=setTimeout(connect,2000)}else streamFailed()};
   }
-  function retry(){
-    clearTimeout(retryTimer);if(paused)return;
-    if(failures>=6){box.hidden=true;return}
-    retryTimer=setTimeout(connect,Math.min(30000,2000*Math.pow(2,failures)));
-  }
+  // Both Binance stream hosts unreachable: keep the strip alive from our own endpoint.
+  function streamFailed(){streamFailures++;if(streamFailures>=STREAMS.length)startPolling();else connect()}
   document.addEventListener("visibilitychange",function(){
-    paused=document.hidden;
-    if(paused){clearTimeout(retryTimer);if(socket){var s=socket;socket=null;s.onclose=null;s.close()}}else{failures=0;connect()}
+    clearTimeout(retryTimer);clearTimeout(pollTimer);
+    if(document.hidden){if(socket){var ws=socket;socket=null;ws.onclose=null;ws.close()}return}
+    if(!symbols.length)return;
+    snapshot();if(polling)schedulePoll();else connect();
   });
-  new MutationObserver(function(){Object.keys(items).forEach(function(k){paint(items[k])})}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
-  return function(assets){
-    symbols=assets.filter(function(a){return /^[A-Z0-9]{2,20}$/.test(a)});list.textContent="";items={};
+  new MutationObserver(function(){Object.keys(items).forEach(function(k){paint(items[k])});layout()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+
+  // Endless scroll: enough copies of the item row to fill the strip twice; wrap by one row width.
+  function makeRow(copy){
+    var row=document.createElement("div");row.className="ticker-row";if(copy)row.setAttribute("aria-hidden","true");
     symbols.forEach(function(symbol){
-      var el=document.createElement("a");el.className="ticker-item";el.hidden=true;el.href="bulletin.html?asset="+encodeURIComponent(symbol)+"&method=cz";
+      var el=document.createElement("a");el.className="ticker-item";el.hidden=!items[symbol].data;el.href="bulletin.html?asset="+encodeURIComponent(symbol)+"&method=cz";if(copy)el.tabIndex=-1;
       el.innerHTML='<b></b><span class="ticker-price"></span><span class="ticker-change"></span>';el.firstChild.textContent=symbol.replace(/USDT$/,"");
-      list.appendChild(el);items[symbol]={el:el,price:el.querySelector(".ticker-price"),change:el.querySelector(".ticker-change"),data:null};
+      row.appendChild(el);items[symbol].nodes.push({el:el,price:el.querySelector(".ticker-price"),change:el.querySelector(".ticker-change")});
     });
-    paused=document.hidden;connect();
+    return row;
+  }
+  function layout(){
+    if(box.hidden||!symbols.length)return;
+    var first=track.firstChild;if(!first)return;
+    while(track.children.length>1)track.removeChild(track.lastChild);
+    Object.keys(items).forEach(function(k){items[k].nodes=items[k].nodes.slice(0,1)});
+    loopWidth=first.getBoundingClientRect().width;
+    if(reduceMotion||!loopWidth){track.classList.remove("is-looping");return}
+    copies=Math.ceil(track.clientWidth/loopWidth)+1;
+    for(var i=0;i<copies;i++)track.appendChild(makeRow(true));
+    Object.keys(items).forEach(function(k){paint(items[k])});
+    track.classList.add("is-looping");
+  }
+  function hold(){holdUntil=performance.now()+RESUME_MS}
+  track.addEventListener("pointerenter",function(e){if(e.pointerType==="mouse")hovering=true});
+  track.addEventListener("pointerleave",function(){hovering=false});
+  ["wheel","touchstart","pointerdown","keydown"].forEach(function(type){track.addEventListener(type,hold,{passive:true})});
+  track.addEventListener("scroll",function(){if(Math.abs(track.scrollLeft-offset)>1)hold();if(loopWidth&&track.classList.contains("is-looping")){if(track.scrollLeft>=loopWidth)track.scrollLeft-=loopWidth;else if(track.scrollLeft<=0&&holdUntil>performance.now())track.scrollLeft+=loopWidth}offset=track.scrollLeft},{passive:true});
+  function frame(now){
+    var dt=lastFrame?Math.min(64,now-lastFrame):0;lastFrame=now;
+    if(!box.hidden&&loopWidth&&!reduceMotion&&!hovering&&now>holdUntil&&!document.hidden&&track.classList.contains("is-looping")){
+      offset+=SPEED*dt/1000;if(offset>=loopWidth)offset-=loopWidth;track.scrollLeft=offset;
+    }
+    requestAnimationFrame(frame);
+  }
+  window.addEventListener("resize",function(){clearTimeout(layout.t);layout.t=setTimeout(layout,150)});
+
+  return function(assets){
+    symbols=assets.filter(function(a){return /^[A-Z0-9]{2,20}$/.test(a)});if(!symbols.length)return;
+    items={};symbols.forEach(function(symbol){items[symbol]={nodes:[],data:null}});
+    track.textContent="";track.appendChild(makeRow(false));
+    snapshot();connect();requestAnimationFrame(frame);
   };
 })();
 </script>
