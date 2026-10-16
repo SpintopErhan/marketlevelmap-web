@@ -62,22 +62,23 @@ async function fromBinance(symbol, attempts) {
   return null;
 }
 
-// Coinbase: USDT pair if listed, else USD. Week/month opens come from daily candles
-// ([time, low, high, open, close, volume], time in seconds).
+// Coinbase: the USD pair (its main, liquid market), else USDT. Week/month opens come from the latest
+// daily candles ([time, low, high, open, close, volume], time in seconds, newest first).
 async function fromCoinbase(symbol, attempts, now) {
   const base = symbol.replace(/USDT$/, "");
   if (!base || base === symbol) return null;
-  for (const quote of ["USDT", "USD"]) {
+  for (const quote of ["USD", "USDT"]) {
     const pair = `${base}-${quote}`;
     const stats = await get(`${COINBASE}/products/${pair}/stats`, attempts);
     if (!stats || !(Number(stats.last) > 0)) continue;
     const week = weekStart(now);
     const month = monthStart(now);
-    const from = new Date(Math.min(week, month)).toISOString();
-    const candles = await get(`${COINBASE}/products/${pair}/candles?granularity=86400&start=${from}&end=${now.toISOString()}`, attempts);
+    const candles = await get(`${COINBASE}/products/${pair}/candles?granularity=86400`, attempts);
+    // Open of the first daily candle on or after the given day.
     const openAt = (ms) => {
-      const row = Array.isArray(candles) ? candles.find((c) => Array.isArray(c) && c[0] * 1000 === ms) : null;
-      return row ? String(row[3]) : null;
+      const rows = Array.isArray(candles) ? candles.filter((c) => Array.isArray(c) && c[0] * 1000 >= ms && c[0] * 1000 < ms + DAY) : [];
+      rows.sort((a, b) => a[0] - b[0]);
+      return rows.length ? String(rows[0][3]) : null;
     };
     return {
       source: "coinbase",

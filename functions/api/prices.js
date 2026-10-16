@@ -42,12 +42,12 @@ async function fromBinance(symbols, attempts) {
   return null;
 }
 
-// Coinbase lists pairs as BASE-QUOTE; prefer the USDT pair, else USD.
+// Coinbase lists pairs as BASE-QUOTE; prefer the USD pair (its main, liquid market), else USDT.
 async function fromCoinbase(symbols, attempts) {
   const rows = await Promise.all(symbols.map(async (symbol) => {
     const base = symbol.replace(/USDT$/, "");
     if (base === symbol || !base) return null;
-    for (const quote of ["USDT", "USD"]) {
+    for (const quote of ["USD", "USDT"]) {
       const stats = await get(`${COINBASE}/products/${base}-${quote}/stats`, attempts);
       if (stats && Number(stats.last) > 0) return { s: symbol, c: stats.last, o: stats.open, pair: `${base}-${quote}` };
     }
