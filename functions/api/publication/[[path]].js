@@ -29,6 +29,13 @@ function publicEntry(entry) {
       sizeBytes: entry.analysisComment.sizeBytes,
       sha256: entry.analysisComment.sha256,
     } : null,
+    // Structured analysis (zones, key levels, note) written by the local engine; see README "Report JSON".
+    report: entry.report ? {
+      url: `/api/publication/report/${id}`,
+      mediaType: entry.report.mediaType,
+      sizeBytes: entry.report.sizeBytes,
+      sha256: entry.report.sha256,
+    } : null,
   };
 }
 
@@ -103,11 +110,11 @@ export async function onRequestGet(context) {
       }))),
     });
   }
-  if (path.length !== 2 || !["image", "comment"].includes(path[0])) {
+  if (path.length !== 2 || !["image", "comment", "report"].includes(path[0])) {
     return json({ error: "Unknown publication resource." }, 404);
   }
   const entry = pointer.entries.find((item) => item.publicationId === path[1]);
-  const resource = path[0] === "image" ? entry?.image : entry?.analysisComment;
+  const resource = path[0] === "image" ? entry?.image : path[0] === "report" ? entry?.report : entry?.analysisComment;
   if (!resource?.objectKey) return json({ error: "Publication resource is not active." }, 404);
   const object = await bucket.get(resource.objectKey);
   if (!object) return json({ error: "Publication resource is unavailable." }, 404);

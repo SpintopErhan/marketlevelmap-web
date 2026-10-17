@@ -1,19 +1,95 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><title>MarketLevelMap — Weekly events</title><link rel="icon" type="image/svg+xml" href="assets/MarketLevelMap-symbol-color.svg"><link rel="stylesheet" href="assets/site.css?v=78f787a3"><style>
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif}
-main{padding:70px 0;min-height:calc(100vh - 165px)}
-.eyebrow{color:var(--accent);font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700}
-.eyebrow:before{content:"";display:inline-block;width:28px;height:1px;background:currentColor;margin:0 10px 4px 0}
-h1{font-size:clamp(34px,5vw,54px);font-weight:500;letter-spacing:-1.8px;margin:13px 0}
-p{max-width:520px;color:var(--muted);font-size:15px;line-height:1.75}
-.notice{margin-top:42px;padding:24px;border:1px dashed var(--line);border-radius:14px;background:var(--panel);max-width:740px}
-.notice strong{display:block;font-size:16px;margin-bottom:7px}
-.notice span{color:var(--muted);font-size:13px;line-height:1.6}
-@media(max-width:520px){main{padding:44px 0}}
-</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=d6f00e0e" defer></script></head><body><div class="shell"><header>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><title>MarketLevelMap — Weekly events</title><link rel="icon" type="image/svg+xml" href="assets/MarketLevelMap-symbol-color.svg"><link rel="stylesheet" href="assets/site.css?v=78f787a3"><style>*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.45}
+button,select,input{font:inherit}button{color:inherit}
+main{padding:0 0 70px}
+.num{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:34px 0 16px}
+.page-head h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.4px}
+.meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:8px 0 0;color:var(--muted);font-size:12px}
+.demo-badge{white-space:nowrap;padding:1px 8px;border:1px dashed var(--muted);border-radius:4px;color:var(--muted);font-size:11px}
+.demo-badge[hidden]{display:none}
+.week-switch{display:flex;gap:8px}
+.filter-btn{min-height:36px;padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:13px;font-weight:600;cursor:pointer}
+.filter-btn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+table{width:100%;min-width:760px;border-collapse:separate;border-spacing:0;font-size:13px}
+th{padding:12px 14px;border-bottom:1px solid var(--line);color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;text-align:left;text-transform:uppercase;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+th.r,td.r{text-align:right}
+td.title{width:100%;white-space:normal;font-weight:600}
+td.title a{color:inherit;text-decoration:none}td.title a:hover{color:var(--accent)}
+.is-past td{color:var(--muted)}.is-past td.title{font-weight:400}
+.actual{font-weight:700}
+.impact{letter-spacing:2px;color:var(--cz)}
+.day-row td{padding:8px 14px;background:var(--panel-2);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+.status-row td{padding:34px 14px;color:var(--muted);text-align:center;white-space:normal}
+.table-note{margin:10px 2px 0;color:var(--muted);font-size:11px}
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=bc3eb127" defer></script><script src="assets/market-ui.js?v=dcda8dff"></script><script src="assets/demo-data.js?v=9e9f55c7"></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
-<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Bültenler">Bulletins</a><a href="weekly-events.html" data-tr="Haftalık olaylar" aria-current="page">Weekly events</a><a href="archive.html" data-tr="Arşiv">Archive</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
-</header><main><div class="eyebrow">Separate module</div><h1>Weekly events</h1><p>Market-moving events will be published here as an independent calendar and archive. They do not belong to individual asset bulletins.</p><div class="notice"><strong>Coming with the content integration</strong><span>This page is intentionally separate from chart bulletins so each content stream can be updated, archived and displayed independently.</span></div></main><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Fiyat şeridi anlık fiyatı gösterir; grafikler belirtilen tarihe ait statik analizlerdir ve canlı güncellenmez. Kripto varlıklar yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. The price strip shows live prices; charts are static analyses as of the stated date and are not updated live. Crypto assets carry high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div><script>var copy={en:{nav:"Bulletins",eyebrow:"Separate module",title:"Weekly events",body:"Market-moving events will be published here as an independent calendar and archive. They do not belong to individual asset bulletins.",notice:"Coming with the content integration",detail:"This page is intentionally separate from chart bulletins so each content stream can be updated, archived and displayed independently."},tr:{nav:"Bültenler",eyebrow:"Ayrı modül",title:"Haftalık olaylar",body:"Piyasayı etkileyen olaylar burada bağımsız bir takvim ve arşiv olarak yayınlanacak. Varlık bültenlerinin parçası değildir.",notice:"İçerik entegrasyonuyla birlikte",detail:"Bu sayfa, her içerik akışının bağımsız güncellenmesi, arşivlenmesi ve gösterilmesi için grafik bültenlerinden ayrı tutulur."}};function applyLanguage(value){var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;document.querySelector(".eyebrow").textContent=t.eyebrow;document.querySelector("h1").textContent=t.title;document.querySelector("main > p").textContent=t.body;document.querySelector(".notice strong").textContent=t.notice;document.querySelector(".notice span").textContent=t.detail;document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});try{localStorage.setItem("mlm-lang",value)}catch(e){}}var savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){};var lang=document.getElementById("lang");lang.value=savedLang==="tr"?"tr":"en";applyLanguage(lang.value);lang.addEventListener("change",function(){applyLanguage(this.value)});var toggle=document.getElementById("theme-toggle");
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar" aria-current="page">Weekly events</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<main class="shell">
+<div class="page-head"><div><h1 data-i18n="heading">Weekly events</h1><p class="meta"><span id="week-range"></span><span>·</span><span data-i18n="utc">times in UTC</span><span class="demo-badge" id="demo" data-i18n="demo" hidden>Sample data</span></p></div>
+<div class="week-switch"><button class="filter-btn" type="button" data-week="0" aria-pressed="true" data-i18n="thisWeek">This week</button><button class="filter-btn" type="button" data-week="1" aria-pressed="false" data-i18n="nextWeek">Next week</button></div></div>
+<div class="table-wrap"><table><thead><tr><th data-i18n="colTime">Time</th><th data-i18n="colEvent">Event</th><th data-i18n="colCountry">Country</th><th data-i18n="colImpact">Impact</th><th class="r" data-i18n="colPrevious">Previous</th><th class="r" data-i18n="colForecast">Forecast</th><th class="r" data-i18n="colActual">Actual</th></tr></thead>
+<tbody id="rows"><tr class="status-row"><td colspan="7" data-i18n="loading">Loading events…</td></tr></tbody></table></div>
+<p class="table-note" data-i18n="note">Dates and times can be changed by the official sources; check the source before relying on them.</p>
+</main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar anlıktır; grafikler belirtilen tarihe ait statik analizlerdir ve canlı güncellenmez. Kripto varlıklar yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table are live; charts are static analyses as of the stated date and are not updated live. Crypto assets carry high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+<script>
+var copy={
+  en:{title:"Weekly events",heading:"Weekly events",utc:"times in UTC",demo:"Sample data",thisWeek:"This week",nextWeek:"Next week",colTime:"Time",colEvent:"Event",colCountry:"Country",colImpact:"Impact",colPrevious:"Previous",colForecast:"Forecast",colActual:"Actual",loading:"Loading events…",failed:"Events could not be loaded.",none:"No events are listed for this week.",note:"Dates and times can be changed by the official sources; check the source before relying on them.",VERY_HIGH:"Very high",HIGH:"High",MEDIUM:"Medium"},
+  tr:{title:"Haftalık olaylar",heading:"Haftalık olaylar",utc:"saatler UTC",demo:"Örnek veriler",thisWeek:"Bu hafta",nextWeek:"Gelecek hafta",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colImpact:"Önem",colPrevious:"Önceki",colForecast:"Beklenti",colActual:"Gerçekleşen",loading:"Olaylar yükleniyor…",failed:"Olaylar yüklenemedi.",none:"Bu hafta için listelenmiş olay yok.",note:"Tarih ve saatler resmî kaynaklarca değiştirilebilir; kullanmadan önce kaynağı kontrol edin.",VERY_HIGH:"Çok yüksek",HIGH:"Yüksek",MEDIUM:"Orta"}
+};
+function words(){return copy[document.getElementById("lang").value]||copy.en}
+function applyLanguage(value){
+  var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){if(t[el.dataset.i18n])el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+  try{localStorage.setItem("mlm-lang",value)}catch(e){}
+}
+var lang=document.getElementById("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
+lang.value=savedLang==="tr"?"tr":"en";applyLanguage(lang.value);lang.addEventListener("change",function(){applyLanguage(this.value)});
+var toggle=document.getElementById("theme-toggle");
 function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
 function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
-toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();</script></body></html>
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+</script>
+<script>
+/* The week's events from /api/events (R2 file site-events/events.json), grouped by day; Monday–Sunday, UTC. */
+(function(){
+  var body=document.getElementById("rows"),range=document.getElementById("week-range"),events=null,failed=false,week=0,DAY=86400000;
+  function weekStart(){var n=new Date();return Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate())-((n.getUTCDay()+6)%7)*DAY+week*7*DAY}
+  function message(key){body.innerHTML='<tr class="status-row"><td colspan="7"></td></tr>';body.firstChild.firstChild.textContent=words()[key]}
+  function render(){
+    var w=words(),lang=MarketUI.lang(),loc=MarketUI.locale(),start=weekStart(),end=start+7*DAY,now=Date.now();
+    range.textContent=new Date(start).toLocaleDateString(loc,{day:"numeric",month:"short",timeZone:"UTC"})+" – "+new Date(end-DAY).toLocaleDateString(loc,{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"});
+    if(events===null){if(failed)message("failed");return}
+    var list=events.filter(function(e){var t=Date.parse(e.startAt);return t>=start&&t<end});
+    if(!list.length){message("none");return}
+    body.textContent="";var lastDay=null;
+    list.forEach(function(e){
+      var t=Date.parse(e.startAt),day=new Date(t).toISOString().slice(0,10);
+      if(day!==lastDay){lastDay=day;var h=document.createElement("tr");h.className="day-row";h.innerHTML='<td colspan="7"></td>';h.firstChild.textContent=new Date(t).toLocaleDateString(loc,{weekday:"long",day:"numeric",month:"long",timeZone:"UTC"});body.appendChild(h)}
+      var tr=document.createElement("tr");if(t<=now)tr.className="is-past";
+      tr.innerHTML='<td class="num"></td><td class="title"></td><td></td><td class="impact"></td><td class="r num"></td><td class="r num"></td><td class="r num actual"></td>';
+      var c=tr.children,title=(e.title&&(e.title[lang]||e.title.en))||"";
+      c[0].textContent=e.datePrecision==="DAY"?"—":new Date(t).toISOString().slice(11,16);
+      if(e.sourceUrl){var a=document.createElement("a");a.href=e.sourceUrl;a.target="_blank";a.rel="noopener";a.textContent=title;c[1].appendChild(a)}else c[1].textContent=title;
+      c[2].textContent=e.country||"";c[3].textContent={VERY_HIGH:"●●●",HIGH:"●●",MEDIUM:"●"}[e.impact]||"●";c[3].title=w[e.impact]||"";
+      c[4].textContent=e.previous||"—";c[5].textContent=e.forecast||"—";c[6].textContent=e.actual||"—";
+      body.appendChild(tr);
+    });
+  }
+  document.querySelectorAll("[data-week]").forEach(function(b){b.addEventListener("click",function(){week=Number(b.dataset.week);document.querySelectorAll("[data-week]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});render()})});
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  function useDemo(){if(window.DemoData&&DemoData.enabled){events=DemoData.events().events;document.getElementById("demo").hidden=false;return true}return false}
+  fetch("/api/events",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(data){
+    if(data&&Array.isArray(data.events)&&data.events.length)events=data.events;else if(!useDemo()){if(data&&!data.error)events=[];else failed=true}
+    render();
+  }).catch(function(){if(!useDemo())failed=true;render()});
+  render();
+})();
+</script>
+</body></html>
