@@ -1,0 +1,23 @@
+/* Styles for assets/price-strip.js (not loaded by any page). */
+/* Live price strip (homepage only) */
+.ticker{display:flex;align-items:center;gap:16px;margin-top:14px;padding:8px 16px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:12px;line-height:1.3}
+.ticker[hidden]{display:none}
+.ticker-live{display:inline-flex;align-items:center;gap:6px;flex:none;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.ticker-live i{width:6px;height:6px;border-radius:50%;background:var(--up);animation:ticker-pulse 2s ease-in-out infinite}
+@keyframes ticker-pulse{50%{opacity:.35}}
+.ticker-items{display:flex;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.ticker-items.is-looping{-webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent)}
+.ticker-row{display:flex;flex:none;gap:22px;padding-right:22px}
+.ticker-items::-webkit-scrollbar{display:none}
+.ticker-item{display:inline-flex;align-items:baseline;gap:7px;padding:2px 4px;border-radius:6px;color:var(--fg);text-decoration:none;white-space:nowrap;transition:background-color .6s ease}
+.ticker-item[hidden]{display:none}
+.ticker-item:hover b{color:var(--fg)}
+.ticker-item b{color:var(--muted);font-size:11px;font-weight:600}
+.ticker-price{font-variant-numeric:tabular-nums;font-weight:600}
+.ticker-change{font-size:11px;font-variant-numeric:tabular-nums}
+.ticker-change.up{color:var(--up)}.ticker-change.down{color:var(--down)}
+.ticker-item.tick-up{background:color-mix(in srgb,var(--up) 16%,transparent);transition:none}
+.ticker-item.tick-down{background:color-mix(in srgb,var(--down) 16%,transparent);transition:none}
+.ticker-source{flex:none;color:var(--muted);font-size:10px}
+@media(prefers-reduced-motion:reduce){.ticker-live i{animation:none}.ticker-item,.ticker-item.tick-up,.ticker-item.tick-down{transition:none;background:none}}
+@media(max-width:520px){.ticker{flex-wrap:wrap;gap:8px 12px;border-radius:12px;padding:10px 12px}.ticker-items{order:3;flex-basis:100%}.ticker-source{margin-left:auto}}

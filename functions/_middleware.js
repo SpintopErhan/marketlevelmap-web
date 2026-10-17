@@ -1,14 +1,14 @@
 // Adds link-preview (Open Graph / Twitter) and description tags to every HTML page.
-// Crawlers do not run the page scripts, so bulletin titles and chart images are set here.
+// Crawlers do not run the page scripts, so analysis titles and chart images are set here.
 const ACTIVE_POINTER_KEY = "site-publication/active.json";
 const SITE = "MarketLevelMap";
-const DEFAULT_DESCRIPTION = "Critical Zones and Price Action chart bulletins for crypto markets. Structure-based market analysis.";
+const DEFAULT_DESCRIPTION = "Live market table and structure-based analysis of crypto markets: support and resistance zones and key levels.";
 
 const PAGES = {
-  "/": { title: "MarketLevelMap — Market Bulletins", description: DEFAULT_DESCRIPTION },
-  "/weekly-events": { title: "Weekly events · MarketLevelMap", description: "Market-moving events as an independent calendar, separate from asset bulletins." },
-  "/archive": { title: "Archive · MarketLevelMap", description: "Earlier MarketLevelMap bulletin publications by date." },
-  "/bulletin": { title: "Bulletin · MarketLevelMap", description: DEFAULT_DESCRIPTION },
+  "/": { title: "MarketLevelMap — Market table", description: DEFAULT_DESCRIPTION },
+  "/weekly-events": { title: "Weekly events · MarketLevelMap", description: "Market-moving events of the week: macro data releases and central-bank decisions." },
+  "/archive": { title: "Archive · MarketLevelMap", description: "Earlier MarketLevelMap analyses by date." },
+  "/bulletin": { title: "Analysis · MarketLevelMap", description: DEFAULT_DESCRIPTION },
 };
 
 function escapeAttr(value) {
@@ -67,7 +67,7 @@ export async function onRequest(context) {
       const chart = /^[A-Z0-9]{2,20}$/.test(asset) ? await bulletinImage(context.env, asset, METHOD_NAMES[requested] ? requested : "") : null;
       if (chart) {
         const name = METHOD_NAMES[chart.method];
-        title = name ? `${asset} ${name} bulletin · ${SITE}` : `${asset} bulletin · ${SITE}`;
+        title = name ? `${asset} ${name} analysis · ${SITE}` : `${asset} analysis · ${SITE}`;
         description = name
           ? `${name} charts for ${asset}. Structure-based market analysis.`
           : `Critical Zones and Price Action charts for ${asset}. Structure-based market analysis.`;

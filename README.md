@@ -39,39 +39,87 @@ links preview the asset's active chart for the method in the query string — `/
 for Price Action, Critical Zones otherwise. The method must be a query parameter: a `#pa` fragment is never
 sent to the server, so link previews cannot see it. Other pages use `assets/og-image.png`.
 
-## Live price strip (homepage)
+## Pages
 
-The strip shows the assets of the active publication. The first prices come from `/api/prices`
-(`functions/api/prices.js`), which calls Binance's public REST API from Cloudflare and caches each symbol set
-for 3 seconds. The browser then opens a public WebSocket directly — Binance, or Coinbase's `ticker` channel
-where Binance is blocked — so live updates never go through Cloudflare and use no Functions quota. Only if no
-stream can be opened does the strip refresh from `/api/prices`, every 15 seconds.
-Binance refuses requests from some countries (e.g. the Netherlands, the US) — including from the Cloudflare
-location serving those visitors — so `/api/prices` falls back to Coinbase's public API (USD pair — Coinbase's liquid market — else USDT)
-and reports `source: "coinbase"`; the strip's source label follows. When both fail it still answers 200
-with `prices: []` and the upstream status codes in `attempts`.
+- `index.html` — market table (live price, 24h change and volume, daily/weekly/monthly/yearly opens, ATH)
+  and this week's events.
+- `bulletin.html?asset=BTCUSDT&tf=4h` — analysis page: 1H/4H/1D chart, note, support/resistance zones,
+  key levels and earlier analyses. Only Critical Zones (CZ) entries are shown; Price Action stays hidden.
+- `weekly-events.html` — this/next week's events. `archive.html` — placeholder until archives are published.
 
-## Market summary (bulletin page)
+## Live market data
 
-`/api/stats?symbol=BTCUSDT` (`functions/api/stats.js`) returns the last price, 24h open/high/low and quote
-volume, and this week's (Monday 00:00 UTC) and month's opening prices — from Binance, or from Coinbase
-(USD pair, else USDT; opens from the latest daily candles) where Binance refuses the request. Cached for 60 seconds per
-symbol. Binance refuses requests coming from Cloudflare, so the bulletin page first opens Binance's public
-stream from the visitor's browser (`<symbol>@ticker`, `@kline_1w`, `@kline_1M`) and shows live Binance figures;
-`/api/stats` (in practice Coinbase) is used only when the browser cannot reach Binance — shown after 2.5 s
-without Binance data and refreshed every 5 minutes while the tab is visible.
+`assets/market-feed.js` feeds the market table and the analysis page. Per symbol it paints the last figures
+this browser saw (`assets/market-cache.js`, localStorage), then a snapshot from `/api/prices`
+(`functions/api/prices.js`, edge-cached 3 s), then opens a public WebSocket from the browser: Binance
+(miniTicker plus 1d/1w/1M klines for the daily, weekly and monthly opens) or, where Binance is blocked
+(e.g. the Netherlands, the US — Binance also refuses requests from Cloudflare), Coinbase's `ticker` channel
+(USD pair, else USDT). Only if no stream works does it refresh from `/api/prices` every 15 s. Live updates
+never pass through Cloudflare. While Binance is marked unreachable (30 min) pages start on Coinbase but
+keep probing Binance and switch back when it answers.
+
+`/api/prices` itself reads Binance's REST API, falling back to Coinbase (`stats` + daily candles for the
+opens); it always answers 200 with JSON and lists upstream status codes in `attempts` when it fell back.
+
+The old scrolling price strip is kept in `assets/price-strip.js` / `assets/price-strip.css` but no page loads it.
+
+## Engine data contracts (R2)
+
+The local engine does not publish these yet; the site reads them as soon as they exist. Until then the
+sections stay hidden on marketlevelmap.com and are filled with sample data on preview hosts (see below).
+
+**Report JSON** — one per chart, referenced from its entry in `site-publication/active.json` as
+`"report": { "objectKey": "…", "mediaType": "application/json" }` and served at
+`/api/publication/report/<publicationId>`:
+
+```json
+{
+  "symbol": "BTCUSDT", "timeframe": "1h", "method": "cz",
+  "analyzedAt": "2026-10-16T10:21:00Z",
+  "note": { "tr": "…", "en": "…" },
+  "noteSource": { "tr": "Algoritma tarafından üretildi, editör tarafından kontrol edildi", "en": "…" },
+  "zones": [ { "type": "resistance", "low": 86200, "high": 86900, "formedAt": "2026-09-22", "drawn": true } ],
+  "levels": [ { "code": "ATH", "price": 109588 }, { "code": "PWO", "price": 86510 },
+              { "code": "MO", "price": 79210 }, { "code": "YO", "price": 71950 } ]
+}
+```
+
+`type` is `resistance` or `support`; `drawn: false` zones appear only under "Show all zones", dashed.
+Level codes: `ATH`, `PWO`, `MO`, `YO` from the engine; `DO` and `WO` are always taken live from the
+exchange (`MO` falls back to the live monthly candle until a report provides it). Without a report the
+note falls back to the entry's `analysisComment` text.
+
+**Archive JSON** — `site-publication/archive/<SYMBOL>.json`, served by `/api/archive?symbol=`:
+
+```json
+{ "items": [ { "publishedAt": "2026-10-13T10:20:00Z", "timeframes": ["1h", "4h", "1d"], "url": "/archive.html#2026-10-13" } ] }
+```
+
+**Events JSON** — `site-events/events.json` (maintained by hand for now), served by `/api/events`, which
+drops invalid or `enabled: false` entries and answers `{ events: [], error }` if the file is missing or broken:
+
+```json
+{
+  "updatedAt": "2026-10-19T08:00:00Z",
+  "events": [
+    { "id": "tr-cbrt-2026-10", "startAt": "2026-10-22T11:00:00Z", "datePrecision": "EXACT",
+      "title": { "tr": "TCMB faiz kararı", "en": "CBRT interest-rate decision" },
+      "country": "TR", "category": "MACRO", "impact": "HIGH",
+      "previous": "40,5%", "forecast": null, "actual": null, "sourceUrl": "https://www.tcmb.gov.tr/" }
+  ]
+}
+```
+
+`datePrecision` is `EXACT` (time shown, UTC) or `DAY`; `impact` is `VERY_HIGH`, `HIGH` or `MEDIUM`.
+
+## Sample data on previews
+
+`assets/demo-data.js` generates zones, key levels, notes, archive rows and events around the live price.
+It is used only on preview hosts (`*.pages.dev`, `localhost`) or with `?demo=1` (`?demo=0` turns it off),
+never on marketlevelmap.com by default, and every section it fills shows a "Sample data" badge.
 
 ## Shared assets and browser caches
 
-Pages link `assets/site.css` and `assets/disclaimer.js` with a `?v=` content hash so browsers pick up new
-versions. After editing either file, update the hash in all four HTML pages, e.g.
-`sha1sum assets/site.css | cut -c1-8`.
-
-## Browser-side market cache
-
-`assets/market-cache.js` (linked with a `?v=` hash like the other shared assets) keeps, in the visitor's
-`localStorage`: the latest 24h figures per symbol (written by the homepage strip and the bulletin summary),
-this week's/month's opening prices, and whether both Binance streams failed in the last 30 minutes. Pages
-paint cached figures (≤15 minutes old, labelled with their time) immediately. While Binance is marked
-unreachable they start on Coinbase without waiting, but still try Binance in the background and switch to it
-(clearing the mark) as soon as it answers — e.g. after moving from a blocked Wi-Fi to mobile data.
+Pages link the files in `assets/` (`site.css`, `disclaimer.js`, `market-cache.js`, `market-feed.js`,
+`market-ui.js`, `demo-data.js`) with a `?v=` content hash so browsers pick up new versions. After editing
+one, update its hash in every page that loads it, e.g. `sha1sum assets/site.css | cut -c1-8`.

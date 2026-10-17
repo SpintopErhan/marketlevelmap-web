@@ -5,337 +5,211 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
 <meta name="description" content="MarketLevelMap — Structure-Based Market Analysis.">
-<title>MarketLevelMap — Market Bulletins</title>
+<title>MarketLevelMap — Market table</title>
 <link rel="icon" type="image/svg+xml" href="assets/MarketLevelMap-symbol-color.svg">
 <link rel="stylesheet" href="assets/site.css?v=78f787a3"><style>
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.45}
-button,select,input{font:inherit}
-button{color:inherit}
-main{padding:52px 0 80px}
-.eyebrow{display:flex;align-items:center;gap:10px;color:var(--accent);font-size:11px;letter-spacing:2.4px;font-weight:700;text-transform:uppercase}
-.eyebrow:before{content:"";width:26px;height:1px;background:currentColor}
-.intro{display:flex;align-items:end;justify-content:space-between;gap:24px;margin:15px 0 34px}
-.intro h1{margin:0;font-size:clamp(30px,4.2vw,50px);font-weight:500;letter-spacing:-1.7px}
-.intro p{max-width:430px;margin:0;color:var(--muted);font-size:14px;line-height:1.7}
-.section-label{font-size:11px;letter-spacing:1.8px;font-weight:700;text-transform:uppercase;color:var(--muted)}
-.featured{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);border:1px solid var(--line);background:var(--panel);box-shadow:var(--shadow);border-radius:16px;overflow:hidden}
-.chart{position:relative;min-height:310px;background:#0f171e;overflow:hidden}
-.chart:before{content:"";position:absolute;inset:0;opacity:.24;background-image:linear-gradient(#49606d 1px,transparent 1px),linear-gradient(90deg,#49606d 1px,transparent 1px);background-size:54px 54px}
-.chart svg{position:absolute;inset:0;width:100%;height:100%}
-.chart-tag{position:absolute;z-index:2;top:18px;left:18px;padding:6px 10px;border-radius:999px;background:rgba(16,22,29,.72);border:1px solid rgba(237,242,244,.18);color:#edf2f4;font-size:11px;letter-spacing:.7px}
-.chart-time{position:absolute;z-index:2;bottom:16px;left:18px;color:#b8c8ce;font-size:11px}
-.feature-copy{padding:34px;display:flex;flex-direction:column}
-.feature-copy h2{font-size:26px;margin:10px 0 12px;font-weight:500;letter-spacing:-.7px}
-.feature-copy p{margin:0;color:var(--muted);font-size:14px;line-height:1.75}
-.metadata{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:26px 0}
-.metadata span{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}
-.metadata strong{font-size:13px;font-weight:500}
-.open-link{margin-top:auto;display:inline-flex;align-items:center;gap:8px;color:var(--fg);font-size:13px;font-weight:600;text-decoration:none}
-.open-link:after{content:"→";color:var(--accent);font-size:18px}
-.filterbar{display:flex;align-items:center;justify-content:flex-end;gap:20px;margin:26px 0 22px}
-.filterbar h2{font-size:21px;font-weight:500;margin:5px 0 0}
+button,select,input{font:inherit}button{color:inherit}
+main{padding:0 0 70px}
+.num{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.up{color:var(--up)}.down{color:var(--down)}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:34px 0 16px}
+.page-head h1,.section-head h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-.4px}
+.meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:8px 0 0;color:var(--muted);font-size:12px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--up);box-shadow:0 0 0 3px color-mix(in srgb,var(--up) 22%,transparent)}
+.meta .sep{opacity:.6}
+.demo-badge{white-space:nowrap;padding:1px 8px;border:1px dashed var(--muted);border-radius:4px;color:var(--muted);font-size:11px}
+.demo-badge[hidden]{display:none}
 .filters{display:flex;align-items:center;gap:8px}
-.search{position:relative}
-.search input{width:170px;min-height:30px;font-size:12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--fg);padding:5px 12px 5px 28px;outline:none}
-.search:before{content:"⌕";position:absolute;z-index:1;left:11px;top:5px;color:var(--muted);font-size:16px}
-.filter-btn{min-height:30px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:11px;cursor:pointer}
-.filter-btn.active{border-color:var(--m,var(--accent));color:var(--m,var(--accent))}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.cards[data-publication-state="loading"]>.card,.cards[data-publication-state="loading"]>.empty{display:none}
-.cards[data-publication-state="loading"]::after{content:"Loading live bulletins…";display:grid;place-items:center;min-height:226px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:13px;grid-column:1/-1}
-:lang(tr) .cards[data-publication-state="loading"]::after{content:"Güncel bültenler yükleniyor…"}
-.cards[data-publication-state="unavailable"]>.empty{display:none}
-.cards[data-publication-state="unavailable"]::after{content:"No active bulletin is available right now. Please check back later.";display:grid;place-items:center;min-height:226px;padding:24px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:13px;text-align:center;grid-column:1/-1}
-:lang(tr) .cards[data-publication-state="unavailable"]::after{content:"Şu anda yayında bülten yok. Lütfen daha sonra tekrar deneyin."}
-.card{position:relative;display:flex;flex-direction:column;min-width:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel);transition:transform .18s ease,border-color .18s ease}
-.card:hover{transform:translateY(-3px);border-color:var(--accent)}
-.card-chart{height:152px;background:#111a22;position:relative;overflow:hidden}
-.card-chart:before{content:"";position:absolute;inset:0;opacity:.2;background-image:linear-gradient(#49606d 1px,transparent 1px),linear-gradient(90deg,#49606d 1px,transparent 1px);background-size:35px 35px}
-.card-chart svg{position:absolute;inset:0;width:100%;height:100%}
-.card-tabs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:11px 12px 0;background:var(--panel)}
-.card-tab{border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--muted);padding:3px 7px;font-size:9px;font-weight:700;cursor:pointer}
-.card-tab.active{color:var(--m,var(--accent));border-color:var(--m,var(--accent))}
-[data-method="cz"]{--m:var(--cz)}
-[data-method="pa"]{--m:var(--pa)}
-.card-method{display:inline-flex;align-items:center;gap:6px}
-.card-method+.card-method{margin-left:4px;padding-left:10px;border-left:1px solid var(--line)}
-.card-method[hidden]{display:none}
-.card-method[hidden]+.card-method{margin-left:0;padding-left:0;border-left:0}
-.card-method b{color:var(--m,var(--muted));font-size:9px;letter-spacing:1px}
-.method-chip{position:absolute;z-index:2;top:10px;left:10px;display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:999px;background:rgba(16,22,29,.78);border:1px solid rgba(237,242,244,.18);color:#edf2f4;font-size:10px;font-weight:600;letter-spacing:.4px}
-.method-chip i{width:7px;height:7px;border-radius:50%;background:var(--m)}
-.card .tf{color:var(--m,var(--accent))}
-.card-body{padding:16px}
-.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.coin{font-size:16px;font-weight:600;letter-spacing:.1px}
-.tf{font-size:10px;letter-spacing:1px;color:var(--accent);font-weight:700}
-.card p{margin:10px 0 0;color:var(--muted);font-size:12px;line-height:1.55}
-.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:11px;color:var(--muted)}
-.read-bulletin{display:block;width:100%;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);color:var(--fg);font-size:12px;font-weight:700;text-decoration:none}
-.read-bulletin span{color:var(--accent);font-size:15px;vertical-align:-1px}
-.favorite{position:absolute;z-index:2;top:10px;right:10px;width:30px;height:30px;border:1px solid rgba(237,242,244,.18);background:rgba(16,22,29,.65);color:#fff;border-radius:50%;cursor:pointer}
-.favorite.active{color:var(--accent)}
-.favorite.active::after{content:"";position:absolute;inset:6px;border-radius:50%;background:rgba(79,214,195,.14)}
-.empty{display:none;border:1px dashed var(--line);border-radius:12px;padding:30px;color:var(--muted);text-align:center;grid-column:1/-1}
-@media(max-width:800px){.intro{display:block}.intro p{margin-top:14px}.featured{grid-template-columns:1fr}.chart{min-height:270px}.feature-copy{padding:25px}.cards{grid-template-columns:repeat(2,1fr)}.filterbar{align-items:flex-end}.filters{flex-wrap:wrap;justify-content:flex-end}}
-@media(max-width:520px){main{padding:38px 0 56px}.intro h1{font-size:32px;letter-spacing:-1.2px}.featured{border-radius:12px}.chart{min-height:224px}.feature-copy h2{font-size:23px}.metadata{gap:10px;margin:22px 0}.filterbar{display:block;margin:48px 0 18px}.filters{justify-content:flex-start;margin-top:16px}.search{width:100%}.search input{width:100%}.cards{grid-template-columns:1fr}.card-chart{height:164px}}
-
-/* Live price strip (homepage only) */
-.ticker{display:flex;align-items:center;gap:16px;margin-top:14px;padding:8px 16px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:12px;line-height:1.3}
-.ticker[hidden]{display:none}
-.ticker-live{display:inline-flex;align-items:center;gap:6px;flex:none;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.ticker-live i{width:6px;height:6px;border-radius:50%;background:var(--up);animation:ticker-pulse 2s ease-in-out infinite}
-@keyframes ticker-pulse{50%{opacity:.35}}
-.ticker-items{display:flex;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
-.ticker-items.is-looping{-webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent)}
-.ticker-row{display:flex;flex:none;gap:22px;padding-right:22px}
-.ticker-items::-webkit-scrollbar{display:none}
-.ticker-item{display:inline-flex;align-items:baseline;gap:7px;padding:2px 4px;border-radius:6px;color:var(--fg);text-decoration:none;white-space:nowrap;transition:background-color .6s ease}
-.ticker-item[hidden]{display:none}
-.ticker-item:hover b{color:var(--fg)}
-.ticker-item b{color:var(--muted);font-size:11px;font-weight:600}
-.ticker-price{font-variant-numeric:tabular-nums;font-weight:600}
-.ticker-change{font-size:11px;font-variant-numeric:tabular-nums}
-.ticker-change.up{color:var(--up)}.ticker-change.down{color:var(--down)}
-.ticker-item.tick-up{background:color-mix(in srgb,var(--up) 16%,transparent);transition:none}
-.ticker-item.tick-down{background:color-mix(in srgb,var(--down) 16%,transparent);transition:none}
-.ticker-source{flex:none;color:var(--muted);font-size:10px}
-@media(prefers-reduced-motion:reduce){.ticker-live i{animation:none}.ticker-item,.ticker-item.tick-up,.ticker-item.tick-down{transition:none;background:none}}
-@media(max-width:520px){.ticker{flex-wrap:wrap;gap:8px 12px;border-radius:12px;padding:10px 12px}.ticker-items{order:3;flex-basis:100%}.ticker-source{margin-left:auto}}
+.search input{width:200px;min-height:36px;padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--fg);font-size:13px;outline:none}
+.search input:focus{border-color:var(--accent)}
+.filter-btn{min-height:36px;padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:13px;font-weight:600;cursor:pointer}
+.filter-btn.active{border-color:var(--accent);color:var(--accent)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+th{padding:12px 14px;border-bottom:1px solid var(--line);color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;text-align:right;text-transform:uppercase;white-space:nowrap;vertical-align:bottom}
+td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+.market-table{min-width:1040px}
+.market-table .asset{position:sticky;left:0;z-index:1;text-align:left;background:var(--panel);border-right:1px solid var(--line)}
+.market-table tbody tr{cursor:pointer}
+.market-table tbody tr:hover td{background:var(--panel-2)}
+.asset-cell{display:flex;align-items:center;gap:12px}
+.asset-cell strong{display:block;font-size:13px;font-weight:700}
+.asset-cell small{display:block;color:var(--muted);font-size:11px}
+.star{width:22px;height:22px;padding:0;border:0;background:none;color:var(--muted);font-size:15px;line-height:1;cursor:pointer}
+.star.active{color:var(--fg)}
+.price{font-size:15px;font-weight:600;border-radius:4px;transition:background-color .6s ease}
+.price.tick-up{background:color-mix(in srgb,var(--up) 18%,transparent);transition:none}
+.price.tick-down{background:color-mix(in srgb,var(--down) 18%,transparent);transition:none}
+.lvl b{display:block;font-weight:500}.lvl small{display:block;margin-top:2px;font-size:11px}
+.analysis-col{width:64px;text-align:center}
+.analysis-link{display:inline-grid;place-items:center;width:38px;height:38px;border:1px solid var(--line);border-radius:8px;color:var(--cz);background:var(--bg)}
+.analysis-link:hover{border-color:var(--cz)}
+.analysis-link svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.status-row td{padding:34px 14px;color:var(--muted);text-align:center;cursor:default;white-space:normal}
+.status-row:hover td{background:none!important}
+.table-note{margin:10px 2px 0;color:var(--muted);font-size:11px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:54px 0 14px}
+.section-head p{margin:6px 0 0;color:var(--muted);font-size:12px}
+.section-head a{flex:none;white-space:nowrap;color:var(--accent);font-size:13px;font-weight:600;text-decoration:none}
+.events-table th:nth-child(-n+3),.events-table td:nth-child(-n+3){text-align:left}
+.events-table td:nth-child(3){width:100%;white-space:normal;font-weight:600}
+.events-table td:nth-child(4),.events-table th:nth-child(4){text-align:left}
+.events-table .is-past td{color:var(--muted);font-weight:400}
+.events-table .actual{font-weight:700;color:var(--fg)}
+@media(prefers-reduced-motion:reduce){.price,.price.tick-up,.price.tick-down{transition:none;background:none}}
+@media(max-width:700px){.page-head{align-items:stretch}.filters{flex-wrap:wrap}.search{flex:1 1 100%}.search input{width:100%}.events-table{min-width:560px}}
 </style>
 <script>
 try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
 </script>
-<script src="assets/disclaimer.js?v=d6f00e0e" defer></script><script src="assets/market-cache.js?v=68230644"></script></head>
+<script src="assets/disclaimer.js?v=bc3eb127" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=dcda8dff"></script><script src="assets/demo-data.js?v=9e9f55c7"></script></head>
 <body>
 <div class="shell"><header>
-<a href="#" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
-<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Bültenler" aria-current="page">Bulletins</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="archive.html" data-tr="Arşiv">Archive</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
-</header>
-<div class="ticker" id="ticker" aria-label="Live prices" hidden><span class="ticker-live"><i></i><span data-tr="Canlı">Live</span></span><div class="ticker-items" id="ticker-items"></div><span class="ticker-source" id="ticker-source" data-en="Source: Binance" data-tr="Kaynak: Binance">Source: Binance</span></div></div>
+<a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
 <main class="shell">
-<section id="latest"><div class="filterbar"><div class="filters"><div class="search"><input id="search" type="search" placeholder="Search an asset" aria-label="Search an asset"></div><button class="filter-btn active" data-filter="all">All</button><button class="filter-btn" data-filter="cz" data-method="cz" title="Critical Zones">CZ</button><button class="filter-btn" data-filter="pa" data-method="pa" title="Price Action">PA</button><button class="filter-btn" data-filter="favorites">Favorites</button></div></div>
-<div class="cards" id="cards" data-publication-state="loading">
-
-<div class="empty" id="empty">No bulletins match this filter.</div></div></section>
-
+<section aria-labelledby="table-title">
+<div class="page-head"><div><h1 id="table-title" data-i18n="tableTitle">Market table</h1>
+<p class="meta"><span class="live-dot" aria-hidden="true"></span><span id="feed-label"></span><span class="sep">·</span><span id="analysis-time"></span><span class="demo-badge" id="table-demo" data-i18n="demo" hidden>Sample data</span></p></div>
+<div class="filters"><div class="search"><input id="search" type="search" autocomplete="off"></div><button class="filter-btn active" type="button" data-filter="all" data-i18n="all">All</button><button class="filter-btn" type="button" data-filter="favorites" data-i18n="fav">Favorites</button></div></div>
+<div class="table-wrap"><table class="market-table"><thead><tr>
+<th class="asset" data-i18n="colAsset">Asset</th><th data-i18n="colPrice">Price</th><th data-i18n="col24h">24h %</th><th data-i18n="colVolume">24h volume</th><th data-i18n="colDay">Daily open</th><th data-i18n="colWeek">Weekly open</th><th data-i18n="colMonth">Monthly open</th><th data-i18n="colYear">Yearly open</th><th>ATH</th><th class="analysis-col" data-i18n="colAnalysis">Analysis</th>
+</tr></thead><tbody id="market-rows"><tr class="status-row"><td colspan="10" data-i18n="loading">Loading live market…</td></tr></tbody></table></div>
+<p class="table-note" data-i18n="tableNote">The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.</p>
+</section>
+<section aria-labelledby="events-title">
+<div class="section-head"><div><h2 id="events-title" data-i18n="eventsTitle">This week's events</h2><p><span id="week-range"></span> · <span data-i18n="utc">times in UTC</span> <span class="demo-badge" id="events-demo" data-i18n="demo" hidden>Sample data</span></p></div><a href="weekly-events.html" data-i18n="fullWeek">Full week →</a></div>
+<div class="table-wrap"><table class="events-table"><thead><tr><th data-i18n="colDayName">Day</th><th data-i18n="colTime">Time</th><th data-i18n="colEvent">Event</th><th data-i18n="colCountry">Country</th><th data-i18n="colActual">Actual</th></tr></thead>
+<tbody id="event-rows"><tr class="status-row"><td colspan="5" data-i18n="eventsLoading">Loading events…</td></tr></tbody></table></div>
+</section>
 </main>
-<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Fiyat şeridi anlık fiyatı gösterir; grafikler belirtilen tarihe ait statik analizlerdir ve canlı güncellenmez. Kripto varlıklar yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. The price strip shows live prices; charts are static analyses as of the stated date and are not updated live. Crypto assets carry high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
-
+<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar anlıktır; grafikler belirtilen tarihe ait statik analizlerdir ve canlı güncellenmez. Kripto varlıklar yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table are live; charts are static analyses as of the stated date and are not updated live. Crypto assets carry high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 <script>
-var copy={en:{title:"MarketLevelMap — Market Bulletins",nav:"Weekly events",search:"Search an asset",all:"All",fav:"Favorites",read:"Read bulletin",published:"Published",empty:"No bulletins match this filter.",archive:"Earlier publications",notice:"General information only.",understand:"I understand",risk:"Not investment advice."},tr:{title:"MarketLevelMap — Piyasa Bültenleri",nav:"Haftalık olaylar",search:"Varlık ara",all:"Tümü",fav:"Favoriler",read:"Bülteni oku",published:"Yayınlandı",empty:"Bu filtreyle eşleşen bülten yok.",archive:"Önceki yayınlar",notice:"Yalnızca genel bilgilendirme.",understand:"Anladım",risk:"Yatırım tavsiyesi değildir."}};
-function applyLanguage(value){var t=copy[value]||copy.en;document.documentElement.lang=value;document.title=t.title;document.getElementById("search").placeholder=t.search;document.querySelector('[data-filter="all"]').textContent=t.all;document.querySelector('[data-filter="favorites"]').textContent=t.fav;document.getElementById("empty").textContent=t.empty;document.querySelectorAll(".read-bulletin").forEach(function(el){el.innerHTML=t.read+' <span>→</span>'});document.querySelectorAll(".published-label").forEach(function(el){el.textContent=t.published});document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});try{localStorage.setItem("mlm-lang",value)}catch(e){}}
-var savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){};lang=document.getElementById("lang");lang.value=savedLang==="tr"?"tr":"en";applyLanguage(lang.value);lang.addEventListener("change",function(){applyLanguage(this.value)});
-var toggle=document.getElementById("theme-toggle"),search=document.getElementById("search"),cards=[].slice.call(document.querySelectorAll(".card")),empty=document.getElementById("empty"),filter="all";
+/* Header: language and theme (same on every page). */
+var copy={
+  en:{title:"MarketLevelMap — Market table",search:"Search an asset",all:"All",fav:"Favorites",tableTitle:"Market table",demo:"Sample data",colAsset:"Asset",colPrice:"Price",col24h:"24h %",colVolume:"24h volume",colDay:"Daily open",colWeek:"Weekly open",colMonth:"Monthly open",colYear:"Yearly open",colAnalysis:"Analysis",loading:"Loading live market…",unavailable:"No active analysis is available right now. Please check back later.",noMatch:"No assets match this filter.",tableNote:"The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.",eventsTitle:"This week's events",utc:"times in UTC",fullWeek:"Full week →",colDayName:"Day",colTime:"Time",colEvent:"Event",colCountry:"Country",colActual:"Actual",eventsLoading:"Loading events…",eventsFailed:"Events could not be loaded.",eventsNone:"No events are listed for this week.",live:"Live price",lastAnalysis:"Last analysis",openAnalysis:"Open analysis",addFav:"Add to favorites",removeFav:"Remove from favorites"},
+  tr:{title:"MarketLevelMap — Piyasa tablosu",search:"Varlık ara",all:"Tümü",fav:"Favoriler",tableTitle:"Piyasa tablosu",demo:"Örnek veriler",colAsset:"Varlık",colPrice:"Fiyat",col24h:"24s %",colVolume:"24s hacim",colDay:"Günlük açılış",colWeek:"Haftalık açılış",colMonth:"Aylık açılış",colYear:"Yıllık açılış",colAnalysis:"Analiz",loading:"Canlı piyasa yükleniyor…",unavailable:"Şu anda yayında analiz yok. Lütfen daha sonra tekrar deneyin.",noMatch:"Bu filtreyle eşleşen varlık yok.",tableNote:"Açılış ve ATH sütunlarının altındaki yüzde, güncel fiyatın o seviyeye uzaklığıdır. Satıra tıklayınca varlığın analiz sayfası açılır.",eventsTitle:"Bu haftanın olayları",utc:"saatler UTC",fullWeek:"Tüm hafta →",colDayName:"Gün",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colActual:"Gerçekleşen",eventsLoading:"Olaylar yükleniyor…",eventsFailed:"Olaylar yüklenemedi.",eventsNone:"Bu hafta için listelenmiş olay yok.",live:"Canlı fiyat",lastAnalysis:"Son analiz",openAnalysis:"Analizi aç",addFav:"Favorilere ekle",removeFav:"Favorilerden çıkar"}
+};
+function words(){return copy[document.getElementById("lang").value]||copy.en}
+function applyLanguage(value){
+  var t=copy[value]||copy.en;document.documentElement.lang=value;document.title=t.title;document.getElementById("search").placeholder=t.search;document.getElementById("search").setAttribute("aria-label",t.search);
+  document.querySelectorAll("[data-i18n]").forEach(function(el){if(t[el.dataset.i18n])el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+  try{localStorage.setItem("mlm-lang",value)}catch(e){}
+}
+var lang=document.getElementById("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
+lang.value=savedLang==="tr"?"tr":"en";applyLanguage(lang.value);lang.addEventListener("change",function(){applyLanguage(this.value)});
+var toggle=document.getElementById("theme-toggle");
 function isDark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches}
 function syncTheme(){var dark=isDark();toggle.setAttribute("aria-pressed",String(dark));toggle.setAttribute("aria-label",dark?"Switch to light theme":"Switch to dark theme")}
 toggle.addEventListener("click",function(){document.documentElement.dataset.theme=isDark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
-lang.addEventListener("change",function(){document.documentElement.lang=this.value});
-document.querySelectorAll("[data-filter]").forEach(function(button){button.addEventListener("click",function(){filter=button.dataset.filter;document.querySelectorAll("[data-filter]").forEach(function(b){b.classList.toggle("active",b===button)});applyFilters()})});
-search.addEventListener("input",applyFilters);
-function applyFilters(){var query=search.value.toLowerCase().trim(),method=filter==="cz"||filter==="pa"?filter:"",shown=0;cards.forEach(function(card){var match=card.dataset.coin.indexOf(query)>-1&&!(filter==="favorites"&&!card.querySelector(".favorite").classList.contains("active"))&&(!method||!!card.querySelector('.card-method[data-method="'+method+'"]'));if(match&&card.focusMethod)card.focusMethod(method);card.style.display=match?"flex":"none";if(match)shown++});empty.style.display=shown?"none":"block"}
 </script>
 <script>
-/* Live price strip (homepage only).
-   1. A snapshot from /api/prices (our Cloudflare function, edge-cached) paints prices straight away.
-   2. The browser then opens a public price stream directly: Binance, or Coinbase where Binance is blocked
-      (e.g. the Netherlands, the US). Live updates never go through Cloudflare, so they cost no quota.
-   3. Only if no stream can be opened does the strip refresh from /api/prices, every 15 seconds.
-   The row scrolls on its own in an endless loop; hovering, touching or scrolling it by hand pauses it. */
-var startTicker=(function(){
-  var STREAMS=[{kind:"binance",url:"wss://data-stream.binance.vision/stream?streams="},{kind:"binance",url:"wss://stream.binance.com:9443/stream?streams="},{kind:"coinbase",url:"wss://ws-feed.exchange.coinbase.com"}];
-  var POLL_MS=15000,SPEED=28,RESUME_MS=3000,COINBASE_PAINT_MS=1000;
-  var box=document.getElementById("ticker"),track=document.getElementById("ticker-items"),items={},symbols=[],socket=null,streamIndex=0,retryTimer=null,pollTimer=null,polling=false,coinbasePairs={};
-  var reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches,loopWidth=0,copies=1,holdUntil=0,hovering=false,lastFrame=0,offset=0;
-  function locale(){return document.documentElement.lang==="tr"?"tr-TR":"en-US"}
-  // Decimals are fixed per asset from its first price, so a price moving across 10 or 1 (e.g. AVAX near 10)
-  // does not flip between "10.01" and "9.9900" on every tick.
-  function formatPrice(value,item){var n=Number(value);if(item.digits==null)item.digits=n>=10?2:n>=1?4:6;return n.toLocaleString(locale(),{minimumFractionDigits:item.digits,maximumFractionDigits:item.digits})}
-  function paint(item){
-    var d=item.data;if(!d)return;
-    var close=Number(d.c),open=Number(d.o),change=open?(close-open)/open*100:0,price=formatPrice(close,item),text=(change>=0?"+":"")+change.toLocaleString(locale(),{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
-    var appeared=false;
-    item.nodes.forEach(function(n){n.price.textContent=price;n.change.textContent=text;n.change.className="ticker-change "+(change>=0?"up":"down");if(n.el.hidden){n.el.hidden=false;appeared=true}});
-    box.hidden=false;
-    // The loop width depends on which items are visible; re-measure once new items show up.
-    if(appeared){clearTimeout(layout.t);layout.t=setTimeout(layout,60)}
-  }
-  // d: {s, c: last, o: 24h open, h, l, q: 24h quote volume, quote}. Every update is also kept in
-  // MarketCache so bulletin pages and the next visit can show it straight away.
-  function update(d,flash,source){
-    var item=items[d.s];if(!item||!(Number(d.c)>0))return;
-    if(source&&window.MarketCache)MarketCache.putTicker(d.s,{c:d.c,o:d.o,h:d.h,l:d.l,q:d.q,quote:d.quote,source:source});
-    var previous=item.data&&Number(item.data.c);item.data={c:d.c,o:d.o};paint(item);
-    if(flash&&previous&&previous!==Number(d.c)){var cls=Number(d.c)>previous?"tick-up":"tick-down";item.nodes.forEach(function(n){n.el.classList.remove("tick-up","tick-down");void n.el.offsetWidth;n.el.classList.add(cls);setTimeout(function(){n.el.classList.remove(cls)},120)})}
-  }
-  // The label names whichever source the prices currently come from.
-  var sourceLabel=document.getElementById("ticker-source"),SOURCE_NAMES={binance:"Binance",coinbase:"Coinbase"};
-  function setSource(source){var name=SOURCE_NAMES[source];if(!name)return;sourceLabel.dataset.en="Source: "+name;sourceLabel.dataset.tr="Kaynak: "+name;sourceLabel.textContent=document.documentElement.lang==="tr"?sourceLabel.dataset.tr:sourceLabel.dataset.en}
-  function snapshot(){
-    return fetch("/api/prices?symbols="+symbols.join(","),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){
-      var prices=body&&body.prices||[];if(prices.length&&!socket)setSource(body.source);
-      prices.forEach(function(d){if(d.pair)coinbasePairs[d.s]=d.pair;update(d,polling,body.source)});return prices.length>0;
-    }).catch(function(){return false});
-  }
-  function startPolling(){if(polling)return;polling=true;schedulePoll()}
-  function schedulePoll(){clearTimeout(pollTimer);if(!document.hidden)pollTimer=setTimeout(function(){snapshot().then(schedulePoll)},POLL_MS)}
+/* Market table. Live price, 24h change/volume and the daily/weekly opens come from MarketFeed (Binance, or
+   Coinbase where Binance is blocked). Monthly/yearly opens and ATH come from the engine's report JSON
+   (monthly falls back to the live monthly candle until the report exists). On preview hosts DemoData fills
+   the engine's figures and the table shows a "Sample data" badge. */
+(function(){
+  var body=document.getElementById("market-rows"),search=document.getElementById("search"),feedLabel=document.getElementById("feed-label"),timeLabel=document.getElementById("analysis-time");
+  var rows={},order=[],filter="all",activatedAt=null,source=null,feed=null,SOURCE_NAMES={binance:"Binance spot",coinbase:"Coinbase spot"};
+  var favorites=[];try{favorites=JSON.parse(localStorage.getItem("mlm-favorites")||"[]");if(!Array.isArray(favorites))favorites=[]}catch(e){favorites=[]}
+  function saveFavorites(){try{localStorage.setItem("mlm-favorites",JSON.stringify(favorites))}catch(e){}}
+  function status(key){body.innerHTML='<tr class="status-row"><td colspan="10"></td></tr>';body.firstChild.firstChild.dataset.i18n=key;body.firstChild.firstChild.textContent=words()[key]}
+  function labels(){var w=words();feedLabel.textContent=w.live+(source?" · "+SOURCE_NAMES[source]:"");timeLabel.textContent=activatedAt?w.lastAnalysis+" "+MarketUI.dateTime(activatedAt):"";
+    order.forEach(function(sym){var r=rows[sym];r.star.setAttribute("aria-label",favorites.indexOf(sym)>-1?w.removeFav:w.addFav);r.link.setAttribute("aria-label",w.openAnalysis+" — "+sym);r.link.title=w.openAnalysis;paint(sym)})}
+  new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
 
-  // Coinbase sends a message per trade; repaint at most once a second.
-  var pending={},paintTimer=null;
-  function queue(d){pending[d.s]=d;if(!paintTimer)paintTimer=setTimeout(function(){paintTimer=null;var batch=pending;pending={};Object.keys(batch).forEach(function(k){update(batch[k],true,"coinbase")})},COINBASE_PAINT_MS)}
-  var rejectedPairs={},retryDelay=2000;
-  function coinbaseProducts(){var bySymbol={};symbols.forEach(function(sym){var id=coinbasePairs[sym]||sym.replace(/USDT$/,"")+"-USD";if(!rejectedPairs[id])bySymbol[sym]=id});return bySymbol}
+  function levelCell(td,level,price,digits){
+    var lv=Number(level),p=Number(price);
+    if(!(lv>0)){td.innerHTML='<b>—</b>';return}
+    var r=p>0?p/lv-1:NaN;
+    td.innerHTML='<b></b><small></small>';td.firstChild.textContent=MarketUI.price(lv,digits);td.lastChild.textContent=p>0?MarketUI.pct(r):"";td.lastChild.className=MarketUI.signClass(r);
+  }
+  function paint(sym){
+    var r=rows[sym],d=r.data,lv=r.levels||{};if(!d)return;
+    if(r.digits==null&&Number(d.c)>0)r.digits=MarketUI.digitsFor(d.c);
+    var price=Number(d.c),change=Number(d.o)>0?price/Number(d.o)-1:NaN;
+    if(r.last&&price!==r.last){var cls=price>r.last?"tick-up":"tick-down";r.price.classList.remove("tick-up","tick-down");void r.price.offsetWidth;r.price.classList.add(cls);setTimeout(function(){r.price.classList.remove(cls)},120)}
+    r.last=price;r.price.textContent=MarketUI.price(price,r.digits);
+    r.change.textContent=MarketUI.pct(change);r.change.className="num "+MarketUI.signClass(change);
+    r.volume.textContent=Number(d.q)>0?MarketUI.compact(d.q)+" $":"—";
+    levelCell(r.day,d.day,price,r.digits);levelCell(r.week,d.week,price,r.digits);
+    levelCell(r.month,lv.MO||d.month,price,r.digits);levelCell(r.year,lv.YO,price,r.digits);levelCell(r.ath,lv.ATH,price,r.digits);
+  }
+  function applyFilter(){
+    var q=search.value.trim().toUpperCase(),shown=0;
+    order.forEach(function(sym){var ok=sym.indexOf(q)>-1||MarketUI.nameOf(sym).toUpperCase().indexOf(q)>-1;if(filter==="favorites"&&favorites.indexOf(sym)<0)ok=false;rows[sym].tr.hidden=!ok;if(ok)shown++});
+    var msg=body.querySelector(".status-row.filter");if(msg)msg.remove();
+    if(order.length&&!shown){var tr=document.createElement("tr");tr.className="status-row filter";tr.innerHTML='<td colspan="10" data-i18n="noMatch"></td>';tr.firstChild.textContent=words().noMatch;body.appendChild(tr)}
+  }
+  search.addEventListener("input",applyFilter);
+  document.querySelectorAll("[data-filter]").forEach(function(b){b.addEventListener("click",function(){filter=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(function(x){x.classList.toggle("active",x===b)});applyFilter()})});
 
-  function connect(){
-    if(document.hidden||socket||polling||!symbols.length)return;
-    var stream=STREAMS[streamIndex],ws,ready=false,products=null,symbolOf={};
-    var url=stream.kind==="binance"?stream.url+symbols.map(function(s){return s.toLowerCase()+"@miniTicker"}).join("/"):stream.url;
-    try{ws=socket=new WebSocket(url)}catch(e){socket=null;return streamFailed()}
-    function opened(){if(ready)return;ready=true;clearTimeout(giveUp);setSource(stream.kind);if(stream.kind==="binance"&&window.MarketCache)MarketCache.markBinance(true)}
-    var giveUp=setTimeout(function(){if(!ready)try{ws.close()}catch(e){}},6000);
-    ws.onopen=function(){
-      if(stream.kind!=="coinbase")return;
-      products=coinbaseProducts();Object.keys(products).forEach(function(sym){symbolOf[products[sym]]=sym});
-      // One subscription per product: an unknown pair is rejected on its own without dropping the others.
-      Object.keys(symbolOf).forEach(function(id){ws.send(JSON.stringify({type:"subscribe",product_ids:[id],channels:["ticker"]}))});
-    };
-    ws.onmessage=function(event){
-      var m;try{m=JSON.parse(event.data)}catch(e){return}
-      if(stream.kind==="binance"){var d=m.data||m;if(d&&d.s){opened();retryDelay=2000;d.quote="USDT";update(d,true,"binance")}return}
-      if(m.type==="subscriptions")opened();
-      else if(m.type==="ticker"&&symbolOf[m.product_id]){opened();retryDelay=2000;queue({s:symbolOf[m.product_id],c:m.price,o:m.open_24h,h:m.high_24h,l:m.low_24h,q:Number(m.volume_24h)*Number(m.price),quote:m.product_id.split("-")[1]})}
-      else if(m.type==="error"){var why=String(m.reason||"")+" "+String(m.message||"");Object.keys(symbolOf).forEach(function(id){if(why.indexOf(id)>-1)rejectedPairs[id]=true})}
-    };
-    ws.onerror=function(){try{ws.close()}catch(e){}};
-    ws.onclose=function(){clearTimeout(giveUp);if(socket===ws)socket=null;if(document.hidden)return;if(ready){retryTimer=setTimeout(connect,retryDelay);retryDelay=Math.min(30000,retryDelay*2)}else streamFailed()};
+  function build(sym,href){
+    var tr=document.createElement("tr");tr.dataset.symbol=sym;
+    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><div><strong></strong><small></small></div></div></td><td class="num price">—</td><td class="num">—</td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="analysis-col"><a class="analysis-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg></a></td>';
+    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1],change:c[2],volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[9].firstChild,data:null,levels:null,digits:null,last:null};
+    c[0].querySelector("strong").textContent=sym;c[0].querySelector("small").textContent=MarketUI.nameOf(sym);r.link.href=href;
+    function paintStar(){var on=favorites.indexOf(sym)>-1;r.star.classList.toggle("active",on);r.star.textContent=on?"★":"☆";r.star.setAttribute("aria-pressed",String(on))}
+    r.star.addEventListener("click",function(e){e.stopPropagation();var i=favorites.indexOf(sym);if(i>-1)favorites.splice(i,1);else favorites.push(sym);saveFavorites();paintStar();labels();applyFilter()});
+    tr.addEventListener("click",function(e){if(e.target.closest("a,button"))return;location.href=href});
+    paintStar();rows[sym]=r;return tr;
   }
-  // Binance was unreachable from this browser recently, so the strip started on Coinbase. Check Binance
-  // quietly in the background (the visitor may have changed network) and switch back if it answers.
-  function probeBinance(host){
-    var binance=STREAMS.filter(function(s){return s.kind==="binance"}),probe;
-    if(host>=binance.length)return;
-    try{probe=new WebSocket(binance[host].url+symbols[0].toLowerCase()+"@miniTicker")}catch(e){return probeBinance(host+1)}
-    var done=false,giveUp=setTimeout(function(){if(!done)try{probe.close()}catch(e){}},6000);
-    probe.onmessage=function(){
-      if(done)return;done=true;clearTimeout(giveUp);try{probe.close()}catch(e){}
-      MarketCache.markBinance(true);clearTimeout(retryTimer);clearTimeout(pollTimer);polling=false;
-      if(socket){var old=socket;socket=null;old.onclose=null;try{old.close()}catch(e){}}
-      streamIndex=STREAMS.indexOf(binance[host]);connect();
-    };
-    probe.onerror=function(){try{probe.close()}catch(e){}};
-    probe.onclose=function(){clearTimeout(giveUp);if(!done){done=true;probeBinance(host+1)}};
-  }
-  // Try the next stream; after the last one, fall back to /api/prices.
-  function streamFailed(){
-    streamIndex++;
-    // Both Binance hosts failed from this browser: remember it so the next pages go straight to Coinbase.
-    if(STREAMS[streamIndex-1].kind==="binance"&&(!STREAMS[streamIndex]||STREAMS[streamIndex].kind!=="binance")&&window.MarketCache)MarketCache.markBinance(false);
-    if(streamIndex>=STREAMS.length){streamIndex=0;startPolling()}else connect();
-  }
-  document.addEventListener("visibilitychange",function(){
-    clearTimeout(retryTimer);clearTimeout(pollTimer);
-    if(document.hidden){if(socket){var ws=socket;socket=null;ws.onclose=null;ws.close()}return}
-    if(!symbols.length)return;
-    snapshot();if(polling)schedulePoll();else connect();
-  });
-  new MutationObserver(function(){Object.keys(items).forEach(function(k){paint(items[k])});layout()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  function useLevels(sym,list,demo){var map={};(list||[]).forEach(function(l){if(l&&l.code&&Number(l.price)>0)map[String(l.code).toUpperCase()]=Number(l.price)});rows[sym].levels=map;if(demo)document.getElementById("table-demo").hidden=false;paint(sym)}
 
-  // Endless scroll: enough copies of the item row to fill the strip twice; wrap by one row width.
-  function makeRow(copy){
-    var row=document.createElement("div");row.className="ticker-row";if(copy)row.setAttribute("aria-hidden","true");
-    symbols.forEach(function(symbol){
-      var el=document.createElement("a");el.className="ticker-item";el.hidden=!items[symbol].data;el.href="bulletin.html?asset="+encodeURIComponent(symbol)+"&method=cz";if(copy)el.tabIndex=-1;
-      el.innerHTML='<b></b><span class="ticker-price"></span><span class="ticker-change"></span>';el.firstChild.textContent=symbol.replace(/USDT$/,"");
-      row.appendChild(el);items[symbol].nodes.push({el:el,price:el.querySelector(".ticker-price"),change:el.querySelector(".ticker-change")});
+  fetch("/api/publication",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(publication){
+    var byAsset={};((publication&&publication.entries)||[]).forEach(function(e){var a=MarketUI.assetOf(e);if(/^[A-Z0-9]{2,20}$/.test(a)&&e.image)(byAsset[a]||(byAsset[a]=[])).push(e)});
+    order=Object.keys(byAsset).sort(MarketUI.byPopularity);if(!order.length){status("unavailable");return}
+    activatedAt=publication.activatedAt||null;body.innerHTML="";
+    order.forEach(function(sym){
+      var entries=byAsset[sym].sort(MarketUI.byTimeframe),main=entries.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||entries[0];
+      body.appendChild(build(sym,"bulletin.html?asset="+encodeURIComponent(sym)+"&method="+MarketUI.methodOf(main)));
+      if(main.report)fetch(main.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
+      else if(window.DemoData&&DemoData.enabled)rows[sym].demo=true;
     });
-    return row;
-  }
-  function layout(){
-    if(box.hidden||!symbols.length)return;
-    var first=track.firstChild;if(!first)return;
-    while(track.children.length>1)track.removeChild(track.lastChild);
-    Object.keys(items).forEach(function(k){items[k].nodes=items[k].nodes.slice(0,1)});
-    loopWidth=first.getBoundingClientRect().width;
-    if(reduceMotion||!loopWidth){track.classList.remove("is-looping");return}
-    copies=Math.ceil(track.clientWidth/loopWidth)+1;
-    for(var i=0;i<copies;i++)track.appendChild(makeRow(true));
-    Object.keys(items).forEach(function(k){paint(items[k])});
-    track.classList.add("is-looping");
-  }
-  function hold(){holdUntil=performance.now()+RESUME_MS}
-  track.addEventListener("pointerenter",function(e){if(e.pointerType==="mouse")hovering=true});
-  track.addEventListener("pointerleave",function(){hovering=false});
-  ["wheel","touchstart","pointerdown","keydown"].forEach(function(type){track.addEventListener(type,hold,{passive:true})});
-  track.addEventListener("scroll",function(){if(Math.abs(track.scrollLeft-offset)>1)hold();if(loopWidth&&track.classList.contains("is-looping")){if(track.scrollLeft>=loopWidth)track.scrollLeft-=loopWidth;else if(track.scrollLeft<=0&&holdUntil>performance.now())track.scrollLeft+=loopWidth}offset=track.scrollLeft},{passive:true});
-  function frame(now){
-    var dt=lastFrame?Math.min(64,now-lastFrame):0;lastFrame=now;
-    if(!box.hidden&&loopWidth&&!reduceMotion&&!hovering&&now>holdUntil&&!document.hidden&&track.classList.contains("is-looping")){
-      offset+=SPEED*dt/1000;if(offset>=loopWidth)offset-=loopWidth;track.scrollLeft=offset;
-    }
-    requestAnimationFrame(frame);
-  }
-  window.addEventListener("resize",function(){clearTimeout(layout.t);layout.t=setTimeout(layout,150)});
-
-  return function(assets){
-    symbols=assets.filter(function(a){return /^[A-Z0-9]{2,20}$/.test(a)});if(!symbols.length)return;
-    items={};symbols.forEach(function(symbol){items[symbol]={nodes:[],data:null}});
-    track.textContent="";track.appendChild(makeRow(false));
-    // Paint the last known prices from this browser at once; live data replaces them within a second.
-    if(window.MarketCache){var cachedSource=null;symbols.forEach(function(symbol){var t=MarketCache.getTicker(symbol,15*60000);if(t){cachedSource=cachedSource||t.source;update({s:symbol,c:t.c,o:t.o},false)}});if(cachedSource)setSource(cachedSource);
-      if(MarketCache.binanceBlocked()){streamIndex=STREAMS.map(function(s){return s.kind}).indexOf("coinbase");probeBinance(0)}}
-    snapshot();connect();requestAnimationFrame(frame);
-  };
+    labels();applyFilter();
+    feed=MarketFeed.start(order,{
+      onSource:function(s){source=s;labels()},
+      onData:function(sym,d){var r=rows[sym];if(!r)return;r.data=d;if(r.demo&&!r.levels&&Number(d.c)>0)useLevels(sym,DemoData.levels(sym,d.c),true);paint(sym)}
+    });
+  }).catch(function(){status("unavailable")});
 })();
 </script>
 <script>
-/* CZ Short and Price Action charts are separate evaluation methods; keep them apart (same rules as bulletin.html). */
-var METHODS={cz:{name:"Critical Zones",tag:"CZ"},pa:{name:"Price Action",tag:"PA"}},TF_ORDER=["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"];
-function methodOf(entry){
-  var key=(entry.graphicKey||"").toLowerCase(),extra=[entry.packageId,entry.sourceReleaseId].join(" ").toLowerCase();
-  function match(text){if(/cz|critical/.test(text))return"cz";if(/(^|[^a-z])pa([^a-z]|$)|price[ _-]?action/.test(text))return"pa";return""}
-  return match(key)||match(extra)||key.split(":")[0]||"other";
-}
-function timeframeOf(entry){return(entry.graphicKey||"").split(":")[2]||""}
-function tfRank(tf){var i=TF_ORDER.indexOf(tf);if(i<0)i=TF_ORDER.indexOf(tf.toLowerCase());return i<0?99:i}
-function groupByMethod(rows){
-  var groups={};rows.forEach(function(entry){var m=methodOf(entry);(groups[m]||(groups[m]=[])).push(entry)});
-  return Object.keys(groups).sort(function(a,b){var o=["cz","pa"];return((o.indexOf(a)+1||9)-(o.indexOf(b)+1||9))||a.localeCompare(b)}).map(function(m){
-    return{method:m,info:METHODS[m]||{name:m.toUpperCase(),tag:m.toUpperCase()},rows:groups[m].sort(function(a,b){return tfRank(timeframeOf(a))-tfRank(timeframeOf(b))||a.graphicKey.localeCompare(b.graphicKey)})};
-  });
-}
-/* The R2 reader returns only entries referenced by the current active pointer. */
-(async function(){
-  var root=document.getElementById("cards");
-  function showUnavailable(){root.dataset.publicationState="unavailable"}
-  var favorites=[];try{favorites=JSON.parse(localStorage.getItem("mlm-favorites")||"[]");if(!Array.isArray(favorites))favorites=[]}catch(e){favorites=[]}
-  function saveFavorites(){try{localStorage.setItem("mlm-favorites",JSON.stringify(favorites))}catch(e){}}
-  try{
-    var response=await fetch("/api/publication",{cache:"no-store"});
-    if(!response.ok){showUnavailable();return;}
-    var publication=await response.json(),entries=publication.entries||[],byAsset={};
-    entries.forEach(function(entry){var pair=(entry.graphicKey||"").split(":")[1];if(!pair||!entry.image)return;(byAsset[pair]||(byAsset[pair]=[])).push(entry)});
-    var assets=Object.keys(byAsset).sort();if(!assets.length){showUnavailable();return;}startTicker(assets);
-    var style=document.createElement("style");style.textContent=".card-chart .live-chart{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;display:block;background:#101820}";document.head.appendChild(style);
-    root.innerHTML="";
-    assets.forEach(function(asset){
-      var rows=byAsset[asset],article=document.createElement("article");
-      article.className="card";article.dataset.coin=asset.replace(/USDT$/,"" ).toLowerCase();
-      article.innerHTML='<button class="favorite" aria-label="Add '+asset+' to favorites">☆</button><div class="card-chart"><span class="method-chip" hidden><i></i><span></span></span><img class="live-chart" alt="'+asset+' market chart"></div><div class="card-tabs"></div><div class="card-body"><div class="card-top"><span class="coin">'+asset+'</span><span class="tf"></span></div><div class="card-footer"><span class="published-label">Published</span><span></span></div><a class="read-bulletin" href="bulletin.html?asset='+encodeURIComponent(asset)+'">Read bulletin <span>→</span></a></div>';
-      var image=article.querySelector(".live-chart"),tabs=article.querySelector(".card-tabs"),timeframe=article.querySelector(".tf"),updated=article.querySelector(".card-footer span:last-child"),chip=article.querySelector(".method-chip"),groups=groupByMethod(rows),firstButton=null,firstEntry=null;
-      var link=article.querySelector(".read-bulletin"),linkBase=link.getAttribute("href");
-      function choose(entry,button,g){var tf=timeframeOf(entry).toUpperCase();link.setAttribute("href",linkBase+"&method="+g.method);image.src=entry.image.url;image.alt=asset+" "+g.info.name+" "+tf+" chart";timeframe.textContent=g.info.tag+" · "+tf;article.dataset.method=g.method;chip.hidden=false;chip.lastChild.textContent=g.info.name;updated.textContent=(publication.activatedAt||"").replace("T"," ").replace("Z"," UTC");tabs.querySelectorAll(".card-tab").forEach(function(tab){tab.classList.toggle("active",tab===button)})}
-      groups.forEach(function(g){var wrap=document.createElement("span");wrap.className="card-method";wrap.dataset.method=g.method;var label=document.createElement("b");label.textContent=g.info.tag;label.title=g.info.name;wrap.appendChild(label);
-        g.rows.forEach(function(entry){var button=document.createElement("button");button.type="button";button.className="card-tab";button.textContent=timeframeOf(entry).toUpperCase();button.setAttribute("aria-label",g.info.name+" "+button.textContent);button.onclick=function(){choose(entry,button,g)};wrap.appendChild(button);if(!firstButton){firstButton=button;firstEntry=[entry,g]}});tabs.appendChild(wrap)});
-      choose(firstEntry[0],firstButton,firstEntry[1]);
-      article.focusMethod=function(method){tabs.querySelectorAll(".card-method").forEach(function(wrap){wrap.hidden=!!method&&wrap.dataset.method!==method});if(method&&article.dataset.method!==method){var wrap=tabs.querySelector('.card-method[data-method="'+method+'"]');if(wrap)wrap.querySelector(".card-tab").click()}else if(!method&&article.narrowed&&article.dataset.method!==groups[0].method){tabs.querySelector(".card-tab").click()}article.narrowed=!!method};
-      var star=article.querySelector(".favorite");
-      function paintStar(){var on=favorites.indexOf(asset)>-1;star.classList.toggle("active",on);star.textContent=on?"★":"☆";star.setAttribute("aria-pressed",String(on))}
-      star.onclick=function(){var i=favorites.indexOf(asset);if(i>-1)favorites.splice(i,1);else favorites.push(asset);saveFavorites();paintStar();applyFilters()};paintStar();root.appendChild(article);
+/* This week's events (Monday–Sunday, UTC) from /api/events — the R2 file site-events/events.json. */
+(function(){
+  var body=document.getElementById("event-rows"),range=document.getElementById("week-range"),events=null,failed=false,DAY=86400000,MAX=7;
+  function weekStart(){var n=new Date();return Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate())-((n.getUTCDay()+6)%7)*DAY}
+  function fmtDay(ms){var d=new Date(ms),o={timeZone:"UTC"};return d.toLocaleDateString(MarketUI.locale(),Object.assign({weekday:"short"},o))+" "+d.toLocaleDateString(MarketUI.locale(),Object.assign({day:"numeric",month:"short"},o))}
+  function render(){
+    var w=words(),start=weekStart(),end=start+7*DAY,lang=MarketUI.lang();
+    range.textContent=new Date(start).toLocaleDateString(MarketUI.locale(),{day:"numeric",timeZone:"UTC"})+"–"+new Date(end-3*DAY).toLocaleDateString(MarketUI.locale(),{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"});
+    if(events===null){if(failed){body.innerHTML='<tr class="status-row"><td colspan="5"></td></tr>';body.firstChild.firstChild.textContent=w.eventsFailed}return}
+    var week=events.filter(function(e){var t=Date.parse(e.startAt);return t>=start&&t<end}),now=Date.now();
+    // Up to MAX events: the most recent past one for context, then the upcoming ones.
+    var past=week.filter(function(e){return Date.parse(e.startAt)<=now}),next=week.filter(function(e){return Date.parse(e.startAt)>now});
+    var shown=past.slice(-Math.max(1,MAX-next.length)).concat(next).slice(0,MAX);
+    if(!shown.length){body.innerHTML='<tr class="status-row"><td colspan="5"></td></tr>';body.firstChild.firstChild.textContent=w.eventsNone;return}
+    body.innerHTML="";
+    shown.forEach(function(e){
+      var t=Date.parse(e.startAt),tr=document.createElement("tr");if(t<=now)tr.className="is-past";
+      tr.innerHTML='<td></td><td class="num"></td><td></td><td></td><td class="num actual"></td>';
+      var c=tr.children;c[0].textContent=fmtDay(t);c[1].textContent=e.datePrecision==="DAY"?"—":new Date(t).toISOString().slice(11,16);
+      c[2].textContent=(e.title&&(e.title[lang]||e.title.en))||"";c[3].textContent=e.country||"";c[4].textContent=e.actual||"—";
+      body.appendChild(tr);
     });
-    root.appendChild(empty);/* keep the no-match message that innerHTML cleared */cards=[].slice.call(document.querySelectorAll(".card"));root.dataset.publicationState="live";applyLanguage(document.getElementById("lang").value);applyFilters();
-  }catch(_){showUnavailable()}
+  }
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  function useDemo(){if(window.DemoData&&DemoData.enabled){events=DemoData.events().events;document.getElementById("events-demo").hidden=false;return true}return false}
+  fetch("/api/events",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(data){
+    if(data&&Array.isArray(data.events)&&data.events.length)events=data.events;else if(!useDemo()){if(data&&!data.error)events=[];else failed=true}
+    render();
+  }).catch(function(){if(!useDemo())failed=true;render()});
+  render();
 })();
 </script>
 </body></html>

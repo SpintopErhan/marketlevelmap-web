@@ -42,15 +42,36 @@ async function fromBinance(symbols, attempts) {
   return null;
 }
 
+const DAY = 86400000;
+
+// Start of today / this week (Monday) / this month, UTC.
+function periodStarts(now) {
+  const day = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  return { day, week: day - ((now.getUTCDay() + 6) % 7) * DAY, month: Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1) };
+}
+
+// Open of the first daily candle ([time s, low, high, open, close, volume]) on or after the given day.
+function openFrom(candles, ms) {
+  const rows = Array.isArray(candles) ? candles.filter((c) => Array.isArray(c) && c[0] * 1000 >= ms && c[0] * 1000 < ms + DAY) : [];
+  rows.sort((a, b) => a[0] - b[0]);
+  return rows.length ? String(rows[0][3]) : undefined;
+}
+
 // Coinbase lists pairs as BASE-QUOTE; prefer the USD pair (its main, liquid market), else USDT.
+// Daily candles give today's, this week's and this month's opens.
 async function fromCoinbase(symbols, attempts) {
+  const starts = periodStarts(new Date());
   const rows = await Promise.all(symbols.map(async (symbol) => {
     const base = symbol.replace(/USDT$/, "");
     if (base === symbol || !base) return null;
     for (const quote of ["USD", "USDT"]) {
       const stats = await get(`${COINBASE}/products/${base}-${quote}/stats`, attempts);
       if (stats && Number(stats.last) > 0) {
-        return { s: symbol, c: stats.last, o: stats.open, h: stats.high, l: stats.low, q: String(Number(stats.volume) * Number(stats.last)), quote, pair: `${base}-${quote}` };
+        const candles = await get(`${COINBASE}/products/${base}-${quote}/candles?granularity=86400`, attempts);
+        return {
+          s: symbol, c: stats.last, o: stats.open, h: stats.high, l: stats.low, q: String(Number(stats.volume) * Number(stats.last)), quote, pair: `${base}-${quote}`,
+          day: openFrom(candles, starts.day), week: openFrom(candles, starts.week), month: openFrom(candles, starts.month),
+        };
       }
     }
     return null;
