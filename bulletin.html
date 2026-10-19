@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light">
 <title>MarketLevelMap — Analysis</title><link rel="icon" type="image/svg+xml" href="assets/MarketLevelMap-symbol-color.svg">
-<link rel="stylesheet" href="assets/site.css?v=78f787a3"><style>
+<link rel="stylesheet" href="assets/site.css?v=2282e9d1"><style>
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.45}
 button,select,input{font:inherit}button{color:inherit}
@@ -111,7 +111,7 @@ th.r,td.r{text-align:right}
 <div class="chart" id="chart" data-state="loading"><div class="live-chart" id="live-chart" hidden></div><img id="chart-img" alt=""></div><div class="chart-foot" id="chart-time"></div></section>
 <section class="panel note" id="note" hidden><div class="note-head"><h2 data-i18n="notes">Analysis note</h2><span class="note-by" id="note-by"></span></div><p id="note-text"></p></section>
 <aside class="side-col">
-<section class="block" id="zones-block" hidden><div class="block-head"><div><h2 data-i18n="zonesTitle">Support and resistance zones</h2><p data-i18n="zonesSub">Sorted by price · distance to the zone's nearest edge</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span><button class="ghost-btn" id="toggle-zones" type="button" aria-pressed="false" data-i18n="showAll">Show all zones</button></div></div>
+<section class="block" id="zones-block" hidden><div class="block-head"><div><h2 data-i18n="zonesTitle">Support and resistance zones</h2><p data-i18n="zonesSub">Sorted by price · distance to the zone's nearest edge</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span></div></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colType">Type</th><th data-i18n="colZone">Zone</th><th class="r formed" data-i18n="colFormed">Formed</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="zone-rows"></tbody></table></div></section>
 <section class="block" id="levels-block" hidden><div class="block-head"><div><h2 data-i18n="levelsTitle">Key levels</h2><p data-i18n="levelsSub">Period opens, Monday range and the all-time high</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span></div></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colCode">Code</th><th data-i18n="colLevel">Level</th><th class="r" data-i18n="colPrice">Price</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="level-rows"></tbody></table></div><p class="levels-note" id="levels-note" hidden></p></section>
@@ -197,7 +197,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   var page=document.querySelector("main"),status=document.getElementById("page-status"),tabs=document.getElementById("tf-tabs");
   var chart=document.getElementById("chart"),img=document.getElementById("chart-img"),expand=document.getElementById("expand"),chartName=document.getElementById("chart-name"),chartTime=document.getElementById("chart-time");
   var noteBox=document.getElementById("note"),noteText=document.getElementById("note-text"),noteBy=document.getElementById("note-by");
-  var zonesBlock=document.getElementById("zones-block"),zoneRows=document.getElementById("zone-rows"),toggleZones=document.getElementById("toggle-zones");
+  var zonesBlock=document.getElementById("zones-block"),zoneRows=document.getElementById("zone-rows");
   var levelsBlock=document.getElementById("levels-block"),levelRows=document.getElementById("level-rows");
   var publication=null,entry=null,report=null,reportDemo=false,commentText=null,live=null,digits=null,showAll=false,pending=0,feedSource=null;
   // Interactive chart (assets/live-chart.js): closed candles from R2 + report zones + live price line.
@@ -218,7 +218,6 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     document.getElementById("live-price").textContent=p?MarketUI.price(p,digits):"—";
     var c=document.getElementById("live-change"),r=p&&Number(live.o)>0?p/Number(live.o)-1:NaN;c.textContent=isFinite(r)?MarketUI.pct(r):"";c.className="num chg "+MarketUI.signClass(r);
     var at=(report&&report.analyzedAt)||(publication&&publication.activatedAt);document.getElementById("analysis-at").textContent=at?w.analysis+" "+MarketUI.dateTime(at):"";
-    toggleZones.textContent=showAll?w.showDrawn:w.showAll;toggleZones.setAttribute("aria-pressed",String(showAll));
     chart.dataset.loading=w.chartLoading;
   }
 
@@ -228,7 +227,6 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   function renderZones(){
     var zones=(report&&Array.isArray(report.zones)?report.zones:[]).filter(function(z){return z&&Number(z.low)>0&&Number(z.high)>0});
     zonesBlock.hidden=!zones.length;badge(zonesBlock,reportDemo);if(!zones.length)return;
-    var hasHidden=zones.some(function(z){return z.drawn===false});toggleZones.hidden=!hasHidden;
     var p=priceNow(),w=words(),list=zones.filter(function(z){return showAll||z.drawn!==false}).sort(function(a,b){return Number(b.high)-Number(a.high)}),placed=!p;
     zoneRows.textContent="";
     list.forEach(function(z){
@@ -279,7 +277,6 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   function applyReportToChart(){if(liveChart)liveChart.setZones(report&&Array.isArray(report.zones)?report.zones:[])}
   function renderAll(){header();renderNote();renderZones();renderLevels();renderChartTime()}
   new MutationObserver(renderAll).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
-  toggleZones.addEventListener("click",function(){showAll=!showAll;renderAll()});
 
   function select(chosen,button){
     entry=chosen;var request=++pending,tf=MarketUI.timeframeOf(chosen).toUpperCase(),w=words();

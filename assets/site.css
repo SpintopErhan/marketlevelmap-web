@@ -37,3 +37,14 @@ footer p{margin:0;line-height:1.75}
 @media(max-width:800px){.shell{padding:0 24px}header{height:70px}}
 /* Phones: page links get their own row under the logo */
 @media(max-width:520px){.shell{padding:0 18px}header{display:grid;grid-template-columns:1fr auto;align-items:center;height:auto;padding-top:16px;row-gap:12px}.logo-header{height:28px}.nav{display:contents}.controls{grid-column:2;grid-row:1;gap:5px;margin-left:0}.nav-links{grid-column:1/-1;grid-row:2;gap:20px;overflow-x:auto}.nav .nav-links a{padding:2px 0 10px;border-bottom:2px solid transparent;font-size:12px;white-space:nowrap}.nav .nav-links a[aria-current="page"]{border-bottom-color:var(--accent)}footer{display:block;padding:22px 0 34px}footer p+p{margin-top:14px}}
+/* Thin scrollbars in the site palette. Side columns and table scrollers keep the thumb hidden
+   until hovered; the page scrollbar stays visible but thin. */
+*{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--muted) 40%,transparent) transparent}
+.side-col,.table-wrap{scrollbar-color:transparent transparent;transition:scrollbar-color .2s}
+.side-col:hover,.table-wrap:hover{scrollbar-color:color-mix(in srgb,var(--muted) 45%,transparent) transparent}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{border:2px solid transparent;border-radius:999px;background:color-mix(in srgb,var(--muted) 40%,transparent) padding-box}
+::-webkit-scrollbar-thumb:hover{background-color:color-mix(in srgb,var(--accent) 65%,transparent)}
+.side-col::-webkit-scrollbar-thumb,.table-wrap::-webkit-scrollbar-thumb{background-color:transparent}
+.side-col:hover::-webkit-scrollbar-thumb,.table-wrap:hover::-webkit-scrollbar-thumb{background-color:color-mix(in srgb,var(--muted) 45%,transparent)}
