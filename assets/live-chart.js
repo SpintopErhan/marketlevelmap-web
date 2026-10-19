@@ -139,7 +139,10 @@ var LiveChart = (function () {
       return loadPeriods(pair, tf, initial.concat(["latest"])).then(function (files) {
         var rows = mergeRows([], files);
         if (!rows.length) throw new Error("no closed candles for " + pair + " " + tf);
-        return build(LC, container, { pair: pair, tf: tf, rows: rows, remaining: remaining, decimals: options.decimals });
+        // Price-axis decimals: an explicit value, else the site's size rule applied to the last close.
+        var lastClose = rows[rows.length - 1][4];
+        var decimals = options.decimals != null ? options.decimals : options.decimalsFor ? options.decimalsFor(lastClose) : null;
+        return build(LC, container, { pair: pair, tf: tf, rows: rows, remaining: remaining, decimals: decimals });
       });
     });
   }
