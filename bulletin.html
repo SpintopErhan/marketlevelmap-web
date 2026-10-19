@@ -33,6 +33,10 @@ main:not([data-state="live"]) #analysis,main:not([data-state="live"]) .head-meta
 .ghost-btn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .chart{position:relative;min-height:200px;background:#101820}
 .chart img{display:block;width:100%;height:auto}
+.chart .live-chart{height:clamp(340px,62vh,640px)}
+.chart .live-chart[hidden],.chart[data-mode="live"] img{display:none}
+.chart-panel:fullscreen{background:var(--panel);overflow:auto}
+.chart-panel:fullscreen .live-chart{height:calc(100vh - 96px)}
 .chart[data-state="loading"] img{visibility:hidden}
 .chart[data-state="loading"]::after{content:attr(data-loading);position:absolute;inset:0;display:grid;place-items:center;color:#9aaab5;font-size:13px}
 .chart-foot{padding:9px 14px;color:var(--muted);font-size:11px}
@@ -77,7 +81,7 @@ th.r,td.r{text-align:right}
 #zoom-image{display:block;width:auto;height:auto;max-width:none;user-select:none;-webkit-user-drag:none}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
-<script src="assets/disclaimer.js?v=bc3eb127" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=dcda8dff"></script><script src="assets/demo-data.js?v=9e9f55c7"></script></head>
+<script src="assets/disclaimer.js?v=bc3eb127" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=dcda8dff"></script><script src="assets/demo-data.js?v=9e9f55c7"></script><script src="assets/live-chart.js?v=d1c2509b"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -90,7 +94,7 @@ th.r,td.r{text-align:right}
 <div id="analysis">
 <div class="tabs" role="tablist" id="tf-tabs"></div>
 <section class="panel chart-panel"><div class="chart-head"><strong id="chart-name"></strong><button class="ghost-btn" id="expand" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg><span data-i18n="expand">Expand</span></button></div>
-<div class="chart" id="chart" data-state="loading"><img id="chart-img" alt=""></div><div class="chart-foot" id="chart-time"></div></section>
+<div class="chart" id="chart" data-state="loading"><div class="live-chart" id="live-chart" hidden></div><img id="chart-img" alt=""></div><div class="chart-foot" id="chart-time"></div></section>
 <section class="panel note" id="note" hidden><div class="note-head"><h2 data-i18n="notes">Analysis note</h2><span class="note-by" id="note-by"></span></div><p id="note-text"></p></section>
 <section class="block" id="zones-block" hidden><div class="block-head"><div><h2 data-i18n="zonesTitle">Support and resistance zones</h2><p data-i18n="zonesSub">Sorted by price · distance to the zone's nearest edge</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span><button class="ghost-btn" id="toggle-zones" type="button" aria-pressed="false" data-i18n="showAll">Show all zones</button></div></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colType">Type</th><th data-i18n="colZone">Zone</th><th class="r formed" data-i18n="colFormed">Formed</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="zone-rows"></tbody></table></div></section>
@@ -103,8 +107,8 @@ th.r,td.r{text-align:right}
 <dialog id="chart-zoom" aria-labelledby="zoom-title"><div class="zoom-heading"><strong id="zoom-title"></strong><button id="close-chart-zoom" type="button" autofocus>Close ×</button></div><div class="zoom-scroll"><img id="zoom-image" alt=""></div></dialog>
 <script>
 var copy={
-  en:{title:"MarketLevelMap — Analysis",back:"← Market table",loadingPage:"Loading analysis…",unavailable:"This analysis is not available right now. Please check back later.",notListed:"There is no active analysis for this asset right now.",expand:"Expand",close:"Close ×",chartLoading:"Loading chart…",notes:"Analysis note",zonesTitle:"Support and resistance zones",zonesSub:"Sorted by price · distance to the zone's nearest edge",showAll:"Show all zones",showDrawn:"Show drawn zones",colType:"Type",colZone:"Zone",colFormed:"Formed",colDistance:"Distance",levelsTitle:"Key levels",levelsSub:"Period opens and the all-time high",colCode:"Code",colLevel:"Level",colPrice:"Price",fullArchive:"Full archive →",archiveTitle:"Earlier {asset} analyses",demo:"Sample data",current:"Current price",resistance:"Resistance",support:"Support",inside:"inside",analysis:"Analysis",chartAsOf:"Chart data as of",chartUploaded:"Chart uploaded",published:"Published",ATH:"All-time high",PWO:"Previous weekly open",WO:"Weekly open",DO:"Daily open",MO:"Monthly open",YO:"Yearly open"},
-  tr:{title:"MarketLevelMap — Analiz",back:"← Piyasa tablosu",loadingPage:"Analiz yükleniyor…",unavailable:"Bu analiz şu anda görüntülenemiyor. Lütfen daha sonra tekrar deneyin.",notListed:"Bu varlık için şu anda yayında analiz yok.",expand:"Büyüt",close:"Kapat ×",chartLoading:"Grafik yükleniyor…",notes:"Analiz notu",zonesTitle:"Destek ve Direnç Bölgeleri",zonesSub:"Fiyata göre sıralı · uzaklık bölgenin en yakın kenarına göre",showAll:"Tüm bölgeleri göster",showDrawn:"Çizilen bölgeleri göster",colType:"Tür",colZone:"Bölge",colFormed:"Oluşum",colDistance:"Uzaklık",levelsTitle:"Anahtar Seviyeler",levelsSub:"Dönem açılışları ve tüm zamanların en yükseği",colCode:"Kod",colLevel:"Seviye",colPrice:"Fiyat",fullArchive:"Tüm arşiv →",archiveTitle:"Önceki {asset} analizleri",demo:"Örnek veriler",current:"Güncel fiyat",resistance:"Direnç",support:"Destek",inside:"içinde",analysis:"Analiz",chartAsOf:"Grafik verisi:",chartUploaded:"Grafik yüklendi:",published:"Yayınlandı",ATH:"Tüm zamanların en yükseği",PWO:"Önceki haftalık açılış",WO:"Haftalık açılış",DO:"Günlük açılış",MO:"Aylık açılış",YO:"Yıllık açılış"}
+  en:{title:"MarketLevelMap — Analysis",back:"← Market table",loadingPage:"Loading analysis…",unavailable:"This analysis is not available right now. Please check back later.",notListed:"There is no active analysis for this asset right now.",expand:"Expand",close:"Close ×",chartLoading:"Loading chart…",notes:"Analysis note",zonesTitle:"Support and resistance zones",zonesSub:"Sorted by price · distance to the zone's nearest edge",showAll:"Show all zones",showDrawn:"Show drawn zones",colType:"Type",colZone:"Zone",colFormed:"Formed",colDistance:"Distance",levelsTitle:"Key levels",levelsSub:"Period opens and the all-time high",colCode:"Code",colLevel:"Level",colPrice:"Price",fullArchive:"Full archive →",archiveTitle:"Earlier {asset} analyses",demo:"Sample data",current:"Current price",resistance:"Resistance",support:"Support",inside:"inside",analysis:"Analysis",chartAsOf:"Chart data as of",chartUploaded:"Chart uploaded",published:"Published",lastCandle:"Last closed candle",ATH:"All-time high",PWO:"Previous weekly open",WO:"Weekly open",DO:"Daily open",MO:"Monthly open",YO:"Yearly open"},
+  tr:{title:"MarketLevelMap — Analiz",back:"← Piyasa tablosu",loadingPage:"Analiz yükleniyor…",unavailable:"Bu analiz şu anda görüntülenemiyor. Lütfen daha sonra tekrar deneyin.",notListed:"Bu varlık için şu anda yayında analiz yok.",expand:"Büyüt",close:"Kapat ×",chartLoading:"Grafik yükleniyor…",notes:"Analiz notu",zonesTitle:"Destek ve Direnç Bölgeleri",zonesSub:"Fiyata göre sıralı · uzaklık bölgenin en yakın kenarına göre",showAll:"Tüm bölgeleri göster",showDrawn:"Çizilen bölgeleri göster",colType:"Tür",colZone:"Bölge",colFormed:"Oluşum",colDistance:"Uzaklık",levelsTitle:"Anahtar Seviyeler",levelsSub:"Dönem açılışları ve tüm zamanların en yükseği",colCode:"Kod",colLevel:"Seviye",colPrice:"Fiyat",fullArchive:"Tüm arşiv →",archiveTitle:"Önceki {asset} analizleri",demo:"Örnek veriler",current:"Güncel fiyat",resistance:"Direnç",support:"Destek",inside:"içinde",analysis:"Analiz",chartAsOf:"Grafik verisi:",chartUploaded:"Grafik yüklendi:",published:"Yayınlandı",lastCandle:"Son kapanan mum",ATH:"Tüm zamanların en yükseği",PWO:"Önceki haftalık açılış",WO:"Haftalık açılış",DO:"Günlük açılış",MO:"Aylık açılış",YO:"Yıllık açılış"}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 var q=new URLSearchParams(location.search),asset=(q.get("asset")||"BTCUSDT").toUpperCase();
@@ -168,6 +172,8 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
 /* Analysis page. The chart PNG, note and timeframes come from the active publication (/api/publication).
    Zones, key levels (MO, YO, PWO, ATH) and the note come from the engine's report JSON when the entry has
    one (README "Report JSON"); the daily and weekly opens and the live price come from MarketFeed.
+   The chart itself is interactive (assets/live-chart.js): closed candles from R2 with the report's
+   zones on top and the live price as a line; the published PNG is the fallback.
    Earlier analyses come from /api/archive. On preview hosts DemoData fills what the engine does not
    publish yet, with a "Sample data" badge. Only Critical Zones is shown for now; Price Action entries
    are kept out of the tabs until that method is presented again. */
@@ -178,6 +184,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   var zonesBlock=document.getElementById("zones-block"),zoneRows=document.getElementById("zone-rows"),toggleZones=document.getElementById("toggle-zones");
   var levelsBlock=document.getElementById("levels-block"),levelRows=document.getElementById("level-rows");
   var publication=null,entry=null,report=null,reportDemo=false,commentText=null,live=null,digits=null,showAll=false,pending=0,feedSource=null;
+  // Interactive chart (assets/live-chart.js): closed candles from R2 + report zones + live price line.
+  // The published PNG is only loaded if the interactive chart cannot be built.
+  var liveBox=document.getElementById("live-chart"),liveChart=null,chartWhen=null,chartKey="published";
   var SOURCE_NAMES={binance:"Binance spot",coinbase:"Coinbase spot"},LEVEL_ORDER=["ATH","PWO","WO","DO","MO","YO"];
   document.getElementById("title").textContent=asset;
   document.getElementById("pair-name").textContent=MarketUI.nameOf(asset)+(/USDT$/.test(asset)?" / Tether":"");
@@ -239,7 +248,15 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     noteBox.hidden=!text;if(!text)return;noteText.textContent=String(text).replace(/^#+\s*/gm,"").trim();
     var by=report&&report.noteSource;noteBy.textContent=by?(typeof by==="string"?by:by[lang]||by.en||""):"";
   }
-  function renderAll(){header();renderNote();renderZones();renderLevels()}
+  function renderChartTime(){
+    var w=words();
+    if(liveChart){
+      var analyzed=(report&&report.analyzedAt)||chartWhen||(publication&&publication.activatedAt);
+      chartTime.textContent=w.analysis+" "+MarketUI.dateTime(analyzed)+" · "+w.lastCandle+" "+MarketUI.dateTime(liveChart.lastClosedAt());
+    }else if(publication){chartTime.textContent=w[chartKey]+" "+MarketUI.dateTime(chartWhen||publication.activatedAt)}
+  }
+  function applyReportToChart(){if(liveChart)liveChart.setZones(report&&Array.isArray(report.zones)?report.zones:[],report&&report.priceDecimals)}
+  function renderAll(){header();renderNote();renderZones();renderLevels();renderChartTime()}
   new MutationObserver(renderAll).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
   toggleZones.addEventListener("click",function(){showAll=!showAll;renderAll()});
 
@@ -247,17 +264,31 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     entry=chosen;var request=++pending,tf=MarketUI.timeframeOf(chosen).toUpperCase(),w=words();
     tabs.querySelectorAll(".tab").forEach(function(t){var on=t===button;t.setAttribute("aria-selected",String(on));t.tabIndex=on?0:-1});
     try{var next=new URL(location.href);next.searchParams.set("tf",MarketUI.timeframeOf(chosen));next.hash="";history.replaceState(null,"",next.toString())}catch(e){}
-    chart.dataset.state="loading";expand.disabled=true;img.src=chosen.image.url;img.alt=asset+" "+tf+" chart";chartName.textContent=asset+" · "+tf;
-    var when=chosen.chartTime&&chosen.chartTime.at,key=!when?"published":chosen.chartTime.source==="upload"?"chartUploaded":"chartAsOf";
-    chartTime.textContent=w[key]+" "+MarketUI.dateTime(when||publication.activatedAt);
+    if(liveChart){liveChart.destroy();liveChart=null}
+    chart.dataset.state="loading";expand.disabled=true;img.removeAttribute("src");img.alt=asset+" "+tf+" chart";chartName.textContent=asset+" · "+tf;
+    chartWhen=chosen.chartTime&&chosen.chartTime.at;chartKey=!chartWhen?"published":chosen.chartTime.source==="upload"?"chartUploaded":"chartAsOf";
     report=null;reportDemo=false;commentText=null;renderAll();
-    if(chosen.report)fetch(chosen.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(request===pending&&rep){report=rep;renderAll()}}).catch(function(){});
-    else if(window.DemoData&&DemoData.enabled){report=DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow());reportDemo=true;renderAll()}
+    if(window.LiveChart){
+      chart.dataset.mode="live";liveBox.hidden=false;
+      LiveChart.show(liveBox,{pair:asset,timeframe:MarketUI.timeframeOf(chosen)}).then(function(ctl){
+        if(request!==pending){ctl.destroy();return}
+        liveChart=ctl;applyReportToChart();if(priceNow())liveChart.setLivePrice(priceNow());
+        chart.dataset.state="live";expand.disabled=false;renderChartTime();
+      }).catch(function(){if(request===pending)showPng(chosen)});
+    }else showPng(chosen);
+    if(chosen.report)fetch(chosen.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(request===pending&&rep){report=rep;applyReportToChart();renderAll()}}).catch(function(){});
+    else if(window.DemoData&&DemoData.enabled){report=DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow());reportDemo=true;applyReportToChart();renderAll()}
     if(!chosen.report&&chosen.analysisComment)fetch(chosen.analysisComment.url,{cache:"no-store"}).then(function(r){return r.ok?r.text():""}).then(function(text){if(request===pending&&text){commentText=text;renderAll()}}).catch(function(){});
   }
+  // Fallback: the published PNG of the analysis.
+  function showPng(chosen){chart.dataset.mode="png";liveBox.hidden=true;img.src=chosen.image.url;renderChartTime()}
   img.addEventListener("load",function(){chart.dataset.state="live";expand.disabled=false});
   img.addEventListener("error",function(){chart.dataset.state="live";expand.disabled=true});
-  expand.addEventListener("click",function(){openChartZoom(img,chartName.textContent,expand)});
+  expand.addEventListener("click",function(){
+    if(chart.dataset.mode!=="live"){openChartZoom(img,chartName.textContent,expand);return}
+    var panel=chart.closest(".chart-panel");
+    if(document.fullscreenElement)document.exitFullscreen();else if(panel.requestFullscreen)panel.requestFullscreen().catch(function(){});
+  });
 
   function archive(){
     var block=document.getElementById("archive-block"),list=document.getElementById("archive-list");
@@ -293,7 +324,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
 
   MarketFeed.start([asset],{
     onSource:function(s){feedSource=s;header()},
-    onData:function(sym,d){if(sym!==asset)return;live=d;if(digits==null&&Number(d.c)>0)digits=MarketUI.digitsFor(d.c);if(reportDemo&&report&&!report._anchored){report=DemoData.report(asset,MarketUI.timeframeOf(entry),d.c);report._anchored=true}renderAll()}
+    onData:function(sym,d){if(sym!==asset)return;live=d;if(digits==null&&Number(d.c)>0)digits=MarketUI.digitsFor(d.c);if(reportDemo&&report&&!report._anchored){report=DemoData.report(asset,MarketUI.timeframeOf(entry),d.c);report._anchored=true;applyReportToChart()}if(liveChart)liveChart.setLivePrice(d.c);renderAll()}
   });
 })();
 </script>
