@@ -137,8 +137,10 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     r.last=price;r.price.textContent=MarketUI.price(price,r.digits);
     r.change.textContent=MarketUI.pct(change);r.change.className="num "+MarketUI.signClass(change);
     r.volume.textContent=Number(d.q)>0?MarketUI.compact(d.q)+" $":"—";
-    levelCell(r.day,d.day,price,r.digits);levelCell(r.week,d.week,price,r.digits);
-    levelCell(r.month,lv.MO||d.month,price,r.digits);levelCell(r.year,lv.YO,price,r.digits);levelCell(r.ath,lv.ATH,price,r.digits);
+    // Opens: live feed first (always current), the published report's value as fallback.
+    // YO and ATH come from the report; ATH is the engine's OATH (highest Binance candle).
+    levelCell(r.day,Number(d.day)>0?d.day:lv.DO,price,r.digits);levelCell(r.week,Number(d.week)>0?d.week:lv.WO,price,r.digits);
+    levelCell(r.month,Number(d.month)>0?d.month:lv.MO,price,r.digits);levelCell(r.year,lv.YO,price,r.digits);levelCell(r.ath,lv.ATH||lv.OATH,price,r.digits);
   }
   function applyFilter(){
     var q=search.value.trim().toUpperCase(),shown=0;

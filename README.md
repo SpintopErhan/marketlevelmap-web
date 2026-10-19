@@ -79,15 +79,18 @@ sections stay hidden on marketlevelmap.com and are filled with sample data on pr
   "note": { "tr": "…", "en": "…" },
   "noteSource": { "tr": "Algoritma tarafından üretildi, editör tarafından kontrol edildi", "en": "…" },
   "zones": [ { "type": "resistance", "low": 86200, "high": 86900, "formedAt": "2026-09-22", "drawn": true } ],
-  "levels": [ { "code": "ATH", "price": 109588 }, { "code": "PWO", "price": 86510 },
-              { "code": "MO", "price": 79210 }, { "code": "YO", "price": 71950 } ]
+  "levels": [ { "code": "DO", "price": 82116 }, { "code": "MH", "price": 83158 }, { "code": "PWO", "price": 83773.12 },
+              { "code": "MO", "price": 83623.59 }, { "code": "YO", "price": 87648.21 }, { "code": "OATH", "price": 125708.42 } ],
+  "levelsAsOf": "2026-10-19T11:00:00Z"
 }
 ```
 
 `type` is `resistance` or `support`; `drawn: false` zones appear only under "Show all zones", dashed.
-Level codes: `ATH`, `PWO`, `MO`, `YO` from the engine; `DO` and `WO` are always taken live from the
-exchange (`MO` falls back to the live monthly candle until a report provides it). Without a report the
-note falls back to the entry's `analysisComment` text.
+Level codes are the engine's Market Reference Levels, in this order: `DO`, `MH`, `MM`, `ML` (Monday
+high/mid/low), `WO`, `PWO`, `MO`, `YO`, `OATH` (highest Binance candle; shown as the market table's ATH).
+`levelsAsOf` is when they were computed. `DO`, `WO` and `MO` prefer the live exchange feed and fall back
+to the report; the other levels are shown with "as of `levelsAsOf`". Without a report the note falls back
+to the entry's `analysisComment` text.
 
 **Archive JSON** — `site-publication/archive/<SYMBOL>.json`, served by `/api/archive?symbol=`:
 
