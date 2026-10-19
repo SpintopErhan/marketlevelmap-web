@@ -1,4 +1,4 @@
-// Run from the repository root: node --experimental-detect-module --test workers/candles/test/
+// Run from the repository root: node --experimental-detect-module --test workers/chart-data/test/
 import test from "node:test";
 import assert from "node:assert/strict";
 import { runProbe, lastClosed, PAIRS, PRIMARY, FALLBACK } from "../src/index.js";
@@ -69,7 +69,7 @@ test("network failure is recorded instead of throwing", async () => {
 });
 
 test("site middleware hides worker sources", async () => {
-  for (const path of ["/workers", "/workers/", "/workers/candles/wrangler.toml", "/Workers/x", "//workers/x", "/%77orkers/x"]) {
+  for (const path of ["/workers", "/workers/", "/workers/chart-data/wrangler.toml", "/Workers/x", "//workers/x", "/%77orkers/x"]) {
     assert.equal(isPrivatePath(path), true, path);
   }
   for (const path of ["/", "/bulletin", "/assets/workers.svg", "/workersx", "/api/publication"]) {
@@ -77,7 +77,7 @@ test("site middleware hides worker sources", async () => {
   }
   let nextCalled = false;
   const response = await onRequest({
-    request: new Request("https://marketlevelmap.com/workers/candles/src/index.js"),
+    request: new Request("https://marketlevelmap.com/workers/chart-data/src/index.js"),
     next: async () => { nextCalled = true; return new Response("source"); },
     env: {},
   });

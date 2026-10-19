@@ -1,4 +1,4 @@
-// MarketLevelMap candle Worker — Phase 0: Binance access probe.
+// MarketLevelMap chart-data Worker — Phase 0: Binance access probe.
 // Writes nothing. Every hour it checks that this Worker can read CLOSED candles
 // from Binance's public market-data endpoint and logs one JSON line per run
 // (read them with `wrangler tail` or Workers Logs). See ../README.md.

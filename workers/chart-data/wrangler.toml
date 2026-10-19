@@ -1,6 +1,6 @@
-# MarketLevelMap candle Worker. Deploy from this folder: npx wrangler deploy
+# MarketLevelMap chart-data Worker. Deploy from this folder: npx wrangler deploy
 # Phase 0 only probes Binance access; it has no bindings and writes nothing.
-name = "marketlevelmap-candles"
+name = "marketlevelmap-chart-data"
 main = "src/index.js"
 compatibility_date = "2025-09-01"
 

@@ -1,7 +1,7 @@
-# Candle Worker (`marketlevelmap-candles`)
+# Chart-data Worker (`marketlevelmap-chart-data`)
 
-Scheduled Cloudflare Worker that will keep the public chart candles in R2 up to
-date (see the engine repository: `interaktif-grafik-plani.md` and
+Scheduled Cloudflare Worker that will keep the public chart data in R2 up to
+date: candles first, later the home-page sparklines and key levels (see the engine repository: `interaktif-grafik-plani.md` and
 `PUBLIC_CHART_CANDLE_DATA_CONTRACT_V1.md`). It is a separate Worker from the
 Pages site: Pages Functions cannot run on a schedule.
 
@@ -30,12 +30,12 @@ SOL, XRP and AVAX from `https://data-api.binance.vision` (plus one request to
 Acceptance: a few days of hourly runs with `ok: true` (across whatever
 datacenters Cloudflare chooses). Any `ok: false` line is kept as evidence.
 
-## Deploy and observe (run inside `workers/candles/`)
+## Deploy and observe (run inside `workers/chart-data/`)
 
 ```
 npx wrangler login            # once
 npx wrangler deploy           # creates the Worker and its cron trigger
-npx wrangler tail             # live logs; or Dashboard → Workers → marketlevelmap-candles → Logs
+npx wrangler tail             # live logs; or Dashboard → Workers → marketlevelmap-chart-data → Logs
 ```
 
 Local check before deploying:
@@ -53,5 +53,5 @@ Remove the probe later with `npx wrangler delete` or by deploying the real job.
 From the repository root (Node 20+):
 
 ```
-node --experimental-detect-module --test workers/candles/test/
+node --experimental-detect-module --test workers/chart-data/test/
 ```
