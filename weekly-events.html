@@ -83,12 +83,20 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     });
   }
   document.querySelectorAll("[data-week]").forEach(function(b){b.addEventListener("click",function(){week=Number(b.dataset.week);document.querySelectorAll("[data-week]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});render()})});
-  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  // Events are per language (the Turkish list can include Turkey-only events), so a language
+  // switch fetches that language's list; an answer for a language no longer shown is ignored.
+  new MutationObserver(function(){load();render()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
   function useDemo(){if(window.DemoData&&DemoData.enabled){events=DemoData.events().events;document.getElementById("demo").hidden=false;return true}return false}
-  fetch("/api/events",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(data){
-    if(data&&Array.isArray(data.events)&&data.events.length)events=data.events;else if(!useDemo()){if(data&&!data.error)events=[];else failed=true}
-    render();
-  }).catch(function(){if(!useDemo())failed=true;render()});
+  var loadedLang=null;
+  function load(){
+    var lang=MarketUI.lang();if(lang===loadedLang)return;loadedLang=lang;
+    fetch("/api/events?lang="+encodeURIComponent(lang),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(data){
+      if(lang!==loadedLang)return;failed=false;
+      if(data&&Array.isArray(data.events)&&data.events.length)events=data.events;else if(!useDemo()){if(data&&!data.error)events=[];else failed=true}
+      render();
+    }).catch(function(){if(lang!==loadedLang)return;if(!useDemo())failed=true;render()});
+  }
+  load();
   render();
 })();
 </script>

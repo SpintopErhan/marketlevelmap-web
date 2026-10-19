@@ -98,22 +98,23 @@ to the entry's `analysisComment` text.
 { "items": [ { "publishedAt": "2026-10-13T10:20:00Z", "timeframes": ["1h", "4h", "1d"], "url": "/archive.html#2026-10-13" } ] }
 ```
 
-**Events JSON** — `site-events/events.json` (maintained by hand for now), served by `/api/events`, which
-drops invalid or `enabled: false` entries and answers `{ events: [], error }` if the file is missing or broken:
+**Events JSON** — maintained by hand, one simple list per language so the Turkish list can include
+Turkey-only events: `site-events/events.en.json` and `site-events/events.tr.json` in the private bucket,
+served by `/api/events?lang=en|tr` (the pages ask for the current language and refetch on a switch):
 
 ```json
-{
-  "updatedAt": "2026-10-19T08:00:00Z",
-  "events": [
-    { "id": "tr-cbrt-2026-10", "startAt": "2026-10-22T11:00:00Z", "datePrecision": "EXACT",
-      "title": { "tr": "TCMB faiz kararı", "en": "CBRT interest-rate decision" },
-      "country": "TR", "category": "MACRO", "impact": "HIGH",
-      "previous": "40,5%", "forecast": null, "actual": null, "sourceUrl": "https://www.tcmb.gov.tr/" }
-  ]
-}
+[
+  { "date": "2026-10-22", "time": "11:00", "country": "TR", "title": "TCMB faiz kararı", "actual": "" },
+  { "date": "2026-10-24", "time": "", "country": "CRYPTO", "title": "Avalanche (AVAX) token unlock", "actual": "" }
+]
 ```
 
-`datePrecision` is `EXACT` (time shown, UTC) or `DAY`; `impact` is `VERY_HIGH`, `HIGH` or `MEDIUM`.
+`time` is UTC; an empty `time` means the date is known but not the hour (shown as "—"). `country` is 2–6
+capital letters (`US`, `TR`, `EU`, `CRYPTO`). Optional per row: `impact` (`VERY_HIGH`, `HIGH`, `MEDIUM`),
+`previous`, `forecast`, `sourceUrl` (https), `enabled: false`. Invalid rows are dropped. If the requested
+language's file is missing the other language is used, then the legacy bilingual `site-events/events.json`
+(`{ "events": [ { "startAt", "datePrecision", "title": { "tr", "en" }, … } ] }`). With no file at all the API
+answers `{ events: [], error }` and the pages say the events could not be loaded.
 
 ## Sample data on previews
 
