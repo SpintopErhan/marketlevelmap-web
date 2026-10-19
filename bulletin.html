@@ -73,6 +73,18 @@ th.r,td.r{text-align:right}
 .archive-list{margin:0;padding:0;list-style:none}
 .archive-list li a,.archive-list li span.row{display:flex;justify-content:space-between;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line);color:var(--fg);font-size:13px;font-weight:600;text-decoration:none}
 .archive-list small{color:var(--muted);font-weight:500}
+/* Desktops: chart, note and archive left; zones and key levels right (sticky). Mobile is unchanged. */
+@media(min-width:1280px){
+  .shell{width:min(1680px,100%)}
+  .content{max-width:none}
+  #analysis{display:grid;grid-template-columns:minmax(0,1fr) 460px;column-gap:28px;align-items:start}
+  #analysis>.tabs,#analysis>.chart-panel,#analysis>.note,#analysis>#archive-block{grid-column:1}
+  #analysis>.side-col{grid-column:2;grid-row:1 / span 6;align-self:start;position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-x:hidden;overflow-y:auto}
+  .side-col>.block{margin:0 0 24px}
+  .side-col .ladder{min-width:0}
+  .side-col .ladder th,.side-col .ladder td{padding:9px 10px}
+  .chart .live-chart{height:clamp(420px,70vh,760px)}
+}
 .archive-more{display:inline-block;margin-top:12px;color:var(--accent);font-size:13px;font-weight:600;text-decoration:none}
 @media(max-width:600px){.asset-head{align-items:flex-start}.head-price{text-align:left}.ladder{min-width:0}.ladder th,.ladder td{padding:9px 10px}.ladder .formed{display:none}.ladder td:nth-child(2){white-space:normal}.block-head .right{width:100%;justify-content:space-between}}
 #chart-zoom{width:96vw;max-width:96vw;max-height:94vh;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--fg)}
@@ -98,10 +110,12 @@ th.r,td.r{text-align:right}
 <section class="panel chart-panel"><div class="chart-head"><strong id="chart-name"></strong><button class="ghost-btn" id="expand" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg><span data-i18n="expand">Expand</span></button></div>
 <div class="chart" id="chart" data-state="loading"><div class="live-chart" id="live-chart" hidden></div><img id="chart-img" alt=""></div><div class="chart-foot" id="chart-time"></div></section>
 <section class="panel note" id="note" hidden><div class="note-head"><h2 data-i18n="notes">Analysis note</h2><span class="note-by" id="note-by"></span></div><p id="note-text"></p></section>
+<aside class="side-col">
 <section class="block" id="zones-block" hidden><div class="block-head"><div><h2 data-i18n="zonesTitle">Support and resistance zones</h2><p data-i18n="zonesSub">Sorted by price · distance to the zone's nearest edge</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span><button class="ghost-btn" id="toggle-zones" type="button" aria-pressed="false" data-i18n="showAll">Show all zones</button></div></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colType">Type</th><th data-i18n="colZone">Zone</th><th class="r formed" data-i18n="colFormed">Formed</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="zone-rows"></tbody></table></div></section>
 <section class="block" id="levels-block" hidden><div class="block-head"><div><h2 data-i18n="levelsTitle">Key levels</h2><p data-i18n="levelsSub">Period opens, Monday range and the all-time high</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span></div></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colCode">Code</th><th data-i18n="colLevel">Level</th><th class="r" data-i18n="colPrice">Price</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="level-rows"></tbody></table></div><p class="levels-note" id="levels-note" hidden></p></section>
+</aside>
 <section class="block" id="archive-block" hidden><div class="block-head"><div><h2 id="archive-title"></h2></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span></div></div>
 <ul class="archive-list" id="archive-list"></ul><a class="archive-more" href="archive.html" data-i18n="fullArchive">Full archive →</a></section>
 </div></div></main>
