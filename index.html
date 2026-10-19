@@ -60,6 +60,15 @@ tbody tr:last-child td{border-bottom:0}
 .events-table .is-past td{color:var(--muted);font-weight:400}
 .events-table .actual{font-weight:700;color:var(--fg)}
 @media(prefers-reduced-motion:reduce){.price,.price.tick-up,.price.tick-down{transition:none;background:none}}
+/* Wide desktops: market table left, events right (sticky). Narrower screens keep the single column. */
+@media(min-width:1600px){
+  .shell{width:min(1720px,100%)}
+  main.shell{display:grid;grid-template-columns:minmax(0,1fr) 400px;column-gap:28px;align-items:start}
+  main.shell>section:last-child{position:sticky;top:20px}
+  main.shell>section:last-child .section-head{margin-top:34px}
+  .events-table{min-width:0}
+  .events-table th:nth-child(4),.events-table td:nth-child(4){display:none}
+}
 @media(max-width:700px){.page-head{align-items:stretch}.filters{flex-wrap:wrap}.search{flex:1 1 100%}.search input{width:100%}.events-table{min-width:560px}}
 </style>
 <script>
