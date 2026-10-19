@@ -49,7 +49,17 @@ async function bulletinImage(env, asset, method) {
   }
 }
 
+// Pages publishes the repository root; Worker sources under /workers are not site content.
+export function isPrivatePath(pathname) {
+  let decoded = pathname;
+  try { decoded = decodeURIComponent(pathname); } catch (_) { /* keep the raw path */ }
+  return [pathname, decoded].some((path) => /^\/+workers(\/|$)/i.test(path));
+}
+
 export async function onRequest(context) {
+  if (isPrivatePath(new URL(context.request.url).pathname)) {
+    return new Response("Not found", { status: 404, headers: { "Content-Type": "text/plain; charset=utf-8" } });
+  }
   const response = await context.next();
   if (!(response.headers.get("content-type") || "").includes("text/html")) return response;
 

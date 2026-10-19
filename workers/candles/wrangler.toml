@@ -1,0 +1,14 @@
+# MarketLevelMap candle Worker. Deploy from this folder: npx wrangler deploy
+# Phase 0 only probes Binance access; it has no bindings and writes nothing.
+name = "marketlevelmap-candles"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+# No public URL: the Worker only runs on its schedule.
+workers_dev = false
+
+[triggers]
+crons = ["2 * * * *"]
+
+[observability]
+enabled = true
