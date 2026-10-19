@@ -13,6 +13,7 @@ var LiveChart = (function () {
   var STEP = { "1h": 3600, "4h": 14400, "1d": 86400, "1w": 604800 };
   var MONTHLY = { "1h": true, "4h": true };
   var PAGE = 2; // monthly files per page = "2 months", like the local chart window
+  var ZONE_TAIL_BARS = 5; // zones end this many bars after the last closed candle
   var libPromise = null, indexPromise = null;
 
   function loadLib() {
@@ -93,7 +94,10 @@ var LiveChart = (function () {
             if (!self.chart || !self.series || !self.times.length) return;
             var timeScale = self.chart.timeScale();
             target.useMediaCoordinateSpace(function (scope) {
-              var ctx = scope.context, right = scope.mediaSize.width;
+              // Zones stop a few bars after the last closed candle instead of running to the price axis.
+              var paneWidth = scope.mediaSize.width, end = timeScale.logicalToCoordinate(self.times.length - 1 + ZONE_TAIL_BARS);
+              var ctx = scope.context, right = end === null ? paneWidth : Math.min(paneWidth, end);
+              if (right <= 0) return;
               self.zones.forEach(function (zone) {
                 var start = zoneStart(zone, self.times);
                 if (!start) return;
@@ -201,8 +205,22 @@ var LiveChart = (function () {
     applyPrecision();
     setData();
     // ~180 candles on desktop like the local chart, fewer on narrow screens so candles stay readable.
-    var count = state.rows.length, bars = Math.max(60, Math.min(180, Math.round((container.clientWidth || 800) / 5)));
-    chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, count - bars), to: count - 1 + 12 });
+    // autoSize measures the container asynchronously, so the initial view is (re)applied once the
+    // chart has a real size — but never after the user has started to interact with it.
+    var touched = false;
+    ["pointerdown", "wheel", "touchstart"].forEach(function (name) { container.addEventListener(name, function () { touched = true; }, { passive: true }); });
+    function initialView() {
+      if (touched || destroyed) return;
+      var count = state.rows.length, bars = Math.max(60, Math.min(180, Math.round((container.clientWidth || 800) / 5)));
+      chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, count - bars), to: count - 1 + 12 });
+    }
+    initialView();
+    var sized = 0, waitForSize = function () {
+      if (touched || destroyed || sized++ > 20) return;
+      if (chart.timeScale().width() > 0) { initialView(); return; }
+      requestAnimationFrame(waitForSize);
+    };
+    requestAnimationFrame(waitForSize);
     chart.timeScale().subscribeVisibleLogicalRangeChange(loadOlder);
 
     return {
