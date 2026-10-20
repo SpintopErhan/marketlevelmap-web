@@ -69,9 +69,15 @@ export function fromSimple(row) {
   });
 }
 
+// Date-only events have no hour, so they sort after that day's timed events.
+function sortKey(event) {
+  const start = Date.parse(event.startAt);
+  return event.datePrecision === "DAY" ? start + 86400000 - 1 : start;
+}
+
 export function normalizeEvents(data) {
   const rows = Array.isArray(data) ? data.map(fromSimple) : (Array.isArray(data?.events) ? data.events.map(clean) : []);
-  return rows.filter(Boolean).sort((a, b) => a.startAt.localeCompare(b.startAt));
+  return rows.filter(Boolean).sort((a, b) => sortKey(a) - sortKey(b) || a.startAt.localeCompare(b.startAt));
 }
 
 async function readJson(bucket, key) {
