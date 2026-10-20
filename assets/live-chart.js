@@ -243,6 +243,11 @@ var LiveChart = (function () {
 
     return {
       lastClosedAt: function () { var last = state.rows[state.rows.length - 1]; return new Date((last[0] + STEP[state.tf]) * 1000).toISOString(); },
+      // The last closed candle as drawn: open time (the chart's label) and close time.
+      lastClosedCandle: function () {
+        var last = state.rows[state.rows.length - 1];
+        return { open: new Date(last[0] * 1000).toISOString(), close: new Date((last[0] + STEP[state.tf]) * 1000).toISOString(), timeframe: state.tf };
+      },
       setZones: function (list, priceDecimals) {
         zoneList = (list || []).filter(function (z) { return z && z.drawn !== false && Number(z.low) > 0 && Number(z.high) > 0; });
         if (priceDecimals != null && priceDecimals !== decimals) { decimals = priceDecimals; applyPrecision(); }
