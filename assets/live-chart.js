@@ -193,7 +193,7 @@ var LiveChart = (function () {
     }
     var chart = LC.createChart(container, {
       autoSize: true,
-      layout: { background: { color: "#101820" }, textColor: "#c7cfde" },
+      layout: { background: { color: "#101820" }, textColor: "#c7cfde", panes: { separatorColor: "#26303c", separatorHoverColor: "#33404d" } },
       grid: { vertLines: { color: "#1f2733" }, horzLines: { color: "#1f2733" } },
       rightPriceScale: { borderColor: "#42495a" },
       timeScale: { borderColor: "#42495a", timeVisible: state.tf === "1h" || state.tf === "4h", secondsVisible: false, rightOffset: 12 },
@@ -204,8 +204,18 @@ var LiveChart = (function () {
       upColor: "#55d99c", downColor: "#ef6e76", borderVisible: false, wickUpColor: "#55d99c", wickDownColor: "#ef6e76",
       priceLineVisible: false
     });
-    var volume = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceScaleId: "volume", priceLineVisible: false, lastValueVisible: false });
-    volume.priceScale().applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } });
+    // Volume lives in its own pane below the price pane, so zone bands (drawn on the price pane)
+    // and volume bars can never overlap, whatever the zoom.
+    var volume = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceLineVisible: false, lastValueVisible: false }, 1);
+    volume.priceScale().applyOptions({ scaleMargins: { top: 0.15, bottom: 0 } });
+    candles.priceScale().applyOptions({ scaleMargins: { top: 0.08, bottom: 0.06 } });
+    function sizePanes() {
+      var panes = chart.panes(), height = container.clientHeight;
+      if (panes.length > 1 && height > 0) panes[1].setHeight(Math.max(48, Math.round(height * 0.16)));
+    }
+    sizePanes();
+    var paneObserver = window.ResizeObserver ? new ResizeObserver(sizePanes) : null;
+    if (paneObserver) paneObserver.observe(container);
     var emaColors = ["#ff6975", "#6fb5ff", "#e7d98c"], emas = emaColors.map(function (color) {
       return chart.addSeries(LC.LineSeries, { color: color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
     });
@@ -388,6 +398,7 @@ var LiveChart = (function () {
       setLocale: function () { if (!destroyed) chart.applyOptions({ localization: localization() }); },
       destroy: function () {
         destroyed = true; closeStream(); document.removeEventListener("visibilitychange", onVisibility);
+        if (paneObserver) paneObserver.disconnect();
         chart.remove(); container.textContent = "";
       }
     };
