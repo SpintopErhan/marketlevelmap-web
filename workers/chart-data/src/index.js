@@ -1,4 +1,4 @@
-// MarketLevelMap chart-data Worker — Phase 0: Binance access probe.
+// MarketLevelMap chart-data Worker — Phase 0: Binance access probe (+ placement test).
 // Writes nothing. Every hour it checks that this Worker can read CLOSED candles
 // from Binance's public market-data endpoint and logs one JSON line per run
 // (read them with `wrangler tail` or Workers Logs). See ../README.md.
@@ -69,10 +69,55 @@ export async function runProbe(fetchImpl, nowMs) {
   };
 }
 
+// Placement test (wrangler.toml [placement] region = "aws:eu-central-1"). Cloudflare documents
+// placement for fetch handlers only, so every cron run probes twice and logs one line:
+//   direct      — from the scheduled handler itself (where crons normally run)
+//   viaFetch    — through this Worker's own fetch handler (service binding SELF), i.e. placed
+// The fetch handler is also reachable on workers.dev for manual tests, but only with the
+// x-probe-token header matching the PROBE_TOKEN secret; anything else gets a plain 404.
+const NOT_FOUND = () => new Response("Not found", { status: 404 });
+
+export function authorized(request, env) {
+  const token = env && env.PROBE_TOKEN;
+  return Boolean(token) && request.headers.get("x-probe-token") === token;
+}
+
+export async function handleFetch(request, env, fetchImpl = fetch, now = Date.now) {
+  if (!authorized(request, env)) return NOT_FOUND();
+  const report = await runProbe(fetchImpl, now());
+  report.path = request.headers.get("x-probe-path") || "manual";
+  console.log(JSON.stringify(report));
+  return new Response(JSON.stringify(report, null, 2), {
+    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
+  });
+}
+
+export async function handleScheduled(scheduledTime, env, fetchImpl = fetch) {
+  const direct = await runProbe(fetchImpl, scheduledTime);
+  let viaFetch = null;
+  if (env && env.SELF && env.PROBE_TOKEN) {
+    try {
+      const response = await env.SELF.fetch("https://self/probe", {
+        headers: { "x-probe-token": env.PROBE_TOKEN, "x-probe-path": "viaFetch" },
+      });
+      viaFetch = response.ok ? await response.json() : { error: "HTTP " + response.status };
+    } catch (error) {
+      viaFetch = { error: String((error && error.message) || error) };
+    }
+  }
+  const summary = (report) => report && !report.error
+    ? { colo: report.colo, loc: report.loc, ok: report.ok, statuses: report.primary.map((row) => row.status), fallback: report.fallback.status }
+    : report;
+  const line = { probe: "placement-test-v1", at: new Date(scheduledTime).toISOString(), direct: summary(direct), viaFetch: summary(viaFetch) };
+  console.log(JSON.stringify(line));
+  return line;
+}
+
 export default {
-  async scheduled(event, env, ctx) {
-    const report = await runProbe(fetch, event.scheduledTime || Date.now());
-    // One structured line per run; `ok:false` lines are what we look for.
-    console.log(JSON.stringify(report));
+  fetch(request, env) {
+    return handleFetch(request, env);
+  },
+  async scheduled(event, env) {
+    await handleScheduled(event.scheduledTime || Date.now(), env);
   },
 };

@@ -1,7 +1,7 @@
 // Run from the repository root: node --experimental-detect-module --test workers/chart-data/test/
 import test from "node:test";
 import assert from "node:assert/strict";
-import { runProbe, lastClosed, PAIRS, PRIMARY, FALLBACK } from "../src/index.js";
+import { runProbe, lastClosed, PAIRS, PRIMARY, FALLBACK, handleFetch, handleScheduled } from "../src/index.js";
 import { isPrivatePath, onRequest } from "../../../functions/_middleware.js";
 
 const HOUR = 3600 * 1000;
@@ -83,4 +83,36 @@ test("site middleware hides worker sources", async () => {
   });
   assert.equal(response.status, 404);
   assert.equal(nextCalled, false);
+});
+
+test("fetch endpoint answers 404 without the exact secret token", async () => {
+  const { impl, calls } = fakeFetch();
+  for (const headers of [{}, { "x-probe-token": "wrong" }]) {
+    const response = await handleFetch(new Request("https://w/probe", { headers }), { PROBE_TOKEN: "s3cret" }, impl, () => NOW);
+    assert.equal(response.status, 404);
+  }
+  const noSecret = await handleFetch(new Request("https://w/probe", { headers: { "x-probe-token": "" } }), {}, impl, () => NOW);
+  assert.equal(noSecret.status, 404);
+  assert.equal(calls.length, 0, "no Binance request without authorization");
+  const ok = await handleFetch(new Request("https://w/probe", { headers: { "x-probe-token": "s3cret" } }), { PROBE_TOKEN: "s3cret" }, impl, () => NOW);
+  assert.equal(ok.status, 200);
+  const body = await ok.json();
+  assert.equal(body.ok, true);
+  assert.equal(body.path, "manual");
+});
+
+test("cron probes directly and through its own fetch handler", async () => {
+  const { impl } = fakeFetch();
+  const env = {
+    PROBE_TOKEN: "s3cret",
+    SELF: { fetch: (url, init) => handleFetch(new Request(url, init), env, fakeFetch({ primaryStatus: 451 }).impl, () => NOW) },
+  };
+  const line = await handleScheduled(NOW, env, impl);
+  assert.equal(line.probe, "placement-test-v1");
+  assert.deepEqual(line.direct.statuses, [200, 200, 200, 200, 200]);
+  assert.equal(line.direct.ok, true);
+  assert.equal(line.viaFetch.ok, false);
+  assert.deepEqual(line.viaFetch.statuses, [451, 451, 451, 451, 451]);
+  const withoutSelf = await handleScheduled(NOW, { PROBE_TOKEN: "x" }, impl);
+  assert.equal(withoutSelf.viaFetch, null);
 });

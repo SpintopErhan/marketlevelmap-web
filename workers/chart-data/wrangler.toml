@@ -1,11 +1,20 @@
 # MarketLevelMap chart-data Worker. Deploy from this folder: npx wrangler deploy
-# Phase 0 only probes Binance access; it has no bindings and writes nothing.
+# Phase 0 only probes Binance access; it writes nothing.
 name = "marketlevelmap-chart-data"
 main = "src/index.js"
 compatibility_date = "2025-09-01"
 
-# No public URL: the Worker only runs on its schedule.
-workers_dev = false
+# Placement test: ask Cloudflare to run the Worker near Frankfurt. Documented for fetch handlers;
+# the cron run therefore also calls its own fetch handler through the SELF binding.
+[placement]
+region = "aws:eu-central-1"
+
+# workers.dev URL for the protected manual test (requests without the PROBE_TOKEN header get 404).
+workers_dev = true
+
+[[services]]
+binding = "SELF"
+service = "marketlevelmap-chart-data"
 
 [triggers]
 crons = ["2 * * * *"]
