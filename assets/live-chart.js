@@ -6,7 +6,14 @@
    the active publication's report JSON and are drawn as published — never derived from candles.
 
    1H/4H open with the last ~2 months and load 2 more months when the user scrolls left;
-   1D/1W load their whole history at once (same as the local program). */
+   1D/1W load their whole history at once (same as the local program).
+
+   Live tail (plan revision 1): R2 holds closed candles written by the local program. What came
+   after its last candle — missing closed candles and the forming candle — is fetched from
+   Binance in the visitor's browser and only displayed, never stored. The forming candle is
+   drawn faded and has no EMA; when it closes the EMA chain advances one step with the same
+   formula the engine uses. If Binance is not reachable from this browser the chart stays on
+   the R2 candles and the page's existing live price line (MarketFeed, e.g. Coinbase) is used. */
 var LiveChart = (function () {
   var DATA = "https://data.marketlevelmap.com/candles/";
   var LIB = "https://unpkg.com/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js";
@@ -14,6 +21,10 @@ var LiveChart = (function () {
   var MONTHLY = { "1h": true, "4h": true };
   var PAGE = 2; // monthly files per page = "2 months", like the local chart window
   var ZONE_TAIL_BARS = 5; // zones end this many bars after the last closed candle
+  var BINANCE_REST = "https://data-api.binance.vision/api/v3/klines";
+  var BINANCE_WS = "wss://data-stream.binance.vision/ws/";
+  var EMA_PERIODS = [20, 50, 200];
+  var TAIL_REQUESTS = 2, KLINE_LIMIT = 1000, WS_GIVE_UP = 3;
   var libPromise = null, indexPromise = null;
 
   function loadLib() {
@@ -49,6 +60,22 @@ var LiveChart = (function () {
     existing.forEach(function (row) { byTime[row[0]] = row; });
     files.forEach(function (file) { (file.candles || []).forEach(function (row) { byTime[row[0]] = row; }); });
     return Object.keys(byTime).map(Number).sort(function (a, b) { return a - b; }).map(function (t) { return byTime[t]; });
+  }
+
+  // ---- Live tail helpers ------------------------------------------------------------------
+  // Binance kline → candle row without EMAs: [openSec, open, high, low, close, volume].
+  function klineRow(openMs, open, high, low, close, volume) {
+    return [Math.round(Number(openMs) / 1000), Number(open), Number(high), Number(low), Number(close), Number(volume)];
+  }
+
+  // Continue every EMA from the previous row: ema = a*close + (1-a)*prev, a = 2/(n+1).
+  function withEma(previous, row) {
+    var out = row.slice(0, 6);
+    EMA_PERIODS.forEach(function (period, i) {
+      var prev = previous ? previous[6 + i] : null, a = 2 / (period + 1);
+      out.push(prev == null ? null : a * out[4] + (1 - a) * prev);
+    });
+    return out;
   }
 
   // ---- Zones -------------------------------------------------------------------------------
@@ -142,7 +169,7 @@ var LiveChart = (function () {
         // Price-axis decimals: an explicit value, else the site's size rule applied to the last close.
         var lastClose = rows[rows.length - 1][4];
         var decimals = options.decimals != null ? options.decimals : options.decimalsFor ? options.decimalsFor(lastClose) : null;
-        return build(LC, container, { pair: pair, tf: tf, rows: rows, remaining: remaining, decimals: decimals });
+        return build(LC, container, { pair: pair, tf: tf, rows: rows, tail: [], remaining: remaining, decimals: decimals, onChange: options.onChange });
       });
     });
   }
@@ -185,6 +212,10 @@ var LiveChart = (function () {
     var zones = new ZonesPrimitive(), zoneList = [];
     candles.attachPrimitive(zones);
     var liveLine = null, loadingOlder = false, destroyed = false;
+    var forming = null, liveStatus = "pending", socket = null, retryTimer = null, socketFailures = 0;
+    function allRows() { return state.rows.concat(state.tail); }
+    function times() { return allRows().map(function (r) { return r[0]; }); }
+    function notify() { if (state.onChange) try { state.onChange(); } catch (error) { /* page re-render only */ } }
 
     function applyPrecision() {
       if (decimals == null) return;
@@ -195,14 +226,105 @@ var LiveChart = (function () {
     }
 
     function setData() {
-      var rows = state.rows;
+      var rows = allRows();
       candles.setData(rows.map(function (r) { return { time: r[0], open: r[1], high: r[2], low: r[3], close: r[4] }; }));
       volume.setData(rows.map(function (r) { return { time: r[0], value: r[5], color: r[4] >= r[1] ? "rgba(59,158,112,0.55)" : "rgba(169,83,91,0.55)" }; }));
       emas.forEach(function (series, i) {
         series.setData(rows.filter(function (r) { return r[6 + i] != null; }).map(function (r) { return { time: r[0], value: r[6 + i] }; }));
       });
       zones.set(zoneList, rows.map(function (r) { return r[0]; }));
+      drawForming();
     }
+
+    // The forming candle: faded colours, no EMA, replaced on every update until it closes.
+    function drawForming() {
+      if (!forming) return;
+      var up = forming[4] >= forming[1], tone = up ? "rgba(85,217,156,0.38)" : "rgba(239,110,118,0.38)";
+      candles.update({ time: forming[0], open: forming[1], high: forming[2], low: forming[3], close: forming[4], color: tone, wickColor: tone, borderColor: tone });
+      volume.update({ time: forming[0], value: forming[5], color: up ? "rgba(59,158,112,0.25)" : "rgba(169,83,91,0.25)" });
+    }
+
+    // A closed candle from Binance after the last known one: extend EMAs and draw it normally.
+    function addClosed(row) {
+      var rows = allRows(), last = rows[rows.length - 1];
+      if (last && row[0] <= last[0]) return false;
+      var full = withEma(last, row);
+      state.tail.push(full);
+      candles.update({ time: full[0], open: full[1], high: full[2], low: full[3], close: full[4] });
+      volume.update({ time: full[0], value: full[5], color: full[4] >= full[1] ? "rgba(59,158,112,0.55)" : "rgba(169,83,91,0.55)" });
+      emas.forEach(function (series, i) { if (full[6 + i] != null) series.update({ time: full[0], value: full[6 + i] }); });
+      zones.set(zoneList, times());
+      return true;
+    }
+
+    function setLiveStatus(status) {
+      if (status === liveStatus) return;
+      liveStatus = status;
+      // Live: the series' own last-price label is the live price, so the separate line goes away.
+      candles.applyOptions({ priceLineVisible: status === "live" });
+      if (status === "live" && liveLine) { candles.removePriceLine(liveLine); liveLine = null; }
+      notify();
+    }
+
+    // Missing closed candles + the forming one, straight after the last known candle.
+    function fillTail() {
+      var step = STEP[state.tf] * 1000, requests = 0;
+      function next(startMs) {
+        requests++;
+        var url = BINANCE_REST + "?symbol=" + state.pair + "&interval=" + state.tf + "&startTime=" + startMs + "&limit=" + KLINE_LIMIT;
+        return fetch(url, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+          .then(function (klines) {
+            if (destroyed || !Array.isArray(klines)) return;
+            var now = Date.now();
+            klines.forEach(function (k) {
+              var row = klineRow(k[0], k[1], k[2], k[3], k[4], k[5]);
+              if (Number(k[6]) < now) { addClosed(row); if (forming && forming[0] <= row[0]) forming = null; }
+              else forming = row;
+            });
+            if (klines.length === KLINE_LIMIT && requests < TAIL_REQUESTS) return next(Number(klines[klines.length - 1][0]) + step);
+          });
+      }
+      var rows = allRows();
+      return next((rows[rows.length - 1][0] + STEP[state.tf]) * 1000).then(function () { drawForming(); notify(); });
+    }
+
+    function openStream() {
+      if (destroyed || document.hidden || socket) return;
+      var ws, received = false;
+      try { ws = socket = new WebSocket(BINANCE_WS + state.pair.toLowerCase() + "@kline_" + state.tf); }
+      catch (error) { socket = null; setLiveStatus("unavailable"); return; }
+      ws.onmessage = function (event) {
+        var k;
+        try { k = JSON.parse(event.data).k; } catch (error) { return; }
+        if (!k || destroyed) return;
+        received = true; socketFailures = 0;
+        var row = klineRow(k.t, k.o, k.h, k.l, k.c, k.v);
+        if (k.x) { addClosed(row); forming = null; notify(); }
+        else { forming = row; drawForming(); }
+        setLiveStatus("live");
+      };
+      ws.onclose = function () {
+        if (socket !== ws) return;
+        socket = null;
+        if (destroyed || document.hidden) return;
+        if (!received && ++socketFailures >= WS_GIVE_UP) { setLiveStatus("unavailable"); return; }
+        retryTimer = setTimeout(resume, 5000);
+      };
+    }
+
+    function closeStream() {
+      clearTimeout(retryTimer);
+      if (socket) { var ws = socket; socket = null; try { ws.close(); } catch (error) { /* already closed */ } }
+    }
+
+    function resume() {
+      if (destroyed || document.hidden) return;
+      fillTail().then(function () { setLiveStatus("live"); openStream(); })
+        .catch(function () { setLiveStatus("unavailable"); });
+    }
+
+    function onVisibility() { if (document.hidden) closeStream(); else resume(); }
+    document.addEventListener("visibilitychange", onVisibility);
 
     function loadOlder(range) {
       if (loadingOlder || destroyed || !state.remaining.length || !range || range.from > 30) return;
@@ -229,7 +351,7 @@ var LiveChart = (function () {
     ["pointerdown", "wheel", "touchstart"].forEach(function (name) { container.addEventListener(name, function () { touched = true; }, { passive: true }); });
     function initialView() {
       if (touched || destroyed) return;
-      var count = state.rows.length, bars = Math.max(60, Math.min(180, Math.round((container.clientWidth || 800) / 5)));
+      var count = allRows().length + (forming ? 1 : 0), bars = Math.max(60, Math.min(180, Math.round((container.clientWidth || 800) / 5)));
       chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, count - bars), to: count - 1 + 12 });
     }
     initialView();
@@ -240,29 +362,36 @@ var LiveChart = (function () {
     };
     requestAnimationFrame(waitForSize);
     chart.timeScale().subscribeVisibleLogicalRangeChange(loadOlder);
+    fillTail().then(function () { initialView(); setLiveStatus("live"); openStream(); })
+      .catch(function () { setLiveStatus("unavailable"); });
 
     return {
-      lastClosedAt: function () { var last = state.rows[state.rows.length - 1]; return new Date((last[0] + STEP[state.tf]) * 1000).toISOString(); },
-      // The last closed candle as drawn: open time (the chart's label) and close time.
+      lastClosedAt: function () { var rows = allRows(), last = rows[rows.length - 1]; return new Date((last[0] + STEP[state.tf]) * 1000).toISOString(); },
+      // The last closed candle as drawn (R2 or browser tail): open time (the chart's label) and close time.
       lastClosedCandle: function () {
-        var last = state.rows[state.rows.length - 1];
+        var rows = allRows(), last = rows[rows.length - 1];
         return { open: new Date(last[0] * 1000).toISOString(), close: new Date((last[0] + STEP[state.tf]) * 1000).toISOString(), timeframe: state.tf };
       },
       setZones: function (list, priceDecimals) {
         zoneList = (list || []).filter(function (z) { return z && z.drawn !== false && Number(z.low) > 0 && Number(z.high) > 0; });
         if (priceDecimals != null && priceDecimals !== decimals) { decimals = priceDecimals; applyPrecision(); }
-        zones.set(zoneList, state.rows.map(function (r) { return r[0]; }));
+        zones.set(zoneList, times());
       },
+      liveStatus: function () { return liveStatus; },
+      // Fallback only: while Binance candles are live the series' last price is already live.
       setLivePrice: function (price) {
         var p = Number(price);
-        if (!(p > 0) || destroyed) return;
+        if (!(p > 0) || destroyed || liveStatus === "live") return;
         if (!liveLine) liveLine = candles.createPriceLine({ price: p, color: "#f0c040", lineWidth: 1, lineStyle: LC.LineStyle.Dashed, axisLabelVisible: true, title: "" });
         else liveLine.applyOptions({ price: p });
       },
       setLocale: function () { if (!destroyed) chart.applyOptions({ localization: localization() }); },
-      destroy: function () { destroyed = true; chart.remove(); container.textContent = ""; }
+      destroy: function () {
+        destroyed = true; closeStream(); document.removeEventListener("visibilitychange", onVisibility);
+        chart.remove(); container.textContent = "";
+      }
     };
   }
 
-  return { show: show, _test: { mergeRows: mergeRows, zoneStart: zoneStart, palette: palette } };
+  return { show: show, _test: { mergeRows: mergeRows, zoneStart: zoneStart, palette: palette, klineRow: klineRow, withEma: withEma } };
 })();
