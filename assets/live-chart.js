@@ -147,9 +147,23 @@ var LiveChart = (function () {
     });
   }
 
+  // Axis, crosshair and price-line labels use the page language's number format (tr-TR: 82.424,0),
+  // matching the tables.
+  function pageLocale() { return document.documentElement.lang === "tr" ? "tr-TR" : "en-US"; }
+
   function build(LC, container, state) {
     container.textContent = "";
     var decimals = state.decimals;
+    function localization() {
+      var locale = pageLocale();
+      return {
+        locale: locale,
+        priceFormatter: function (price) {
+          var d = decimals == null ? 2 : decimals;
+          return Number(price).toLocaleString(locale, { minimumFractionDigits: d, maximumFractionDigits: d });
+        }
+      };
+    }
     var chart = LC.createChart(container, {
       autoSize: true,
       layout: { background: { color: "#101820" }, textColor: "#c7cfde" },
@@ -157,7 +171,7 @@ var LiveChart = (function () {
       rightPriceScale: { borderColor: "#42495a" },
       timeScale: { borderColor: "#42495a", timeVisible: state.tf === "1h" || state.tf === "4h", secondsVisible: false, rightOffset: 12 },
       crosshair: { mode: LC.CrosshairMode.Normal },
-      localization: { locale: document.documentElement.lang === "tr" ? "tr-TR" : "en-US" }
+      localization: localization()
     });
     var candles = chart.addSeries(LC.CandlestickSeries, {
       upColor: "#55d99c", downColor: "#ef6e76", borderVisible: false, wickUpColor: "#55d99c", wickDownColor: "#ef6e76",
@@ -175,6 +189,7 @@ var LiveChart = (function () {
     function applyPrecision() {
       if (decimals == null) return;
       var format = { type: "price", precision: decimals, minMove: Math.pow(10, -decimals) };
+      chart.applyOptions({ localization: localization() });
       candles.applyOptions({ priceFormat: format });
       emas.forEach(function (s) { s.applyOptions({ priceFormat: format }); });
     }
@@ -239,6 +254,7 @@ var LiveChart = (function () {
         if (!liveLine) liveLine = candles.createPriceLine({ price: p, color: "#f0c040", lineWidth: 1, lineStyle: LC.LineStyle.Dashed, axisLabelVisible: true, title: "" });
         else liveLine.applyOptions({ price: p });
       },
+      setLocale: function () { if (!destroyed) chart.applyOptions({ localization: localization() }); },
       destroy: function () { destroyed = true; chart.remove(); container.textContent = ""; }
     };
   }

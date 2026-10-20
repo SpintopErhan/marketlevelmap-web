@@ -21,7 +21,6 @@ td.title{width:100%;white-space:normal;font-weight:600}
 td.title a{color:inherit;text-decoration:none}td.title a:hover{color:var(--accent)}
 .is-past td{color:var(--muted)}.is-past td.title{font-weight:400}
 .actual{font-weight:700}
-.impact{letter-spacing:2px;color:var(--cz)}
 .day-row td{padding:8px 14px;background:var(--panel-2);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase}
 .status-row td{padding:34px 14px;color:var(--muted);text-align:center;white-space:normal}
 .table-note{margin:10px 2px 0;color:var(--muted);font-size:11px}
@@ -32,15 +31,15 @@ td.title a{color:inherit;text-decoration:none}td.title a:hover{color:var(--accen
 <main class="shell">
 <div class="page-head"><div><h1 data-i18n="heading">Weekly events</h1><p class="meta"><span id="week-range"></span><span>·</span><span data-i18n="utc">times in UTC</span><span class="demo-badge" id="demo" data-i18n="demo" hidden>Sample data</span></p></div>
 <div class="week-switch"><button class="filter-btn" type="button" data-week="0" aria-pressed="true" data-i18n="thisWeek">This week</button><button class="filter-btn" type="button" data-week="1" aria-pressed="false" data-i18n="nextWeek">Next week</button></div></div>
-<div class="table-wrap"><table><thead><tr><th data-i18n="colTime">Time</th><th data-i18n="colEvent">Event</th><th data-i18n="colCountry">Country</th><th data-i18n="colImpact">Impact</th><th class="r" data-i18n="colPrevious">Previous</th><th class="r" data-i18n="colForecast">Forecast</th><th class="r" data-i18n="colActual">Actual</th></tr></thead>
-<tbody id="rows"><tr class="status-row"><td colspan="7" data-i18n="loading">Loading events…</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th data-i18n="colTime">Time</th><th data-i18n="colEvent">Event</th><th data-i18n="colCountry">Country</th><th class="r" data-i18n="colActual">Actual</th></tr></thead>
+<tbody id="rows"><tr class="status-row"><td colspan="4" data-i18n="loading">Loading events…</td></tr></tbody></table></div>
 <p class="table-note" data-i18n="note">Dates and times can be changed by the official sources; check the source before relying on them.</p>
 </main>
 <div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar anlıktır; grafikler belirtilen tarihe ait statik analizlerdir ve canlı güncellenmez. Kripto varlıklar yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table are live; charts are static analyses as of the stated date and are not updated live. Crypto assets carry high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 <script>
 var copy={
-  en:{title:"Weekly events",heading:"Weekly events",utc:"times in UTC",demo:"Sample data",thisWeek:"This week",nextWeek:"Next week",colTime:"Time",colEvent:"Event",colCountry:"Country",colImpact:"Impact",colPrevious:"Previous",colForecast:"Forecast",colActual:"Actual",loading:"Loading events…",failed:"Events could not be loaded.",none:"No events are listed for this week.",note:"Dates and times can be changed by the official sources; check the source before relying on them.",VERY_HIGH:"Very high",HIGH:"High",MEDIUM:"Medium"},
-  tr:{title:"Haftalık olaylar",heading:"Haftalık olaylar",utc:"saatler UTC",demo:"Örnek veriler",thisWeek:"Bu hafta",nextWeek:"Gelecek hafta",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colImpact:"Önem",colPrevious:"Önceki",colForecast:"Beklenti",colActual:"Gerçekleşen",loading:"Olaylar yükleniyor…",failed:"Olaylar yüklenemedi.",none:"Bu hafta için listelenmiş olay yok.",note:"Tarih ve saatler resmî kaynaklarca değiştirilebilir; kullanmadan önce kaynağı kontrol edin.",VERY_HIGH:"Çok yüksek",HIGH:"Yüksek",MEDIUM:"Orta"}
+  en:{title:"Weekly events",heading:"Weekly events",utc:"times in UTC",demo:"Sample data",thisWeek:"This week",nextWeek:"Next week",colTime:"Time",colEvent:"Event",colCountry:"Country",colActual:"Actual",allDay:"During the day",loading:"Loading events…",failed:"Events could not be loaded.",none:"No events are listed for this week.",note:"Dates and times can be changed by the official sources; check the source before relying on them.",VERY_HIGH:"Very high",HIGH:"High",MEDIUM:"Medium"},
+  tr:{title:"Haftalık olaylar",heading:"Haftalık olaylar",utc:"saatler UTC",demo:"Örnek veriler",thisWeek:"Bu hafta",nextWeek:"Gelecek hafta",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colActual:"Gerçekleşen",allDay:"Gün içinde",loading:"Olaylar yükleniyor…",failed:"Olaylar yüklenemedi.",none:"Bu hafta için listelenmiş olay yok.",note:"Tarih ve saatler resmî kaynaklarca değiştirilebilir; kullanmadan önce kaynağı kontrol edin.",VERY_HIGH:"Çok yüksek",HIGH:"Yüksek",MEDIUM:"Orta"}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 function applyLanguage(value){
@@ -61,7 +60,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
 (function(){
   var body=document.getElementById("rows"),range=document.getElementById("week-range"),events=null,failed=false,week=0,DAY=86400000;
   function weekStart(){var n=new Date();return Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate())-((n.getUTCDay()+6)%7)*DAY+week*7*DAY}
-  function message(key){body.innerHTML='<tr class="status-row"><td colspan="7"></td></tr>';body.firstChild.firstChild.textContent=words()[key]}
+  function message(key){body.innerHTML='<tr class="status-row"><td colspan="4"></td></tr>';body.firstChild.firstChild.textContent=words()[key]}
   function render(){
     var w=words(),lang=MarketUI.lang(),loc=MarketUI.locale(),start=weekStart(),end=start+7*DAY,now=Date.now();
     range.textContent=new Date(start).toLocaleDateString(loc,{day:"numeric",month:"short",timeZone:"UTC"})+" – "+new Date(end-DAY).toLocaleDateString(loc,{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"});
@@ -71,14 +70,14 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     body.textContent="";var lastDay=null;
     list.forEach(function(e){
       var t=Date.parse(e.startAt),day=new Date(t).toISOString().slice(0,10);
-      if(day!==lastDay){lastDay=day;var h=document.createElement("tr");h.className="day-row";h.innerHTML='<td colspan="7"></td>';h.firstChild.textContent=new Date(t).toLocaleDateString(loc,{weekday:"long",day:"numeric",month:"long",timeZone:"UTC"});body.appendChild(h)}
-      var tr=document.createElement("tr");if(t<=now)tr.className="is-past";
-      tr.innerHTML='<td class="num"></td><td class="title"></td><td></td><td class="impact"></td><td class="r num"></td><td class="r num"></td><td class="r num actual"></td>';
+      if(day!==lastDay){lastDay=day;var h=document.createElement("tr");h.className="day-row";h.innerHTML='<td colspan="4"></td>';h.firstChild.textContent=new Date(t).toLocaleDateString(loc,{weekday:"long",day:"numeric",month:"long",timeZone:"UTC"});body.appendChild(h)}
+      // Past events are dimmed; a date-only event counts as past once its day is over.
+      var tr=document.createElement("tr");if((e.datePrecision==="DAY"?t+DAY:t)<=now)tr.className="is-past";
+      tr.innerHTML='<td class="num"></td><td class="title"></td><td></td><td class="r num actual"></td>';
       var c=tr.children,title=(e.title&&(e.title[lang]||e.title.en))||"";
-      c[0].textContent=e.datePrecision==="DAY"?"—":new Date(t).toISOString().slice(11,16);
+      c[0].textContent=e.datePrecision==="DAY"?w.allDay:new Date(t).toISOString().slice(11,16);
       if(e.sourceUrl){var a=document.createElement("a");a.href=e.sourceUrl;a.target="_blank";a.rel="noopener";a.textContent=title;c[1].appendChild(a)}else c[1].textContent=title;
-      c[2].textContent=e.country||"";c[3].textContent={VERY_HIGH:"●●●",HIGH:"●●",MEDIUM:"●"}[e.impact]||"●";c[3].title=w[e.impact]||"";
-      c[4].textContent=e.previous||"—";c[5].textContent=e.forecast||"—";c[6].textContent=e.actual||"—";
+      c[2].textContent=e.country||"";c[3].textContent=e.actual||"—";
       body.appendChild(tr);
     });
   }
