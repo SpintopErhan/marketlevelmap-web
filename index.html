@@ -48,6 +48,22 @@ tbody tr:last-child td{border-bottom:0}
 .analysis-link{display:inline-grid;place-items:center;width:38px;height:38px;border:1px solid var(--line);border-radius:8px;color:var(--cz);background:var(--bg)}
 .analysis-link:hover{border-color:var(--cz)}
 .analysis-link svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.analysis-link .spark{display:none}
+.spark svg{display:block;width:112px;height:32px}
+.spark-line{fill:none;stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round}
+.spark-line.up{stroke:var(--up)}.spark-line.down{stroke:var(--down)}
+.spark-dot.up{fill:var(--up)}.spark-dot.down{fill:var(--down)}
+.spark-band.support{fill:color-mix(in srgb,var(--up) 16%,transparent)}
+.spark-band.resistance{fill:color-mix(in srgb,var(--down) 16%,transparent)}
+.spark-band.edge.support{fill:color-mix(in srgb,var(--up) 35%,transparent)}
+.spark-band.edge.resistance{fill:color-mix(in srgb,var(--down) 35%,transparent)}
+@media(min-width:701px){
+  .analysis-col{width:132px}
+  .analysis-link.has-spark{width:auto;height:auto;padding:3px 6px;border-color:transparent;background:none}
+  .analysis-link.has-spark:hover{border-color:var(--line);background:var(--panel-2)}
+  .analysis-link.has-spark .icon{display:none}
+  .analysis-link.has-spark .spark{display:block}
+}
 .status-row td{padding:34px 14px;color:var(--muted);text-align:center;cursor:default;white-space:normal}
 .status-row:hover td{background:none!important}
 .table-note{margin:10px 2px 0;color:var(--muted);font-size:11px}
@@ -72,7 +88,7 @@ tbody tr:last-child td{border-bottom:0}
 <script>
 try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
 </script>
-<script src="assets/disclaimer.js?v=76512242" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=037b531f"></script><script src="assets/demo-data.js?v=9e9f55c7"></script></head>
+<script src="assets/disclaimer.js?v=76512242" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=037b531f"></script><script src="assets/demo-data.js?v=9e9f55c7"></script><script src="assets/sparkline.js?v=eb413b7b"></script></head>
 <body>
 <div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
@@ -98,8 +114,8 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <script>
 /* Header: language and theme (same on every page). */
 var copy={
-  en:{title:"MarketLevelMap — Market table",search:"Search an asset",all:"All",fav:"Favorites",tableTitle:"Market table",demo:"Sample data",colAsset:"Asset",colPrice:"Price",col24h:"24h %",colVolume:"24h volume",colDay:"Daily open",colWeek:"Weekly open",colMonth:"Monthly open",colYear:"Yearly open",colAnalysis:"Analysis",loading:"Loading live market…",unavailable:"No active analysis is available right now. Please check back later.",noMatch:"No assets match this filter.",tableNote:"The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.",eventsTitle:"This week's events",utc:"times in UTC",fullWeek:"Full week →",colDayName:"Day",colTime:"Time",colEvent:"Event",colCountry:"Country",colActual:"Actual",eventsLoading:"Loading events…",eventsFailed:"Events could not be loaded.",eventsNone:"No more events are listed for this week.",allDay:"During the day",live:"Live price",lastAnalysis:"Last published",openAnalysis:"Open analysis",addFav:"Add to favorites",removeFav:"Remove from favorites"},
-  tr:{title:"MarketLevelMap — Piyasa tablosu",search:"Varlık ara",all:"Tümü",fav:"Favoriler",tableTitle:"Piyasa tablosu",demo:"Örnek veriler",colAsset:"Varlık",colPrice:"Fiyat",col24h:"24s %",colVolume:"24s hacim",colDay:"Günlük açılış",colWeek:"Haftalık açılış",colMonth:"Aylık açılış",colYear:"Yıllık açılış",colAnalysis:"Analiz",loading:"Canlı piyasa yükleniyor…",unavailable:"Şu anda yayında analiz yok. Lütfen daha sonra tekrar deneyin.",noMatch:"Bu filtreyle eşleşen varlık yok.",tableNote:"Açılış ve ATH sütunlarının altındaki yüzde, güncel fiyatın o seviyeye uzaklığıdır. Satıra tıklayınca varlığın analiz sayfası açılır.",eventsTitle:"Bu haftanın olayları",utc:"saatler UTC",fullWeek:"Tüm hafta →",colDayName:"Gün",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colActual:"Gerçekleşen",eventsLoading:"Olaylar yükleniyor…",eventsFailed:"Olaylar yüklenemedi.",eventsNone:"Bu hafta için kalan olay yok.",allDay:"Gün içinde",live:"Canlı fiyat",lastAnalysis:"Son yayın",openAnalysis:"Analizi aç",addFav:"Favorilere ekle",removeFav:"Favorilerden çıkar"}
+  en:{title:"MarketLevelMap — Market table",search:"Search an asset",all:"All",fav:"Favorites",tableTitle:"Market table",demo:"Sample data",colAsset:"Asset",colPrice:"Price",col24h:"24h %",colVolume:"24h volume",colDay:"Daily open",colWeek:"Weekly open",colMonth:"Monthly open",colYear:"Yearly open",colAnalysis:"Analysis",loading:"Loading live market…",unavailable:"No active analysis is available right now. Please check back later.",noMatch:"No assets match this filter.",tableNote:"The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.",eventsTitle:"This week's events",utc:"times in UTC",fullWeek:"Full week →",colDayName:"Day",colTime:"Time",colEvent:"Event",colCountry:"Country",colActual:"Actual",eventsLoading:"Loading events…",eventsFailed:"Events could not be loaded.",eventsNone:"No more events are listed for this week.",allDay:"During the day",live:"Live price",lastAnalysis:"Last published",openAnalysis:"Open analysis",spark7d:"7 days",addFav:"Add to favorites",removeFav:"Remove from favorites"},
+  tr:{title:"MarketLevelMap — Piyasa tablosu",search:"Varlık ara",all:"Tümü",fav:"Favoriler",tableTitle:"Piyasa tablosu",demo:"Örnek veriler",colAsset:"Varlık",colPrice:"Fiyat",col24h:"24s %",colVolume:"24s hacim",colDay:"Günlük açılış",colWeek:"Haftalık açılış",colMonth:"Aylık açılış",colYear:"Yıllık açılış",colAnalysis:"Analiz",loading:"Canlı piyasa yükleniyor…",unavailable:"Şu anda yayında analiz yok. Lütfen daha sonra tekrar deneyin.",noMatch:"Bu filtreyle eşleşen varlık yok.",tableNote:"Açılış ve ATH sütunlarının altındaki yüzde, güncel fiyatın o seviyeye uzaklığıdır. Satıra tıklayınca varlığın analiz sayfası açılır.",eventsTitle:"Bu haftanın olayları",utc:"saatler UTC",fullWeek:"Tüm hafta →",colDayName:"Gün",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colActual:"Gerçekleşen",eventsLoading:"Olaylar yükleniyor…",eventsFailed:"Olaylar yüklenemedi.",eventsNone:"Bu hafta için kalan olay yok.",allDay:"Gün içinde",live:"Canlı fiyat",lastAnalysis:"Son yayın",openAnalysis:"Analizi aç",spark7d:"7 gün",addFav:"Favorilere ekle",removeFav:"Favorilerden çıkar"}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 function applyLanguage(value){
@@ -127,7 +143,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   function saveFavorites(){try{localStorage.setItem("mlm-favorites",JSON.stringify(favorites))}catch(e){}}
   function status(key){body.innerHTML='<tr class="status-row"><td colspan="10"></td></tr>';body.firstChild.firstChild.dataset.i18n=key;body.firstChild.firstChild.textContent=words()[key]}
   function labels(){var w=words();feedLabel.textContent=w.live+(source?" · "+SOURCE_NAMES[source]:"");timeLabel.textContent=activatedAt?w.lastAnalysis+" "+MarketUI.dateTime(activatedAt):"";
-    order.forEach(function(sym){var r=rows[sym];r.star.setAttribute("aria-label",favorites.indexOf(sym)>-1?w.removeFav:w.addFav);r.link.setAttribute("aria-label",w.openAnalysis+" — "+sym);r.link.title=w.openAnalysis;paint(sym)})}
+    order.forEach(function(sym){var r=rows[sym];r.star.setAttribute("aria-label",favorites.indexOf(sym)>-1?w.removeFav:w.addFav);r.link.setAttribute("aria-label",w.openAnalysis+" — "+sym+(r.sparkChange!=null?" · "+w.spark7d+" "+MarketUI.pct(r.sparkChange):""));r.link.title=w.openAnalysis;paint(sym)})}
   new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
 
   function levelCell(td,level,price,digits){
@@ -142,6 +158,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     var price=Number(d.c),change=Number(d.o)>0?price/Number(d.o)-1:NaN;
     if(r.last&&price!==r.last){var cls=price>r.last?"tick-up":"tick-down";r.price.classList.remove("tick-up","tick-down");void r.price.offsetWidth;r.price.classList.add(cls);setTimeout(function(){r.price.classList.remove(cls)},120)}
     r.last=price;r.price.textContent=MarketUI.price(price,r.digits);
+    if(r.closes&&Date.now()-r.sparkAt>5000)drawSpark(sym);
     r.change.textContent=MarketUI.pct(change);r.change.className="num "+MarketUI.signClass(change);
     r.volume.textContent=Number(d.q)>0?MarketUI.compact(d.q)+" $":"—";
     // Opens: live feed first (always current), the published report's value as fallback.
@@ -149,6 +166,25 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     levelCell(r.day,Number(d.day)>0?d.day:lv.DO,price,r.digits);levelCell(r.week,Number(d.week)>0?d.week:lv.WO,price,r.digits);
     levelCell(r.month,Number(d.month)>0?d.month:lv.MO,price,r.digits);levelCell(r.year,lv.YO,price,r.digits);levelCell(r.ath,lv.ATH||lv.OATH,price,r.digits);
   }
+  // Sparkline (desktop only): 7 days of 1h closes per asset.
+  var DESKTOP=window.matchMedia("(min-width:701px)");
+  function drawSpark(sym){
+    var r=rows[sym];if(!r||!r.closes||!window.Sparkline)return;
+    r.sparkChange=Sparkline.draw(r.spark,r.closes,{live:r.last,zones:r.zones});r.sparkAt=Date.now();
+    r.link.classList.add("has-spark");
+    var w=words();r.link.setAttribute("aria-label",w.openAnalysis+" — "+sym+" · "+w.spark7d+" "+MarketUI.pct(r.sparkChange));
+  }
+  function loadSpark(sym){
+    if(!window.Sparkline||!DESKTOP.matches||rows[sym].sparkLoading)return;
+    rows[sym].sparkLoading=true;
+    Sparkline.load(sym).then(function(closes){rows[sym].closes=closes;drawSpark(sym)}).catch(function(){/* no data: the icon stays */});
+  }
+  // The table lists a handful of assets, so every row loads at once on a desktop-wide window;
+  // widening a phone-width window later loads them then.
+  function watchSpark(sym){if(DESKTOP.matches)loadSpark(sym)}
+  (DESKTOP.addEventListener?DESKTOP.addEventListener.bind(DESKTOP,"change"):DESKTOP.addListener.bind(DESKTOP))(function(){
+    if(DESKTOP.matches)order.forEach(loadSpark);
+  });
   function applyFilter(){
     var q=search.value.trim().toUpperCase(),shown=0;
     order.forEach(function(sym){var ok=sym.indexOf(q)>-1||MarketUI.nameOf(sym).toUpperCase().indexOf(q)>-1;if(filter==="favorites"&&favorites.indexOf(sym)<0)ok=false;rows[sym].tr.hidden=!ok;if(ok)shown++});
@@ -160,13 +196,13 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
 
   function build(sym,href){
     var tr=document.createElement("tr");tr.dataset.symbol=sym;
-    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><div><strong></strong><small></small></div></div></td><td class="num price">—</td><td class="num">—</td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="analysis-col"><a class="analysis-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg></a></td>';
-    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1],change:c[2],volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[9].firstChild,data:null,levels:null,digits:null,last:null};
+    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><div><strong></strong><small></small></div></div></td><td class="num price">—</td><td class="num">—</td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="analysis-col"><a class="analysis-link"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><span class="spark"></span></a></td>';
+    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1],change:c[2],volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[9].firstChild,spark:c[9].querySelector(".spark"),data:null,levels:null,digits:null,last:null,closes:null,zones:null,sparkChange:null,sparkAt:0};
     c[0].querySelector("strong").textContent=sym;c[0].querySelector("small").textContent=MarketUI.nameOf(sym);r.link.href=href;
     function paintStar(){var on=favorites.indexOf(sym)>-1;r.star.classList.toggle("active",on);r.star.textContent=on?"★":"☆";r.star.setAttribute("aria-pressed",String(on))}
     r.star.addEventListener("click",function(e){e.stopPropagation();var i=favorites.indexOf(sym);if(i>-1)favorites.splice(i,1);else favorites.push(sym);saveFavorites();paintStar();labels();applyFilter()});
     tr.addEventListener("click",function(e){if(e.target.closest("a,button"))return;location.href=href});
-    paintStar();rows[sym]=r;return tr;
+    paintStar();rows[sym]=r;watchSpark(sym);return tr;
   }
   function useLevels(sym,list,demo){var map={};(list||[]).forEach(function(l){if(l&&l.code&&Number(l.price)>0)map[String(l.code).toUpperCase()]=Number(l.price)});rows[sym].levels=map;if(demo)document.getElementById("table-demo").hidden=false;paint(sym)}
 
@@ -177,7 +213,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     order.forEach(function(sym){
       var entries=byAsset[sym].sort(MarketUI.byTimeframe),main=entries.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||entries[0];
       body.appendChild(build(sym,"bulletin.html?asset="+encodeURIComponent(sym)+"&method="+MarketUI.methodOf(main)));
-      if(main.report)fetch(main.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
+      if(main.report)fetch(main.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.zones)){rows[sym].zones=rep.zones;drawSpark(sym)}if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
       else if(window.DemoData&&DemoData.enabled)rows[sym].demo=true;
     });
     labels();applyFilter();
