@@ -20,30 +20,38 @@ function pageKey(pathname) {
   return path === "" ? "/" : path;
 }
 
-const METHOD_NAMES = { cz: "Critical Zones", pa: "Price Action" };
+// Link previews always use the site image (logo); charts are no longer published as images.
+const OG_IMAGE = "/assets/og-image.png?v=dd26b484";
 
-// Same rule as the pages: which evaluation method a chart belongs to.
-function methodOf(graphicKey) {
-  const key = (graphicKey || "").toLowerCase();
-  if (/cz|critical/.test(key)) return "cz";
-  if (/(^|[^a-z])pa([^a-z]|$)|price[ _-]?action/.test(key)) return "pa";
-  return "";
-}
+// Texts for a shared analysis link. They match the share text on the page (bulletin.html "shareText");
+// `lang=tr` in the link (added when the page is in Turkish) gives the Turkish preview.
+const ANALYSIS_TEXT = {
+  en: {
+    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} support and resistance zones · ${SITE}`,
+    description: (asset, tf) => `Critical Zones analysis of ${asset}${tf ? " on the " + tf + " chart" : ""}: support and resistance zones and key levels.`,
+  },
+  tr: {
+    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} destek ve direnç bölgeleri · ${SITE}`,
+    description: (asset, tf) => `${asset}${tf ? " " + tf + " grafiğinin" : ""} Critical Zones analizi: destek ve direnç bölgeleri ve anahtar seviyeler.`,
+  },
+};
 
-// Image of the asset's active chart for the requested method (Critical Zones by default).
-// Null when the asset has no active bulletin.
-async function bulletinImage(env, asset, method) {
+// Timeframes of the asset's active Critical Zones analyses (graphicKey "<source>:<ASSET>:<tf>:…"), or null
+// when the asset has none, so a preview never describes an analysis that does not exist. Price Action
+// entries are left out, as on the page.
+const PRICE_ACTION = /(^|[^a-z])pa([^a-z]|$)|price[ _-]?action/;
+async function activeTimeframes(env, asset) {
   const bucket = env.MARKETLEVELMAP_PUBLIC;
   if (!bucket) return null;
   try {
     const object = await bucket.get(ACTIVE_POINTER_KEY);
     if (!object) return null;
     const pointer = await object.json();
-    const rows = (pointer?.entries || []).filter((entry) => entry.image && (entry.graphicKey || "").split(":")[1] === asset);
-    const wanted = method || "cz";
-    rows.sort((a, b) => ((methodOf(b.graphicKey) === wanted) - (methodOf(a.graphicKey) === wanted)) || a.graphicKey.localeCompare(b.graphicKey));
-    if (!rows.length) return null;
-    return { url: `/api/publication/image/${encodeURIComponent(rows[0].publicationId)}`, method: methodOf(rows[0].graphicKey) };
+    const tfs = (pointer?.entries || [])
+      .filter((entry) => (entry.image || entry.report) && (entry.graphicKey || "").split(":")[1] === asset)
+      .filter((entry) => !PRICE_ACTION.test((entry.graphicKey || "").toLowerCase()))
+      .map((entry) => ((entry.graphicKey || "").split(":")[2] || "").toLowerCase());
+    return tfs.length ? tfs : null;
   } catch (_) {
     return null;
   }
@@ -60,18 +68,16 @@ export async function onRequest(context) {
     if (!page) return response;
 
     let { title, description } = page;
-    let image = "/assets/og-image.png";
+    const image = OG_IMAGE;
     if (key === "/bulletin") {
       const asset = (url.searchParams.get("asset") || "").toUpperCase();
-      const requested = (url.searchParams.get("method") || "").toLowerCase();
-      const chart = /^[A-Z0-9]{2,20}$/.test(asset) ? await bulletinImage(context.env, asset, METHOD_NAMES[requested] ? requested : "") : null;
-      if (chart) {
-        const name = METHOD_NAMES[chart.method];
-        title = name ? `${asset} ${name} analysis · ${SITE}` : `${asset} analysis · ${SITE}`;
-        description = name
-          ? `${name} charts for ${asset}. Structure-based market analysis.`
-          : `Critical Zones and Price Action charts for ${asset}. Structure-based market analysis.`;
-        image = chart.url;
+      const tf = (url.searchParams.get("tf") || "").toLowerCase();
+      const text = ANALYSIS_TEXT[url.searchParams.get("lang") === "tr" ? "tr" : "en"];
+      const tfs = /^[A-Z0-9]{2,20}$/.test(asset) ? await activeTimeframes(context.env, asset) : null;
+      if (tfs) {
+        const label = tfs.includes(tf) ? tf.toUpperCase() : "";
+        title = text.title(asset, label);
+        description = text.description(asset, label);
       }
     }
 

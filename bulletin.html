@@ -401,10 +401,11 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   // Share menu (Features "chartShare"): X and Telegram share this analysis page's link with a short text;
   // "Copy link" copies it. Where the browser can share files (most phones), "Share image…" hands the
   // downloadable PNG plus the link to the system share sheet; the PNG is prepared when the menu opens so
-  // the share call stays inside the tap. Link previews show the site image until charts are published as
-  // images again (README "Chart sharing").
+  // the share call stays inside the tap. Link previews show the site logo with this chart's
+  // title (functions/_middleware.js, README "Link previews").
   var shareMenu=document.getElementById("share-menu"),shareFile=null;
-  function shareUrl(){return location.origin+"/bulletin?asset="+encodeURIComponent(asset)+"&tf="+encodeURIComponent(MarketUI.timeframeOf(entry))}
+  // lang=tr gives the Turkish link preview (functions/_middleware.js), matching the Turkish share text.
+  function shareUrl(){return location.origin+"/bulletin?asset="+encodeURIComponent(asset)+"&tf="+encodeURIComponent(MarketUI.timeframeOf(entry))+(MarketUI.lang()==="tr"?"&lang=tr":"")}
   function shareText(){return words().shareText.replace("{asset}",asset).replace("{tf}",MarketUI.timeframeOf(entry).toUpperCase())+" · MarketLevelMap"}
   function closeShare(focusButton){if(shareMenu.hidden)return;shareMenu.hidden=true;share.setAttribute("aria-expanded","false");if(focusButton)share.focus()}
   function openShare(){

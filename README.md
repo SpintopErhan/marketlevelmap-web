@@ -34,10 +34,14 @@ the bulletin page:
 
 ## Link previews
 
-`functions/_middleware.js` adds description, Open Graph and Twitter tags to every HTML page. Bulletin
-links preview the asset's active chart for the method in the query string — `/bulletin?asset=BTCUSDT&method=pa`
-for Price Action, Critical Zones otherwise. The method must be a query parameter: a `#pa` fragment is never
-sent to the server, so link previews cannot see it. Other pages use `assets/og-image.png`.
+`functions/_middleware.js` adds description, Open Graph and Twitter tags to every HTML page. Every page,
+analysis links included, previews the site image `assets/og-image.png` (logo only; linked with `?v=` so
+X/Telegram fetch a new version). Analysis links get a title and description for the shared chart, the same
+words as the page's share text: `/bulletin?asset=BTCUSDT&tf=1h` → "BTCUSDT 1H support and resistance zones ·
+MarketLevelMap", "Critical Zones analysis of BTCUSDT on the 1H chart: …"; with `&lang=tr` (the share menu
+adds it on the Turkish page) the Turkish text. The asset must have an active Critical Zones analysis and the
+timeframe is named only if that analysis exists; otherwise the generic page text is used. Telegram and X
+cache previews per link, so a link shared before a change keeps its old card for a while.
 
 ## Pages
 
@@ -101,9 +105,8 @@ The chart header's Share button opens a menu:
   phones): the same PNG as Download plus the text and link go to the system share sheet. The PNG is built
   when the menu opens, so the share call stays inside the tap. Needs `chartDownload` to be allowed too.
 
-Link previews: since publications no longer carry a chart PNG, `functions/_middleware.js` finds no
-`entry.image` and X/Telegram cards show `assets/og-image.png`, not the chart. Showing the chart there needs
-a server-side image again (open item).
+Link previews show the site logo image and the shared chart's title (README "Link previews"); the chart
+itself is not in the card.
 
 On phones (≤ 600 px) the chart buttons (Share, Download, Expand) show icons only and carry `aria-label`s.
 
