@@ -25,6 +25,7 @@ var LiveChart = (function () {
   var BINANCE_WS = "wss://data-stream.binance.vision/ws/";
   var EMA_PERIODS = [20, 50, 200];
   var LEVEL_COLOR = "#e8a765"; // key levels the visitor chose to show (the site's CZ colour)
+  var WATERMARK_FONT = "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
   var TAIL_REQUESTS = 2, KLINE_LIMIT = 1000, WS_GIVE_UP = 3;
   var libPromise = null, indexPromise = null;
 
@@ -219,9 +220,21 @@ var LiveChart = (function () {
     var volume = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceLineVisible: false, lastValueVisible: false }, 1);
     volume.priceScale().applyOptions({ scaleMargins: { top: 0.15, bottom: 0 } });
     candles.priceScale().applyOptions({ scaleMargins: { top: 0.08, bottom: 0.06 } });
+    // Faint site name in the middle of the price pane. It is drawn on the chart canvas, so chart
+    // screenshots (download, share) carry it. Its size follows the chart width.
+    var watermark = LC.createTextWatermark ? LC.createTextWatermark(chart.panes()[0], { horzAlign: "center", vertAlign: "center", lines: [] }) : null;
+    function sizeWatermark() {
+      if (!watermark) return;
+      var big = Math.round(Math.max(22, Math.min(56, (container.clientWidth || 800) / 13)));
+      watermark.applyOptions({ lines: [
+        { text: "MarketLevelMap", color: "rgba(199, 207, 222, 0.08)", fontSize: big, fontFamily: WATERMARK_FONT, fontStyle: "bold" },
+        { text: "marketlevelmap.com", color: "rgba(199, 207, 222, 0.10)", fontSize: Math.round(big * 0.4), fontFamily: WATERMARK_FONT, fontStyle: "" }
+      ] });
+    }
     function sizePanes() {
       var panes = chart.panes(), height = container.clientHeight;
       if (panes.length > 1 && height > 0) panes[1].setHeight(Math.max(48, Math.round(height * 0.16)));
+      sizeWatermark();
     }
     sizePanes();
     var paneObserver = window.ResizeObserver ? new ResizeObserver(sizePanes) : null;
