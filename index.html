@@ -53,10 +53,6 @@ tbody tr:last-child td{border-bottom:0}
 .spark-line{fill:none;stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round}
 .spark-line.up{stroke:var(--up)}.spark-line.down{stroke:var(--down)}
 .spark-dot.up{fill:var(--up)}.spark-dot.down{fill:var(--down)}
-.spark-band.support{fill:color-mix(in srgb,var(--up) 16%,transparent)}
-.spark-band.resistance{fill:color-mix(in srgb,var(--down) 16%,transparent)}
-.spark-band.edge.support{fill:color-mix(in srgb,var(--up) 35%,transparent)}
-.spark-band.edge.resistance{fill:color-mix(in srgb,var(--down) 35%,transparent)}
 @media(min-width:701px){
   .analysis-col{width:132px}
   .analysis-link.has-spark{width:auto;height:auto;padding:3px 6px;border-color:transparent;background:none}
@@ -88,7 +84,7 @@ tbody tr:last-child td{border-bottom:0}
 <script>
 try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
 </script>
-<script src="assets/disclaimer.js?v=76512242" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=037b531f"></script><script src="assets/demo-data.js?v=9e9f55c7"></script><script src="assets/sparkline.js?v=eb413b7b"></script></head>
+<script src="assets/disclaimer.js?v=76512242" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=037b531f"></script><script src="assets/demo-data.js?v=9e9f55c7"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
 <body>
 <div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
@@ -166,11 +162,11 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     levelCell(r.day,Number(d.day)>0?d.day:lv.DO,price,r.digits);levelCell(r.week,Number(d.week)>0?d.week:lv.WO,price,r.digits);
     levelCell(r.month,Number(d.month)>0?d.month:lv.MO,price,r.digits);levelCell(r.year,lv.YO,price,r.digits);levelCell(r.ath,lv.ATH||lv.OATH,price,r.digits);
   }
-  // Sparkline (desktop only): 7 days of 1h closes per asset.
+  // Sparkline (desktop only): 7 days of 2h closes per asset.
   var DESKTOP=window.matchMedia("(min-width:701px)");
   function drawSpark(sym){
     var r=rows[sym];if(!r||!r.closes||!window.Sparkline)return;
-    r.sparkChange=Sparkline.draw(r.spark,r.closes,{live:r.last,zones:r.zones});r.sparkAt=Date.now();
+    r.sparkChange=Sparkline.draw(r.spark,r.closes,{live:r.last});r.sparkAt=Date.now();
     r.link.classList.add("has-spark");
     var w=words();r.link.setAttribute("aria-label",w.openAnalysis+" — "+sym+" · "+w.spark7d+" "+MarketUI.pct(r.sparkChange));
   }
@@ -197,7 +193,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   function build(sym,href){
     var tr=document.createElement("tr");tr.dataset.symbol=sym;
     tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><div><strong></strong><small></small></div></div></td><td class="num price">—</td><td class="num">—</td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="analysis-col"><a class="analysis-link"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><span class="spark"></span></a></td>';
-    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1],change:c[2],volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[9].firstChild,spark:c[9].querySelector(".spark"),data:null,levels:null,digits:null,last:null,closes:null,zones:null,sparkChange:null,sparkAt:0};
+    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1],change:c[2],volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[9].firstChild,spark:c[9].querySelector(".spark"),data:null,levels:null,digits:null,last:null,closes:null,sparkChange:null,sparkAt:0};
     c[0].querySelector("strong").textContent=sym;c[0].querySelector("small").textContent=MarketUI.nameOf(sym);r.link.href=href;
     function paintStar(){var on=favorites.indexOf(sym)>-1;r.star.classList.toggle("active",on);r.star.textContent=on?"★":"☆";r.star.setAttribute("aria-pressed",String(on))}
     r.star.addEventListener("click",function(e){e.stopPropagation();var i=favorites.indexOf(sym);if(i>-1)favorites.splice(i,1);else favorites.push(sym);saveFavorites();paintStar();labels();applyFilter()});
@@ -213,7 +209,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     order.forEach(function(sym){
       var entries=byAsset[sym].sort(MarketUI.byTimeframe),main=entries.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||entries[0];
       body.appendChild(build(sym,"bulletin.html?asset="+encodeURIComponent(sym)+"&method="+MarketUI.methodOf(main)));
-      if(main.report)fetch(main.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.zones)){rows[sym].zones=rep.zones;drawSpark(sym)}if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
+      if(main.report)fetch(main.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
       else if(window.DemoData&&DemoData.enabled)rows[sym].demo=true;
     });
     labels();applyFilter();
