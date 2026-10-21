@@ -1,13 +1,12 @@
 /* 7-day price sparkline for the market table's analysis column.
-   Data: 168 closed 1h candles from Binance in the visitor's browser; if Binance cannot be reached,
-   the closed 1h candles the local program uploaded to R2 (data.marketlevelmap.com). The right end
-   follows the table's live price. The nearest support and resistance zone of the asset's report
-   are drawn behind the line as faint bands (a zone outside the line's range is a thin edge strip).
-   Series are kept 10 minutes in localStorage. Nothing here classifies zones or reads analysis. */
+   Data: 84 closed 2h candles from Binance in the visitor's browser; if Binance cannot be reached,
+   the closed 1h candles the local program uploaded to R2 (data.marketlevelmap.com), taken every
+   second hour so they match 2h closes. The right end follows the table's live price.
+   Series are kept 10 minutes in localStorage. */
 var Sparkline = (function () {
   var BINANCE = "https://data-api.binance.vision/api/v3/klines";
   var DATA = "https://data.marketlevelmap.com/candles/";
-  var KEY = "mlm-spark-v1", TTL = 10 * 60 * 1000, POINTS = 168, MIN_POINTS = 24;
+  var KEY = "mlm-spark-v2", TTL = 10 * 60 * 1000, POINTS = 84, MIN_POINTS = 12, HOUR = 3600;
   var W = 112, H = 32, PAD = 2;
   var pending = {}, indexPromise = null;
 
@@ -31,10 +30,11 @@ var Sparkline = (function () {
   }
 
   function fromBinance(symbol) {
-    return getJson(BINANCE + "?symbol=" + encodeURIComponent(symbol) + "&interval=1h&limit=" + POINTS)
+    return getJson(BINANCE + "?symbol=" + encodeURIComponent(symbol) + "&interval=2h&limit=" + POINTS)
       .then(function (rows) { return rows.map(function (k) { return Number(k[4]); }); });
   }
   // The last monthly archive plus latest.json cover the last 7 days even right after a month change.
+  // A 2h candle (opening on an even UTC hour) closes with the 1h candle that opens on the odd hour.
   function fromR2(symbol) {
     if (!indexPromise) indexPromise = getJson(DATA + "index.json").catch(function (e) { indexPromise = null; throw e; });
     return indexPromise.then(function (index) {
@@ -45,7 +45,8 @@ var Sparkline = (function () {
     }).then(function (files) {
       var byTime = {};
       files.forEach(function (file) { (file.candles || []).forEach(function (row) { byTime[row[0]] = row[4]; }); });
-      return Object.keys(byTime).map(Number).sort(function (a, b) { return a - b; }).slice(-POINTS)
+      return Object.keys(byTime).map(Number).filter(function (time) { return Math.floor(time / HOUR) % 2 === 1; })
+        .sort(function (a, b) { return a - b; }).slice(-POINTS)
         .map(function (time) { return Number(byTime[time]); });
     });
   }
@@ -64,18 +65,6 @@ var Sparkline = (function () {
     return pending[symbol];
   }
 
-  // Nearest support below / resistance above the price, taken from the report as published.
-  function nearestZones(zones, price) {
-    var support = null, resistance = null;
-    (zones || []).forEach(function (zone) {
-      var low = Math.min(Number(zone.low), Number(zone.high)), high = Math.max(Number(zone.low), Number(zone.high));
-      if (!(low > 0) || !(high > 0)) return;
-      if (zone.type === "support" && low <= price && (!support || high > support.high)) support = { type: "support", low: low, high: high };
-      if (zone.type === "resistance" && high >= price && (!resistance || low < resistance.low)) resistance = { type: "resistance", low: low, high: high };
-    });
-    return [support, resistance].filter(Boolean);
-  }
-
   function svgEl(name, attrs) {
     var el = document.createElementNS("http://www.w3.org/2000/svg", name);
     Object.keys(attrs).forEach(function (key) { el.setAttribute(key, attrs[key]); });
@@ -91,13 +80,6 @@ var Sparkline = (function () {
     var x = function (i) { return PAD + (W - 2 * PAD) * i / (values.length - 1); };
     var change = values[values.length - 1] / values[0] - 1, tone = change >= 0 ? "up" : "down";
     var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, width: W, height: H, "aria-hidden": "true", focusable: "false" });
-    nearestZones(options.zones, values[values.length - 1]).forEach(function (zone) {
-      var cls = "spark-band " + zone.type, top, bottom;
-      if (zone.low > max) { top = 0; bottom = 2; cls += " edge"; }
-      else if (zone.high < min) { top = H - 2; bottom = H; cls += " edge"; }
-      else { top = y(Math.min(zone.high, max)); bottom = y(Math.max(zone.low, min)); if (bottom - top < 1.5) bottom = top + 1.5; }
-      svg.appendChild(svgEl("rect", { x: 0, y: top, width: W, height: bottom - top, "class": cls }));
-    });
     svg.appendChild(svgEl("polyline", {
       points: values.map(function (value, i) { return x(i).toFixed(1) + "," + y(value).toFixed(1); }).join(" "),
       "class": "spark-line " + tone,
@@ -108,5 +90,5 @@ var Sparkline = (function () {
     return change;
   }
 
-  return { load: load, draw: draw, nearestZones: nearestZones };
+  return { load: load, draw: draw };
 })();
