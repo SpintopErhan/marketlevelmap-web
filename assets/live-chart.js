@@ -416,6 +416,8 @@ var LiveChart = (function () {
 
     return {
       setLevels: setLevels,
+      // The chart as drawn now (zones, levels, watermark; no crosshair), at device resolution.
+      screenshot: function () { return chart.takeScreenshot(true, false); },
       lastClosedAt: function () { var rows = allRows(), last = rows[rows.length - 1]; return new Date((last[0] + STEP[state.tf]) * 1000).toISOString(); },
       // The last closed candle as drawn (R2 or browser tail): open time (the chart's label) and close time.
       lastClosedCandle: function () {
