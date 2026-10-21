@@ -39,6 +39,8 @@ main:not([data-state="live"]) #analysis,main:not([data-state="live"]) .head-meta
 .chart-panel:fullscreen .live-chart{height:calc(100vh - 96px)}
 .chart[data-state="loading"] img{visibility:hidden}
 .chart[data-state="loading"]::after{content:attr(data-loading);position:absolute;inset:0;display:grid;place-items:center;color:#9aaab5;font-size:13px}
+.chart[data-state="unavailable"] img{display:none}
+.chart[data-state="unavailable"]::after{content:attr(data-unavailable);position:absolute;inset:0;display:grid;place-items:center;padding:0 16px;color:#9aaab5;font-size:13px;text-align:center}
 .chart-foot{padding:9px 14px;color:var(--muted);font-size:11px}
 .note{margin-top:22px;padding:18px 20px}
 .note-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -123,8 +125,8 @@ th.r,td.r{text-align:right}
 <dialog id="chart-zoom" aria-labelledby="zoom-title"><div class="zoom-heading"><strong id="zoom-title"></strong><button id="close-chart-zoom" type="button" autofocus>Close ×</button></div><div class="zoom-scroll"><img id="zoom-image" alt=""></div></dialog>
 <script>
 var copy={
-  en:{title:"MarketLevelMap — Analysis",back:"← Market table",loadingPage:"Loading analysis…",unavailable:"This analysis is not available right now. Please check back later.",notListed:"There is no active analysis for this asset right now.",expand:"Expand",close:"Close ×",chartLoading:"Loading chart…",notes:"Analysis note",zonesTitle:"Support and resistance zones",zonesSub:"Sorted by price · distance to the zone's nearest edge",showAll:"Show all zones",showDrawn:"Show drawn zones",colType:"Type",colZone:"Zone",colFormed:"Formed",colDistance:"Distance",levelsTitle:"Key levels",levelsSub:"Period opens, Monday range and the all-time high",colCode:"Code",colLevel:"Level",colPrice:"Price",fullArchive:"Full archive →",archiveTitle:"Earlier {asset} analyses",demo:"Sample data",current:"Current price",resistance:"Resistance",support:"Support",inside:"inside",analysis:"Analysis",chartAsOf:"Chart data as of",chartUploaded:"Chart uploaded",published:"Published",lastCandle:"Last closed candle",liveOff:"Live candles unavailable",ATH:"All-time high",OATH:"Old ATH",PWO:"Previous weekly open",WO:"Weekly open",DO:"Daily open",MO:"Monthly open",YO:"Yearly open",MH:"Monday high",MM:"Monday mid",ML:"Monday low",levelsLive:"DO, WO and MO are live; other levels as of {date}.",levelsAsOf:"Levels as of {date}."},
-  tr:{title:"MarketLevelMap — Analiz",back:"← Piyasa tablosu",loadingPage:"Analiz yükleniyor…",unavailable:"Bu analiz şu anda görüntülenemiyor. Lütfen daha sonra tekrar deneyin.",notListed:"Bu varlık için şu anda yayında analiz yok.",expand:"Büyüt",close:"Kapat ×",chartLoading:"Grafik yükleniyor…",notes:"Analiz notu",zonesTitle:"Destek ve Direnç Bölgeleri",zonesSub:"Fiyata göre sıralı · uzaklık bölgenin en yakın kenarına göre",showAll:"Tüm bölgeleri göster",showDrawn:"Çizilen bölgeleri göster",colType:"Tür",colZone:"Bölge",colFormed:"Oluşum",colDistance:"Uzaklık",levelsTitle:"Anahtar Seviyeler",levelsSub:"Dönem açılışları, pazartesi aralığı ve tüm zamanların en yükseği",colCode:"Kod",colLevel:"Seviye",colPrice:"Fiyat",fullArchive:"Tüm arşiv →",archiveTitle:"Önceki {asset} analizleri",demo:"Örnek veriler",current:"Güncel fiyat",resistance:"Direnç",support:"Destek",inside:"içinde",analysis:"Analiz",chartAsOf:"Grafik verisi:",chartUploaded:"Grafik yüklendi:",published:"Yayınlandı",lastCandle:"Son kapanan mum",liveOff:"Canlı mumlar kullanılamıyor",ATH:"Tüm zamanların en yükseği",OATH:"Old ATH",PWO:"Önceki haftalık açılış",WO:"Haftalık açılış",DO:"Günlük açılış",MO:"Aylık açılış",YO:"Yıllık açılış",MH:"Pazartesi yüksek",MM:"Pazartesi orta",ML:"Pazartesi düşük",levelsLive:"DO, WO ve MO canlıdır; diğer seviyeler {date} itibarıyla.",levelsAsOf:"Seviyeler {date} itibarıyla."}
+  en:{title:"MarketLevelMap — Analysis",back:"← Market table",loadingPage:"Loading analysis…",unavailable:"This analysis is not available right now. Please check back later.",notListed:"There is no active analysis for this asset right now.",expand:"Expand",close:"Close ×",chartLoading:"Loading chart…",chartUnavailable:"The chart cannot be shown right now. Zones and levels are listed beside it.",notes:"Analysis note",zonesTitle:"Support and resistance zones",zonesSub:"Sorted by price · distance to the zone's nearest edge",showAll:"Show all zones",showDrawn:"Show drawn zones",colType:"Type",colZone:"Zone",colFormed:"Formed",colDistance:"Distance",levelsTitle:"Key levels",levelsSub:"Period opens, Monday range and the all-time high",colCode:"Code",colLevel:"Level",colPrice:"Price",fullArchive:"Full archive →",archiveTitle:"Earlier {asset} analyses",demo:"Sample data",current:"Current price",resistance:"Resistance",support:"Support",inside:"inside",analysis:"Analysis",chartAsOf:"Chart data as of",chartUploaded:"Chart uploaded",published:"Published",lastCandle:"Last closed candle",liveOff:"Live candles unavailable",ATH:"All-time high",OATH:"Old ATH",PWO:"Previous weekly open",WO:"Weekly open",DO:"Daily open",MO:"Monthly open",YO:"Yearly open",MH:"Monday high",MM:"Monday mid",ML:"Monday low",levelsLive:"DO, WO and MO are live; other levels as of {date}.",levelsAsOf:"Levels as of {date}."},
+  tr:{title:"MarketLevelMap — Analiz",back:"← Piyasa tablosu",loadingPage:"Analiz yükleniyor…",unavailable:"Bu analiz şu anda görüntülenemiyor. Lütfen daha sonra tekrar deneyin.",notListed:"Bu varlık için şu anda yayında analiz yok.",expand:"Büyüt",close:"Kapat ×",chartLoading:"Grafik yükleniyor…",chartUnavailable:"Grafik şu an gösterilemiyor. Bölgeler ve seviyeler yandaki tablolarda.",notes:"Analiz notu",zonesTitle:"Destek ve Direnç Bölgeleri",zonesSub:"Fiyata göre sıralı · uzaklık bölgenin en yakın kenarına göre",showAll:"Tüm bölgeleri göster",showDrawn:"Çizilen bölgeleri göster",colType:"Tür",colZone:"Bölge",colFormed:"Oluşum",colDistance:"Uzaklık",levelsTitle:"Anahtar Seviyeler",levelsSub:"Dönem açılışları, pazartesi aralığı ve tüm zamanların en yükseği",colCode:"Kod",colLevel:"Seviye",colPrice:"Fiyat",fullArchive:"Tüm arşiv →",archiveTitle:"Önceki {asset} analizleri",demo:"Örnek veriler",current:"Güncel fiyat",resistance:"Direnç",support:"Destek",inside:"içinde",analysis:"Analiz",chartAsOf:"Grafik verisi:",chartUploaded:"Grafik yüklendi:",published:"Yayınlandı",lastCandle:"Son kapanan mum",liveOff:"Canlı mumlar kullanılamıyor",ATH:"Tüm zamanların en yükseği",OATH:"Old ATH",PWO:"Önceki haftalık açılış",WO:"Haftalık açılış",DO:"Günlük açılış",MO:"Aylık açılış",YO:"Yıllık açılış",MH:"Pazartesi yüksek",MM:"Pazartesi orta",ML:"Pazartesi düşük",levelsLive:"DO, WO ve MO canlıdır; diğer seviyeler {date} itibarıyla.",levelsAsOf:"Seviyeler {date} itibarıyla."}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 var q=new URLSearchParams(location.search),asset=(q.get("asset")||"BTCUSDT").toUpperCase();
@@ -218,7 +220,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     document.getElementById("live-price").textContent=p?MarketUI.price(p,digits):"—";
     var c=document.getElementById("live-change"),r=p&&Number(live.o)>0?p/Number(live.o)-1:NaN;c.textContent=isFinite(r)?MarketUI.pct(r):"";c.className="num chg "+MarketUI.signClass(r);
     var at=(report&&report.analyzedAt)||(publication&&publication.activatedAt);document.getElementById("analysis-at").textContent=at?w.analysis+" "+MarketUI.dateTime(at):"";
-    chart.dataset.loading=w.chartLoading;
+    chart.dataset.loading=w.chartLoading;chart.dataset.unavailable=w.chartUnavailable;
   }
 
   // A "ladder": rows sorted by price, highest first, with the current price inserted where it falls.
@@ -308,8 +310,13 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     else if(window.DemoData&&DemoData.enabled){report=DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow());reportDemo=true;applyReportToChart();renderAll()}
     if(!chosen.report&&chosen.analysisComment)fetch(chosen.analysisComment.url,{cache:"no-store"}).then(function(r){return r.ok?r.text():""}).then(function(text){if(request===pending&&text){commentText=text;renderAll()}}).catch(function(){});
   }
-  // Fallback: the published PNG of the analysis.
-  function showPng(chosen){chart.dataset.mode="png";liveBox.hidden=true;img.src=chosen.image.url;renderChartTime()}
+  // Fallback when the interactive chart cannot load: the published PNG (older publications);
+  // newer publications carry no image, so the chart area shows a short note instead.
+  function showPng(chosen){
+    liveBox.hidden=true;
+    if(!chosen.image){chart.dataset.mode="none";img.removeAttribute("src");chart.dataset.state="unavailable";expand.disabled=true;renderChartTime();return}
+    chart.dataset.mode="png";img.src=chosen.image.url;renderChartTime();
+  }
   img.addEventListener("load",function(){chart.dataset.state="live";expand.disabled=false});
   img.addEventListener("error",function(){chart.dataset.state="live";expand.disabled=true});
   expand.addEventListener("click",function(){
@@ -338,7 +345,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   fetch("/api/publication",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){
     if(!body){fail("unavailable");return}
     publication=body;
-    var rows=(body.entries||[]).filter(function(e){return e.image&&MarketUI.assetOf(e)===asset});
+    var rows=(body.entries||[]).filter(function(e){return (e.image||e.report)&&MarketUI.assetOf(e)===asset});
     var cz=rows.filter(function(e){return MarketUI.methodOf(e)==="cz"}),shown=(cz.length?cz:rows).sort(MarketUI.byTimeframe);
     if(!shown.length){fail("notListed");return}
     var wanted=(q.get("tf")||"").toLowerCase(),first=null;
