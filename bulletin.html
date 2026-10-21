@@ -34,6 +34,14 @@ main:not([data-state="live"]) #analysis,main:not([data-state="live"]) .head-meta
 .chart-actions{display:flex;gap:8px}
 .ghost-btn[hidden],.ghost-btn .lock,.ghost-btn[data-locked] .dl{display:none}.ghost-btn[data-locked] .lock{display:block}
 .ghost-btn[data-locked]{opacity:.6;cursor:not-allowed}
+.share-wrap{position:relative}.share-wrap[hidden]{display:none}
+.share-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:20;min-width:190px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--panel);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.share-menu[hidden],.share-menu [hidden]{display:none}
+.share-menu a,.share-menu button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:6px;background:none;color:var(--fg);font:inherit;font-size:13px;text-align:left;text-decoration:none;cursor:pointer}
+.share-menu a:hover,.share-menu button:hover,.share-menu a:focus-visible,.share-menu button:focus-visible{background:var(--panel-2);outline:none}
+.share-menu svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.share-menu svg.brand{fill:currentColor;stroke:none}
+@media(max-width:600px){.chart-actions .ghost-btn{padding:7px 9px}.chart-actions .ghost-btn>span{display:none}}
 .chart{position:relative;min-height:200px;background:#101820}
 .chart img{display:block;width:100%;height:auto}
 .chart .live-chart{height:clamp(340px,62vh,640px)}
@@ -103,7 +111,7 @@ th.r,td.r{text-align:right}
 #zoom-image{display:block;width:auto;height:auto;max-width:none;user-select:none;-webkit-user-drag:none}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
-<script src="assets/disclaimer.js?v=76512242" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=037b531f"></script><script src="assets/demo-data.js?v=9e9f55c7"></script><script src="assets/live-chart.js?v=cc9cdb58"></script><script src="assets/features.js?v=1223835a"></script></head>
+<script src="assets/disclaimer.js?v=76512242" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=037b531f"></script><script src="assets/demo-data.js?v=9e9f55c7"></script><script src="assets/live-chart.js?v=cc9cdb58"></script><script src="assets/features.js?v=abf64eef"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -115,7 +123,7 @@ th.r,td.r{text-align:right}
 <div class="page-status" id="page-status" data-i18n="loadingPage">Loading analysis…</div>
 <div id="analysis">
 <div class="tabs" role="tablist" id="tf-tabs"></div>
-<section class="panel chart-panel"><div class="chart-head"><strong id="chart-name"></strong><div class="chart-actions"><button class="ghost-btn" id="download" type="button" hidden disabled><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6z"/></svg><span data-i18n="download">Download</span></button><button class="ghost-btn" id="expand" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg><span data-i18n="expand">Expand</span></button></div></div>
+<section class="panel chart-panel"><div class="chart-head"><strong id="chart-name"></strong><div class="chart-actions"><div class="share-wrap" id="share-wrap" hidden><button class="ghost-btn" id="share" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="share-menu" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg><span data-i18n="share">Share</span></button><div class="share-menu" id="share-menu" role="menu" hidden><button type="button" role="menuitem" data-share="image" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4"/><circle cx="15.5" cy="8.5" r="1.5"/></svg><span data-i18n="shareImage">Share image…</span></button><a role="menuitem" data-share="x" target="_blank" rel="noopener noreferrer"><svg class="brand" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg><span>X (Twitter)</span></a><a role="menuitem" data-share="telegram" target="_blank" rel="noopener noreferrer"><svg class="brand" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.47l-.38 5.33c.54 0 .78-.23 1.06-.51l2.55-2.43 5.28 3.86c.97.53 1.66.25 1.92-.89l3.48-16.3c.31-1.44-.52-2-1.47-1.65L1.3 10.85c-1.4.55-1.38 1.33-.24 1.68l5.21 1.63L18.37 6.6c.57-.38 1.09-.17.66.21z"/></svg><span>Telegram</span></a><button type="button" role="menuitem" data-share="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span data-i18n="copyLink">Copy link</span></button></div></div><button class="ghost-btn" id="download" type="button" hidden disabled><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6z"/></svg><span data-i18n="download">Download</span></button><button class="ghost-btn" id="expand" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg><span data-i18n="expand">Expand</span></button></div></div>
 <div class="chart" id="chart" data-state="loading"><div class="live-chart" id="live-chart" hidden></div><img id="chart-img" alt=""></div><div class="chart-foot" id="chart-time"></div></section>
 <section class="panel note" id="note" hidden><div class="note-head"><h2 data-i18n="notes">Analysis note</h2><span class="note-by" id="note-by"></span></div><p id="note-text"></p></section>
 <aside class="side-col">
@@ -131,8 +139,8 @@ th.r,td.r{text-align:right}
 <dialog id="chart-zoom" aria-labelledby="zoom-title"><div class="zoom-heading"><strong id="zoom-title"></strong><button id="close-chart-zoom" type="button" autofocus>Close ×</button></div><div class="zoom-scroll"><img id="zoom-image" alt=""></div></dialog>
 <script>
 var copy={
-  en:{title:"MarketLevelMap — Analysis",back:"← Market table",loadingPage:"Loading analysis…",unavailable:"This analysis is not available right now. Please check back later.",notListed:"There is no active analysis for this asset right now.",expand:"Expand",download:"Download",downloadTitle:"Download the chart as PNG",premiumOnly:"For premium members",notAdvice:"Not investment advice.",close:"Close ×",chartLoading:"Loading chart…",chartUnavailable:"The chart cannot be shown right now. Zones and levels are listed beside it.",notes:"Analysis note",zonesTitle:"Support and resistance zones",zonesSub:"Sorted by price · distance to the zone's nearest edge",showAll:"Show all zones",showDrawn:"Show drawn zones",colType:"Type",colZone:"Zone",colFormed:"Formed",colDistance:"Distance",levelsTitle:"Key levels",showOnChart:"Show on chart",levelsSub:"Period opens, Monday range and the all-time high",colCode:"Code",colLevel:"Level",colPrice:"Price",fullArchive:"Full archive →",archiveTitle:"Earlier {asset} analyses",demo:"Sample data",current:"Current price",resistance:"Resistance",support:"Support",inside:"inside",analysis:"Analysis",chartAsOf:"Chart data as of",chartUploaded:"Chart uploaded",published:"Published",lastCandle:"Last closed candle",liveOff:"Live candles unavailable",ATH:"All-time high",OATH:"Old ATH",PWO:"Previous weekly open",WO:"Weekly open",DO:"Daily open",MO:"Monthly open",YO:"Yearly open",MH:"Monday high",MM:"Monday mid",ML:"Monday low",levelsLive:"DO, WO and MO are live; other levels as of {date}.",levelsAsOf:"Levels as of {date}."},
-  tr:{title:"MarketLevelMap — Analiz",back:"← Piyasa tablosu",loadingPage:"Analiz yükleniyor…",unavailable:"Bu analiz şu anda görüntülenemiyor. Lütfen daha sonra tekrar deneyin.",notListed:"Bu varlık için şu anda yayında analiz yok.",expand:"Büyüt",download:"İndir",downloadTitle:"Grafiği PNG olarak indir",premiumOnly:"Premium üyelere özel",notAdvice:"Yatırım tavsiyesi değildir.",close:"Kapat ×",chartLoading:"Grafik yükleniyor…",chartUnavailable:"Grafik şu an gösterilemiyor. Bölgeler ve seviyeler yandaki tablolarda.",notes:"Analiz notu",zonesTitle:"Destek ve Direnç Bölgeleri",zonesSub:"Fiyata göre sıralı · uzaklık bölgenin en yakın kenarına göre",showAll:"Tüm bölgeleri göster",showDrawn:"Çizilen bölgeleri göster",colType:"Tür",colZone:"Bölge",colFormed:"Oluşum",colDistance:"Uzaklık",levelsTitle:"Anahtar Seviyeler",showOnChart:"Grafikte göster",levelsSub:"Dönem açılışları, pazartesi aralığı ve tüm zamanların en yükseği",colCode:"Kod",colLevel:"Seviye",colPrice:"Fiyat",fullArchive:"Tüm arşiv →",archiveTitle:"Önceki {asset} analizleri",demo:"Örnek veriler",current:"Güncel fiyat",resistance:"Direnç",support:"Destek",inside:"içinde",analysis:"Analiz",chartAsOf:"Grafik verisi:",chartUploaded:"Grafik yüklendi:",published:"Yayınlandı",lastCandle:"Son kapanan mum",liveOff:"Canlı mumlar kullanılamıyor",ATH:"Tüm zamanların en yükseği",OATH:"Old ATH",PWO:"Önceki haftalık açılış",WO:"Haftalık açılış",DO:"Günlük açılış",MO:"Aylık açılış",YO:"Yıllık açılış",MH:"Pazartesi yüksek",MM:"Pazartesi orta",ML:"Pazartesi düşük",levelsLive:"DO, WO ve MO canlıdır; diğer seviyeler {date} itibarıyla.",levelsAsOf:"Seviyeler {date} itibarıyla."}
+  en:{title:"MarketLevelMap — Analysis",back:"← Market table",loadingPage:"Loading analysis…",unavailable:"This analysis is not available right now. Please check back later.",notListed:"There is no active analysis for this asset right now.",expand:"Expand",download:"Download",downloadTitle:"Download the chart as PNG",premiumOnly:"For premium members",notAdvice:"Not investment advice.",share:"Share",shareImage:"Share image…",copyLink:"Copy link",linkCopied:"Link copied",shareText:"{asset} {tf} support and resistance zones",close:"Close ×",chartLoading:"Loading chart…",chartUnavailable:"The chart cannot be shown right now. Zones and levels are listed beside it.",notes:"Analysis note",zonesTitle:"Support and resistance zones",zonesSub:"Sorted by price · distance to the zone's nearest edge",showAll:"Show all zones",showDrawn:"Show drawn zones",colType:"Type",colZone:"Zone",colFormed:"Formed",colDistance:"Distance",levelsTitle:"Key levels",showOnChart:"Show on chart",levelsSub:"Period opens, Monday range and the all-time high",colCode:"Code",colLevel:"Level",colPrice:"Price",fullArchive:"Full archive →",archiveTitle:"Earlier {asset} analyses",demo:"Sample data",current:"Current price",resistance:"Resistance",support:"Support",inside:"inside",analysis:"Analysis",chartAsOf:"Chart data as of",chartUploaded:"Chart uploaded",published:"Published",lastCandle:"Last closed candle",liveOff:"Live candles unavailable",ATH:"All-time high",OATH:"Old ATH",PWO:"Previous weekly open",WO:"Weekly open",DO:"Daily open",MO:"Monthly open",YO:"Yearly open",MH:"Monday high",MM:"Monday mid",ML:"Monday low",levelsLive:"DO, WO and MO are live; other levels as of {date}.",levelsAsOf:"Levels as of {date}."},
+  tr:{title:"MarketLevelMap — Analiz",back:"← Piyasa tablosu",loadingPage:"Analiz yükleniyor…",unavailable:"Bu analiz şu anda görüntülenemiyor. Lütfen daha sonra tekrar deneyin.",notListed:"Bu varlık için şu anda yayında analiz yok.",expand:"Büyüt",download:"İndir",downloadTitle:"Grafiği PNG olarak indir",premiumOnly:"Premium üyelere özel",notAdvice:"Yatırım tavsiyesi değildir.",share:"Paylaş",shareImage:"Görseli paylaş…",copyLink:"Bağlantıyı kopyala",linkCopied:"Bağlantı kopyalandı",shareText:"{asset} {tf} destek ve direnç bölgeleri",close:"Kapat ×",chartLoading:"Grafik yükleniyor…",chartUnavailable:"Grafik şu an gösterilemiyor. Bölgeler ve seviyeler yandaki tablolarda.",notes:"Analiz notu",zonesTitle:"Destek ve Direnç Bölgeleri",zonesSub:"Fiyata göre sıralı · uzaklık bölgenin en yakın kenarına göre",showAll:"Tüm bölgeleri göster",showDrawn:"Çizilen bölgeleri göster",colType:"Tür",colZone:"Bölge",colFormed:"Oluşum",colDistance:"Uzaklık",levelsTitle:"Anahtar Seviyeler",showOnChart:"Grafikte göster",levelsSub:"Dönem açılışları, pazartesi aralığı ve tüm zamanların en yükseği",colCode:"Kod",colLevel:"Seviye",colPrice:"Fiyat",fullArchive:"Tüm arşiv →",archiveTitle:"Önceki {asset} analizleri",demo:"Örnek veriler",current:"Güncel fiyat",resistance:"Direnç",support:"Destek",inside:"içinde",analysis:"Analiz",chartAsOf:"Grafik verisi:",chartUploaded:"Grafik yüklendi:",published:"Yayınlandı",lastCandle:"Son kapanan mum",liveOff:"Canlı mumlar kullanılamıyor",ATH:"Tüm zamanların en yükseği",OATH:"Old ATH",PWO:"Önceki haftalık açılış",WO:"Haftalık açılış",DO:"Günlük açılış",MO:"Aylık açılış",YO:"Yıllık açılış",MH:"Pazartesi yüksek",MM:"Pazartesi orta",ML:"Pazartesi düşük",levelsLive:"DO, WO ve MO canlıdır; diğer seviyeler {date} itibarıyla.",levelsAsOf:"Seviyeler {date} itibarıyla."}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 var q=new URLSearchParams(location.search),asset=(q.get("asset")||"BTCUSDT").toUpperCase();
@@ -203,7 +211,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
    are kept out of the tabs until that method is presented again. */
 (function(){
   var page=document.querySelector("main"),status=document.getElementById("page-status"),tabs=document.getElementById("tf-tabs");
-  var chart=document.getElementById("chart"),img=document.getElementById("chart-img"),expand=document.getElementById("expand"),download=document.getElementById("download"),chartName=document.getElementById("chart-name"),chartTime=document.getElementById("chart-time");
+  var chart=document.getElementById("chart"),img=document.getElementById("chart-img"),expand=document.getElementById("expand"),download=document.getElementById("download"),share=document.getElementById("share"),shareWrap=document.getElementById("share-wrap"),chartName=document.getElementById("chart-name"),chartTime=document.getElementById("chart-time");
   var noteBox=document.getElementById("note"),noteText=document.getElementById("note-text"),noteBy=document.getElementById("note-by");
   var zonesBlock=document.getElementById("zones-block"),zoneRows=document.getElementById("zone-rows");
   var levelsBlock=document.getElementById("levels-block"),levelRows=document.getElementById("level-rows");
@@ -352,7 +360,12 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     download.disabled=state==="allowed"&&!liveChart;
     download.title=state==="locked"?w.premiumOnly:w.downloadTitle;
     download.setAttribute("aria-disabled",String(state!=="allowed"));
+    // Phones show the chart buttons as icons only, so each carries its name.
+    download.setAttribute("aria-label",w.download);expand.setAttribute("aria-label",w.expand);share.setAttribute("aria-label",w.share);share.title=w.share;
+    shareWrap.hidden=!window.Features||Features.state("chartShare")!=="allowed";
+    share.disabled=!entry;
   }
+  function chartFileName(){return "MarketLevelMap_"+asset+"_"+MarketUI.timeframeOf(entry).toUpperCase()+"_"+stamp(new Date())+"UTC.png"}
   function stamp(d){return d.toISOString().slice(0,16).replace(/[-:]/g,"").replace("T","-")}
   function chartImage(){
     var shot=liveChart.screenshot(),k=shot.width/(liveBox.clientWidth||shot.width),w=words();
@@ -381,10 +394,57 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     chartImage().toBlob(function(blob){
       if(!blob)return;
       var a=document.createElement("a"),url=URL.createObjectURL(blob);
-      a.href=url;a.download="MarketLevelMap_"+asset+"_"+MarketUI.timeframeOf(entry).toUpperCase()+"_"+stamp(new Date())+"UTC.png";
+      a.href=url;a.download=chartFileName();
       document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},10000);
     },"image/png");
   });
+  // Share menu (Features "chartShare"): X and Telegram share this analysis page's link with a short text;
+  // "Copy link" copies it. Where the browser can share files (most phones), "Share image…" hands the
+  // downloadable PNG plus the link to the system share sheet; the PNG is prepared when the menu opens so
+  // the share call stays inside the tap. Link previews show the site image until charts are published as
+  // images again (README "Chart sharing").
+  var shareMenu=document.getElementById("share-menu"),shareFile=null;
+  function shareUrl(){return location.origin+"/bulletin?asset="+encodeURIComponent(asset)+"&tf="+encodeURIComponent(MarketUI.timeframeOf(entry))}
+  function shareText(){return words().shareText.replace("{asset}",asset).replace("{tf}",MarketUI.timeframeOf(entry).toUpperCase())+" · MarketLevelMap"}
+  function closeShare(focusButton){if(shareMenu.hidden)return;shareMenu.hidden=true;share.setAttribute("aria-expanded","false");if(focusButton)share.focus()}
+  function openShare(){
+    var url=shareUrl(),text=shareText(),imageItem=shareMenu.querySelector('[data-share="image"]');
+    shareMenu.querySelector('[data-share="x"]').href="https://x.com/intent/post?text="+encodeURIComponent(text)+"&url="+encodeURIComponent(url);
+    shareMenu.querySelector('[data-share="telegram"]').href="https://t.me/share/url?url="+encodeURIComponent(url)+"&text="+encodeURIComponent(text);
+    shareMenu.querySelector('[data-share="copy"] span').textContent=words().copyLink;
+    shareFile=null;imageItem.hidden=true;
+    var canFiles=navigator.canShare&&window.File&&liveChart&&Features.state("chartDownload")==="allowed";
+    if(canFiles)chartImage().toBlob(function(blob){
+      if(!blob||shareMenu.hidden)return;
+      var file=new File([blob],chartFileName(),{type:"image/png"});
+      try{if(navigator.canShare({files:[file]})){shareFile=file;imageItem.hidden=false}}catch(e){}
+    },"image/png");
+    shareMenu.hidden=false;share.setAttribute("aria-expanded","true");
+    var first=shareMenu.querySelector('[role="menuitem"]:not([hidden])');if(first)first.focus();
+  }
+  share.addEventListener("click",function(){if(shareMenu.hidden)openShare();else closeShare(false)});
+  shareMenu.addEventListener("click",function(event){
+    var item=event.target.closest("[data-share]");if(!item)return;
+    var kind=item.dataset.share;
+    if(kind==="copy"){
+      event.preventDefault();var label=item.querySelector("span");
+      var done=function(){label.textContent=words().linkCopied;setTimeout(function(){closeShare(true)},900)};
+      if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(shareUrl()).then(done,function(){window.prompt(words().copyLink,shareUrl())});
+      else window.prompt(words().copyLink,shareUrl());
+      return;
+    }
+    if(kind==="image"){
+      event.preventDefault();if(!shareFile)return;
+      navigator.share({files:[shareFile],title:shareText(),text:shareText()+" "+shareUrl()}).catch(function(){/* cancelled */});
+    }
+    closeShare(false);
+  });
+  shareMenu.addEventListener("keydown",function(event){
+    var items=[].slice.call(shareMenu.querySelectorAll('[role="menuitem"]:not([hidden])')),i=items.indexOf(document.activeElement);
+    if(event.key==="Escape"){event.preventDefault();closeShare(true)}
+    else if(event.key==="ArrowDown"||event.key==="ArrowUp"){event.preventDefault();var next=items[(i+(event.key==="ArrowDown"?1:items.length-1))%items.length];if(next)next.focus()}
+  });
+  document.addEventListener("click",function(event){if(!shareWrap.contains(event.target))closeShare(false)});
   expand.addEventListener("click",function(){
     if(chart.dataset.mode!=="live"){openChartZoom(img,chartName.textContent,expand);return}
     var panel=chart.closest(".chart-panel");
