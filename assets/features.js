@@ -3,7 +3,8 @@
    This only shapes the page; it is not access control (anything drawn in the browser can be captured). */
 var Features = (function () {
   var PLAN = {
-    chartDownload: "all" // "all" | "premium" | "off"
+    chartDownload: "all", // "all" | "premium" | "off"
+    chartShare: "all" // share menu (X, Telegram, copy link); its image item also needs chartDownload
   };
   function isPremium() { return false; } // hook for the future membership check
   function plan(feature) { return PLAN[feature] || "off"; }

@@ -89,9 +89,27 @@ analysis and last-candle times, "Not investment advice."; on narrow charts the t
 left out). File name: `MarketLevelMap_<SYMBOL>_<TF>_<YYYYMMDD-HHMM>UTC.png` (download time, UTC). Older
 PNG-only publications offer no download.
 
+## Chart sharing
+
+The chart header's Share button opens a menu:
+
+- **X (Twitter)** — `x.com/intent/post?text=…&url=…`; **Telegram** — `t.me/share/url?url=…&text=…`. Both share
+  the analysis page link `https://marketlevelmap.com/bulletin?asset=<SYMBOL>&tf=<tf>` with a short text
+  ("BTCUSDT 4H support and resistance zones · MarketLevelMap", Turkish on the Turkish page).
+- **Copy link** — the same link to the clipboard ("Link copied").
+- **Share image…** — only where the browser can share files (`navigator.canShare({ files })`, i.e. most
+  phones): the same PNG as Download plus the text and link go to the system share sheet. The PNG is built
+  when the menu opens, so the share call stays inside the tap. Needs `chartDownload` to be allowed too.
+
+Link previews: since publications no longer carry a chart PNG, `functions/_middleware.js` finds no
+`entry.image` and X/Telegram cards show `assets/og-image.png`, not the chart. Showing the chart there needs
+a server-side image again (open item).
+
+On phones (≤ 600 px) the chart buttons (Share, Download, Expand) show icons only and carry `aria-label`s.
+
 ### Feature plans (premium)
 
-`assets/features.js` decides who may use a feature: `PLAN = { chartDownload: "all" }`, where a value is
+`assets/features.js` decides who may use a feature: `PLAN = { chartDownload: "all", chartShare: "all" }`, where a value is
 `"all"`, `"premium"` or `"off"`. `Features.state(name)` answers `allowed`, `locked` (premium-only and the
 visitor is not premium: the button shows a lock, "For premium members", and does nothing) or `off`
 (hidden). There are no accounts yet, so `isPremium()` returns false; a membership check plugs in there.
