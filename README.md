@@ -63,6 +63,33 @@ opens); it always answers 200 with JSON and lists upstream status codes in `atte
 
 The old scrolling price strip is kept in `assets/price-strip.js` / `assets/price-strip.css` but no page loads it.
 
+## Market table sparkline
+
+The market table's Analysis column shows a 7-day price line per asset (`assets/sparkline.js`, wired in
+`index.html`). It is decoration for the link to the analysis page; it reads no report and no zones.
+
+- **Where it shows:** desktop only (`min-width: 701px`). On mobile, and on desktop until the line is drawn
+  or when no data could be loaded, the cell shows the bar-chart icon instead. Resizing a narrow window to
+  desktop width loads the lines then. All rows load at once (no IntersectionObserver: it does not fire in
+  hidden or emulated panes, and the table is short).
+- **Data:** 84 closed 2h candles (7 days) from Binance REST in the visitor's browser,
+  `data-api.binance.vision/api/v3/klines?interval=2h&limit=84`, close = `k[4]`. Requests never pass through
+  Cloudflare (Binance refuses Workers). If Binance cannot be reached, the 1h candles the local program
+  uploads to R2 are used (`data.marketlevelmap.com/candles/index.json` → `<SYMBOL>/1h/<last archive>.json`
+  plus `latest.json`, merged by open time). R2 has no 2h files, so only 1h candles opening on an odd UTC hour
+  are kept: their close is the close of the 2h candle that opened an hour earlier. Checked against Binance:
+  identical closes.
+- **Live end:** the last point is replaced by the table's live price; a row is redrawn at most every 5 s.
+- **Colour:** green (`--up`) if the live price is at or above the first close, red (`--down`) otherwise,
+  with a dot on the last point. The link's `aria-label` carries the 7-day change ("7 days +2.41%").
+- **Cache:** series are kept 10 minutes in localStorage under `mlm-spark-v2`. Change the key whenever the
+  series format or candle size changes, so browsers do not draw old series. At least 12 points are needed.
+- **Size:** 112 × 32 px SVG (2 px padding); the column is 132 px wide on desktop.
+
+History: the first version (PR #36) used 168 × 1h candles and drew the nearest support/resistance zone of
+the asset's report as faint bands behind the line. The bands looked cluttered and were removed together
+with the switch to 2h candles (PR #37).
+
 ## Engine data contracts (R2)
 
 The local engine does not publish these yet; the site reads them as soon as they exist. Until then the
@@ -125,5 +152,5 @@ never on marketlevelmap.com by default, and every section it fills shows a "Samp
 ## Shared assets and browser caches
 
 Pages link the files in `assets/` (`site.css`, `disclaimer.js`, `market-cache.js`, `market-feed.js`,
-`market-ui.js`, `demo-data.js`) with a `?v=` content hash so browsers pick up new versions. After editing
+`market-ui.js`, `demo-data.js`, `sparkline.js`) with a `?v=` content hash so browsers pick up new versions. After editing
 one, update its hash in every page that loads it, e.g. `sha1sum assets/site.css | cut -c1-8`.
