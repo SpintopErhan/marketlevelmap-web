@@ -268,17 +268,20 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     var note=document.getElementById("levels-note"),asOf=report&&report.levelsAsOf;
     note.hidden=!(codes.length&&asOf);if(asOf)note.textContent=words()[liveCount?"levelsLive":"levelsAsOf"].replace("{date}",MarketUI.dateTime(asOf));
     if(!codes.length)return;
-    // Rows are rebuilt on every price tick: keep keyboard focus on the same level's eye.
+    // Rows are rebuilt on every price tick. They are built off-page and swapped in at once (an
+    // emptied table would shrink the page and move the scroll position), and keyboard focus returns
+    // to the same level's eye without scrolling the page to it.
     var focused=document.activeElement&&document.activeElement.classList.contains("eye")&&levelRows.contains(document.activeElement)?document.activeElement.dataset.code:null;
-    var p=priceNow(),w=words(),placed=!p;levelRows.textContent="";
+    var p=priceNow(),w=words(),placed=!p,rows=document.createDocumentFragment(),refocus=null;
     codes.sort(function(a,b){return map[b]-map[a]}).forEach(function(code){
-      if(!placed&&map[code]<p){levelRows.appendChild(nowRow(4,p));placed=true}
+      if(!placed&&map[code]<p){rows.appendChild(nowRow(4,p));placed=true}
       var tr=document.createElement("tr");tr.innerHTML='<td><input type="checkbox" class="eye"><span class="badge code"></span></td><td></td><td class="r num"></td><td></td>';
       var c=tr.children,eye=c[0].firstChild;eye.checked=chartLevels.indexOf(code)>-1;eye.title=w.showOnChart;eye.setAttribute("aria-label",w.showOnChart+" — "+code);
       eye.dataset.code=code;eye.addEventListener("change",function(){toggleChartLevel(code,eye.checked)});c[0].lastChild.textContent=code;c[1].textContent=w[code];c[2].textContent=MarketUI.price(map[code],digits);distanceCell(c[3],p?map[code]/p-1:NaN);
-      levelRows.appendChild(tr);if(code===focused)eye.focus();
+      rows.appendChild(tr);if(code===focused)refocus=eye;
     });
-    if(!placed)levelRows.appendChild(nowRow(4,p));
+    if(!placed)rows.appendChild(nowRow(4,p));
+    levelRows.textContent="";levelRows.appendChild(rows);if(refocus)refocus.focus({preventScroll:true});
   }
   function renderNote(){
     var lang=MarketUI.lang(),n=report&&report.note,text=n?(typeof n==="string"?n:n[lang]||n.en||n.tr):commentText;
