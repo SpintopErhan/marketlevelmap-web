@@ -63,6 +63,15 @@ opens); it always answers 200 with JSON and lists upstream status codes in `atte
 
 The old scrolling price strip is kept in `assets/price-strip.js` / `assets/price-strip.css` but no page loads it.
 
+## Key levels on the analysis chart
+
+Each row of the analysis page's "Key levels" table starts with an eye toggle. A switched-on level is drawn
+on the interactive chart as a dashed orange (`#e8a765`) price line labelled with its code (`DO`, `WO`,
+`ATH`…) on the price axis (`LiveChart` `setLevels`). The choice is stored in this browser under
+`mlm-chart-levels-v1` (a list of codes) and applies to every asset and timeframe; nothing is shown by
+default. `DO`, `WO` and `MO` follow the live feed, so their lines move when a new period opens. Price lines
+do not stretch the price scale: a level outside the visible range (often `ATH`) is simply not drawn.
+
 ## Market table sparkline
 
 The market table's Analysis column shows a 7-day price line per asset (`assets/sparkline.js`, wired in

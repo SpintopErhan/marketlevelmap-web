@@ -24,6 +24,7 @@ var LiveChart = (function () {
   var BINANCE_REST = "https://data-api.binance.vision/api/v3/klines";
   var BINANCE_WS = "wss://data-stream.binance.vision/ws/";
   var EMA_PERIODS = [20, 50, 200];
+  var LEVEL_COLOR = "#e8a765"; // key levels the visitor chose to show (the site's CZ colour)
   var TAIL_REQUESTS = 2, KLINE_LIMIT = 1000, WS_GIVE_UP = 3;
   var libPromise = null, indexPromise = null;
 
@@ -384,7 +385,24 @@ var LiveChart = (function () {
     fillTail().then(function () { initialView(); setLiveStatus("live"); openStream(); })
       .catch(function () { setLiveStatus("unavailable"); });
 
+    // Key levels the page asks for (analysis page "Key levels" eye toggles): one dashed price line
+    // each, labelled with its code on the price axis. Price lines do not change the price scale.
+    var levelLines = {};
+    function setLevels(list) {
+      if (destroyed) return;
+      var keep = {};
+      (list || []).forEach(function (level) {
+        var code = String(level.code), price = Number(level.price);
+        if (!(price > 0)) return;
+        keep[code] = true;
+        if (!levelLines[code]) levelLines[code] = candles.createPriceLine({ price: price, color: LEVEL_COLOR, lineWidth: 1, lineStyle: LC.LineStyle.LargeDashed, axisLabelVisible: true, title: code });
+        else if (levelLines[code].options().price !== price) levelLines[code].applyOptions({ price: price });
+      });
+      Object.keys(levelLines).forEach(function (code) { if (!keep[code]) { candles.removePriceLine(levelLines[code]); delete levelLines[code]; } });
+    }
+
     return {
+      setLevels: setLevels,
       lastClosedAt: function () { var rows = allRows(), last = rows[rows.length - 1]; return new Date((last[0] + STEP[state.tf]) * 1000).toISOString(); },
       // The last closed candle as drawn (R2 or browser tail): open time (the chart's label) and close time.
       lastClosedCandle: function () {
