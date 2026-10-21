@@ -40,7 +40,8 @@ function publicEntry(entry) {
 }
 
 // The chart's own time: an explicit field written by the publisher wins; otherwise the
-// image's R2 custom metadata; otherwise the time the image was uploaded to R2.
+// R2 custom metadata of the image (or, for image-less publications, the report); otherwise
+// the time that object was uploaded to R2.
 const TIME_FIELDS = ["dataAsOf", "analysisTime", "chartTime", "generatedAt", "renderedAt", "createdAt"];
 
 function explicitTime(source) {
@@ -53,11 +54,12 @@ function explicitTime(source) {
 }
 
 async function chartTime(bucket, entry) {
-  const declared = explicitTime(entry) || explicitTime(entry.image);
+  const declared = explicitTime(entry) || explicitTime(entry.image) || explicitTime(entry.report);
   if (declared) return { at: declared, source: "publication" };
-  if (!entry.image?.objectKey) return null;
+  const artifact = entry.image?.objectKey ? entry.image : entry.report;
+  if (!artifact?.objectKey) return null;
   try {
-    const head = await bucket.head(entry.image.objectKey);
+    const head = await bucket.head(artifact.objectKey);
     if (!head) return null;
     const fromMetadata = explicitTime(head.customMetadata);
     if (fromMetadata) return { at: fromMetadata, source: "metadata" };

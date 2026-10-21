@@ -171,7 +171,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   function useLevels(sym,list,demo){var map={};(list||[]).forEach(function(l){if(l&&l.code&&Number(l.price)>0)map[String(l.code).toUpperCase()]=Number(l.price)});rows[sym].levels=map;if(demo)document.getElementById("table-demo").hidden=false;paint(sym)}
 
   fetch("/api/publication",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(publication){
-    var byAsset={};((publication&&publication.entries)||[]).forEach(function(e){var a=MarketUI.assetOf(e);if(/^[A-Z0-9]{2,20}$/.test(a)&&e.image)(byAsset[a]||(byAsset[a]=[])).push(e)});
+    var byAsset={};((publication&&publication.entries)||[]).forEach(function(e){var a=MarketUI.assetOf(e);if(/^[A-Z0-9]{2,20}$/.test(a)&&(e.image||e.report))(byAsset[a]||(byAsset[a]=[])).push(e)});
     order=Object.keys(byAsset).sort(MarketUI.byPopularity);if(!order.length){status("unavailable");return}
     activatedAt=publication.activatedAt||null;body.innerHTML="";
     order.forEach(function(sym){
