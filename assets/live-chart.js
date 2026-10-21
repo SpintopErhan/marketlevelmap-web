@@ -96,13 +96,22 @@ var LiveChart = (function () {
   // Where a zone starts on the loaded candles. "unknown": no formedAt (decision B: drawn from the
   // first loaded candle with a faded, dashed left edge). "clipped": its start is older than what is
   // loaded, so no left edge is drawn until the user scrolls back to it.
+  // startAt (first structural evidence) wins over formedAt (confirmation); a box that starts at
+  // its first evidence opens START_PADDING_BARS candles earlier so that candle sits inside it.
+  // The local program draws with the same rule.
+  var START_PADDING_BARS = 3;
   function zoneStart(zone, times) {
     var first = times[0];
-    var formed = Date.parse(zone.formedAt || "");
+    var evidence = Date.parse(zone.startAt || "");
+    var formed = isFinite(evidence) ? evidence : Date.parse(zone.formedAt || "");
     if (!isFinite(formed)) return { time: first, edge: "unknown" };
     var seconds = Math.floor(formed / 1000);
     if (seconds < first) return { time: first, edge: "clipped" };
-    for (var i = 0; i < times.length; i++) if (times[i] >= seconds) return { time: times[i], edge: "solid" };
+    for (var i = 0; i < times.length; i++) if (times[i] >= seconds) {
+      if (!isFinite(evidence)) return { time: times[i], edge: "solid" };
+      var padded = i - START_PADDING_BARS;
+      return padded < 0 ? { time: first, edge: "clipped" } : { time: times[padded], edge: "solid" };
+    }
     return null; // formed after the last loaded candle: nothing to draw yet
   }
 
