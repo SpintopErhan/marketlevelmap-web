@@ -31,6 +31,9 @@ main:not([data-state="live"]) #analysis,main:not([data-state="live"]) .head-meta
 .ghost-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font-size:12px;font-weight:600;cursor:pointer}
 .ghost-btn:hover{border-color:var(--accent)}.ghost-btn:disabled{opacity:.45;cursor:default}
 .ghost-btn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.chart-actions{display:flex;gap:8px}
+.ghost-btn[hidden],.ghost-btn .lock,.ghost-btn[data-locked] .dl{display:none}.ghost-btn[data-locked] .lock{display:block}
+.ghost-btn[data-locked]{opacity:.6;cursor:not-allowed}
 .chart{position:relative;min-height:200px;background:#101820}
 .chart img{display:block;width:100%;height:auto}
 .chart .live-chart{height:clamp(340px,62vh,640px)}
@@ -100,7 +103,7 @@ th.r,td.r{text-align:right}
 #zoom-image{display:block;width:auto;height:auto;max-width:none;user-select:none;-webkit-user-drag:none}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
-<script src="assets/disclaimer.js?v=76512242" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=037b531f"></script><script src="assets/demo-data.js?v=9e9f55c7"></script><script src="assets/live-chart.js?v=b7f0dd5c"></script></head>
+<script src="assets/disclaimer.js?v=76512242" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=037b531f"></script><script src="assets/demo-data.js?v=9e9f55c7"></script><script src="assets/live-chart.js?v=cc9cdb58"></script><script src="assets/features.js?v=1223835a"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -112,7 +115,7 @@ th.r,td.r{text-align:right}
 <div class="page-status" id="page-status" data-i18n="loadingPage">Loading analysis…</div>
 <div id="analysis">
 <div class="tabs" role="tablist" id="tf-tabs"></div>
-<section class="panel chart-panel"><div class="chart-head"><strong id="chart-name"></strong><button class="ghost-btn" id="expand" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg><span data-i18n="expand">Expand</span></button></div>
+<section class="panel chart-panel"><div class="chart-head"><strong id="chart-name"></strong><div class="chart-actions"><button class="ghost-btn" id="download" type="button" hidden disabled><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6z"/></svg><span data-i18n="download">Download</span></button><button class="ghost-btn" id="expand" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg><span data-i18n="expand">Expand</span></button></div></div>
 <div class="chart" id="chart" data-state="loading"><div class="live-chart" id="live-chart" hidden></div><img id="chart-img" alt=""></div><div class="chart-foot" id="chart-time"></div></section>
 <section class="panel note" id="note" hidden><div class="note-head"><h2 data-i18n="notes">Analysis note</h2><span class="note-by" id="note-by"></span></div><p id="note-text"></p></section>
 <aside class="side-col">
@@ -128,8 +131,8 @@ th.r,td.r{text-align:right}
 <dialog id="chart-zoom" aria-labelledby="zoom-title"><div class="zoom-heading"><strong id="zoom-title"></strong><button id="close-chart-zoom" type="button" autofocus>Close ×</button></div><div class="zoom-scroll"><img id="zoom-image" alt=""></div></dialog>
 <script>
 var copy={
-  en:{title:"MarketLevelMap — Analysis",back:"← Market table",loadingPage:"Loading analysis…",unavailable:"This analysis is not available right now. Please check back later.",notListed:"There is no active analysis for this asset right now.",expand:"Expand",close:"Close ×",chartLoading:"Loading chart…",chartUnavailable:"The chart cannot be shown right now. Zones and levels are listed beside it.",notes:"Analysis note",zonesTitle:"Support and resistance zones",zonesSub:"Sorted by price · distance to the zone's nearest edge",showAll:"Show all zones",showDrawn:"Show drawn zones",colType:"Type",colZone:"Zone",colFormed:"Formed",colDistance:"Distance",levelsTitle:"Key levels",showOnChart:"Show on chart",levelsSub:"Period opens, Monday range and the all-time high",colCode:"Code",colLevel:"Level",colPrice:"Price",fullArchive:"Full archive →",archiveTitle:"Earlier {asset} analyses",demo:"Sample data",current:"Current price",resistance:"Resistance",support:"Support",inside:"inside",analysis:"Analysis",chartAsOf:"Chart data as of",chartUploaded:"Chart uploaded",published:"Published",lastCandle:"Last closed candle",liveOff:"Live candles unavailable",ATH:"All-time high",OATH:"Old ATH",PWO:"Previous weekly open",WO:"Weekly open",DO:"Daily open",MO:"Monthly open",YO:"Yearly open",MH:"Monday high",MM:"Monday mid",ML:"Monday low",levelsLive:"DO, WO and MO are live; other levels as of {date}.",levelsAsOf:"Levels as of {date}."},
-  tr:{title:"MarketLevelMap — Analiz",back:"← Piyasa tablosu",loadingPage:"Analiz yükleniyor…",unavailable:"Bu analiz şu anda görüntülenemiyor. Lütfen daha sonra tekrar deneyin.",notListed:"Bu varlık için şu anda yayında analiz yok.",expand:"Büyüt",close:"Kapat ×",chartLoading:"Grafik yükleniyor…",chartUnavailable:"Grafik şu an gösterilemiyor. Bölgeler ve seviyeler yandaki tablolarda.",notes:"Analiz notu",zonesTitle:"Destek ve Direnç Bölgeleri",zonesSub:"Fiyata göre sıralı · uzaklık bölgenin en yakın kenarına göre",showAll:"Tüm bölgeleri göster",showDrawn:"Çizilen bölgeleri göster",colType:"Tür",colZone:"Bölge",colFormed:"Oluşum",colDistance:"Uzaklık",levelsTitle:"Anahtar Seviyeler",showOnChart:"Grafikte göster",levelsSub:"Dönem açılışları, pazartesi aralığı ve tüm zamanların en yükseği",colCode:"Kod",colLevel:"Seviye",colPrice:"Fiyat",fullArchive:"Tüm arşiv →",archiveTitle:"Önceki {asset} analizleri",demo:"Örnek veriler",current:"Güncel fiyat",resistance:"Direnç",support:"Destek",inside:"içinde",analysis:"Analiz",chartAsOf:"Grafik verisi:",chartUploaded:"Grafik yüklendi:",published:"Yayınlandı",lastCandle:"Son kapanan mum",liveOff:"Canlı mumlar kullanılamıyor",ATH:"Tüm zamanların en yükseği",OATH:"Old ATH",PWO:"Önceki haftalık açılış",WO:"Haftalık açılış",DO:"Günlük açılış",MO:"Aylık açılış",YO:"Yıllık açılış",MH:"Pazartesi yüksek",MM:"Pazartesi orta",ML:"Pazartesi düşük",levelsLive:"DO, WO ve MO canlıdır; diğer seviyeler {date} itibarıyla.",levelsAsOf:"Seviyeler {date} itibarıyla."}
+  en:{title:"MarketLevelMap — Analysis",back:"← Market table",loadingPage:"Loading analysis…",unavailable:"This analysis is not available right now. Please check back later.",notListed:"There is no active analysis for this asset right now.",expand:"Expand",download:"Download",downloadTitle:"Download the chart as PNG",premiumOnly:"For premium members",notAdvice:"Not investment advice.",close:"Close ×",chartLoading:"Loading chart…",chartUnavailable:"The chart cannot be shown right now. Zones and levels are listed beside it.",notes:"Analysis note",zonesTitle:"Support and resistance zones",zonesSub:"Sorted by price · distance to the zone's nearest edge",showAll:"Show all zones",showDrawn:"Show drawn zones",colType:"Type",colZone:"Zone",colFormed:"Formed",colDistance:"Distance",levelsTitle:"Key levels",showOnChart:"Show on chart",levelsSub:"Period opens, Monday range and the all-time high",colCode:"Code",colLevel:"Level",colPrice:"Price",fullArchive:"Full archive →",archiveTitle:"Earlier {asset} analyses",demo:"Sample data",current:"Current price",resistance:"Resistance",support:"Support",inside:"inside",analysis:"Analysis",chartAsOf:"Chart data as of",chartUploaded:"Chart uploaded",published:"Published",lastCandle:"Last closed candle",liveOff:"Live candles unavailable",ATH:"All-time high",OATH:"Old ATH",PWO:"Previous weekly open",WO:"Weekly open",DO:"Daily open",MO:"Monthly open",YO:"Yearly open",MH:"Monday high",MM:"Monday mid",ML:"Monday low",levelsLive:"DO, WO and MO are live; other levels as of {date}.",levelsAsOf:"Levels as of {date}."},
+  tr:{title:"MarketLevelMap — Analiz",back:"← Piyasa tablosu",loadingPage:"Analiz yükleniyor…",unavailable:"Bu analiz şu anda görüntülenemiyor. Lütfen daha sonra tekrar deneyin.",notListed:"Bu varlık için şu anda yayında analiz yok.",expand:"Büyüt",download:"İndir",downloadTitle:"Grafiği PNG olarak indir",premiumOnly:"Premium üyelere özel",notAdvice:"Yatırım tavsiyesi değildir.",close:"Kapat ×",chartLoading:"Grafik yükleniyor…",chartUnavailable:"Grafik şu an gösterilemiyor. Bölgeler ve seviyeler yandaki tablolarda.",notes:"Analiz notu",zonesTitle:"Destek ve Direnç Bölgeleri",zonesSub:"Fiyata göre sıralı · uzaklık bölgenin en yakın kenarına göre",showAll:"Tüm bölgeleri göster",showDrawn:"Çizilen bölgeleri göster",colType:"Tür",colZone:"Bölge",colFormed:"Oluşum",colDistance:"Uzaklık",levelsTitle:"Anahtar Seviyeler",showOnChart:"Grafikte göster",levelsSub:"Dönem açılışları, pazartesi aralığı ve tüm zamanların en yükseği",colCode:"Kod",colLevel:"Seviye",colPrice:"Fiyat",fullArchive:"Tüm arşiv →",archiveTitle:"Önceki {asset} analizleri",demo:"Örnek veriler",current:"Güncel fiyat",resistance:"Direnç",support:"Destek",inside:"içinde",analysis:"Analiz",chartAsOf:"Grafik verisi:",chartUploaded:"Grafik yüklendi:",published:"Yayınlandı",lastCandle:"Son kapanan mum",liveOff:"Canlı mumlar kullanılamıyor",ATH:"Tüm zamanların en yükseği",OATH:"Old ATH",PWO:"Önceki haftalık açılış",WO:"Haftalık açılış",DO:"Günlük açılış",MO:"Aylık açılış",YO:"Yıllık açılış",MH:"Pazartesi yüksek",MM:"Pazartesi orta",ML:"Pazartesi düşük",levelsLive:"DO, WO ve MO canlıdır; diğer seviyeler {date} itibarıyla.",levelsAsOf:"Seviyeler {date} itibarıyla."}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 var q=new URLSearchParams(location.search),asset=(q.get("asset")||"BTCUSDT").toUpperCase();
@@ -200,7 +203,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
    are kept out of the tabs until that method is presented again. */
 (function(){
   var page=document.querySelector("main"),status=document.getElementById("page-status"),tabs=document.getElementById("tf-tabs");
-  var chart=document.getElementById("chart"),img=document.getElementById("chart-img"),expand=document.getElementById("expand"),chartName=document.getElementById("chart-name"),chartTime=document.getElementById("chart-time");
+  var chart=document.getElementById("chart"),img=document.getElementById("chart-img"),expand=document.getElementById("expand"),download=document.getElementById("download"),chartName=document.getElementById("chart-name"),chartTime=document.getElementById("chart-time");
   var noteBox=document.getElementById("note"),noteText=document.getElementById("note-text"),noteBy=document.getElementById("note-by");
   var zonesBlock=document.getElementById("zones-block"),zoneRows=document.getElementById("zone-rows");
   var levelsBlock=document.getElementById("levels-block"),levelRows=document.getElementById("level-rows");
@@ -307,7 +310,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   }
   // The chart's price axis follows the site's decimals rule (MarketUI.digitsFor), not the report's priceDecimals.
   function applyReportToChart(){if(liveChart)liveChart.setZones(report&&Array.isArray(report.zones)?report.zones:[])}
-  function renderAll(){header();renderNote();renderZones();renderLevels();renderChartTime()}
+  function renderAll(){header();renderNote();renderZones();renderLevels();renderChartTime();syncDownload()}
   new MutationObserver(function(){if(liveChart)liveChart.setLocale();renderAll()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
 
   function select(chosen,button){
@@ -315,7 +318,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     tabs.querySelectorAll(".tab").forEach(function(t){var on=t===button;t.setAttribute("aria-selected",String(on));t.tabIndex=on?0:-1});
     try{var next=new URL(location.href);next.searchParams.set("tf",MarketUI.timeframeOf(chosen));next.hash="";history.replaceState(null,"",next.toString())}catch(e){}
     if(liveChart){liveChart.destroy();liveChart=null}
-    chart.dataset.state="loading";expand.disabled=true;img.removeAttribute("src");img.alt=asset+" "+tf+" chart";chartName.textContent=asset+" · "+tf;
+    chart.dataset.state="loading";expand.disabled=true;download.disabled=true;img.removeAttribute("src");img.alt=asset+" "+tf+" chart";chartName.textContent=asset+" · "+tf;
     chartWhen=chosen.chartTime&&chosen.chartTime.at;chartKey=!chartWhen?"published":chosen.chartTime.source==="upload"?"chartUploaded":"chartAsOf";
     report=null;reportDemo=false;commentText=null;renderAll();
     if(window.LiveChart){
@@ -323,7 +326,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       LiveChart.show(liveBox,{pair:asset,timeframe:MarketUI.timeframeOf(chosen),decimalsFor:MarketUI.digitsFor,onChange:function(){if(request===pending)renderChartTime()}}).then(function(ctl){
         if(request!==pending){ctl.destroy();return}
         liveChart=ctl;applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
-        chart.dataset.state="live";expand.disabled=false;renderChartTime();
+        chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();
       }).catch(function(){if(request===pending)showPng(chosen)});
     }else showPng(chosen);
     if(chosen.report)fetch(chosen.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(request===pending&&rep){report=rep;applyReportToChart();renderAll()}}).catch(function(){});
@@ -339,6 +342,49 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   }
   img.addEventListener("load",function(){chart.dataset.state="live";expand.disabled=false});
   img.addEventListener("error",function(){chart.dataset.state="live";expand.disabled=true});
+  // Chart download (Features "chartDownload"): only the interactive chart, as a PNG with a title bar
+  // (asset, timeframe, method, site) and a footer (analysis and last-candle times). Older PNG
+  // publications are not offered. A locked (premium-only) button stays visible but does nothing.
+  function syncDownload(){
+    var state=window.Features?Features.state("chartDownload"):"off",w=words();
+    download.hidden=state==="off";
+    if(state==="locked")download.dataset.locked="";else delete download.dataset.locked;
+    download.disabled=state==="allowed"&&!liveChart;
+    download.title=state==="locked"?w.premiumOnly:w.downloadTitle;
+    download.setAttribute("aria-disabled",String(state!=="allowed"));
+  }
+  function stamp(d){return d.toISOString().slice(0,16).replace(/[-:]/g,"").replace("T","-")}
+  function chartImage(){
+    var shot=liveChart.screenshot(),k=shot.width/(liveBox.clientWidth||shot.width),w=words();
+    var head=Math.round(54*k),foot=Math.round(34*k),pad=Math.round(14*k);
+    var out=document.createElement("canvas");out.width=shot.width;out.height=shot.height+head+foot;
+    var g=out.getContext("2d"),font=" Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
+    g.fillStyle="#101820";g.fillRect(0,0,out.width,out.height);
+    g.drawImage(shot,0,head);
+    g.fillStyle="#26303c";g.fillRect(0,head-Math.max(1,Math.round(k)),out.width,Math.max(1,Math.round(k)));g.fillRect(0,head+shot.height,out.width,Math.max(1,Math.round(k)));
+    g.textBaseline="middle";
+    g.fillStyle="#e6ebf2";g.font="700 "+Math.round(17*k)+"px"+font;g.textAlign="left";g.fillText(chartName.textContent,pad,Math.round(20*k));
+    g.fillStyle="#9aa6b8";g.font="500 "+Math.round(11*k)+"px"+font;g.fillText("Critical Zones · "+MarketUI.nameOf(asset),pad,Math.round(39*k));
+    g.textAlign="right";g.fillStyle="#e8a765";g.font="700 "+Math.round(15*k)+"px"+font;g.fillText("MarketLevelMap",out.width-pad,Math.round(20*k));
+    g.fillStyle="#9aa6b8";g.font="500 "+Math.round(11*k)+"px"+font;g.fillText("marketlevelmap.com",out.width-pad,Math.round(39*k));
+    var y=head+shot.height+Math.round(foot/2);
+    // Narrow charts (phones): the times shrink to fit and the advice note is left out if it would overlap.
+    var times=chartTime.textContent,size=11;
+    while(size>7&&g.measureText(times).width>out.width-2*pad){size--;g.font="500 "+Math.round(size*k)+"px"+font}
+    g.textAlign="left";g.fillText(times,pad,y);
+    g.font="500 "+Math.round(11*k)+"px"+font;
+    if(g.measureText(times).width*size/11+g.measureText(w.notAdvice).width+3*pad<=out.width){g.textAlign="right";g.fillText(w.notAdvice,out.width-pad,y)}
+    return out;
+  }
+  download.addEventListener("click",function(){
+    if(!window.Features||Features.state("chartDownload")!=="allowed"||!liveChart)return;
+    chartImage().toBlob(function(blob){
+      if(!blob)return;
+      var a=document.createElement("a"),url=URL.createObjectURL(blob);
+      a.href=url;a.download="MarketLevelMap_"+asset+"_"+MarketUI.timeframeOf(entry).toUpperCase()+"_"+stamp(new Date())+"UTC.png";
+      document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},10000);
+    },"image/png");
+  });
   expand.addEventListener("click",function(){
     if(chart.dataset.mode!=="live"){openChartZoom(img,chartName.textContent,expand);return}
     var panel=chart.closest(".chart-panel");

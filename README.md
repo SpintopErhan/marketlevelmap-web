@@ -79,6 +79,24 @@ middle of the price pane (Lightweight Charts `createTextWatermark`, behind the c
 follows the chart width (22–56 px). It is drawn on the chart canvas itself, so chart screenshots used for
 downloads and sharing include it.
 
+## Chart download
+
+The analysis chart header has a Download button (next to Expand). It saves the interactive chart as drawn
+— zones, chosen key levels, watermark, current zoom; no crosshair — as a PNG built in the browser
+(`LiveChart` `screenshot()` = Lightweight Charts `takeScreenshot(true, false)`), with a title bar (asset ·
+timeframe, "Critical Zones · <name>", MarketLevelMap / marketlevelmap.com) and a footer (the chart's
+analysis and last-candle times, "Not investment advice."; on narrow charts the times shrink and the note is
+left out). File name: `MarketLevelMap_<SYMBOL>_<TF>_<YYYYMMDD-HHMM>UTC.png` (download time, UTC). Older
+PNG-only publications offer no download.
+
+### Feature plans (premium)
+
+`assets/features.js` decides who may use a feature: `PLAN = { chartDownload: "all" }`, where a value is
+`"all"`, `"premium"` or `"off"`. `Features.state(name)` answers `allowed`, `locked` (premium-only and the
+visitor is not premium: the button shows a lock, "For premium members", and does nothing) or `off`
+(hidden). There are no accounts yet, so `isPremium()` returns false; a membership check plugs in there.
+This only shapes the page — it is not access control, since anything drawn in a browser can be captured.
+
 ## Market table sparkline
 
 The market table's Analysis column shows a 7-day price line per asset (`assets/sparkline.js`, wired in
@@ -168,5 +186,5 @@ never on marketlevelmap.com by default, and every section it fills shows a "Samp
 ## Shared assets and browser caches
 
 Pages link the files in `assets/` (`site.css`, `disclaimer.js`, `market-cache.js`, `market-feed.js`,
-`market-ui.js`, `demo-data.js`, `sparkline.js`) with a `?v=` content hash so browsers pick up new versions. After editing
+`market-ui.js`, `demo-data.js`, `sparkline.js`, `features.js`, `live-chart.js`) with a `?v=` content hash so browsers pick up new versions. After editing
 one, update its hash in every page that loads it, e.g. `sha1sum assets/site.css | cut -c1-8`.
