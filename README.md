@@ -72,6 +72,13 @@ on the interactive chart as a dashed orange (`#e8a765`) price line labelled with
 default. `DO`, `WO` and `MO` follow the live feed, so their lines move when a new period opens. Price lines
 do not stretch the price scale: a level outside the visible range (often `ATH`) is simply not drawn.
 
+## Chart watermark
+
+The interactive analysis chart carries a faint "MarketLevelMap / marketlevelmap.com" text watermark in the
+middle of the price pane (Lightweight Charts `createTextWatermark`, behind the candles). Its font size
+follows the chart width (22–56 px). It is drawn on the chart canvas itself, so chart screenshots used for
+downloads and sharing include it.
+
 ## Market table sparkline
 
 The market table's Analysis column shows a 7-day price line per asset (`assets/sparkline.js`, wired in
