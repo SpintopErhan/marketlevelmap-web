@@ -1,0 +1,205 @@
+id: pennant
+kind: chart
+direction: neutral
+pattern_type: continuation
+candles: multi
+order: 90
+related: [flag, symmetrical-triangle, rectangle]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: flama
+  name: Flama
+  alt_name: Pennant
+  summary: >-
+    Sert ve hızlı bir hareketin (direk) ardından oluşan, küçük ve birbirine yaklaşan iki çizgiden
+    meydana gelen kısa süreli bir duraklama formasyonu. Fiyat kısa bir süre dinlenir, ardından
+    çoğunlukla direğin yönünde kırılır. Bu yüzden devam formasyonu olarak okunur. Yükselişte de
+    düşüşte de oluşabilir, yönü direk ve kırılım belirler.
+  formation:
+    style: steps
+    items:
+      - title: Direk.
+        text: >-
+          Fiyat az sayıda mumda, neredeyse dik bir hareketle yükselir ya da düşer. Bu hareket çoğu
+          zaman yüksek hacimle gelir. Belirgin bir direk yoksa formasyon flama sayılmaz.
+      - title: Flama.
+        text: >-
+          Direğin ucunda fiyat küçük bir alanda sıkışır. Alçalan tepeler ve yükselen dipler
+          birbirine yaklaşan iki çizgi oluşturur. Her çizgide en az iki dokunuş gerekir.
+      - title: Küçük ve kısa.
+        text: >-
+          Flama direğe göre küçüktür. Geri çekilme çoğunlukla direğin yaklaşık **üçte biri** ile
+          **yarısını** geçmez. Süre de kısadır, genellikle yaklaşık 5 ile 20 mum arasında kalır.
+      - title: Hacim.
+        text: Flama boyunca hacim çoğu zaman belirgin şekilde azalır.
+      - title: Tamamlanma.
+        text: >-
+          Fiyat direğin yönündeki çizginin dışında **kapanış** yaptığında formasyon tamamlanmış
+          sayılır. Çizgiyi fitille aşıp içeride kapanan bir mum kırılım sayılmaz.
+    note: Buradaki eşikler ders kitaplarında yaygın kabul gören yaklaşık değerlerdir, kesin kurallar değildir.
+  meaning:
+    - >-
+      Direk, bir tarafın kısa sürede belirgin bir üstünlük kurduğunu gösterir. Flama ise bu
+      hareketin ardından gelen bir nefes alma anıdır. Fiyatın çok az geri çekilmesi, hareketi
+      başlatan tarafın geri adım atmadığına işaret edebilir.
+    - >-
+      Flama, sıkışma bakımından simetrik üçgene benzer. Farkı bağlamdır. Önündeki direk, kırılımın
+      hangi yönde daha sık beklendiğini gösterir. Ancak yön yine de kırılımla belli olur.
+  measurement:
+    title: Sık kullanılan bir ölçüm
+    text: >-
+      Teknik analizde direğin boyu (h), kırılım noktasından direğin yönünde ölçülerek olası
+      hareketin büyüklüğü hakkında kaba bir fikir verilir. Bu bir hedef değil, bir ölçek
+      referansıdır. Fiyat bu mesafeye ulaşmadan dönebilir ya da çok daha ileri gidebilir.
+      Yoldaki bölgeler genellikle daha gerçekçi bir referanstır.
+  strengthens:
+    - Direğin dik ve yüksek hacimli olması
+    - Flamanın direğe göre küçük ve kısa kalması
+    - Flama boyunca hacmin azalması, kırılımda artması
+    - Kırılımın uç noktaya varmadan gelmesi
+    - Direğin bir bölgeyi aşmış olması ve flamanın o bölgenin üstünde (ya da altında) kalması
+  weakens:
+    - Direğin yavaş ya da dağınık olması
+    - Geri çekilmenin direğin yarısını geçmesi
+    - Flamanın uzun sürmesi
+    - Direğin yönünde hemen yakında güçlü bir bölge bulunması
+    - Fitille çizgiyi aşıp içeride kapanan sahte kırılımlar
+  zones:
+    intro: "Flama küçük bir formasyon olduğu için çoğu zaman tek bir bölgenin hemen yakınında oluşur. Hangi tarafında oluştuğu önemlidir:"
+    points:
+      - "**Direk bir bölgeyi aştıysa ve flama o bölgenin üstünde oluşuyorsa**, flama aslında bölgenin yeni rolünün testi olabilir. Fiyat bölgenin içine geri girmeden sıkışıyorsa, eski direnç destek gibi davranıyor demektir."
+      - "**Direk bir bölgenin hemen altında durduysa ve flama orada oluşuyorsa**, fiyat henüz o bölgeyi aşmamıştır. Kırılım bu durumda bölgenin kendisiyle karşılaşır ve daha çok zorlanabilir."
+      - "**Direğin yönündeki bir sonraki bölge**, fiyatın nerede yeniden tepki verebileceğine dair direğin boyundan daha gerçekçi bir referanstır."
+    paragraphs:
+      - >-
+        Aynı mantık düşüş yönlü flamada aynalanarak geçerlidir: direk bir destek bölgesini kırdıysa
+        ve flama bölgenin altında oluşuyorsa, bölge artık direnç gibi davranıyor olabilir.
+  completion: Direğin yönündeki çizginin dışında kapanış.
+  invalidation:
+    before: >-
+      Fiyat direğin tersi yönündeki çizginin dışında **kapanış** yaparsa ya da geri çekilme
+      direğin yaklaşık yarısını geçerse formasyon flama olarak okunmaz. Sıkışma çok uzun
+      sürerse de flama özelliğini yitirir.
+    after: >-
+      Kırılım yönünde kapanış gelmiş olsa bile fiyat flamanın içine döner ve **karşı çizginin
+      dışında kapanış** yaparsa devam senaryosu geçersiz sayılır.
+  confusions:
+    - id: flag
+      text: "Çizgiler paraleldir: fiyat birbirine yaklaşmayan dar bir kanalda geri çekilir."
+    - id: symmetrical-triangle
+      text: Öncesinde sert bir direk yoktur, daha uzun sürer ve daha büyüktür.
+    - id: falling-wedge
+      text: "İki çizgi de aynı yöne eğimlidir: biri yukarı, biri aşağı değil."
+  facts:
+    - [Tür, Devam]
+    - [Yön, Direk yönünde]
+    - [Süre, Kısa (yaklaşık 5–20 mum)]
+    - [Bağlam, Sert bir hareketin ardından]
+    - [Tamamlanma, Direk yönünde kapanış]
+    - [Geçersiz, Karşı çizginin dışında kapanış]
+  svg_labels:
+    pole: Direk
+    pennant: Flama
+    breakout: Kırılım
+  svg_alt: "Flama çizimi: fiyat dik bir yükselişle direği oluşturuyor, ardından birbirine yaklaşan iki çizgi arasında kısa bir süre sıkışıyor ve yeniden yukarı kırılıyor"
+  svg_caption: Turuncu noktalar flamanın iki çizgisine yapılan dokunuşları gösterir. h, direğin boyudur.
+
+en:
+  slug: pennant
+  name: Pennant
+  summary: >-
+    A short pause that forms after a sharp, fast move (the pole) and is made of two small,
+    converging lines. Price rests briefly, then most often breaks in the direction of the pole,
+    which is why it is read as a continuation pattern. It can form in a rise or a fall; the pole
+    and the break set the direction.
+  formation:
+    style: steps
+    items:
+      - title: Pole.
+        text: >-
+          Price rises or falls in a near-vertical move over few candles, often on high volume.
+          Without a clear pole, the pattern is not a pennant.
+      - title: Pennant.
+        text: >-
+          At the top of the pole, price is squeezed into a small range. Lower highs and higher lows
+          form two converging lines. Each line needs at least two touches.
+      - title: Small and short.
+        text: >-
+          The pennant is small compared with the pole. The pullback usually stays within about **a
+          third** to **a half** of the pole. It is also short, usually lasting roughly 5 to 20 candles.
+      - title: Volume.
+        text: Volume often falls clearly during the pennant.
+      - title: Completion.
+        text: >-
+          The pattern is complete when price **closes** outside the line on the pole's side. A candle
+          whose wick crosses the line but closes back inside is not a break.
+    note: The thresholds here are approximate values commonly used in textbooks, not strict rules.
+  meaning:
+    - >-
+      The pole shows one side taking clear control in a short time. The pennant is a breather after
+      that move. A very shallow pullback can suggest that the side behind the move is not giving
+      ground.
+    - >-
+      A pennant squeezes like a symmetrical triangle. The difference is context. The pole in front of
+      it shows which way a break is more often expected. Even so, the direction is only settled by
+      the break.
+  measurement:
+    title: A common measurement
+    text: >-
+      In technical analysis, the length of the pole (h) is measured from the breakout point in the
+      pole's direction to give a rough sense of the possible move's size. It is a scale reference, not
+      a target. Price can turn before covering that distance, or go much further. Zones along the way
+      are usually a more realistic reference.
+  strengthens:
+    - A steep pole on high volume
+    - A pennant that stays small and short compared with the pole
+    - Volume falling during the pennant and rising at the break
+    - The break coming before the apex
+    - A pole that has cleared a zone, with the pennant holding above (or below) it
+  weakens:
+    - A slow or choppy pole
+    - A pullback deeper than half the pole
+    - A pennant that drags on
+    - A strong zone close by in the pole's direction
+    - False breakouts, where a wick crosses the line but the close stays inside
+  zones:
+    intro: "Because a pennant is small, it often forms right next to a single zone. Which side of the zone it forms on matters:"
+    points:
+      - "**If the pole cleared a zone and the pennant forms above it**, the pennant may in fact be testing the zone's new role. If price squeezes without falling back into the zone, former resistance is acting as support."
+      - "**If the pole stopped just below a zone and the pennant forms there**, price has not cleared that zone yet. A breakout then runs straight into the zone and may struggle more."
+      - "**The next zone in the pole's direction** is a more realistic reference than the pole's length for where price may react again."
+    paragraphs:
+      - >-
+        The same logic applies, mirrored, to a bearish pennant: if the pole broke a support zone and
+        the pennant forms below it, that zone may now be acting as resistance.
+  completion: Close outside the line on the pole's side.
+  invalidation:
+    before: >-
+      If price **closes** outside the line on the side opposite the pole, or the pullback goes beyond
+      roughly half of the pole, the pattern is not read as a pennant. A squeeze that lasts too long
+      also loses the character of a pennant.
+    after: >-
+      Even after a close in the direction of the break, if price returns into the pennant and
+      **closes outside the opposite line**, the continuation scenario is considered invalid.
+  confusions:
+    - id: flag
+      text: "The lines are parallel: price pulls back in a narrow channel that does not converge."
+    - id: symmetrical-triangle
+      text: There is no sharp pole before it, and it lasts longer and is larger.
+    - id: falling-wedge
+      text: "Both lines slope the same way, rather than one up and one down."
+  facts:
+    - [Type, Continuation]
+    - [Direction, Direction of the pole]
+    - [Duration, Short (about 5–20 candles)]
+    - [Context, After a sharp move]
+    - [Completion, Close in the pole's direction]
+    - [Invalid, Close outside the opposite line]
+  svg_labels:
+    pole: Pole
+    pennant: Pennant
+    breakout: Breakout
+  svg_alt: "Pennant illustration: price forms the pole with a steep rise, then briefly squeezes between two converging lines and breaks upwards again"
+  svg_caption: The orange dots mark the touches on the pennant's two lines. h is the length of the pole.

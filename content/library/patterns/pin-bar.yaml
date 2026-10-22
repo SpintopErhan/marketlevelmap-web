@@ -1,0 +1,181 @@
+id: pin-bar
+kind: candle
+direction: neutral
+pattern_type: reversal
+candles: 1
+order: 60
+related: [hammer, shooting-star, doji]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: pin-bar
+  name: Pin Bar
+  summary: >-
+    Tek bir uzun fitil ve küçük bir gövdeden oluşan dönüş mumu. Uzun fitil, fiyatın o yönde
+    denenip geri itildiği tarafı gösterir. Alt fitili uzun olan boğa pin bar, üst fitili uzun olan
+    ayı pin bar olarak adlandırılır. Fiyatın bir seviyeyi kabul etmediğine işaret edebilir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde bir hareket vardır. Boğa pin bar genellikle bir düşüşten, ayı pin bar bir yükselişten sonra anlam kazanır.
+        marker: neutral
+      - text: "**Uzun fitil**, mumun toplam aralığının (en yüksek ile en düşük arası) **en az üçte ikisidir**."
+        marker: accent
+      - text: "**Gövde**, aralığın karşı uçtaki üçte birlik kısmında yer alır. Açılış ve kapanış ikisi de bu kısımdadır."
+        marker: neutral
+      - text: "**Boğa pin bar:** uzun fitil aşağıdadır, gövde mumun üst kısmındadır. Gövdenin yeşil olması daha güçlü kabul edilir."
+        marker: up
+      - text: "**Ayı pin bar:** uzun fitil yukarıdadır, gövde mumun alt kısmındadır. Gövdenin kırmızı olması daha güçlü kabul edilir."
+        marker: down
+    note: >-
+      Pin bar, fiyat hareketi (price action) yaklaşımından gelen genel bir şekil adıdır. Düşüş
+      sonrasındaki boğa pin bar çoğu zaman bir **çekiç**, yükseliş sonrasındaki ayı pin bar ise bir
+      **kayan yıldız** ile aynı mumdur. Pin bar adı, şekli trend bağlamından bağımsız olarak tarif eder.
+  meaning:
+    - >-
+      Uzun fitil, fiyatın mum içinde bir yöne doğru belirgin biçimde ilerlediğini, ama kapanışa
+      kadar o ilerlemenin büyük kısmının geri alındığını gösterir. Boğa pin barda satıcılar fiyatı
+      aşağı itmiş, alıcılar ise kapanıştan önce geri almıştır. Ayı pin barda bunun tersi olur.
+    - >-
+      Bu, fitilin uzandığı fiyatların piyasa tarafından **reddedildiğine** işaret edebilir. Ancak
+      tek bir mum yönün değiştiğini kanıtlamaz. Sonraki mumların fitilin ucunu yeniden test edip
+      etmediği, okumanın geçerli kalıp kalmadığını gösterir.
+  strengthens:
+    - Fitilin bir destek ya da direnç bölgesine uzanıp gövdenin bölgenin dışında kapanması
+    - Fitilin önceki birkaç mumun aralığının belirgin biçimde dışına taşması
+    - Öncesindeki hareketin belirgin olması
+    - Gövde renginin pin barın yönüyle uyumlu olması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasanın ortasında oluşması
+    - Fitilin hiçbir bölgeye ulaşmaması
+    - Kısa fitilin de uzun olması (şekil dojiye yaklaşır)
+    - Mumun önceki mumların aralığı içinde kalması
+    - Çok küçük zaman dilimlerinde (1 dk, 5 dk) oluşması
+  zones:
+    intro: "Pin bar, bölgelerle birlikte okunmaya en uygun mumlardan biridir. Çünkü uzun fitil, fiyatın tam olarak nereye kadar gidip geri döndüğünü gösterir:"
+    points:
+      - "**Fitil bölgenin içine girip gövde bölgenin dışında kapanıyorsa**, fiyatın o bölgeye ulaştığı ama orada kabul görmediği düşünülebilir. En anlamlı durum budur."
+      - "**Fitil bölgeyi tamamen delip gövde yine geri dönüyorsa**, bölgenin kısa süreli olarak aşıldığı ama kapanışta korunduğu söylenebilir. Bu tür sahte kırılımlar sık görülür."
+      - "**Gövde bölgenin öbür tarafında kapanıyorsa**, mum pin bar şeklinde olsa bile bölge kapanışta kaybedilmiştir. Bu durumda reddetme okuması zayıflar."
+    paragraphs:
+      - >-
+        Bölgeden uzakta, fiyatın daha önce tepki vermediği bir yerde oluşan pin bar çoğu zaman
+        rastgele bir dalgalanmadan ibarettir. Fitilin ucu ile bölgenin kenarı arasındaki ilişki,
+        mumun şeklinden daha çok şey söyler.
+  invalidation:
+    - >-
+      **Boğa pin bar** için, fiyat pin barın **en düşük noktasının** (fitilin ucu) altında kapanış
+      yaparsa reddetme okuması geçersiz kabul edilir.
+    - >-
+      **Ayı pin bar** için, fiyat pin barın **en yüksek noktasının** üzerinde kapanış yaparsa aynı
+      şey geçerlidir. Fitilin reddettiği fiyatlar artık kabul edilmiş demektir.
+  confusions:
+    - id: hammer
+      text: "Aynı şekil olabilir, ama çekiç yalnızca düşüş sonrası boğa yönlü okumayı anlatır."
+    - id: shooting-star
+      text: "Yükseliş sonrasındaki ayı pin barın klasik mum adı."
+    - id: doji
+      text: "Gövde çok küçüktür; yusufçuk ve mezar taşı doji pin bara benzeyebilir."
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, İki yönlü]
+    - [Mum, "1"]
+    - [Ölçüt, Fitil ≥ aralığın 2/3'ü]
+    - [Bağlam, Bir hareketin sonunda]
+    - [Geçersiz, Fitil ucunun ötesinde kapanış]
+  svg_labels:
+    bull_1: Boğa pin bar
+    bull_2: uzun alt fitil
+    bear_1: Ayı pin bar
+    bear_2: uzun üst fitil
+    ratio: ≥ 2/3
+  svg_alt: "Pin bar çizimi: solda küçük düşüş mumlarının ardından alt fitili uzun bir boğa pin bar, sağda küçük yükseliş mumlarının ardından üst fitili uzun bir ayı pin bar"
+  svg_caption: Turuncu çizgiler uzun fitili gösterir. Fitil, mumun en yüksek ile en düşük noktası arasındaki aralığın en az üçte ikisidir.
+
+en:
+  slug: pin-bar
+  name: Pin Bar
+  summary: >-
+    A single-candle reversal pattern made of one long wick and a small body. The long wick points to
+    the side where price was tried and pushed back. A pin bar with a long lower wick is called bullish,
+    one with a long upper wick bearish. It can signal that the market has refused a price level.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a move. A bullish pin bar usually matters after a decline, a bearish one after a rise.
+        marker: neutral
+      - text: "The **long wick** is **at least two-thirds** of the candle's full range (from high to low)."
+        marker: accent
+      - text: "The **body** sits in the opposite third of the range. Both the open and the close are inside that third."
+        marker: neutral
+      - text: "**Bullish pin bar:** the long wick points down and the body is at the top of the candle. A green body is considered stronger."
+        marker: up
+      - text: "**Bearish pin bar:** the long wick points up and the body is at the bottom of the candle. A red body is considered stronger."
+        marker: down
+    note: >-
+      Pin bar is a general shape name from the price action approach. A bullish pin bar after a
+      decline is often the same candle as a **hammer**, and a bearish pin bar after a rise the same as
+      a **shooting star**. The name pin bar describes the shape regardless of trend context.
+  meaning:
+    - >-
+      The long wick shows that price moved clearly in one direction during the candle, but most of that
+      move was taken back by the close. In a bullish pin bar, sellers pushed price down and buyers
+      reclaimed it before the close. In a bearish pin bar, the reverse happened.
+    - >-
+      This can suggest that the prices the wick reached were **rejected** by the market. Still, a single
+      candle does not prove a change of direction. Whether the next candles retest the wick's tip shows
+      whether the read still holds.
+  strengthens:
+    - The wick reaching into a support or resistance zone while the body closes outside it
+    - The wick sticking out clearly beyond the range of the previous few candles
+    - A clear move before the pattern
+    - A body colour that matches the pin bar's direction
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in the middle of a flat, directionless market
+    - The wick not reaching any zone
+    - The short wick also being long (the shape moves towards a doji)
+    - The candle staying inside the previous candles' range
+    - Forming on very low timeframes (1m, 5m)
+  zones:
+    intro: "The pin bar is one of the candles best suited to reading with zones, because the long wick shows exactly how far price went before turning back:"
+    points:
+      - "**If the wick reaches into the zone and the body closes outside it**, price can be said to have reached the zone but not been accepted there. This is the most meaningful case."
+      - "**If the wick pierces right through the zone and the body still comes back**, the zone was briefly breached but held on the close. These false breaks are common."
+      - "**If the body closes on the far side of the zone**, the zone has been lost on the close, even if the candle has a pin bar shape. The rejection read is then weaker."
+    paragraphs:
+      - >-
+        A pin bar that forms away from any zone, where price has not reacted before, is often just
+        random noise. The relationship between the wick's tip and the zone's edge says more than the
+        candle's shape.
+  invalidation:
+    - >-
+      For a **bullish pin bar**, if price closes below the pin bar's **lowest point** (the wick's tip),
+      the rejection read is considered invalid.
+    - >-
+      For a **bearish pin bar**, the same applies to a close above the pin bar's **highest point**. The
+      prices the wick rejected have now been accepted.
+  confusions:
+    - id: hammer
+      text: "Can be the same shape, but a hammer only describes the bullish read after a decline."
+    - id: shooting-star
+      text: "The classic candlestick name for a bearish pin bar after a rise."
+    - id: doji
+      text: "The body is tiny; dragonfly and gravestone dojis can look like pin bars."
+  facts:
+    - [Type, Reversal]
+    - [Direction, Either way]
+    - [Candles, "1"]
+    - [Rule, Wick ≥ 2/3 of range]
+    - [Context, At the end of a move]
+    - [Invalid, Close beyond the wick's tip]
+  svg_labels:
+    bull_1: Bullish pin bar
+    bull_2: long lower wick
+    bear_1: Bearish pin bar
+    bear_2: long upper wick
+    ratio: ≥ 2/3
+  svg_alt: "Pin bar illustration: on the left, a bullish pin bar with a long lower wick after small falling candles; on the right, a bearish pin bar with a long upper wick after small rising candles"
+  svg_caption: The orange brackets mark the long wick. It is at least two-thirds of the range between the candle's high and low.

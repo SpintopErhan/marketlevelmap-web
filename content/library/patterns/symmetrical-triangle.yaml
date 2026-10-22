@@ -1,0 +1,227 @@
+id: symmetrical-triangle
+kind: chart
+direction: neutral
+pattern_type: continuation
+candles: multi
+order: 70
+related: [ascending-triangle, descending-triangle, pennant]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: simetrik-ucgen
+  name: Simetrik Üçgen
+  alt_name: Symmetrical Triangle
+  summary: >-
+    Alçalan tepeler ile yükselen diplerin birbirine yaklaşarak oluşturduğu üçgen formasyonu.
+    Ne alıcılar ne de satıcılar üstünlük kurabilir ve fiyat giderek daralan bir alanda sıkışır.
+    Çoğunlukla önceki trendin yönünde kırıldığı için devam formasyonu olarak okunur, ancak her
+    iki yöne de kırılabilir. Yönü kırılım belirler.
+  formation:
+    style: steps
+    items:
+      - title: Önceki hareket.
+        text: >-
+          Formasyon genellikle belirgin bir yükseliş ya da düşüşün ardından bir duraklama olarak
+          görülür. Önceki trend, kırılımın hangi yönde daha sık beklendiğine dair bağlam verir.
+      - title: Alçalan tepeler.
+        text: >-
+          Fiyat en az iki kez, her seferinde bir öncekinden daha alçak bir tepe yapar. Bu tepeler
+          birleştirilerek aşağı eğimli bir üst çizgi çizilir.
+      - title: Yükselen dipler.
+        text: >-
+          Aynı süre içinde fiyat en az iki kez, her seferinde bir öncekinden daha yüksek bir dip
+          yapar. Bu dipler birleştirilerek yukarı eğimli bir alt çizgi çizilir.
+      - title: Daralma.
+        text: >-
+          İki çizginin eğimi zıt yönlüdür ve yaklaşık olarak benzer diktedir. Toplam en az dört
+          dokunuş gerekir, beş ya da altı dokunuş formasyonu daha belirgin kılar. Bu sırada hacim
+          çoğu zaman azalır.
+      - title: Kırılım bölgesi.
+        text: >-
+          Kırılım genellikle çizgilerin kesiştiği uç noktaya varmadan, üçgenin uzunluğunun
+          yaklaşık üçte ikisi ile dörtte üçü arasında gelir. Fiyat uç noktaya kadar sıkışıp
+          kalırsa formasyon anlamını yitirmeye başlar.
+      - title: Tamamlanma.
+        text: >-
+          Fiyat çizgilerden birinin dışında **kapanış** yaptığında formasyon tamamlanmış sayılır
+          ve yön o kapanışla belirlenir. Çizgiyi fitille aşıp içeride kapanan bir mum kırılım sayılmaz.
+    note: Buradaki eşikler ders kitaplarında yaygın kabul gören yaklaşık değerlerdir, kesin kurallar değildir.
+  meaning:
+    - >-
+      Alçalan tepeler satıcıların daha aşağıdan devreye girdiğini, yükselen dipler ise alıcıların
+      daha yukarıdan devreye girdiğini gösterir. İki taraf da geri adım atmaz ve fiyat sıkışır.
+      Bu, piyasanın bir karar öncesinde dengede olduğuna işaret edebilir.
+    - >-
+      Formasyon kendi başına bir yön söylemez. Önceki trendin yönünde kırılım daha sık görülür,
+      ancak ters yönde kırılım da azımsanmayacak kadar yaygındır. Bu yüzden kırılım gelmeden
+      yön hakkında sonuç çıkarmak, formasyonun en sık yanlış okunduğu noktadır.
+  measurement:
+    title: Sık kullanılan bir ölçüm
+    text: >-
+      Teknik analizde üçgenin en geniş yerindeki yüksekliği (h), kırılım noktasından kırılım
+      yönünde ölçülerek olası hareketin büyüklüğü hakkında kaba bir fikir verilir. Bu bir hedef
+      değil, bir ölçek referansıdır. Fiyat bu mesafeye ulaşmadan dönebilir ya da çok daha ileri
+      gidebilir. Kırılım yönündeki ilk bölge genellikle daha gerçekçi bir referanstır.
+  strengthens:
+    - Öncesinde belirgin bir trend olması
+    - Her çizgide ikiden fazla dokunuş
+    - Formasyon boyunca hacmin azalması, kırılımda artması
+    - Kırılımın üçgenin son üçte birinde, uç noktadan önce gelmesi
+    - Kırılımın bir bölgenin dışına taşıyan bir kapanışla gelmesi
+  weakens:
+    - Çizgilerin az dokunuşla, zorlanarak çizilmesi
+    - Kırılımın düşük hacimle gelmesi
+    - Fiyatın uç noktaya kadar sıkışması
+    - Kırılım yönünde hemen yakında güçlü bir bölge bulunması
+    - Fitille çizgiyi aşıp içeride kapanan sahte kırılımlar
+  zones:
+    intro: "Simetrik üçgende iki yatay kenar yoktur. Bu yüzden bölgeler en çok üçgenin dışında, kırılımın gideceği yerde anlam kazanır:"
+    points:
+      - "**Üçgen bir destek ile bir direnç bölgesinin arasında sıkışıyorsa**, fiyatın iki bölge arasında karar aradığı düşünülebilir. Kırılım çoğu zaman bu bölgelerden birine doğru olur."
+      - "**Kırılım yönünde hemen yakında bir bölge varsa**, hareketin orada durması ya da tepki görmesi olasıdır. Bu bölge ölçüm yönteminden daha gerçekçi bir referanstır."
+      - "**Uç nokta bir bölgenin içine denk geliyorsa**, fiyat o bölgeye yaklaştıkça sıkışma bölgenin kendi tepkisine dönüşebilir. Bu durumda çizgilerden çok bölge izlenir."
+    paragraphs:
+      - >-
+        Kırılımdan sonra fiyat bazen kırılan çizgiye geri dönüp onu test eder. Simetrik üçgende bu
+        çizgi eğimli olduğu için test noktası zamanla kayar. Kırılan çizgi bir bölgenin sınırına
+        yakınsa, test o bölgenin içinde de gerçekleşebilir.
+  completion: Çizgilerden birinin dışında kapanış.
+  invalidation:
+    before: >-
+      Fiyat uç noktaya kadar kırılım yapmadan sıkışırsa ve çizgilerin dışına net bir kapanış
+      gelmezse formasyon anlamını yitirmiş kabul edilir.
+    after: >-
+      Kırılım yönünde kapanış gelmiş olsa bile fiyat üçgenin içine döner ve **karşı çizginin
+      dışında kapanış** yaparsa ilk kırılım geçersiz sayılır. Bu tür sahte kırılımlar bazen ters
+      yönde sert hareketlerle sonuçlanır.
+  confusions:
+    - id: pennant
+      text: "Öncesinde sert bir direk vardır, formasyon daha kısa ve küçüktür."
+    - id: ascending-triangle
+      text: "Üst çizgi yataydır: tepeler aynı seviyede kalır, yalnızca dipler yükselir."
+    - id: rising-wedge
+      text: "İki çizgi de aynı yöne eğimlidir, birbirine zıt yönde değil."
+  facts:
+    - [Tür, Devam]
+    - [Yön, Kırılım yönünde]
+    - [Süre, Çok mumlu]
+    - [Bağlam, Trend içinde]
+    - [Tamamlanma, Çizgilerden birinin dışında kapanış]
+    - [Geçersiz, Karşı çizginin dışında kapanış]
+  svg_labels:
+    lower_highs: Alçalan tepeler
+    higher_lows: Yükselen dipler
+    apex: Uç nokta
+    breakout: Kırılım
+  svg_alt: "Simetrik üçgen çizimi: yükselen fiyat alçalan tepeler ve yükselen dipler yaparak daralan bir üçgende sıkışıyor, ardından çizgilerin kesiştiği noktaya varmadan üst çizginin üzerine çıkıyor"
+  svg_caption: Turuncu noktalar iki çizgiye yapılan dokunuşları gösterir. Bu çizimde kırılım yukarıdır, ama formasyon her iki yöne de kırılabilir. h, üçgenin en geniş yerindeki yüksekliğidir.
+
+en:
+  slug: symmetrical-triangle
+  name: Symmetrical Triangle
+  summary: >-
+    A triangle pattern formed by lower highs and higher lows converging on each other. Neither
+    buyers nor sellers take control, and price is squeezed into a narrowing range. It is most often
+    read as a continuation pattern because it tends to break in the direction of the prior trend,
+    but it can break either way. The break decides the direction.
+  formation:
+    style: steps
+    items:
+      - title: Prior move.
+        text: >-
+          The pattern usually appears as a pause after a clear rise or fall. The prior trend gives
+          context for which way a break is more often expected.
+      - title: Lower highs.
+        text: >-
+          Price makes at least two peaks, each lower than the one before. Joining them gives a
+          downward-sloping upper line.
+      - title: Higher lows.
+        text: >-
+          Over the same period, price makes at least two troughs, each higher than the one before.
+          Joining them gives an upward-sloping lower line.
+      - title: Narrowing.
+        text: >-
+          The two lines slope in opposite directions at roughly similar angles. At least four
+          touches in total are needed; five or six make the pattern clearer. Volume often falls
+          during this phase.
+      - title: Breakout zone.
+        text: >-
+          The break usually comes before the apex where the lines meet, roughly two thirds to three
+          quarters of the way along the triangle. If price drifts all the way into the apex, the
+          pattern starts to lose meaning.
+      - title: Completion.
+        text: >-
+          The pattern is complete when price **closes** outside one of the lines, and that close sets
+          the direction. A candle whose wick crosses the line but closes back inside is not a break.
+    note: The thresholds here are approximate values commonly used in textbooks, not strict rules.
+  meaning:
+    - >-
+      Lower highs show sellers stepping in lower, and higher lows show buyers stepping in higher.
+      Neither side gives ground, and price is squeezed. This can suggest the market is balanced
+      ahead of a decision.
+    - >-
+      The pattern does not point in a direction by itself. Breaks in the direction of the prior trend
+      are more common, but breaks the other way are far from rare. Drawing conclusions about
+      direction before the break is the most common misreading of this pattern.
+  measurement:
+    title: A common measurement
+    text: >-
+      In technical analysis, the triangle's height at its widest part (h) is measured from the
+      breakout point in the direction of the break to give a rough sense of the possible move's
+      size. It is a scale reference, not a target. Price can turn before covering that distance, or
+      go much further. The first zone in the direction of the break is usually a more realistic
+      reference.
+  strengthens:
+    - A clear trend before the pattern
+    - More than two touches on each line
+    - Volume falling during the pattern and rising at the break
+    - The break coming in the last third, before the apex
+    - The break coming with a close that also clears a zone
+  weakens:
+    - Lines drawn with few touches, or forced to fit
+    - The break coming on low volume
+    - Price drifting all the way into the apex
+    - A strong zone close by in the direction of the break
+    - False breakouts, where a wick crosses the line but the close stays inside
+  zones:
+    intro: "A symmetrical triangle has no flat side. So zones mostly matter outside the triangle, where the break is heading:"
+    points:
+      - "**If the triangle is squeezed between a support zone and a resistance zone**, it suggests price is looking for a decision between the two. The break often heads towards one of them."
+      - "**If a zone sits close by in the direction of the break**, the move may stall or react there. That zone is a more realistic reference than the measured move."
+      - "**If the apex falls inside a zone**, the squeeze may turn into that zone's own reaction as price nears it. In that case the zone matters more than the lines."
+    paragraphs:
+      - >-
+        After the break, price sometimes returns to retest the broken line. Because the line is sloped
+        in a symmetrical triangle, the retest point shifts over time. If the broken line is close to
+        the edge of a zone, the retest may also happen inside that zone.
+  completion: Close outside one of the lines.
+  invalidation:
+    before: >-
+      If price drifts all the way into the apex without breaking out, and no clear close outside the
+      lines comes, the pattern is considered to have lost its meaning.
+    after: >-
+      Even after a close in the direction of the break, if price returns into the triangle and
+      **closes outside the opposite line**, the first break is considered invalid. False breaks like
+      this sometimes lead to sharp moves the other way.
+  confusions:
+    - id: pennant
+      text: It follows a sharp pole and is shorter and smaller.
+    - id: ascending-triangle
+      text: "The upper line is flat: the peaks stay at one level and only the lows rise."
+    - id: rising-wedge
+      text: Both lines slope the same way, not in opposite directions.
+  facts:
+    - [Type, Continuation]
+    - [Direction, Direction of the break]
+    - [Duration, Multi-candle]
+    - [Context, Within a trend]
+    - [Completion, Close outside one of the lines]
+    - [Invalid, Close outside the opposite line]
+  svg_labels:
+    lower_highs: Lower highs
+    higher_lows: Higher lows
+    apex: Apex
+    breakout: Breakout
+  svg_alt: "Symmetrical triangle illustration: rising price makes lower highs and higher lows inside a narrowing triangle, then breaks above the upper line before reaching the point where the lines meet"
+  svg_caption: The orange dots mark the touches on the two lines. The break here is upwards, but the pattern can break either way. h is the triangle's height at its widest part.

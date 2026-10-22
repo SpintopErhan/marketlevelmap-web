@@ -1,0 +1,168 @@
+id: bullish-engulfing
+kind: candle
+direction: bullish
+pattern_type: reversal
+candles: 2
+order: 10
+related: [bearish-engulfing, piercing-line, bullish-harami]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: yutan-boga
+  name: Yutan Boğa
+  alt_name: Bullish Engulfing
+  summary: >-
+    Bir düşüşün ardından, büyük bir yeşil mumun önceki kırmızı mumun gövdesini tamamen
+    içine almasıyla oluşan dönüş formasyonu. Satış baskısının zayıfladığını ve alıcıların
+    kontrolü ele almaya başladığını gösterebilir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde belirgin bir düşüş vardır. Formasyon bir dönüş işareti olduğu için dönecek bir hareket olması gerekir.
+        marker: neutral
+      - text: "**1. mum** kırmızıdır: kapanışı açılışının altındadır."
+        marker: down
+      - text: "**2. mum** yeşildir: kapanışı açılışının üstündedir."
+        marker: up
+      - text: "2. mumun gövdesi 1. mumun gövdesini **tamamen kapsar**: açılışı 1. mumun kapanışına eşit ya da altında, kapanışı 1. mumun açılışının üstündedir."
+        marker: accent
+    note: >-
+      Kripto piyasası 7/24 işlem gördüğü için mumlar arasında boşluk (gap) nadiren oluşur.
+      2. mumun açılışı çoğu zaman 1. mumun kapanışıyla aynıdır. Bu durum formasyonu geçersiz kılmaz.
+  meaning:
+    - >-
+      İlk mum, satıcıların hâlâ kontrolde olduğunu gösterir. İkinci mum ise aynı zaman aralığında
+      satıcıların bütün kazanımını geri alıp üstüne çıkar. Bu, piyasada dengenin alıcılar lehine
+      değişmeye başlamış olabileceğine işaret eder.
+    - >-
+      Formasyon tek başına yönün değiştiğini kanıtlamaz. Düşüşün yavaşladığına dair bir ipucu
+      olarak okunmalı ve başka işaretlerle birlikte değerlendirilmelidir.
+  strengthens:
+    - Bir destek bölgesinde oluşması
+    - Öncesindeki düşüşün belirgin olması
+    - 2. mumun hacminin yüksek olması
+    - 2. mumun 1. mumu fitilleriyle birlikte de kapsaması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasada oluşması
+    - İki mumun da çok küçük olması
+    - Düşük hacim
+    - Hemen üstünde güçlü bir direnç bölgesi bulunması
+    - Çok küçük zaman dilimlerinde (1 dk, 5 dk) oluşması
+  zones:
+    paragraphs:
+      - >-
+        Yutan boğa grafiklerde sık görülür ve çoğu zaman bir anlam taşımaz. Asıl dikkat çektiği
+        yer, fiyatın bir **destek bölgesine** geldiği andır. Bölge, fiyatın daha önce tepki verdiği
+        bir alanı işaret eder. Formasyon ise o alanda alıcıların yeniden devreye girdiğini
+        gösterebilir. İkisi birlikte, tek başlarına olduklarından daha anlamlı bir tablo çizer.
+      - >-
+        Tersi de geçerlidir: bir direnç bölgesinin hemen altında oluşan yutan boğa, yukarıda
+        fiyatı bekleyen satıcılar nedeniyle daha zayıf kabul edilir.
+  invalidation:
+    - >-
+      Fiyat, formasyonun **en düşük noktasının** (iki mumun fitilleri dahil) altında kapanış
+      yaparsa yükseliş senaryosu geçersiz kabul edilir. Formasyon bir destek bölgesinde
+      oluştuysa, bölgenin altında kapanış da aynı anlama gelir.
+    - Geçersizlik noktasını önceden bilmek, formasyonun ne zaman artık bir şey söylemediğini anlamanın en net yoludur.
+  confusions:
+    - id: bearish-engulfing
+      text: "Tersi: yükselişten sonra kırmızı mum yeşili kapsar."
+    - id: piercing-line
+      text: Yeşil mum kırmızı gövdenin yarısını geçer ama tamamını kapsamaz.
+    - id: bullish-harami
+      text: "Tersine ilişki: küçük yeşil mum büyük kırmızı gövdenin içinde kalır."
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Yükseliş]
+    - [Mum, "2"]
+    - [Bağlam, Düşüş sonrası]
+    - [Geçersiz, En düşüğün altında kapanış]
+  svg_labels:
+    candle_1: 1. mum
+    candle_2: 2. mum
+    note_1: 2. gövde,
+    note_2: 1. gövdeyi
+    note_3: tamamen kapsar
+  svg_alt: "Yutan boğa formasyonu çizimi: kısa bir kırmızı mumun ardından gövdesi onu tamamen kapsayan büyük bir yeşil mum"
+  svg_caption: Kesikli çizgiler ilk mumun gövdesini gösterir. Fitiller bu kurala dahil değildir.
+
+en:
+  slug: bullish-engulfing
+  name: Bullish Engulfing
+  summary: >-
+    A reversal pattern that forms after a decline, when a large green candle completely
+    engulfs the body of the previous red candle. It can signal that selling pressure is fading
+    and buyers are starting to take control.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a clear decline. Since it is a reversal signal, there needs to be a move to reverse.
+        marker: neutral
+      - text: "**Candle 1** is red: it closes below its open."
+        marker: down
+      - text: "**Candle 2** is green: it closes above its open."
+        marker: up
+      - text: "The body of candle 2 **completely covers** the body of candle 1: it opens at or below candle 1's close and closes above candle 1's open."
+        marker: accent
+    note: >-
+      Crypto trades 24/7, so gaps between candles are rare. Candle 2 usually opens exactly at
+      candle 1's close. This does not invalidate the pattern.
+  meaning:
+    - >-
+      The first candle shows sellers are still in control. The second candle, over the same
+      length of time, takes back all of the sellers' gains and closes above them. This suggests
+      the balance may be starting to shift in favour of buyers.
+    - >-
+      On its own, the pattern does not prove that the direction has changed. Read it as a hint
+      that the decline is slowing, and weigh it together with other evidence.
+  strengthens:
+    - Forming at a support zone
+    - A clear decline before the pattern
+    - High volume on candle 2
+    - Candle 2 also covering candle 1's wicks
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in a flat, directionless market
+    - Both candles being very small
+    - Low volume
+    - A strong resistance zone just above
+    - Forming on very low timeframes (1m, 5m)
+  zones:
+    paragraphs:
+      - >-
+        Bullish engulfing candles are common and often mean little. Where they really stand out is
+        when price reaches a **support zone**. The zone marks an area where price has reacted
+        before; the pattern can show buyers stepping back in at that area. Together they paint a
+        more meaningful picture than either does alone.
+      - >-
+        The reverse also holds: a bullish engulfing that forms just below a resistance zone is
+        considered weaker, because sellers are waiting overhead.
+  invalidation:
+    - >-
+      If price closes below the pattern's **lowest point** (including both candles' wicks), the
+      bullish scenario is considered invalid. If the pattern formed at a support zone, a close
+      below the zone means the same.
+    - Knowing the invalidation point in advance is the clearest way to tell when the pattern no longer says anything.
+  confusions:
+    - id: bearish-engulfing
+      text: "The opposite: after a rise, a red candle engulfs the green one."
+    - id: piercing-line
+      text: The green candle closes past the middle of the red body but does not cover all of it.
+    - id: bullish-harami
+      text: "The inverse relationship: a small green candle sits inside a large red body."
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bullish]
+    - [Candles, "2"]
+    - [Context, After a decline]
+    - [Invalid, Close below the low]
+  svg_labels:
+    candle_1: Candle 1
+    candle_2: Candle 2
+    note_1: Body 2
+    note_2: fully covers
+    note_3: body 1
+  svg_alt: "Bullish engulfing illustration: a short red candle followed by a large green candle whose body fully covers it"
+  svg_caption: The dashed lines mark the first candle's body. Wicks are not part of this rule.

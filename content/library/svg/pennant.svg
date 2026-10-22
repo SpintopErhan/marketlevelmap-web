@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <line class="s-accent" x1="185" y1="66" x2="345" y2="108" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="185" y1="150" x2="345" y2="108" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <polyline class="s-line" points="20,296 40,283 60,272 100,203 112,208 190,68 220,141 250,84 278,127 300,96 315,112 360,60 375,70 440,40 455,48 530,18" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-accent">
+    <circle cx="190" cy="68" r="3.5"/>
+    <circle cx="250" cy="84" r="3.5"/>
+    <circle cx="300" cy="96" r="3.5"/>
+    <circle cx="220" cy="141" r="3.5"/>
+    <circle cx="278" cy="127" r="3.5"/>
+  </g>
+  <text class="t-label" x="150" y="204">{{pole}}</text>
+  <text class="t-accent" x="262" y="172" text-anchor="middle">{{pennant}}</text>
+  <circle class="s-up" cx="323" cy="102" r="9" fill="none" stroke-width="1.5"/>
+  <text class="t-label" x="344" y="134">{{breakout}}</text>
+  <path class="s-guide" d="M44 68 H182 M44 272 H54" stroke-width="1" stroke-dasharray="3 4" fill="none"/>
+  <path class="s-guide" d="M40 72 V268 M35 78 l5 -6 l5 6 M35 262 l5 6 l5 -6" stroke-width="1.2" fill="none"/>
+  <text class="t-guide t-mono" x="31" y="174" text-anchor="end">h</text>
+</svg>

@@ -1,0 +1,177 @@
+id: shooting-star
+kind: candle
+direction: bearish
+pattern_type: reversal
+candles: 1
+order: 50
+related: [inverted-hammer, evening-star, bearish-engulfing]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: kayan-yildiz
+  name: Kayan Yıldız
+  alt_name: Shooting Star
+  summary: >-
+    Bir yükselişin ardından oluşan, küçük gövdeli ve uzun üst fitilli tek mumluk dönüş
+    formasyonu. Fiyatın mum içinde belirgin biçimde yükselip kapanışa doğru geri düştüğünü
+    gösterir. Yukarıdaki fiyatların kabul görmediğine işaret edebilir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde belirgin bir yükseliş vardır. Aynı şekil bir düşüşten sonra oluşursa ters çekiç adını alır.
+        marker: neutral
+      - text: "**Üst fitil**, gövdenin **en az 2 katı** uzunluğundadır."
+        marker: accent
+      - text: "Alt fitil ya hiç yoktur ya da çok kısadır: mumun toplam boyunun (en yüksek ile en düşük arası) yaklaşık **onda birini** geçmez."
+        marker: neutral
+      - text: "Gövde küçüktür ve mumun **alt üçte birlik** kısmında yer alır. Rengi kuralı değiştirmez. Kırmızı gövde biraz daha güçlü kabul edilir."
+        marker: down
+  meaning:
+    - >-
+      Mum açıldıktan sonra alıcılar fiyatı yeni bir tepeye taşır. Kapanışa doğru satıcılar devreye
+      girer ve fiyatı açılış seviyesinin yakınına geri indirir. Uzun üst fitil, yukarıdaki
+      fiyatlarda alıcı bulunamadığını gösterebilir.
+    - >-
+      Yükseliş trendinde mumlar genellikle tepeye yakın kapanır. Kayan yıldız ise dibe yakın kapanır.
+      Bu, alış baskısının zayıflamaya başlamış olabileceğine dair bir ipucudur. Sonraki mumun
+      kayan yıldızın gövdesinin altında kapanması, bu okumayı destekleyen bir onay olarak kabul edilir.
+  strengthens:
+    - Bir direnç bölgesinde oluşması
+    - Öncesindeki yükselişin belirgin olması
+    - Üst fitilin gövdeye göre çok uzun olması
+    - Yüksek hacim
+    - Sonraki mumun kayan yıldızın gövdesinin altında kapanması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasada oluşması
+    - Belirgin bir alt fitil bulunması
+    - Hemen altında güçlü bir destek bölgesi bulunması
+    - Sonraki mumun kayan yıldızın en yükseğine doğru çıkması
+    - Çok küçük zaman dilimlerinde (1 dk, 5 dk) oluşması
+  zones:
+    paragraphs:
+      - >-
+        Kayan yıldızın en anlamlı olduğu yer bir **direnç bölgesidir**. Uzun üst fitil, fiyatın
+        bölgenin içine ya da kısa süreliğine üzerine çıktığını, ama gövdenin bölgenin altında
+        kapandığını gösterir. Bu tablo, bölgeyi aşma denemesinin o mumda geri çevrildiği şeklinde
+        okunabilir.
+      - >-
+        Belirleyici olan kapanıştır. Gövde bölgenin **üzerinde** kapanıyorsa, uzun bir üst fitil
+        olsa bile bölge aşılmış olabilir. Bu durumda tablo bir ret değil, bir kırılım denemesidir.
+        Fitilin ucu ise bölgenin üst sınırı için somut bir referans verir.
+      - >-
+        Kayan yıldızın hemen altındaki ilk destek bölgesi de önemlidir. Destek çok yakınsa,
+        düşüş için alan dardır ve formasyon daha zayıf kabul edilir.
+  invalidation:
+    - >-
+      Fiyat, kayan yıldızın **en yüksek noktasının** (üst fitilin ucu) üzerinde kapanış yaparsa
+      düşüş senaryosu geçersiz kabul edilir. Bu, fitilin geri çevirdiği fiyatların artık kabul
+      gördüğü anlamına gelir.
+    - Kayan yıldız bir direnç bölgesinde oluştuysa, bölgenin üzerinde kapanış da aynı anlama gelir.
+  confusions:
+    - id: inverted-hammer
+      text: "Aynı şekil, farklı bağlam: düşüşten sonra oluşur ve yükseliş yönlü okunur."
+    - id: hanging-man
+      text: "Yükselişten sonra oluşan diğer tek mum: fitil altta, gövde mumun üst kısmında."
+    - id: pin-bar
+      text: "Daha geniş bir terim: uzun fitilli her ret mumu. Kayan yıldız, yükseliş sonrası üst fitilli olanıdır."
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Düşüş]
+    - [Mum, "1"]
+    - [Bağlam, Yükseliş sonrası]
+    - [Kural, Üst fitil ≥ 2 × gövde]
+    - [Geçersiz, En yükseğin üzerinde kapanış]
+  svg_labels:
+    context: Önceki yükseliş
+    candle: Kayan yıldız
+    body: Gövde
+    note_1: Üst fitil
+    note_2: gövdenin en az
+    note_3: 2 katı
+  svg_alt: "Kayan yıldız formasyonu çizimi: birkaç küçük yeşil mumdan oluşan yükselişin ardından, küçük gövdesi altta ve üst fitili uzun bir kırmızı mum"
+  svg_caption: Kesikli çizgiler kayan yıldızın gövdesini gösterir. Turuncu ayraç, en az gövdenin iki katı olması gereken üst fitili işaretler.
+
+en:
+  slug: shooting-star
+  name: Shooting Star
+  summary: >-
+    A single-candle reversal pattern that forms after a rise, with a small body and a long upper
+    wick. It shows price climbing clearly within the candle and falling back towards the close.
+    It can suggest that the higher prices were not accepted.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a clear rise. The same shape after a decline is called an inverted hammer.
+        marker: neutral
+      - text: "The **upper wick** is **at least twice** the length of the body."
+        marker: accent
+      - text: "The lower wick is absent or very short: no more than about **a tenth** of the candle's full range (high to low)."
+        marker: neutral
+      - text: "The body is small and sits in the **lower third** of the range. Its colour does not change the rule; a red body is considered slightly stronger."
+        marker: down
+  meaning:
+    - >-
+      After the open, buyers carry price to a new high. Towards the close, sellers step in and push
+      it back near the opening level. The long upper wick can show that buyers could not be found at
+      the higher prices.
+    - >-
+      In an uptrend, candles usually close near their highs. A shooting star closes near its low.
+      This is a hint that buying pressure may be starting to fade. The next candle closing below the
+      shooting star's body is considered a confirmation that supports this reading.
+  strengthens:
+    - Forming at a resistance zone
+    - A clear rise before the pattern
+    - An upper wick that is very long relative to the body
+    - High volume
+    - The next candle closing below the shooting star's body
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in a flat, directionless market
+    - A noticeable lower wick
+    - A strong support zone just below
+    - The next candle heading back towards the shooting star's high
+    - Forming on very low timeframes (1m, 5m)
+  zones:
+    paragraphs:
+      - >-
+        A shooting star means most at a **resistance zone**. The long upper wick shows price reaching
+        into the zone, or briefly above it, while the body closes below it. This can be read as the
+        attempt to clear the zone being rejected on that candle.
+      - >-
+        The close is what decides it. If the body closes **above** the zone, the zone may have been
+        cleared even with a long upper wick. The picture is then a breakout attempt, not a rejection.
+        The tip of the wick gives a concrete reference for the zone's upper edge.
+      - >-
+        The first support zone below the shooting star matters too. If support is very close, there
+        is little room for a decline and the pattern is considered weaker.
+  invalidation:
+    - >-
+      If price closes above the shooting star's **highest point** (the tip of the upper wick), the
+      bearish scenario is considered invalid. It means the prices the wick rejected are now being
+      accepted.
+    - If the shooting star formed at a resistance zone, a close above the zone means the same.
+  confusions:
+    - id: inverted-hammer
+      text: "Same shape, different context: it forms after a decline and is read as bullish."
+    - id: hanging-man
+      text: "The other single candle after a rise: the wick is at the bottom and the body at the top."
+    - id: pin-bar
+      text: "A broader term for any long-wick rejection candle. A shooting star is the upper-wick one after a rise."
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bearish]
+    - [Candles, "1"]
+    - [Context, After a rise]
+    - [Rule, Upper wick ≥ 2 × body]
+    - [Invalid, Close above the high]
+  svg_labels:
+    context: Prior rise
+    candle: Shooting star
+    body: Body
+    note_1: Upper wick
+    note_2: at least twice
+    note_3: the body
+  svg_alt: "Shooting star illustration: after a rise of several small green candles, a red candle with a small body at the bottom and a long upper wick"
+  svg_caption: The dashed lines mark the shooting star's body. The orange bracket marks the upper wick, which must be at least twice the body.

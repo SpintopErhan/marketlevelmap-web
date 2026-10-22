@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <line class="s-accent" x1="115" y1="53" x2="470" y2="165" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="115" y1="277" x2="470" y2="165" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text class="t-accent" x="340" y="98" text-anchor="middle">{{lower_highs}}</text>
+  <text class="t-accent" x="330" y="242" text-anchor="middle">{{higher_lows}}</text>
+  <polyline class="s-line" points="20,250 50,215 65,228 130,58 180,256 250,96 315,214 370,134 410,184 455,120 472,132 530,70" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-accent">
+    <circle cx="130" cy="58" r="3.5"/>
+    <circle cx="250" cy="96" r="3.5"/>
+    <circle cx="370" cy="134" r="3.5"/>
+    <circle cx="180" cy="256" r="3.5"/>
+    <circle cx="315" cy="214" r="3.5"/>
+    <circle cx="410" cy="184" r="3.5"/>
+  </g>
+  <circle class="s-guide" cx="470" cy="165" r="3" fill="none" stroke-width="1.2"/>
+  <text class="t-label" x="460" y="192">{{apex}}</text>
+  <circle class="s-up" cx="432" cy="153" r="9" fill="none" stroke-width="1.5"/>
+  <text class="t-label" x="416" y="114" text-anchor="middle">{{breakout}}</text>
+  <path class="s-guide" d="M118 60 V270 M113 66 l5 -6 l5 6 M113 264 l5 6 l5 -6" stroke-width="1.2" fill="none"/>
+  <text class="t-guide t-mono" x="108" y="172" text-anchor="end">h</text>
+</svg>

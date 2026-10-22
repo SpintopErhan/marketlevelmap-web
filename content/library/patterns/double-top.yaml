@@ -1,0 +1,207 @@
+id: double-top
+kind: chart
+direction: bearish
+pattern_type: reversal
+candles: multi
+order: 30
+related: [double-bottom, head-and-shoulders, triple-top]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: ikili-tepe
+  name: İkili Tepe
+  alt_name: Double Top
+  summary: >-
+    Bir yükselişin sonunda, fiyatın yaklaşık aynı seviyede iki tepe yapmasıyla oluşan dönüş
+    formasyonu. İki tepe arasındaki dipten geçen boyun çizgisinin altına inilmesiyle tamamlanır.
+    Fiyatın aynı seviyeyi ikinci kez geçemediğini ve yükselişin güç kaybettiğini gösterebilir.
+  formation:
+    style: steps
+    items:
+      - title: Önceki yükseliş.
+        text: Formasyon bir dönüş işaretidir. Öncesinde belirgin bir yükseliş trendi olmalıdır.
+      - title: Birinci tepe.
+        text: Fiyat yeni bir tepe yapar, ardından belirgin bir geri çekilmeyle bir dibe iner.
+      - title: Aradaki dip.
+        text: >-
+          Geri çekilme küçük bir dalgalanma değil, görünür bir harekettir. Günlük grafiklerde sık
+          verilen ölçü, tepeden yaklaşık **%10 ya da daha fazla** düşüştür. Küçük zaman
+          dilimlerinde bu oran daha düşük olabilir.
+      - title: İkinci tepe.
+        text: >-
+          Fiyat yeniden yükselir ve ilk tepeye yakın bir seviyede durur. İki tepe arasındaki fark
+          genellikle **yaklaşık %3'ün altındadır**. Tepeler birkaç mumluk aralıkla değil, belirgin
+          bir süreyle ayrılır.
+      - title: Boyun çizgisi.
+        text: İki tepe arasındaki dibin en düşük noktasından geçen yatay çizgidir.
+      - title: Tamamlanma.
+        text: Fiyat boyun çizgisinin altında **kapanış** yaptığında formasyon tamamlanmış sayılır. O ana kadar iki tepe yalnızca bir olasılıktır.
+    note: Oranlar yaklaşıktır. Ders kitaplarında yaygın kabul gören değerlerdir, kesin sınırlar değildir.
+  meaning:
+    - >-
+      İlk tepede satıcılar fiyatı geri iter. İkinci denemede fiyat aynı seviyeye gelir ama onu
+      geçemez. Bu, o seviyede satış baskısının sürdüğünü ve alıcıların yeni bir tepe yapacak gücü
+      bulamadığını gösterebilir. Aradaki dibin kırılması ise alıcıların son savunma seviyesinin
+      kaybedildiğine işaret eder.
+    - >-
+      Yükselişlerde fiyatın bir önceki tepeye geri gelip duraklaması çok sık görülür. Bu tek
+      başına ikili tepe değildir. Formasyon ancak boyun çizgisi kırıldığında anlam kazanır.
+      Kırılım gelmeden fiyat tepelerin üzerine çıkabilir ve yükseliş devam edebilir.
+  measurement:
+    title: Sık kullanılan bir ölçüm
+    text: >-
+      Teknik analizde tepelerin boyun çizgisine olan yüksekliği (h), kırılım noktasından aşağı
+      doğru ölçülerek olası hareketin büyüklüğü hakkında kaba bir fikir verilir. Bu bir hedef
+      değil, bir ölçek referansıdır. Fiyat bu mesafeye ulaşmadan dönebilir ya da çok daha ileri
+      gidebilir. Yoldaki destek bölgeleri genellikle daha gerçekçi bir referanstır.
+  strengthens:
+    - İki tepenin de aynı direnç bölgesinde oluşması
+    - İkinci tepede hacmin birinci tepeye göre düşük kalması
+    - Boyun çizgisi kırılırken hacmin artması
+    - Tepeler arasında belirgin bir süre ve derin bir geri çekilme olması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Öncesinde belirgin bir yükseliş olmaması
+    - Tepelerin çok kısa aralıkla oluşması
+    - Aradaki dibin çok sığ olması
+    - Kırılımın düşük hacimle gelmesi
+    - Boyun çizgisinin hemen altında güçlü bir destek bölgesi bulunması
+  zones:
+    intro: "İkili tepe, doğası gereği bir bölge formasyonudur: fiyat aynı alana iki kez gelir ve iki kez geri döner. Bölgelerle ilişkisi üç yerde okunur:"
+    points:
+      - "**İki tepe bir direnç bölgesine denk geliyorsa**, formasyon o bölgenin ikinci kez savunulduğunu gösterir. Tepelerin tam aynı fiyatta olması gerekmez, ikisinin de aynı bölgenin içinde kalması yeterlidir."
+      - "**Aradaki dip bir destek bölgesiyle örtüşüyorsa**, boyun çizgisinin kırılması o bölgenin de kaybedilmesi anlamına gelir. Bu, kırılımı daha anlamlı kılar."
+      - "**Kırılımın altındaki ilk destek bölgesi**, fiyatın nerede yeniden tepki verebileceğine dair ölçüm yönteminden daha gerçekçi bir referanstır."
+    paragraphs:
+      - >-
+        Kırılımdan sonra fiyat bazen boyun çizgisine geri dönüp onu aşağıdan test eder. Daha önce
+        destek olan bölge bu kez direnç gibi davranabilir. Fiyat bu testte boyun çizgisinin
+        üzerinde kapanış yapıp tutunursa kırılım zayıflamış kabul edilir.
+  completion: Boyun çizgisinin (aradaki dibin) altında kapanış.
+  invalidation:
+    before: >-
+      Fiyat boyun çizgisini kırmadan iki tepenin üzerinde kapanış yaparsa formasyon oluşmamış
+      kabul edilir. Bu durumda tepeler bir direnç değil, aşılan bir seviye olur.
+    after: >-
+      Boyun çizgisinin altında kapanış gelmiş olsa bile fiyat yeniden boyun çizgisinin üzerine
+      çıkar ve **ikinci tepenin üzerinde kapanış** yaparsa düşüş senaryosu geçersiz sayılır.
+  confusions:
+    - id: head-and-shoulders
+      text: "Ortada daha yüksek bir tepe (baş) ve iki yanında omuzlar vardır."
+    - id: triple-top
+      text: Aynı seviyede iki değil üç tepe oluşur.
+    - id: rectangle
+      text: Fiyat iki yatay seviye arasında gidip gelir, kırılımın yönü önceden belli değildir.
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Düşüş]
+    - [Süre, Çok mumlu]
+    - [Bağlam, Yükseliş sonrası]
+    - [Tamamlanma, Aradaki dibin altında kapanış]
+    - [Geçersiz, İkinci tepe üzerinde kapanış]
+  svg_labels:
+    neckline: Boyun çizgisi
+    peak_1: 1. tepe
+    peak_2: 2. tepe
+    breakdown: Kırılım
+  svg_alt: "İkili tepe çizimi: yükselen fiyat bir tepe yapıyor, bir dibe geri çekiliyor, ilk tepeye yakın seviyede ikinci bir tepe yapıyor ve ardından aradaki dipten geçen boyun çizgisinin altına iniyor"
+  svg_caption: Turuncu nokta, boyun çizgisini belirleyen aradaki dibi gösterir. h, tepelerin boyun çizgisine olan yüksekliğidir.
+
+en:
+  slug: double-top
+  name: Double Top
+  summary: >-
+    A reversal pattern that forms at the end of an uptrend, when price makes two peaks at roughly
+    the same level. It completes when price falls below the neckline drawn through the trough
+    between the peaks. It can signal that price failed to clear the same level twice and that the
+    uptrend is losing strength.
+  formation:
+    style: steps
+    items:
+      - title: Prior uptrend.
+        text: The pattern is a reversal signal. It needs a clear uptrend before it.
+      - title: First peak.
+        text: Price makes a new high, then pulls back clearly to a trough.
+      - title: The trough between.
+        text: >-
+          The pullback is a visible move, not a small wobble. A figure often quoted for daily charts
+          is a drop of about **10% or more** from the peak. On lower timeframes it can be smaller.
+      - title: Second peak.
+        text: >-
+          Price rises again and stalls near the first peak. The two peaks are usually **within about
+          3%** of each other. They are separated by a clear stretch of time, not just a few candles.
+      - title: Neckline.
+        text: A horizontal line through the lowest point of the trough between the peaks.
+      - title: Completion.
+        text: The pattern is complete when price **closes** below the neckline. Until then, two peaks are only a possibility.
+    note: The figures are approximate. They are commonly accepted textbook values, not hard limits.
+  meaning:
+    - >-
+      At the first peak, sellers push price back. On the second attempt, price reaches the same level
+      but cannot get past it. This can show that selling pressure is still there and that buyers lack
+      the strength for a new high. A break of the trough suggests that buyers' last line of defence
+      has been lost.
+    - >-
+      In an uptrend, price often returns to a previous high and pauses. That alone is not a double
+      top. The pattern only means something once the neckline breaks. Before that, price can rise
+      above the peaks and the uptrend can carry on.
+  measurement:
+    title: A common measurement
+    text: >-
+      In technical analysis, the height of the peaks above the neckline (h) is measured down from the
+      breakout point to give a rough sense of the possible move's size. It is a scale reference, not
+      a target. Price can turn before covering that distance, or go much further. Support zones along
+      the way are usually a more realistic reference.
+  strengthens:
+    - Both peaks forming in the same resistance zone
+    - Lower volume on the second peak than on the first
+    - Volume rising as the neckline breaks
+    - A clear gap in time and a deep pullback between the peaks
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - No clear uptrend before the pattern
+    - Peaks forming very close together in time
+    - A very shallow trough between the peaks
+    - The break coming on low volume
+    - A strong support zone just below the neckline
+  zones:
+    intro: "A double top is a zone pattern by nature: price comes to the same area twice and turns back twice. Its link to zones is read in three places:"
+    points:
+      - "**If both peaks fall in a resistance zone**, the pattern shows that zone being defended a second time. The peaks need not be at exactly the same price; it is enough that both sit inside the same zone."
+      - "**If the trough lines up with a support zone**, a break of the neckline also means that zone is lost. This gives the break more weight."
+      - "**The first support zone below the break** is a more realistic reference than the measured move for where price may react again."
+    paragraphs:
+      - >-
+        After the break, price sometimes returns to retest the neckline from below. The zone that was
+        support may now act as resistance. If price closes back above the neckline in this test and
+        holds there, the break is considered to have weakened.
+  completion: Close below the neckline (the trough between the peaks).
+  invalidation:
+    before: >-
+      If price closes above both peaks without breaking the neckline, the pattern is considered not
+      to have formed. The peaks then become a level that has been cleared, not resistance.
+    after: >-
+      Even after a close below the neckline, if price climbs back above it and **closes above the
+      second peak**, the bearish scenario is considered invalid.
+  confusions:
+    - id: head-and-shoulders
+      text: There is a higher middle peak (the head) with a shoulder on each side.
+    - id: triple-top
+      text: Three peaks form at the same level instead of two.
+    - id: rectangle
+      text: Price moves between two flat levels, and the direction of the break is not known in advance.
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bearish]
+    - [Duration, Multi-candle]
+    - [Context, After an uptrend]
+    - [Completion, Close below the trough]
+    - [Invalid, Close above the second peak]
+  svg_labels:
+    neckline: Neckline
+    peak_1: Peak 1
+    peak_2: Peak 2
+    breakdown: Breakdown
+  svg_alt: "Double top illustration: rising price makes a peak, pulls back to a trough, makes a second peak near the first, then falls below the neckline through the trough"
+  svg_caption: The orange dot marks the trough that defines the neckline. h is the height of the peaks above the neckline.

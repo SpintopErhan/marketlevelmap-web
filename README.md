@@ -145,6 +145,19 @@ History: the first version (PR #36) used 168 × 1h candles and drew the nearest 
 the asset's report as faint bands behind the line. The bands looked cluttered and were removed together
 with the switch to 2h candles (PR #37).
 
+## Pattern library
+
+`/tr/kutuphane/…` and `/en/library/…` are static pages generated from `content/library` (one YAML file and one
+SVG per pattern, both languages in the same file) by `scripts/build-library.mjs`, which also writes `sitemap.xml`.
+The generated pages are committed, so Pages still has no build step: after changing the content run
+`cd scripts && npm ci && node build-library.mjs` and commit the result. The `Library` GitHub check runs
+`node build-library.mjs --check` on every PR and fails on invalid content or out-of-date pages. Authoring rules
+(schema, SVG colour classes, URLs) are in `content/library/README.md`. Each language has its own URL so search
+engines index both; the other pages link to the library in the visitor's language.
+
+`_routes.json` keeps `assets/`, the library pages, `sitemap.xml` and `robots.txt` out of Pages Functions, so they
+do not run the middleware or count towards the Functions quota (library pages carry their own preview tags).
+
 ## Engine data contracts (R2)
 
 The local engine does not publish these yet; the site reads them as soon as they exist. Until then the
@@ -207,5 +220,6 @@ never on marketlevelmap.com by default, and every section it fills shows a "Samp
 ## Shared assets and browser caches
 
 Pages link the files in `assets/` (`site.css`, `disclaimer.js`, `market-cache.js`, `market-feed.js`,
-`market-ui.js`, `demo-data.js`, `sparkline.js`, `features.js`, `live-chart.js`) with a `?v=` content hash so browsers pick up new versions. After editing
+`market-ui.js`, `demo-data.js`, `sparkline.js`, `features.js`, `live-chart.js`) with a `?v=` content hash (the library
+pages get theirs from the build script) so browsers pick up new versions. After editing
 one, update its hash in every page that loads it, e.g. `sha1sum assets/site.css | cut -c1-8`.

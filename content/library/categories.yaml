@@ -1,0 +1,26 @@
+# Library categories. `kind` in a pattern file picks its category; `order` sorts the categories
+# (also the order of the sections on the library home page).
+- kind: candle
+  order: 20
+  tr:
+    slug: mum-formasyonlari
+    name: Mum formasyonları
+    singular: Mum formasyonu
+    summary: Bir ile üç mumdan oluşan, fiyatın kısa vadede yön değiştirebileceğine ya da kararsız kaldığına işaret eden formasyonlar.
+  en:
+    slug: candlestick-patterns
+    name: Candlestick patterns
+    singular: Candlestick pattern
+    summary: Patterns of one to three candles that can point to a short-term change of direction or to indecision.
+- kind: chart
+  order: 10
+  tr:
+    slug: grafik-formasyonlari
+    name: Grafik formasyonları
+    singular: Grafik formasyonu
+    summary: Çok sayıda mumun oluşturduğu tepe, dip ve çizgilerden okunan, trendin dönebileceğine ya da devam edebileceğine işaret eden formasyonlar.
+  en:
+    slug: chart-patterns
+    name: Chart patterns
+    singular: Chart pattern
+    summary: Patterns read from the peaks, troughs and lines that many candles form, pointing to a possible reversal or continuation of the trend.
