@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <line class="s-accent" x1="170" y1="176" x2="520" y2="176" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text class="t-accent" x="522" y="166" text-anchor="end">{{neckline}}</text>
+  <polyline class="s-line" points="20,280 55,240 75,252 140,84 185,150 225,176 270,128 310,86 360,150 412,212 440,196 520,270" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point">
+    <circle cx="140" cy="84" r="4"/>
+    <circle cx="310" cy="86" r="4"/>
+  </g>
+  <circle class="f-accent" cx="225" cy="176" r="3.5"/>
+  <g class="t-label" text-anchor="middle">
+    <text x="140" y="70">{{peak_1}}</text>
+    <text x="310" y="72">{{peak_2}}</text>
+  </g>
+  <circle class="s-down" cx="382" cy="176" r="9" fill="none" stroke-width="1.5"/>
+  <text class="t-down" x="368" y="202" text-anchor="end">{{breakdown}}</text>
+  <path class="s-guide" d="M225 90 V170 M220 96 l5 -6 l5 6 M220 164 l5 6 l5 -6" stroke-width="1.2" fill="none"/>
+  <text class="t-guide t-mono" x="233" y="134" text-anchor="start">h</text>
+</svg>

@@ -1,0 +1,184 @@
+id: doji
+kind: candle
+direction: neutral
+pattern_type: indecision
+candles: 1
+order: 70
+related: [spinning-top, morning-star, evening-star]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: doji
+  name: Doji
+  summary: >-
+    Açılışı ile kapanışı neredeyse aynı seviyede olan, gövdesi çok küçük tek mum. Mum içinde fiyat
+    hareket etmiş ama kapanışta başladığı yere dönmüştür. Alıcılar ile satıcılar arasında o zaman
+    aralığında bir kazananın çıkmadığını, yani kararsızlığı gösterebilir.
+  formation:
+    style: bullets
+    items:
+      - text: "**Açılış ve kapanış** neredeyse aynıdır. Mumun rengi önemli değildir."
+        marker: neutral
+      - text: "**Gövde**, mumun toplam aralığının (en yüksek ile en düşük arası) **en fazla %10'u** kadardır."
+        marker: accent
+      - text: "**Uzun bacaklı doji:** iki fitil de uzundur, gövde aralığın ortasına yakındır."
+        marker: neutral
+      - text: "**Yusufçuk doji:** gövde aralığın en üstündedir, üst fitil yok denecek kadar kısadır, alt fitil uzundur."
+        marker: up
+      - text: "**Mezar taşı doji:** gövde aralığın en altındadır, alt fitil yok denecek kadar kısadır, üst fitil uzundur."
+        marker: down
+    note: >-
+      Yusufçuk ve mezar taşı doji, tek yöndeki uzun fitilleri nedeniyle pin bara benzer. Gövde bu
+      kadar küçük olduğunda doji adı kullanılır.
+  meaning:
+    - >-
+      Doji tek başına bir yön bildirmez. Gösterdiği şey, o zaman aralığında iki tarafın da fiyatı
+      kendi yönünde kapatamadığıdır. Fitiller ne kadar uzunsa, mum içindeki mücadele de o kadar
+      geniş bir alanda geçmiştir.
+    - >-
+      Anlamı büyük ölçüde nerede oluştuğuna bağlıdır. Güçlü bir hareketin ardından gelen doji, o
+      hareketin hızının kesildiğine işaret edebilir. Zaten yatay giden bir piyasada ise dojiler sık
+      görülür ve genellikle yeni bir şey söylemez. Sabah ve akşam yıldızı gibi formasyonlarda doji
+      çoğu zaman ortadaki mum olarak yer alır.
+  strengthens:
+    - Bir destek ya da direnç bölgesinde oluşması
+    - Öncesinde belirgin, hızlı bir hareket olması
+    - Fitillerin önceki mumların aralığının dışına taşması
+    - Hacmin ortalamanın üzerinde olması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasanın ortasında oluşması
+    - Arka arkaya çok sayıda doji ya da küçük mum olması
+    - Çok kısa fitiller (mumun tamamı küçük)
+    - Düşük hacim
+    - Çok küçük zaman dilimlerinde (1 dk, 5 dk) oluşması
+  zones:
+    paragraphs:
+      - >-
+        Bir bölgede oluşan doji, fiyatın daha önce tepki verdiği bir seviyeye geldiğini ve orada
+        **durakladığını** gösterir. Önceki hareket bölgeye kadar sürmüş, ama bölgede iki taraf da
+        üstünlük kuramamıştır. Bu, bölgenin hâlâ önem taşıdığına dair bir ipucu olabilir.
+      - >-
+        Bu kararsızlığın nasıl çözüleceği ayrı bir bilgidir. Sonraki mumların dojinin aralığından
+        hangi yöne ve bölgeye göre nerede kapanış yaptığı, bölgenin korunup korunmadığını gösterir.
+        Doji bu soruyu sormayı sağlar, cevabı vermez.
+      - >-
+        İki bölgenin ortasında, fiyatın tepki verebileceği bir seviyeden uzakta oluşan doji
+        çoğunlukla sıradan bir duraklamadır.
+  invalidation:
+    - >-
+      Doji bir yön bildirmediği için geçersiz sayılacak bir senaryosu da yoktur. Kararsızlık
+      okuması, fiyat dojinin **en yüksek ya da en düşük noktasının ötesinde kapanış** yaptığında
+      önemini yitirir. Bu kapanışın yönü, dojinin değil, sonraki fiyat hareketinin bilgisidir.
+    - >-
+      Fiyat birkaç mum boyunca dojinin aralığı içinde kalırsa, tek mumun kararsızlığı yerini daha
+      geniş bir yatay harekete bırakır. Bu durumda dojiye ayrı bir anlam yüklemek zorlaşır.
+  confusions:
+    - id: spinning-top
+      text: "Gövde küçüktür ama belirgindir; dojide gövde neredeyse hiç yoktur."
+    - id: pin-bar
+      text: "Tek uzun fitil ve küçük bir gövde; gövde dojiden daha büyük olabilir."
+    - id: hammer
+      text: "Yusufçuk dojiye benzer, ama belirgin bir gövdesi vardır ve düşüş sonrası okunur."
+  facts:
+    - [Tür, Kararsızlık]
+    - [Yön, Kararsız]
+    - [Mum, "1"]
+    - [Ölçüt, Gövde ≤ aralığın %10'u]
+    - [Bağlam, Bir hareketin sonunda ya da bölgede]
+    - [Önemini yitirir, Aralığın dışında kapanış]
+  svg_labels:
+    doji: Doji
+    dragonfly: Yusufçuk
+    gravestone: Mezar taşı
+    open_close: Açılış ≈ kapanış
+    body_rule: Gövde ≤ %10
+  svg_alt: "Doji çizimi: solda iki fitili de uzun, gövdesi tek bir çizgi kadar ince bir doji; sağda gövdesi en üstte olan yusufçuk ve gövdesi en altta olan mezar taşı doji"
+  svg_caption: Turuncu kesikli çizgi açılış ile kapanışın neredeyse aynı olduğu gövdeyi gösterir. Gövde, mumun toplam aralığının en fazla %10'udur.
+
+en:
+  slug: doji
+  name: Doji
+  summary: >-
+    A single candle whose open and close are almost the same, leaving a very small body. Price moved
+    during the candle but returned to where it started by the close. It can show indecision: neither
+    buyers nor sellers won over that period.
+  formation:
+    style: bullets
+    items:
+      - text: "The **open and close** are almost the same. The candle's colour does not matter."
+        marker: neutral
+      - text: "The **body** is **at most 10%** of the candle's full range (from high to low)."
+        marker: accent
+      - text: "**Long-legged doji:** both wicks are long and the body sits near the middle of the range."
+        marker: neutral
+      - text: "**Dragonfly doji:** the body is at the very top of the range, the upper wick is negligible and the lower wick is long."
+        marker: up
+      - text: "**Gravestone doji:** the body is at the very bottom of the range, the lower wick is negligible and the upper wick is long."
+        marker: down
+    note: >-
+      Dragonfly and gravestone dojis look like pin bars because of their single long wick. When the
+      body is this small, the name doji is used.
+  meaning:
+    - >-
+      On its own, a doji gives no direction. What it shows is that neither side managed to close price
+      in its favour over that period. The longer the wicks, the wider the range the tug of war covered.
+    - >-
+      Its meaning depends largely on where it forms. A doji after a strong move may suggest that the
+      move is losing pace. In a market that is already moving sideways, dojis are common and usually
+      add nothing new. In patterns such as the morning and evening star, the middle candle is often a doji.
+  strengthens:
+    - Forming at a support or resistance zone
+    - A clear, fast move before it
+    - The wicks sticking out beyond the previous candles' range
+    - Above-average volume
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in the middle of a flat, directionless market
+    - Many dojis or small candles in a row
+    - Very short wicks (the whole candle is small)
+    - Low volume
+    - Forming on very low timeframes (1m, 5m)
+  zones:
+    paragraphs:
+      - >-
+        A doji at a zone shows that price has reached a level where it reacted before, and has
+        **paused** there. The prior move carried price to the zone, but neither side took control at it.
+        This can be a hint that the zone still matters.
+      - >-
+        How this indecision resolves is a separate piece of information. Where the next candles close
+        relative to the doji's range, and to the zone, shows whether the zone held. The doji raises the
+        question; it does not answer it.
+      - >-
+        A doji between two zones, away from any level where price might react, is usually an ordinary pause.
+  invalidation:
+    - >-
+      A doji has no direction, so it has no scenario to invalidate. The indecision read stops being
+      relevant once price **closes beyond the doji's high or low**. The direction of that close belongs
+      to the price action that follows, not to the doji.
+    - >-
+      If price stays inside the doji's range for several candles, the single candle's indecision turns
+      into a wider sideways move. At that point it is hard to give the doji a meaning of its own.
+  confusions:
+    - id: spinning-top
+      text: "The body is small but visible; a doji has almost no body."
+    - id: pin-bar
+      text: "One long wick and a small body, which can be larger than a doji's."
+    - id: hammer
+      text: "Looks like a dragonfly doji but has a clear body and is read after a decline."
+  facts:
+    - [Type, Indecision]
+    - [Direction, Undecided]
+    - [Candles, "1"]
+    - [Rule, Body ≤ 10% of range]
+    - [Context, After a move or at a zone]
+    - [Loses relevance, Close outside its range]
+  svg_labels:
+    doji: Doji
+    dragonfly: Dragonfly
+    gravestone: Gravestone
+    open_close: Open ≈ close
+    body_rule: Body ≤ 10%
+  svg_alt: "Doji illustration: on the left, a doji with two long wicks and a body as thin as a line; on the right, a dragonfly doji with its body at the top and a gravestone doji with its body at the bottom"
+  svg_caption: The dashed orange line marks the body, where the open and close are almost the same. The body is at most 10% of the candle's full range.

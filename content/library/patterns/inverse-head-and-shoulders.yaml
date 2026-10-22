@@ -1,0 +1,200 @@
+id: inverse-head-and-shoulders
+kind: chart
+direction: bullish
+pattern_type: reversal
+candles: multi
+order: 20
+related: [head-and-shoulders, double-bottom, triple-bottom]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: ters-omuz-bas-omuz
+  name: Ters Omuz Baş Omuz (TOBO)
+  alt_name: Inverse Head and Shoulders
+  summary: >-
+    Bir düşüşün sonunda oluşan, üç dipten meydana gelen dönüş formasyonu. Ortadaki dip (baş)
+    iki yandakilerden (omuzlar) daha aşağıdadır. Fiyatın iki tepe noktasını birleştiren boyun
+    çizgisinin üzerine çıkmasıyla tamamlanır ve düşüşün güç kaybettiğini gösterebilir.
+  formation:
+    style: steps
+    items:
+      - title: Önceki düşüş.
+        text: Formasyon bir dönüş işaretidir. Öncesinde belirgin bir düşüş trendi olmalıdır.
+      - title: Sol omuz.
+        text: Fiyat yeni bir dip yapar, ardından bir tepeye doğru toparlanır.
+      - title: Baş.
+        text: Fiyat sol omuzdan daha aşağıda yeni bir dip yapar, ardından yaklaşık ilk tepe seviyesine geri yükselir.
+      - title: Sağ omuz.
+        text: Fiyat yeniden geriler ama başın seviyesine inmez. Bu dip genellikle sol omuza yakın bir seviyededir.
+      - title: Boyun çizgisi.
+        text: Baştan önceki ve sonraki iki tepe birleştirilerek çizilir. Yatay, hafif yukarı ya da hafif aşağı eğimli olabilir.
+      - title: Tamamlanma.
+        text: Fiyat boyun çizgisinin üzerinde **kapanış** yaptığında formasyon tamamlanmış sayılır. Kapanış gelmeden önce yalnızca oluşum halindedir.
+  meaning:
+    - >-
+      Düşüş trendinde her dip bir öncekinden aşağıdadır. Sağ omuzda fiyat başın seviyesine
+      inmez. Bu, satıcıların fiyatı aşağı itme gücünün azaldığını gösterebilir. Boyun çizgisinin
+      yukarı kırılması ise satıcıların savunduğu son tepe seviyesinin de aşıldığına işaret eder.
+    - >-
+      Yükseliş yönlü kırılımlar çoğu zaman hacim artışı ister. Hacim zayıf kalırsa fiyat boyun
+      çizgisinin üzerinde tutunmakta zorlanabilir. Tamamlanmadan önce sonuç çıkarmak burada da
+      en sık yapılan hatadır: sağ omuz oluşmuş gibi görünse bile fiyat yeni bir dibe inebilir.
+  measurement:
+    title: Sık kullanılan bir ölçüm
+    text: >-
+      Teknik analizde başın boyun çizgisine olan derinliği (h), kırılım noktasından yukarı doğru
+      ölçülerek olası hareketin büyüklüğü hakkında kaba bir fikir verilir. Bu bir hedef değil,
+      bir ölçek referansıdır. Fiyat bu mesafeye ulaşmadan dönebilir ya da çok daha ileri gidebilir.
+      Yoldaki direnç bölgeleri genellikle daha gerçekçi bir referanstır.
+  strengthens:
+    - Başın bir destek bölgesinde oluşması
+    - Sol omuzdan başa doğru satış hacminin azalması
+    - Boyun çizgisi kırılırken hacmin belirgin şekilde artması
+    - Omuzların birbirine yakın derinlikte ve sürede oluşması
+    - Yukarı eğimli bir boyun çizgisi
+  weakens:
+    - Öncesinde belirgin bir düşüş olmaması
+    - Omuzların derinlik ya da süre olarak çok farklı olması
+    - Kırılımın düşük hacimle gelmesi
+    - Boyun çizgisinin hemen üzerinde güçlü bir direnç bölgesi bulunması
+    - Dik aşağı eğimli bir boyun çizgisi
+  zones:
+    intro: "TOBO'da üç kritik yer vardır ve üçü de bölgelerle birlikte okunduğunda daha anlamlı hale gelir:"
+    points:
+      - "**Baş bir destek bölgesinde oluşuyorsa**, fiyatın o bölgenin altına inemediği ve alıcıların orada beklediği düşünülebilir."
+      - "**Boyun çizgisi bir direnç bölgesiyle örtüşüyorsa**, kırılımı daha önemli kılar. Çünkü aşılan yalnızca bir çizgi değil, fiyatın daha önce geri döndüğü bir alandır."
+      - "**Kırılımın üzerindeki ilk direnç bölgesi**, fiyatın nerede yeniden tepki verebileceğine dair ölçüm yönteminden daha gerçekçi bir referanstır."
+    paragraphs:
+      - >-
+        Kırılımdan sonra fiyat bazen boyun çizgisine geri inip onu yukarıdan test eder. Boyun bir
+        direnç bölgesiyle örtüşüyorsa, o bölge bu kez destek gibi davranabilir. Bu geri test
+        sırasında fiyatın yeniden boyun altına kapanış yapması, kırılımın zayıf olduğuna işaret edebilir.
+  completion: Boyun çizgisinin üzerinde kapanış.
+  invalidation:
+    before: >-
+      Fiyat sağ omuzu oluşturduktan sonra boyun çizgisini kırmadan başın altına inerse
+      formasyon oluşmamış kabul edilir.
+    after: >-
+      Boyun çizgisinin üzerinde kapanış gelmiş olsa bile fiyat yeniden boyun çizgisinin altına
+      iner ve **sağ omzun dibinin altında kapanış** yaparsa yükseliş senaryosu geçersiz sayılır.
+      Bu durum bazen sert aşağı hareketlerle sonuçlanır, çünkü formasyona göre konum alanlar
+      pozisyonlarını kapatmak zorunda kalır.
+  confusions:
+    - id: head-and-shoulders
+      text: "Aynalanmış hali: yükseliş sonrası üç tepe, düşüş yönlü dönüş."
+    - id: double-bottom
+      text: "Baş yok: iki benzer seviyede dip ve aradaki tepe."
+    - id: triple-bottom
+      text: Üç dip de yaklaşık aynı seviyede, ortadaki öne çıkmaz.
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Yükseliş]
+    - [Süre, Çok mumlu]
+    - [Bağlam, Düşüş sonrası]
+    - [Tamamlanma, Boyun üstünde kapanış]
+    - [Geçersiz, Sağ omuz dibi altında kapanış]
+  svg_labels:
+    neckline: Boyun çizgisi
+    left_shoulder: Sol omuz
+    head: Baş
+    right_shoulder: Sağ omuz
+    breakout: Kırılım
+  svg_alt: "Ters omuz baş omuz çizimi: düşen fiyat sol omuz, daha derin baş ve sağ omuz diplerini oluşturuyor, ardından iki tepeyi birleştiren boyun çizgisinin üzerine çıkıyor"
+  svg_caption: Turuncu noktalar boyun çizgisini belirleyen iki tepeyi gösterir. h, başın boyun çizgisine olan derinliğidir.
+
+en:
+  slug: inverse-head-and-shoulders
+  name: Inverse Head and Shoulders
+  alt_name: Ters Omuz Baş Omuz (TOBO)
+  summary: >-
+    A reversal pattern that forms at the end of a downtrend and is made of three troughs. The
+    middle trough (the head) is lower than the two on either side (the shoulders). It completes
+    when price rises above the neckline that connects the two peaks, and it can signal that the
+    downtrend is losing strength.
+  formation:
+    style: steps
+    items:
+      - title: Prior downtrend.
+        text: The pattern is a reversal signal. It needs a clear downtrend before it.
+      - title: Left shoulder.
+        text: Price makes a new low, then recovers to a peak.
+      - title: Head.
+        text: Price makes a lower low than the left shoulder, then climbs back to roughly the first peak's level.
+      - title: Right shoulder.
+        text: Price falls again but does not reach the head. This trough is usually near the left shoulder's level.
+      - title: Neckline.
+        text: Drawn by connecting the two peaks before and after the head. It can be flat, or slightly sloped up or down.
+      - title: Completion.
+        text: The pattern is complete when price **closes** above the neckline. Until that close, it is only forming.
+  meaning:
+    - >-
+      In a downtrend, each trough is lower than the last. At the right shoulder, price does not fall
+      as far as the head. This can show that sellers are losing the strength to push price lower. A
+      break above the neckline suggests that the last peak sellers were defending has been cleared
+      as well.
+    - >-
+      Upside breaks often need a rise in volume. If volume stays weak, price may struggle to hold
+      above the neckline. Drawing conclusions before completion is the most common mistake here
+      too: even when the right shoulder seems to have formed, price can still make a new low.
+  measurement:
+    title: A common measurement
+    text: >-
+      In technical analysis, the depth of the head below the neckline (h) is measured up from the
+      breakout point to give a rough sense of the possible move's size. It is a scale reference, not
+      a target. Price can turn before covering that distance, or go much further. Resistance zones
+      along the way are usually a more realistic reference.
+  strengthens:
+    - The head forming at a support zone
+    - Selling volume fading from the left shoulder to the head
+    - A clear rise in volume as the neckline breaks
+    - Shoulders similar in depth and duration
+    - An upward-sloping neckline
+  weakens:
+    - No clear downtrend before the pattern
+    - Shoulders very different in depth or duration
+    - The break coming on low volume
+    - A strong resistance zone just above the neckline
+    - A steep downward-sloping neckline
+  zones:
+    intro: "An inverse head and shoulders has three critical places, and all three become more meaningful when read alongside zones:"
+    points:
+      - "**If the head forms at a support zone**, it suggests price could not get below that zone and buyers were waiting there."
+      - "**If the neckline lines up with a resistance zone**, the break carries more weight, because what is cleared is not just a line but an area where price has turned before."
+      - "**The first resistance zone above the break** is a more realistic reference than the measured move for where price may react again."
+    paragraphs:
+      - >-
+        After the break, price sometimes returns to retest the neckline from above. If the neckline
+        lines up with a resistance zone, that zone may now act as support. A close back below the
+        neckline during this retest can suggest the break was weak.
+  completion: Close above the neckline.
+  invalidation:
+    before: >-
+      If, after the right shoulder forms, price falls below the head without breaking the neckline,
+      the pattern is considered not to have formed.
+    after: >-
+      Even after a close above the neckline, if price drops back below it and **closes below the
+      right shoulder's trough**, the bullish scenario is considered invalid. This sometimes leads to
+      sharp moves down, as those who positioned on the pattern are forced to close.
+  confusions:
+    - id: head-and-shoulders
+      text: "The mirror image: three peaks after a rise, a bearish reversal."
+    - id: double-bottom
+      text: "No head: two troughs at a similar level with a peak between them."
+    - id: triple-bottom
+      text: All three troughs are at roughly the same level; the middle one does not stand out.
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bullish]
+    - [Duration, Multi-candle]
+    - [Context, After a downtrend]
+    - [Completion, Close above the neckline]
+    - [Invalid, Close below the right shoulder]
+  svg_labels:
+    neckline: Neckline
+    left_shoulder: Left shoulder
+    head: Head
+    right_shoulder: Right shoulder
+    breakout: Breakout
+  svg_alt: "Inverse head and shoulders illustration: falling price forms a left shoulder, a deeper head and a right shoulder, then rises above the neckline joining the two peaks"
+  svg_caption: The orange dots mark the two peaks that define the neckline. h is the depth of the head below the neckline.

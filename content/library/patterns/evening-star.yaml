@@ -1,0 +1,186 @@
+id: evening-star
+kind: candle
+direction: bearish
+pattern_type: reversal
+candles: 3
+order: 90
+related: [morning-star, bearish-engulfing, dark-cloud-cover]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: aksam-yildizi
+  name: Akşam Yıldızı
+  alt_name: Evening Star
+  summary: >-
+    Bir yükselişin ardından üç mumla oluşan dönüş formasyonu. Büyük bir yeşil mumu küçük gövdeli bir
+    mum, onu da ilk mumun gövdesinin yarısının altına inen bir kırmızı mum izler. Alım baskısının
+    durduğunu ve satıcıların yeniden devreye girmeye başladığını gösterebilir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde belirgin bir yükseliş vardır. Formasyon bir dönüş işareti olduğu için dönecek bir hareket olması gerekir.
+        marker: neutral
+      - text: "**1. mum** uzun gövdeli yeşil bir mumdur: gövdesi kendi aralığının en az yarısıdır ve önceki mumların gövdelerinden belirgin biçimde büyüktür."
+        marker: up
+      - text: "**2. mum** küçük gövdelidir: gövdesi 1. mumun gövdesinin en fazla üçte biridir. Rengi önemli değildir. Gövdesinin alt kenarı, 1. mumun gövdesinin üst dörtte birinin altına inmez ve en yüksek noktası üç mumun en yükseğidir."
+        marker: neutral
+      - text: "**3. mum** kırmızıdır ve **1. mumun gövdesinin orta noktasının altında** kapanır."
+        marker: accent
+    note: >-
+      Klasik tanımda 2. mum, 1. mumun kapanışının üstünde bir boşlukla (gap) açılır. Kripto 7/24 işlem
+      gördüğü için bu boşluk nadiren oluşur. Bu yüzden 2. mum, boşluk yerine küçük gövdesi ve 1. mumun
+      kapanışının çevresinde ya da üstünde kalmasıyla tanınır. 2. mum bir doji ise formasyona
+      **akşam doji yıldızı** da denir.
+  meaning:
+    - >-
+      1. mum alıcıların kontrolde olduğunu gösterir. 2. mumda yükseliş devam etmeye çalışır ama gövde
+      küçük kalır: iki taraf da üstünlük kuramamıştır. 3. mum ise 1. mumun kazandırdığı alanın
+      yarısından fazlasını geri verir. Bu sıra, dengenin alıcılardan satıcılara doğru kaymaya
+      başladığına işaret edebilir.
+    - >-
+      Formasyon 3. mumun kapanışıyla tamamlanır. Ondan önce yalnızca bir duraklama vardır. Tamamlansa
+      bile tek başına yönün değiştiğini kanıtlamaz, başka işaretlerle birlikte değerlendirilmelidir.
+  strengthens:
+    - 2. mumun bir direnç bölgesinde oluşması
+    - Öncesindeki yükselişin belirgin olması
+    - 2. mumun doji ya da çok küçük gövdeli olması
+    - 3. mumun 1. mumun açılışına yakın ya da altında kapanması
+    - 3. mumda hacmin artması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasada oluşması
+    - 3. mumun 1. mumun gövdesinin ortasının ancak altına inmesi
+    - 3. mumun hacminin düşük olması
+    - Hemen altında güçlü bir destek bölgesi bulunması
+    - Çok küçük zaman dilimlerinde (1 dk, 5 dk) oluşması
+  zones:
+    intro: "Akşam yıldızında üç mumun her biri bölgelerle birlikte farklı bir şey anlatır:"
+    points:
+      - "**2. mum bir direnç bölgesinde oluşuyorsa**, yükselişin tam olarak fiyatın daha önce tepki verdiği bir alanda durakladığı düşünülebilir. Yıldızın en yüksek noktası çoğu zaman bölgenin içinde ya da hemen üstündedir."
+      - "**3. mum bölgenin alt kenarının altında kapanıyorsa**, bölgenin fiyatı geri ittiği daha net okunur. Kapanış bölgenin içinde kalıyorsa tablo daha belirsizdir."
+      - "**1. mumun açılışının yakınında bir destek bölgesi varsa**, 3. mumun geri verdiği alanın altında alıcıların beklediği bir seviye vardır. Formasyon bu seviyenin üstünde daha zayıf kabul edilir."
+    paragraphs:
+      - >-
+        Bölgeden uzakta oluşan bir akşam yıldızı, yükseliş içindeki sıradan bir geri çekilme de olabilir.
+        Bölge, yükselişin neden orada durmuş olabileceğine dair bir gerekçe sunar.
+  completion: 3. mumun, 1. mumun gövdesinin orta noktasının altında kapanması.
+  invalidation:
+    before: >-
+      3. mum, 1. mumun gövdesinin orta noktasının altında kapanmazsa formasyon tamamlanmamış sayılır.
+      Fiyat 2. mumun en yüksek noktasının üstünde kapanırsa oluşum tamamen bozulur.
+    after: >-
+      Formasyon tamamlandıktan sonra fiyat formasyonun **en yüksek noktasının** (genellikle 2. mumun
+      fitili) üstünde kapanış yaparsa düşüş senaryosu geçersiz kabul edilir. Formasyon bir direnç
+      bölgesinde oluştuysa, bölgenin üstünde kapanış da aynı anlama gelir.
+  confusions:
+    - id: morning-star
+      text: "Tersi: düşüşten sonra, ortada küçük gövdeli bir mumla yükseliş yönlü dönüş."
+    - id: dark-cloud-cover
+      text: "Ortadaki mum yok: kırmızı mum doğrudan yeşil gövdenin yarısının altına iner."
+    - id: bearish-engulfing
+      text: "İki mum: kırmızı gövde yeşil gövdeyi tamamen kapsar."
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Düşüş]
+    - [Mum, "3"]
+    - [Bağlam, Yükseliş sonrası]
+    - [Tamamlanma, 1. gövdenin ortası altında kapanış]
+    - [Geçersiz, En yükseğin üstünde kapanış]
+  svg_labels:
+    candle_1: 1. mum
+    candle_2: 2. mum
+    candle_3: 3. mum
+    note_1: 3. mum, 1. gövdenin
+    note_2: ortasının altında
+    note_3: kapanır
+  svg_alt: "Akşam yıldızı çizimi: küçük yükseliş mumlarının ardından büyük bir yeşil mum, onun kapanışının üstünde küçük gövdeli bir mum ve ilk mumun gövdesinin ortasının altına inen büyük bir kırmızı mum"
+  svg_caption: Turuncu kesikli çizgi 1. mumun gövdesinin orta noktasını gösterir. 3. mumun kapanışı bu çizginin altındadır.
+
+en:
+  slug: evening-star
+  name: Evening Star
+  alt_name: Akşam Yıldızı
+  summary: >-
+    A three-candle reversal pattern that forms after a rise. A large green candle is followed by a
+    small-bodied candle, and then by a red candle that closes below the middle of the first candle's
+    body. It can signal that buying pressure has stalled and sellers are starting to step back in.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a clear rise. Since it is a reversal signal, there needs to be a move to reverse.
+        marker: neutral
+      - text: "**Candle 1** is a long green candle: its body is at least half of its range and clearly larger than the bodies of the previous candles."
+        marker: up
+      - text: "**Candle 2** has a small body: at most one-third of candle 1's body. Its colour does not matter. The bottom of its body does not fall below the upper quarter of candle 1's body, and its high is the highest point of the three candles."
+        marker: neutral
+      - text: "**Candle 3** is red and closes **below the midpoint of candle 1's body**."
+        marker: accent
+    note: >-
+      In the textbook definition, candle 2 opens with a gap above candle 1's close. Crypto trades 24/7,
+      so such gaps are rare. Instead of a gap, candle 2 is identified by its small body sitting at or
+      above candle 1's close. When candle 2 is a doji, the pattern is also called an **evening doji star**.
+  meaning:
+    - >-
+      Candle 1 shows buyers in control. In candle 2, the rise tries to continue but the body stays
+      small: neither side takes over. Candle 3 then gives back more than half of the ground candle 1
+      gained. This sequence can suggest that the balance is starting to shift from buyers to sellers.
+    - >-
+      The pattern completes with candle 3's close. Before that, there is only a pause. Even when complete,
+      it does not prove that the direction has changed on its own, and should be weighed together with
+      other evidence.
+  strengthens:
+    - Candle 2 forming at a resistance zone
+    - A clear rise before the pattern
+    - Candle 2 being a doji or having a very small body
+    - Candle 3 closing near or below candle 1's open
+    - Rising volume on candle 3
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in a flat, directionless market
+    - Candle 3 only just closing below the middle of candle 1's body
+    - Low volume on candle 3
+    - A strong support zone just below
+    - Forming on very low timeframes (1m, 5m)
+  zones:
+    intro: "In an evening star, each of the three candles tells you something different when read with zones:"
+    points:
+      - "**If candle 2 forms at a resistance zone**, the rise can be said to have paused exactly where price reacted before. The star's high often sits inside the zone or just above it."
+      - "**If candle 3 closes below the zone's lower edge**, the zone pushing price back is easier to read. If the close stays inside the zone, the picture is less clear."
+      - "**If a support zone sits near candle 1's open**, there is a level below the ground candle 3 gave back where buyers are waiting. Above that level, the pattern is considered weaker."
+    paragraphs:
+      - >-
+        An evening star that forms away from any zone may just be an ordinary pullback within the rise.
+        The zone gives a reason why the rise might have stopped there.
+  completion: Candle 3 closing below the midpoint of candle 1's body.
+  invalidation:
+    before: >-
+      If candle 3 does not close below the midpoint of candle 1's body, the pattern is not complete. If
+      price closes above candle 2's high, the setup breaks down entirely.
+    after: >-
+      Once complete, if price closes above the pattern's **highest point** (usually candle 2's wick), the
+      bearish scenario is considered invalid. If the pattern formed at a resistance zone, a close above
+      the zone means the same.
+  confusions:
+    - id: morning-star
+      text: "The opposite: after a decline, a small-bodied middle candle and a bullish reversal."
+    - id: dark-cloud-cover
+      text: "No middle candle: the red candle closes below the middle of the green body straight away."
+    - id: bearish-engulfing
+      text: "Two candles: the red body fully covers the green body."
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bearish]
+    - [Candles, "3"]
+    - [Context, After a rise]
+    - [Completion, Close below body 1's midpoint]
+    - [Invalid, Close above the high]
+  svg_labels:
+    candle_1: Candle 1
+    candle_2: Candle 2
+    candle_3: Candle 3
+    note_1: Candle 3 closes
+    note_2: below the middle
+    note_3: of body 1
+  svg_alt: "Evening star illustration: after small rising candles, a large green candle, a small-bodied candle above its close, and a large red candle that closes below the middle of the first candle's body"
+  svg_caption: The dashed orange line marks the midpoint of candle 1's body. Candle 3 closes below it.

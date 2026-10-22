@@ -1,0 +1,217 @@
+id: flag
+kind: chart
+direction: neutral
+pattern_type: continuation
+candles: multi
+order: 80
+related: [pennant, rectangle, symmetrical-triangle]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: bayrak
+  name: Bayrak
+  alt_name: Flag
+  summary: >-
+    Sert ve hızlı bir hareketin (direk) ardından, fiyatın kısa süre bu harekete ters yönde eğimli
+    dar bir kanalda dinlenmesiyle oluşan devam formasyonu. Yükselişte boğa bayrağı, düşüşte ayı
+    bayrağı olarak görülür. Kanalın direk yönünde kırılmasıyla tamamlanır ve önceki hareketin
+    sürebileceğine işaret edebilir.
+  formation:
+    style: steps
+    items:
+      - title: Direk.
+        text: >-
+          Fiyat birkaç mum içinde, neredeyse düz bir çizgi halinde sert bir hareket yapar. Bu hareket
+          önceki dalgalanmalardan belirgin şekilde büyüktür ve genellikle yüksek hacimle gelir.
+      - title: Bayrak.
+        text: >-
+          Ardından fiyat, direğe ters yönde hafif eğimli, birbirine **yaklaşık paralel** iki çizgi
+          arasında dalgalanır. Boğa bayrağında kanal aşağı, ayı bayrağında yukarı eğimlidir.
+          Her çizgiye en az iki kez değilir.
+      - title: Geri çekilme sınırı.
+        text: >-
+          Bayrak, direğin **yarısından azını** geri alır. Çoğu örnekte geri çekilme direğin üçte
+          biri civarında kalır.
+      - title: Süre.
+        text: >-
+          Bayrak kısa sürer. Genellikle **5 ile 20 mum** arasında tamamlanır ve direğe göre uzun
+          değildir. Bu süre boyunca hacim çoğu zaman azalır.
+      - title: Tamamlanma.
+        text: >-
+          Fiyat kanalın direk yönündeki çizgisinin dışında **kapanış** yaptığında formasyon
+          tamamlanmış sayılır. Boğa bayrağında bu üst çizgi, ayı bayrağında alt çizgidir.
+    note: Oranlar ve mum sayıları yaklaşıktır. Ders kitaplarında yaygın kabul gören değerlerdir, kesin sınırlar değildir.
+  meaning:
+    - >-
+      Direk, bir tarafın kısa sürede baskın geldiğini gösterir. Bayrak ise bu hareketten sonra
+      gelen bir nefes alma dönemidir: bir kısım katılımcı kâr alır, fiyat hafifçe geri çekilir ama
+      karşı taraf hareketi geri çevirecek gücü bulamaz. Geri çekilmenin sığ ve düzenli kalması,
+      baskın tarafın hâlâ kontrolde olduğunu düşündürebilir.
+    - >-
+      Bayrak ancak gerçekten sert bir direkten sonra anlam taşır. Yavaş bir yükselişin ardından
+      gelen her aşağı eğimli kanal bayrak değildir. Kanal uzadıkça ya da geri çekilme derinleştikçe
+      formasyon bayrak olmaktan çıkar ve başka bir yapıya dönüşebilir.
+  measurement:
+    title: Sık kullanılan bir ölçüm
+    text: >-
+      Teknik analizde direğin yüksekliği (h), kırılım noktasından direk yönünde ölçülerek olası
+      hareketin büyüklüğü hakkında kaba bir fikir verilir. Bu bir hedef değil, bir ölçek
+      referansıdır. Fiyat bu mesafeye ulaşmadan dönebilir ya da çok daha ileri gidebilir. Yoldaki
+      destek ve direnç bölgeleri genellikle daha gerçekçi bir referanstır.
+  strengthens:
+    - Direğin yüksek hacimle ve neredeyse kesintisiz gelmesi
+    - Bayrak boyunca hacmin azalması
+    - Kırılım sırasında hacmin yeniden artması
+    - Geri çekilmenin direğin üçte birinden az kalması
+    - Bayrağın kısa sürmesi ve düzenli bir kanal çizmesi
+  weakens:
+    - Direğin yavaş ya da dalgalı olması
+    - Geri çekilmenin direğin yarısına yaklaşması
+    - Bayrağın direğe göre çok uzun sürmesi
+    - Kırılımın düşük hacimle gelmesi
+    - Kırılım yönünde hemen yakında güçlü bir bölge bulunması
+  zones:
+    intro: "Bayrak kısa süreli bir formasyondur ve çoğu zaman bir bölgenin hemen yanında oluşur. Bölgelerle ilişkisi en çok şu durumlarda belirginleşir:"
+    points:
+      - "**Direk bir bölgeyi kırıp geçtiyse**, bayrak çoğu zaman bu bölgenin hemen üzerinde (ayı bayrağında altında) oluşur. Bu durumda bayrak, kırılan bölgenin geri testi gibi okunabilir. Eski direnç destek gibi davranıyorsa bayrak daha sağlam görünür."
+      - "**Direk bir bölgeye çarpıp durduysa**, bayrak o bölgenin hemen altında (ayı bayrağında üstünde) oluşur. Kanalın kırılması aynı zamanda bölgenin de geçilmesi anlamına gelir, bu yüzden kırılım daha fazla önem taşır."
+      - "**Kırılım yönündeki ilk bölge**, fiyatın nerede yeniden tepki verebileceğine dair direk ölçümünden daha gerçekçi bir referanstır."
+    paragraphs:
+      - >-
+        Bayrağın içindeki geri çekilme bir bölgenin içine kadar iniyorsa, fiyatın o bölgede
+        tutunup tutunmadığı formasyonun kendisinden daha çok şey söyleyebilir. Bölgenin karşı
+        tarafında kapanış, bayrak okumasını zayıflatır.
+  completion: Kanalın direk yönündeki çizgisinin dışında kapanış.
+  invalidation:
+    before: >-
+      Fiyat kanalın direğe ters yöndeki çizgisinin dışında kapanış yaparsa ya da geri çekilme
+      direğin yarısını aşarsa formasyon bayrak olarak kabul edilmez.
+    after: >-
+      Kırılım gelmiş olsa bile fiyat yeniden kanalın içine döner ve **bayrağın en uç noktasının**
+      ötesinde kapanış yaparsa (boğa bayrağında en düşük, ayı bayrağında en yüksek nokta) devam
+      senaryosu geçersiz sayılır.
+  confusions:
+    - id: pennant
+      text: "Direk aynıdır, ama dinlenme bölümünde çizgiler paralel değil, birbirine yaklaşır: küçük bir üçgen oluşur."
+    - id: rectangle
+      text: Kanal eğimli değil yataydır ve çoğu zaman daha uzun sürer.
+    - id: falling-wedge
+      text: Çizgiler aşağı eğimlidir ama paralel değil, birbirine yaklaşır. Öncesinde sert bir direk gerekmez.
+  facts:
+    - [Tür, Devam]
+    - [Yön, Trend yönünde]
+    - [Süre, Çok mumlu]
+    - [Bağlam, Sert bir hareket (direk) sonrası]
+    - [Tamamlanma, Direk yönünde kanal dışı kapanış]
+    - [Geçersiz, Bayrağın uç noktası ötesinde kapanış]
+  svg_labels:
+    pole: Direk
+    flag: Bayrak
+    breakout: Kırılım
+  svg_alt: "Boğa bayrağı çizimi: fiyat sert bir yükselişle direği oluşturuyor, ardından aşağı eğimli paralel iki çizgi arasında kısa bir geri çekilme yapıyor ve kanalın üst çizgisini yukarı kırıyor"
+  svg_caption: Turuncu kesikli çizgiler bayrağın paralel kanalını, turuncu noktalar kanala değen tepe ve dipleri gösterir. h, direğin yüksekliğidir. Ayı bayrağı aynı yapının aşağı yönlü halidir.
+
+en:
+  slug: flag
+  name: Flag
+  alt_name: Bayrak
+  summary: >-
+    A continuation pattern that forms when a sharp, fast move (the pole) is followed by a short
+    pause in a narrow channel sloping against that move. It appears as a bull flag in a rise and a
+    bear flag in a fall. It completes when the channel breaks in the direction of the pole, and it
+    can suggest that the earlier move may carry on.
+  formation:
+    style: steps
+    items:
+      - title: Pole.
+        text: >-
+          Price makes a sharp move over a few candles, almost in a straight line. The move is clearly
+          larger than the swings before it and usually comes on high volume.
+      - title: Flag.
+        text: >-
+          Price then moves between two **roughly parallel** lines that slope gently against the pole.
+          In a bull flag the channel slopes down; in a bear flag it slopes up. Each line is touched
+          at least twice.
+      - title: Retracement limit.
+        text: >-
+          The flag retraces **less than half** of the pole. In most examples the pullback stays
+          around a third of the pole.
+      - title: Duration.
+        text: >-
+          The flag is short. It usually completes within **about 5 to 20 candles** and is not long
+          compared with the pole. Volume often fades during this time.
+      - title: Completion.
+        text: >-
+          The pattern is complete when price **closes** outside the channel line on the pole's side.
+          In a bull flag this is the upper line; in a bear flag, the lower line.
+    note: The ratios and candle counts are approximate. They are commonly accepted textbook values, not hard limits.
+  meaning:
+    - >-
+      The pole shows one side taking control in a short time. The flag is a pause after that move:
+      some participants take profit and price drifts back a little, but the other side cannot
+      reverse the move. A shallow, orderly pullback may suggest that the dominant side is still in
+      control.
+    - >-
+      A flag only means something after a genuinely sharp pole. Not every downward-sloping channel
+      after a slow rise is a flag. The longer the channel runs, or the deeper the pullback gets, the
+      less it is a flag and the more it may turn into another structure.
+  measurement:
+    title: A common measurement
+    text: >-
+      In technical analysis, the height of the pole (h) is measured from the breakout point in the
+      direction of the pole to give a rough sense of the possible move's size. It is a scale
+      reference, not a target. Price can turn before covering that distance, or go much further.
+      Support and resistance zones along the way are usually a more realistic reference.
+  strengthens:
+    - A pole on high volume with almost no pauses
+    - Volume fading through the flag
+    - Volume picking up again at the break
+    - A pullback of less than a third of the pole
+    - A short flag that draws a tidy channel
+  weakens:
+    - A slow or choppy pole
+    - A pullback approaching half of the pole
+    - A flag that lasts very long compared with the pole
+    - The break coming on low volume
+    - A strong zone close by in the direction of the break
+  zones:
+    intro: "A flag is a short-lived pattern and often forms right next to a zone. Its link to zones shows most clearly in these cases:"
+    points:
+      - "**If the pole broke through a zone**, the flag often forms just above it (below it in a bear flag). The flag can then be read as a retest of the broken zone. If old resistance is acting as support, the flag looks sturdier."
+      - "**If the pole ran into a zone and stalled**, the flag forms just below it (above it in a bear flag). A break of the channel then also means clearing the zone, so the break carries more weight."
+      - "**The first zone in the direction of the break** is a more realistic reference than the pole measurement for where price may react again."
+    paragraphs:
+      - >-
+        If the pullback inside the flag reaches into a zone, whether price holds in that zone may
+        say more than the pattern itself. A close on the far side of the zone weakens the flag
+        reading.
+  completion: Close outside the channel line on the pole's side.
+  invalidation:
+    before: >-
+      If price closes outside the channel line on the side away from the pole, or the pullback
+      retraces more than half of the pole, the pattern is not considered a flag.
+    after: >-
+      Even after the break, if price returns into the channel and **closes beyond the flag's
+      extreme point** (the lowest point in a bull flag, the highest in a bear flag), the
+      continuation scenario is considered invalid.
+  confusions:
+    - id: pennant
+      text: "The pole is the same, but in the pause the lines converge instead of running parallel: a small triangle forms."
+    - id: rectangle
+      text: The channel is flat rather than sloped, and it often lasts longer.
+    - id: falling-wedge
+      text: The lines slope down but converge instead of running parallel. It does not need a sharp pole before it.
+  facts:
+    - [Type, Continuation]
+    - [Direction, With the trend]
+    - [Duration, Multi-candle]
+    - [Context, After a sharp move (the pole)]
+    - [Completion, Close outside the channel with the pole]
+    - [Invalid, Close beyond the flag's extreme]
+  svg_labels:
+    pole: Pole
+    flag: Flag
+    breakout: Breakout
+  svg_alt: "Bull flag illustration: price forms the pole with a sharp rise, then pulls back briefly between two parallel downward-sloping lines and breaks above the channel's upper line"
+  svg_caption: The dashed orange lines mark the flag's parallel channel, and the orange dots the highs and lows touching it. h is the height of the pole. A bear flag is the same structure pointing down.
