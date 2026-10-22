@@ -19,3 +19,11 @@ descending-triangle: { tr: Alçalan Üçgen, en: Descending Triangle }
 symmetrical-triangle: { tr: Simetrik Üçgen, en: Symmetrical Triangle }
 flag: { tr: Bayrak, en: Flag }
 pennant: { tr: Flama, en: Pennant }
+triple-bottom: { tr: Üçlü Dip, en: Triple Bottom }
+dark-cloud-cover: { tr: Kara Bulut, en: Dark Cloud Cover }
+bearish-harami: { tr: Ayı Harami, en: Bearish Harami }
+hanging-man: { tr: Asılı Adam, en: Hanging Man }
+spinning-top: { tr: Topaç, en: Spinning Top }
+rising-wedge: { tr: Yükselen Takoz, en: Rising Wedge }
+falling-wedge: { tr: Alçalan Takoz, en: Falling Wedge }
+rectangle: { tr: Dikdörtgen, en: Rectangle }

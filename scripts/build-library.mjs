@@ -44,10 +44,11 @@ const WORDS = {
     disclaimer: "Genel bilgilendirme amaçlıdır. Yatırım tavsiyesi değildir.", updated: "Son güncelleme",
     footer: "İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Kripto varlıklar yüksek risk taşır; analizler getiri garantisi sunmaz.",
     riskNotice: "Bilgilendirme ve Risk Bildirimi",
-    direction: { bullish: "Yükseliş", bearish: "Düşüş", neutral: "Kararsızlık" },
+    direction: { bullish: "Yükseliş", bearish: "Düşüş", neutral: "Nötr" },
     type: {
       "bullish:reversal": "Yükseliş yönlü dönüş", "bearish:reversal": "Düşüş yönlü dönüş",
       "bullish:continuation": "Yükseliş yönlü devam", "bearish:continuation": "Düşüş yönlü devam",
+      "neutral:reversal": "İki yönlü dönüş", "neutral:continuation": "Trend yönünde devam",
     },
     indecision: "Kararsızlık",
     candles: { 1: "Tek mum", 2: "2 mumlu", 3: "3 mumlu", multi: "Çok mumlu" },
@@ -71,10 +72,11 @@ const WORDS = {
     disclaimer: "For general information only. Not investment advice.", updated: "Last updated",
     footer: "Content is for general information only and is not investment advice. Crypto assets carry high risk; analyses offer no guarantee of returns.",
     riskNotice: "Information and Risk Notice",
-    direction: { bullish: "Bullish", bearish: "Bearish", neutral: "Indecision" },
+    direction: { bullish: "Bullish", bearish: "Bearish", neutral: "Neutral" },
     type: {
       "bullish:reversal": "Bullish reversal", "bearish:reversal": "Bearish reversal",
       "bullish:continuation": "Bullish continuation", "bearish:continuation": "Bearish continuation",
+      "neutral:reversal": "Reversal either way", "neutral:continuation": "Continuation with the trend",
     },
     indecision: "Indecision",
     candles: { 1: "Single candle", 2: "2 candles", 3: "3 candles", multi: "Multi-candle" },
@@ -245,7 +247,8 @@ function svgFor(p, lang, { decorative = false } = {}) {
 
 function tags(p, lang) {
   const w = WORDS[lang], c = categoryOf(p);
-  const kind = p.pattern_type === "indecision" || p.direction === "neutral" ? w.indecision : w.type[`${p.direction}:${p.pattern_type}`] || w.direction[p.direction];
+  // Neutral patterns either show indecision (doji) or work in both directions (pin bar, symmetrical triangle).
+  const kind = p.pattern_type === "indecision" ? w.indecision : w.type[`${p.direction}:${p.pattern_type}`] || w.direction[p.direction];
   const arrow = p.direction === "bullish" ? "↑ " : p.direction === "bearish" ? "↓ " : "";
   return `<ul class="tags"><li class="tag tag-cat">${esc(c[lang].singular)}</li><li class="tag tag-${esc(p.direction)}">${arrow}${esc(kind)}</li><li class="tag">${esc(w.candles[String(p.candles)])}</li></ul>`;
 }
