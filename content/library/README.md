@@ -50,7 +50,7 @@ updated: 2026-10-22
 tr:
   slug: omuz-bas-omuz             # URL parçası, dile özel
   name: Omuz Baş Omuz (OBO)
-  alt_name: Head and Shoulders    # diğer dildeki / yaygın ad
+  alt_name: Head and Shoulders    # yalnızca tr: İngilizce adı (okur küresel terimi de öğrensin). en: bloğunda Türkçe ad yazılmaz
   summary: …                      # tek paragraf, sayfa açıklaması ve meta description
   formation:                      # mum: madde listesi | grafik: adımlar
     style: steps                  # bullets | steps
@@ -83,7 +83,7 @@ tr:
   svg_caption: …
 
 en:
-  # tr ile aynı yapı
+  # tr ile aynı yapı (alt_name hariç)
 ```
 
 **Metin içi biçim:** sadece `**kalın**` desteklenir. Derleyici bunu `<strong>`'a çevirir, geri kalan her şeyi HTML-escape eder. YAML'a ham HTML yazılmaz.
