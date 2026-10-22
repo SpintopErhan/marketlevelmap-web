@@ -1,0 +1,180 @@
+id: inverted-hammer
+kind: candle
+direction: bullish
+pattern_type: reversal
+candles: 1
+order: 40
+related: [hammer, shooting-star, morning-star]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: ters-cekic
+  name: Ters Çekiç
+  alt_name: Inverted Hammer
+  summary: >-
+    Bir düşüşün ardından oluşan, küçük gövdeli ve uzun üst fitilli tek mumluk dönüş formasyonu.
+    Alıcıların mum içinde fiyatı yukarı taşımayı denediğini gösterir. Deneme kapanışa kadar
+    sürmese de satış baskısının gevşemeye başladığına işaret edebilir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde belirgin bir düşüş vardır. Aynı şekil bir yükselişten sonra oluşursa adı ve anlamı değişir.
+        marker: neutral
+      - text: "**Üst fitil**, gövdenin **en az 2 katı** uzunluğundadır."
+        marker: accent
+      - text: "Alt fitil ya hiç yoktur ya da çok kısadır: mumun toplam boyunun (en yüksek ile en düşük arası) yaklaşık **onda birini** geçmez."
+        marker: neutral
+      - text: "Gövde küçüktür ve mumun **alt üçte birlik** kısmında yer alır. Rengi kuralı değiştirmez. Yeşil gövde biraz daha güçlü kabul edilir."
+        marker: up
+    note: >-
+      Ters çekiç, çekiçten daha çok onaya ihtiyaç duyan bir mum olarak kabul edilir. Yaygın
+      yaklaşım, sonraki mumun ters çekicin **gövdesinin üzerinde** kapanmasını beklemektir.
+  meaning:
+    - >-
+      Mum açıldıktan sonra alıcılar fiyatı belirgin biçimde yukarı taşır. Kapanışa doğru satıcılar
+      fiyatı yeniden açılış seviyesinin yakınına indirir. Yine de mum yeni bir dip yapmadan kapanır.
+    - >-
+      Düşüş trendinde alıcılar çoğu zaman hiç direnç göstermez. Ters çekiç, ilk ciddi yukarı
+      denemenin yapıldığını gösterebilir. Denemenin başarılı olup olmadığını ise sonraki mumlar
+      belirler. Bu nedenle tek başına zayıf bir ipucu olarak okunmalıdır.
+  strengthens:
+    - Bir destek bölgesinde oluşması
+    - Öncesindeki düşüşün belirgin olması
+    - Sonraki mumun ters çekicin gövdesinin üzerinde kapanması
+    - Yüksek hacim
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasada oluşması
+    - Belirgin bir alt fitil bulunması
+    - Üst fitilin hemen üstteki bir direnç bölgesinde geri çevrilmesi
+    - Sonraki mumun ters çekicin en düşüğüne doğru inmesi
+    - Çok küçük zaman dilimlerinde (1 dk, 5 dk) oluşması
+  zones:
+    paragraphs:
+      - >-
+        Ters çekiçte iki seviye bölgelerle birlikte okunur. **Gövde ve alt uç**, fiyatın durduğu
+        yeri gösterir. Bu kısım bir **destek bölgesinin** içinde ya da hemen üzerindeyse, düşüşün
+        bilinen bir alanda yavaşladığı düşünülebilir.
+      - >-
+        **Üst fitilin ucu** ise alıcıların denemesinin nerede geri çevrildiğini gösterir. Bu uç
+        çoğu zaman en yakın direnç bölgesine ya da daha önce kırılmış bir desteğe değer. Fitil
+        bir direnç bölgesine çarpıp geri döndüyse, toparlanma için alan dar olabilir. Sonraki
+        mumların bu bölgenin üzerinde kapanması, denemenin sonuç verdiğine daha güçlü bir işaret
+        olarak kabul edilir.
+  invalidation:
+    - >-
+      Fiyat, ters çekicin **en düşük noktasının** altında kapanış yaparsa yükseliş senaryosu
+      geçersiz kabul edilir. Düşüş kaldığı yerden devam ediyor demektir.
+    - >-
+      Ters çekiç bir destek bölgesinde oluştuysa, bölgenin altında kapanış da aynı anlama gelir.
+      Onay gelmeden fiyatın uzun süre gövde seviyesinde yatay kalması da işaretin gücünü yitirdiğini
+      gösterebilir.
+  confusions:
+    - id: shooting-star
+      text: "Aynı şekil, farklı bağlam: yükselişten sonra oluşur ve düşüş yönlü okunur."
+    - id: hammer
+      text: "Fitil ters tarafta: uzun alt fitil, gövde mumun üst kısmında."
+    - id: doji
+      text: "Gövde yok denecek kadar küçüktür. Uzun üst fitilli doji ters çekice benzer ama kararsızlık mumudur."
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Yükseliş]
+    - [Mum, "1"]
+    - [Bağlam, Düşüş sonrası]
+    - [Kural, Üst fitil ≥ 2 × gövde]
+    - [Geçersiz, En düşüğün altında kapanış]
+  svg_labels:
+    context: Önceki düşüş
+    candle: Ters çekiç
+    body: Gövde
+    note_1: Üst fitil
+    note_2: gövdenin en az
+    note_3: 2 katı
+  svg_alt: "Ters çekiç formasyonu çizimi: birkaç küçük kırmızı mumdan oluşan düşüşün ardından, küçük gövdesi altta ve üst fitili uzun bir yeşil mum"
+  svg_caption: Kesikli çizgiler ters çekicin gövdesini gösterir. Turuncu ayraç, en az gövdenin iki katı olması gereken üst fitili işaretler.
+
+en:
+  slug: inverted-hammer
+  name: Inverted Hammer
+  alt_name: Ters Çekiç
+  summary: >-
+    A single-candle reversal pattern that forms after a decline, with a small body and a long
+    upper wick. It shows buyers trying to lift price within the candle. Even though the attempt
+    does not hold until the close, it can suggest that selling pressure is starting to ease.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a clear decline. The same shape after a rise has a different name and meaning.
+        marker: neutral
+      - text: "The **upper wick** is **at least twice** the length of the body."
+        marker: accent
+      - text: "The lower wick is absent or very short: no more than about **a tenth** of the candle's full range (high to low)."
+        marker: neutral
+      - text: "The body is small and sits in the **lower third** of the range. Its colour does not change the rule; a green body is considered slightly stronger."
+        marker: up
+    note: >-
+      An inverted hammer is considered to need more confirmation than a hammer. The usual approach
+      is to look for the next candle to close **above its body**.
+  meaning:
+    - >-
+      After the open, buyers carry price clearly higher. Towards the close, sellers push it back
+      near the opening level. Even so, the candle closes without making a new low.
+    - >-
+      In a downtrend, buyers often put up no resistance at all. An inverted hammer can show the
+      first serious attempt to push higher. Whether the attempt works is decided by the candles that
+      follow, so on its own it should be read as a weak hint.
+  strengthens:
+    - Forming at a support zone
+    - A clear decline before the pattern
+    - The next candle closing above the inverted hammer's body
+    - High volume
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in a flat, directionless market
+    - A noticeable lower wick
+    - The upper wick being rejected at a resistance zone just above
+    - The next candle heading back towards the low
+    - Forming on very low timeframes (1m, 5m)
+  zones:
+    paragraphs:
+      - >-
+        Two levels of an inverted hammer are read against zones. The **body and the low** show where
+        price stopped. If they sit inside or just above a **support zone**, the decline can be seen as
+        slowing at a known area.
+      - >-
+        The **tip of the upper wick** shows where the buyers' attempt was turned back. It often
+        touches the nearest resistance zone or a support that broke earlier. If the wick hit a
+        resistance zone and fell back, there may be little room for a recovery. Later candles closing
+        above that zone are considered a stronger sign that the attempt has worked.
+  invalidation:
+    - >-
+      If price closes below the inverted hammer's **lowest point**, the bullish scenario is considered
+      invalid. It means the decline is carrying on where it left off.
+    - >-
+      If the inverted hammer formed at a support zone, a close below the zone means the same. Price
+      drifting sideways at the body's level for a long time without confirmation can also show that
+      the signal has lost its weight.
+  confusions:
+    - id: shooting-star
+      text: "Same shape, different context: it forms after a rise and is read as bearish."
+    - id: hammer
+      text: "Wick on the other side: a long lower wick with the body at the top."
+    - id: doji
+      text: "The body is almost non-existent. A doji with a long upper wick looks similar but is an indecision candle."
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bullish]
+    - [Candles, "1"]
+    - [Context, After a decline]
+    - [Rule, Upper wick ≥ 2 × body]
+    - [Invalid, Close below the low]
+  svg_labels:
+    context: Prior decline
+    candle: Inverted hammer
+    body: Body
+    note_1: Upper wick
+    note_2: at least twice
+    note_3: the body
+  svg_alt: "Inverted hammer illustration: after a decline of several small red candles, a green candle with a small body at the bottom and a long upper wick"
+  svg_caption: The dashed lines mark the inverted hammer's body. The orange bracket marks the upper wick, which must be at least twice the body.

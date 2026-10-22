@@ -1,0 +1,183 @@
+id: hammer
+kind: candle
+direction: bullish
+pattern_type: reversal
+candles: 1
+order: 30
+related: [inverted-hammer, hanging-man, pin-bar]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: cekic
+  name: Çekiç
+  alt_name: Hammer
+  summary: >-
+    Bir düşüşün ardından oluşan, küçük gövdeli ve uzun alt fitilli tek mumluk dönüş formasyonu.
+    Fiyatın mum içinde sert biçimde düşüp kapanışa doğru geri toplandığını gösterir. Satıcıların
+    fiyatı aşağıda tutamadığına işaret edebilir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde belirgin bir düşüş vardır. Aynı şekil bir yükselişten sonra oluşursa adı ve anlamı değişir.
+        marker: neutral
+      - text: "**Alt fitil**, gövdenin **en az 2 katı** uzunluğundadır."
+        marker: accent
+      - text: "Üst fitil ya hiç yoktur ya da çok kısadır: mumun toplam boyunun (en yüksek ile en düşük arası) yaklaşık **onda birini** geçmez."
+        marker: neutral
+      - text: "Gövde küçüktür ve mumun **üst üçte birlik** kısmında yer alır. Rengi kuralı değiştirmez. Yeşil gövde biraz daha güçlü kabul edilir."
+        marker: up
+    note: >-
+      Çekiç tek bir mumdur ve kendi başına bir şey kanıtlamaz. Birçok kaynak, sonraki mumun
+      çekicin gövdesinin üzerinde kapanmasını bir onay olarak bekler.
+  meaning:
+    - >-
+      Mum açıldıktan sonra satıcılar fiyatı belirgin biçimde aşağı iter. Ancak kapanışa doğru
+      alıcılar devreye girer ve fiyatı açılış seviyesinin yakınına geri taşır. Uzun alt fitil,
+      aşağıdaki fiyatların kabul görmediğini gösterebilir.
+    - >-
+      Düşüş trendinde mumlar genellikle dibe yakın kapanır. Çekiç ise tepeye yakın kapanır. Bu,
+      satış baskısının zayıflamaya başlamış olabileceğine dair bir ipucudur, yönün değiştiğinin
+      kanıtı değildir.
+  strengthens:
+    - Bir destek bölgesinde oluşması
+    - Öncesindeki düşüşün belirgin olması
+    - Alt fitilin gövdeye göre çok uzun olması
+    - Yüksek hacim
+    - Sonraki mumun çekicin gövdesinin üzerinde kapanması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasada oluşması
+    - Belirgin bir üst fitil bulunması
+    - Mumun çevresindeki mumlara göre çok küçük olması
+    - Hemen üstünde güçlü bir direnç bölgesi bulunması
+    - Sonraki mumun çekicin en düşüğüne doğru inmesi
+  zones:
+    paragraphs:
+      - >-
+        Çekicin en anlamlı olduğu yer bir **destek bölgesidir**. Uzun alt fitil, fiyatın bölgenin
+        içine ya da kısa süreliğine altına indiğini, ama gövdenin bölgenin üzerinde kapandığını
+        gösterir. Bu tablo, bölgenin o mumda savunulduğu şeklinde okunabilir.
+      - >-
+        Gövdenin nerede kapandığı fitilden daha önemlidir. Gövde bölgenin **altında** kapanıyorsa,
+        şekil çekice benzese de bölge kaybedilmiş olabilir. Fitilin ucu ise bölgenin alt sınırı
+        için somut bir referans verir. Fiyat sonraki mumlarda o seviyeyi tekrar test ederse,
+        bölgenin ne kadar sağlam olduğu daha net görülür.
+      - >-
+        Çekicin hemen üstünde bir direnç bölgesi varsa, toparlanma için alan dardır ve formasyon
+        daha zayıf kabul edilir.
+  invalidation:
+    - >-
+      Fiyat, çekicin **en düşük noktasının** (alt fitilin ucu) altında kapanış yaparsa yükseliş
+      senaryosu geçersiz kabul edilir. Bu, alt fitilin geri çevirdiği fiyatların artık kabul
+      gördüğü anlamına gelir.
+    - Çekiç bir destek bölgesinde oluştuysa, bölgenin altında kapanış da aynı anlama gelir.
+  confusions:
+    - id: hanging-man
+      text: "Aynı şekil, farklı bağlam: yükselişten sonra oluşur ve düşüş yönlü okunur."
+    - id: inverted-hammer
+      text: "Fitil ters tarafta: uzun üst fitil, gövde mumun alt kısmında."
+    - id: pin-bar
+      text: "Daha geniş bir terim: uzun fitilli her ret mumu. Çekiç, düşüş sonrası alt fitilli olanıdır."
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Yükseliş]
+    - [Mum, "1"]
+    - [Bağlam, Düşüş sonrası]
+    - [Kural, Alt fitil ≥ 2 × gövde]
+    - [Geçersiz, En düşüğün altında kapanış]
+  svg_labels:
+    context: Önceki düşüş
+    candle: Çekiç
+    body: Gövde
+    note_1: Alt fitil
+    note_2: gövdenin en az
+    note_3: 2 katı
+  svg_alt: "Çekiç formasyonu çizimi: birkaç küçük kırmızı mumdan oluşan düşüşün ardından, küçük gövdesi üstte ve alt fitili uzun bir yeşil mum"
+  svg_caption: Kesikli çizgiler çekicin gövdesini gösterir. Turuncu ayraç, en az gövdenin iki katı olması gereken alt fitili işaretler.
+
+en:
+  slug: hammer
+  name: Hammer
+  alt_name: Çekiç
+  summary: >-
+    A single-candle reversal pattern that forms after a decline, with a small body and a long
+    lower wick. It shows price falling sharply within the candle and recovering towards the
+    close. It can suggest that sellers were unable to hold price lower.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a clear decline. The same shape after a rise has a different name and meaning.
+        marker: neutral
+      - text: "The **lower wick** is **at least twice** the length of the body."
+        marker: accent
+      - text: "The upper wick is absent or very short: no more than about **a tenth** of the candle's full range (high to low)."
+        marker: neutral
+      - text: "The body is small and sits in the **upper third** of the range. Its colour does not change the rule; a green body is considered slightly stronger."
+        marker: up
+    note: >-
+      A hammer is a single candle and proves nothing by itself. Many sources look for the next
+      candle to close above the hammer's body as confirmation.
+  meaning:
+    - >-
+      After the open, sellers push price clearly lower. Towards the close, buyers step in and carry
+      price back near the opening level. The long lower wick can show that the lower prices were
+      not accepted.
+    - >-
+      In a downtrend, candles usually close near their lows. A hammer closes near its high. This is
+      a hint that selling pressure may be starting to fade, not proof that the direction has changed.
+  strengthens:
+    - Forming at a support zone
+    - A clear decline before the pattern
+    - A lower wick that is very long relative to the body
+    - High volume
+    - The next candle closing above the hammer's body
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in a flat, directionless market
+    - A noticeable upper wick
+    - The candle being very small compared with those around it
+    - A strong resistance zone just above
+    - The next candle heading back towards the hammer's low
+  zones:
+    paragraphs:
+      - >-
+        A hammer means most at a **support zone**. The long lower wick shows price dipping into the
+        zone, or briefly below it, while the body closes above it. This can be read as the zone being
+        defended on that candle.
+      - >-
+        Where the body closes matters more than the wick. If the body closes **below** the zone, the
+        candle may look like a hammer, but the zone may have been lost. The tip of the wick gives a
+        concrete reference for the zone's lower edge. If price tests that level again in later
+        candles, it becomes clearer how solid the zone is.
+      - >-
+        If there is a resistance zone just above the hammer, there is little room for a recovery and
+        the pattern is considered weaker.
+  invalidation:
+    - >-
+      If price closes below the hammer's **lowest point** (the tip of the lower wick), the bullish
+      scenario is considered invalid. It means the prices the wick rejected are now being accepted.
+    - If the hammer formed at a support zone, a close below the zone means the same.
+  confusions:
+    - id: hanging-man
+      text: "Same shape, different context: it forms after a rise and is read as bearish."
+    - id: inverted-hammer
+      text: "Wick on the other side: a long upper wick with the body at the bottom."
+    - id: pin-bar
+      text: "A broader term for any long-wick rejection candle. A hammer is the lower-wick one after a decline."
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bullish]
+    - [Candles, "1"]
+    - [Context, After a decline]
+    - [Rule, Lower wick ≥ 2 × body]
+    - [Invalid, Close below the low]
+  svg_labels:
+    context: Prior decline
+    candle: Hammer
+    body: Body
+    note_1: Lower wick
+    note_2: at least twice
+    note_3: the body
+  svg_alt: "Hammer illustration: after a decline of several small red candles, a green candle with a small body at the top and a long lower wick"
+  svg_caption: The dashed lines mark the hammer's body. The orange bracket marks the lower wick, which must be at least twice the body.

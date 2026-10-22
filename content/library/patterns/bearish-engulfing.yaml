@@ -1,0 +1,172 @@
+id: bearish-engulfing
+kind: candle
+direction: bearish
+pattern_type: reversal
+candles: 2
+order: 20
+related: [bullish-engulfing, dark-cloud-cover, bearish-harami]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: yutan-ayi
+  name: Yutan Ayı
+  alt_name: Bearish Engulfing
+  summary: >-
+    Bir yükselişin ardından, büyük bir kırmızı mumun önceki yeşil mumun gövdesini tamamen
+    içine almasıyla oluşan dönüş formasyonu. Alış baskısının zayıfladığını ve satıcıların
+    kontrolü ele almaya başladığını gösterebilir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde belirgin bir yükseliş vardır. Formasyon bir dönüş işareti olduğu için dönecek bir hareket olması gerekir.
+        marker: neutral
+      - text: "**1. mum** yeşildir: kapanışı açılışının üstündedir."
+        marker: up
+      - text: "**2. mum** kırmızıdır: kapanışı açılışının altındadır."
+        marker: down
+      - text: "2. mumun gövdesi 1. mumun gövdesini **tamamen kapsar**: açılışı 1. mumun kapanışına eşit ya da üstünde, kapanışı 1. mumun açılışının altındadır."
+        marker: accent
+    note: >-
+      Kriptoda 2. mum çoğu zaman 1. mumun kapanış fiyatından açılır. Kural gövdelerle ilgilidir.
+      Açılışın kapanışa eşit olması yeterlidir, ayrıca bir boşluk aranmaz.
+  meaning:
+    - >-
+      İlk mum, alıcıların hâlâ kontrolde olduğunu gösterir. İkinci mum ise aynı zaman aralığında
+      alıcıların bütün kazanımını geri verir ve onun da altında kapanır. Bu, piyasada dengenin
+      satıcılar lehine değişmeye başlamış olabileceğine işaret eder.
+    - >-
+      Formasyon tek başına yükselişin bittiğini kanıtlamaz. Yükselişin yorulduğuna dair bir ipucu
+      olarak okunmalı ve başka işaretlerle birlikte değerlendirilmelidir.
+  strengthens:
+    - Bir direnç bölgesinde oluşması
+    - Öncesindeki yükselişin belirgin olması
+    - 2. mumun hacminin yüksek olması
+    - 2. mumun 1. mumu fitilleriyle birlikte de kapsaması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasada oluşması
+    - İki mumun da çok küçük olması
+    - Düşük hacim
+    - Hemen altında güçlü bir destek bölgesi bulunması
+    - Çok küçük zaman dilimlerinde (1 dk, 5 dk) oluşması
+  zones:
+    paragraphs:
+      - >-
+        Yutan ayının en çok dikkat çektiği yer, fiyatın bir **direnç bölgesine** ulaştığı andır.
+        Bölge, fiyatın daha önce satışla karşılaştığı bir alanı gösterir. Formasyon ise satıcıların
+        o alanda yeniden ağırlık kazandığını gösterebilir. Özellikle 2. mumun fitili bölgenin içine
+        uzanıp gövdesi bölgenin altında kapanıyorsa, fiyatın bölgeyi aşma denemesinin geri
+        çevrildiği düşünülebilir.
+      - >-
+        Formasyonun hemen altındaki **ilk destek bölgesi** de önemlidir. Destek çok yakınsa,
+        düşüş için alan dardır ve formasyon daha zayıf kabul edilir. Destek uzaktaysa fiyatın
+        hareket edebileceği mesafe daha geniştir.
+  invalidation:
+    - >-
+      Fiyat, formasyonun **en yüksek noktasının** (iki mumun fitilleri dahil) üzerinde kapanış
+      yaparsa düşüş senaryosu geçersiz kabul edilir. Formasyon bir direnç bölgesinde oluştuysa,
+      bölgenin üzerinde kapanış da aynı anlama gelir.
+    - Yalnızca fitille en yüksek noktanın üzerine çıkıp altında kapanan bir mum, formasyonu tek başına geçersiz kılmaz.
+  confusions:
+    - id: bullish-engulfing
+      text: "Tersi: düşüşten sonra yeşil mum kırmızıyı kapsar."
+    - id: dark-cloud-cover
+      text: Kırmızı mum yeşil gövdenin yarısının altında kapanır ama tamamını kapsamaz.
+    - id: bearish-harami
+      text: "Tersine ilişki: küçük kırmızı mum büyük yeşil gövdenin içinde kalır."
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Düşüş]
+    - [Mum, "2"]
+    - [Bağlam, Yükseliş sonrası]
+    - [Geçersiz, En yükseğin üzerinde kapanış]
+  svg_labels:
+    candle_1: 1. mum
+    candle_2: 2. mum
+    note_1: 2. gövde,
+    note_2: 1. gövdeyi
+    note_3: tamamen kapsar
+  svg_alt: "Yutan ayı formasyonu çizimi: kısa bir yeşil mumun ardından gövdesi onu tamamen kapsayan büyük bir kırmızı mum"
+  svg_caption: Kesikli çizgiler ilk mumun gövdesini gösterir. Fitiller bu kurala dahil değildir.
+
+en:
+  slug: bearish-engulfing
+  name: Bearish Engulfing
+  alt_name: Yutan Ayı
+  summary: >-
+    A reversal pattern that forms after a rise, when a large red candle completely engulfs the
+    body of the previous green candle. It can signal that buying pressure is fading and sellers
+    are starting to take control.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a clear rise. Since it is a reversal signal, there needs to be a move to reverse.
+        marker: neutral
+      - text: "**Candle 1** is green: it closes above its open."
+        marker: up
+      - text: "**Candle 2** is red: it closes below its open."
+        marker: down
+      - text: "The body of candle 2 **completely covers** the body of candle 1: it opens at or above candle 1's close and closes below candle 1's open."
+        marker: accent
+    note: >-
+      In crypto, candle 2 usually opens at candle 1's closing price. The rule is about bodies, so
+      an open equal to the previous close is enough. No gap is required.
+  meaning:
+    - >-
+      The first candle shows buyers are still in control. The second candle, over the same length
+      of time, gives back all of the buyers' gains and closes below them. This suggests the balance
+      may be starting to shift in favour of sellers.
+    - >-
+      On its own, the pattern does not prove that the rise is over. Read it as a hint that the
+      advance is tiring, and weigh it together with other evidence.
+  strengthens:
+    - Forming at a resistance zone
+    - A clear rise before the pattern
+    - High volume on candle 2
+    - Candle 2 also covering candle 1's wicks
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in a flat, directionless market
+    - Both candles being very small
+    - Low volume
+    - A strong support zone just below
+    - Forming on very low timeframes (1m, 5m)
+  zones:
+    paragraphs:
+      - >-
+        A bearish engulfing stands out most when price reaches a **resistance zone**. The zone marks
+        an area where price has met selling before; the pattern can show sellers regaining the upper
+        hand there. When candle 2's wick reaches into the zone but its body closes below it, the
+        attempt to clear the zone can be read as rejected.
+      - >-
+        The **first support zone below** the pattern matters too. If support is very close, there is
+        little room for a decline and the pattern is considered weaker. If it is further away, price
+        has more space to move.
+  invalidation:
+    - >-
+      If price closes above the pattern's **highest point** (including both candles' wicks), the
+      bearish scenario is considered invalid. If the pattern formed at a resistance zone, a close
+      above the zone means the same.
+    - A candle that only wicks above the high and closes back below it does not invalidate the pattern on its own.
+  confusions:
+    - id: bullish-engulfing
+      text: "The opposite: after a decline, a green candle engulfs the red one."
+    - id: dark-cloud-cover
+      text: The red candle closes below the middle of the green body but does not cover all of it.
+    - id: bearish-harami
+      text: "The inverse relationship: a small red candle sits inside a large green body."
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bearish]
+    - [Candles, "2"]
+    - [Context, After a rise]
+    - [Invalid, Close above the high]
+  svg_labels:
+    candle_1: Candle 1
+    candle_2: Candle 2
+    note_1: Body 2
+    note_2: fully covers
+    note_3: body 1
+  svg_alt: "Bearish engulfing illustration: a short green candle followed by a large red candle whose body fully covers it"
+  svg_caption: The dashed lines mark the first candle's body. Wicks are not part of this rule.

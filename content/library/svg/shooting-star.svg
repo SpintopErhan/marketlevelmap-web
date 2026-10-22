@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 250">
+  <g stroke-width="1.5">
+    <line class="s-up" x1="50" y1="160" x2="50" y2="200"/>
+    <line class="s-up" x1="86" y1="136" x2="86" y2="178"/>
+    <line class="s-up" x1="122" y1="112" x2="122" y2="154"/>
+    <line class="s-up" x1="158" y1="88" x2="158" y2="130"/>
+  </g>
+  <rect class="f-up" x="42" y="166" width="16" height="24" rx="2"/>
+  <rect class="f-up" x="78" y="142" width="16" height="26" rx="2"/>
+  <rect class="f-up" x="114" y="118" width="16" height="26" rx="2"/>
+  <rect class="f-up" x="150" y="94" width="16" height="26" rx="2"/>
+  <line class="s-guide" x1="196" y1="96" x2="256" y2="96" stroke-width="1" stroke-dasharray="4 4"/>
+  <line class="s-guide" x1="196" y1="118" x2="256" y2="118" stroke-width="1" stroke-dasharray="4 4"/>
+  <line class="s-down" x1="228" y1="34" x2="228" y2="122" stroke-width="2"/>
+  <rect class="f-down" x="208" y="96" width="40" height="22" rx="2"/>
+  <g class="t-label" text-anchor="middle">
+    <text x="104" y="222">{{context}}</text>
+    <text x="228" y="222">{{candle}}</text>
+  </g>
+  <path class="s-accent" d="M256 34 h12 M256 92 h12 M262 34 V92" stroke-width="1.5" fill="none"/>
+  <g class="t-accent">
+    <text x="276" y="52">{{note_1}}</text>
+    <text x="276" y="68">{{note_2}}</text>
+    <text x="276" y="84">{{note_3}}</text>
+  </g>
+  <path class="s-guide" d="M256 96 h12 M256 118 h12 M262 96 V118" stroke-width="1.2" fill="none"/>
+  <text class="t-guide" x="276" y="111">{{body}}</text>
+</svg>
