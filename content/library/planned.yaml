@@ -1,0 +1,21 @@
+# Names of patterns that are referenced (related / confusions) but not written yet.
+# Their cards are shown as plain text; once the pattern file exists they become links automatically.
+bearish-engulfing: { tr: Yutan Ayı, en: Bearish Engulfing }
+hammer: { tr: Çekiç, en: Hammer }
+inverted-hammer: { tr: Ters Çekiç, en: Inverted Hammer }
+doji: { tr: Doji, en: Doji }
+morning-star: { tr: Sabah Yıldızı, en: Morning Star }
+evening-star: { tr: Akşam Yıldızı, en: Evening Star }
+shooting-star: { tr: Kayan Yıldız, en: Shooting Star }
+pin-bar: { tr: Pin Bar, en: Pin Bar }
+piercing-line: { tr: Delen Mum, en: Piercing Line }
+bullish-harami: { tr: Boğa Harami, en: Bullish Harami }
+inverse-head-and-shoulders: { tr: Ters Omuz Baş Omuz, en: Inverse Head and Shoulders }
+double-top: { tr: İkili Tepe, en: Double Top }
+double-bottom: { tr: İkili Dip, en: Double Bottom }
+triple-top: { tr: Üçlü Tepe, en: Triple Top }
+ascending-triangle: { tr: Yükselen Üçgen, en: Ascending Triangle }
+descending-triangle: { tr: Alçalan Üçgen, en: Descending Triangle }
+symmetrical-triangle: { tr: Simetrik Üçgen, en: Symmetrical Triangle }
+flag: { tr: Bayrak, en: Flag }
+pennant: { tr: Flama, en: Pennant }

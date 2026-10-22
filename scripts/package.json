@@ -1,0 +1,13 @@
+{
+  "name": "marketlevelmap-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Build tools for marketlevelmap.com. Kept out of the repository root so Cloudflare Pages does not try to install or build anything.",
+  "scripts": {
+    "library": "node build-library.mjs",
+    "library:check": "node build-library.mjs --check"
+  },
+  "dependencies": {
+    "yaml": "2.6.1"
+  }
+}
