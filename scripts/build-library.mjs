@@ -35,7 +35,7 @@ const WORDS = {
       "MarketLevelMap'te formasyonları **destek ve direnç bölgeleriyle birlikte** okuruz. Bir formasyonun nerede oluştuğu, ne olduğu kadar önemlidir: aynı mum bir bölgede anlamlı, boşlukta anlamsız olabilir.",
     ],
     libraryDescription: "Mum ve grafik formasyonlarının ne olduğu, nasıl oluştuğu ve destek ve direnç bölgeleriyle birlikte nasıl okunduğu.",
-    all: "Tümü", search: "Formasyon ara", noMatch: "Bu filtreyle eşleşen formasyon yok.", filters: "Filtreler",
+    seeAll: (cat, n) => `Tüm ${cat.toLocaleLowerCase("tr")} (${n}) →`, search: "Formasyon ara", noMatch: "Bu filtreyle eşleşen formasyon yok.", filters: "Filtreler",
     onThisPage: "Bu sayfada", facts: "Kısa özet", others: (cat) => `Diğer ${cat.toLocaleLowerCase("tr")}`, allIn: (cat) => `Tüm ${cat.toLocaleLowerCase("tr")} →`,
     formation: "Nasıl oluşur", meaning: "Neye işaret eder", strength: "Ne zaman güçlenir, ne zaman zayıflar", strengthToc: "Güçlendirenler ve zayıflatanlar",
     strengthens: "Güçlendirenler", weakens: "Zayıflatanlar", mlmView: "MarketLevelMap bakışı", zones: "Bölgelerle ilişkisi",
@@ -63,7 +63,7 @@ const WORDS = {
       "At MarketLevelMap we read patterns **together with support and resistance zones**. Where a pattern forms matters as much as what it is: the same candle can mean something at a zone and little in open space.",
     ],
     libraryDescription: "What candlestick and chart patterns are, how they form, and how to read them together with support and resistance zones.",
-    all: "All", search: "Search patterns", noMatch: "No patterns match this filter.", filters: "Filters",
+    seeAll: (cat, n) => `All ${cat.toLowerCase()} (${n}) →`, search: "Search patterns", noMatch: "No patterns match this filter.", filters: "Filters",
     onThisPage: "On this page", facts: "At a glance", others: (cat) => `Other ${cat.toLowerCase()}`, allIn: (cat) => `All ${cat.toLowerCase()} →`,
     formation: "How it forms", meaning: "What it suggests", strength: "When it strengthens, when it weakens", strengthToc: "Strengthens and weakens",
     strengthens: "Strengthens", weakens: "Weakens", mlmView: "The MarketLevelMap view", zones: "How it relates to zones",
@@ -328,21 +328,31 @@ ${aside}</div>`;
 
 // ---------------------------------------------------------------- library home + category pages
 
+// Library home: one section per category with its first few patterns and a link to the category page,
+// so the page stays short as the library grows. Category pages list everything, with filters and search.
+const PREVIEW = 3;
+
 function listPage(lang, category) {
   const w = WORDS[lang];
   const list = sorted(category ? patterns.filter((p) => p.kind === category.kind) : patterns);
-  const filterButton = (group, value, label, pressed) => `<button class="filter-btn" type="button" data-filter="${group}" data-value="${value}" aria-pressed="${pressed}">${esc(label)}</button>`;
-  const filters = category ? "" : `<div class="lib-filters" role="group" aria-label="${esc(w.filters)}">
-<div class="filter-row">${filterButton("kind", "", w.all, true)}${categories.map((c) => filterButton("kind", c.kind, c[lang].name, false)).join("")}</div>
-<div class="filter-row">${["bullish", "bearish", "neutral"].map((d) => filterButton("direction", d, w.direction[d], false)).join("")}</div>
-<input class="lib-search" type="search" placeholder="${esc(w.search)}" aria-label="${esc(w.search)}">
-</div>`;
-  const crumbs = category ? breadcrumb(lang, [[w.library, urls.home(lang)], [category[lang].name]]) : "";
-  const intro = category ? `<p>${inline(category[lang].summary)}</p>` : w.libraryIntro.map((x) => `<p>${inline(x)}</p>`).join("");
-  const body = `${crumbs}<div class="lib-intro"><h1>${esc(category ? category[lang].name : w.libraryTitle)}</h1>${intro}</div>
-${filters}
+  const filterButton = (value, label) => `<button class="filter-btn" type="button" data-filter="direction" data-value="${value}" aria-pressed="false">${esc(label)}</button>`;
+  let body;
+  if (category) {
+    const directions = ["bullish", "bearish", "neutral"].filter((d) => list.some((p) => p.direction === d));
+    body = `${breadcrumb(lang, [[w.library, urls.home(lang)], [category[lang].name]])}<div class="lib-intro"><h1>${esc(category[lang].name)}</h1><p>${inline(category[lang].summary)}</p></div>
+<div class="lib-filters" role="group" aria-label="${esc(w.filters)}"><div class="filter-row">${directions.map((d) => filterButton(d, w.direction[d])).join("")}</div><input class="lib-search" type="search" placeholder="${esc(w.search)}" aria-label="${esc(w.search)}"></div>
 <ul class="pattern-grid">${list.map((p) => card(p, lang)).join("\n")}</ul>
 <p class="lib-empty" hidden>${esc(w.noMatch)}</p>`;
+  } else {
+    const sections = categories.map((c) => {
+      const items = list.filter((p) => p.kind === c.kind);
+      if (!items.length) return "";
+      return `<section class="lib-section" aria-labelledby="cat-${esc(c.kind)}"><div class="section-head"><h2 id="cat-${esc(c.kind)}"><a href="${esc(urls.category(c, lang))}">${esc(c[lang].name)}</a></h2><p>${inline(c[lang].summary)}</p></div>
+<ul class="pattern-grid preview">${items.slice(0, PREVIEW).map((p) => card(p, lang)).join("\n")}</ul>
+<a class="section-more" href="${esc(urls.category(c, lang))}">${esc(w.seeAll(c[lang].name, items.length))}</a></section>`;
+    }).join("\n");
+    body = `<div class="lib-intro"><h1>${esc(w.libraryTitle)}</h1>${w.libraryIntro.map((x) => `<p>${inline(x)}</p>`).join("")}</div>\n${sections}`;
+  }
   const path = category ? urls.category(category, lang) : urls.home(lang);
   const title = category ? `${category[lang].name} | ${w.titleSuffix}` : `${w.libraryTitle} | MarketLevelMap`;
   const description = category ? plain(category[lang].summary) : w.libraryDescription;
@@ -352,7 +362,9 @@ ${filters}
     jsonLd: {
       "@context": "https://schema.org", "@type": category ? "CollectionPage" : "DefinedTermSet", name: category ? category[lang].name : w.libraryTitle,
       description, url: ORIGIN + path, inLanguage: lang,
-      hasPart: list.map((p) => ({ "@type": "DefinedTerm", name: p[lang].name, url: ORIGIN + urls.pattern(p, lang) })),
+      hasPart: category
+        ? list.map((p) => ({ "@type": "DefinedTerm", name: p[lang].name, url: ORIGIN + urls.pattern(p, lang) }))
+        : categories.map((c) => ({ "@type": "CollectionPage", name: c[lang].name, url: ORIGIN + urls.category(c, lang) })),
     },
   });
 }

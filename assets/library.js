@@ -15,24 +15,23 @@
   function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
   if(toggle){toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme()}
 
-  // Library home: every card is in the HTML; filters and search only hide cards.
+  // Category pages: every card is in the HTML; the direction filter and search only hide cards.
   var cards=[].slice.call(document.querySelectorAll(".pattern-card")),search=document.querySelector(".lib-search"),empty=document.querySelector(".lib-empty");
   if(!search)return;
-  var chosen={kind:"",direction:""};
+  var direction="";
   function apply(){
     var q=search.value.trim().toLocaleLowerCase(lang),shown=0;
     cards.forEach(function(card){
-      var ok=(!chosen.kind||card.dataset.kind===chosen.kind)&&(!chosen.direction||card.dataset.direction===chosen.direction)&&(!q||card.dataset.search.indexOf(q)>-1);
+      var ok=(!direction||card.dataset.direction===direction)&&(!q||card.dataset.search.indexOf(q)>-1);
       card.hidden=!ok;if(ok)shown++;
     });
     empty.hidden=shown>0;
   }
-  document.querySelectorAll("[data-filter]").forEach(function(button){
+  document.querySelectorAll('[data-filter="direction"]').forEach(function(button){
     button.addEventListener("click",function(){
-      var group=button.dataset.filter,value=button.dataset.value;
-      // Direction buttons toggle (a second click clears); "All" clears the category.
-      chosen[group]=group==="direction"&&chosen.direction===value?"":value;
-      document.querySelectorAll('[data-filter="'+group+'"]').forEach(function(b){b.setAttribute("aria-pressed",String(group==="kind"?b.dataset.value===chosen.kind:b.dataset.value===chosen.direction))});
+      // A second click on the chosen direction clears it.
+      direction=direction===button.dataset.value?"":button.dataset.value;
+      document.querySelectorAll('[data-filter="direction"]').forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.value===direction))});
       apply();
     });
   });

@@ -1,6 +1,7 @@
-# Library categories. `kind` in a pattern file picks its category; `order` sorts the categories.
+# Library categories. `kind` in a pattern file picks its category; `order` sorts the categories
+# (also the order of the sections on the library home page).
 - kind: candle
-  order: 10
+  order: 20
   tr:
     slug: mum-formasyonlari
     name: Mum formasyonları
@@ -12,7 +13,7 @@
     singular: Candlestick pattern
     summary: Patterns of one to three candles that can point to a short-term change of direction or to indecision.
 - kind: chart
-  order: 20
+  order: 10
   tr:
     slug: grafik-formasyonlari
     name: Grafik formasyonları

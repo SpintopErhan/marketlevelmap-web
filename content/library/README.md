@@ -157,8 +157,15 @@ Boş isteğe bağlı alanların bölümü **hiç gösterilmez** ve "Bu sayfada" 
 ### Kütüphane ana sayfası
 
 - Kısa giriş paragrafı (formasyonlar nedir, bölgelerle neden birlikte okunmalı).
-- Filtreler: Tümü / Mum formasyonları / Grafik formasyonları, ve Yükseliş / Düşüş / Kararsızlık. Arama kutusu (ad ve alternatif ad içinde).
-- Kart ızgarası: küçük SVG, ad, etiketler, özetin ilk cümlesi. Kartın tamamı tıklanabilir.
+- Her kategori bir bölüm: başlık, kısa açıklama, `order`'a göre ilk **3** kart ve kategori sayfasına giden
+  "Tüm … (sayı) →" düğmesi. Bölümlerin sırası `categories.yaml`'daki `order`'dır (şu an önce grafik, sonra mum).
+  Kütüphane büyüdükçe ana sayfa uzamaz; yeni bir konu (örneğin emtialar) yeni bir bölüm olarak eklenir.
+- Kart: küçük SVG, ad, etiketler, özetin ilk cümlesi. Kartın tamamı tıklanabilir.
+
+### Kategori sayfası
+
+- Kategorideki bütün formasyonlar. Yön filtresi (Yükseliş / Düşüş / Nötr, yalnızca o kategoride olanlar) ve
+  arama kutusu (ad ve alternatif ad içinde).
 - Filtre ve arama tarayıcıda çalışır, ama kartların hepsi statik HTML olarak sayfada bulunur (SEO).
 
 ---
