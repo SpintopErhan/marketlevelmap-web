@@ -204,7 +204,7 @@ node build-library.mjs      # tr/kutuphane/, en/library/ ve sitemap.xml'i yenide
 
 | Kategori | Formasyonlar |
 |---|---|
-| Mum | **Yutan Boğa** ✅, Yutan Ayı, Çekiç, Ters Çekiç, Doji, Sabah Yıldızı, Akşam Yıldızı, Kayan Yıldız, Pin Bar |
-| Grafik | **Omuz Baş Omuz** ✅, Ters Omuz Baş Omuz, İkili Tepe, İkili Dip, Üçgenler (yükselen, alçalan, simetrik), Bayrak ve Flama |
+| Mum | Yutan Boğa, Yutan Ayı, Çekiç, Ters Çekiç, Kayan Yıldız, Pin Bar, Doji, Sabah Yıldızı, Akşam Yıldızı |
+| Grafik | Omuz Baş Omuz, Ters Omuz Baş Omuz, İkili Tepe, İkili Dip, Yükselen / Alçalan / Simetrik Üçgen, Bayrak, Flama |
 
-✅ işaretli iki formasyonun YAML ve SVG dosyaları hazır.
+İlk listedeki formasyonların hepsi yazıldı. Sıradaki adaylar `planned.yaml` dosyasında.

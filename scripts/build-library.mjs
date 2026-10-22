@@ -205,7 +205,8 @@ const urls = {
   pattern: (p, lang) => `${BASE[lang]}${p[lang].slug}/`,
 };
 const nameOf = (id, lang) => byId.get(id)?.[lang].name || planned[id]?.[lang] || id;
-const sorted = (list) => [...list].sort((a, b) => (a.order ?? 999) - (b.order ?? 999) || a[ "en" ].name.localeCompare(b.en.name));
+// Category first (candle patterns before chart patterns), then each pattern's order.
+const sorted = (list) => [...list].sort((a, b) => categoryOf(a).order - categoryOf(b).order || (a.order ?? 999) - (b.order ?? 999) || a.en.name.localeCompare(b.en.name));
 
 // ---------------------------------------------------------------- page shell
 

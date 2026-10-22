@@ -1,0 +1,227 @@
+id: descending-triangle
+kind: chart
+direction: bearish
+pattern_type: continuation
+candles: multi
+order: 60
+related: [ascending-triangle, symmetrical-triangle, rectangle]
+example: null
+updated: 2026-10-22
+
+tr:
+  slug: alcalan-ucgen
+  name: Alçalan Üçgen
+  alt_name: Descending Triangle
+  summary: >-
+    Yatay bir destek çizgisi ile giderek alçalan tepelerin oluşturduğu üçgen formasyonu. Fiyat
+    aynı seviyede alıcılarla karşılaşırken satıcılar her tepkide daha erken devreye girer.
+    Çoğunlukla bir düşüşün içinde devam formasyonu olarak okunur ve yatay çizginin altında
+    kapanışla tamamlanır.
+  formation:
+    style: steps
+    items:
+      - title: Önceki hareket.
+        text: >-
+          Formasyon en çok bir düşüş trendinin içinde, bir duraklama olarak görülür. Daha seyrek
+          olarak bir yükselişin sonunda da oluşabilir. Bu durumda dönüş formasyonu gibi okunur.
+      - title: Yatay destek.
+        text: >-
+          Fiyat en az iki kez yaklaşık aynı seviyede dip yapar ve tepki verir. Dipler birbirine
+          yaklaşık **%1** mesafe içinde kalır. Bu dipleri birleştiren çizgi yataydır.
+      - title: Alçalan tepeler.
+        text: >-
+          Tepkilerin her biri bir öncekinden daha alçak bir tepede biter. En az iki tepe
+          birleştirilerek aşağı eğimli bir direnç çizgisi çizilir.
+      - title: Daralma.
+        text: >-
+          İki çizgi sağa doğru birbirine yaklaşır. Toplam en az dört dokunuş (her çizgide iki)
+          gerekir, beş ya da daha fazlası formasyonu daha belirgin kılar. Bu sırada hacim çoğu zaman azalır.
+      - title: Kırılım bölgesi.
+        text: >-
+          Kırılım genellikle iki çizginin kesiştiği uç noktaya varmadan, üçgenin son üçte birlik
+          kısmında gelir. Fiyat uç noktaya kadar sıkışıp kalırsa formasyon anlamını yitirmeye başlar.
+      - title: Tamamlanma.
+        text: >-
+          Fiyat yatay desteğin altında **kapanış** yaptığında formasyon tamamlanmış sayılır.
+          Çizginin altına inip kapanışı üstünde yapan bir fitil kırılım sayılmaz.
+    note: Buradaki eşikler ders kitaplarında yaygın kabul gören yaklaşık değerlerdir, kesin kurallar değildir.
+  meaning:
+    - >-
+      Yatay çizgi, alıcıların belirli bir seviyeyi tekrar tekrar savunduğunu gösterir. Alçalan
+      tepeler ise satıcıların her seferinde daha aşağıdan devreye girdiğine işaret eder. Fiyat bu
+      iki baskı arasında sıkışır. Yatay seviyedeki alım her testte biraz daha tükeniyor olabilir.
+    - >-
+      Kırılım, alıcıların o seviyeyi artık savunamadığı şeklinde yorumlanır. Ancak üçgen
+      tamamlanmadan önce yön kesin değildir. Fiyat alçalan direnç çizgisini yukarı kırarsa
+      tablo tamamen değişir.
+  measurement:
+    title: Sık kullanılan bir ölçüm
+    text: >-
+      Teknik analizde üçgenin en geniş yerindeki yüksekliği (h), kırılım noktasından aşağı doğru
+      ölçülerek olası hareketin büyüklüğü hakkında kaba bir fikir verilir. Bu bir hedef değil,
+      bir ölçek referansıdır. Fiyat bu mesafeye ulaşmadan dönebilir ya da çok daha ileri gidebilir.
+      Yoldaki destek bölgeleri genellikle daha gerçekçi bir referanstır.
+  strengthens:
+    - Öncesinde belirgin bir düşüş olması
+    - Yatay çizginin bir destek bölgesiyle örtüşmesi
+    - Her çizgide ikiden fazla dokunuş
+    - Formasyon boyunca hacmin azalması, kırılımda artması
+    - Kırılımın üçgenin son üçte birinde, uç noktadan önce gelmesi
+  weakens:
+    - Dokunuşların az ya da diplerin aynı seviyede olmaması
+    - Kırılımın düşük hacimle gelmesi
+    - Fiyatın uç noktaya kadar sıkışması
+    - Yatay çizginin hemen altında güçlü bir destek bölgesi bulunması
+    - Fitille çizginin altına inip üstünde kapanan sahte kırılımlar
+  zones:
+    intro: "Alçalan üçgenin yatay kenarı, çoğu zaman haritadaki bir destek bölgesinin kendisidir:"
+    points:
+      - "**Yatay çizgi bir destek bölgesiyle örtüşüyorsa**, fiyatın o bölgeyi defalarca test ettiği görülür. Her testte bölgedeki alıcılar biraz daha azalıyor olabilir. Kırılım bu durumda yalnızca bir çizginin değil, bir bölgenin kaybedilmesi anlamına gelir."
+      - "**Alçalan tepeler bir direnç bölgesinin altında kalıyorsa**, satıcıların fiyatın o bölgeye kadar çıkmasını beklemeden devreye girdiği düşünülebilir."
+      - "**Kırılımın hemen altında bir destek bölgesi varsa**, fiyatın kısa sürede yeniden tepki verebileceği bir alan vardır. Bu, ölçüm yönteminden daha gerçekçi bir referanstır."
+    paragraphs:
+      - >-
+        Kırılımdan sonra fiyat bazen yatay çizgiye geri dönüp onu aşağıdan test eder. Çizgi bir
+        destek bölgesiyle örtüşüyorsa, o bölge bu kez direnç gibi davranabilir. Fiyat geri dönüşte
+        bölgenin içinde kalır ve üstünde kapanış yapmazsa kırılım daha sağlam kabul edilir.
+      - >-
+        Yatay çizgi haritada hiçbir bölgeye denk gelmiyorsa, formasyon yine geçerlidir ama
+        kırılımın taşıdığı anlam daha sınırlı kalabilir.
+  completion: Yatay desteğin altında kapanış.
+  invalidation:
+    before: >-
+      Fiyat yatay çizgiyi kırmadan alçalan direnç çizgisinin üzerinde **kapanış** yaparsa alçalan
+      tepeler dizisi bozulur ve formasyon oluşmamış kabul edilir.
+    after: >-
+      Yatay çizginin altında kapanış gelmiş olsa bile fiyat yeniden üçgenin içine döner ve
+      **son alçalan tepenin üzerinde kapanış** yaparsa düşüş senaryosu geçersiz sayılır. Bu tür
+      sahte kırılımlar bazen sert yukarı hareketlerle sonuçlanır.
+  confusions:
+    - id: symmetrical-triangle
+      text: "Alt çizgi yatay değil: alçalan tepeler ve yükselen dipler birbirine yaklaşır."
+    - id: rectangle
+      text: "Tepeler alçalmaz: fiyat iki yatay çizgi arasında gidip gelir."
+    - id: falling-wedge
+      text: İki çizgi de aşağı eğimlidir ve çoğunlukla yükseliş yönlü okunur.
+  facts:
+    - [Tür, Devam]
+    - [Yön, Düşüş]
+    - [Süre, Çok mumlu]
+    - [Bağlam, Düşüş içinde]
+    - [Tamamlanma, Yatay destek altında kapanış]
+    - [Geçersiz, Son tepe üzerinde kapanış]
+  svg_labels:
+    support: Yatay destek
+    lower_highs: Alçalan tepeler
+    breakdown: Kırılım
+  svg_alt: "Alçalan üçgen çizimi: düşen fiyat aynı seviyede üç dip yapıyor, her tepki daha alçak bir tepede bitiyor, ardından fiyat yatay desteğin altına iniyor"
+  svg_caption: Turuncu noktalar iki çizgiye yapılan dokunuşları gösterir. h, üçgenin en geniş yerindeki yüksekliğidir.
+
+en:
+  slug: descending-triangle
+  name: Descending Triangle
+  alt_name: Alçalan Üçgen
+  summary: >-
+    A triangle pattern formed by a flat support line and a series of falling highs. Price meets
+    buyers at the same level each time, while sellers step in earlier on every bounce. It is most
+    often read as a continuation pattern within a downtrend, and it completes with a close below
+    the flat line.
+  formation:
+    style: steps
+    items:
+      - title: Prior move.
+        text: >-
+          The pattern is most often seen as a pause within a downtrend. Less often, it forms at the
+          end of a rise, where it is read as a reversal pattern.
+      - title: Flat support.
+        text: >-
+          Price bottoms at roughly the same level at least twice and bounces. The lows sit within
+          about **1%** of each other. The line joining them is horizontal.
+      - title: Lower highs.
+        text: >-
+          Each bounce ends at a lower high than the one before. Joining at least two highs gives a
+          downward-sloping resistance line.
+      - title: Narrowing.
+        text: >-
+          The two lines converge to the right. At least four touches in total (two on each line) are
+          needed; five or more make the pattern clearer. Volume often falls during this phase.
+      - title: Breakout zone.
+        text: >-
+          The break usually comes before the apex where the lines meet, roughly in the last third of
+          the triangle. If price drifts all the way into the apex, the pattern starts to lose meaning.
+      - title: Completion.
+        text: >-
+          The pattern is complete when price **closes** below the flat support. A wick below the line
+          that closes back above it is not a breakdown.
+    note: The thresholds here are approximate values commonly used in textbooks, not strict rules.
+  meaning:
+    - >-
+      The flat line shows buyers defending the same level again and again. The lower highs suggest
+      sellers are stepping in lower each time. Price is squeezed between the two. Buying at the flat
+      level may be running out a little more with each test.
+    - >-
+      A breakdown is read as buyers no longer being able to defend that level. Before completion,
+      though, the direction is not settled. If price breaks above the falling resistance line, the
+      picture changes completely.
+  measurement:
+    title: A common measurement
+    text: >-
+      In technical analysis, the triangle's height at its widest part (h) is measured down from the
+      breakout point to give a rough sense of the possible move's size. It is a scale reference, not
+      a target. Price can turn before covering that distance, or go much further. Support zones along
+      the way are usually a more realistic reference.
+  strengthens:
+    - A clear downtrend before the pattern
+    - The flat line lining up with a support zone
+    - More than two touches on each line
+    - Volume falling during the pattern and rising at the break
+    - The break coming in the last third, before the apex
+  weakens:
+    - Few touches, or lows that are not at the same level
+    - The break coming on low volume
+    - Price drifting all the way into the apex
+    - A strong support zone just below the flat line
+    - False breakdowns, where a wick crosses the line but the close stays above
+  zones:
+    intro: "The flat side of a descending triangle is often a support zone on the map itself:"
+    points:
+      - "**If the flat line lines up with a support zone**, price can be seen testing that zone again and again. Buyers in the zone may be thinning out with each test. A break then means losing a zone, not just a line."
+      - "**If the lower highs stay below a resistance zone**, it suggests sellers are stepping in without waiting for price to reach that zone."
+      - "**If a support zone sits just below the break**, there is an area where price may react again soon. It is a more realistic reference than the measured move."
+    paragraphs:
+      - >-
+        After the break, price sometimes returns to retest the flat line from below. If the line
+        lines up with a support zone, that zone may now act as resistance. If price stays inside the
+        zone on the retest and does not close above it, the break is considered more solid.
+      - >-
+        If the flat line does not match any zone on the map, the pattern still stands, but the break
+        may carry less weight.
+  completion: Close below the flat support.
+  invalidation:
+    before: >-
+      If price **closes** above the falling resistance line before breaking the flat line, the series
+      of lower highs is broken and the pattern is considered not to have formed.
+    after: >-
+      Even after a close below the flat line, if price climbs back into the triangle and **closes
+      above the last lower high**, the bearish scenario is considered invalid. False breakdowns like
+      this sometimes lead to sharp moves up.
+  confusions:
+    - id: symmetrical-triangle
+      text: "The lower line is not flat: lower highs and higher lows converge."
+    - id: rectangle
+      text: "The highs do not fall: price moves between two flat lines."
+    - id: falling-wedge
+      text: Both lines slope downwards, and it is usually read as bullish.
+  facts:
+    - [Type, Continuation]
+    - [Direction, Bearish]
+    - [Duration, Multi-candle]
+    - [Context, Within a downtrend]
+    - [Completion, Close below the flat line]
+    - [Invalid, Close above the last high]
+  svg_labels:
+    support: Flat support
+    lower_highs: Lower highs
+    breakdown: Breakdown
+  svg_alt: "Descending triangle illustration: falling price makes three lows at the same level, each bounce ends at a lower high, then price breaks below the flat support"
+  svg_caption: The orange dots mark the touches on the two lines. h is the triangle's height at its widest part.
