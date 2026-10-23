@@ -36,7 +36,7 @@ const WORDS = {
     ],
     libraryDescription: "Mum ve grafik formasyonlarının ne olduğu, nasıl oluştuğu ve destek ve direnç bölgeleriyle birlikte nasıl okunduğu.",
     seeAll: (cat, n) => `Tüm ${cat.toLocaleLowerCase("tr")} (${n}) →`, search: "Formasyon ara", noMatch: "Bu filtreyle eşleşen formasyon yok.", filters: "Filtreler",
-    topics: "Konular", overview: "Genel bakış", onThisPage: "Bu sayfada", facts: "Kısa özet", others: (cat) => `Diğer ${cat.toLocaleLowerCase("tr")}`, allIn: (cat) => `Tüm ${cat.toLocaleLowerCase("tr")} →`,
+    topics: "Konular", overview: "Genel bakış", toggle: (cat) => `${cat}: alt başlıkları aç ya da kapat`, onThisPage: "Bu sayfada", facts: "Kısa özet",
     formation: "Nasıl oluşur", meaning: "Neye işaret eder", strength: "Ne zaman güçlenir, ne zaman zayıflar", strengthToc: "Güçlendirenler ve zayıflatanlar",
     strengthens: "Güçlendirenler", weakens: "Zayıflatanlar", mlmView: "MarketLevelMap bakışı", zones: "Bölgelerle ilişkisi",
     completion: "Ne zaman tamamlanır", completionToc: "Tamamlanma", invalidation: "Ne zaman geçersiz sayılır", invalidationToc: "Geçersiz sayılma",
@@ -64,7 +64,7 @@ const WORDS = {
     ],
     libraryDescription: "What candlestick and chart patterns are, how they form, and how to read them together with support and resistance zones.",
     seeAll: (cat, n) => `All ${cat.toLowerCase()} (${n}) →`, search: "Search patterns", noMatch: "No patterns match this filter.", filters: "Filters",
-    topics: "Topics", overview: "Overview", onThisPage: "On this page", facts: "At a glance", others: (cat) => `Other ${cat.toLowerCase()}`, allIn: (cat) => `All ${cat.toLowerCase()} →`,
+    topics: "Topics", overview: "Overview", toggle: (cat) => `${cat}: show or hide the patterns`, onThisPage: "On this page", facts: "At a glance",
     formation: "How it forms", meaning: "What it suggests", strength: "When it strengthens, when it weakens", strengthToc: "Strengthens and weakens",
     strengthens: "Strengthens", weakens: "Weakens", mlmView: "The MarketLevelMap view", zones: "How it relates to zones",
     completion: "When it completes", completionToc: "Completion", invalidation: "When it is invalidated", invalidationToc: "Invalidation",
@@ -210,7 +210,8 @@ const sorted = (list) => [...list].sort((a, b) => categoryOf(a).order - category
 
 // ---------------------------------------------------------------- page shell
 
-// Left column on every library page: the library's topics (categories and their patterns) for quick access.
+// Left column on every library page: the library's topics for quick access. Each category is a heading
+// (link to its page) with an arrow that shows or hides its patterns.
 // On narrow screens it is a collapsed box above the content (assets/library.js opens it on wide screens).
 function libNav(lang, path) {
   const w = WORDS[lang];
@@ -218,7 +219,10 @@ function libNav(lang, path) {
   const groups = categories.map((c) => {
     const items = sorted(patterns.filter((p) => p.kind === c.kind));
     if (!items.length) return "";
-    return `<div class="nav-group">${link(urls.category(c, lang), c[lang].name, "nav-cat")}<ul>${items.map((p) => `<li>${link(urls.pattern(p, lang), p[lang].name)}</li>`).join("")}</ul></div>`;
+    // The group of the page being read starts open; the others start closed. The arrow toggles it.
+    const open = path === urls.category(c, lang) || items.some((p) => path === urls.pattern(p, lang));
+    const id = `nav-${c.kind}`;
+    return `<div class="nav-group${open ? " open" : ""}"><div class="nav-cat-row">${link(urls.category(c, lang), c[lang].name, "nav-cat")}<button class="nav-toggle" type="button" aria-expanded="${open}" aria-controls="${id}" aria-label="${esc(w.toggle(c[lang].name))}"></button></div><ul id="${id}">${items.map((p) => `<li>${link(urls.pattern(p, lang), p[lang].name)}</li>`).join("")}</ul></div>`;
   }).join("");
   return `<details class="lib-nav"><summary>${esc(w.topics)}</summary><nav aria-label="${esc(w.topics)}">${link(urls.home(lang), w.overview, "nav-home")}${groups}</nav></details>`;
 }
@@ -309,11 +313,9 @@ function patternPage(p, lang) {
     return target ? `<li><a href="${esc(urls.pattern(target, lang))}">${inner}</a></li>` : `<li class="pending" title="${esc(w.soon)}">${inner}</li>`;
   }).join("")}</ul>`);
 
-  const siblings = sorted(patterns.filter((x) => x.kind === p.kind && x.id !== p.id));
   const aside = `<aside class="side">
 <nav class="side-card toc" aria-label="${esc(w.onThisPage)}"><p class="eyebrow">${w.onThisPage}</p><ul>${sections.map((s) => `<li><a href="#${s.id}">${esc(s.toc)}</a></li>`).join("")}</ul></nav>
 <div class="side-card"><p class="eyebrow">${w.facts}</p><dl class="facts">${t.facts.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl></div>
-<nav class="side-card" aria-label="${esc(w.others(c[lang].name))}"><p class="eyebrow">${esc(w.others(c[lang].name))}</p><ul>${siblings.map((s) => `<li><a href="${esc(urls.pattern(s, lang))}">${esc(s[lang].name)}</a></li>`).join("")}<li><a class="more" href="${esc(urls.category(c, lang))}">${esc(w.allIn(c[lang].name))}</a></li></ul></nav>
 </aside>`;
 
   const body = `${breadcrumb(lang, [[w.library, urls.home(lang)], [c[lang].name, urls.category(c, lang)], [t.name]])}

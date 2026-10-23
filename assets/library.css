@@ -18,7 +18,13 @@ button,select,input{font:inherit}button{color:inherit}
 .lib-nav a[aria-current="page"]{color:var(--accent);font-weight:600}
 .lib-nav .nav-home{margin-bottom:6px}
 .lib-nav .nav-group{margin-top:12px}
-.lib-nav .nav-cat{color:var(--fg);font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}
+.lib-nav .nav-cat-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.lib-nav .nav-cat{flex:1;color:var(--fg);font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}
+.lib-nav .nav-toggle{display:grid;place-items:center;width:26px;height:26px;padding:0;border:0;border-radius:6px;background:none;color:var(--muted);cursor:pointer}
+.lib-nav .nav-toggle:hover{background:var(--panel-2);color:var(--accent)}
+.lib-nav .nav-toggle:before{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .15s}
+.lib-nav .nav-group:not(.open) .nav-toggle:before{transform:rotate(-45deg)}
+.lib-nav .nav-group:not(.open) ul{display:none}
 .lib-nav ul{margin:4px 0 0;padding:0 0 0 10px;list-style:none;border-left:1px solid var(--line)}
 @media(min-width:1100px){
   .lib-layout{grid-template-columns:220px minmax(0,1fr)}
@@ -99,7 +105,6 @@ button,select,input{font:inherit}button{color:inherit}
 .side-card ul{margin:0;padding:0;list-style:none}
 .side-card li+li{margin-top:7px}
 .side-card a{color:var(--muted);text-decoration:none}.side-card a:hover{color:var(--accent)}
-.side-card a.more{color:var(--accent)}
 .facts{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;margin:0}
 .facts dt{color:var(--muted)}.facts dd{margin:0;font-weight:600}
 

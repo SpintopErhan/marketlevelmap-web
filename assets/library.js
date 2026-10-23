@@ -19,6 +19,10 @@
   var nav=document.querySelector(".lib-nav");
   if(nav&&window.matchMedia){var wide=matchMedia("(min-width:1100px)");var syncNav=function(){if(wide.matches)nav.open=true};syncNav();if(wide.addEventListener)wide.addEventListener("change",syncNav)}
 
+  document.querySelectorAll(".nav-toggle").forEach(function(button){
+    button.addEventListener("click",function(){var group=button.closest(".nav-group"),open=group.classList.toggle("open");button.setAttribute("aria-expanded",String(open))});
+  });
+
   // Category pages: every card is in the HTML; the direction filter and search only hide cards.
   var cards=[].slice.call(document.querySelectorAll(".pattern-card")),search=document.querySelector(".lib-search"),empty=document.querySelector(".lib-empty");
   if(!search)return;
