@@ -1,0 +1,215 @@
+id: timeframe-conflicts
+kind: basics
+order: 50
+related: [multi-timeframe-analysis, timeframes, trend, candle-close]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: zaman-dilimi-celiskileri
+  name: Zaman dilimleri arasında görünen çelişkiler
+  alt_name: Timeframe conflicts
+  summary: >-
+    Aynı anda 1H grafikte fiyat düşerken 1D grafikte yükselen yapı korunuyor olabilir. Bu bir çelişki
+    değil, aynı fiyatın iki farklı ölçekte okunmasıdır. Her okuma ait olduğu zaman dilimiyle birlikte
+    ifade edildiğinde iki tablo da doğru olabilir.
+  sections:
+    - type: text
+      id: definition
+      title: Çelişki gerçekten var mı?
+      paragraphs:
+        - >-
+          Her zaman dilimi farklı uzunlukta bir süreyi anlatır. 1H grafikte son birkaç günün dalgaları,
+          1D grafikte son birkaç ayın yapısı görünür. Bu yüzden "fiyat düşüyor" ve "trend yükseliyor"
+          cümleleri aynı anda doğru olabilir: biri **saatlik**, diğeri **günlük** ölçekte söylenmiştir.
+        - >-
+          Görünen çelişki çoğu zaman cümleden zaman diliminin düşmesiyle ortaya çıkar. "Piyasa
+          düşüşte" gibi tek bir yargı, hangi ölçekte geçerli olduğu belirtilmediğinde iki okumadan
+          birini yok sayar.
+    - type: text
+      id: why-both
+      title: Neden ikisi de doğru olabilir?
+      paragraphs:
+        - >-
+          Yükselen bir trend düz bir çizgide ilerlemez; arada geri çekilmeler olur. 1D grafikte tek
+          bir geri çekilme dalgası, 1H grafikte **alçalan tepe ve diplerden oluşan küçük bir düşüş
+          trendi** olarak görünebilir.
+        - >-
+          1H düşüşü, 1D yapısının bozulduğu anlamına gelmez. Yükselen 1D yapısı için referans, 1D
+          grafikteki **son önemli diptir**. 1H düşüşü bu dibin üzerinde kaldıkça iki okuma birlikte
+          geçerlidir. 1D kapanış bu dibin altında gelirse, 1D okuması da değişebilir.
+    - type: scenarios
+      id: common-cases
+      title: Sık görülen durumlar
+      items:
+        - title: 1H düşüyor, 1D yapısı korunuyor
+          tone: up
+          text: 1H grafikte alçalan tepe ve dipler var, ama fiyat 1D grafikteki son önemli dibin üzerinde. 1H düşüşü, 1D trendinin içinde bir geri çekilme olarak okunabilir.
+        - title: 1H düşüşü 1D dibine ulaşıyor
+          tone: down
+          text: 1H düşüşü 1D grafikteki son önemli dibin bulunduğu bölgeye kadar iner. Burada belirleyici olan, 1D mumun bu bölgeye göre nerede kapandığıdır.
+        - title: 1D yatay, 1H trendli
+          tone: neutral
+          text: 1D grafikte fiyat bir aralıkta gidip gelirken 1H grafikte belirgin trendler görülür. Bu trendler çoğu zaman aralığın bir kenarından diğerine giden hareketlerdir.
+    - type: steps
+      id: how-to-state
+      title: Okumayı zaman dilimiyle birlikte ifade etmek
+      items:
+        - title: Her gözlemin başına zaman dilimini yaz.
+          text: "\"1H: alçalan tepe ve dipler\" ve \"1D: yükselen yapı\" ayrı cümleler olarak yazıldığında çelişki ortadan kalkar."
+        - title: Seviyelerin hangi zaman diliminden geldiğini belirt.
+          text: "\"1D son önemli dip\" ile \"1H son dip\" farklı seviyelerdir ve farklı ağırlık taşır."
+        - title: Okumayı neyin değiştireceğini yaz.
+          text: "Örneğin: \"1D kapanış son önemli dibin bulunduğu bölgenin altında gelirse 1D yapısı da değişmiş olabilir.\""
+        - title: Tek bir genel yargıdan kaçın.
+          text: "\"Piyasa düşüşte\" yerine hangi ölçekte düştüğünü ve büyük ölçekte ne olduğunu birlikte söyle."
+    - type: limits
+      shows:
+        - Farklı zaman dilimlerinin aynı fiyatı farklı ölçeklerde anlattığını
+        - Küçük zaman dilimindeki bir hareketin büyük yapının neresinde olduğunu
+        - Büyük zaman dilimindeki okumayı hangi seviyenin değiştirebileceğini
+      not_proves:
+        - Hangi zaman diliminin sonunda haklı çıkacağını
+        - Küçük zaman dilimindeki düşüşün kısa süreceğini ya da büyük yapıyı bozacağını
+        - Zaman dilimleri aynı yönü gösterdiğinde hareketin kesin olarak süreceğini
+    - type: zones
+      paragraphs:
+        - >-
+          Görünen çelişkiler çoğu zaman bir **büyük zaman dilimi bölgesinin** yakınında netleşir. 1H
+          grafikte düşen fiyat, 1D grafikteki bir destek bölgesine yaklaşıyorsa iki okuma aynı yerde
+          buluşur: 1H düşüşü bu bölgeyi test etmektedir.
+        - >-
+          Bölgeyi bir bant olarak okumak burada da işe yarar. 1H mumlarının bandın içine girmesi,
+          1D yapısının bozulduğunu göstermez; 1D okumasını değiştiren, **1D kapanışın bandın uzak
+          kenarının ötesinde** gelmesidir.
+    - type: box
+      title: Örnek bir ifade
+      text: >-
+        "1D: yükselen yapı korunuyor; son önemli dip bir destek bölgesinde. 4H: geri çekilme sürüyor.
+        1H: alçalan tepe ve dipler, fiyat 1D bölgesine yaklaşıyor." Her cümle kendi zaman dilimine ait
+        olduğu için hiçbiri diğeriyle çelişmez.
+  confusions:
+    - id: pullback-vs-reversal
+      text: Küçük zaman dilimindeki bir düşüş, büyük zaman diliminde bir geri çekilme olabilir. Dönüş sayılması için büyük zaman dilimindeki yapının da değişmesi gerekir.
+    - id: trend-change
+      text: 1H grafikte yön değişmesi, 1D trendinin değiştiği anlamına gelmez. Trendin değiştiği, o trendin okunduğu zaman diliminde söylenir.
+  key_points:
+    - Farklı zaman dilimleri farklı süreleri anlatır; ikisi de doğru olabilir.
+    - Küçük zaman dilimindeki düşüş, büyük zaman diliminde bir geri çekilme olabilir.
+    - Büyük yapı, kendi zaman dilimindeki kapanış ve son önemli dip ya da tepeyle değerlendirilir.
+    - Her okumayı zaman dilimiyle birlikte yazmak, görünen çelişkiyi ortadan kaldırır.
+  svg_labels:
+    level_1: Son önemli dip
+    level_2: 1D son önemli dip
+    d1_1: "1D: yükselen yapı"
+    d1_2: korunuyor
+    h1_1: "1H: alçalan tepe ve dipler"
+    h1_2: son önemli dibin üzerinde
+  svg_alt: "Solda 1D grafikte tepe ve dipleri yükselen bir trend ve son önemli dibi gösteren kesikli çizgi; sağda son bölümün 1H görünümü: alçalan tepe ve dipler, ama fiyat 1D son önemli dibin üzerinde"
+  svg_caption: >-
+    Kesikli çerçeve 1D grafiğin sağda yakınlaştırılan bölümünü, turuncu kesikli çizgi 1D grafikteki son
+    önemli dibi gösterir. Noktalar her zaman diliminin kendi tepe ve diplerini işaretler.
+
+en:
+  slug: when-timeframes-disagree
+  name: When timeframes seem to disagree
+  summary: >-
+    Price can be falling on the 1H chart while the rising structure holds on the 1D chart. This is not a
+    contradiction but the same price read at two different scales. When each reading is stated with the
+    timeframe it belongs to, both pictures can be true.
+  sections:
+    - type: text
+      id: definition
+      title: Is there really a contradiction?
+      paragraphs:
+        - >-
+          Each timeframe describes a span of time of a different length. The 1H chart shows the swings of
+          the last few days; the 1D chart shows the structure of the last few months. So "price is falling"
+          and "the trend is up" can both be true at once: one is said on the **hourly** scale, the other on
+          the **daily** scale.
+        - >-
+          The apparent contradiction usually appears when the timeframe drops out of the sentence. A single
+          verdict such as "the market is falling", without saying on which scale, ignores one of the two
+          readings.
+    - type: text
+      id: why-both
+      title: Why both can be true
+      paragraphs:
+        - >-
+          An uptrend does not move in a straight line; there are pullbacks along the way. A single
+          pullback swing on the 1D chart can look like **a small downtrend of lower highs and lows** on the
+          1H chart.
+        - >-
+          A 1H decline does not mean the 1D structure has broken. The reference for a rising 1D structure
+          is the **last important low** on the 1D chart. As long as the 1H decline stays above that low,
+          both readings hold together. If a 1D candle closes below that low, the 1D reading can change too.
+    - type: scenarios
+      id: common-cases
+      title: Common situations
+      items:
+        - title: 1H falling, 1D structure intact
+          tone: up
+          text: The 1H chart shows lower highs and lows, but price is above the last important low on the 1D chart. The 1H decline can be read as a pullback inside the 1D trend.
+        - title: The 1H decline reaches the 1D low
+          tone: down
+          text: The 1H decline reaches the zone where the last important 1D low sits. What decides it here is where the 1D candle closes relative to that zone.
+        - title: 1D sideways, 1H trending
+          tone: neutral
+          text: Price moves back and forth in a range on the 1D chart while clear trends show on the 1H chart. These trends are often moves from one edge of the range to the other.
+    - type: steps
+      id: how-to-state
+      title: Stating a reading with its timeframe
+      items:
+        - title: Put the timeframe in front of each observation.
+          text: "Written as separate sentences, \"1H: lower highs and lows\" and \"1D: rising structure\" no longer contradict each other."
+        - title: Say which timeframe a level comes from.
+          text: "\"The last important 1D low\" and \"the last 1H low\" are different levels and carry different weight."
+        - title: Write what would change the reading.
+          text: "For example: \"If a 1D candle closes below the zone of the last important low, the 1D structure may have changed too.\""
+        - title: Avoid a single overall verdict.
+          text: "Instead of \"the market is falling\", say on which scale it is falling and what is happening on the larger scale."
+    - type: limits
+      shows:
+        - That different timeframes describe the same price at different scales
+        - Where in the larger structure a move on a smaller timeframe sits
+        - Which level could change the reading on the larger timeframe
+      not_proves:
+        - Which timeframe will prove right in the end
+        - That the decline on the smaller timeframe will be short-lived, or that it will break the larger structure
+        - That a move will certainly continue when the timeframes agree
+    - type: zones
+      paragraphs:
+        - >-
+          Apparent conflicts often become clearer near a **higher-timeframe zone**. If price falling on
+          the 1H chart is approaching a support zone from the 1D chart, the two readings meet in one place:
+          the 1H decline is testing that zone.
+        - >-
+          Reading the zone as a band helps here too. 1H candles entering the band do not show that the 1D
+          structure has broken; what changes the 1D reading is **a 1D close beyond the band's far edge**.
+    - type: box
+      title: An example statement
+      text: >-
+        "1D: rising structure holds; the last important low sits in a support zone. 4H: the pullback
+        continues. 1H: lower highs and lows, price approaching the 1D zone." Each sentence belongs to its
+        own timeframe, so none contradicts another.
+  confusions:
+    - id: pullback-vs-reversal
+      text: A decline on a smaller timeframe can be a pullback on a larger one. For it to count as a reversal, the structure on the larger timeframe needs to change too.
+    - id: trend-change
+      text: A change of direction on the 1H chart does not mean the 1D trend has changed. A trend change is stated on the timeframe the trend is read on.
+  key_points:
+    - Different timeframes describe different spans of time; both can be true.
+    - A decline on a smaller timeframe can be a pullback on a larger one.
+    - The larger structure is judged by its own timeframe's close and its last important low or high.
+    - Stating each reading with its timeframe removes the apparent contradiction.
+  svg_labels:
+    level_1: Last important low
+    level_2: Last important 1D low
+    d1_1: "1D: rising structure"
+    d1_2: still intact
+    h1_1: "1H: lower highs and lows"
+    h1_2: above the last important low
+  svg_alt: "On the left, a 1D uptrend with rising highs and lows and a dashed line at its last important low; on the right, a 1H view of the latest section: lower highs and lows, but price still above the last important 1D low"
+  svg_caption: >-
+    The dashed frame marks the part of the 1D chart enlarged on the right, and the orange dashed line marks
+    the last important low on the 1D chart. The dots mark each timeframe's own highs and lows.

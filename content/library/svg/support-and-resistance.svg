@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="24" y="70" width="512" height="26" opacity="0.14"/>
+  <line class="s-accent" x1="24" y1="70" x2="536" y2="70" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="24" y1="96" x2="536" y2="96" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <rect class="f-accent" x="24" y="214" width="512" height="26" opacity="0.14"/>
+  <line class="s-accent" x1="24" y1="214" x2="536" y2="214" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="24" y1="240" x2="536" y2="240" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <text class="t-accent" x="30" y="60">{{resistance}}</text>
+  <text class="t-accent" x="30" y="262">{{support}}</text>
+  <polyline class="s-line" points="24,182 60,150 80,162 120,84 150,122 168,110 206,228 240,186 258,198 296,90 330,142 348,130 384,220 420,170 438,182 476,76 510,122 536,106" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point"><circle cx="120" cy="84" r="3.5"/><circle cx="206" cy="228" r="3.5"/><circle cx="296" cy="90" r="3.5"/><circle cx="384" cy="220" r="3.5"/><circle cx="476" cy="76" r="3.5"/></g>
+  <g class="t-label" text-anchor="end">
+    <text x="536" y="262">{{note_1}}</text>
+    <text x="536" y="278">{{note_2}}</text>
+  </g>
+</svg>

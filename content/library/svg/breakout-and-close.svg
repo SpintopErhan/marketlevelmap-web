@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="24" y="130" width="512" height="26" opacity="0.14"/>
+  <line class="s-accent" x1="24" y1="130" x2="536" y2="130" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="24" y1="156" x2="536" y2="156" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <text class="t-accent" x="30" y="122">{{zone}}</text>
+  <g stroke-width="2">
+    <line class="s-up" x1="60" y1="250" x2="60" y2="290"/><rect class="f-up" x="51" y="258" width="18" height="24" rx="2"/>
+    <line class="s-up" x1="100" y1="228" x2="100" y2="270"/><rect class="f-up" x="91" y="236" width="18" height="26" rx="2"/>
+    <line class="s-down" x1="140" y1="232" x2="140" y2="262"/><rect class="f-down" x="131" y="240" width="18" height="12" rx="2"/>
+    <line class="s-up" x1="180" y1="196" x2="180" y2="250"/><rect class="f-up" x="171" y="205" width="18" height="40" rx="2"/>
+    <line class="s-up" x1="220" y1="168" x2="220" y2="214"/><rect class="f-up" x="211" y="176" width="18" height="32" rx="2"/>
+    <line class="s-up" x1="260" y1="136" x2="260" y2="186"/><rect class="f-up" x="251" y="144" width="18" height="36" rx="2"/>
+    <line class="s-down" x1="300" y1="138" x2="300" y2="166"/><rect class="f-down" x="291" y="144" width="18" height="12" rx="2"/>
+    <line class="s-up" x1="340" y1="100" x2="340" y2="162"/><rect class="f-up" x="331" y="110" width="18" height="46" rx="2"/>
+    <line class="s-up" x1="380" y1="84" x2="380" y2="120"/><rect class="f-up" x="371" y="92" width="18" height="22" rx="2"/>
+    <line class="s-down" x1="420" y1="88" x2="420" y2="116"/><rect class="f-down" x="411" y="96" width="18" height="12" rx="2"/>
+    <line class="s-up" x1="460" y1="64" x2="460" y2="106"/><rect class="f-up" x="451" y="72" width="18" height="30" rx="2"/>
+    <line class="s-up" x1="500" y1="50" x2="500" y2="86"/><rect class="f-up" x="491" y="58" width="18" height="24" rx="2"/>
+  </g>
+  <line class="s-guide" x1="274" y1="150" x2="284" y2="180" stroke-width="1" stroke-dasharray="3 4"/>
+  <g class="t-label">
+    <text x="286" y="196">{{inside_1}}</text>
+    <text x="286" y="212">{{inside_2}}</text>
+  </g>
+  <line class="s-guide" x1="334" y1="86" x2="346" y2="104" stroke-width="1" stroke-dasharray="3 4"/>
+  <g class="t-label" text-anchor="end">
+    <text x="330" y="64">{{beyond_1}}</text>
+    <text x="330" y="80">{{beyond_2}}</text>
+  </g>
+  <text class="t-label" x="440" y="36" text-anchor="middle">{{follow}}</text>
+  <circle class="f-accent" cx="269" cy="144" r="3.5"/>
+  <circle class="f-accent" cx="349" cy="110" r="3.5"/>
+</svg>

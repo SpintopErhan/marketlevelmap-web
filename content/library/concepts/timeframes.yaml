@@ -1,0 +1,190 @@
+id: timeframes
+kind: basics
+order: 20
+related: [candlestick-chart, candle-close, multi-timeframe-analysis, timeframe-conflicts]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: zaman-dilimleri
+  name: "Zaman dilimleri: 15m, 1H, 4H, 1D, 1W"
+  alt_name: Timeframes
+  summary: >-
+    Zaman dilimi, grafikteki tek bir mumun kapsadığı süredir: 15m on beş dakika, 1H bir saat, 4H dört
+    saat, 1D bir gün, 1W bir hafta. Aynı fiyat hareketi farklı zaman dilimlerinde farklı sayıda mumla
+    ve farklı ayrıntıyla görünür. Her okuma, hangi zaman dilimine ait olduğuyla birlikte anlam kazanır.
+  sections:
+    - type: text
+      id: definition
+      title: Zaman dilimi nedir?
+      paragraphs:
+        - >-
+          Bir mum grafiğinde her mum sabit bir süreyi özetler. Bu süreye **zaman dilimi** denir.
+          Kısaltmalar çoğu platformda aynıdır: **m** dakika, **H** saat, **D** gün, **W** hafta
+          anlamına gelir. 15m, 1H, 4H, 1D ve 1W en sık kullanılanlardır.
+        - >-
+          Zaman dilimi küçüldükçe her mum daha kısa bir süreyi anlatır, grafikte daha çok mum ve daha
+          çok ayrıntı görünür. Zaman dilimi büyüdükçe mumlar daha uzun süreleri özetler; küçük
+          dalgalanmalar tek bir mumun içinde kaybolur.
+    - type: text
+      id: same-move
+      title: Aynı hareket, farklı görünüm
+      paragraphs:
+        - >-
+          Dört adet 1H mum, tek bir 4H mumun içine sığar. 4H mumun açılışı ilk 1H mumun açılışı,
+          kapanışı son 1H mumun kapanışıdır. En yüksek ve en düşük fiyatı da bu dört mumun en uç
+          noktalarıdır.
+        - >-
+          Bu yüzden 1H grafikte iniş çıkışlı görünen bir dönem, 4H grafikte **tek bir yeşil mum**
+          olarak görünebilir. Ayrıntı kaybolmaz, yalnızca mumun içine katlanır: 1H grafikteki
+          geri çekilme, 4H mumda bir fitil olarak kalır.
+    - type: bullets
+      id: common-uses
+      title: Zaman dilimleri genellikle ne için kullanılır?
+      items:
+        - text: "**15m:** çok kısa vadeli ayrıntı. Mumlar küçüktür; tek tek mumların gürültüsü fazladır."
+          marker: neutral
+        - text: "**1H:** gün içi yapı. Bir günün içindeki dalgalar ve bölgelere yaklaşımlar burada izlenir."
+          marker: neutral
+        - text: "**4H:** birkaç günlük dalgalar. Günlük yapının içindeki geri çekilmeleri ve tepkileri gösterir."
+          marker: neutral
+        - text: "**1D:** ana yapı. Pek çok kişinin baktığı zaman dilimidir; önemli tepe ve dipler burada belirginleşir."
+          marker: accent
+        - text: "**1W:** uzun vadeli bağlam. Aylara yayılan trendleri ve en geniş bölgeleri gösterir."
+          marker: neutral
+      note: >-
+        Bunlar yaygın kullanım biçimleridir, kural değildir. Hiçbir zaman dilimi diğerinden daha doğru
+        değildir; her biri farklı bir süreyi anlatır. MarketLevelMap analizlerinde 1H, 4H ve 1D
+        zaman dilimleri kullanılır.
+    - type: box
+      title: Kriptoda mumlar ne zaman açılır?
+      text: >-
+        Kripto 7/24 işlem gördüğü için mumların başlangıç saatini borsanın saat ayarı belirler. Çoğu
+        borsada mumlar **UTC** saatine göre açılır: 1D mum 00:00 UTC'de (Türkiye saatiyle 03:00), 4H
+        mumlar 00:00, 04:00, 08:00 … UTC'de, 1W mum pazartesi 00:00 UTC'de başlar. Bazı platformlarda
+        saat dilimi değiştirilebilir; bu durumda günlük mumun sınırları da kayar ve aynı gün farklı
+        bir mum olarak görünebilir.
+    - type: limits
+      shows:
+        - Seçilen süre boyunca fiyatın nasıl hareket ettiğini, o sürenin ayrıntı düzeyinde
+        - Bir hareketin daha büyük ya da daha küçük ölçekte nasıl göründüğünü
+        - Aynı dönemin hem özetini (büyük zaman dilimi) hem de içini (küçük zaman dilimi)
+      not_proves:
+        - Bir zaman diliminin diğerinden daha doğru ya da daha güvenilir olduğunu
+        - Bir zaman diliminde görülen yönün diğerlerinde de geçerli olduğunu
+        - Küçük zaman dilimindeki her hareketin büyük resmi değiştireceğini
+    - type: zones
+      paragraphs:
+        - >-
+          Destek ve direnç bölgeleri de bir zaman dilimine göre okunur. Büyük zaman diliminde
+          görülen bir bölge daha uzun bir fiyat geçmişini kapsar; küçük zaman diliminde ise aynı
+          bölge, içinde birçok mumun gidip geldiği **geniş bir bant** olarak görünebilir.
+        - >-
+          Bu yüzden bir bölgeden söz ederken hangi zaman diliminde görüldüğünü belirtmek yorumu
+          netleştirir. 1D grafikte ince görünen bir bölgeye 1H grafikte bakmak, fiyatın bandın
+          içinde nasıl davrandığını ayrıntılı görmeyi sağlar.
+  key_points:
+    - Zaman dilimi, tek bir mumun kapsadığı süredir.
+    - Küçük zaman dilimindeki birkaç mum, büyük zaman diliminde tek bir mumdur.
+    - Hiçbir zaman dilimi diğerinden daha doğru değildir; her biri farklı bir süreyi anlatır.
+    - Kriptoda mumlar çoğu borsada UTC saatine göre açılır.
+  svg_labels:
+    lower_1: Her mum 1 saat
+    lower_2: 12 mum
+    higher_1: Her mum 4 saat
+    higher_2: Aynı 12 saat, 3 mum
+  svg_alt: "Aynı on iki saatlik hareketin iki görünümü: solda on iki 1H mumdan oluşan yükseliş, geri çekilme ve yeniden yükseliş; sağda aynı hareketin üç 4H mumla gösterilişi"
+  svg_caption: >-
+    Soldaki her dört 1H mum, sağdaki bir 4H muma karşılık gelir. Numaralar eşleşen grupları gösterir.
+    1H grafikteki geri çekilme, 4H grafikte tek bir düşen mum olarak kalır.
+
+en:
+  slug: timeframes
+  name: "Timeframes: 15m, 1H, 4H, 1D, 1W"
+  summary: >-
+    A timeframe is the length of time a single candle covers on a chart: 15m is fifteen minutes, 1H one
+    hour, 4H four hours, 1D one day and 1W one week. The same price move looks different on different
+    timeframes, with a different number of candles and level of detail. Every reading makes sense only
+    together with the timeframe it belongs to.
+  sections:
+    - type: text
+      id: definition
+      title: What is a timeframe?
+      paragraphs:
+        - >-
+          On a candlestick chart each candle summarises a fixed period of time. That period is the
+          **timeframe**. The abbreviations are the same on most platforms: **m** for minutes, **H** for
+          hours, **D** for days and **W** for weeks. 15m, 1H, 4H, 1D and 1W are the most common.
+        - >-
+          The smaller the timeframe, the shorter the period each candle covers, and the more candles
+          and detail you see. The larger the timeframe, the longer the period each candle summarises;
+          small swings disappear inside a single candle.
+    - type: text
+      id: same-move
+      title: The same move, seen differently
+      paragraphs:
+        - >-
+          Four 1H candles fit inside one 4H candle. The 4H candle's open is the first 1H candle's open
+          and its close is the last 1H candle's close. Its high and low are the extremes of those four
+          candles.
+        - >-
+          So a period that looks choppy on the 1H chart can show as **a single green candle** on the 4H
+          chart. The detail is not lost, only folded into the candle: a pullback on the 1H chart is left
+          as a wick on the 4H candle.
+    - type: bullets
+      id: common-uses
+      title: What each timeframe tends to be used for
+      items:
+        - text: "**15m:** very short-term detail. Candles are small, and single candles carry a lot of noise."
+          marker: neutral
+        - text: "**1H:** intraday structure. The swings within a day and approaches to zones are followed here."
+          marker: neutral
+        - text: "**4H:** swings over several days. It shows the pullbacks and bounces inside the daily structure."
+          marker: neutral
+        - text: "**1D:** the main structure. A timeframe many people watch; important highs and lows stand out here."
+          marker: accent
+        - text: "**1W:** long-term context. It shows trends spanning months and the widest zones."
+          marker: neutral
+      note: >-
+        These are common uses, not rules. No timeframe is more correct than another; each describes a
+        different span of time. MarketLevelMap's analyses use the 1H, 4H and 1D timeframes.
+    - type: box
+      title: When do candles open in crypto?
+      text: >-
+        Because crypto trades 24/7, the exchange's clock decides when candles start. On most exchanges
+        candles open on **UTC** time: the 1D candle at 00:00 UTC, 4H candles at 00:00, 04:00, 08:00 …
+        UTC, and the 1W candle on Monday at 00:00 UTC. Some platforms let you change the time zone; the
+        daily candle's boundaries then shift too, and the same day can show as a different candle.
+    - type: limits
+      shows:
+        - How price moved over the chosen period, at that period's level of detail
+        - How a move looks on a larger or smaller scale
+        - Both the summary of a period (larger timeframe) and what happened inside it (smaller timeframe)
+      not_proves:
+        - That one timeframe is more correct or more reliable than another
+        - That the direction seen on one timeframe holds on the others
+        - That every move on a small timeframe will change the bigger picture
+    - type: zones
+      paragraphs:
+        - >-
+          Support and resistance zones are read on a timeframe too. A zone seen on a larger timeframe
+          covers a longer price history; on a smaller timeframe the same zone can look like **a wide
+          band** that many candles move back and forth inside.
+        - >-
+          So when talking about a zone, saying which timeframe it was seen on makes the reading clearer.
+          Looking at a zone that seems thin on the 1D chart from the 1H chart shows in detail how price
+          behaves inside the band.
+  key_points:
+    - A timeframe is the length of time a single candle covers.
+    - Several candles on a small timeframe are one candle on a larger one.
+    - No timeframe is more correct than another; each describes a different span of time.
+    - In crypto, candles open on UTC time on most exchanges.
+  svg_labels:
+    lower_1: Each candle 1 hour
+    lower_2: 12 candles
+    higher_1: Each candle 4 hours
+    higher_2: Same 12 hours, 3 candles
+  svg_alt: "Two views of the same twelve-hour move: on the left twelve 1H candles rising, pulling back and rising again; on the right the same move shown with three 4H candles"
+  svg_caption: >-
+    Every four 1H candles on the left match one 4H candle on the right. The numbers show the matching
+    groups. The pullback on the 1H chart is left as a single falling candle on the 4H chart.

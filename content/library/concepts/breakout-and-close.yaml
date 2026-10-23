@@ -1,0 +1,227 @@
+id: breakout-and-close
+kind: levels
+order: 30
+related: [false-breakout, candle-close, retest-and-role-reversal, level-test]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: kirilim-ve-kapanis
+  name: Kırılım ve kapanış
+  alt_name: Breakout and the close
+  summary: >-
+    Kırılım, bir mumun destek ya da direnç bölgesinin uzak kenarının ötesinde kapanmasıdır. Kapanış
+    kırılımı başlatır; sonraki mumların bölgenin ötesinde kalması ise onu güçlendirir. Kırılımı hangi
+    zaman diliminin kapanışıyla ölçtüğünü belirtmek, yorumun parçasıdır.
+  sections:
+    - type: text
+      id: definition
+      title: Kırılım nedir?
+      paragraphs:
+        - >-
+          Bir direnç bölgesinin kırılımı, mumun bölgenin **üst kenarının üzerinde kapanmasıyla**
+          ölçülür. Destek bölgesinde ise ölçü **alt kenarın altında kapanıştır**. İki durumda da
+          ölçülen yer, bölgenin fiyatın geldiği yöne göre **uzak kenarıdır**.
+        - >-
+          Bandın içinde gelen bir kapanış kırılım değil, testtir. Bölgenin ötesine uzanıp kapanıştan
+          önce geri dönen bir fitil de kırılım sayılmaz; bu durum sahte kırılım sayfasında anlatılır.
+    - type: steps
+      id: how-to-measure
+      title: Kırılım nasıl ölçülür?
+      items:
+        - title: Bölgeyi bant olarak çiz.
+          text: Bölgenin iki kenarını belirle ve fiyatın hangi yönden geldiğine göre uzak kenarı not et.
+        - title: Kapanışın zaman dilimini seç.
+          text: Kırılımı 1H, 4H ya da günlük mumun kapanışıyla ölçebilirsin. Seçtiğin zaman dilimini baştan belirt.
+        - title: Mumun kapanmasını bekle.
+          text: Henüz kapanmamış bir mum, kapanana kadar şekil değiştirebilir. Mum içinde bölgenin ötesine geçen fiyat, kapanışta geri dönebilir.
+        - title: Sonraki mumlara bak.
+          text: Kapanıştan sonra fiyatın bölgenin ötesinde kalıp kalmadığı, kırılımın ne kadar kabul gördüğünü gösterir.
+    - type: text
+      id: follow-through
+      title: Devam hareketi
+      paragraphs:
+        - >-
+          Uzak kenarın ötesindeki tek bir kapanış kırılımın başlangıcıdır, sonucu değil. **Devam
+          hareketi**, sonraki mumların da bölgenin ötesinde kapanması ve fiyatın bölgeden
+          uzaklaşmasıdır.
+        - >-
+          Kırılım mumu bölgeden ne kadar uzakta kapandıysa ve sonraki mumlar bölgeye geri dönmeden
+          ilerlediyse, kırılım o kadar net okunur. Kapanış uzak kenarın hemen ötesinde kalıp sonraki
+          mumlar bandın içine geri giriyorsa, kırılım zayıf kalır.
+    - type: scenarios
+      id: after-the-close
+      title: Kapanıştan sonra
+      intro: Direnç bölgesinin üst kenarının üzerinde bir kapanış geldiğinde, sonraki mumlar farklı tablolar çizebilir.
+      items:
+        - title: Devam
+          tone: up
+          text: Sonraki mumlar bölgenin **üzerinde kapanır** ve fiyat bölgeden uzaklaşır. Kırılım kabul görmüş olarak okunur.
+        - title: Bölgeye geri dönüş
+          tone: down
+          text: Sonraki mumlar **bandın içine ya da altına** döner. Kırılım geçerliliğini yitirir ve sonradan bakıldığında sahte kırılıma dönüşebilir.
+        - title: Geri test
+          tone: neutral
+          text: Fiyat bölgeden uzaklaştıktan sonra kırılan kenara **yukarıdan geri gelir**. Bölgenin bu kez destek gibi davranıp davranmadığı izlenir.
+    - type: text
+      id: timeframe-of-close
+      title: Kapanış hangi zaman diliminde?
+      paragraphs:
+        - >-
+          Aynı hareket farklı zaman dilimlerinde farklı görünür. 1H grafikte bölgenin üzerinde iki üç
+          kapanış gelmiş olabilir; aynı saatler 4H grafikte tek bir mumun içinde kalır ve o mum
+          bölgenin içinde kapanabilir. Büyük zaman diliminin kapanışı daha geç gelir, ama daha fazla
+          fiyat hareketini kapsar.
+        - >-
+          Kripto piyasası 7/24 işlem gördüğü için mumların kapanış saati borsaya ve grafik ayarına
+          bağlıdır. Günlük mum çoğu zaman UTC 00:00'da kapanır, ama bu her yerde aynı değildir.
+          Kırılımı değerlendirirken hangi kapanışa bakıldığını açıkça söylemek karışıklığı önler.
+    - type: limits
+      shows:
+        - Fiyatın bu zaman diliminde bölgenin ötesinde kapanış yapabildiğini
+        - Sonraki mumlarla birlikte, bölgenin ötesindeki fiyatların kabul görüp görmediğini
+        - Bölgenin rolünün değişmiş olabileceğini (direncin destek gibi davranması)
+      not_proves:
+        - Fiyatın kırılım yönünde ilerlemeye devam edeceğini
+        - Hareketin ne kadar süreceğini ya da nereye kadar gideceğini
+        - Diğer zaman dilimlerinde de bölgenin kırılmış olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          Kırılımı ölçmek için bölgeyi **bir bant** olarak okumak gerekir. Bandın **yakın kenarının**
+          ötesinde kapanış fiyatın bölgeye girdiğini, **uzak kenarının** ötesinde kapanış ise bölgenin
+          aşıldığını gösterir. Aradaki kapanışlar bölgenin hâlâ test edildiğini anlatır.
+        - >-
+          Kırılan bir bölge grafikten silinmez. Fiyat sonradan aynı banda geri gelirse, bölge bu kez
+          diğer taraftan tepki görülebilecek bir alan olarak okunabilir.
+  confusions:
+    - id: false-breakout
+      text: Sahte kırılımda fiyat bölgenin ötesine geçer ama kapanış bölgenin gerisinde gelir; kırılımda ise kapanış uzak kenarın ötesindedir.
+    - id: candle-close
+      text: Mumun kapanışı, kırılımın ölçüldüğü fiyattır; kapanışın neden fitilden daha önemli olduğu o sayfada anlatılır.
+    - id: retest-and-role-reversal
+      text: Geri test, kırılımdan sonra fiyatın kırılan bölgeye diğer taraftan dönmesidir; kırılımın kendisi değildir.
+  key_points:
+    - Kırılım, uzak kenarın ötesinde bir kapanışla ölçülür.
+    - Bandın içindeki kapanış kırılım değil, testtir.
+    - Tek bir kapanış başlangıçtır; devam hareketi sonraki mumlarla görülür.
+    - Kırılımı hangi zaman diliminin kapanışıyla ölçtüğünü belirt.
+  svg_labels:
+    zone: Direnç bölgesi
+    inside_1: "Bandın içinde kapanış:"
+    inside_2: yalnızca test
+    beyond_1: Uzak kenarın üzerinde
+    beyond_2: "kapanış: kırılım"
+    follow: Devam hareketi
+  svg_alt: "Kırılım çizimi: yükselen mumlar bir direnç bandına geliyor, bir mum bandın içinde kapanıyor, ardından bir mum bandın üst kenarının üzerinde kapanıyor ve sonraki mumlar bandın üzerinde ilerliyor"
+  svg_caption: Turuncu bant direnç bölgesini, turuncu noktalar mumların kapanışını gösterir. Bandın içindeki kapanış yalnızca testtir; kırılımı üst kenarın üzerindeki kapanış başlatır.
+
+en:
+  slug: breakouts-and-the-close
+  name: Breakouts and the close
+  summary: >-
+    A breakout is a candle closing beyond the far edge of a support or resistance zone. The close starts
+    the breakout; the next candles staying beyond the zone strengthen it. Saying which timeframe's close
+    you measure it on is part of the reading.
+  sections:
+    - type: text
+      id: definition
+      title: What is a breakout?
+      paragraphs:
+        - >-
+          A breakout of a resistance zone is measured by a candle **closing above the zone's upper
+          edge**. At a support zone the measure is **a close below the lower edge**. Either way, the
+          edge that counts is the zone's **far edge**, seen from the direction price came from.
+        - >-
+          A close inside the band is not a breakout but a test. A wick that reaches beyond the zone and
+          comes back before the close does not count either; that case is covered on the false breakout
+          page.
+    - type: steps
+      id: how-to-measure
+      title: How to measure a breakout
+      items:
+        - title: Draw the zone as a band.
+          text: Mark both edges of the zone and note the far edge, based on which side price is coming from.
+        - title: Choose the timeframe of the close.
+          text: You can measure a breakout on the 1H, 4H or daily close. State the timeframe you chose up front.
+        - title: Wait for the candle to close.
+          text: A candle that has not closed yet can still change shape. Price that moves beyond the zone within a candle can come back by the close.
+        - title: Look at the next candles.
+          text: Whether price stays beyond the zone after the close shows how far the breakout has been accepted.
+    - type: text
+      id: follow-through
+      title: Follow-through
+      paragraphs:
+        - >-
+          A single close beyond the far edge is the start of a breakout, not its outcome.
+          **Follow-through** is the next candles closing beyond the zone too, and price moving away
+          from it.
+        - >-
+          The further from the zone the breakout candle closed, and the more the next candles moved on
+          without coming back to the zone, the clearer the breakout reads. If the close sits just beyond
+          the far edge and the next candles slip back into the band, the breakout stays weak.
+    - type: scenarios
+      id: after-the-close
+      title: After the close
+      intro: When a candle closes above a resistance zone's upper edge, the next candles can draw different pictures.
+      items:
+        - title: Follow-through
+          tone: up
+          text: The next candles **close above the zone** and price moves away from it. The breakout reads as accepted.
+        - title: Back into the zone
+          tone: down
+          text: The next candles return **into or below the band**. The breakout loses its validity and, looking back, can turn into a false breakout.
+        - title: Retest
+          tone: neutral
+          text: After moving away, price **comes back down** to the broken edge. The question is whether the zone now acts as support.
+    - type: text
+      id: timeframe-of-close
+      title: Which timeframe's close?
+      paragraphs:
+        - >-
+          The same move looks different on different timeframes. The 1H chart may show two or three
+          closes above the zone; on the 4H chart those same hours sit inside one candle, which may close
+          inside the zone. A higher timeframe's close comes later, but it covers more price action.
+        - >-
+          Crypto trades 24/7, so candle close times depend on the exchange and the chart settings. The
+          daily candle often closes at 00:00 UTC, but not everywhere. Saying clearly which close you are
+          looking at avoids confusion when judging a breakout.
+    - type: limits
+      shows:
+        - That price was able to close beyond the zone on this timeframe
+        - Together with the next candles, whether prices beyond the zone were accepted
+        - That the zone's role may have changed (resistance acting as support)
+      not_proves:
+        - That price will keep moving in the breakout's direction
+        - How long the move will last or how far it will go
+        - That the zone has broken on other timeframes too
+    - type: zones
+      paragraphs:
+        - >-
+          Measuring a breakout requires reading the zone as **a band**. A close beyond the band's **near
+          edge** shows price entering the zone; a close beyond its **far edge** shows the zone being
+          cleared. Closes in between show the zone still being tested.
+        - >-
+          A broken zone does not disappear from the chart. If price later returns to the same band, the
+          zone can be read as an area where a reaction may come from the other side.
+  confusions:
+    - id: false-breakout
+      text: In a false breakout price moves beyond the zone but closes back behind it; in a breakout the close is beyond the far edge.
+    - id: candle-close
+      text: The candle's close is the price a breakout is measured by; why the close matters more than the wick is covered on that page.
+    - id: retest-and-role-reversal
+      text: A retest is price returning to the broken zone from the other side after a breakout; it is not the breakout itself.
+  key_points:
+    - A breakout is measured by a close beyond the far edge.
+    - A close inside the band is a test, not a breakout.
+    - A single close is a start; follow-through shows in the next candles.
+    - State which timeframe's close you measure the breakout on.
+  svg_labels:
+    zone: Resistance zone
+    inside_1: "Close inside the band:"
+    inside_2: only a test
+    beyond_1: "Close above the far edge:"
+    beyond_2: breakout
+    follow: Follow-through
+  svg_alt: "Breakout illustration: rising candles reach a resistance band, one candle closes inside the band, then a candle closes above the band's upper edge and the next candles move on above the band"
+  svg_caption: The orange band marks the resistance zone and the orange dots the candles' closes. The close inside the band is only a test; the close above the upper edge starts the breakout.

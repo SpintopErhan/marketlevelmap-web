@@ -1,0 +1,201 @@
+id: multi-timeframe-analysis
+kind: basics
+order: 40
+related: [timeframes, timeframe-conflicts, trend, support-and-resistance]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: coklu-zaman-dilimi-analizi
+  name: Çoklu zaman dilimi analizi
+  alt_name: Multi-timeframe analysis
+  summary: >-
+    Çoklu zaman dilimi analizi, aynı grafiğe birden fazla zaman diliminden bakmaktır. Büyük zaman
+    dilimi bağlamı, yani ana yönü ve önemli bölgeleri gösterir; küçük zaman dilimi fiyatın bu bağlam
+    içinde nasıl davrandığını ayrıntılı gösterir. Sık kullanılan bir sıra, 1D'den 4H'ye ve 1H'ye
+    doğru yukarıdan aşağıya inmektir.
+  sections:
+    - type: text
+      id: definition
+      title: Çoklu zaman dilimi analizi nedir?
+      paragraphs:
+        - >-
+          Tek bir zaman dilimi resmin yalnızca bir ölçeğini gösterir. 1H grafik ayrıntıyı gösterir
+          ama haftalarca süren bir yapıyı tek ekranda göstermez. 1D grafik yapıyı gösterir ama bir
+          bölgeye yaklaşırken mumların nasıl davrandığını göstermez.
+        - >-
+          Çoklu zaman dilimi analizinde bu ölçekler birlikte okunur. **Büyük zaman dilimi bağlam**
+          içindir: trend, önemli tepe ve dipler, ana bölgeler. **Küçük zaman dilimi ayrıntı**
+          içindir: fiyatın bir bölgeye nasıl yaklaştığı, orada nasıl tepki verdiği.
+    - type: steps
+      id: top-down
+      title: Yukarıdan aşağıya sık kullanılan bir sıra
+      items:
+        - title: 1D ile bağlamı belirle.
+          text: Trendin yönünü, son önemli tepe ve dibi ve fiyatın yakınındaki önemli bölgeleri not et.
+        - title: 4H ile yapının içine bak.
+          text: Günlük trendin içindeki dalgaları gör. Şu anki hareketin bir geri çekilme mi, yeni bir dalga mı olduğuna ve fiyatın bölgelere göre nerede durduğuna bak.
+        - title: 1H ile ayrıntıyı oku.
+          text: Fiyat bir bölgeye yaklaşıyorsa mumların orada nasıl davrandığını izle; fitiller, kapanışlar ve küçük tepe ve dipler burada görünür.
+        - title: Her okumayı zaman dilimiyle birlikte yaz.
+          text: "\"1D: yükselen trend. 4H: geri çekilme. 1H: destek bölgesinde tepki\" gibi bir özet, hangi gözlemin hangi ölçeğe ait olduğunu açık tutar."
+    - type: bullets
+      id: choosing
+      title: Zaman dilimlerini seçerken
+      items:
+        - text: "Ardışık zaman dilimleri arasında genellikle **4 ila 6 kat** fark bırakılır (1D → 4H → 1H gibi). Çok yakın zaman dilimleri aynı şeyi gösterir."
+          marker: neutral
+        - text: "**Üç zaman dilimi** çoğu zaman yeterlidir. Daha fazlası okumayı netleştirmekten çok karmaşıklaştırabilir."
+          marker: neutral
+        - text: "Aynı **zaman dilimi setini** tutarlı biçimde kullanmak, okumaların birbiriyle karşılaştırılmasını kolaylaştırır."
+          marker: accent
+        - text: "Bağlamı büyük zaman dilimi verir; küçük zaman diliminde görülen tek bir hareket bağlamın yerine konmaz."
+          marker: neutral
+    - type: scenarios
+      id: combinations
+      title: Zaman dilimleri birlikte nasıl okunabilir?
+      items:
+        - title: Aynı hikâyeyi anlatıyorlar
+          tone: up
+          text: 1D'de yükselen trend, 4H'de bir destek bölgesine inen geri çekilme, 1H'de o bölgede gelen tepki. Üç okuma birbiriyle uyumludur.
+        - title: Farklı yönler gösteriyorlar
+          tone: down
+          text: 1D'de yükselen yapı sürerken 1H'de alçalan tepe ve dipler görülür. Bu bir hata değil, iki farklı ölçektir; ayrıntısı ayrı bir sayfada anlatılır.
+        - title: Büyük resim yatay
+          tone: neutral
+          text: 1D'de fiyat bir aralıkta gidip geliyorsa, küçük zaman dilimlerindeki trendler çoğu zaman bu aralığın sınırları içinde kalır.
+    - type: limits
+      shows:
+        - Bir hareketin büyük yapının neresinde gerçekleştiğini
+        - Büyük zaman dilimindeki bir bölgede fiyatın ayrıntılı davranışını
+        - Okumaların farklı ölçeklerde birbiriyle uyumlu olup olmadığını
+      not_proves:
+        - Zaman dilimleri aynı yönü gösterdiğinde hareketin devam edeceğini
+        - Büyük zaman diliminin her zaman haklı çıkacağını
+        - Seçilen zaman dilimi setinin tek doğru set olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          Büyük zaman diliminde görülen bölgeler daha uzun bir fiyat geçmişini kapsadığı için çoğu
+          zaman **daha belirgin** kabul edilir. Küçük zaman dilimi ise bu bölgenin içine bakmayı
+          sağlar: 1D grafikteki bir destek bölgesi, 1H grafikte içinde birçok mumun gidip geldiği
+          geniş bir bant olarak görünür.
+        - >-
+          Bu yüzden bölgeyi bir bant olarak okumak, zaman dilimleri arasında geçişi de kolaylaştırır.
+          Bölge 1D'den alınır, fiyatın bandın neresinde tepki verdiği ve nerede kapandığı 4H ve 1H'de
+          izlenir.
+  confusions:
+    - id: timeframe-conflicts
+      text: Çoklu zaman dilimi analizi bir okuma yöntemidir; zaman dilimlerinin farklı yön göstermesi ise bu yöntemi uygularken sık karşılaşılan bir durumdur.
+  key_points:
+    - Büyük zaman dilimi bağlam, küçük zaman dilimi ayrıntı içindir.
+    - Sık kullanılan bir sıra 1D → 4H → 1H şeklindedir.
+    - Üç zaman dilimi çoğu zaman yeterlidir.
+    - Her okuma, ait olduğu zaman dilimiyle birlikte yazılır.
+  svg_labels:
+    ctx_1: Bağlam
+    ctx_2: ana yön
+    struct_1: Yapı
+    struct_2: dalgalar ve bölgeler
+    detail_1: Ayrıntı
+    detail_2: mum davranışı
+  svg_alt: "Üç panelli yukarıdan aşağıya okuma: 1D panelinde yükselen trend ve son bölümü çerçeveli; 4H panelinde bu bölümün bir destek bölgesine inen geri çekilmesi; 1H panelinde mumların bölgede tepki vermesi"
+  svg_caption: >-
+    Kesikli çerçeveler bir sonraki panelde yakınlaştırılan bölümü, turuncu bant destek bölgesini
+    gösterir. Her panel bir önceki panelin bir parçasını daha ayrıntılı gösterir.
+
+en:
+  slug: multi-timeframe-analysis
+  name: Multi-timeframe analysis
+  summary: >-
+    Multi-timeframe analysis means looking at the same chart on more than one timeframe. The higher
+    timeframe gives the context, meaning the main direction and the important zones; the lower
+    timeframe shows in detail how price behaves within that context. A common sequence is to work top
+    down, from 1D to 4H to 1H.
+  sections:
+    - type: text
+      id: definition
+      title: What is multi-timeframe analysis?
+      paragraphs:
+        - >-
+          A single timeframe shows only one scale of the picture. The 1H chart shows detail but cannot
+          fit a structure lasting weeks on one screen. The 1D chart shows the structure but not how
+          candles behave as price approaches a zone.
+        - >-
+          In multi-timeframe analysis these scales are read together. **The higher timeframe is for
+          context**: the trend, important highs and lows, the main zones. **The lower timeframe is for
+          detail**: how price approaches a zone and how it reacts there.
+    - type: steps
+      id: top-down
+      title: A common top-down sequence
+      items:
+        - title: Set the context on 1D.
+          text: Note the trend's direction, the last important high and low, and the important zones near price.
+        - title: Look inside the structure on 4H.
+          text: See the swings within the daily trend. Check whether the current move is a pullback or a new swing, and where price stands relative to the zones.
+        - title: Read the detail on 1H.
+          text: If price is approaching a zone, watch how candles behave there; wicks, closes and small highs and lows show up here.
+        - title: Write each reading with its timeframe.
+          text: "A summary such as \"1D: uptrend. 4H: pullback. 1H: reaction at the support zone\" keeps clear which observation belongs to which scale."
+    - type: bullets
+      id: choosing
+      title: Choosing the timeframes
+      items:
+        - text: "Consecutive timeframes are usually **4 to 6 times** apart (such as 1D → 4H → 1H). Timeframes too close together show the same thing."
+          marker: neutral
+        - text: "**Three timeframes** are often enough. More can complicate the reading rather than clarify it."
+          marker: neutral
+        - text: "Using the same **set of timeframes** consistently makes readings easier to compare."
+          marker: accent
+        - text: "The higher timeframe gives the context; a single move on a lower timeframe does not replace it."
+          marker: neutral
+    - type: scenarios
+      id: combinations
+      title: How timeframes can be read together
+      items:
+        - title: They tell the same story
+          tone: up
+          text: An uptrend on 1D, a pullback to a support zone on 4H, a reaction at that zone on 1H. The three readings fit together.
+        - title: They point different ways
+          tone: down
+          text: The rising structure holds on 1D while 1H shows lower highs and lows. This is not an error but two different scales; it is covered on a separate page.
+        - title: The big picture is sideways
+          tone: neutral
+          text: If price moves back and forth in a range on 1D, trends on the lower timeframes often stay within the bounds of that range.
+    - type: limits
+      shows:
+        - Where in the larger structure a move is taking place
+        - How price behaves in detail at a zone from a higher timeframe
+        - Whether readings at different scales fit together
+      not_proves:
+        - That a move will continue when the timeframes agree
+        - That the higher timeframe will always prove right
+        - That the chosen set of timeframes is the only correct one
+    - type: zones
+      paragraphs:
+        - >-
+          Zones seen on a higher timeframe cover a longer price history, so they are often treated as
+          **more significant**. The lower timeframe lets you look inside such a zone: a support zone on
+          the 1D chart shows on the 1H chart as a wide band that many candles move back and forth inside.
+        - >-
+          That is why reading the zone as a band also makes moving between timeframes easier. The zone
+          is taken from 1D, and where in the band price reacts and closes is followed on 4H and 1H.
+  confusions:
+    - id: timeframe-conflicts
+      text: Multi-timeframe analysis is a way of reading; timeframes pointing in different directions is a common situation you meet while using it.
+  key_points:
+    - The higher timeframe is for context, the lower for detail.
+    - A common sequence is 1D → 4H → 1H.
+    - Three timeframes are often enough.
+    - Each reading is written with the timeframe it belongs to.
+  svg_labels:
+    ctx_1: Context
+    ctx_2: main direction
+    struct_1: Structure
+    struct_2: swings and zones
+    detail_1: Detail
+    detail_2: candle behaviour
+  svg_alt: "Three-panel top-down reading: the 1D panel shows an uptrend with its latest section framed; the 4H panel shows that section's pullback to a support zone; the 1H panel shows candles reacting at the zone"
+  svg_caption: >-
+    The dashed frames mark the section enlarged in the next panel, and the orange band marks the support
+    zone. Each panel shows part of the previous one in more detail.

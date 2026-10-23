@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="24" y="136" width="512" height="26" opacity="0.14"/>
+  <line class="s-accent" x1="24" y1="136" x2="536" y2="136" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="24" y1="162" x2="536" y2="162" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <text class="t-accent" x="30" y="128">{{zone}}</text>
+  <polyline class="s-line" points="30,262 70,196 100,226 140,152 170,204 210,148 240,190 280,100 312,82 350,138 380,104 410,118 452,68 530,44" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point"><circle cx="140" cy="152" r="3.5"/><circle cx="210" cy="148" r="3.5"/></g>
+  <circle class="f-up" cx="280" cy="100" r="3.5"/>
+  <g class="t-label" text-anchor="end">
+    <text x="268" y="84">{{break_1}}</text>
+    <text x="268" y="100">{{break_2}}</text>
+  </g>
+  <line class="s-guide" x1="350" y1="146" x2="350" y2="184" stroke-width="1" stroke-dasharray="3 4"/>
+  <circle class="f-accent" cx="350" cy="138" r="4"/>
+  <g class="t-label" text-anchor="middle">
+    <text x="350" y="202">{{retest_1}}</text>
+    <text x="350" y="218">{{retest_2}}</text>
+  </g>
+</svg>

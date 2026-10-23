@@ -1,0 +1,192 @@
+id: historical-highs-and-lows
+kind: levels
+order: 60
+related: [support-and-resistance, psychological-levels, breakout-and-close, retest-and-role-reversal]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: tarihsel-tepe-ve-dipler
+  name: "Tarihsel tepe ve dipler: geçmişin bıraktığı referanslar"
+  alt_name: Historical highs and lows
+  summary: >-
+    Tüm zamanların zirvesi (ATH), çok yıllık tepe ve dipler ile önceki haftanın ya da ayın tepe ve
+    dibi, grafikte herkesin görebildiği referans alanlarıdır. Fiyat bu alanlara yaklaştığında çoğu
+    zaman tepki verir. ATH'ın üzerinde ise fiyatın geçmişte işlem gördüğü bir seviye yoktur.
+  sections:
+    - type: text
+      id: definition
+      title: Tarihsel tepe ve dip nedir?
+      paragraphs:
+        - >-
+          Fiyatın uzun bir dönemde ulaştığı en yüksek ve en düşük noktalar, o dönemin **uç
+          noktalarıdır**. Bir varlığın işlem gördüğü tüm süre içindeki en yüksek fiyat, tüm zamanların
+          zirvesi (ATH, all-time high) olarak adlandırılır.
+        - >-
+          Bu noktalar grafiğe bakan herkes tarafından kolayca görülür. Bu yüzden fiyat yeniden bu
+          alanlara geldiğinde **dikkat ve emirler** buralarda yoğunlaşabilir. Tarihsel tepe ve dipler
+          de diğer seviyeler gibi tek bir fiyat değil, bir bölge olarak okunur.
+    - type: bullets
+      id: reference-types
+      title: Hangi seviyeler tarihsel referans sayılır?
+      items:
+        - "**Tüm zamanların zirvesi (ATH):** varlığın bugüne kadar gördüğü en yüksek fiyat bölgesi."
+        - "**Çok yıllık tepe ve dipler:** bir ya da birkaç yıl boyunca aşılamamış tepeler ve kırılmamış dipler."
+        - "**Dönemsel tepe ve dipler:** önceki günün, haftanın ya da ayın en yüksek ve en düşük seviyeleri."
+      note: Dönem ne kadar uzunsa, o dönemin tepe ve dibi genellikle o kadar çok kişi tarafından izlenir.
+    - type: text
+      id: near-ath
+      title: ATH yakınında davranış neden değişebilir?
+      paragraphs:
+        - >-
+          ATH'ın altında fiyatın geçmişte işlem gördüğü seviyeler vardır; önceki tepeler ve dipler
+          yol boyunca referans olur. ATH'ın üzerinde ise **geçmiş fiyat yoktur**. Fiyatın tepki
+          verebileceği eski bir bölge bulunmaz.
+        - >-
+          Bu durumda dikkat çoğu zaman ATH bölgesinin kendisine, yuvarlak sayılara ve daha kısa zaman
+          dilimlerindeki yeni tepe ve diplere kayar. Hareketler daha hızlı ya da daha düzensiz
+          olabilir. Bu, fiyatın yükselmeye devam edeceği anlamına gelmez; yalnızca **yukarıda eski bir
+          referans olmadığını** anlatır.
+    - type: scenarios
+      id: three-outcomes
+      title: ATH bölgesinde üç farklı tablo
+      intro: Fiyat önceki zirvenin bulunduğu bölgeye geldiğinde üç farklı gelişme görülebilir.
+      items:
+        - title: Bölgenin üzerinde kabul
+          tone: up
+          text: Kapanışlar **ATH bölgesinin üzerinde** gelir ve sonraki mumlar da orada kalır. Eski zirve bölgesi daha sonra destek gibi çalışabilir.
+        - title: Bölgeden geri çevrilme
+          tone: down
+          text: Fiyat bölgeye girer ama kapanışlar **bölgenin altında** kalır. Fitil eski zirveyi aşsa bile kapanış aşmamışsa sahte kırılım söz konusu olabilir.
+        - title: Bölge çevresinde yatay seyir
+          tone: neutral
+          text: Fiyat bir süre **bölgenin içinde ve çevresinde** gidip gelir. Ne kabul ne de geri çevrilme henüz netleşmiştir.
+    - type: limits
+      shows:
+        - Fiyatın geçmişte hangi aralıkta işlem gördüğünü
+        - Piyasanın büyük kısmının izlediği referans alanların nerede olduğunu
+        - ATH'ın üzerinde eski bir fiyat bölgesi bulunmadığını
+      not_proves:
+        - Fiyatın eski tepe ya da dipten döneceğini
+        - ATH aşıldıktan sonra yükselişin süreceğini
+        - Tarihsel bir seviyenin her zaman aynı güçte tepki üreteceğini
+    - type: zones
+      paragraphs:
+        - >-
+          Tarihsel tepe ve dipler, grafikteki en belirgin **destek ve direnç bölgeleri** arasında yer
+          alır. Uzun süre aşılamamış bir tepe, fiyat yeniden yaklaştığında direnç bölgesi olarak
+          okunabilir. Kırıldıktan sonra ise geri testte destek gibi çalışabilir.
+        - >-
+          Bu seviyeleri tek bir fitil ucuna çizilen bir çizgi yerine **bir bant** olarak okumak daha
+          sağlıklıdır. Tepe ve dipler çoğu zaman birkaç mumun fitil ve gövdeleriyle oluşan bir alana
+          yayılır. Kırılım da bu bandın uzak kenarının ötesindeki kapanışla ölçülür.
+    - type: box
+      title: Kriptoda veri borsaya göre değişir
+      text: >-
+        Aynı varlığın ATH'ı farklı borsalarda farklı görünebilir; özellikle ani fitiller bir borsada
+        çok daha uzun olabilir. Kripto 7/24 işlem gördüğü için önceki haftanın ya da ayın tepe ve dibi
+        de mumların hangi saatte kapandığına (çoğu zaman UTC) bağlıdır.
+  key_points:
+    - ATH, çok yıllık ve dönemsel tepe ve dipler herkesin gördüğü referans alanlarıdır.
+    - ATH'ın üzerinde fiyatın tepki verebileceği eski bir bölge yoktur.
+    - Eski bir tepe kırıldıktan sonra destek gibi çalışabilir.
+    - Tarihsel seviyeler de çizgi değil, bölge olarak okunur.
+  svg_labels:
+    ath: Önceki zirve (ATH) bölgesi
+    low: Çok yıllık dip bölgesi
+    above_1: Bu bölgenin üzerinde
+    above_2: geçmiş fiyat yok
+  svg_alt: "Tarihsel tepe ve dip çizimi: fiyat bir zirve yapıp düşüyor, alttaki çok yıllık dip bölgesinden iki kez dönüyor, sonra eski zirve bölgesine geri gelip üzerine çıkıyor"
+  svg_caption: Üstteki turuncu bant önceki zirve (ATH) bölgesini, alttaki bant çok yıllık dip bölgesini gösterir. Noktalar fiyatın bu bölgelere dokunduğu yerleri, ok ise üzerinde geçmiş fiyat bulunmayan alanı işaret eder.
+
+en:
+  slug: historical-highs-and-lows
+  name: "Historical highs and lows: references left by the past"
+  summary: >-
+    The all-time high (ATH), multi-year highs and lows, and the previous week's or month's high and
+    low are reference areas anyone can see on a chart. Price often reacts as it nears them. Above an
+    ATH, though, there is no level where price has traded before.
+  sections:
+    - type: text
+      id: definition
+      title: What are historical highs and lows?
+      paragraphs:
+        - >-
+          The highest and lowest points price reached over a long period are that period's
+          **extremes**. The highest price in an asset's whole trading history is called its all-time
+          high (ATH).
+        - >-
+          These points are easy for anyone looking at the chart to see. So when price comes back to
+          them, **attention and orders** can cluster there. Like other levels, historical highs and
+          lows are read as a zone rather than a single price.
+    - type: bullets
+      id: reference-types
+      title: Which levels count as historical references?
+      items:
+        - "**All-time high (ATH):** the zone of the highest price the asset has ever traded at."
+        - "**Multi-year highs and lows:** highs that have not been cleared and lows that have not been broken for one or more years."
+        - "**Periodic highs and lows:** the highest and lowest levels of the previous day, week or month."
+      note: The longer the period, the more people usually watch its high and low.
+    - type: text
+      id: near-ath
+      title: Why can behaviour change near an ATH?
+      paragraphs:
+        - >-
+          Below an ATH there are levels where price has traded before; earlier highs and lows act as
+          references along the way. Above an ATH there is **no price history**. There is no old zone
+          for price to react to.
+        - >-
+          Attention then often shifts to the ATH zone itself, to round numbers and to new highs and
+          lows on shorter timeframes. Moves can be faster or more erratic. This does not mean price
+          will keep rising; it only says that **there is no old reference overhead**.
+    - type: scenarios
+      id: three-outcomes
+      title: Three pictures at an ATH zone
+      intro: When price reaches the zone of the previous high, three different things can follow.
+      items:
+        - title: Accepted above the zone
+          tone: up
+          text: Closes come **above the ATH zone** and the next candles stay there. The old high zone can later act as support.
+        - title: Rejected at the zone
+          tone: down
+          text: Price enters the zone but closes stay **below it**. Even if a wick clears the old high, without a close beyond it this may be a false breakout.
+        - title: Sideways around the zone
+          tone: neutral
+          text: Price moves back and forth **in and around the zone** for a while. Neither acceptance nor rejection is clear yet.
+    - type: limits
+      shows:
+        - The range price has traded in before
+        - Where the reference areas watched by most of the market sit
+        - That there is no old price zone above an ATH
+      not_proves:
+        - That price will turn at an old high or low
+        - That the rise will continue once the ATH is cleared
+        - That a historical level will always produce a reaction of the same strength
+    - type: zones
+      paragraphs:
+        - >-
+          Historical highs and lows are among the clearest **support and resistance zones** on a
+          chart. A high that has held for a long time can read as a resistance zone when price nears
+          it again. Once broken, it can act as support on a retest.
+        - >-
+          It is sounder to read these levels as **a band** than as a line drawn at a single wick tip.
+          Highs and lows often spread across an area formed by the wicks and bodies of several candles.
+          A breakout is measured by a close beyond the band's far edge.
+    - type: box
+      title: In crypto the data depends on the exchange
+      text: >-
+        The same asset's ATH can look different on different exchanges; sudden wicks in particular can
+        be much longer on one exchange. Crypto trades 24/7, so the previous week's or month's high and
+        low also depend on the time the candles close (usually UTC).
+  key_points:
+    - The ATH and multi-year and periodic highs and lows are reference areas everyone can see.
+    - Above an ATH there is no old zone for price to react to.
+    - An old high can act as support once it is broken.
+    - Historical levels are read as zones, not lines.
+  svg_labels:
+    ath: Previous all-time high (ATH) zone
+    low: Multi-year low zone
+    above_1: No price history
+    above_2: above this zone
+  svg_alt: "Historical highs and lows illustration: price makes a high and falls, turns up twice at a multi-year low zone below, then comes back to the old high zone and moves above it"
+  svg_caption: The upper orange band marks the previous all-time high (ATH) zone and the lower band a multi-year low zone. The dots mark where price touched these zones and the arrow points to the area with no price history above.

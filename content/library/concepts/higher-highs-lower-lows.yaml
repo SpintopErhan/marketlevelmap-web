@@ -1,0 +1,206 @@
+id: higher-highs-lower-lows
+kind: structure
+order: 30
+related: [trend, swing-points, trend-change, pullback-vs-reversal]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: yukselen-ve-alcalan-tepe-dipler
+  name: Yükselen ve alçalan tepe-dipler (HH, HL, LH, LL)
+  alt_name: Higher highs, higher lows, lower highs, lower lows
+  summary: >-
+    Her yeni tepe ve dip bir öncekiyle karşılaştırılarak etiketlenir: yükselen tepe (HH), yükselen dip
+    (HL), alçalan tepe (LH) ve alçalan dip (LL). Bu etiketlerin sırası trendin yönünü ölçülebilir hale
+    getirir.
+  sections:
+    - type: text
+      id: definition
+      title: Dört etiket ne anlatır?
+      paragraphs:
+        - >-
+          Tepe ve dipler tek başına yalnızca fiyatın yön değiştirdiği yerleri gösterir. Yapıyı okumak
+          için her yeni tepeyi **bir önceki tepeyle**, her yeni dibi **bir önceki diple**
+          karşılaştırırız. Kısaltmalar İngilizce terimlerden gelir ve grafiklerde yaygın olarak
+          kullanılır.
+        - >-
+          Karşılaştırma her zaman aynı türden noktalar arasında yapılır: tepe tepeyle, dip diple.
+          Bir dibi bir önceki tepeyle karşılaştırmak yapı hakkında bir şey söylemez.
+    - type: bullets
+      id: labels
+      title: Etiketler
+      items:
+        - text: "**HH (higher high, yükselen tepe):** Yeni tepe bir önceki tepeden yüksektir."
+          marker: up
+        - text: "**HL (higher low, yükselen dip):** Yeni dip bir önceki dipten yüksektir."
+          marker: up
+        - text: "**LH (lower high, alçalan tepe):** Yeni tepe bir önceki tepeden alçaktır."
+          marker: down
+        - text: "**LL (lower low, alçalan dip):** Yeni dip bir önceki dipten alçaktır."
+          marker: down
+      note: Bir tepe ya da dip bir öncekiyle neredeyse aynı yerdeyse ne yükselen ne alçalan sayılır. Bu tür eşit tepe ve dipler çoğu zaman yatay bir piyasaya işaret eder.
+    - type: scenarios
+      id: sequences
+      title: Sıra trendi nasıl tanımlar?
+      intro: Tek bir etiket trendi belirlemez. Trend, etiketlerin art arda nasıl dizildiğiyle okunur.
+      items:
+        - title: Yükselen trend
+          tone: up
+          text: Tepeler **HH**, dipler **HL** olarak dizilir. Her geri çekilme bir önceki dibin üzerinde biter.
+        - title: Düşen trend
+          tone: down
+          text: Tepeler **LH**, dipler **LL** olarak dizilir. Her tepki bir önceki tepenin altında biter.
+        - title: Karışık ya da yatay
+          tone: neutral
+          text: Etiketler karışır, örneğin bir HH'nin ardından bir LL gelir ya da tepe ve dipler aynı yerlerde kalır. Belirgin bir yön yoktur.
+    - type: steps
+      id: how-to-label
+      title: Grafikte nasıl etiketlenir?
+      items:
+        - title: Önemli tepe ve dipleri işaretle.
+          text: Aynı zaman diliminde ve aynı kuralla seçilmiş noktaları kullan. Küçük salınımları dahil etmek etiketleri gereksiz yere karıştırır.
+        - title: Her noktayı bir öncekiyle karşılaştır.
+          text: Tepeyi bir önceki tepeyle, dibi bir önceki diple karşılaştırıp HH, HL, LH ya da LL olarak etiketle.
+        - title: Son birkaç etikete bak.
+          text: Son iki tepe ve son iki dip birlikte, yapının şu anki halini anlatır. Çok eski etiketler bugünkü yapıyı değiştirmez.
+        - title: Sıranın bozulduğu yeri not et.
+          text: Yükselen yapıda ilk LH ya da ilk LL, düşen yapıda ilk HH ya da ilk HL, yapının değişmeye başladığı yerdir.
+    - type: limits
+      shows:
+        - Yapının bu zaman diliminde şimdiye kadar yükselen mi, alçalan mı, yatay mı olduğunu
+        - Trendin hangi noktada zayıflamaya başladığını
+        - Trendi bir çizgiye ya da göstergeye gerek kalmadan, yalnızca fiyatla tanımlamanın bir yolunu
+      not_proves:
+        - Bir sonraki tepe ya da dibin de aynı sırayı izleyeceğini
+        - Tek bir LH'nin ya da LL'nin trendi tek başına tersine çevirdiğini
+        - Diğer zaman dilimlerinde de aynı sıranın geçerli olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          Yükselen yapıda HL'ler çoğu zaman bir **destek bölgesinin** üzerinde ya da içinde oluşur.
+          Düşen yapıda LH'ler benzer şekilde bir **direnç bölgesinin** altında ya da içinde kalır.
+          Etiketler, bölgelerin trend içinde nasıl çalıştığını görmeyi kolaylaştırır.
+        - >-
+          Bir dibin bir öncekinden "yüksek" ya da "alçak" sayılması için fark çok küçükse, iki dip
+          aynı bölgenin içinde kalıyor olabilir. Bu durumda noktaları bir **bant** içinde okumak, birkaç
+          birimlik farkı yön değişimi gibi yorumlamaktan daha sağlıklıdır.
+  confusions:
+    - id: swing-points
+      text: Tepe ve dipler noktaların kendisidir; HH, HL, LH ve LL bu noktaların bir öncekine göre nerede olduğunu anlatır.
+    - id: trend-change
+      text: İlk LH ya da ilk LL yapının zayıfladığını gösterebilir; trendin değişmiş sayılması için genellikle daha fazlası gerekir.
+  key_points:
+    - Tepe tepeyle, dip diple karşılaştırılır.
+    - HH ve HL yükselen, LH ve LL düşen yapıyı anlatır.
+    - Trend tek bir etiketle değil, etiketlerin sırasıyla okunur.
+    - Neredeyse eşit tepe ve dipler aynı bölgenin içinde kalıyor olabilir.
+  svg_labels:
+    hh: HH
+    hl: HL
+    lh: LH
+    ll: LL
+    up_1: Yükselen yapı
+    up_2: HH ve HL
+    down_1: Düşen yapı
+    down_2: LH ve LL
+  svg_alt: "Önce yükselen tepe ve diplerle (HH, HL) ilerleyen, sonra alçalan tepe ve diplere (LH, LL) dönen bir fiyat çizgisi; her tepe ve dip etiketlenmiş"
+  svg_caption: Her tepe bir önceki tepeyle, her dip bir önceki diple karşılaştırılarak etiketlenir. İlk tepe karşılaştırılacak bir tepe olmadığı için etiketsizdir. Kesikli çizgi sıranın değiştiği yeri gösterir.
+
+en:
+  slug: higher-highs-and-lower-lows
+  name: Higher highs, higher lows, lower highs, lower lows
+  summary: >-
+    Each new swing high and low is labelled by comparing it with the previous one: higher high (HH),
+    higher low (HL), lower high (LH) and lower low (LL). The sequence of these labels makes the
+    direction of the trend measurable.
+  sections:
+    - type: text
+      id: definition
+      title: What do the four labels describe?
+      paragraphs:
+        - >-
+          On their own, swing highs and lows only show where price changed direction. To read the
+          structure, we compare each new high with **the previous high** and each new low with **the
+          previous low**. The abbreviations are widely used on charts.
+        - >-
+          The comparison is always between points of the same kind: high with high, low with low.
+          Comparing a low with the previous high says nothing about the structure.
+    - type: bullets
+      id: labels
+      title: The labels
+      items:
+        - text: "**HH (higher high):** The new high is above the previous high."
+          marker: up
+        - text: "**HL (higher low):** The new low is above the previous low."
+          marker: up
+        - text: "**LH (lower high):** The new high is below the previous high."
+          marker: down
+        - text: "**LL (lower low):** The new low is below the previous low."
+          marker: down
+      note: If a high or low is at almost the same level as the previous one, it counts as neither higher nor lower. Equal highs and lows like these often point to a sideways market.
+    - type: scenarios
+      id: sequences
+      title: How the sequence defines the trend
+      intro: A single label does not set the trend. The trend is read from how the labels line up one after another.
+      items:
+        - title: Uptrend
+          tone: up
+          text: Highs line up as **HH** and lows as **HL**. Each pullback ends above the previous low.
+        - title: Downtrend
+          tone: down
+          text: Highs line up as **LH** and lows as **LL**. Each bounce ends below the previous high.
+        - title: Mixed or sideways
+          tone: neutral
+          text: The labels mix, for example an HH followed by an LL, or highs and lows stay at the same levels. There is no clear direction.
+    - type: steps
+      id: how-to-label
+      title: How to label a chart
+      items:
+        - title: Mark the significant swing highs and lows.
+          text: Use points picked on the same timeframe with the same rule. Including minor swings muddles the labels for no reason.
+        - title: Compare each point with the previous one.
+          text: Compare each high with the previous high and each low with the previous low, and label it HH, HL, LH or LL.
+        - title: Look at the last few labels.
+          text: The last two highs and the last two lows together describe the current structure. Much older labels do not change today's structure.
+        - title: Note where the sequence breaks.
+          text: In a rising structure the first LH or first LL, and in a falling structure the first HH or first HL, is where the structure starts to change.
+    - type: limits
+      shows:
+        - Whether the structure on this timeframe has been rising, falling or sideways so far
+        - At which point the trend started to weaken
+        - A way to define the trend from price alone, without lines or indicators
+      not_proves:
+        - That the next high or low will follow the same sequence
+        - That a single LH or LL reverses the trend on its own
+        - That the same sequence holds on other timeframes
+    - type: zones
+      paragraphs:
+        - >-
+          In a rising structure, higher lows often form on or inside a **support zone**. In a falling
+          structure, lower highs similarly stay below or inside a **resistance zone**. The labels make
+          it easier to see how zones work within a trend.
+        - >-
+          If the difference that makes a low "higher" or "lower" than the previous one is very small,
+          both lows may sit inside the same zone. In that case it is sounder to read the points within
+          a **band** than to treat a few units of difference as a change of direction.
+  confusions:
+    - id: swing-points
+      text: Swing highs and lows are the points themselves; HH, HL, LH and LL describe where each point sits relative to the previous one.
+    - id: trend-change
+      text: A first LH or LL can show the structure weakening; a trend usually needs more before it counts as changed.
+  key_points:
+    - Highs are compared with highs, lows with lows.
+    - HH and HL describe a rising structure, LH and LL a falling one.
+    - A trend is read from the sequence of labels, not from a single label.
+    - Nearly equal highs or lows may sit inside the same zone.
+  svg_labels:
+    hh: HH
+    hl: HL
+    lh: LH
+    ll: LL
+    up_1: Rising structure
+    up_2: HH and HL
+    down_1: Falling structure
+    down_2: LH and LL
+  svg_alt: "A price line that first moves with higher highs and higher lows (HH, HL), then turns to lower highs and lower lows (LH, LL); each swing high and low is labelled"
+  svg_caption: Each high is labelled against the previous high and each low against the previous low. The first high has no label because there is no earlier high to compare it with. The dashed line marks where the sequence changes.

@@ -1,0 +1,225 @@
+id: candlestick-chart
+kind: basics
+order: 10
+related: [candle-close, timeframes, doji, pin-bar]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: mum-grafigi-nasil-okunur
+  name: Mum grafiği nasıl okunur?
+  alt_name: Candlestick chart
+  summary: >-
+    Mum grafiğinde her mum tek bir zaman dilimini, örneğin bir saati ya da bir günü gösterir. Bir mum
+    dört fiyatı bir arada taşır: açılış, en yüksek, en düşük ve kapanış. Gövde açılış ile kapanış
+    arasını, fitiller o süre içinde ulaşılan uç fiyatları gösterir.
+  sections:
+    - type: text
+      id: definition
+      title: Mum grafiği nedir?
+      paragraphs:
+        - >-
+          Çizgi grafik her dönem için tek bir fiyatı, genellikle kapanışı birleştirir. Mum grafik ise
+          her dönemi **bir mum** olarak çizer ve o dönemde fiyatın nereden başlayıp nerede bittiğini,
+          arada ne kadar yukarı ve aşağı gittiğini aynı anda gösterir.
+        - >-
+          Bir mumun kapsadığı süre, grafiğin **zaman dilimidir**. 1H grafikte her mum bir saati, 1D
+          grafikte her mum bir günü anlatır. Mumun şekli değişmez; değişen, tek bir mumun içine sığan
+          sürenin uzunluğudur.
+    - type: bullets
+      id: parts
+      title: Bir mumun parçaları
+      items:
+        - text: "**Açılış:** dönemin ilk işlem fiyatı."
+          marker: neutral
+        - text: "**Kapanış:** dönemin son işlem fiyatı. Mum kapanana kadar değişmeye devam eder."
+          marker: accent
+        - text: "**En yüksek / en düşük:** dönem içinde görülen en yüksek ve en düşük fiyat."
+          marker: neutral
+        - text: "**Gövde:** açılış ile kapanış arasındaki dolu kısım. Dönemin net hareketini gösterir."
+          marker: up
+        - text: "**Fitil:** gövdenin üstünde ve altında kalan ince çizgi. Fiyatın gidip geri döndüğü alanı gösterir."
+          marker: down
+      note: Fitil, bazı kaynaklarda gölge olarak da geçer. İkisi aynı şeyi anlatır.
+    - type: scenarios
+      id: colours
+      title: Renk ne anlatır?
+      intro: Rengi belirleyen, mumun önceki muma göre değil, **kendi açılışına göre** nerede kapandığıdır.
+      items:
+        - title: Yükselen mum (yeşil)
+          tone: up
+          text: Kapanış açılışın üzerindedir. Gövdenin altı açılışı, üstü kapanışı gösterir.
+        - title: Düşen mum (kırmızı)
+          tone: down
+          text: Kapanış açılışın altındadır. Gövdenin üstü açılışı, altı kapanışı gösterir.
+        - title: Gövdesi çok küçük mum
+          tone: neutral
+          text: Kapanış açılışa çok yakındır. Dönem içinde hareket olsa bile net sonuç neredeyse sıfırdır.
+    - type: steps
+      id: how-to-read
+      title: Bir mum adım adım nasıl okunur?
+      items:
+        - title: Zaman dilimine bak.
+          text: Aynı şekil 15m grafikte birkaç dakikalık, 1W grafikte bir haftalık hareketi anlatır. Okumanın ağırlığı buna göre değişir.
+        - title: Rengi ve gövdenin boyunu oku.
+          text: Uzun gövde, dönem boyunca tek yönde belirgin bir hareket olduğunu; kısa gövde, net hareketin küçük kaldığını gösterir.
+        - title: Fitillere bak.
+          text: Uzun bir üst fitil, fiyatın yukarıya gidip orada tutunamadığını; uzun bir alt fitil, aşağıya gidip geri toplandığını gösterir.
+        - title: Komşu mumlarla karşılaştır.
+          text: Tek bir mum az şey söyler. Önceki mumların boyu, yönü ve kapanış yerleriyle birlikte okunduğunda anlam kazanır.
+    - type: limits
+      shows:
+        - Bir dönemin açılış, en yüksek, en düşük ve kapanış fiyatlarını
+        - Dönem içinde fiyatın nereye kadar gidip nereden geri döndüğünü
+        - Dönemin net olarak yükselişle mi düşüşle mi kapandığını
+      not_proves:
+        - Dönemin içinde fiyatların hangi sırayla görüldüğünü; en yüksek fiyat en düşükten önce de sonra da gelmiş olabilir
+        - Bir sonraki mumun hangi yönde açılıp kapanacağını
+        - Tek başına bir trendi ya da yön değişimini
+    - type: zones
+      paragraphs:
+        - >-
+          Bir mumu bir destek ya da direnç bölgesinin yanında okurken asıl soru, mumun **hangi
+          kısmının** bölgeye değdiğidir. Yalnızca fitilin bölgeye girmesi, fiyatın oraya uğrayıp
+          geri döndüğünü gösterir. Gövdenin bölgenin içinde ya da ötesinde kapanması farklı bir şey
+          anlatır.
+        - >-
+          Bu yüzden bölgeyi tek bir çizgi değil **bir bant** olarak okumak, mumun parçalarıyla
+          birlikte daha anlamlı olur. Fitilin bandın içinde kalıp kalmadığı ve kapanışın bandın
+          neresinde geldiği, bölgenin nasıl test edildiğini ayırt etmeye yardım eder.
+    - type: box
+      title: Kriptoda mumlar
+      text: >-
+        Kripto piyasası 7/24 işlem gördüğü için bir mumun açılışı çoğu zaman önceki mumun kapanışına
+        çok yakındır ve mumlar arasında boşluk nadiren oluşur. Fiyatlar borsadan borsaya biraz
+        farklılaştığından, aynı zaman dilimindeki bir mumun fitil uçları farklı borsalarda birkaç birim
+        farklı görünebilir.
+  key_points:
+    - Her mum tek bir dönemi gösterir; dönemin uzunluğu zaman dilimidir.
+    - Gövde açılış ile kapanış arasını, fitiller uç fiyatları gösterir.
+    - Renk, kapanışın mumun kendi açılışına göre yerini anlatır.
+    - Tek bir mum, komşu mumlar ve bölgeler olmadan az şey söyler.
+  svg_labels:
+    high: En yüksek
+    low: En düşük
+    open: Açılış
+    close: Kapanış
+    upper_wick: Üst fitil
+    body: Gövde
+    lower_wick: Alt fitil
+    up_1: Yükselen mum
+    up_2: kapanış açılışın üzerinde
+    down_1: Düşen mum
+    down_2: kapanış açılışın altında
+  svg_alt: "Yan yana iki mum: solda yeşil yükselen bir mum, sağda kırmızı düşen bir mum. Her birinde en yüksek, en düşük, açılış ve kapanış fiyatları ile üst fitil, gövde ve alt fitil işaretli"
+  svg_caption: >-
+    Yeşil mumda kapanış gövdenin üstünde, kırmızı mumda altındadır. Turuncu nokta ve yazı kapanışı,
+    ortadaki ayraçlar fitilleri ve gövdeyi gösterir.
+
+en:
+  slug: how-to-read-a-candlestick-chart
+  name: How to read a candlestick chart
+  summary: >-
+    On a candlestick chart, each candle shows a single period, such as one hour or one day. A candle
+    carries four prices at once: the open, the high, the low and the close. The body spans the open
+    and the close; the wicks show the extreme prices reached during that period.
+  sections:
+    - type: text
+      id: definition
+      title: What is a candlestick chart?
+      paragraphs:
+        - >-
+          A line chart joins one price per period, usually the close. A candlestick chart draws each
+          period as **a candle** and shows at the same time where price started and ended in that
+          period, and how far it moved up and down in between.
+        - >-
+          The length of time one candle covers is the chart's **timeframe**. On a 1H chart each candle
+          covers one hour; on a 1D chart, one day. The shape of a candle does not change; what changes
+          is how much time fits into a single candle.
+    - type: bullets
+      id: parts
+      title: The parts of a candle
+      items:
+        - text: "**Open:** the first traded price of the period."
+          marker: neutral
+        - text: "**Close:** the last traded price of the period. It keeps changing until the candle closes."
+          marker: accent
+        - text: "**High / low:** the highest and lowest prices seen during the period."
+          marker: neutral
+        - text: "**Body:** the filled part between the open and the close. It shows the period's net move."
+          marker: up
+        - text: "**Wick:** the thin line above and below the body. It shows where price went and came back from."
+          marker: down
+      note: Some sources call the wick a shadow. Both mean the same thing.
+    - type: scenarios
+      id: colours
+      title: What the colour tells you
+      intro: The colour depends on where the candle closes relative to **its own open**, not relative to the previous candle.
+      items:
+        - title: Rising candle (green)
+          tone: up
+          text: The close is above the open. The bottom of the body is the open and the top is the close.
+        - title: Falling candle (red)
+          tone: down
+          text: The close is below the open. The top of the body is the open and the bottom is the close.
+        - title: Very small body
+          tone: neutral
+          text: The close is very near the open. Even if price moved during the period, the net result is close to zero.
+    - type: steps
+      id: how-to-read
+      title: Reading a candle step by step
+      items:
+        - title: Check the timeframe.
+          text: The same shape describes a few minutes on a 15m chart and a whole week on a 1W chart. How much weight the reading carries changes with it.
+        - title: Read the colour and the body length.
+          text: A long body shows a clear move in one direction over the period; a short body shows the net move stayed small.
+        - title: Look at the wicks.
+          text: A long upper wick shows price went higher but could not hold there; a long lower wick shows it went lower and recovered.
+        - title: Compare with the neighbouring candles.
+          text: A single candle says little. It gains meaning when read together with the size, direction and closes of the candles before it.
+    - type: limits
+      shows:
+        - The open, high, low and close of a period
+        - How far price went within the period and where it turned back
+        - Whether the period closed up or down on balance
+      not_proves:
+        - The order in which prices were seen within the period; the high may have come before or after the low
+        - Which way the next candle will open or close
+        - A trend or a change of direction on its own
+    - type: zones
+      paragraphs:
+        - >-
+          When reading a candle next to a support or resistance zone, the real question is **which
+          part** of the candle touched the zone. A wick entering the zone only shows that price visited
+          it and came back. A body closing inside or beyond the zone says something different.
+        - >-
+          That is why reading the zone as **a band** rather than a single line works better with the
+          parts of a candle. Whether the wick stayed inside the band, and where in the band the close
+          came, helps tell how the zone was tested.
+    - type: box
+      title: Candles in crypto
+      text: >-
+        Because crypto trades 24/7, a candle's open is usually very close to the previous candle's close,
+        and gaps between candles are rare. Prices differ slightly from exchange to exchange, so the wick
+        ends of the same candle can look a few units apart on different exchanges.
+  key_points:
+    - Each candle shows one period; the length of that period is the timeframe.
+    - The body spans the open and the close; the wicks show the extremes.
+    - The colour tells you where the close sits relative to the candle's own open.
+    - A single candle says little without its neighbours and the zones around it.
+  svg_labels:
+    high: High
+    low: Low
+    open: Open
+    close: Close
+    upper_wick: Upper wick
+    body: Body
+    lower_wick: Lower wick
+    up_1: Rising candle
+    up_2: close above the open
+    down_1: Falling candle
+    down_2: close below the open
+  svg_alt: "Two candles side by side: a green rising candle on the left and a red falling candle on the right, each marked with its high, low, open and close, plus the upper wick, body and lower wick"
+  svg_caption: >-
+    On the green candle the close is at the top of the body; on the red candle it is at the bottom. The
+    orange dot and text mark the close; the brackets in the middle mark the wicks and the body.

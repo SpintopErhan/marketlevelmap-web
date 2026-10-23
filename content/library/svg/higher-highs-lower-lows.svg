@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <line class="s-guide" x1="260" y1="40" x2="260" y2="270" stroke-width="1" stroke-dasharray="3 5"/>
+  <polyline class="s-up" points="24,262 70,190 104,226 150,150 186,190 240,96" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline class="s-down" points="240,96 282,150 330,120 372,180 420,152 470,222 510,198 540,240" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point"><circle cx="70" cy="190" r="3.5"/><circle cx="104" cy="226" r="3.5"/><circle cx="150" cy="150" r="3.5"/><circle cx="186" cy="190" r="3.5"/><circle cx="240" cy="96" r="3.5"/><circle cx="282" cy="150" r="3.5"/><circle cx="330" cy="120" r="3.5"/><circle cx="372" cy="180" r="3.5"/><circle cx="420" cy="152" r="3.5"/><circle cx="470" cy="222" r="3.5"/><circle cx="510" cy="198" r="3.5"/></g>
+  <g class="f-up t-mono" text-anchor="middle" font-weight="600">
+    <text x="104" y="248">{{hl}}</text>
+    <text x="150" y="136">{{hh}}</text>
+    <text x="186" y="212">{{hl}}</text>
+    <text x="240" y="82">{{hh}}</text>
+    <text x="282" y="172">{{hl}}</text>
+  </g>
+  <g class="t-down t-mono" text-anchor="middle" font-weight="600">
+    <text x="330" y="106">{{lh}}</text>
+    <text x="372" y="202">{{ll}}</text>
+    <text x="420" y="138">{{lh}}</text>
+    <text x="470" y="244">{{ll}}</text>
+    <text x="510" y="184">{{lh}}</text>
+  </g>
+  <g class="t-label" text-anchor="middle">
+    <text x="140" y="294">{{up_1}}</text>
+    <text x="140" y="310">{{up_2}}</text>
+    <text x="410" y="294">{{down_1}}</text>
+    <text x="410" y="310">{{down_2}}</text>
+  </g>
+</svg>

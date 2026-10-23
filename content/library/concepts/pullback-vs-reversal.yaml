@@ -1,0 +1,189 @@
+id: pullback-vs-reversal
+kind: structure
+order: 50
+related: [trend, trend-change, swing-points, flag]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: geri-cekilme-ve-trend-donusu
+  name: Geri çekilme ile trend dönüşü arasındaki fark
+  alt_name: Pullback vs reversal
+  summary: >-
+    Geri çekilme, trendin tersine yönde gelen ama yapıyı bozmayan geçici bir harekettir. Trend
+    dönüşünde ise yapı bozulur: son önemli dip ya da tepe kaybedilir. İkisi başlangıçta aynı görünür;
+    farkı hareketin nerede durduğu belirler.
+  sections:
+    - type: text
+      id: definition
+      title: Geri çekilme nedir?
+      paragraphs:
+        - >-
+          Yükselen bir trendde fiyat yeni bir tepe yaptıktan sonra bir süre aşağı iner. Bu iniş,
+          trendin ters yönünde bir harekettir ama trendin bittiği anlamına gelmez. Fiyat **son önemli
+          dibin üzerinde** durup yeniden yükselirse, yaşanan şey bir **geri çekilmedir**.
+        - >-
+          Trend dönüşünde ise aynı iniş son önemli dibin altına kadar uzanır ve orada kapanış gelir.
+          Yükselen tepe ve dip sırası bozulmuş olur. Düşen trendde aynısı ters yönde geçerlidir:
+          tepki son önemli tepenin altında kalırsa geri çekilme, üzerinde kapanırsa olası bir dönüştür.
+    - type: scenarios
+      id: two-outcomes
+      title: Aynı iniş, farklı sonuçlar
+      intro: Yükselen bir trendde fiyat yeni tepeden aşağı inmeye başladı. Hareketin nerede durduğuna göre üç tablo oluşabilir.
+      items:
+        - title: Geri çekilme
+          tone: up
+          text: İniş son önemli dibin **üzerinde** durur ve fiyat yeniden yükselerek yeni bir tepe yapar. Yapı korunmuştur.
+        - title: Trend dönüşü
+          tone: down
+          text: Fiyat son önemli dibin **altında** kapanır, ardından önceki tepeye ulaşamayan daha alçak bir tepe gelir. Yapı bozulmuştur.
+        - title: Henüz belirsiz
+          tone: neutral
+          text: Fiyat son önemli dibin bulunduğu **bölgenin içinde** duraklar. Ne yapının korunduğu ne de bozulduğu netleşmiştir.
+    - type: bullets
+      id: depth
+      title: Geri çekilmeler ne kadar derin olur?
+      items:
+        - Geri çekilmenin derinliği çoğu zaman bir önceki yükselişin (ya da düşüşün) **bir oranı** olarak ifade edilir.
+        - Teknik analiz kaynaklarında önceki hareketin yaklaşık üçte biri ile üçte ikisi arası sık anılan bir aralıktır. Bu bir kural değil, kaba bir gözlemdir.
+        - Güçlü trendlerde geri çekilmeler sığ kalabilir; daha yavaş trendlerde önceki dibe kadar yaklaşabilir.
+        - Derinlik tek başına ayırt edici değildir. Çok derin bir geri çekilme yapıyı koruyabilir, sığ görünen bir hareket de dönüşün ilk adımı olabilir.
+      note: Belirleyici olan derinliğin yüzdesi değil, son önemli dibin ya da tepenin korunup korunmadığıdır.
+    - type: limits
+      shows:
+        - Ters yöndeki hareketin şimdiye kadar yapıyı bozup bozmadığını
+        - Yapının hangi seviyede bozulmuş sayılacağını (son önemli dip ya da tepe)
+        - Hareketin önceki trendin içinde mi kaldığını, dışına mı çıktığını
+      not_proves:
+        - Yapıyı koruyan bir geri çekilmenin ardından trendin mutlaka süreceğini
+        - Son önemli dibin altındaki tek bir kapanışın kalıcı bir dönüş olduğunu
+        - Geri çekilmenin nerede biteceğini; bu ancak sonradan görülür
+    - type: zones
+      paragraphs:
+        - >-
+          Geri çekilmeler çoğu zaman bir **destek bölgesine** kadar iner; bu bölge sık sık önceki bir
+          tepenin ya da dibin bulunduğu alandır. Bölgede gelen tepki, geri çekilmenin yapıyı koruyarak
+          sona erebileceğine dair bir ipucu olarak okunabilir.
+        - >-
+          Son önemli dibi tek bir fiyat yerine **bir bölge** olarak okumak, ayrımı daha sağlıklı yapar.
+          Fitilin bu bölgeye girmesi henüz dönüş değildir. Dönüşten söz etmek için kapanışın bölgenin
+          alt kenarının altında gelmesi ve sonraki tepkinin önceki tepeye ulaşamaması beklenir.
+    - type: box
+      title: Zaman dilimi farkı
+      text: >-
+        1H grafikte bir trend dönüşü gibi görünen hareket, 4H ya da günlük grafikte yükselen trendin
+        içindeki sıradan bir geri çekilme olabilir. Kripto piyasaları 7/24 işlem gördüğü için kısa
+        zaman dilimlerinde bu tür iniş çıkışlar sık görülür. Hangi zaman diliminin yapısından söz
+        edildiğini belirtmek yorumu netleştirir.
+  confusions:
+    - id: trend-change
+      text: Trend dönüşü tek bir mumla değil, yapının bozulup yeni bir tepe ve dip sırasının oluşmasıyla tamamlanan bir süreçtir.
+    - id: flag
+      text: Bayrak, güçlü bir hareketin ardından gelen düzenli bir geri çekilmenin formasyon halidir.
+  key_points:
+    - Geri çekilme yapıyı korur, trend dönüşü yapıyı bozar.
+    - Referans noktası son önemli dip ya da tepedir.
+    - Derinlik tek başına ayırt edici değildir.
+    - Dönüş için fitil değil kapanış ve sonraki tepe ya da dip önemlidir.
+  svg_labels:
+    zone: Son önemli dip
+    held: Dip korunur
+    broken: Dip kırılır
+    lower_high_1: Daha alçak
+    lower_high_2: tepe
+    pullback: Geri çekilme
+    reversal: Trend dönüşü
+  svg_alt: "İki panel: solda yükselen trendde fiyat son önemli dibin üzerinde durup yeniden yükseliyor; sağda aynı iniş son önemli dibin altına uzanıyor ve ardından daha alçak bir tepe oluşuyor"
+  svg_caption: Turuncu bant son önemli dibin bölgesini gösterir. Solda iniş bölgenin üzerinde durur (geri çekilme); sağda fiyat bölgenin altına iner ve önceki tepeye ulaşamaz (trend dönüşü).
+
+en:
+  slug: pullback-or-reversal
+  name: Pullback or reversal?
+  summary: >-
+    A pullback is a temporary move against the trend that leaves the structure intact. In a reversal
+    the structure breaks: the last important low or high is lost. The two look the same at first;
+    where the move stops makes the difference.
+  sections:
+    - type: text
+      id: definition
+      title: What is a pullback?
+      paragraphs:
+        - >-
+          In an uptrend, price makes a new high and then moves lower for a while. This decline runs
+          against the trend, but it does not mean the trend is over. If price stops **above the last
+          important low** and rises again, what happened was a **pullback**.
+        - >-
+          In a reversal, the same decline reaches below the last important low and closes there. The
+          sequence of rising highs and lows is broken. The same holds the other way round in a
+          downtrend: a bounce that stays below the last important high is a pullback, while a close
+          above it is a possible reversal.
+    - type: scenarios
+      id: two-outcomes
+      title: Same decline, different outcomes
+      intro: In an uptrend, price has started to fall from a new high. Depending on where the move stops, three pictures can follow.
+      items:
+        - title: Pullback
+          tone: up
+          text: The decline stops **above** the last important low and price rises again to a new high. The structure holds.
+        - title: Reversal
+          tone: down
+          text: Price closes **below** the last important low, then makes a lower high that fails to reach the previous one. The structure is broken.
+        - title: Not yet clear
+          tone: neutral
+          text: Price pauses **inside the zone** of the last important low. Neither a hold nor a break is clear yet.
+    - type: bullets
+      id: depth
+      title: How deep do pullbacks go?
+      items:
+        - The depth of a pullback is often expressed as **a proportion** of the previous rise (or fall).
+        - Technical analysis texts often cite roughly a third to two thirds of the previous move. This is a rough observation, not a rule.
+        - In strong trends pullbacks can stay shallow; in slower trends they can come close to the previous low.
+        - Depth alone does not decide it. A very deep pullback can keep the structure, and a shallow-looking move can be the first step of a reversal.
+      note: What decides it is not the percentage but whether the last important low or high holds.
+    - type: limits
+      shows:
+        - Whether the counter-move has broken the structure so far
+        - The level at which the structure would count as broken (the last important low or high)
+        - Whether the move has stayed inside the previous trend or left it
+      not_proves:
+        - That the trend will continue after a pullback that keeps the structure
+        - That a single close below the last important low is a lasting reversal
+        - Where the pullback will end; that is only visible afterwards
+    - type: zones
+      paragraphs:
+        - >-
+          Pullbacks often reach a **support zone**, frequently the area of a previous high or low. A
+          reaction at that zone can be read as a hint that the pullback may end with the structure
+          intact.
+        - >-
+          Reading the last important low as **a zone** rather than a single price makes the
+          distinction sounder. A wick into the zone is not yet a reversal. To speak of a reversal, the
+          close should come below the zone's lower edge and the next bounce should fail to reach the
+          previous high.
+    - type: box
+      title: The timeframe matters
+      text: >-
+        A move that looks like a reversal on the 1H chart can be an ordinary pullback inside an
+        uptrend on the 4H or daily chart. Crypto markets trade around the clock, so swings like this
+        are common on short timeframes. Saying which timeframe's structure you mean makes the reading
+        clearer.
+  confusions:
+    - id: trend-change
+      text: A trend change is not one candle but a process that completes when the structure breaks and a new sequence of highs and lows forms.
+    - id: flag
+      text: A flag is the pattern form of an orderly pullback after a strong move.
+  key_points:
+    - A pullback keeps the structure; a reversal breaks it.
+    - The reference point is the last important low or high.
+    - Depth alone does not decide it.
+    - For a reversal, the close and the next high or low matter, not the wick.
+  svg_labels:
+    zone: Last important low
+    held: Low holds
+    broken: Low breaks
+    lower_high_1: Lower
+    lower_high_2: high
+    pullback: Pullback
+    reversal: Reversal
+  svg_alt: "Two panels: on the left, price in an uptrend stops above the last important low and rises again; on the right, the same decline reaches below the last important low and a lower high follows"
+  svg_caption: The orange band marks the zone of the last important low. On the left the decline stops above it (pullback); on the right price falls below it and fails to reach the previous high (reversal).

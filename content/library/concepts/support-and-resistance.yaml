@@ -1,0 +1,217 @@
+id: support-and-resistance
+kind: levels
+order: 10
+related: [level-test, breakout-and-close, false-breakout, retest-and-role-reversal]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: destek-ve-direnc-nedir
+  name: Destek ve direnç nedir?
+  alt_name: Support and resistance
+  summary: >-
+    Destek, düşen fiyatın daha önce durup yukarı döndüğü; direnç, yükselen fiyatın daha önce durup
+    aşağı döndüğü fiyat alanıdır. Bu alanlar geçmiş tepkilerden doğar. Tepkiler tek bir fiyatta değil
+    belirli bir genişlikte oluştuğu için onları tek bir çizgi yerine bir bölge olarak okumak daha
+    sağlıklıdır.
+  sections:
+    - type: text
+      id: definition
+      title: Destek ve direnç nedir?
+      paragraphs:
+        - >-
+          **Destek**, fiyatın aşağı inerken durmaya ya da yukarı dönmeye eğilimli olduğu alandır.
+          **Direnç** ise fiyatın yukarı çıkarken durmaya ya da aşağı dönmeye eğilimli olduğu alandır.
+          İkisi de fiyatın geçmişte tepki verdiği yerlerdir.
+        - >-
+          Destek grafikte fiyatın altında, direnç üstünde kalır. Hangisinin hangisi olduğu fiyatın
+          o anki konumuna göre söylenir. Kırılan bir destek sonradan direnç gibi, kırılan bir direnç
+          de destek gibi davranabilir.
+    - type: text
+      id: why-they-form
+      title: Neden oluşur?
+      paragraphs:
+        - >-
+          Bir fiyat alanında belirgin bir tepki olduğunda, o alan grafikte **iz bırakır**. Önceki
+          tepe ve dipler, fiyatın uzun süre yatay kaldığı aralıklar ve sert hareketlerin başladığı
+          yerler bu izlerin en tanıdık örnekleridir.
+        - >-
+          Fiyat daha sonra bu alana döndüğünde, birçok piyasa katılımcısı aynı yere bakar. Kimi
+          önceki tepkinin tekrarlanmasını bekler, kimi o seviyede işlemini kapatmak ister. Bu ortak
+          dikkat, alanda yeniden bir tepki görülme olasılığını artırabilir. Yine de bu bir eğilimdir,
+          kural değildir.
+    - type: text
+      id: zones-not-lines
+      title: Neden çizgi değil, bölge?
+      paragraphs:
+        - >-
+          Fiyat aynı alana her döndüğünde tam olarak aynı fiyatta dönmez. Bir seferinde biraz
+          yukarıda, bir seferinde biraz aşağıda tepki verir. Fitiller bazen alanın içine kadar uzanır,
+          kapanışlar ise biraz daha geride kalır.
+        - >-
+          Tek bir çizgi bu dağılımı göstermez. Çizgiyi birkaç birim aşan her hareket kırılım gibi,
+          çizgiye birkaç birim varamayan her dönüş de "seviyeye gelmedi" gibi görünür. Tepkilerin
+          dağıldığı genişliği kapsayan **bir bant**, aynı davranışı daha gerçekçi gösterir. Bandın
+          **yakın kenarı** fiyatın bölgeye girdiği, **uzak kenarı** ise bölgenin aşıldığı sayılacak
+          yeri belirler.
+    - type: bullets
+      id: strength-factors
+      title: Bir bölgeyi öne çıkaran etkenler
+      items:
+        - "**Tepki sayısı:** Fiyatın bölgede birden fazla kez dönmüş olması."
+        - "**Tepkinin büyüklüğü:** Bölgeden sonra fiyatın ne kadar uzaklaştığı."
+        - "**Zaman dilimi:** Günlük grafikte görülen bir bölge, 1H grafikteki bir bölgeden daha fazla fiyat hareketini kapsar."
+        - "**Yakınlık ve yaş:** Yakın zamanda çalışmış bir bölge ile uzun süredir test edilmemiş bir bölge farklı okunabilir."
+        - "**Hacim:** Veri varsa, tepkinin yüksek hacimle gelip gelmediği."
+      note: >-
+        Bu etkenler bir bölgenin neden dikkat çektiğini anlatır. Hiçbiri, fiyatın bir sonraki gelişinde
+        aynı tepkiyi vereceğini garanti etmez.
+    - type: limits
+      shows:
+        - Fiyatın geçmişte hangi alanlarda tepki verdiğini
+        - Fiyatın yeniden geldiğinde tepki görebileceği olası alanları
+        - Bir hareketin hangi noktada bölgeyi aşmış sayılabileceğini (uzak kenar)
+      not_proves:
+        - Fiyatın bölgeden kesinlikle döneceğini
+        - Dönüş olursa ne kadar süreceğini ya da nereye kadar gideceğini
+        - Bölgenin bir sonraki gelişte de aynı güçte olacağını
+    - type: zones
+      paragraphs:
+        - >-
+          Destek ve direnç, MarketLevelMap'in gösterdiği bölgelerin temelidir. Bölgeler tek bir fiyat
+          yerine **bir bant** olarak çizilir; çünkü tepkiler de bir bant içinde oluşur. Bandın içinde
+          gelen bir kapanış bölgenin test edildiğini, **uzak kenarın** ötesinde gelen bir kapanış ise
+          bölgenin aşıldığını gösterir.
+        - >-
+          Bir bölgeyi okurken onu tek başına değil, trendle birlikte değerlendirmek daha sağlıklıdır.
+          Yükselen bir trendde aşağıdaki destek bölgeleri, düşen bir trendde yukarıdaki direnç
+          bölgeleri çoğu zaman daha sık gündeme gelir.
+    - type: box
+      title: Kripto piyasasında bölgeler
+      text: >-
+        Kripto piyasası 7/24 işlem gördüğü için grafikte boşluk (gap) azdır ve bölgeler kesintisiz
+        fiyat hareketinden oluşur. Ancak fiyat verisi borsadan borsaya biraz değişir: aynı mumun fitili
+        bir borsada bölgenin içine, diğerinde ötesine uzanabilir. Bu da bölgeyi tek bir çizgi yerine
+        bant olarak okumanın bir başka nedenidir.
+  confusions:
+    - id: trendlines-and-channels
+      text: Trend çizgileri eğimli destek ve direnç gibi çalışır; bu sayfadaki bölgeler ise yatay fiyat alanlarıdır.
+    - id: psychological-levels
+      text: Yuvarlak sayılar da destek ya da direnç gibi davranabilir, ama kaynakları geçmiş tepki değil, rakamın kendisidir.
+  key_points:
+    - Destek ve direnç, fiyatın geçmişte tepki verdiği alanlardır.
+    - Tepkiler tek bir fiyatta değil, bir genişlikte oluşur; bu yüzden bölge bir bant olarak okunur.
+    - Bölgenin aşılması, uzak kenarın ötesinde kapanışla ölçülür.
+    - Bir bölgenin geçmişteki gücü, gelecekteki tepkiyi garanti etmez.
+  svg_labels:
+    resistance: Direnç bölgesi
+    support: Destek bölgesi
+    note_1: Dönüşler tek bir fiyatta değil,
+    note_2: bandın içinde dağılır
+  svg_alt: "Destek ve direnç çizimi: fiyat yukarıdaki bir direnç bandı ile aşağıdaki bir destek bandı arasında gidip geliyor; her dönüş bandın içinde farklı bir yükseklikte oluşuyor"
+  svg_caption: Turuncu bantlar destek ve direnç bölgelerini, noktalar fiyatın döndüğü yerleri gösterir. Dönüşler bandın içinde farklı yüksekliklerde gelir.
+
+en:
+  slug: what-are-support-and-resistance
+  name: What are support and resistance?
+  summary: >-
+    Support is a price area where falling price has stopped and turned up before; resistance is an
+    area where rising price has stopped and turned down before. These areas come from past reactions.
+    Because reactions happen over a range of prices rather than at a single one, they are better read
+    as zones than as single lines.
+  sections:
+    - type: text
+      id: definition
+      title: What are support and resistance?
+      paragraphs:
+        - >-
+          **Support** is an area where price, on the way down, tends to stop or turn up.
+          **Resistance** is an area where price, on the way up, tends to stop or turn down. Both are
+          places where price has reacted in the past.
+        - >-
+          Support sits below price on the chart and resistance above it. Which is which depends on
+          where price is now. Broken support can later act as resistance, and broken resistance as
+          support.
+    - type: text
+      id: why-they-form
+      title: Why do they form?
+      paragraphs:
+        - >-
+          When price reacts clearly in an area, that area **leaves a mark** on the chart. Previous
+          highs and lows, ranges where price moved sideways for a long time and places where sharp
+          moves started are the most familiar examples.
+        - >-
+          When price later returns to that area, many market participants are looking at the same
+          place. Some expect the earlier reaction to repeat; others want to close a position at that
+          level. This shared attention can make another reaction more likely. Even so, it is a
+          tendency, not a rule.
+    - type: text
+      id: zones-not-lines
+      title: Why a zone and not a line?
+      paragraphs:
+        - >-
+          Each time price returns to the same area, it does not turn at exactly the same price. One
+          time it reacts a little higher, another time a little lower. Wicks sometimes reach into the
+          area while closes stay a little further back.
+        - >-
+          A single line cannot show this spread. Any move that crosses the line by a few units looks
+          like a breakout, and any turn that stops a few units short looks like it "missed the level".
+          **A band** covering the width over which reactions are spread shows the same behaviour more
+          realistically. The band's **near edge** marks where price enters the zone, and its **far
+          edge** marks where the zone would count as cleared.
+    - type: bullets
+      id: strength-factors
+      title: What makes a zone stand out
+      items:
+        - "**Number of reactions:** Price has turned in the zone more than once."
+        - "**Size of the reaction:** How far price moved away after the zone."
+        - "**Timeframe:** A zone seen on the daily chart covers more price action than one on the 1H chart."
+        - "**Recency and age:** A zone that worked recently and one that has not been tested for a long time can be read differently."
+        - "**Volume:** Where the data exists, whether the reaction came on high volume."
+      note: >-
+        These factors explain why a zone draws attention. None of them guarantees that price will react
+        the same way next time it arrives.
+    - type: limits
+      shows:
+        - Where price has reacted in the past
+        - Likely areas where price may react when it returns
+        - The point at which a move can count as having cleared the zone (the far edge)
+      not_proves:
+        - That price will certainly turn at the zone
+        - How long a turn will last or how far it will go, if it happens
+        - That the zone will be just as strong next time
+    - type: zones
+      paragraphs:
+        - >-
+          Support and resistance are the basis of the zones MarketLevelMap shows. Zones are drawn as
+          **a band** rather than a single price, because reactions happen within a band too. A close
+          inside the band shows the zone being tested; a close beyond the **far edge** shows the zone
+          being cleared.
+        - >-
+          It is sounder to read a zone together with the trend rather than on its own. In an uptrend,
+          support zones below tend to come into play more often; in a downtrend, resistance zones
+          above do.
+    - type: box
+      title: Zones in crypto markets
+      text: >-
+        Crypto trades 24/7, so charts have few gaps and zones form from continuous price action. But
+        price data varies slightly between exchanges: the same candle's wick can reach into the zone on
+        one exchange and beyond it on another. That is one more reason to read a zone as a band rather
+        than a single line.
+  confusions:
+    - id: trendlines-and-channels
+      text: Trendlines work like sloping support and resistance; the zones on this page are horizontal price areas.
+    - id: psychological-levels
+      text: Round numbers can also act as support or resistance, but they come from the number itself, not from past reactions.
+  key_points:
+    - Support and resistance are areas where price has reacted in the past.
+    - Reactions happen over a width, not at one price, so a zone is read as a band.
+    - A zone is cleared by a close beyond its far edge.
+    - A zone's past strength does not guarantee a future reaction.
+  svg_labels:
+    resistance: Resistance zone
+    support: Support zone
+    note_1: Turns do not happen at one price;
+    note_2: they spread across the band
+  svg_alt: "Support and resistance illustration: price moves back and forth between a resistance band above and a support band below, turning at a different height within the band each time"
+  svg_caption: The orange bands mark the support and resistance zones and the dots the points where price turned. The turns come at different heights within each band.
