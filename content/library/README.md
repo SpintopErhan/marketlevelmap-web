@@ -156,7 +156,8 @@ Boş isteğe bağlı alanların bölümü **hiç gösterilmez** ve "Bu sayfada" 
 
 ### Sol menü (bütün kütüphane sayfaları)
 
-- "Genel bakış" (kütüphane ana sayfası), sonra her kategori ve altında formasyonları, kategori ve formasyon
+- "Genel bakış" (kütüphane ana sayfası), sonra her kategori başlığı (kategori sayfasına bağlantı) ve yanındaki okla
+  açılıp kapanan formasyon listesi. Bulunulan sayfanın kategorisi açık, diğerleri kapalı başlar. Sıra kategori ve formasyon
   sırasıyla. Bulunulan sayfa vurgulanır. Yeni formasyon ya da kategori eklenince menü kendiliğinden güncellenir.
 - Geniş ekranda (≥ 1100 px) solda sabit durur; daha dar ekranda içeriğin üstünde kapalı bir "Konular" kutusudur.
 
