@@ -48,3 +48,6 @@ footer p{margin:0;line-height:1.75}
 ::-webkit-scrollbar-thumb:hover{background-color:color-mix(in srgb,var(--accent) 65%,transparent)}
 .side-col::-webkit-scrollbar-thumb,.table-wrap::-webkit-scrollbar-thumb{background-color:transparent}
 .side-col:hover::-webkit-scrollbar-thumb,.table-wrap:hover::-webkit-scrollbar-thumb{background-color:color-mix(in srgb,var(--muted) 45%,transparent)}
+
+/* Installed app (PWA) on notched phones: keep content out of the screen edges, notch and home bar. Zero elsewhere. */
+body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}

@@ -145,7 +145,26 @@ History: the first version (PR #36) used 168 × 1h candles and drew the nearest 
 the asset's report as faint bands behind the line. The bands looked cluttered and were removed together
 with the switch to 2h candles (PR #37).
 
-## Pattern library
+## Installable app (PWA)
+
+The site can be added to the home screen (Android: install prompt or browser menu; iPhone: Safari → Share → Add
+to Home Screen) and then opens full screen as "MLMap". No store and no push notifications.
+
+- `manifest.webmanifest` (one for both languages; `start_url` `/?source=pwa`), icons in `assets/icons/`
+  (192, 512, 512 maskable, 180 apple-touch; logo symbol on the dark background `#10161d`).
+- Every page's head carries the manifest, theme-color, apple-touch-icon and app-title tags and loads
+  `assets/pwa.js` (service worker registration, offline notice, install button / iPhone hint — dismissed for good
+  once closed, never shown inside the installed app). The library generator adds the same tags.
+- `sw.js` (site root), cache `mlm-v1` — market data is never served stale while the network works:
+  pages network-first (offline: last copy, else `offline.html`); `/api/publication`, `/api/events`,
+  `/api/archive` network-first (offline: last copy + "offline – data may not be up to date" notice);
+  `/api/prices` never cached; `/assets/*` and the manifest stale-while-revalidate; other origins (exchanges,
+  `data.marketlevelmap.com` candles) and websockets untouched. Updates install at once (`skipWaiting` +
+  `clients.claim`); bump `VERSION` in `sw.js` when its rules change so old caches are deleted.
+- `_headers` keeps `sw.js` and the manifest out of the CDN/browser cache and sets the manifest's content type;
+  `_routes.json` keeps them and `offline.html` out of Pages Functions.
+
+
 
 `/tr/kutuphane/…` and `/en/library/…` are static pages generated from `content/library` (one YAML file and one
 SVG per pattern, both languages in the same file) by `scripts/build-library.mjs`, which also writes `sitemap.xml`.

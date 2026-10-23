@@ -317,7 +317,10 @@ function page({ lang, path, alternates, title, description, body, jsonLd }) {
   const canonical = ORIGIN + path;
   const other = lang === "tr" ? "en" : "tr";
   const head = [
-    `<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light">`,
+    `<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="color-scheme" content="dark light">`,
+    // Installable app (PWA): manifest, icons, app title; assets/pwa.js registers the service worker.
+    `<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)">`,
+    `<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap">`,
     `<title>${esc(title)}</title>`,
     `<meta name="description" content="${esc(description)}">`,
     `<link rel="canonical" href="${esc(canonical)}">`,
@@ -328,7 +331,7 @@ function page({ lang, path, alternates, title, description, body, jsonLd }) {
     `<link rel="icon" type="image/svg+xml" href="/assets/MarketLevelMap-symbol-color.svg">`,
     `<link rel="stylesheet" href="${asset("assets/site.css")}"><link rel="stylesheet" href="${asset("assets/library.css")}">`,
     `<script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>`,
-    `<script src="${asset("assets/disclaimer.js")}" defer></script><script src="${asset("assets/library.js")}" defer></script>`,
+    `<script src="${asset("assets/disclaimer.js")}" defer></script><script src="${asset("assets/library.js")}" defer></script><script src="${asset("assets/pwa.js")}" defer></script>`,
     jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>` : "",
   ].join("\n");
   const header = `<div class="shell"><header>
