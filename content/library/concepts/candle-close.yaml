@@ -106,9 +106,9 @@ tr:
     wick_2: fitil kalır
     t1: 4H mum, 1. saat
     t2: 4H mum, 3. saat
-    t3: 4H mum kapandı
-    pending: Henüz kesin değil
-    final: Kesinleşti
+    t3: 4H mum, kapanış
+    pending: Mum açık
+    final: Mum kapandı
   svg_alt: "Aynı 4H mumun üç anı: ilk saatte fiyat direnç bölgesinin altında yükseliyor, üçüncü saatte bölgenin üzerine çıkıyor, kapanışta ise bölgenin altına dönüyor ve bölgenin üzerinde yalnızca bir fitil kalıyor"
   svg_caption: >-
     Soluk gövdeler henüz kapanmamış mumu, dolu gövde kapanmış mumu gösterir. Turuncu nokta o anki
@@ -214,9 +214,9 @@ en:
     wick_2: is left
     t1: 4H candle, hour 1
     t2: 4H candle, hour 3
-    t3: 4H candle closed
-    pending: Not final yet
-    final: Final
+    t3: 4H candle, at the close
+    pending: Candle still open
+    final: Candle closed
   svg_alt: "Three moments of the same 4H candle: in the first hour price rises below a resistance zone, by the third hour it is above the zone, and at the close it is back below the zone with only a wick left above it"
   svg_caption: >-
     The faded bodies show a candle that has not closed yet; the solid body shows the closed candle. The

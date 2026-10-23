@@ -41,11 +41,11 @@ tr:
           text: Bir tepe ancak sağındaki N mum kapandıktan sonra kesinleşir. Son mumun en yükseği, henüz sağında mum olmadığı için bir tepe adayıdır, tepe değildir.
     - type: bullets
       id: significant-vs-minor
-      title: Önemli ve küçük salınımlar
+      title: Önemli tepe-dipler ve ara tepe-dipler
       items:
         - text: "**Önemli tepe ve dipler**, fiyatın belirgin bir hareketten sonra açıkça yön değiştirdiği noktalardır. Trendin ve yapının referansı bunlardır."
           marker: accent
-        - text: "**Küçük salınımlar**, büyük bir hareketin içindeki kısa duraklamalardır. N küçük seçildiğinde tepe ya da dip sayılırlar, N büyüdükçe kaybolurlar."
+        - text: "**Ara tepe-dipler**, büyük bir hareketin içindeki kısa duraklamalardır. N küçük seçildiğinde tepe ya da dip sayılırlar, N büyüdükçe kaybolurlar."
           marker: neutral
         - text: Bir noktanın önemini artıran şeyler, öncesindeki hareketin büyüklüğü, dönüşün sertliği ve fiyatın o noktaya sonra yeniden tepki vermesidir.
           marker: neutral
@@ -90,10 +90,10 @@ tr:
     swing_low: Dip (swing low)
     lower_highs: 2 alçak tepe
     higher_lows: 2 yüksek dip
-    minor_1: Küçük dip
+    minor_1: Ara dip
     minor_2: (yalnızca N = 1)
-  svg_alt: "Mum grafiğinde tepe ve dip çizimi: her iki yanında iki daha alçak tepe bulunan bir tepe, her iki yanında iki daha yüksek dip bulunan bir dip ve yalnızca N = 1 kuralıyla dip sayılan küçük bir salınım"
-  svg_caption: Noktalar N = 2 kuralıyla bulunan tepe ve dibi, köşeli çizgiler karşılaştırılan iki yandaki mumları gösterir. Halka içindeki küçük dip yalnızca N = 1 seçilirse dip sayılır.
+  svg_alt: "Mum grafiğinde tepe ve dip çizimi: her iki yanında iki daha alçak tepe bulunan bir tepe, her iki yanında iki daha yüksek dip bulunan bir dip ve yalnızca N = 1 kuralıyla dip sayılan bir ara dip"
+  svg_caption: Noktalar N = 2 kuralıyla bulunan tepe ve dibi, köşeli çizgiler karşılaştırılan iki yandaki mumları gösterir. Halka içindeki ara dip yalnızca N = 1 seçilirse dip sayılır.
 
 en:
   slug: swing-highs-and-lows

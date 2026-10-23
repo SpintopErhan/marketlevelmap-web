@@ -58,7 +58,7 @@ tr:
       title: Grafikte nasıl etiketlenir?
       items:
         - title: Önemli tepe ve dipleri işaretle.
-          text: Aynı zaman diliminde ve aynı kuralla seçilmiş noktaları kullan. Küçük salınımları dahil etmek etiketleri gereksiz yere karıştırır.
+          text: Aynı zaman diliminde ve aynı kuralla seçilmiş noktaları kullan. Ara tepe-dipleri dahil etmek etiketleri gereksiz yere karıştırır.
         - title: Her noktayı bir öncekiyle karşılaştır.
           text: Tepeyi bir önceki tepeyle, dibi bir önceki diple karşılaştırıp HH, HL, LH ya da LL olarak etiketle.
         - title: Son birkaç etikete bak.
