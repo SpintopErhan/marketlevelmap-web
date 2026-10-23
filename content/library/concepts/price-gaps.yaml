@@ -1,0 +1,245 @@
+id: price-gaps
+kind: volume-volatility
+order: 60
+related: [volatility, candle-close, support-and-resistance, atr]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: fiyat-bosluklari
+  name: Fiyat boşlukları (gap)
+  alt_name: Price gaps
+  summary: >-
+    Fiyat boşluğu, bir mumun önceki mumun aralığıyla hiç örtüşmeden, onun yukarısında ya da aşağısında
+    açılmasıdır; arada hiç işlem görmemiş bir fiyat alanı kalır. 7/24 işlem gören kripto spot
+    grafiklerinde boşluklar seyrektir. En sık, hafta sonu kapanan CME Bitcoin vadeli işlemlerinde ve
+    düşük likiditeli paritelerde görülür.
+  sections:
+    - type: text
+      id: definition
+      title: Fiyat boşluğu nedir?
+      paragraphs:
+        - >-
+          Normalde her mum, önceki mumun kapandığı yerin yakınında açılır. Bir mum önceki mumun **en
+          yüksek fiyatının üzerinde** ya da **en düşük fiyatının altında** açılırsa, iki mum arasında
+          grafikte boş bir alan kalır. Bu alana **fiyat boşluğu** (gap) denir. Özellikle CME
+          grafiklerinde boşluk daha gevşek biçimde, önceki kapanış ile yeni açılış arasındaki fark
+          olarak da ölçülür; hangi ölçünün kullanıldığını belirtmek karışıklığı önler.
+        - >-
+          Boşluk, piyasa kapalıyken ya da işlem çok seyrekken fiyatın değişmesiyle oluşur. Piyasa
+          yeniden açıldığında ilk işlem, son işlemden uzak bir fiyattan gerçekleşir. Aradaki fiyatlarda
+          o zaman diliminde hiç işlem görülmemiştir.
+    - type: text
+      id: crypto-spot
+      title: Kripto spot grafiklerinde neden seyrek?
+      paragraphs:
+        - >-
+          Kripto spot piyasası 7/24 işlem görür; gece, hafta sonu ya da tatil kapanışı yoktur. Fiyat
+          sürekli işlem gördüğü için her mum genellikle önceki mumun kapanışına çok yakın açılır. Büyük
+          paritelerde 1H, 4H ve 1D grafiklerde gerçek bir boşluk görmek bu yüzden nadirdir.
+        - >-
+          Sert hareketlerde bile fiyat aradaki seviyelerden geçerek ilerler; bu seviyeler boşluk değil,
+          **uzun bir gövde ya da fitil** olarak görünür. Bir bölgenin hızla geçilmesi ile bir bölgenin
+          hiç işlem görmeden atlanması farklı şeylerdir.
+    - type: text
+      id: cme-gaps
+      title: CME Bitcoin vadeli boşlukları
+      paragraphs:
+        - >-
+          CME'deki Bitcoin vadeli işlemleri borsanın çalışma saatlerine bağlıdır: hafta sonu ve bazı
+          tatillerde işlem görmez, hafta içinde de her gün kısa bir ara verilir. Spot piyasa bu sürede
+          işlem görmeye devam eder. Vadeli piyasa yeniden açıldığında fiyat, kapalıyken spotta oluşan
+          seviyeden açılır ve cuma kapanışı ile yeni açılış arasında bir boşluk kalabilir.
+        - >-
+          Bu boşluklar spot grafikte görünmez; aynı saatler spotta sıradan mumlarla doludur. Yani CME
+          boşluğu, piyasanın kendisinde değil, **o borsanın grafiğinde** oluşan bir boşluktur.
+    - type: bullets
+      id: gap-fill
+      title: "\"Boşluklar dolar\" inancı"
+      items:
+        - text: Yaygın bir görüşe göre fiyat, zamanla boşluğun bulunduğu fiyat alanına geri döner ve boşluğu "doldurur".
+          marker: neutral
+        - text: Geçmişte birçok CME boşluğu sonradan dolmuştur. Ama bazıları çok uzun süre, bazıları bugüne kadar hiç dolmamıştır.
+          marker: neutral
+        - text: Boşluğun **ne zaman** dolacağı belli değildir. Günler içinde dolan da, aylar sonra dolan da vardır; bu yüzden "dolacak" demek tek başına bir zaman bilgisi taşımaz.
+          marker: accent
+        - text: Dolan boşluklar akılda kalır, dolmayanlar unutulur. Bu seçici hatırlama, inancın olduğundan daha güvenilir görünmesine yol açabilir.
+          marker: down
+      note: >-
+        Boşluğun dolması bir olasılıktır, kural değildir. Boşluk alanı, fiyatın ileride geri gelebileceği
+        bir referans olarak not edilebilir; tek başına bir yön beklentisi yaratmaz.
+    - type: text
+      id: low-liquidity
+      title: Düşük likiditeli parite ve borsalarda boşluklar
+      paragraphs:
+        - >-
+          Az işlem gören bir paritede ya da küçük bir borsada bir mum süresince hiç işlem olmayabilir.
+          Bir sonraki işlem uzak bir fiyattan gelirse grafikte boşluk ya da tek fiyattan oluşan,
+          gövdesiz mumlar görülür. Bunlar çoğu zaman bir fiyat hareketini değil, **işlem azlığını**
+          anlatır.
+        - >-
+          Aynı varlık farklı borsalarda farklı görünebilir: büyük bir borsada boşluksuz olan bir grafik,
+          küçük bir borsada boşluklu olabilir. Bakım kesintileri ve yeni listelenen pariteler de
+          boşluk oluşturabilir. Bu yüzden boşluk yorumlanırken hangi borsanın verisine bakıldığı
+          belirtilmelidir.
+    - type: limits
+      shows:
+        - Belirli bir fiyat alanında, o grafikte hiç işlem görülmediğini
+        - Piyasa kapalıyken ya da işlem seyrekken fiyatın ne kadar değiştiğini
+        - İleride fiyatın geri gelebileceği bir referans alanını
+      not_proves:
+        - Boşluğun dolacağını ya da ne zaman dolacağını
+        - Aynı boşluğun spot piyasada ya da diğer borsalarda da bulunduğunu
+        - Boşluk yönünde ya da tersinde bir hareketin geleceğini
+    - type: zones
+      paragraphs:
+        - >-
+          Boşluk tek bir fiyat değil, iki kenarı olan **bir fiyat alanıdır**: önceki mumun uç noktası ile
+          sonraki mumun uç noktası arasında kalır. Bu yönüyle bir bant gibi okunabilir. Boşluğun bir
+          destek ya da direnç bölgesiyle çakıştığı yerler, fiyatın geri geldiğinde tepki görebileceği
+          alanlar olarak not edilebilir.
+        - >-
+          Ancak CME boşluğu spot grafikte yoktur; spotta aynı fiyatlar işlem görmüştür. Bu yüzden spot
+          grafikteki bölgeler okunurken CME boşluğu ayrı bir bilgi olarak ele alınır, bölgenin yerine
+          geçmez.
+  confusions:
+    - id: volatility
+      text: Hızlı ve büyük bir mum yüksek volatiliteyi gösterir ama boşluk değildir; fiyat aradaki seviyelerde işlem görmüştür.
+    - id: candle-close
+      text: Kapanış ile sonraki açılış arasındaki fark boşluğun gevşek ölçüsüdür; tam boşlukta iki mumun aralıkları hiç örtüşmez.
+  key_points:
+    - Boşluk, iki mumun aralıklarının hiç örtüşmediği, işlem görülmemiş bir fiyat alanıdır.
+    - 7/24 işlem gören kripto spot grafiklerinde gerçek boşluk seyrektir.
+    - CME boşlukları vadeli piyasanın kapalı kaldığı saatlerden doğar; spot grafikte görünmez.
+    - Boşluğun dolması bir olasılıktır, kural değildir; ne zaman dolacağı belli değildir.
+  svg_labels:
+    cme: CME vadeli
+    spot: Spot (7/24)
+    gap: Boşluk
+    closed_1: Hafta sonu
+    closed_2: işlem yok
+    open_1: Hafta sonu
+    open_2: işlem sürer
+  svg_alt: "İki grafik yan yana: solda CME vadelide cuma mumlarından sonra hafta sonu işlem olmadığı için boş kalan alan ve daha yukarıda açılan pazartesi mumları; sağda spot piyasada aynı dönemin hafta sonu mumlarıyla kesintisiz devam ettiği grafik"
+  svg_caption: >-
+    Kesikli kutu, CME grafiğinde cuma mumlarının en yüksek fiyatı ile ilk yeni mumun en düşük fiyatı
+    arasındaki boşluğu gösterir. Spot grafikte aynı saatler hafta sonu mumlarıyla dolu olduğu için
+    boşluk oluşmaz.
+
+en:
+  slug: price-gaps
+  name: Price gaps
+  summary: >-
+    A price gap is when a candle opens above or below the previous candle's range without overlapping
+    it, leaving an area of price where no trading took place. Gaps are rare on crypto spot charts, which
+    trade 24/7. They are most often seen on CME Bitcoin futures, which close at weekends, and on
+    low-liquidity pairs.
+  sections:
+    - type: text
+      id: definition
+      title: What is a price gap?
+      paragraphs:
+        - >-
+          Normally each candle opens close to where the previous one closed. If a candle opens **above
+          the previous candle's high** or **below its low**, an empty space is left on the chart between
+          the two candles. That space is a **price gap**. On CME charts in particular, a gap is also
+          measured more loosely, as the distance between the previous close and the new open; saying
+          which measure you use avoids confusion.
+        - >-
+          A gap forms when price changes while the market is closed or trading is very thin. When the
+          market reopens, the first trade happens at a price far from the last one. On that timeframe,
+          no trades took place at the prices in between.
+    - type: text
+      id: crypto-spot
+      title: Why gaps are rare on crypto spot charts
+      paragraphs:
+        - >-
+          The crypto spot market trades 24/7; there is no overnight, weekend or holiday close. Because
+          price trades continuously, each candle usually opens very close to the previous close. On the
+          major pairs, a real gap on the 1H, 4H or 1D chart is therefore rare.
+        - >-
+          Even in sharp moves price passes through the levels in between; those levels show as **a long
+          body or wick**, not a gap. Moving through a zone quickly and skipping a zone without any
+          trading are different things.
+    - type: text
+      id: cme-gaps
+      title: CME Bitcoin futures gaps
+      paragraphs:
+        - >-
+          Bitcoin futures on CME follow the exchange's trading hours: they do not trade at weekends or
+          on some holidays, and there is a short break every weekday. The spot market keeps trading
+          during that time. When the futures market reopens, price opens at the level spot reached in
+          the meantime, and a gap can be left between Friday's close and the new open.
+        - >-
+          These gaps do not appear on the spot chart; the same hours are filled with ordinary candles
+          there. So a CME gap is a gap on **that exchange's chart**, not in the market as a whole.
+    - type: bullets
+      id: gap-fill
+      title: "The \"gaps get filled\" belief"
+      items:
+        - text: A common view is that price eventually returns to the area of the gap and "fills" it.
+          marker: neutral
+        - text: Many CME gaps have been filled later on. But some stayed open for a very long time, and some have not been filled to this day.
+          marker: neutral
+        - text: "**When** a gap will fill is unknown. Some fill within days, others months later, so saying \"it will fill\" carries no timing on its own."
+          marker: accent
+        - text: Filled gaps are remembered and unfilled ones forgotten. That selective memory can make the belief look more reliable than it is.
+          marker: down
+      note: >-
+        A gap filling is a possibility, not a rule. The gap area can be noted as a reference price may
+        return to; on its own it does not create an expectation of direction.
+    - type: text
+      id: low-liquidity
+      title: Gaps on low-liquidity pairs and exchanges
+      paragraphs:
+        - >-
+          On a thinly traded pair or a small exchange there may be no trades at all during a candle. If
+          the next trade comes at a distant price, the chart shows a gap or bodiless candles made of a
+          single price. These often describe **a lack of trading** rather than a price move.
+        - >-
+          The same asset can look different on different exchanges: a chart without gaps on a large
+          exchange can have gaps on a small one. Maintenance outages and newly listed pairs can create
+          gaps too. So when reading a gap, say which exchange's data you are looking at.
+    - type: limits
+      shows:
+        - That no trading took place on that chart within a certain price area
+        - How much price changed while the market was closed or trading was thin
+        - A reference area that price may come back to later
+      not_proves:
+        - That the gap will fill, or when
+        - That the same gap exists on the spot market or on other exchanges
+        - That a move in the direction of the gap, or against it, will follow
+    - type: zones
+      paragraphs:
+        - >-
+          A gap is not a single price but **an area of price** with two edges: it sits between one
+          candle's extreme and the next candle's extreme. In that sense it can be read like a band.
+          Places where a gap overlaps a support or resistance zone can be noted as areas where price may
+          react if it comes back.
+        - >-
+          A CME gap, however, does not exist on the spot chart; those prices did trade on spot. So when
+          reading zones on a spot chart, a CME gap is treated as separate information, not as a
+          replacement for the zone.
+  confusions:
+    - id: volatility
+      text: A fast, large candle shows high volatility but is not a gap; price did trade at the levels in between.
+    - id: candle-close
+      text: The distance from a close to the next open is the loose measure of a gap; in a full gap the two candles' ranges do not overlap at all.
+  key_points:
+    - A gap is an untraded area of price where the ranges of two candles do not overlap.
+    - Real gaps are rare on crypto spot charts, which trade 24/7.
+    - CME gaps come from the hours the futures market is closed; they do not show on the spot chart.
+    - A gap filling is a possibility, not a rule, and when it fills is unknown.
+  svg_labels:
+    cme: CME futures
+    spot: Spot (24/7)
+    gap: Gap
+    closed_1: Weekend,
+    closed_2: no trading
+    open_1: Weekend,
+    open_2: trading goes on
+  svg_alt: "Two charts side by side: on the left, CME futures with an empty space after Friday's candles because there is no weekend trading, and Monday's candles opening higher; on the right, the spot market showing the same period continuously with weekend candles"
+  svg_caption: >-
+    The dashed box on the CME chart marks the gap between the high of Friday's candles and the low of
+    the first new candle. On the spot chart the same hours are filled with weekend candles, so no gap
+    forms.

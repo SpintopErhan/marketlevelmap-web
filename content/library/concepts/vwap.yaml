@@ -1,0 +1,230 @@
+id: vwap
+kind: indicators
+order: 70
+related: [volume, volume-profile, moving-averages, support-and-resistance]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: vwap
+  name: VWAP (Hacim Ağırlıklı Ortalama Fiyat)
+  alt_name: Volume-Weighted Average Price (VWAP)
+  summary: >-
+    VWAP, belirli bir başlangıç noktasından bu yana işlem gören fiyatların hacimle ağırlıklandırılmış
+    ortalamasıdır. Çok hacimle işlem gören fiyatlar ortalamayı daha çok etkiler. Kriptoda seans
+    olmadığı için VWAP bir noktaya sabitlenir: çoğu zaman UTC günün başına, haftaya ya da seçilen bir
+    olaya.
+  sections:
+    - type: text
+      id: definition
+      title: VWAP hangi soruya cevap verir?
+      paragraphs:
+        - >-
+          VWAP şu soruyu cevaplar: **başlangıç noktasından bu yana işlemler ortalama hangi fiyattan
+          gerçekleşti?** Basit bir ortalamada her mum eşit ağırlık taşır. VWAP'ta ise her mum, içinde
+          gerçekleşen **hacim** kadar ağırlık taşır.
+        - >-
+          Bu yüzden VWAP, o dönemde işlem yapanların ortalama fiyatına yakın bir değerdir. Fiyat
+          VWAP'ın üzerindeyse, o dönemde işlem görmüş hacmin ağırlıklı ortalamasının üzerinde işlem
+          görüyor demektir; altındaysa tersi geçerlidir.
+    - type: steps
+      id: calculation
+      title: Nasıl hesaplanır?
+      items:
+        - title: Her mumun tipik fiyatını bul.
+          text: "Tipik fiyat = (en yüksek + en düşük + kapanış) ÷ 3."
+        - title: Hacimle çarp.
+          text: Her mumun tipik fiyatı, o mumdaki işlem hacmiyle çarpılır.
+        - title: Başlangıç noktasından bu yana topla.
+          text: Hem fiyat × hacim çarpımları hem de hacimler, çapa noktasından itibaren kümülatif olarak toplanır.
+        - title: Oranı al.
+          text: "VWAP = kümülatif (tipik fiyat × hacim) ÷ kümülatif hacim. Yeni bir çapa noktasında iki toplam da sıfırlanır."
+    - type: text
+      id: anchoring
+      title: Çapa noktası
+      paragraphs:
+        - >-
+          Seansı olan piyasalarda VWAP her gün seans açılışında sıfırlanır. Kripto 7/24 işlem gördüğü
+          için doğal bir seans başlangıcı yoktur; VWAP'ın **nereden başlayacağını** kullanıcı ya da
+          platform belirler. En yaygın seçim **UTC günün başıdır** (00:00 UTC). Haftalık VWAP
+          pazartesi 00:00 UTC'de, aylık VWAP ayın ilk gününde başlar.
+        - >-
+          **Sabitlenmiş VWAP** (anchored VWAP) ise belirli bir olaydan başlatılır: önemli bir dip ya da
+          tepe, bir kırılım mumu ya da sert bir hareketin başladığı mum. Bu durumda VWAP, o olaydan bu
+          yana işlem yapanların ortalama fiyatını gösterir. Çapa noktası değişince VWAP da değişir;
+          bu yüzden hangi noktadan başlatıldığı her zaman belirtilmelidir.
+    - type: bullets
+      id: common-readings
+      title: Genellikle nasıl okunur?
+      items:
+        - text: "**Adil değer referansı:** VWAP sık sık o dönemin \"ortalama işlem fiyatı\" olarak okunur. Fiyatın VWAP'tan uzaklaşması, ortalamadan ne kadar saptığını gösterir."
+          marker: accent
+        - text: "**VWAP'ın üzerinde:** fiyat dönemin ağırlıklı ortalamasının üzerinde kalıyor. Gün içi yükselişlerde geri çekilmeler zaman zaman VWAP'a kadar iner."
+          marker: up
+        - text: "**VWAP'ın altında:** fiyat dönemin ağırlıklı ortalamasının altında kalıyor. Düşüşlerde tepkiler zaman zaman VWAP'a kadar çıkar."
+          marker: down
+        - text: "**Etrafında gidip gelme:** fiyat VWAP'ın iki tarafında sık sık yer değiştiriyorsa, piyasa o dönem için dengededir; VWAP bir yön bilgisi vermez."
+          marker: neutral
+      note: >-
+        Çapa noktasından uzaklaştıkça kümülatif hacim büyür ve yeni mumların VWAP'a etkisi azalır. Bu
+        yüzden günün sonuna doğru VWAP daha yavaş hareket eder.
+    - type: limits
+      shows:
+        - Çapa noktasından bu yana işlemlerin hacim ağırlıklı ortalama fiyatını
+        - Fiyatın bu ortalamanın üzerinde mi altında mı işlem gördüğünü
+        - Hangi fiyatlarda daha çok hacim gerçekleştiğinin ortalamaya etkisini
+      not_proves:
+        - Fiyatın VWAP'a geri döneceğini ya da VWAP'tan tepki alacağını
+        - Tek bir doğru VWAP değeri olduğunu; sonuç çapa noktasına ve kullanılan borsanın hacmine bağlıdır
+        - Piyasanın tamamındaki işlemlerin ortalamasını; yalnızca grafiğin verisini aldığı borsayı yansıtır
+    - type: zones
+      paragraphs:
+        - >-
+          VWAP gün boyunca yer değiştiren bir ortalamadır; destek ve direnç bölgeleri ise fiyatın daha
+          önce tepki verdiği sabit alanlardır. Fiyat bir bölgeye yaklaşırken VWAP'ın bölgenin içinde ya
+          da hemen yakınında olması, iki farklı referansın aynı fiyat aralığında **üst üste geldiğini**
+          gösterir. Bu çakışma, o aralığın daha çok kişi tarafından izlendiği şeklinde okunabilir.
+        - >-
+          VWAP tek bir çizgi olsa da, fiyatın onun etrafında gidip gelmesi çoğu zaman bir bant içinde
+          olur. Bu yüzden VWAP'ı da kesin bir sınır gibi değil, bölgelerde olduğu gibi **bir alan**
+          olarak okumak daha sağlıklıdır.
+    - type: box
+      title: Hacim borsaya bağlıdır
+      text: >-
+        Kriptoda aynı varlık birçok borsada işlem görür ve her borsanın hacmi farklıdır. Bir grafikteki
+        VWAP yalnızca o grafiğin verisini aldığı borsanın hacmini kullanır; başka bir borsanın grafiğinde
+        aynı gün için biraz farklı bir VWAP görülebilir. Spot ile vadeli işlem grafiklerinin VWAP'ı da
+        birbirinden ayrıdır.
+  confusions:
+    - id: moving-averages
+      text: Hareketli ortalama son N mumu hacimden bağımsız ortalar ve pencere kayar; VWAP çapa noktasından bu yana bütün mumları hacimle ağırlıklandırır.
+    - id: volume-profile
+      text: Hacim profili hacmin hangi fiyatlarda toplandığını dağılım olarak gösterir; VWAP aynı bilgiyi tek bir ortalama fiyata indirger.
+  key_points:
+    - "VWAP = kümülatif (tipik fiyat × hacim) ÷ kümülatif hacim."
+    - Kriptoda seans yoktur; VWAP UTC güne, haftaya ya da seçilen bir olaya sabitlenir.
+    - VWAP sık sık dönemin adil değer referansı olarak okunur, ama tepki garantisi vermez.
+    - Sonuç, kullanılan borsanın hacmine bağlıdır.
+  svg_labels:
+    anchor_1: "00:00 UTC"
+    anchor_2: VWAP sıfırlanır
+    prev_1: Önceki günün
+    prev_2: VWAP'ı
+    volume: Hacim
+    vwap: Günlük VWAP
+    pull_1: Geri çekilme
+    pull_2: VWAP'a kadar
+  svg_alt: "Saatlik mumlar ve altta hacim çubukları: 00:00 UTC'de VWAP sıfırlanıyor, ardından fiyat yükseliyor, VWAP onu geriden izliyor ve fiyat geri çekilmede VWAP'a kadar iniyor"
+  svg_caption: >-
+    Dikey kesikli çizgi çapa noktasıdır (00:00 UTC). Turuncu kesikli çizgi önceki günün, turuncu
+    düz çizgi yeni günün VWAP'ıdır. Yüksek hacimli mumlar VWAP'ı daha çok etkiler.
+
+en:
+  slug: vwap
+  name: VWAP (Volume-Weighted Average Price)
+  summary: >-
+    VWAP is the volume-weighted average of the prices traded since a chosen starting point. Prices that
+    traded on heavy volume affect the average more. Crypto has no sessions, so VWAP is anchored to a
+    point: usually the start of the UTC day, the week, or a chosen event.
+  sections:
+    - type: text
+      id: definition
+      title: Which question does VWAP answer?
+      paragraphs:
+        - >-
+          VWAP answers this question: **since the starting point, at what average price have trades taken
+          place?** In a simple average every candle carries equal weight. In VWAP each candle carries as
+          much weight as the **volume** traded in it.
+        - >-
+          So VWAP is close to the average price paid by those who traded in that period. If price is above
+          VWAP, it is trading above the weighted average of the period's volume; if below, the opposite.
+    - type: steps
+      id: calculation
+      title: How it is calculated
+      items:
+        - title: Find each candle's typical price.
+          text: "Typical price = (high + low + close) ÷ 3."
+        - title: Multiply by volume.
+          text: Each candle's typical price is multiplied by the volume traded in that candle.
+        - title: Add up from the starting point.
+          text: Both the price × volume products and the volumes are summed cumulatively from the anchor point.
+        - title: Take the ratio.
+          text: "VWAP = cumulative (typical price × volume) ÷ cumulative volume. At a new anchor point both sums reset to zero."
+    - type: text
+      id: anchoring
+      title: The anchor point
+      paragraphs:
+        - >-
+          In markets with sessions, VWAP resets each day at the session open. Crypto trades 24/7, so there
+          is no natural session start; the user or the platform decides **where VWAP starts**. The most
+          common choice is **the start of the UTC day** (00:00 UTC). A weekly VWAP starts on Monday at
+          00:00 UTC, a monthly one on the first day of the month.
+        - >-
+          An **anchored VWAP** starts from a specific event instead: an important low or high, a breakout
+          candle, or the candle where a sharp move began. VWAP then shows the average price of everyone
+          who has traded since that event. Change the anchor and VWAP changes too, so the starting point
+          should always be stated.
+    - type: bullets
+      id: common-readings
+      title: How it is commonly read
+      items:
+        - text: "**Fair-value reference:** VWAP is often read as the period's \"average traded price\". How far price moves from VWAP shows how far it has strayed from that average."
+          marker: accent
+        - text: "**Above VWAP:** price is holding above the period's weighted average. In intraday rises, pullbacks sometimes come back down to VWAP."
+          marker: up
+        - text: "**Below VWAP:** price is holding below the period's weighted average. In declines, bounces sometimes come back up to VWAP."
+          marker: down
+        - text: "**Crossing back and forth:** if price keeps switching sides of VWAP, the market is balanced for the period and VWAP gives no directional information."
+          marker: neutral
+      note: >-
+        The further from the anchor point, the larger the cumulative volume and the smaller each new
+        candle's effect on VWAP. That is why VWAP moves more slowly towards the end of the day.
+    - type: limits
+      shows:
+        - The volume-weighted average price of trades since the anchor point
+        - Whether price is trading above or below that average
+        - How the prices where more volume traded pull the average
+      not_proves:
+        - That price will return to VWAP or react at it
+        - That there is a single correct VWAP; the result depends on the anchor point and the exchange's volume
+        - The average of all trades across the market; it reflects only the exchange the chart takes its data from
+    - type: zones
+      paragraphs:
+        - >-
+          VWAP is an average that moves through the day; support and resistance zones are fixed areas
+          where price has reacted before. When price approaches a zone and VWAP sits inside or just next
+          to it, two different references **overlap** in the same price range. That overlap can be read
+          as the range being watched by more people.
+        - >-
+          VWAP is a single line, but price usually moves back and forth around it within a band. So it is
+          sounder to read VWAP not as an exact limit but as **an area**, just as with zones.
+    - type: box
+      title: Volume depends on the exchange
+      text: >-
+        In crypto the same asset trades on many exchanges, and each exchange's volume is different. VWAP
+        on a chart uses only the volume of the exchange that chart takes its data from; another exchange's
+        chart can show a slightly different VWAP for the same day. Spot and futures charts have separate
+        VWAPs as well.
+  confusions:
+    - id: moving-averages
+      text: A moving average averages the last N candles regardless of volume, and its window slides; VWAP weights every candle since the anchor point by volume.
+    - id: volume-profile
+      text: Volume profile shows where volume built up across prices as a distribution; VWAP reduces the same information to one average price.
+  key_points:
+    - "VWAP = cumulative (typical price × volume) ÷ cumulative volume."
+    - Crypto has no sessions; VWAP is anchored to the UTC day, the week or a chosen event.
+    - VWAP is often read as the period's fair-value reference, but it does not guarantee a reaction.
+    - The result depends on the exchange's volume.
+  svg_labels:
+    anchor_1: "00:00 UTC"
+    anchor_2: VWAP resets
+    prev_1: Previous day's
+    prev_2: VWAP
+    volume: Volume
+    vwap: Daily VWAP
+    pull_1: Pullback
+    pull_2: to the VWAP
+  svg_alt: "Hourly candles with volume bars below: at 00:00 UTC the VWAP resets, then price rises, VWAP follows it from behind, and price pulls back down to VWAP"
+  svg_caption: >-
+    The dashed vertical line is the anchor point (00:00 UTC). The dashed orange line is the previous
+    day's VWAP and the solid orange line the new day's. High-volume candles pull VWAP more.

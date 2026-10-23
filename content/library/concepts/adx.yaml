@@ -1,0 +1,218 @@
+id: adx
+kind: indicators
+order: 90
+related: [trend, range-and-consolidation, moving-averages, indicators-basics]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: adx
+  name: ADX ve trend gücü
+  alt_name: ADX (Average Directional Index)
+  summary: >-
+    ADX, bir trendin yönünü değil, gücünü ölçen bir göstergedir. Yanında yön bilgisini taşıyan iki
+    çizgi daha çizilir: +DI ve −DI. Sorduğu soru şudur: fiyat belirgin bir yönde mi ilerliyor, yoksa
+    yönsüz bir aralıkta mı gidip geliyor?
+  sections:
+    - type: text
+      id: definition
+      title: ADX hangi soruyu yanıtlar?
+      paragraphs:
+        - >-
+          Bir grafikte fiyatın trendde mi yoksa yatay bir aralıkta mı olduğunu tepe ve diplere bakarak
+          okuyabiliriz. ADX bu okumayı **tek bir sayıya** indirger: fiyatın son dönemde ne kadar
+          tutarlı biçimde tek bir yöne genişlediğini ölçer.
+        - >-
+          ADX **yönü göstermez**. Güçlü bir yükselişte de güçlü bir düşüşte de yükselir. Yönü,
+          ADX'in hesaplandığı iki yön çizgisinden okuruz: **+DI** yukarı yönlü hareketin, **−DI**
+          aşağı yönlü hareketin payını gösterir. Bu üç çizgiye birlikte DMI (Directional Movement
+          Index) denir.
+    - type: steps
+      id: how-it-is-calculated
+      title: Nasıl hesaplanır?
+      items:
+        - title: Yönlü hareketi bul.
+          text: "Her mumda yukarı hareket = bu mumun en yükseği − önceki mumun en yükseği, aşağı hareket = önceki mumun en düşüğü − bu mumun en düşüğü. Hangisi büyükse ve sıfırdan büyükse o sayılır (+DM ya da −DM); diğeri sıfır yazılır."
+        - title: Gerçek aralığı (TR) bul.
+          text: "TR, şu üçünün en büyüğüdür: en yüksek − en düşük, en yüksek ile önceki kapanış arasındaki fark, en düşük ile önceki kapanış arasındaki fark. Bu, ATR'nin de temelidir."
+        - title: 14 dönemle yumuşat ve +DI, −DI'yi hesapla.
+          text: "+DM, −DM ve TR, Wilder yöntemiyle 14 dönem boyunca yumuşatılır. +DI = 100 × yumuşatılmış +DM / yumuşatılmış TR; −DI aynı şekilde −DM ile hesaplanır."
+        - title: DX'i ve ADX'i hesapla.
+          text: "DX = 100 × |+DI − −DI| / (+DI + −DI). ADX, DX'in yine 14 dönemlik Wilder ortalamasıdır. Bu yüzden 0 ile 100 arasında bir değer alır ve yavaş hareket eder."
+    - type: bullets
+      id: common-readings
+      title: Yaygın okumalar
+      items:
+        - text: "**ADX yaklaşık 20'nin altında:** çoğu zaman zayıf ya da belirgin olmayan bir trend, yatay bir piyasa olarak okunur."
+          marker: neutral
+        - text: "**ADX yaklaşık 25'in üzerinde:** çoğu zaman belirgin bir trendin varlığı olarak okunur. Yönü +DI ile −DI'nin hangisinin üstte olduğu gösterir."
+          marker: accent
+        - text: "**+DI −DI'nin üzerinde:** yukarı yönlü hareketler baskındır. **−DI +DI'nin üzerinde:** aşağı yönlü hareketler baskındır."
+          marker: up
+        - text: "**ADX çok yüksek seviyelerde:** trend güçlüdür, ama hareket uzun sürmüş de olabilir. Yüksek ADX tek başına trendin devam edeceğini söylemez."
+          marker: down
+      note: >-
+        20 ve 25 eşikleri yaygın kullanılan geleneklerdir, kural değildir. Farklı kaynaklar farklı
+        eşikler kullanır; ayarlar da 14 dönemin dışında seçilebilir. Varsayılan ayar ADX/DMI 14'tür.
+    - type: scenarios
+      id: rising-vs-falling
+      title: Yükselen ve düşen ADX
+      intro: ADX'in seviyesi kadar yönü de okunur. Aynı seviyedeki iki ADX, farklı tablolar anlatabilir.
+      items:
+        - title: ADX yükseliyor
+          tone: up
+          text: Fiyat bir yöne giderek daha tutarlı biçimde genişliyor. Bu, yükselişte de düşüşte de olabilir; yönü DI çizgileri gösterir.
+        - title: ADX düşüyor
+          tone: down
+          text: Trend gücünü yitiriyor ya da fiyat yataya dönüyor. Düşen ADX, trendin tersine döndüğünü değil, tutarlılığının azaldığını anlatır.
+        - title: ADX düşük ve yatay
+          tone: neutral
+          text: Fiyat belirgin bir yön olmadan gidip geliyor. DI çizgileri sık sık birbirini kesebilir; kesişmeler bu ortamda pek bir şey anlatmaz.
+    - type: limits
+      shows:
+        - Fiyatın son dönemde ne kadar tutarlı biçimde tek bir yöne genişlediğini
+        - +DI ve −DI ile, yukarı ve aşağı yönlü hareketlerden hangisinin baskın olduğunu
+        - Piyasanın trend ile yatay seyir arasında hangi tarafa yakın durduğunu
+      not_proves:
+        - Trendin devam edeceğini ya da ne kadar süreceğini
+        - Trendin başladığını zamanında; iki aşamalı yumuşatma nedeniyle ADX fiyatın gerisinden gelir
+        - Düşen ADX'in bir dönüş anlamına geldiğini; yalnızca gücün azaldığını gösterir
+    - type: zones
+      paragraphs:
+        - >-
+          ADX, bir **destek ya da direnç bölgesinin** hangi bağlamda okunacağına dair ipucu verir.
+          Düşük ADX'li yatay bir piyasada fiyat çoğu zaman aralığın kenarlarındaki bölgeler arasında
+          gidip gelir; bölgelerden tepki görülmesi bu ortamda daha olağandır.
+        - >-
+          Yükselen ADX ile ilerleyen bir trendde ise fiyat bölgelerin ötesine geçmeye daha yatkın
+          olabilir. Yine de kırılım ADX'le değil, bölgenin bant olarak okunduğunda **uzak kenarının
+          ötesindeki kapanışla** ölçülür. ADX geriden geldiği için, bir bölgeden çıkış çoğu zaman
+          ADX yükselmeden önce fiyatta görünür.
+    - type: box
+      title: Gecikme
+      text: >-
+        ADX, önce DI çizgilerini, sonra DX'i yumuşatır. Bu iki katlı ortalama, çizgiyi sakin ve
+        okunaklı yapar ama geciktirir. Bir trend başladığında ADX'in 25'in üzerine çıkması birkaç
+        mum, hatta daha fazla sürebilir; 1H grafikte saatler, 1D grafikte haftalar demektir.
+  confusions:
+    - id: trend
+      text: Trend, tepe ve diplerin sırasıyla tanımlanır ve bir yönü vardır; ADX ise yalnızca bu hareketin ne kadar tutarlı olduğunu ölçer, yönü söylemez.
+    - id: range-and-consolidation
+      text: Yatay aralık fiyatın iki bölge arasında gidip gelmesidir; düşük ADX bu durumun sayısal bir yansıması olabilir ama aralığın sınırlarını göstermez.
+  key_points:
+    - ADX trendin yönünü değil, gücünü ölçer.
+    - Yönü +DI ve −DI gösterir; varsayılan ayar 14'tür.
+    - Yaklaşık 20'nin altı zayıf, 25'in üstü trend olarak okunur; bunlar gelenektir.
+    - ADX geriden gelir; düşen ADX dönüş değil, güç kaybıdır.
+  svg_labels:
+    range: Yatay
+    trend: Trend
+    slowing: Trend yavaşlıyor
+    pane: ADX / DMI (14)
+  svg_alt: "ADX çizimi: üstte önce yatay seyreden, sonra yükselen, en sonda yataylaşan bir fiyat çizgisi; altta yatay dönemde 20'nin altında kalan, trendle birlikte yükselen ve fiyat yataylaşınca düşen ADX çizgisi ile +DI ve −DI çizgileri"
+  svg_caption: Turuncu çizgi ADX'i, yeşil çizgi +DI'yi, kırmızı çizgi −DI'yi gösterir. Kesikli yatay çizgiler 20 ve 25 eşikleridir. ADX trend boyunca yükselir ama trendin başlangıcından sonra; fiyat yataylaşınca düşer.
+
+en:
+  slug: adx
+  name: ADX and trend strength
+  summary: >-
+    ADX is an indicator that measures the strength of a trend, not its direction. Two more lines that
+    carry the direction are drawn with it: +DI and −DI. The question it asks is whether price is moving
+    clearly in one direction or going back and forth in a directionless range.
+  sections:
+    - type: text
+      id: definition
+      title: Which question does ADX answer?
+      paragraphs:
+        - >-
+          On a chart we can tell whether price is trending or moving sideways by looking at its highs
+          and lows. ADX reduces this reading to **a single number**: it measures how consistently price
+          has been extending in one direction recently.
+        - >-
+          ADX **does not show direction**. It rises in a strong uptrend and in a strong downtrend
+          alike. Direction is read from the two directional lines ADX is calculated from: **+DI** shows
+          the share of upward movement and **−DI** the share of downward movement. Together the three
+          lines are called the DMI (Directional Movement Index).
+    - type: steps
+      id: how-it-is-calculated
+      title: How it is calculated
+      items:
+        - title: Find the directional movement.
+          text: "For each candle, up move = this candle's high − the previous high, and down move = the previous low − this candle's low. Whichever is larger, and above zero, counts (+DM or −DM); the other is set to zero."
+        - title: Find the true range (TR).
+          text: "TR is the largest of three values: high − low, the distance from the high to the previous close, and the distance from the low to the previous close. This is also the basis of ATR."
+        - title: Smooth over 14 periods and calculate +DI and −DI.
+          text: "+DM, −DM and TR are smoothed over 14 periods with Wilder's method. +DI = 100 × smoothed +DM / smoothed TR; −DI is calculated the same way with −DM."
+        - title: Calculate DX and ADX.
+          text: "DX = 100 × |+DI − −DI| / (+DI + −DI). ADX is a 14-period Wilder average of DX. That is why it ranges from 0 to 100 and moves slowly."
+    - type: bullets
+      id: common-readings
+      title: Common readings
+      items:
+        - text: "**ADX below about 20:** often read as a weak or unclear trend, a sideways market."
+          marker: neutral
+        - text: "**ADX above about 25:** often read as a clear trend being in place. Which of +DI and −DI is on top shows the direction."
+          marker: accent
+        - text: "**+DI above −DI:** upward moves dominate. **−DI above +DI:** downward moves dominate."
+          marker: up
+        - text: "**ADX at very high levels:** the trend is strong, but the move may also have run for a long time. A high ADX on its own does not say the trend will continue."
+          marker: down
+      note: >-
+        The 20 and 25 thresholds are widely used conventions, not rules. Different sources use different
+        thresholds, and settings other than 14 periods can be chosen. The default setting is ADX/DMI 14.
+    - type: scenarios
+      id: rising-vs-falling
+      title: Rising and falling ADX
+      intro: The direction of ADX is read as well as its level. Two ADX readings at the same level can tell different stories.
+      items:
+        - title: ADX rising
+          tone: up
+          text: Price is extending more and more consistently in one direction. This can be up or down; the DI lines show which.
+        - title: ADX falling
+          tone: down
+          text: The trend is losing strength or price is turning sideways. A falling ADX does not mean the trend is reversing, only that it is becoming less consistent.
+        - title: ADX low and flat
+          tone: neutral
+          text: Price moves back and forth with no clear direction. The DI lines may cross each other often; crossings say little in this setting.
+    - type: limits
+      shows:
+        - How consistently price has been extending in one direction recently
+        - Through +DI and −DI, whether upward or downward moves dominate
+        - Which side of trend versus sideways the market is closer to
+      not_proves:
+        - That the trend will continue, or how long it will last
+        - That a trend has started, in good time; because of two stages of smoothing ADX lags price
+        - That a falling ADX means a reversal; it only shows strength fading
+    - type: zones
+      paragraphs:
+        - >-
+          ADX gives a hint about the context in which a **support or resistance zone** is read. In a
+          sideways market with a low ADX, price often moves between the zones at the edges of the range;
+          reactions at zones are more usual in that setting.
+        - >-
+          In a trend moving with a rising ADX, price may be more inclined to move beyond zones. Even so,
+          a breakout is measured not by ADX but by **a close beyond the far edge** of the zone, read as
+          a band. Because ADX lags, a move out of a zone often shows in price before ADX rises.
+    - type: box
+      title: Lag
+      text: >-
+        ADX smooths the DI lines first and then DX. This double averaging makes the line calm and easy
+        to read, but it also delays it. When a trend starts, it can take several candles or more for ADX
+        to climb above 25; on the 1H chart that means hours, on the 1D chart weeks.
+  confusions:
+    - id: trend
+      text: A trend is defined by the sequence of highs and lows and has a direction; ADX only measures how consistent the move is and does not give its direction.
+    - id: range-and-consolidation
+      text: A range is price moving between two zones; a low ADX can be a numerical reflection of that, but it does not show the range's boundaries.
+  key_points:
+    - ADX measures a trend's strength, not its direction.
+    - +DI and −DI show the direction; the default setting is 14.
+    - Below about 20 reads as weak, above 25 as trending; these are conventions.
+    - ADX lags; a falling ADX means fading strength, not a reversal.
+  svg_labels:
+    range: Range
+    trend: Trend
+    slowing: Trend slowing
+    pane: ADX / DMI (14)
+  svg_alt: "ADX illustration: on top a price line that first moves sideways, then rises, then flattens; below, an ADX line that stays under 20 in the sideways phase, rises with the trend and falls as price flattens, together with the +DI and −DI lines"
+  svg_caption: The orange line is ADX, the green line +DI and the red line −DI. The dashed horizontal lines are the 20 and 25 thresholds. ADX rises through the trend, but only after it has started, and falls as price flattens.

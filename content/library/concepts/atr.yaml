@@ -1,0 +1,222 @@
+id: atr
+kind: indicators
+order: 60
+related: [volatility, bollinger-bands, price-gaps, after-sharp-moves]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: atr
+  name: ATR (Ortalama Gerçek Aralık)
+  alt_name: Average True Range (ATR)
+  summary: >-
+    ATR, mumların gerçek aralığının ortalamasıdır; fiyatın bir mumda tipik olarak ne kadar oynadığını
+    fiyat birimiyle gösterir. Varsayılan ayar 14 periyottur ve Wilder yöntemiyle yumuşatılır. ATR
+    hareketin büyüklüğünü ölçer, yönünü söylemez.
+  sections:
+    - type: text
+      id: definition
+      title: ATR hangi soruya cevap verir?
+      paragraphs:
+        - >-
+          ATR şu soruyu cevaplar: **son 14 mumda fiyat bir mumda ortalama ne kadar oynadı?** Sonuç
+          fiyat birimiyle verilir. Örneğin günlük grafikte ATR 1.200 ise, son 14 günde fiyat bir günde
+          tipik olarak yaklaşık 1.200 birim oynamıştır.
+        - >-
+          ATR **yönden bağımsızdır**. Sert bir düşüş de sert bir yükseliş de ATR'yi aynı şekilde
+          artırır. Bu yüzden ATR'nin yükselmesi fiyatın yükseldiğini değil, mumların genişlediğini
+          gösterir.
+    - type: steps
+      id: calculation
+      title: Nasıl hesaplanır?
+      items:
+        - title: Her mumun gerçek aralığını bul.
+          text: "Gerçek aralık (TR) şu üç değerin en büyüğüdür: en yüksek − en düşük; |en yüksek − önceki kapanış|; |en düşük − önceki kapanış|."
+        - title: Neden üç değer?
+          text: Önceki kapanış ile bu mumun açılışı arasında boşluk varsa, yalnızca en yüksek ile en düşük arasındaki fark hareketin bir kısmını kaçırır. Son iki değer bu boşluğu da hesaba katar.
+        - title: İlk ortalamayı al.
+          text: İlk 14 mumun gerçek aralıklarının basit ortalaması ilk ATR değeridir.
+        - title: Wilder yöntemiyle yumuşat.
+          text: "Sonraki her mumda: ATR = (önceki ATR × 13 + bu mumun TR değeri) ÷ 14. Yeni değer ağırlığın yalnızca 1/14'ünü taşıdığı için ATR yavaş değişir."
+    - type: text
+      id: units
+      title: Fiyat birimi mi, yüzde mi?
+      paragraphs:
+        - >-
+          ATR fiyat birimiyle hesaplandığı için **fiyat düzeyine bağlıdır**. Fiyatı 60.000 olan bir
+          varlıkta ATR 1.200, fiyatı 2 olan bir varlıkta ATR 0,04 olabilir; iki sayı doğrudan
+          karşılaştırılamaz. Aynı varlıkta bile fiyat iki katına çıktığında ATR çoğu zaman büyür.
+        - >-
+          Bu yüzden ATR sık sık **fiyata oranlanır**: ATR ÷ kapanış × 100. Yukarıdaki iki örnekte de
+          sonuç yüzde 2'dir; yani iki varlık da bir mumda tipik olarak fiyatının yüzde 2'si kadar
+          oynamaktadır. Yüzdelik ATR, farklı varlıkları ve farklı fiyat dönemlerini karşılaştırmayı
+          kolaylaştırır.
+    - type: bullets
+      id: common-uses
+      title: Genellikle ne için kullanılır?
+      items:
+        - text: "**Dönemleri karşılaştırmak:** bugünkü ATR'yi aylar önceki ATR ile karşılaştırmak, piyasanın şu an sakin mi hareketli mi olduğunu gösterir."
+          marker: neutral
+        - text: "**Varlıkları karşılaştırmak:** yüzdelik ATR ile hangi varlığın daha çok oynadığı görülür."
+          marker: neutral
+        - text: "**Bir hareketin büyüklüğünü ölçmek:** tek bir mumun aralığını ATR'ye oranlamak, o mumun olağan mı olağan dışı mı olduğunu anlatır. ATR'nin üç katı uzunluğunda bir mum, o dönem için belirgin biçimde geniştir."
+          marker: accent
+        - text: "**Mesafeleri ifade etmek:** fiyatın bir bölgeden uzaklığı \"1,5 ATR\" gibi ATR cinsinden söylenebilir. Böylece mesafe o dönemin oynaklığıyla birlikte okunur."
+          marker: neutral
+      note: >-
+        Bu kullanımların hepsi betimleyicidir: ATR bugüne kadar ne kadar oynandığını söyler, bundan sonra
+        ne kadar oynanacağını söylemez.
+    - type: limits
+      shows:
+        - Fiyatın son 14 mumda bir mumda tipik olarak ne kadar oynadığını, fiyat birimiyle
+        - Volatilitenin artıp azaldığını
+        - Tek bir mumun ya da hareketin o dönemin olağan oynaklığına göre büyüklüğünü
+      not_proves:
+        - Fiyatın hangi yöne gideceğini; ATR yönden bağımsızdır
+        - Volatilitenin yüksek ya da düşük kalacağını
+        - Farklı fiyat düzeyindeki varlıkların doğrudan karşılaştırılabileceğini; bunun için yüzdeye çevirmek gerekir
+    - type: zones
+      paragraphs:
+        - >-
+          ATR, bir destek ya da direnç bölgesinin **ne kadar geniş göründüğünü** bağlama oturtur.
+          Kalınlığı bir ATR'nin çok altında kalan bir bant, tek bir olağan mumun içinde kolayca
+          geçilebilir; birkaç ATR genişliğindeki bir bant ise fiyatın içinde birkaç mum boyunca gidip
+          gelebileceği bir alandır.
+        - >-
+          Aynı şekilde, bölgenin ötesindeki bir kapanışın bölgeden ne kadar uzakta geldiği ATR ile
+          ifade edilebilir. Uzak kenarın yalnızca küçük bir ATR kesri ötesindeki bir kapanış, o
+          dönemin olağan oynaklığı içinde kalır. Bu, kırılımı değerlendirirken mesafeyi sabit bir
+          sayıyla değil, piyasanın o anki oynaklığıyla okumayı sağlar.
+    - type: box
+      title: Kriptoda ATR
+      text: >-
+        Kripto 7/24 işlem gördüğü için spot grafikte mumlar arasında boşluk nadirdir; açılış çoğu zaman
+        önceki kapanışa eşittir ve gerçek aralık genellikle en yüksek ile en düşük arasındaki farka
+        eşit olur. Hafta sonu kapanan piyasalarda, örneğin CME vadeli işlem grafiklerinde, boşluklar
+        daha sık görülür; orada gerçek aralığın iki ek değeri daha çok fark yaratır.
+  confusions:
+    - id: bollinger-bands
+      text: İkisi de volatiliteyi ölçer. ATR mumların aralığını kullanır ve fitilleri de hesaba katar; Bollinger Bantları yalnızca kapanışların standart sapmasını kullanır.
+    - id: volatility
+      text: Volatilite fiyatın ne kadar oynadığı kavramıdır; ATR onu ölçmenin yaygın yollarından biridir.
+  key_points:
+    - Gerçek aralık, en yüksek − en düşük ile önceki kapanışa olan iki uzaklığın en büyüğüdür.
+    - "Varsayılan ayar: 14 periyot, Wilder yöntemiyle yumuşatma."
+    - ATR hareketin büyüklüğünü ölçer, yönünü söylemez.
+    - Farklı fiyat düzeylerini karşılaştırmak için ATR fiyata oranlanır.
+  svg_labels:
+    atr: ATR (14)
+    calm: "Dar mumlar: ATR düşük"
+    wide_1: "Mumlar genişler,"
+    wide_2: ATR yükselir
+    fade: Mumlar daralınca ATR yavaşça düşer
+  svg_alt: "Üstte sakin bir dönem, ardından geniş mumlarla sert bir düşüş ve sert bir yükseliş, sonra yeniden sakin bir dönem; altta aynı dönemin ATR çizgisi"
+  svg_caption: >-
+    Alt paneldeki turuncu çizgi 14 periyotluk ATR'dir. Düşüşte de yükselişte de mumlar genişledikçe ATR
+    yükselir; mumlar yeniden küçülünce Wilder yumuşatması nedeniyle yavaş yavaş düşer.
+
+en:
+  slug: atr
+  name: ATR (Average True Range)
+  summary: >-
+    ATR is the average of the candles' true range; it shows how much price typically moves in one candle,
+    in price units. The default setting is 14 periods with Wilder smoothing. ATR measures the size of
+    moves, not their direction.
+  sections:
+    - type: text
+      id: definition
+      title: Which question does ATR answer?
+      paragraphs:
+        - >-
+          ATR answers this question: **over the last 14 candles, how much did price move in a typical
+          candle?** The result is in price units. For example, if the daily ATR is 1,200, price has
+          typically moved about 1,200 units a day over the last 14 days.
+        - >-
+          ATR is **independent of direction**. A sharp fall and a sharp rise both push ATR up in the same
+          way. So a rising ATR does not mean price is rising; it means the candles are getting wider.
+    - type: steps
+      id: calculation
+      title: How it is calculated
+      items:
+        - title: Find each candle's true range.
+          text: "The true range (TR) is the largest of three values: high − low; |high − previous close|; |low − previous close|."
+        - title: Why three values?
+          text: If there is a gap between the previous close and this candle's open, high minus low alone misses part of the move. The last two values take that gap into account.
+        - title: Take the first average.
+          text: The simple average of the first 14 true ranges is the first ATR value.
+        - title: Smooth it with Wilder's method.
+          text: "For each later candle: ATR = (previous ATR × 13 + this candle's TR) ÷ 14. A new value carries only 1/14 of the weight, so ATR changes slowly."
+    - type: text
+      id: units
+      title: Price units or percent?
+      paragraphs:
+        - >-
+          Because ATR is calculated in price units, **it depends on the price level**. An asset priced at
+          60,000 might have an ATR of 1,200 and one priced at 2 an ATR of 0.04; the two numbers cannot be
+          compared directly. Even for the same asset, ATR often grows when price doubles.
+        - >-
+          That is why ATR is often **divided by price**: ATR ÷ close × 100. In both examples above the
+          result is 2%, so both assets typically move about 2% of their price in a candle. Percentage ATR
+          makes it easier to compare different assets and different price periods.
+    - type: bullets
+      id: common-uses
+      title: What it is commonly used for
+      items:
+        - text: "**Comparing periods:** setting today's ATR against the ATR of months ago shows whether the market is quiet or active right now."
+          marker: neutral
+        - text: "**Comparing assets:** percentage ATR shows which asset moves more."
+          marker: neutral
+        - text: "**Sizing a move:** dividing a single candle's range by ATR tells you whether that candle is ordinary or unusual. A candle three times the ATR is clearly wide for that period."
+          marker: accent
+        - text: "**Expressing distances:** the distance of price from a zone can be stated in ATR terms, such as \"1.5 ATR\". The distance is then read together with the volatility of the period."
+          marker: neutral
+      note: >-
+        All of these uses are descriptive: ATR tells you how much price has moved so far, not how much
+        it will move next.
+    - type: limits
+      shows:
+        - How much price has typically moved per candle over the last 14 candles, in price units
+        - That volatility is rising or falling
+        - How large a single candle or move is compared with the usual variability of the period
+      not_proves:
+        - Which way price will go; ATR is independent of direction
+        - That volatility will stay high or low
+        - That assets at different price levels can be compared directly; that needs a conversion to percent
+    - type: zones
+      paragraphs:
+        - >-
+          ATR puts **how wide a support or resistance zone looks** into context. A band much thinner than
+          one ATR can easily be crossed within a single ordinary candle; a band several ATRs wide is an
+          area price can move back and forth in for several candles.
+        - >-
+          In the same way, how far beyond a zone a close came can be expressed in ATR. A close only a
+          small fraction of an ATR beyond the far edge stays within the usual variability of the period.
+          This lets you read the distance when judging a breakout against the market's current
+          volatility rather than as a fixed number.
+    - type: box
+      title: ATR in crypto
+      text: >-
+        Crypto trades 24/7, so gaps between candles are rare on spot charts; the open usually equals the
+        previous close and the true range is usually just high minus low. On markets that close at the
+        weekend, such as CME futures charts, gaps are more common, and there the two extra values of the
+        true range make more of a difference.
+  confusions:
+    - id: bollinger-bands
+      text: Both measure volatility. ATR uses the candles' range, wicks included; Bollinger Bands use only the standard deviation of closes.
+    - id: volatility
+      text: Volatility is the idea of how much price moves; ATR is one of the common ways of measuring it.
+  key_points:
+    - The true range is the largest of high − low and the two distances from the previous close.
+    - "Default setting: 14 periods with Wilder smoothing."
+    - ATR measures the size of moves, not their direction.
+    - To compare different price levels, ATR is divided by price.
+  svg_labels:
+    atr: ATR (14)
+    calm: "Narrow candles: low ATR"
+    wide_1: "Candles widen,"
+    wide_2: ATR rises
+    fade: "As candles narrow, ATR eases slowly"
+  svg_alt: "Above, a quiet period, then a sharp fall and a sharp rise with wide candles, then another quiet period; below, the ATR line for the same period"
+  svg_caption: >-
+    The orange line in the lower pane is the 14-period ATR. It rises as the candles widen, in the fall
+    and the rise alike; once the candles shrink again it eases only slowly because of Wilder smoothing.

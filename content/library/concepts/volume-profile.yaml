@@ -1,0 +1,233 @@
+id: volume-profile
+kind: volume-volatility
+order: 40
+related: [volume, support-and-resistance, range-and-consolidation, vwap]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: hacim-profili
+  name: Hacim profili (POC, VAH, VAL)
+  alt_name: Volume profile
+  summary: >-
+    Hacim profili, seçilen bir dönemde işlem gören hacmi zamana göre değil, fiyata göre dağıtır.
+    Grafiğin yanında yatay çubuklar olarak çizilir. En çok işlem gören fiyat POC, hacmin büyük
+    kısmının toplandığı aralık ise değer alanıdır (VAH ile VAL arası).
+  sections:
+    - type: text
+      id: definition
+      title: Hacim profili nedir?
+      paragraphs:
+        - >-
+          Normal hacim çubukları her mumun altında durur ve **hangi zamanda** ne kadar işlem yapıldığını
+          gösterir. Hacim profili aynı işlemleri **hangi fiyatta** yapıldıklarına göre toplar. Fiyat
+          ekseni eşit aralıklı satırlara bölünür ve her satırda işlem gören hacim yatay bir çubukla
+          gösterilir.
+        - >-
+          Profil her zaman **seçilen bir dönem** için hesaplanır: bir gün, bir hafta, ekranda görünen
+          aralık ya da elle seçilen bir başlangıç ve bitiş. Kripto 7/24 işlem gördüğü için borsa
+          seansı yoktur; günlük profiller çoğu zaman UTC gününe göre ayrılır.
+    - type: bullets
+      id: terms
+      title: Temel kavramlar
+      items:
+        - text: "**POC (Point of Control):** seçilen dönemde en çok hacmin işlem gördüğü fiyat satırı."
+          marker: accent
+        - text: "**Değer alanı (Value Area):** POC'tan başlayarak her iki yöne genişletilen ve toplam hacmin belirli bir payını içeren fiyat aralığı. Yaygın ayar **%70**'tir."
+          marker: neutral
+        - text: "**VAH (Value Area High) / VAL (Value Area Low):** değer alanının üst ve alt sınırı."
+          marker: neutral
+        - text: "**Yüksek hacim düğümü (HVN):** profilde belirgin biçimde kalın olan bölüm; fiyatın uzun süre işlem gördüğü yer."
+          marker: neutral
+        - text: "**Düşük hacim düğümü (LVN):** profilde ince kalan bölüm; fiyatın hızlı geçtiği, az işlem gördüğü yer."
+          marker: neutral
+      note: >-
+        %70 bir kural değil, gelenekten gelen yaygın bir ayardır. Platformlar değer alanını
+        hesaplarken satırları ekleme sırasında küçük farklar gösterebilir; bu yüzden aynı dönemin
+        VAH ve VAL değerleri iki platformda birebir aynı olmayabilir.
+    - type: steps
+      id: how-to-read
+      title: Grafikte nasıl okunur?
+      items:
+        - title: Dönemi seç.
+          text: Profilin hangi dönemi kapsadığını belirle. Dönemi değiştirmek POC'u ve değer alanını tamamen değiştirebilir.
+        - title: POC'u ve değer alanını bul.
+          text: En uzun satır POC'tur. VAH ve VAL, hacmin büyük kısmının hangi fiyat aralığında toplandığını gösterir.
+        - title: Düğümleri işaretle.
+          text: Kalın bölümler fiyatın kabul gördüğü, ince bölümler fiyatın hızla geçtiği aralıklardır.
+        - title: Fiyatın şimdiki yerine bak.
+          text: Fiyatın değer alanının içinde mi, üzerinde mi, altında mı işlem gördüğü, seçilen döneme göre nerede durduğunu anlatır.
+    - type: scenarios
+      id: price-and-value-area
+      title: Fiyat ve değer alanı
+      intro: Fiyatın değer alanına göre konumu genellikle şöyle okunur. Her biri bir eğilimdir, sonuç değildir.
+      items:
+        - title: Fiyat değer alanının üzerinde
+          tone: up
+          text: Fiyat, dönemin en çok işlem gören aralığının üzerinde kabul görmeye çalışmaktadır. Değer alanının yukarı kayabileceği şeklinde okunabilir.
+        - title: Fiyat değer alanının içinde
+          tone: neutral
+          text: Fiyat, dönemin büyük bölümünde işlem gördüğü aralıktadır. Bu aralıkta hareketler çoğu zaman yataylaşır ve POC çevresinde yavaşlar.
+        - title: Fiyat değer alanının altında
+          tone: down
+          text: Fiyat, dönemin en çok işlem gören aralığının altında kabul görmeye çalışmaktadır. Değer alanının aşağı kayabileceği şeklinde okunabilir.
+    - type: limits
+      shows:
+        - Seçilen dönemde hangi fiyatlarda daha çok, hangilerinde daha az işlem yapıldığını
+        - Fiyatın uzun süre kaldığı ve hızla geçtiği aralıkları
+        - Fiyatın şimdi bu döneme göre nerede durduğunu
+      not_proves:
+        - Fiyatın POC'a ya da değer alanına geri döneceğini
+        - Yüksek hacim düğümünün bir sonraki gelişte tepki üreteceğini
+        - Tüm piyasanın hacim dağılımını; profil tek bir borsanın ya da veri kaynağının verisinden hesaplanır
+    - type: zones
+      paragraphs:
+        - >-
+          Yüksek hacim düğümleri çoğu zaman fiyatın bir süre **yatay işlem gördüğü** aralıklara denk
+          gelir. Destek ve direnç bölgeleri de sık sık bu aralıkların kenarlarında oluşur. Bir bölgenin
+          bir hacim düğümüyle örtüşmesi, o fiyatların geçmişte yoğun işlem gördüğünü gösteren ek bir
+          bilgidir.
+        - >-
+          Profil de tek tek çizgiler değil, **fiyat aralıkları** gösterir: bir düğüm bir bant
+          kalınlığındadır. Bu yüzden POC'u ya da bir düğümü tek bir fiyat gibi değil, bölgeler gibi
+          bir bant olarak okumak daha sağlıklıdır.
+    - type: box
+      title: Veri sınırları
+      text: >-
+        Birçok grafik platformu profili gerçek işlem kayıtlarından değil, daha küçük zaman dilimindeki
+        mumlardan yaklaşık olarak hesaplar: her mumun hacmini en yüksek ile en düşük fiyatı arasına
+        dağıtır. Satır sayısı ya da satır genişliği değişince profilin şekli de değişir. Kriptoda
+        profil yalnızca seçilen borsanın hacmini yansıtır; spot ve türev profilleri farklı olabilir.
+  confusions:
+    - id: volume
+      text: Hacim çubukları işlemleri zamana göre, hacim profili fiyata göre dağıtır.
+    - id: vwap
+      text: VWAP hacimle ağırlıklandırılmış ortalama fiyattır ve tek bir çizgidir; POC ise en çok hacmin işlem gördüğü fiyat satırıdır. İkisi çoğu zaman farklı yerdedir.
+  key_points:
+    - Hacim profili, hacmi zamana göre değil fiyata göre gösterir.
+    - POC en çok işlem gören fiyat, değer alanı hacmin genellikle %70'ini içeren aralıktır.
+    - Kalın düğümler fiyatın kaldığı, ince düğümler hızla geçtiği aralıklardır.
+    - Profil, seçilen döneme ve veri kaynağına göre değişir.
+  svg_labels:
+    time: Mumlar (zamana göre)
+    profile: Fiyata göre hacim
+    poc: POC
+    vah: VAH
+    val: VAL
+    hvn: HVN
+    lvn: LVN
+    va: Kesikli çizgiler arası, değer alanı (toplam hacmin %70'i)
+  svg_alt: "Hacim profili çizimi: solda önce dar bir aralıkta, sonra hızlı bir yükselişin ardından daha yüksek bir aralıkta işlem gören mumlar; sağda fiyata göre yatay hacim çubukları, en uzun çubuk turuncu POC olarak işaretli, değer alanı üstteki aralığı kapsıyor ve VAH ile VAL çizgileriyle sınırlı"
+  svg_caption: Sağdaki yatay çubuklar her fiyat satırında işlem gören hacmi gösterir. Turuncu çubuk ve noktalı çizgi POC'u, kesikli çizgiler VAH ve VAL'ı gösterir. Hızlı yükselişin geçtiği fiyatlarda çubuklar incedir (LVN); alttaki aralık değer alanının dışında kalan ikinci bir yüksek hacim düğümüdür (HVN).
+
+en:
+  slug: volume-profile
+  name: Volume profile (POC, VAH, VAL)
+  summary: >-
+    A volume profile spreads the volume traded over a chosen period by price instead of by time. It is
+    drawn as horizontal bars beside the chart. The price with the most trading is the POC, and the range
+    holding most of the volume is the value area (between VAH and VAL).
+  sections:
+    - type: text
+      id: definition
+      title: What is a volume profile?
+      paragraphs:
+        - >-
+          Ordinary volume bars sit under each candle and show how much was traded **at what time**. A
+          volume profile adds up the same trades by **the price they took place at**. The price axis is
+          split into equal rows, and the volume traded in each row is shown as a horizontal bar.
+        - >-
+          A profile is always worked out for **a chosen period**: a day, a week, the range visible on
+          screen, or a start and end picked by hand. Crypto trades 24/7, so there is no exchange
+          session; daily profiles are usually split by the UTC day.
+    - type: bullets
+      id: terms
+      title: Key terms
+      items:
+        - text: "**POC (point of control):** the price row where the most volume traded in the chosen period."
+          marker: accent
+        - text: "**Value area:** the price range built outwards from the POC in both directions until it holds a set share of total volume. The common setting is **70%**."
+          marker: neutral
+        - text: "**VAH (value area high) / VAL (value area low):** the upper and lower edges of the value area."
+          marker: neutral
+        - text: "**High volume node (HVN):** a clearly thick part of the profile; where price traded for a long time."
+          marker: neutral
+        - text: "**Low volume node (LVN):** a thin part of the profile; where price moved through quickly and little was traded."
+          marker: neutral
+      note: >-
+        70% is not a rule but a common setting that comes from tradition. Platforms can differ slightly
+        in the order they add rows when building the value area, so the VAH and VAL of the same period
+        may not match exactly on two platforms.
+    - type: steps
+      id: how-to-read
+      title: How to read it on a chart
+      items:
+        - title: Choose the period.
+          text: Decide which period the profile covers. Changing the period can change the POC and the value area completely.
+        - title: Find the POC and the value area.
+          text: The longest row is the POC. VAH and VAL show the price range where most of the volume gathered.
+        - title: Mark the nodes.
+          text: Thick parts are ranges where price was accepted; thin parts are ranges price moved through quickly.
+        - title: Look at where price is now.
+          text: Whether price is trading inside, above or below the value area tells you where it stands relative to the chosen period.
+    - type: scenarios
+      id: price-and-value-area
+      title: Price and the value area
+      intro: Price's position relative to the value area is usually read as follows. Each is a tendency, not an outcome.
+      items:
+        - title: Price above the value area
+          tone: up
+          text: Price is trying to find acceptance above the range where the period traded most. It can be read as the value area possibly shifting higher.
+        - title: Price inside the value area
+          tone: neutral
+          text: Price is in the range where it traded for most of the period. Moves here often turn sideways and slow down around the POC.
+        - title: Price below the value area
+          tone: down
+          text: Price is trying to find acceptance below the range where the period traded most. It can be read as the value area possibly shifting lower.
+    - type: limits
+      shows:
+        - At which prices more, and at which less, was traded in the chosen period
+        - The ranges where price stayed for a long time and those it moved through quickly
+        - Where price stands now relative to that period
+      not_proves:
+        - That price will return to the POC or the value area
+        - That a high volume node will draw a reaction next time price gets there
+        - The volume distribution of the whole market; a profile is worked out from one exchange or data source
+    - type: zones
+      paragraphs:
+        - >-
+          High volume nodes often line up with ranges where price **traded sideways** for a while.
+          Support and resistance zones often form at the edges of those ranges too. A zone lining up
+          with a volume node is extra information that those prices saw heavy trading in the past.
+        - >-
+          A profile shows **price ranges**, not single lines either: a node is as thick as a band. So
+          it is sounder to read the POC or a node not as a single price but as a band, the same way as
+          zones.
+    - type: box
+      title: Data limits
+      text: >-
+        Many charting platforms work out the profile not from actual trade records but approximately,
+        from candles on a smaller timeframe: they spread each candle's volume between its high and low.
+        Changing the number or height of the rows changes the profile's shape. In crypto a profile only
+        reflects the chosen exchange's volume; spot and derivatives profiles can differ.
+  confusions:
+    - id: volume
+      text: Volume bars spread trading over time; a volume profile spreads it over price.
+    - id: vwap
+      text: VWAP is the volume-weighted average price and a single line; the POC is the price row where the most volume traded. The two are often in different places.
+  key_points:
+    - A volume profile shows volume by price, not by time.
+    - The POC is the most traded price; the value area is the range holding usually 70% of the volume.
+    - Thick nodes are ranges where price stayed, thin nodes ranges it moved through quickly.
+    - The profile changes with the chosen period and data source.
+  svg_labels:
+    time: Candles over time
+    profile: Volume by price
+    poc: POC
+    vah: VAH
+    val: VAL
+    hvn: HVN
+    lvn: LVN
+    va: Between the dashed lines, the value area (70% of total volume)
+  svg_alt: "Volume profile illustration: on the left, candles trade in a narrow range, then rise quickly and trade in a higher range; on the right, horizontal volume bars by price, with the longest bar marked in orange as the POC and the value area covering the upper range between the VAH and VAL lines"
+  svg_caption: The horizontal bars on the right show the volume traded in each price row. The orange bar and dotted line mark the POC, and the dashed lines VAH and VAL. The bars are thin at the prices the quick rise moved through (LVN); the lower range is a second high volume node (HVN) outside the value area.

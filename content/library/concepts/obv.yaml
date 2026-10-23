@@ -1,0 +1,196 @@
+id: obv
+kind: indicators
+order: 80
+related: [volume, price-volume-relationship, divergence, indicators-basics]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: obv
+  name: OBV (Denge İşlem Hacmi)
+  alt_name: On-Balance Volume (OBV)
+  summary: >-
+    OBV, hacmi kapanışın yönüne göre biriktiren bir göstergedir: kapanış yükseldiğinde mumun hacmi
+    eklenir, düştüğünde çıkarılır. Sorduğu soru şudur: hacim, fiyatın yönüyle aynı tarafta mı
+    birikiyor? Önemli olan OBV'nin mutlak değeri değil, eğimidir.
+  sections:
+    - type: text
+      id: definition
+      title: OBV hangi soruyu yanıtlar?
+      paragraphs:
+        - >-
+          Hacim tek başına her mumda ne kadar işlem yapıldığını gösterir, ama yön bilgisi taşımaz.
+          OBV, hacme **kapanışın yönünü** ekler. Kapanışı bir öncekinden yüksek olan mumların hacmi
+          artı, düşük olanlarınki eksi sayılır ve bunlar üst üste toplanır.
+        - >-
+          Böylece tek bir çizgi elde edilir. Bu çizgi yükseliyorsa, son dönemde yükselişle kapanan
+          mumların hacmi düşüşle kapananlarınkinden fazladır. Düşüyorsa tersi geçerlidir. OBV,
+          **fiyat hareketinin hacimle desteklenip desteklenmediğine** dair kaba bir ölçüdür.
+    - type: steps
+      id: how-it-is-calculated
+      title: Nasıl hesaplanır?
+      items:
+        - title: Bir başlangıç değeri seç.
+          text: OBV genellikle sıfırdan ya da serinin ilk mumundan başlatılır. Başlangıç noktası keyfidir; bu yüzden çizginin seviyesi değil, yönü okunur.
+        - title: Kapanışı bir öncekiyle karşılaştır.
+          text: "Kapanış bir önceki kapanıştan yüksekse: OBV = önceki OBV + bu mumun hacmi."
+        - title: Düşüşte hacmi çıkar.
+          text: "Kapanış bir önceki kapanıştan düşükse: OBV = önceki OBV − bu mumun hacmi. Kapanış aynıysa OBV değişmez."
+        - title: Her mumda tekrarla.
+          text: Sonuç, hacmin yön işaretiyle biriktirildiği bir çizgidir. Mumun ne kadar yükseldiği önemli değildir; yalnızca yönü ve hacmi hesaba girer.
+    - type: bullets
+      id: how-it-is-read
+      title: Nasıl okunur?
+      items:
+        - text: "**Eğim, değer değil:** OBV'nin 1,2 milyon ya da eksi 300 bin olması tek başına bir şey anlatmaz. Çizginin yükselen ya da alçalan tepe ve dipler yapması okunur."
+          marker: accent
+        - text: "**Teyit:** fiyat yükselen tepe ve dipler yaparken OBV de aynı yapıyı çiziyorsa, hareket hacimle uyumlu olarak okunur."
+          marker: up
+        - text: "**Uyumsuzluk:** fiyat yeni bir tepe yaparken OBV önceki tepesinin altında kalıyorsa, yükselişin daha az hacimle geldiği düşünülebilir."
+          marker: down
+        - text: "**Yatay fiyat, eğimli OBV:** fiyat bir aralıkta gidip gelirken OBV belirgin biçimde bir yöne ilerliyorsa, hacmin hangi yöndeki mumlarda yoğunlaştığı izlenebilir."
+          marker: neutral
+      note: >-
+        Bunlar yaygın okuma biçimleridir, kural değildir. OBV'yi fiyatla karşılaştırırken aynı zaman
+        dilimine ve aynı tepe ve diplere bakmak gerekir.
+    - type: limits
+      shows:
+        - Seçilen dönemde hacmin ağırlıklı olarak yükselişle mi düşüşle mi kapanan mumlarda biriktiğini
+        - Fiyatın tepe ve dipleriyle OBV'nin tepe ve diplerinin aynı yönde olup olmadığını
+        - Fiyat hareketinin hacimle ne ölçüde uyumlu olduğuna dair kaba bir resmi
+      not_proves:
+        - Kimin alıp kimin sattığını; her işlemin bir alıcısı ve bir satıcısı vardır
+        - Fiyatın OBV'nin yönünde ilerleyeceğini ya da bir uyumsuzluğun ne zaman sonuç vereceğini
+        - Mumun içindeki hacim dağılımını; çok küçük bir yükselişle kapanan mum da hacminin tamamını artı yazar
+    - type: box
+      title: Kriptoda hacim borsaya bağlıdır
+      text: >-
+        Kripto piyasasında tek bir merkezi hacim verisi yoktur. Her borsa kendi hacmini raporlar; spot
+        ve vadeli piyasaların hacmi de birbirinden farklıdır. Aynı varlığın OBV'si iki borsada farklı
+        eğimler çizebilir. OBV'yi okurken hangi borsanın ve hangi piyasanın verisine bakıldığını
+        belirtmek, karşılaştırmayı anlamlı kılar.
+    - type: zones
+      paragraphs:
+        - >-
+          OBV, bir **destek ya da direnç bölgesindeki** hareketin hacimle desteklenip desteklenmediğine
+          ek bir bakış sunar. Fiyat bir direnç bölgesine yaklaşırken OBV de yükselen dipler yapıyorsa,
+          yaklaşım hacimle uyumlu okunur. Fiyat bölgeyi zorlarken OBV yatay kalıyorsa, hareketin
+          arkasındaki hacmin zayıfladığı düşünülebilir.
+        - >-
+          Ama bölgeyi okumanın ölçüsü yine fiyattır. Kırılımı ya da reddi belirleyen, bölgenin bant
+          olarak okunduğunda **uzak kenarına göre kapanıştır**. OBV bu okumaya bağlam ekler; onun
+          yerine geçmez.
+  confusions:
+    - id: volume
+      text: Hacim her mumda işlem gören ham miktardır; OBV ise bu hacmi kapanışın yönüne göre üst üste toplayan bir göstergedir.
+    - id: divergence
+      text: OBV'nin fiyatla aynı tepe ve dipleri yapmaması bir uyumsuzluktur; uyumsuzluğun nasıl okunduğu ve neden zamanlama sinyali olmadığı o sayfada anlatılır.
+  key_points:
+    - OBV, kapanış yükselince hacmi ekler, düşünce çıkarır.
+    - Mutlak değer değil, eğim ve tepe-dip yapısı okunur.
+    - Fiyatla aynı yönde ilerlemesi teyit, ayrışması uyumsuzluk olarak okunur.
+    - Kriptoda hacim borsaya bağlıdır; hangi verinin kullanıldığını belirt.
+  svg_labels:
+    price: Fiyat ve hacim
+    volume: Hacim
+    price_1: Yükselen
+    price_2: dipler
+    obv_1: OBV de
+    obv_2: yükseliyor
+  svg_alt: "OBV çizimi: üstte yükselen tepe ve dipler yapan bir fiyat çizgisi ve altında yükselişte yeşil, düşüşte kırmızı hacim çubukları; alt panelde aynı yönde yükselen dipler yapan OBV çizgisi"
+  svg_caption: Yeşil çubuklar OBV'ye eklenen, kırmızı çubuklar çıkarılan hacmi gösterir. Noktalar geri çekilmelerin diplerini, kesikli çizgiler fiyatın ve OBV'nin eğimini gösterir; iki eğim aynı yöndedir.
+
+en:
+  slug: obv
+  name: OBV (On-Balance Volume)
+  summary: >-
+    OBV is an indicator that accumulates volume by the direction of the close: a candle's volume is
+    added when the close rises and subtracted when it falls. The question it asks is whether volume is
+    building up on the same side as price. What matters is the slope of OBV, not its absolute value.
+  sections:
+    - type: text
+      id: definition
+      title: Which question does OBV answer?
+      paragraphs:
+        - >-
+          Volume on its own shows how much was traded in each candle, but it carries no direction. OBV
+          adds **the direction of the close** to volume. The volume of candles that close above the
+          previous close counts as plus, the volume of those that close below counts as minus, and
+          these are added up one after another.
+        - >-
+          The result is a single line. If it is rising, recent candles that closed higher have had
+          more volume than those that closed lower. If it is falling, the opposite holds. OBV is a
+          rough measure of **whether a price move is backed by volume**.
+    - type: steps
+      id: how-it-is-calculated
+      title: How it is calculated
+      items:
+        - title: Choose a starting value.
+          text: OBV usually starts from zero or from the first candle of the series. The starting point is arbitrary, which is why the direction of the line is read, not its level.
+        - title: Compare the close with the previous one.
+          text: "If the close is above the previous close: OBV = previous OBV + this candle's volume."
+        - title: Subtract volume on a lower close.
+          text: "If the close is below the previous close: OBV = previous OBV − this candle's volume. If the close is unchanged, OBV stays the same."
+        - title: Repeat for every candle.
+          text: The result is a line in which volume is accumulated with a sign for direction. How far the candle moved does not matter; only its direction and volume go into the sum.
+    - type: bullets
+      id: how-it-is-read
+      title: How it is read
+      items:
+        - text: "**Slope, not value:** an OBV of 1.2 million or minus 300,000 says nothing on its own. What is read is whether the line makes rising or falling highs and lows."
+          marker: accent
+        - text: "**Confirmation:** if price makes higher highs and lows and OBV draws the same structure, the move is read as consistent with volume."
+          marker: up
+        - text: "**Divergence:** if price makes a new high while OBV stays below its previous high, the rise may be coming on less volume."
+          marker: down
+        - text: "**Flat price, sloping OBV:** if price moves back and forth in a range while OBV clearly trends one way, you can watch which direction of candles the volume is concentrating in."
+          marker: neutral
+      note: >-
+        These are common ways of reading it, not rules. When comparing OBV with price, look at the same
+        timeframe and the same highs and lows.
+    - type: limits
+      shows:
+        - Whether, over the chosen period, volume has built up mostly in candles closing higher or lower
+        - Whether the highs and lows of OBV move in the same direction as those of price
+        - A rough picture of how far a price move is consistent with volume
+      not_proves:
+        - Who is buying and who is selling; every trade has a buyer and a seller
+        - That price will move in the direction of OBV, or when a divergence will play out
+        - How volume was spread within the candle; a candle closing only slightly higher still counts all its volume as plus
+    - type: box
+      title: In crypto, volume depends on the exchange
+      text: >-
+        There is no single central volume figure in crypto. Each exchange reports its own volume, and
+        spot and futures volumes differ too. The OBV of the same asset can draw different slopes on two
+        exchanges. Saying which exchange and which market the data comes from makes a comparison
+        meaningful.
+    - type: zones
+      paragraphs:
+        - >-
+          OBV adds a second view of whether a move at a **support or resistance zone** is backed by
+          volume. If price approaches a resistance zone while OBV also makes higher lows, the approach
+          reads as consistent with volume. If OBV stays flat while price presses into the zone, the
+          volume behind the move may be fading.
+        - >-
+          But the measure for reading the zone is still price. What decides a breakout or a rejection
+          is **the close relative to the far edge** of the zone, read as a band. OBV adds context to
+          that reading; it does not replace it.
+  confusions:
+    - id: volume
+      text: Volume is the raw amount traded in each candle; OBV is an indicator that adds that volume up by the direction of the close.
+    - id: divergence
+      text: OBV not making the same highs and lows as price is a divergence; how divergence is read, and why it is not a timing signal, is covered on that page.
+  key_points:
+    - OBV adds volume on a higher close and subtracts it on a lower close.
+    - Read the slope and the highs and lows, not the absolute value.
+    - Moving with price reads as confirmation; parting from it reads as divergence.
+    - In crypto, volume depends on the exchange; say which data you use.
+  svg_labels:
+    price: Price and volume
+    volume: Volume
+    price_1: Higher
+    price_2: lows
+    obv_1: OBV rises
+    obv_2: as well
+  svg_alt: "OBV illustration: on top a price line making higher highs and lows with volume bars below it, green on higher closes and red on lower closes; in the lower pane an OBV line making higher lows in the same direction"
+  svg_caption: Green bars show volume added to OBV and red bars volume subtracted from it. The dots mark the lows of the pullbacks and the dashed lines the slope of price and of OBV; both slopes point the same way.

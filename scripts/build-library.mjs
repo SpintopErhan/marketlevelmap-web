@@ -157,6 +157,7 @@ function loadSvg(where, id) {
     if (!/^<svg[^>]*\sviewBox="/.test(svg)) fail(`svg/${id}.svg`, "needs a viewBox");
     if (/^<svg[^>]*\s(width|height)=/.test(svg)) fail(`svg/${id}.svg`, "must not set width or height");
     if (/#[0-9a-f]{3,8}\b|font-family=/i.test(svg)) fail(`svg/${id}.svg`, "use the colour/text classes instead of fixed colours or fonts (see content/library/README.md)");
+    if (/\spoints="[^"]*[^\d\s.,"-]/.test(svg)) fail(`svg/${id}.svg`, "points must contain only numbers");
   }
   return svg;
 }

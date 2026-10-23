@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <line class="s-guide" x1="20" y1="174" x2="540" y2="174" stroke-width="1" opacity="0.5"/>
+  <line class="s-guide" x1="30" y1="225" x2="470" y2="225" stroke-width="1" stroke-dasharray="4 4"/>
+  <line class="s-guide" x1="30" y1="263" x2="470" y2="263" stroke-width="1" stroke-dasharray="4 4"/>
+  <g class="t-guide t-mono" font-size="10" text-anchor="end">
+    <text x="25" y="228">70</text>
+    <text x="25" y="266">30</text>
+  </g>
+  <line class="s-guide" x1="113" y1="46" x2="113" y2="204" stroke-width="1" stroke-dasharray="2 4"/>
+  <line class="s-guide" x1="363" y1="36" x2="363" y2="219" stroke-width="1" stroke-dasharray="2 4"/>
+  <polyline class="s-line" points="30,150 42,134 54,122 66,108 78,92 89,77 101,62 113,47 125,54 137,60 149,68 161,77 173,83 185,92 196,102 208,110 220,106 232,103 244,92 256,86 268,77 280,67 292,67 304,65 315,58 327,53 339,48 351,47 363,36 375,36 387,45 399,53 411,60 422,67 434,74 446,84 458,92 470,101" fill="none" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline class="s-accent" points="30,241 42,226 54,219 66,214 78,210 89,208 101,206 113,204 125,210 137,215 149,221 161,227 173,231 185,236 196,241 208,246 220,243 232,242 244,237 256,235 268,232 280,228 292,228 304,227 315,225 327,223 339,222 351,221 363,219 375,219 387,226 399,232 411,237 422,241 434,245 446,250 458,254 470,257" fill="none" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <line class="s-up" x1="113" y1="46" x2="363" y2="36" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <line class="s-down" x1="113" y1="204" x2="363" y2="219" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <g class="f-point"><circle cx="113" cy="46" r="3.5"/><circle cx="363" cy="36" r="3.5"/><circle cx="113" cy="204" r="3.5"/><circle cx="363" cy="219" r="3.5"/></g>
+  <text class="t-label" x="30" y="22">{{price}}</text>
+  <text class="t-accent" x="30" y="192">RSI (14)</text>
+  <g class="t-label">
+    <text x="388" y="16">{{hh_1}}</text>
+    <text x="388" y="30">{{hh_2}}</text>
+    <text x="388" y="200">{{lh_1}}</text>
+    <text x="388" y="216">{{lh_2}}</text>
+  </g>
+</svg>

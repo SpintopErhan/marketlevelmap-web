@@ -1,0 +1,205 @@
+id: indicators-basics
+kind: indicators
+order: 10
+related: [moving-averages, rsi, macd, volume]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: gostergeler-nedir
+  name: Göstergeler nedir, sınırları neler?
+  alt_name: Technical indicators
+  summary: >-
+    Teknik gösterge, fiyat ve hacim verisinden bir formülle hesaplanan çizgi ya da değerdir. Grafikte
+    zaten olan bilgiyi farklı bir biçimde özetler; yeni bilgi eklemez ve çoğu zaman fiyatın gerisinden
+    gelir. Hangi soruya cevap verdiğini ve nerede yanıltabildiğini bilmek, onu doğru okumanın ilk adımıdır.
+  sections:
+    - type: text
+      id: definition
+      title: Gösterge nedir?
+      paragraphs:
+        - >-
+          Bir gösterge, açılış, en yüksek, en düşük, kapanış ve hacim verisini bir formülden geçirir.
+          Sonuç ya fiyatın üzerine çizilen bir çizgi (örneğin hareketli ortalama) ya da ayrı bir panelde
+          gösterilen bir değerdir (örneğin RSI). İkisi de **mumların zaten içerdiği bilginin
+          özetidir**.
+        - >-
+          Çoğu gösterge geçmiş mumların ortalamasını ya da oranını kullandığı için **fiyatın gerisinden
+          gelir**. Gösterge yön değiştirdiğinde fiyat çoğu zaman bu değişimi birkaç mum önce yapmıştır.
+          Göstergenin değeri, fiyatı tahmin etmesinden değil, belirli bir soruyu düzenli ve ölçülebilir
+          biçimde cevaplamasından gelir.
+    - type: bullets
+      id: types
+      title: Gösterge türleri
+      items:
+        - text: "**Trend göstergeleri:** fiyatın genel yönünü yumuşatarak gösterir. Hareketli ortalamalar, MACD ve ADX bu gruptadır."
+          marker: accent
+        - text: "**Momentum göstergeleri:** hareketin hızını ve tek yönlülüğünü ölçer. RSI ve MACD histogramı bu gruptadır."
+          marker: neutral
+        - text: "**Volatilite göstergeleri:** fiyatın ne kadar geniş salındığını ölçer. ATR ve Bollinger bantları bu gruptadır."
+          marker: neutral
+        - text: "**Hacim göstergeleri:** fiyat hareketine eşlik eden işlem miktarını özetler. OBV ve VWAP bu gruptadır."
+          marker: neutral
+      note: >-
+        Bazı göstergeler birden fazla gruba girer. MACD hem trendi hem momentumu anlatır; VWAP hem fiyatı
+        hem hacmi kullanır.
+    - type: text
+      id: settings
+      title: Ayarlar sonucu değiştirir
+      paragraphs:
+        - >-
+          Her göstergenin bir ya da birkaç ayarı vardır: RSI için 14, MACD için 12, 26, 9 gibi. Bunlar
+          yaygın **varsayılanlardır**, doğru değerler değildir. Periyot kısaldıkça gösterge daha hızlı
+          ama daha oynak olur; uzadıkça daha sakin ama daha geç tepki verir.
+        - >-
+          Aynı göstergenin farklı zaman dilimlerinde ve farklı borsaların verisiyle farklı değerler
+          vermesi de olağandır. Bir okumayı aktarırken göstergenin ayarını ve zaman dilimini belirtmek,
+          yorumu netleştirir.
+    - type: text
+      id: not-independent
+      title: Birden çok gösterge, birden çok kanıt değildir
+      paragraphs:
+        - >-
+          RSI, MACD ve hareketli ortalama aynı anda yükselişi gösterebilir. Bu, üç ayrı kanıt gibi
+          görünür; ama üçü de **aynı kapanış fiyatlarından** hesaplanır. Aynı bilgiyi üç farklı
+          biçimde göstermek, bilginin kendisini güçlendirmez.
+        - >-
+          Farklı bilgi kullanan göstergeler (örneğin fiyattan hesaplanan bir göstergeyle hacimden
+          hesaplanan bir gösterge) birbirini daha çok tamamlar. Yine de hepsi aynı geçmişi anlatır;
+          hiçbiri geleceği kesinleştirmez.
+    - type: limits
+      shows:
+        - Fiyat ve hacim geçmişinin belirli bir özelliğini (yön, hız, genişlik, katılım) ölçülebilir bir biçimde
+        - Aynı ölçünün zaman içinde nasıl değiştiğini
+        - Göze kolay çarpmayan farkları, örneğin fiyatın yükselirken hızının azaldığını
+      not_proves:
+        - Fiyatın bundan sonra ne yapacağını; göstergeler geçmiş veriden hesaplanır
+        - Aynı veriden türeyen birkaç göstergenin uyumunun bağımsız bir doğrulama olduğunu
+        - Bir ayarın ya da eşiğin diğerlerinden daha doğru olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          Göstergeler fiyatın **nasıl** hareket ettiğini anlatır; destek ve direnç bölgeleri ise
+          fiyatın **nerede** tepki verdiğini. İkisi farklı sorulara cevap verir ve birlikte okunduğunda
+          birbirini tamamlar.
+        - >-
+          Bir bölgeye yaklaşırken momentumun zayıflaması ya da hacmin artması, bölgedeki fiyat
+          davranışını yorumlamaya yardım eden ek gözlemlerdir. Ama bölgenin tutup tutmadığını yine
+          bölgenin kenarlarına göre gelen kapanışlar gösterir; gösterge bu okumanın yerine geçmez.
+  key_points:
+    - Göstergeler fiyat ve hacimden hesaplanır; yeni bilgi eklemez, özetler.
+    - Çoğu gösterge fiyatın gerisinden gelir.
+    - Trend, momentum, volatilite ve hacim göstergeleri farklı sorulara cevap verir.
+    - Ayarlar sonucu değiştirir; varsayılanlar doğru değerler değildir.
+    - Aynı veriden türeyen göstergelerin uyumu bağımsız kanıt değildir.
+  svg_labels:
+    price_pane: Fiyat paneli
+    overlay_1: Hareketli
+    overlay_2: ortalama
+    overlay_type: (trend)
+    ind_pane: Gösterge paneli
+    osc_1: RSI
+    osc_type: (momentum)
+  svg_alt: "İki panelli grafik: üstte fiyat çizgisi ve üzerine çizilmiş bir hareketli ortalama, altta aynı dönemin RSI çizgisi ve 70 ile 30 seviyeleri"
+  svg_caption: >-
+    Üst panelde fiyatın üzerine çizilen bir trend göstergesi (hareketli ortalama), alt panelde ayrı
+    ölçekli bir momentum göstergesi (RSI) var. İkisi de aynı kapanış fiyatlarından hesaplanır.
+
+en:
+  slug: what-are-indicators
+  name: What are indicators, and what are their limits?
+  summary: >-
+    A technical indicator is a line or value calculated from price and volume data with a formula. It
+    summarises information that is already on the chart in a different form; it adds no new information
+    and usually lags price. Knowing which question it answers and where it can mislead is the first step
+    to reading it well.
+  sections:
+    - type: text
+      id: definition
+      title: What is an indicator?
+      paragraphs:
+        - >-
+          An indicator runs open, high, low, close and volume data through a formula. The result is
+          either a line drawn over price (a moving average, for example) or a value shown in a separate
+          pane (RSI, for example). Both are **a summary of information the candles already contain**.
+        - >-
+          Because most indicators use averages or ratios of past candles, they **lag price**. By the time
+          an indicator changes direction, price has usually made that change a few candles earlier. An
+          indicator's value comes not from predicting price but from answering one question in a
+          consistent, measurable way.
+    - type: bullets
+      id: types
+      title: Types of indicator
+      items:
+        - text: "**Trend indicators:** show the general direction of price by smoothing it. Moving averages, MACD and ADX belong here."
+          marker: accent
+        - text: "**Momentum indicators:** measure the speed and one-sidedness of a move. RSI and the MACD histogram belong here."
+          marker: neutral
+        - text: "**Volatility indicators:** measure how widely price swings. ATR and Bollinger Bands belong here."
+          marker: neutral
+        - text: "**Volume indicators:** summarise the amount traded behind a price move. OBV and VWAP belong here."
+          marker: neutral
+      note: >-
+        Some indicators fit more than one group. MACD describes both trend and momentum; VWAP uses both
+        price and volume.
+    - type: text
+      id: settings
+      title: Settings change the result
+      paragraphs:
+        - >-
+          Every indicator has one or more settings: 14 for RSI, 12, 26, 9 for MACD, and so on. These are
+          common **defaults**, not correct values. A shorter period makes an indicator faster but noisier;
+          a longer one makes it calmer but slower to react.
+        - >-
+          It is also normal for the same indicator to give different values on different timeframes and
+          with data from different exchanges. Stating the setting and the timeframe when sharing a
+          reading makes it clearer.
+    - type: text
+      id: not-independent
+      title: Several indicators are not several pieces of evidence
+      paragraphs:
+        - >-
+          RSI, MACD and a moving average can all point to a rise at the same time. That looks like three
+          separate pieces of evidence, but all three are calculated from **the same closing prices**.
+          Showing the same information in three forms does not make the information any stronger.
+        - >-
+          Indicators that use different information (one calculated from price and one from volume, for
+          example) complement each other more. Even so, they all describe the same past; none of them
+          makes the future certain.
+    - type: limits
+      shows:
+        - A particular feature of the price and volume history (direction, speed, range, participation) in a measurable way
+        - How the same measure changes over time
+        - Differences that are easy to miss by eye, such as price rising while its pace slows
+      not_proves:
+        - What price will do next; indicators are calculated from past data
+        - That agreement between several indicators built from the same data is independent confirmation
+        - That one setting or threshold is more correct than others
+    - type: zones
+      paragraphs:
+        - >-
+          Indicators describe **how** price is moving; support and resistance zones describe **where**
+          price has reacted. The two answer different questions and complement each other when read
+          together.
+        - >-
+          Momentum fading or volume rising on the way to a zone are extra observations that help
+          interpret how price behaves there. But whether the zone holds is still shown by closes relative
+          to its edges; an indicator does not replace that reading.
+  key_points:
+    - Indicators are calculated from price and volume; they summarise rather than add information.
+    - Most indicators lag price.
+    - Trend, momentum, volatility and volume indicators answer different questions.
+    - Settings change the result; defaults are not correct values.
+    - Agreement between indicators built from the same data is not independent evidence.
+  svg_labels:
+    price_pane: Price pane
+    overlay_1: Moving
+    overlay_2: average
+    overlay_type: (trend)
+    ind_pane: Indicator pane
+    osc_1: RSI
+    osc_type: (momentum)
+  svg_alt: "A two-pane chart: at the top a price line with a moving average drawn over it, below the RSI line for the same period with its 70 and 30 levels"
+  svg_caption: >-
+    The top pane has a trend indicator (a moving average) drawn over price; the bottom pane has a
+    momentum indicator (RSI) on its own scale. Both are calculated from the same closing prices.

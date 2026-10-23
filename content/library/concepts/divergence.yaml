@@ -1,0 +1,225 @@
+id: divergence
+kind: indicators
+order: 100
+related: [rsi, macd, obv, trend-change]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: uyumsuzluk
+  name: Uyumsuzluk (divergence)
+  alt_name: Divergence
+  summary: >-
+    Uyumsuzluk, fiyatın tepe ve dipleriyle bir osilatörün (RSI, MACD, OBV gibi) tepe ve diplerinin
+    farklı yönleri göstermesidir. Örneğin fiyat daha yüksek bir tepe yaparken RSI daha alçak bir tepe
+    yapar. Hareketin ivme kaybettiğini düşündürebilir, ama ne zaman ve hatta dönüp dönmeyeceği
+    hakkında bir şey söylemez.
+  sections:
+    - type: text
+      id: definition
+      title: Uyumsuzluk nedir?
+      paragraphs:
+        - >-
+          Osilatörler fiyattan hesaplanır, bu yüzden çoğu zaman fiyatla aynı yönde hareket ederler.
+          Fiyat yeni bir tepe yaptığında RSI ya da MACD de genellikle yeni bir tepe yapar. **Uyumsuzluk**,
+          bu eşleşmenin bozulduğu durumdur: fiyat bir yönde yeni bir uç nokta yaparken gösterge aynı
+          uç noktayı onaylamaz.
+        - >-
+          Bunun anlamı genellikle şudur: fiyat hâlâ ilerliyor ama **bir öncekinden daha az ivmeyle**
+          ilerliyor. RSI ve MACD ivmeyi, OBV ise hacmin yönünü ölçtüğü için, uyumsuzluk hangi
+          göstergede görüldüğüne göre biraz farklı bir şey anlatır.
+    - type: scenarios
+      id: regular-divergence
+      title: Klasik uyumsuzluk
+      intro: Klasik (regular) uyumsuzluk, mevcut hareketin ivme kaybettiğini düşündüren türdür.
+      items:
+        - title: Negatif (ayı) uyumsuzluk
+          tone: down
+          text: Fiyat **daha yüksek bir tepe** yapar, gösterge **daha alçak bir tepe** yapar. Yükselişin ivme kaybettiği şeklinde okunabilir.
+        - title: Pozitif (boğa) uyumsuzluk
+          tone: up
+          text: Fiyat **daha alçak bir dip** yapar, gösterge **daha yüksek bir dip** yapar. Düşüşün ivme kaybettiği şeklinde okunabilir.
+    - type: steps
+      id: how-to-read
+      title: Grafikte nasıl okunur?
+      items:
+        - title: Belirgin tepe ya da dipleri seç.
+          text: Fiyatta açıkça oluşmuş iki tepe (ya da iki dip) al. Küçük kıpırtılar uyumsuzluk aramak için uygun değildir.
+        - title: Göstergede aynı mumlara bak.
+          text: Göstergenin tepesi, fiyatın tepesiyle aynı ya da çok yakın mumlarda olmalıdır. Başka yerlerdeki tepeleri eşleştirmek yanıltıcı olur.
+        - title: Yönleri karşılaştır.
+          text: İki fiyat tepesini ve iki gösterge tepesini birer çizgiyle birleştir. Çizgiler farklı yönleri gösteriyorsa uyumsuzluk vardır.
+        - title: Kapanmış mumları kullan.
+          text: Henüz kapanmamış bir mumdaki uyumsuzluk, mum kapanana kadar değişebilir. Aynı zaman diliminin kapanmış mumlarına bakmak okumayı sabitler.
+    - type: text
+      id: hidden-divergence
+      title: Gizli uyumsuzluk
+      paragraphs:
+        - >-
+          Gizli (hidden) uyumsuzluk, klasik türün tersidir ve trendin içindeki geri çekilmelerde
+          aranır. Yükselen bir trendde fiyat **daha yüksek bir dip** yaparken gösterge **daha alçak bir
+          dip** yapıyorsa gizli pozitif uyumsuzluk denir. Düşen trendde fiyat daha alçak bir tepe,
+          gösterge daha yüksek bir tepe yapıyorsa gizli negatif uyumsuzluk denir.
+        - >-
+          Gizli uyumsuzluk çoğu zaman trendin devamına dair bir ipucu olarak okunur. Klasik türe göre
+          daha az kullanılır ve aynı sınırlamaları taşır.
+    - type: text
+      id: not-a-timing-signal
+      title: Neden zamanlama sinyali değildir?
+      paragraphs:
+        - >-
+          Güçlü bir trendde ivme azalabilir ama fiyat ilerlemeye devam edebilir. Bu durumda uyumsuzluk
+          **arka arkaya birkaç kez** oluşur: her yeni tepede gösterge biraz daha aşağıda kalır, fiyat
+          ise yükselmeyi sürdürür. Uyumsuzluk haftalarca, bazen aylarca devam edebilir.
+        - >-
+          Bu yüzden uyumsuzluk "ne zaman" sorusuna yanıt vermez. İvmenin azaldığını gösterir; trendin
+          bozulduğunu ise tepe ve dip yapısının kendisi gösterir. Yükselen bir trendde son önemli dibin
+          altında kapanış, uyumsuzluktan çok daha doğrudan bir ölçüdür.
+    - type: limits
+      shows:
+        - Fiyatın yeni uç noktasının göstergede onaylanmadığını
+        - Hareketin bir öncekine göre daha az ivmeyle (ya da OBV'de daha az hacimle) geldiğini
+        - Tepe ve dip yapısını daha dikkatli izlemek için bir nedeni
+      not_proves:
+        - Fiyatın döneceğini; uyumsuzluk trend boyunca defalarca oluşup sonuçsuz kalabilir
+        - Dönüş olacaksa ne zaman olacağını ya da nereye kadar gideceğini
+        - Trend değişimini; bunu tepe ve diplerin sırası ve önemli bölgelerin kaybedilmesi gösterir
+    - type: zones
+      paragraphs:
+        - >-
+          Aynı uyumsuzluk, nerede oluştuğuna göre farklı ağırlık taşır. Fiyat bir **direnç bölgesine**
+          gelip burada daha yüksek bir tepe yaparken gösterge daha alçak bir tepe yapıyorsa, iki ayrı
+          bilgi aynı yeri işaret eder: bölge fiyatın daha önce tepki verdiği bir alandır ve hareket bu
+          alana ivme kaybederek gelmiştir.
+        - >-
+          Açık alanda, yani yakınında belirgin bir bölge olmayan bir yerde oluşan uyumsuzluk ise daha
+          zayıf bir bağlam sunar. Fiyatın hangi seviyede tepki verebileceğine dair bir referans yoktur.
+          Her iki durumda da sonucu gösterge değil fiyat belirler: bölgenin bant olarak okunduğunda
+          **uzak kenarına göre kapanış**, bölgenin tutup tutmadığını gösterir.
+  confusions:
+    - id: trend-change
+      text: Trend değişimi tepe ve diplerin sırasının değişmesiyle görülür; uyumsuzluk ise yalnızca ivmenin azaldığını gösterebilir ve trend değişimi olmadan da oluşabilir.
+    - id: rsi
+      text: RSI uyumsuzluğun en sık arandığı göstergedir; RSI'ın nasıl hesaplandığı ve 30/70 seviyelerinin ne anlama geldiği o sayfada anlatılır.
+  key_points:
+    - Uyumsuzluk, fiyatın uç noktasını göstergenin onaylamamasıdır.
+    - Klasik uyumsuzluk ivme kaybını, gizli uyumsuzluk trendin devamını düşündürebilir.
+    - Güçlü trendlerde uyumsuzluk defalarca oluşup sonuçsuz kalabilir.
+    - Zamanlama sinyali değildir; bir bölgede oluştuğunda daha anlamlı bir bağlam sunar.
+  svg_labels:
+    price: Fiyat
+    hh_1: Fiyat daha
+    hh_2: yüksek tepe yapar
+    lh_1: RSI daha
+    lh_2: alçak tepe yapar
+  svg_alt: "Negatif uyumsuzluk çizimi: üstte fiyat iki tepe yapıyor ve ikinci tepe birinciden yüksek; altta RSI aynı mumlarda iki tepe yapıyor ve ikinci tepe birinciden alçak; tepeler kesikli çizgilerle birleştirilmiş"
+  svg_caption: Noktalar fiyatın ve RSI'ın tepelerini, kesikli çizgiler bu tepelerin yönünü gösterir. Fiyatın çizgisi yukarı, RSI'ınki aşağı eğimlidir. Yatay kesikli çizgiler RSI'ın 70 ve 30 seviyeleridir.
+
+en:
+  slug: divergence
+  name: Divergence
+  summary: >-
+    Divergence is when the highs and lows of price and of an oscillator (such as RSI, MACD or OBV)
+    point in different directions. For example, price makes a higher high while RSI makes a lower high.
+    It can suggest that a move is losing momentum, but it says nothing about when, or even whether,
+    price will turn.
+  sections:
+    - type: text
+      id: definition
+      title: What is divergence?
+      paragraphs:
+        - >-
+          Oscillators are calculated from price, so they usually move in the same direction as price.
+          When price makes a new high, RSI or MACD usually makes a new high too. **Divergence** is when
+          that match breaks down: price makes a new extreme in one direction and the indicator does not
+          confirm it.
+        - >-
+          This usually means that price is still moving but **with less momentum than before**. Because
+          RSI and MACD measure momentum and OBV measures the direction of volume, a divergence says
+          something slightly different depending on the indicator it appears on.
+    - type: scenarios
+      id: regular-divergence
+      title: Regular divergence
+      intro: Regular divergence is the type that suggests the current move is losing momentum.
+      items:
+        - title: Bearish divergence
+          tone: down
+          text: Price makes a **higher high**, the indicator makes a **lower high**. It can be read as the rise losing momentum.
+        - title: Bullish divergence
+          tone: up
+          text: Price makes a **lower low**, the indicator makes a **higher low**. It can be read as the decline losing momentum.
+    - type: steps
+      id: how-to-read
+      title: How to read it on a chart
+      items:
+        - title: Pick clear highs or lows.
+          text: Take two clearly formed highs (or two lows) in price. Small wiggles are not suitable for looking for divergence.
+        - title: Look at the same candles on the indicator.
+          text: The indicator's high should be on the same or nearly the same candles as the price high. Matching highs from elsewhere is misleading.
+        - title: Compare the directions.
+          text: Join the two price highs and the two indicator highs with a line each. If the lines point in different directions, there is a divergence.
+        - title: Use closed candles.
+          text: A divergence on a candle that has not closed yet can change until it closes. Looking at closed candles on the same timeframe keeps the reading fixed.
+    - type: text
+      id: hidden-divergence
+      title: Hidden divergence
+      paragraphs:
+        - >-
+          Hidden divergence is the reverse of the regular type and is looked for in pullbacks within a
+          trend. In an uptrend, if price makes a **higher low** while the indicator makes a **lower
+          low**, it is called hidden bullish divergence. In a downtrend, if price makes a lower high
+          while the indicator makes a higher high, it is called hidden bearish divergence.
+        - >-
+          Hidden divergence is often read as a hint that the trend may continue. It is used less than
+          the regular type and has the same limitations.
+    - type: text
+      id: not-a-timing-signal
+      title: Why it is not a timing signal
+      paragraphs:
+        - >-
+          In a strong trend, momentum can fade while price keeps moving. In that case divergence forms
+          **several times in a row**: at each new high the indicator stays a little lower while price
+          keeps rising. A divergence can last for weeks, sometimes months.
+        - >-
+          That is why divergence does not answer the question "when". It shows that momentum is fading;
+          whether the trend has broken is shown by the structure of highs and lows itself. In an
+          uptrend, a close below the last important low is a far more direct measure than a divergence.
+    - type: limits
+      shows:
+        - That price's new extreme is not confirmed by the indicator
+        - That the move is coming with less momentum (or, on OBV, less volume) than the previous one
+        - A reason to watch the structure of highs and lows more closely
+      not_proves:
+        - That price will turn; divergence can form again and again through a trend and come to nothing
+        - When a turn will come, if it comes at all, or how far it will go
+        - A trend change; that is shown by the sequence of highs and lows and the loss of important zones
+    - type: zones
+      paragraphs:
+        - >-
+          The same divergence carries different weight depending on where it forms. If price reaches a
+          **resistance zone** and makes a higher high there while the indicator makes a lower high, two
+          separate pieces of information point to the same place: the zone is an area where price has
+          reacted before, and the move has arrived there losing momentum.
+        - >-
+          A divergence in open space, where there is no clear zone nearby, offers weaker context. There
+          is no reference for the level at which price might react. In both cases it is price, not the
+          indicator, that decides the outcome: **the close relative to the far edge** of the zone, read
+          as a band, shows whether the zone holds.
+  confusions:
+    - id: trend-change
+      text: A trend change shows in a change in the sequence of highs and lows; divergence can only show that momentum is fading, and it can form without any trend change.
+    - id: rsi
+      text: RSI is the indicator on which divergence is looked for most often; how RSI is calculated and what the 30/70 levels mean is covered on that page.
+  key_points:
+    - Divergence is the indicator not confirming price's extreme.
+    - Regular divergence can suggest fading momentum, hidden divergence a continuing trend.
+    - In strong trends, divergence can form again and again and come to nothing.
+    - It is not a timing signal; at a zone it offers more meaningful context.
+  svg_labels:
+    price: Price
+    hh_1: Price makes
+    hh_2: a higher high
+    lh_1: RSI makes
+    lh_2: a lower high
+  svg_alt: "Bearish divergence illustration: on top price makes two highs, the second above the first; below, RSI makes two highs on the same candles, the second below the first; the highs are joined with dashed lines"
+  svg_caption: The dots mark the highs of price and of RSI, and the dashed lines the direction of those highs. The price line slopes up and the RSI line slopes down. The horizontal dashed lines are the RSI 70 and 30 levels.

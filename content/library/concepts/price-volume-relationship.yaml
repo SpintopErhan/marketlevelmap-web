@@ -1,0 +1,229 @@
+id: price-volume-relationship
+kind: volume-volatility
+order: 20
+related: [volume, breakout-volume, trend, obv]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: fiyat-ve-hacim
+  name: Fiyat ve hacim ilişkisi
+  alt_name: Price and volume
+  summary: >-
+    Fiyat ve hacim birlikte okunduğunda, bir hareketin ne kadar katılımla geldiği görülür. Hacmin
+    hareketle birlikte artması ya da azalması farklı okumalara yol açabilir. Bu okumalar ipucudur;
+    fiyatın bundan sonra ne yapacağını tek başına söylemez.
+  sections:
+    - type: text
+      id: definition
+      title: Neden birlikte okunur?
+      paragraphs:
+        - >-
+          Fiyat, piyasanın **nereye** gittiğini gösterir; hacim ise bu hareketin **ne kadar işlemle**
+          geldiğini. Aynı yükseliş, artan hacimle de azalan hacimle de gelebilir. İki tablo aynı
+          fiyat grafiğini çizse de farklı bir katılım düzeyi anlatır.
+        - >-
+          Burada önemli olan hacmin mutlak büyüklüğü değil, **önceki mumlara göre** nasıl değiştiğidir.
+          Bu yüzden karşılaştırma aynı zaman diliminde, aynı veri kaynağında ve kapanmış mumlar
+          arasında yapılır.
+    - type: scenarios
+      id: combinations
+      title: Fiyat ve hacmin birlikte çizdiği tablolar
+      intro: Aşağıdaki kartlar sık görülen birleşimleri ve genellikle nasıl okunduklarını özetler. Her biri bir olasılığı anlatır, sonucu değil.
+      items:
+        - title: Fiyat yükselir, hacim artar
+          tone: up
+          text: >-
+            Yükselişe katılımın arttığını gösterir. Hareketin piyasada **kabul gördüğü** şeklinde
+            okunabilir. Sınırı: hacim artışı tek bir mumda toplanmışsa, yükseliş o mumdan sonra
+            hızını kaybedebilir.
+        - title: Fiyat yükselir, hacim azalır
+          tone: neutral
+          text: >-
+            Yükseliş sürerken katılımın azaldığını gösterir. Hareketin **güç kaybettiği** şeklinde
+            okunabilir. Sınırı: sakin dönemlerde, hafta sonlarında ya da tatil günlerinde hacim zaten
+            düşer; yükseliş düşük hacimle de uzun süre devam edebilir.
+        - title: Fiyat düşer, hacim artar
+          tone: down
+          text: >-
+            Düşüşe katılımın arttığını gösterir. Satış baskısının **geniş bir kesime yayıldığı**
+            şeklinde okunabilir. Sınırı: uzun bir düşüşün sonunda gelen çok yüksek hacim, hareketin
+            tükendiği bir anla da aynı görünebilir.
+        - title: Fiyat düşer, hacim azalır
+          tone: neutral
+          text: >-
+            Düşüşün az işlemle geldiğini gösterir. Yükselen bir trendin içinde **sakin bir geri
+            çekilme** gibi okunabilir. Sınırı: düşük hacimli düşüşler de birikerek trendi bozabilir;
+            yapıyı tepe ve diplerle birlikte okumak gerekir.
+        - title: Hacim yüksek, fiyat yerinde
+          tone: neutral
+          text: >-
+            Çok işlem yapılmasına rağmen fiyatın fazla ilerlemediğini gösterir. Klasik **çaba ve sonuç**
+            fikrine göre karşı tarafın bu fiyatlarda işlemleri karşıladığı şeklinde okunabilir.
+            Sınırı: kimin karşıladığını ya da bundan sonra hangi tarafın baskın geleceğini göstermez.
+    - type: steps
+      id: how-to-read
+      title: Grafikte nasıl okunur?
+      items:
+        - title: Önce fiyatın yapısını oku.
+          text: Trendin yönünü, tepe ve dipleri ve fiyatın hangi bölgede olduğunu belirle. Hacim bu bağlama eklenen bir bilgidir.
+        - title: Hacmi önceki mumlarla karşılaştır.
+          text: Tek bir çubuğa değil, son birkaç düzine mumun genel düzeyine bak. Hareket bu düzeyin üzerinde mi, altında mı geliyor?
+        - title: Dalgaları karşılaştır.
+          text: Yükselen trendde yükseliş dalgalarının hacmini geri çekilmelerin hacmiyle karşılaştır. Hangi yöndeki hareketler daha çok işlemle geliyor?
+        - title: Okumayı fiyatla doğrula.
+          text: Hacimden çıkan bir ipucu, ancak sonraki kapanışlar ve tepe dip sırası aynı yönü gösterirse güçlenir.
+    - type: limits
+      shows:
+        - Bir hareketin önceki mumlara göre daha çok mu, daha az mı katılımla geldiğini
+        - Trendin içindeki dalgalardan hangilerinin daha çok işlem gördüğünü
+        - Fiyatın çok işleme rağmen ilerleyemediği yerleri
+      not_proves:
+        - Trendin devam edeceğini ya da döneceğini
+        - Hacmin alış mı satış mı olduğunu; her işlemin iki tarafı vardır
+        - Farklı borsalardaki ya da türev piyasalardaki hacmin de aynı tabloyu çizdiğini
+    - type: zones
+      paragraphs:
+        - >-
+          Fiyat ve hacim ilişkisi en çok **bölgelerin çevresinde** anlam kazanır. Bir direnç
+          bölgesine azalan hacimle yaklaşan fiyat ile artan hacimle yaklaşan fiyat, aynı bölgede
+          farklı bir katılım anlatır.
+        - >-
+          Bölgede yüksek hacme rağmen kapanışların bandın gerisinde kalması, bölgenin o fiyatlarda
+          hâlâ tepki gördüğü şeklinde okunabilir. Ölçü yine kapanıştır: hacim, bandın uzak kenarının
+          ötesinde bir kapanışın yerini tutmaz.
+    - type: box
+      title: Kriptoda saat ve gün etkisi
+      text: >-
+        Kripto 7/24 işlem görse de hacim günün saatine ve haftanın gününe göre değişir. Hafta sonları
+        ve bazı saatler genellikle daha sakindir. 1H grafikte hacmin düşmesi her zaman ilginin
+        azaldığı anlamına gelmez; yalnızca sakin bir saate girilmiş olabilir.
+  confusions:
+    - id: obv
+      text: OBV, fiyat ve hacim ilişkisini tek bir çizgide toplamaya çalışan bir göstergedir; bu sayfa ise ham hacmi fiyatla yan yana okumayı anlatır.
+    - id: breakout-volume
+      text: Kırılım mumundaki hacmin nasıl okunduğu ayrı bir sayfada ele alınır.
+  key_points:
+    - Fiyat yönü, hacim katılımı gösterir; ikisi birlikte okunur.
+    - Hacmi mutlak değeriyle değil, önceki mumlara göre değerlendir.
+    - Artan hacimli yükseliş kabul, azalan hacimli yükseliş güç kaybı olarak okunabilir; ikisi de kesin değildir.
+    - Hacimden çıkan ipucu, fiyatın kapanışları ve yapısıyla doğrulanır.
+  svg_labels:
+    volume: Hacim
+    left_1: Fiyat yükselir,
+    left_2: hacim artar
+    right_1: Fiyat yükselir,
+    right_2: hacim azalır
+  svg_alt: "Fiyat ve hacim çizimi: solda yükselen mumların altında giderek uzayan hacim çubukları, sağda aynı yükselişin altında giderek kısalan hacim çubukları"
+  svg_caption: İki tarafta fiyat aynı şekilde yükselir. Kesikli çizgiler hacim çubuklarının yönünü gösterir; solda katılım artar, sağda azalır.
+
+en:
+  slug: price-and-volume
+  name: Price and volume
+  summary: >-
+    Reading price and volume together shows how much participation came with a move. Volume rising or
+    falling along with the move can lead to different readings. These readings are hints; on their own
+    they do not say what price will do next.
+  sections:
+    - type: text
+      id: definition
+      title: Why read them together?
+      paragraphs:
+        - >-
+          Price shows **where** the market is going; volume shows **how much trading** came with that
+          move. The same rise can come with rising or with falling volume. The two cases can draw the
+          same price chart and still describe a different level of participation.
+        - >-
+          What matters here is not the absolute size of volume but how it changes **against the earlier
+          candles**. So the comparison is made on the same timeframe, in the same data source and
+          between closed candles.
+    - type: scenarios
+      id: combinations
+      title: What price and volume show together
+      intro: The cards below sum up common combinations and how they are usually read. Each describes a possibility, not an outcome.
+      items:
+        - title: Price rises, volume rises
+          tone: up
+          text: >-
+            Participation in the rise is growing. This can be read as the move being **accepted** by
+            the market. Limit: if the extra volume sits in a single candle, the rise can lose pace
+            after that candle.
+        - title: Price rises, volume falls
+          tone: neutral
+          text: >-
+            The rise continues while participation shrinks. This can be read as the move **losing
+            strength**. Limit: volume drops anyway in quiet periods, at weekends or on holidays; a rise
+            can carry on for a long time on low volume.
+        - title: Price falls, volume rises
+          tone: down
+          text: >-
+            Participation in the decline is growing. This can be read as selling pressure **spreading
+            widely**. Limit: very high volume at the end of a long decline can look the same as a
+            moment when the move runs out.
+        - title: Price falls, volume falls
+          tone: neutral
+          text: >-
+            The decline comes with little trading. Inside an uptrend it can read as **a quiet
+            pullback**. Limit: low-volume declines can add up and still break the trend; the structure
+            has to be read through the highs and lows too.
+        - title: High volume, price stays put
+          tone: neutral
+          text: >-
+            A lot is traded but price does not move far. Under the classic idea of **effort versus
+            result**, it can be read as the other side meeting those trades at these prices. Limit: it
+            does not show who did so, or which side will win next.
+    - type: steps
+      id: how-to-read
+      title: How to read it on a chart
+      items:
+        - title: Read the price structure first.
+          text: Identify the trend, the highs and lows, and which zone price is in. Volume is information added to that context.
+        - title: Compare volume with earlier candles.
+          text: Look not at one bar but at the general level of the last few dozen candles. Is the move coming above or below that level?
+        - title: Compare the swings.
+          text: In an uptrend, compare the volume of the rising swings with that of the pullbacks. Which way do the moves come with more trading?
+        - title: Confirm the reading with price.
+          text: A hint from volume only gets stronger if the next closes and the sequence of highs and lows point the same way.
+    - type: limits
+      shows:
+        - Whether a move came with more or less participation than the earlier candles
+        - Which swings inside the trend drew more trading
+        - Where price could not move on despite heavy trading
+      not_proves:
+        - That the trend will continue or reverse
+        - Whether the volume was buying or selling; every trade has two sides
+        - That volume on other exchanges or in derivatives markets draws the same picture
+    - type: zones
+      paragraphs:
+        - >-
+          The relationship between price and volume means most **around zones**. Price approaching a
+          resistance zone on falling volume and price approaching it on rising volume describe
+          different participation at the same zone.
+        - >-
+          If closes stay behind the band despite high volume at the zone, this can be read as the zone
+          still drawing a reaction at those prices. The measure is still the close: volume does not
+          replace a close beyond the band's far edge.
+    - type: box
+      title: Time of day and day of week in crypto
+      text: >-
+        Crypto trades 24/7, but volume still changes with the hour and the day of the week. Weekends
+        and some hours are usually quieter. Falling volume on the 1H chart does not always mean interest
+        is fading; price may just have entered a quiet hour.
+  confusions:
+    - id: obv
+      text: OBV is an indicator that tries to sum up price and volume in one line; this page is about reading raw volume next to price.
+    - id: breakout-volume
+      text: How volume on the breakout candle is read is covered on its own page.
+  key_points:
+    - Price shows direction, volume shows participation; read them together.
+    - Judge volume against earlier candles, not by its absolute size.
+    - A rise on rising volume can read as acceptance, on falling volume as fading strength; neither is certain.
+    - A hint from volume is confirmed by price closes and structure.
+  svg_labels:
+    volume: Volume
+    left_1: Price rises,
+    left_2: volume rises
+    right_1: Price rises,
+    right_2: volume falls
+  svg_alt: "Price and volume illustration: on the left, volume bars grow taller under rising candles; on the right, volume bars get shorter under the same rise"
+  svg_caption: Price rises the same way on both sides. The dashed lines show the direction of the volume bars; participation grows on the left and shrinks on the right.
