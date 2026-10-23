@@ -1,0 +1,188 @@
+id: retest-and-role-reversal
+kind: levels
+order: 50
+related: [support-and-resistance, breakout-and-close, false-breakout, level-test]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: geri-test-ve-rol-degisimi
+  name: "Geri test ve rol değişimi: kırılan bölgeye dönüş"
+  alt_name: Retest and role reversal
+  summary: >-
+    Geri test, bir bölge kırıldıktan sonra fiyatın yeniden o bölgeye dönmesidir. Kırılan direnç
+    bölgesi bu dönüşte destek gibi, kırılan destek bölgesi de direnç gibi çalışabilir. Buna rol
+    değişimi denir. Her kırılım geri test edilmez, her geri test de tutmaz.
+  sections:
+    - type: text
+      id: definition
+      title: Geri test nedir?
+      paragraphs:
+        - >-
+          Fiyat bir direnç bölgesinin üzerinde kapanış yaptıktan sonra çoğu zaman düz bir çizgide
+          uzaklaşmaz. Bir süre sonra **kırdığı bölgeye geri dönebilir**. Bu dönüşe geri test denir.
+        - >-
+          Geri testte bölge bu kez **ters yönden** denenir. Daha önce fiyatı aşağıda tutan alan, şimdi
+          fiyatın üzerinde durduğu bir taban gibi davranabilir. Eski direncin yeni destek olmasına
+          **rol değişimi** denir. Destek bölgesinin aşağı kırılmasında aynısı ters yönde geçerlidir:
+          eski destek, yeni direnç olabilir.
+    - type: steps
+      id: how-it-develops
+      title: Nasıl gelişir?
+      items:
+        - title: Bölge kapanışla kırılır.
+          text: Mum, bölgenin uzak kenarının ötesinde kapanır. Kırılımı belirleyen fitil değil, kapanıştır.
+        - title: Fiyat bölgeden uzaklaşır.
+          text: Kırılımın ardından fiyat kırılım yönünde bir süre ilerler.
+        - title: Fiyat bölgeye geri döner.
+          text: Bir geri çekilme fiyatı yeniden bölgenin kenarına ya da içine taşır. Geri test bu andır.
+        - title: Bölgedeki tepki izlenir.
+          text: Kapanışlar bölgenin kırılım tarafında kalırsa rol değişimi okunabilir. Tek bir mum tek başına yeterli değildir.
+    - type: scenarios
+      id: three-outcomes
+      title: Kırılımdan sonra üç farklı tablo
+      intro: Yukarı kırılan bir direnç bölgesinden sonra üç farklı gelişme görülebilir.
+      items:
+        - title: Tutan geri test
+          tone: up
+          text: Fiyat bölgeye döner, kapanışlar **bölgenin üzerinde** kalır ve fiyat yeniden yükselir. Eski direnç destek gibi çalışmıştır.
+        - title: Başarısız geri test
+          tone: down
+          text: Fiyat bölgeye döner ve **bölgenin altında** kapanış yapar. Kırılım geçerliliğini yitirmiş olabilir; geriye dönüp bakıldığında sahte kırılım gibi okunabilir.
+        - title: Geri test olmadan devam
+          tone: neutral
+          text: Fiyat bölgeye hiç dönmeden kırılım yönünde ilerler. Bu, kırılımın zayıf olduğu anlamına gelmez.
+    - type: limits
+      shows:
+        - Kırılan bölgenin fiyat için hâlâ bir referans alanı olduğunu
+        - Bölgenin ters yönden denendiğinde nasıl tepki verdiğini
+        - Kırılım tarafında gelen kapanışların, kırılımın şimdilik geçerli kaldığını
+      not_proves:
+        - Fiyatın kırılım yönünde uzun bir hareket yapacağını
+        - Her kırılımın bir geri testle izleneceğini
+        - Bir sonraki dönüşte bölgenin yine tutacağını
+    - type: zones
+      paragraphs:
+        - >-
+          Rol değişimi, destek ve direncin sabit etiketler değil, **fiyata göre konumlanan alanlar**
+          olduğunu gösterir. Aynı bant fiyat altındayken direnç, fiyat üstündeyken destek olarak
+          okunur.
+        - >-
+          Geri testi bir çizgiyle değil bir bantla okumak, değerlendirmeyi daha sağlıklı yapar. Fiyat
+          bandın içine girip kırılım tarafında kapanış yaparsa bölge çalışıyor sayılabilir. Bandın
+          **diğer kenarının** ötesinde gelen kapanış ise geri testin başarısız olduğunu gösterebilir.
+    - type: box
+      title: Her kırılım geri test edilmez
+      text: >-
+        Bazı kırılımlardan sonra fiyat bölgeye hiç dönmez. Geri test bazen 1H grafikte görülür ama
+        4H ya da günlük grafikte fark edilmez. Kriptoda işlem 7/24 sürdüğü için geri test gece ya da
+        hafta sonu da gelebilir; hangi zaman diliminin kapanışına bakıldığını belirtmek yorumu
+        netleştirir.
+  confusions:
+    - id: false-breakout
+      text: Başarısız bir geri test, kırılımın sonradan sahte kırılıma dönmesi olarak görülebilir; sahte kırılımda ise kapanış hiç bölgenin ötesinde gelmez.
+    - id: pullback-vs-reversal
+      text: Geri test bir geri çekilmedir; bölgenin altında kapanışlarla devam ederse dönüşe dönüşebilir.
+  key_points:
+    - Geri test, kırılan bölgeye fiyatın geri dönmesidir.
+    - Kırılan direnç destek, kırılan destek direnç gibi çalışabilir.
+    - Geri testin sonucunu kapanışlar belirler, fitiller değil.
+    - Her kırılım geri test edilmez, her geri test de tutmaz.
+  svg_labels:
+    zone: Eski direnç, yeni destek
+    break_1: Bölgenin üzerinde
+    break_2: kapanış
+    retest_1: "Geri test:"
+    retest_2: bölge destek olur
+  svg_alt: "Geri test çizimi: fiyat bir direnç bölgesinden iki kez döndükten sonra bölgenin üzerinde kapanıyor, ardından bölgeye geri dönüp üst kenarından yeniden yükseliyor"
+  svg_caption: Turuncu bant kırılan bölgeyi gösterir. Gri noktalar bölgenin direnç olduğu dönemdeki dönüşleri, yeşil nokta kırılım kapanışını, turuncu nokta geri testi işaretler.
+
+en:
+  slug: retests-and-role-reversal
+  name: "Retests and role reversal: returning to a broken zone"
+  summary: >-
+    A retest is price returning to a zone after breaking it. On that return a broken resistance zone
+    can act as support, and a broken support zone as resistance. This is called role reversal. Not
+    every break gets a retest, and not every retest holds.
+  sections:
+    - type: text
+      id: definition
+      title: What is a retest?
+      paragraphs:
+        - >-
+          After closing above a resistance zone, price rarely moves away in a straight line. At some
+          point it can **come back to the zone it broke**. That return is called a retest.
+        - >-
+          In a retest the zone is tried **from the other side**. The area that used to hold price
+          down can now act as a floor that price stands on. Old resistance becoming new support is
+          called **role reversal**. The same holds the other way round when a support zone breaks
+          downwards: old support can become new resistance.
+    - type: steps
+      id: how-it-develops
+      title: How it develops
+      items:
+        - title: The zone breaks with a close.
+          text: A candle closes beyond the zone's far edge. It is the close, not the wick, that decides a breakout.
+        - title: Price moves away from the zone.
+          text: After the break, price travels for a while in the direction of the breakout.
+        - title: Price comes back to the zone.
+          text: A pullback brings price back to the zone's edge or into it. That moment is the retest.
+        - title: The reaction at the zone is watched.
+          text: If closes stay on the breakout side of the zone, role reversal can be read. A single candle on its own is not enough.
+    - type: scenarios
+      id: three-outcomes
+      title: Three pictures after a break
+      intro: After a resistance zone breaks upwards, three different things can follow.
+      items:
+        - title: Retest holds
+          tone: up
+          text: Price returns to the zone, closes stay **above the zone** and price rises again. The old resistance has acted as support.
+        - title: Retest fails
+          tone: down
+          text: Price returns to the zone and closes **below it**. The breakout may no longer hold; looking back, it can read as a false breakout.
+        - title: No retest
+          tone: neutral
+          text: Price keeps moving in the breakout direction without returning to the zone. This does not mean the breakout was weak.
+    - type: limits
+      shows:
+        - That the broken zone is still a reference area for price
+        - How the zone reacts when it is tried from the other side
+        - That closes on the breakout side mean the breakout still holds for now
+      not_proves:
+        - That price will make a long move in the breakout direction
+        - That every breakout will be followed by a retest
+        - That the zone will hold again on the next return
+    - type: zones
+      paragraphs:
+        - >-
+          Role reversal shows that support and resistance are not fixed labels but **areas defined by
+          where price is relative to them**. The same band reads as resistance while price is below it
+          and as support while price is above it.
+        - >-
+          Reading a retest with a band rather than a line makes the judgement sounder. If price enters
+          the band and closes on the breakout side, the zone can be said to be working. A close beyond
+          the band's **other edge** can show that the retest has failed.
+    - type: box
+      title: Not every break gets a retest
+      text: >-
+        After some breakouts price never comes back to the zone. A retest can be visible on the 1H
+        chart but not on the 4H or daily chart. Crypto trades 24/7, so a retest can come overnight or
+        at the weekend too; saying which timeframe's close you are looking at makes the reading clearer.
+  confusions:
+    - id: false-breakout
+      text: A failed retest can look like a breakout turning into a false breakout later; in a false breakout the close never comes beyond the zone at all.
+    - id: pullback-vs-reversal
+      text: A retest is a pullback; if it continues with closes below the zone it can turn into a reversal.
+  key_points:
+    - A retest is price returning to a zone it has broken.
+    - Broken resistance can act as support, and broken support as resistance.
+    - Closes, not wicks, decide how a retest turns out.
+    - Not every break gets a retest, and not every retest holds.
+  svg_labels:
+    zone: Old resistance, new support
+    break_1: Close above
+    break_2: the zone
+    retest_1: "Retest: the zone"
+    retest_2: acts as support
+  svg_alt: "Retest illustration: price turns down twice at a resistance zone, then closes above it, comes back to the zone and rises again from its upper edge"
+  svg_caption: The orange band marks the broken zone. The grey dots mark the turns while the zone was resistance, the green dot the breakout close and the orange dot the retest.

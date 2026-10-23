@@ -1,0 +1,187 @@
+id: false-breakout
+kind: levels
+order: 40
+related: [trend, shooting-star, pin-bar, rectangle]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: sahte-kirilim
+  name: "Sahte kırılım: fitil ile kapanış arasındaki fark"
+  alt_name: False breakout (fakeout)
+  summary: >-
+    Sahte kırılım, fiyatın bir destek ya da direnç bölgesinin ötesine geçip mum kapanmadan önce
+    yeniden bölgenin gerisine dönmesidir. Grafikte çoğu zaman uzun bir fitil olarak görünür. Kırılımı
+    belirleyen fitil değil, kapanıştır.
+  sections:
+    - type: text
+      id: definition
+      title: Sahte kırılım nedir?
+      paragraphs:
+        - >-
+          Fiyat bir direnç bölgesine geldiğinde mum içinde bölgenin üzerine çıkabilir. Bu an, kırılım
+          gerçekleşmiş gibi görünür. Ama mum kapandığında fiyat yeniden bölgenin altına dönmüşse,
+          geriye yalnızca **bölgenin üzerine uzanan bir fitil** kalır.
+        - >-
+          Bu durumda bölge aşılmış değil, **denenmiş ve geri çevrilmiş** olur. Destek bölgesinde de
+          aynısı ters yönde geçerlidir: fitil bölgenin altına iner, kapanış bölgenin üzerinde kalır.
+    - type: steps
+      id: how-it-forms
+      title: Nasıl oluşur?
+      items:
+        - title: Fiyat bölgeye yaklaşır.
+          text: Bir direnç bölgesine doğru yükseliş ya da bir destek bölgesine doğru düşüş vardır.
+        - title: Mum içinde bölgenin ötesine geçer.
+          text: Fiyat kısa bir süre bölgenin üzerinde (ya da altında) işlem görür. Bu sırada kırılım gerçekleşmiş gibi görünür.
+        - title: Kapanış bölgenin gerisinde gelir.
+          text: Mum kapandığında fiyat bölgenin içine ya da gerisine dönmüştür. Bölgenin ötesinde yalnızca fitil kalır.
+        - title: Sonraki mumlar ters yöne ilerler.
+          text: Fiyat bölgeden uzaklaşırsa sahte kırılım daha net okunur. Tek bir fitil tek başına yeterli değildir.
+    - type: scenarios
+      id: three-outcomes
+      title: Aynı bölgede üç farklı sonuç
+      intro: Fiyat bir direnç bölgesinin üzerine çıktığında üç farklı tablo oluşabilir. Farkı kapanış ve sonraki mumlar belirler.
+      items:
+        - title: Gerçek kırılım
+          tone: up
+          text: Mum bölgenin **üst kenarının üzerinde** kapanır ve sonraki mumlar da bölgenin üzerinde kalır.
+        - title: Sahte kırılım
+          tone: down
+          text: Fitil bölgenin üzerine çıkar ama kapanış **bölgenin altında** gelir. Sonraki mumlar aşağı ilerler.
+        - title: Belirsiz durum
+          tone: neutral
+          text: Kapanış **bölgenin içinde** gelir. Ne kırılım ne de geri çevrilme henüz netleşmiştir.
+    - type: limits
+      shows:
+        - Bölgenin ötesindeki fiyatların o mumda kabul görmediğini
+        - Bölgenin hâlâ fiyatın tepki verdiği bir alan olduğunu
+        - Kırılımı değerlendirmek için kapanışın fitilden daha güvenilir bir ölçü olduğunu
+      not_proves:
+        - Fiyatın ters yönde uzun bir hareket yapacağını
+        - Bir sonraki denemenin de başarısız olacağını
+        - Kimin, hangi amaçla fiyatı bölgenin ötesine taşıdığını
+    - type: zones
+      paragraphs:
+        - >-
+          Sahte kırılımı ayırt etmek, bölgeyi tek bir çizgi yerine **bir bant** olarak okumayı
+          gerektirir. Kırılım, bandın **uzak kenarının** ötesinde kapanışla ölçülür. Bandın içinde
+          gelen bir kapanış, yalnızca bölgenin test edildiğini gösterir.
+        - >-
+          Tek bir çizgiye bakıldığında, çizgiyi birkaç birim geçen her fitil kırılım gibi görünebilir.
+          Bölge ise fiyatın daha önce tepki verdiği genişliği hesaba katar. Bu yüzden fitille bölgeye
+          girip geri dönen bir hareket, bölgenin geçerliliğini kaybettiği değil, yeniden çalıştığı
+          şeklinde okunabilir.
+    - type: box
+      title: Zaman dilimi farkı
+      text: >-
+        1H grafikte bölgenin üzerinde kapanan bir mum kırılım gibi görünebilir. Aynı hareket 4H ya da
+        günlük grafikte tek bir uzun fitil olarak kalabilir. Kırılımı hangi zaman diliminin kapanışıyla
+        ölçtüğünü belirtmek, yorumu netleştirir.
+  confusions:
+    - id: shooting-star
+      text: Direnç bölgesinde oluşan sahte kırılım çoğu zaman bir kayan yıldız mumu olarak görünür; biri bölgeyle, diğeri mumun şekliyle ilgilidir.
+    - id: pin-bar
+      text: Uzun fitilli ret mumu. Bir bölgede oluşursa sahte kırılımın en sık görülen şeklidir.
+  key_points:
+    - Kırılımı fitil değil, kapanış belirler.
+    - Kapanış bölgenin uzak kenarının ötesinde olmalıdır; bölgenin içindeki kapanış yalnızca testtir.
+    - Sahte kırılım, bölgenin hâlâ çalıştığını gösterebilir.
+    - Tek bir fitil yeterli değildir; sonraki mumlar da önemlidir.
+  svg_labels:
+    zone: Direnç bölgesi
+    wick_1: Fitil bölgenin
+    wick_2: üzerine çıkar
+    close_1: Kapanış bölgenin
+    close_2: altında kalır
+  svg_alt: "Sahte kırılım çizimi: yükselen mumlar bir direnç bölgesine geliyor, bir mumun fitili bölgenin üzerine çıkıyor ama kapanışı bölgenin altında kalıyor, ardından fiyat düşüyor"
+  svg_caption: Turuncu bant direnç bölgesini, turuncu nokta mumun kapanışını gösterir. Fitil bölgenin üzerine çıksa da kapanış bölgenin altında kalır.
+
+en:
+  slug: false-breakout
+  name: "False breakout: the wick versus the close"
+  summary: >-
+    A false breakout is when price moves beyond a support or resistance zone and returns behind it
+    before the candle closes. On a chart it usually shows as a long wick. It is the close, not the
+    wick, that decides a breakout.
+  sections:
+    - type: text
+      id: definition
+      title: What is a false breakout?
+      paragraphs:
+        - >-
+          When price reaches a resistance zone it can trade above the zone within a candle. At that
+          moment a breakout seems to have happened. But if price is back below the zone when the
+          candle closes, all that is left is **a wick reaching above the zone**.
+        - >-
+          In that case the zone has not been cleared but **tested and rejected**. The same holds the
+          other way round at a support zone: the wick dips below the zone and the close stays above it.
+    - type: steps
+      id: how-it-forms
+      title: How it forms
+      items:
+        - title: Price approaches the zone.
+          text: There is a rise towards a resistance zone or a decline towards a support zone.
+        - title: It moves beyond the zone within a candle.
+          text: Price briefly trades above (or below) the zone. For a moment it looks like a breakout.
+        - title: The close comes back behind the zone.
+          text: When the candle closes, price is back inside or behind the zone. Only the wick is left beyond it.
+        - title: The next candles move the other way.
+          text: The false breakout reads more clearly if price moves away from the zone. A single wick on its own is not enough.
+    - type: scenarios
+      id: three-outcomes
+      title: Three outcomes at the same zone
+      intro: When price moves above a resistance zone, three different pictures can follow. The close and the next candles make the difference.
+      items:
+        - title: Real breakout
+          tone: up
+          text: The candle closes **above the zone's upper edge** and the next candles stay above the zone too.
+        - title: False breakout
+          tone: down
+          text: The wick goes above the zone but the close comes **below the zone**. The next candles move lower.
+        - title: Undecided
+          tone: neutral
+          text: The close comes **inside the zone**. Neither a breakout nor a rejection is clear yet.
+    - type: limits
+      shows:
+        - That prices beyond the zone were not accepted in that candle
+        - That the zone is still an area where price reacts
+        - That the close is a more reliable measure of a breakout than the wick
+      not_proves:
+        - That price will make a long move the other way
+        - That the next attempt will fail too
+        - Who moved price beyond the zone, or why
+    - type: zones
+      paragraphs:
+        - >-
+          Telling a false breakout apart requires reading the zone as **a band** rather than a single
+          line. A breakout is measured by a close beyond the band's **far edge**. A close inside the
+          band only shows that the zone is being tested.
+        - >-
+          With a single line, any wick that crosses it by a few units can look like a breakout. A zone
+          takes into account the width over which price has reacted before. So a move that wicks into
+          the zone and returns can be read as the zone working again, not as the zone losing its
+          validity.
+    - type: box
+      title: The timeframe matters
+      text: >-
+        A candle closing above the zone on the 1H chart can look like a breakout. The same move can be
+        just a long wick on the 4H or daily chart. Saying which timeframe's close you measure the
+        breakout on makes the reading clearer.
+  confusions:
+    - id: shooting-star
+      text: A false breakout at a resistance zone often shows as a shooting star; one is about the zone, the other about the candle's shape.
+    - id: pin-bar
+      text: A long-wicked rejection candle. When it forms at a zone it is the most common shape of a false breakout.
+  key_points:
+    - The close, not the wick, decides a breakout.
+    - The close should be beyond the zone's far edge; a close inside the zone is only a test.
+    - A false breakout can show that the zone is still working.
+    - A single wick is not enough; the next candles matter too.
+  svg_labels:
+    zone: Resistance zone
+    wick_1: The wick goes
+    wick_2: above the zone
+    close_1: The close stays
+    close_2: below the zone
+  svg_alt: "False breakout illustration: rising candles reach a resistance zone, one candle's wick goes above the zone but it closes below it, then price falls"
+  svg_caption: The orange band marks the resistance zone and the orange dot the candle's close. The wick goes above the zone but the close stays below it.

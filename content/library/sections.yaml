@@ -1,0 +1,8 @@
+# Top-level groups of the library. A category joins one with `section:` in categories.yaml.
+# They head the left menu and group the category cards on the library home page.
+- id: reading
+  order: 10
+  tr:
+    name: Grafik okuma
+  en:
+    name: Chart reading

@@ -1,0 +1,184 @@
+id: swing-points
+kind: structure
+order: 20
+related: [trend, higher-highs-lower-lows, timeframes, support-and-resistance]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: tepe-ve-dip-noktalari
+  name: Tepe ve dip noktaları (swing)
+  alt_name: Swing highs and swing lows
+  summary: >-
+    Tepe (swing high), fiyatın yükselip yön değiştirdiği, iki yanındaki mumlardan daha yüksekte
+    kalan noktadır. Dip (swing low) bunun tersidir. Trend, destek ve direnç gibi kavramların hepsi bu
+    noktaların doğru işaretlenmesine dayanır.
+  sections:
+    - type: text
+      id: definition
+      title: Tepe ve dip nedir?
+      paragraphs:
+        - >-
+          Grafikte her mumun bir en yükseği ve bir en düşüğü vardır, ama bunların çoğu yalnızca
+          hareketin içindeki ara noktalardır. **Tepe**, fiyatın yükselişini bitirip aşağı döndüğü
+          noktadır: kendisinden önceki ve sonraki mumların en yükseklerinden daha yüksektir.
+          **Dip** ise fiyatın düşüşünü bitirip yukarı döndüğü, iki yanındaki mumlardan daha alçakta
+          kalan noktadır.
+        - >-
+          Tepe ve dipler fiyatın yön değiştirdiği yerleri işaretler. Bu yüzden trendin, geri
+          çekilmelerin ve destek ya da direnç bölgelerinin okunması hep bu noktalardan başlar.
+    - type: steps
+      id: measurable-rule
+      title: Ölçülebilir bir tanım
+      items:
+        - title: Bir N sayısı seç.
+          text: Yaygın bir kural, bir mumun en yükseğinin her iki yanındaki **N mumun** en yükseklerinden daha yüksek olmasıdır. N için sık kullanılan değerler 2 ile 5 arasıdır; çizimde N = 2'dir. Bu bir tercihtir, tek doğru değer yoktur.
+        - title: Tepeyi kontrol et.
+          text: Mumun en yükseği, solundaki N mumun ve sağındaki N mumun en yükseğinden yüksekse o nokta bir tepedir.
+        - title: Dibi aynı şekilde kontrol et.
+          text: Mumun en düşüğü, iki yanındaki N mumun en düşüğünden alçaksa o nokta bir diptir.
+        - title: Sağdaki mumların kapanmasını bekle.
+          text: Bir tepe ancak sağındaki N mum kapandıktan sonra kesinleşir. Son mumun en yükseği, henüz sağında mum olmadığı için bir tepe adayıdır, tepe değildir.
+    - type: bullets
+      id: significant-vs-minor
+      title: Önemli tepe-dipler ve ara tepe-dipler
+      items:
+        - text: "**Önemli tepe ve dipler**, fiyatın belirgin bir hareketten sonra açıkça yön değiştirdiği noktalardır. Trendin ve yapının referansı bunlardır."
+          marker: accent
+        - text: "**Ara tepe-dipler**, büyük bir hareketin içindeki kısa duraklamalardır. N küçük seçildiğinde tepe ya da dip sayılırlar, N büyüdükçe kaybolurlar."
+          marker: neutral
+        - text: Bir noktanın önemini artıran şeyler, öncesindeki hareketin büyüklüğü, dönüşün sertliği ve fiyatın o noktaya sonra yeniden tepki vermesidir.
+          marker: neutral
+      note: Her mumun en yükseği bir tepe değildir. Her küçük kıpırtıyı tepe ya da dip saymak, yapıyı gürültüye boğar ve trendi olduğundan sık değişmiş gibi gösterir.
+    - type: box
+      title: Zaman dilimi farkı
+      text: >-
+        Tepe ve dipler her zaman bir zaman dilimine göre tanımlanır. 1H grafikte belirgin bir tepe,
+        günlük grafikte tek bir mumun içinde kalabilir. Aynı N kuralı 1H, 4H ve 1D grafiklerde farklı
+        noktaları seçer. Hangi zaman diliminin tepe ve diplerine baktığını belirtmek yorumu netleştirir.
+    - type: limits
+      shows:
+        - Fiyatın bu zaman diliminde nerede yön değiştirdiğini
+        - Trendi ve yapıyı okumak için gereken referans noktalarını
+        - Fiyatın daha önce tepki verdiği seviyeleri
+      not_proves:
+        - Fiyatın o seviyeye yeniden geldiğinde aynı tepkiyi vereceğini
+        - Son mumun yakınındaki bir noktanın kalıcı bir tepe ya da dip olacağını
+        - Seçilen N değerinin diğerlerinden daha doğru olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          Destek ve direnç bölgeleri çoğu zaman önemli tepe ve diplerin etrafında oluşur. Fiyatın
+          birkaç kez aynı alanda dönmesi, o alanı bir **bölgeye** dönüştürür.
+        - >-
+          Tepe ya da dip tek bir fiyat gibi görünse de, aynı alandaki dönüşler birbirinden birkaç
+          birim farklı noktalarda olur. Bu yüzden bir tepeyi tek bir çizgi yerine, fitillerin ve
+          gövdelerin yığıldığı bir **bant** olarak okumak daha gerçekçidir.
+  confusions:
+    - id: higher-highs-lower-lows
+      text: Tepe ve dipler yapının yapı taşlarıdır; HH, HL, LH ve LL ise bu noktaların birbirine göre sırasını anlatır.
+    - id: support-and-resistance
+      text: Tek bir tepe ya da dip bir noktadır; destek ve direnç bölgesi ise fiyatın birden fazla kez tepki verdiği bir alandır.
+  key_points:
+    - Tepe, iki yanındaki N mumdan daha yüksek olan noktadır; dip bunun tersidir.
+    - N bir tercihtir; küçük N daha çok, büyük N daha az ve daha önemli nokta seçer.
+    - Her mumun en yükseği bir tepe değildir.
+    - Bir tepe, sağındaki mumlar kapanınca kesinleşir.
+    - Tepe ve dipler zaman dilimine göre değişir.
+  svg_labels:
+    swing_high: Tepe (swing high)
+    swing_low: Dip (swing low)
+    lower_highs: 2 alçak tepe
+    higher_lows: 2 yüksek dip
+    minor_1: Ara dip
+    minor_2: (yalnızca N = 1)
+  svg_alt: "Mum grafiğinde tepe ve dip çizimi: her iki yanında iki daha alçak tepe bulunan bir tepe, her iki yanında iki daha yüksek dip bulunan bir dip ve yalnızca N = 1 kuralıyla dip sayılan bir ara dip"
+  svg_caption: Noktalar N = 2 kuralıyla bulunan tepe ve dibi, köşeli çizgiler karşılaştırılan iki yandaki mumları gösterir. Halka içindeki ara dip yalnızca N = 1 seçilirse dip sayılır.
+
+en:
+  slug: swing-highs-and-lows
+  name: Swing highs and swing lows
+  summary: >-
+    A swing high is a point where price stops rising and turns down, standing above the candles on
+    either side. A swing low is the opposite. Trend, support and resistance all depend on marking
+    these points correctly.
+  sections:
+    - type: text
+      id: definition
+      title: What are swing highs and lows?
+      paragraphs:
+        - >-
+          Every candle has a high and a low, but most of them are just points along the way. A
+          **swing high** is where price ends a rise and turns down: it is higher than the highs of the
+          candles before and after it. A **swing low** is where price ends a decline and turns up,
+          lower than the candles on either side.
+        - >-
+          Swing highs and lows mark where price changed direction. That is why reading trends,
+          pullbacks and support or resistance zones always starts from these points.
+    - type: steps
+      id: measurable-rule
+      title: A measurable definition
+      items:
+        - title: Choose a number N.
+          text: A common rule is that a candle's high must be above the highs of the **N candles** on each side. Values between 2 and 5 are often used; the drawing uses N = 2. This is a choice, and there is no single correct value.
+        - title: Check for a swing high.
+          text: If the candle's high is above the highs of the N candles to its left and the N candles to its right, it is a swing high.
+        - title: Check for a swing low the same way.
+          text: If the candle's low is below the lows of the N candles on each side, it is a swing low.
+        - title: Wait for the candles on the right to close.
+          text: A swing high is only confirmed once the N candles to its right have closed. The high of the latest candle is a candidate, not a swing high, because nothing has formed to its right yet.
+    - type: bullets
+      id: significant-vs-minor
+      title: Significant and minor swings
+      items:
+        - text: "**Significant swings** are where price clearly turned after a clear move. They are the reference for the trend and the structure."
+          marker: accent
+        - text: "**Minor swings** are short pauses inside a larger move. They count as swings with a small N and disappear as N grows."
+          marker: neutral
+        - text: A point gains weight from the size of the move before it, how sharply price turned, and whether price reacts there again later.
+          marker: neutral
+      note: Not every candle's high is a swing high. Counting every small wiggle buries the structure in noise and makes the trend look as if it changes far more often than it does.
+    - type: box
+      title: The timeframe matters
+      text: >-
+        Swing highs and lows are always defined for a timeframe. A clear swing high on the 1H chart can
+        sit inside a single candle on the daily chart. The same N rule picks different points on the
+        1H, 4H and 1D charts. Saying which timeframe's swings you are reading makes the reading clearer.
+    - type: limits
+      shows:
+        - Where price changed direction on this timeframe
+        - The reference points needed to read the trend and the structure
+        - Levels where price has reacted before
+      not_proves:
+        - That price will react the same way when it returns to that level
+        - That a point near the latest candle will become a lasting swing high or low
+        - That the chosen N is more correct than another
+    - type: zones
+      paragraphs:
+        - >-
+          Support and resistance zones often form around significant swing highs and lows. When price
+          turns in the same area several times, that area becomes a **zone**.
+        - >-
+          A swing high looks like a single price, but turns in the same area happen a few units apart.
+          That is why it is more realistic to read a swing high as a **band** where wicks and bodies
+          cluster, rather than as a single line.
+  confusions:
+    - id: higher-highs-lower-lows
+      text: Swing highs and lows are the building blocks of structure; HH, HL, LH and LL describe how these points sit relative to each other.
+    - id: support-and-resistance
+      text: A single swing high or low is a point; a support or resistance zone is an area where price has reacted more than once.
+  key_points:
+    - A swing high is above the N candles on each side; a swing low is the opposite.
+    - N is a choice; a small N picks more points, a large N fewer and more significant ones.
+    - Not every candle's high is a swing high.
+    - A swing high is confirmed once the candles to its right have closed.
+    - Swing highs and lows depend on the timeframe.
+  svg_labels:
+    swing_high: Swing high
+    swing_low: Swing low
+    lower_highs: 2 lower highs
+    higher_lows: 2 higher lows
+    minor_1: Minor low
+    minor_2: (only with N = 1)
+  svg_alt: "Candlestick drawing of swing points: a swing high with two lower highs on each side, a swing low with two higher lows on each side, and a minor dip that only counts as a swing low with N = 1"
+  svg_caption: The dots mark the swing high and swing low found with N = 2; the brackets show the candles compared on each side. The circled minor dip only counts as a swing low if N = 1 is chosen.

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="110" y="96" width="370" height="22" opacity="0.14"/>
+  <line class="s-accent" x1="110" y1="96" x2="480" y2="96" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="110" y1="118" x2="480" y2="118" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <rect class="f-accent" x="110" y="194" width="370" height="22" opacity="0.14"/>
+  <line class="s-accent" x1="110" y1="194" x2="480" y2="194" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="110" y1="216" x2="480" y2="216" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-guide" x1="110" y1="156" x2="480" y2="156" stroke-width="1" stroke-dasharray="2 5"/>
+  <text class="t-accent" x="116" y="88">{{upper}}</text>
+  <text class="t-accent" x="116" y="234">{{lower}}</text>
+  <polyline class="s-line" points="24,268 62,182 88,204 130,106 168,206 206,100 246,192 284,112 324,212 362,150 398,104 436,200 470,156" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point"><circle cx="130" cy="106" r="3.5"/><circle cx="206" cy="100" r="3.5"/><circle cx="284" cy="112" r="3.5"/><circle cx="398" cy="104" r="3.5"/><circle cx="168" cy="206" r="3.5"/><circle cx="246" cy="192" r="3.5"/><circle cx="324" cy="212" r="3.5"/><circle cx="436" cy="200" r="3.5"/></g>
+  <line class="s-up" x1="474" y1="150" x2="526" y2="70" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line class="s-down" x1="474" y1="162" x2="526" y2="242" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text class="f-up" x="534" y="64" text-anchor="end">{{exit}}</text>
+  <text class="t-down" x="534" y="262" text-anchor="end">{{exit}}</text>
+  <text class="t-label" x="24" y="292">{{prior}}</text>
+</svg>

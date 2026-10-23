@@ -1,0 +1,219 @@
+id: trend-change
+kind: structure
+order: 40
+related: [higher-highs-lower-lows, pullback-vs-reversal, false-breakout, candle-close]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: trend-ne-zaman-degisir
+  name: Trend ne zaman değişmiş sayılır?
+  alt_name: Trend change
+  summary: >-
+    Yükselen bir trend, son önemli yükselen dibin altında kapanış geldiğinde bozulmuş sayılır.
+    İlk alçalan tepe yapının zayıfladığını gösterebilir; yeni bir düşen trendden söz etmek için ise
+    alçalan tepe ve alçalan dip sırasının oluşması beklenir.
+  sections:
+    - type: text
+      id: definition
+      title: Referans nokta
+      paragraphs:
+        - >-
+          Trend, tepe ve diplerin sırasıyla tanımlanır. Bu yüzden trendin değişip değişmediği de aynı
+          sıraya bakılarak ölçülür. Yükselen trendde referans, **son önemli yükselen diptir (HL)**:
+          son yeni tepeyi (HH) başlatan dip. Düşen trendde referans, **son önemli alçalan tepedir
+          (LH)**.
+        - >-
+          Fiyat bu referansın üzerinde kaldıkça, ne kadar sert olursa olsun düşüşler yükselen trendin
+          içindeki geri çekilmeler olarak okunabilir. Referansın kaybedilmesi ise yapının artık
+          yükselen sayılamayacağı anlamına gelir.
+      note: Yükselen bir trendin düşene dönmesi çoğu zaman tek bir mumda değil, birkaç aşamada görülür. Aşağıdaki aşamalar düşen trend için ters yönde geçerlidir.
+    - type: steps
+      id: stages
+      title: Değişim hangi aşamalardan geçer?
+      items:
+        - title: Yeni tepe gelmez.
+          text: Fiyat son tepenin üzerine çıkamaz ve bir **alçalan tepe (LH)** oluşturur. Bu, yükselişin güç kaybettiğini gösterebilir ama trend henüz bozulmamıştır.
+        - title: Son önemli yükselen dibin altında kapanış gelir.
+          text: Fiyat son önemli HL'nin altında **kapanış** yapar. Yükselen yapı artık geçerli değildir.
+        - title: Tepki eski dibin altında kalır.
+          text: Fiyat yukarı tepki verse bile kaybedilen dibin bulunduğu bölgenin altında kalır ve yeni bir LH oluşturur.
+        - title: Alçalan dip oluşur.
+          text: Fiyat bir önceki dibin altına iner ve bir **alçalan dip (LL)** yapar. LH ve LL sırası, yeni bir düşen trendin teyidi olarak okunabilir.
+    - type: scenarios
+      id: weakened-vs-changed
+      title: "Zayıflama, bozulma, teyit"
+      intro: Bu üç durum sık karıştırılır. Aralarındaki fark, hangi noktanın kaybedildiğidir.
+      items:
+        - title: Yapı zayıfladı
+          tone: neutral
+          text: İlk LH oluştu ya da fiyat son önemli dibe fitille yaklaştı, ama kapanış dibin **üzerinde** kaldı. Yükselen yapı hâlâ geçerlidir.
+        - title: Yapı bozuldu
+          tone: down
+          text: Son önemli HL'nin **altında kapanış** geldi. Yükselen trend artık geçerli değildir, ama yeni yön henüz belli değildir; fiyat yataya da dönebilir.
+        - title: Yeni düşen trend teyit edildi
+          tone: down
+          text: Bozulmanın ardından en az bir **LH ve bir LL** oluştu. Yapı artık düşen trend olarak okunabilir.
+    - type: bullets
+      id: close-vs-wick
+      title: Kapanış mı, fitil mi?
+      items:
+        - text: Son önemli dibin altına inen bir **fitil**, kapanış dibin üzerinde kaldıysa yapıyı bozmaz. Bu çoğu zaman dibin denendiğini gösterir.
+          marker: neutral
+        - text: Yapının bozulduğunu ölçmek için **kapanış** kullanılır. Hangi zaman diliminin kapanışına bakıldığı belirtilmelidir.
+          marker: accent
+        - text: Kapanış dibin hemen altında gelip sonraki mumlarda fiyat yeniden yukarı dönerse, hareket bir sahte kırılım olabilir. Sonraki mumlar da önemlidir.
+          marker: neutral
+    - type: limits
+      shows:
+        - Yükselen ya da düşen yapının hangi noktada geçerliliğini yitirdiğini
+        - Zayıflama, bozulma ve teyit arasındaki farkı ölçülebilir hale getirmeyi
+        - Trend değişimini tek bir mumdan değil, tepe ve dip sırasından okumayı
+      not_proves:
+        - Bozulmanın ardından fiyatın mutlaka ters yönde ilerleyeceğini
+        - Yeni trendin ne kadar süreceğini ya da nereye kadar gideceğini
+        - Bir zaman dilimindeki değişimin diğer zaman dilimlerinde de geçerli olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          Son önemli dip çoğu zaman bir **destek bölgesinin** içinde oluşur. Bu yüzden yapının
+          bozulmasını tek bir fiyatla değil, o dibin oturduğu bölgenin **alt kenarının altında**
+          kapanışla ölçmek daha sağlıklıdır. Bölgenin içinde gelen bir kapanış, yalnızca bölgenin test
+          edildiğini gösterir.
+        - >-
+          Kaybedilen bölge sonrasında bir **direnç bölgesi** gibi çalışabilir. Fiyatın aşağıdan bu
+          bölgeye gelip altında kalması, yeni alçalan tepenin çoğu zaman nerede oluştuğunu gösterir.
+    - type: box
+      title: Zaman dilimi ve kripto
+      text: >-
+        1H grafikte yapı bozulmuşken 4H ya da günlük grafikteki yükselen trend sürüyor olabilir.
+        Kripto piyasası 7/24 açık olduğu için kapanışlar borsadan borsaya küçük farklarla oluşabilir;
+        dibin hemen altında gelen kapanışlar bu yüzden temkinli okunmalıdır.
+  confusions:
+    - id: pullback-vs-reversal
+      text: Son önemli dibin üzerinde kalan bir düşüş geri çekilme olarak okunabilir; dibin altında kapanış ise olası bir dönüşün ilk işaretidir.
+    - id: false-breakout
+      text: Dibin altına inen bir fitil ya da hemen geri alınan bir kapanış, yapıyı bozmak yerine dibin denendiğini gösterebilir.
+  key_points:
+    - Yükselen trendde referans son önemli yükselen dip, düşen trendde son önemli alçalan tepedir.
+    - İlk alçalan tepe yapının zayıfladığını gösterir, trendi tek başına değiştirmez.
+    - Yapıyı fitil değil, kapanış bozar.
+    - Bozulma ile yeni trendin teyidi farklıdır; teyit için LH ve LL sırası beklenir.
+  svg_labels:
+    hh: HH
+    hl: HL
+    zone_1: Son önemli
+    zone_2: yükselen dip
+    lh_1: İlk alçalan tepe
+    lh_2: yapı zayıflar
+    break_1: Bölgenin altında kapanış
+    break_2: yapı bozulur
+    confirm_1: LH ve LL
+    confirm_2: düşen trend teyidi
+  svg_alt: "Yükselen bir trendin değişimi: son önemli yükselen dip turuncu bir bölgeyle gösteriliyor, fiyat yeni tepe yapamayıp alçalan bir tepe oluşturuyor, ardından bölgenin altında kapanış yapıyor ve alçalan tepe ile alçalan dip oluşturuyor"
+  svg_caption: Turuncu bant son önemli yükselen dibin bölgesini, turuncu nokta bölgenin altındaki kapanışı gösterir. Yeşil kısım yükselen yapıyı, nötr renkli kısım zayıflamayı, kırmızı kısım bozulma sonrasını gösterir.
+
+en:
+  slug: when-a-trend-changes
+  name: When does a trend count as changed?
+  summary: >-
+    An uptrend counts as broken when price closes below the last important higher low. A first
+    lower high can show the structure weakening; to speak of a new downtrend, a sequence of lower
+    highs and lower lows is usually needed.
+  sections:
+    - type: text
+      id: definition
+      title: The reference point
+      paragraphs:
+        - >-
+          A trend is defined by the sequence of highs and lows, so whether it has changed is measured
+          from the same sequence. In an uptrend the reference is **the last important higher low
+          (HL)**: the low that launched the latest higher high (HH). In a downtrend the reference is
+          **the last important lower high (LH)**.
+        - >-
+          As long as price stays above that reference, even sharp declines can be read as pullbacks
+          inside the uptrend. Losing the reference means the structure can no longer be called rising.
+      note: An uptrend turning into a downtrend usually shows over several stages, not in a single candle. The stages below apply the other way round for a downtrend.
+    - type: steps
+      id: stages
+      title: The stages of a change
+      items:
+        - title: No new high.
+          text: Price fails to get above the last high and forms a **lower high (LH)**. This can show the rise losing strength, but the trend is not broken yet.
+        - title: A close below the last important higher low.
+          text: Price **closes** below the last important HL. The rising structure no longer holds.
+        - title: The bounce stays below the old low.
+          text: Even if price bounces, it stays below the zone of the lost low and forms another LH.
+        - title: A lower low forms.
+          text: Price falls below the previous low and makes a **lower low (LL)**. The LH and LL sequence can be read as confirming a new downtrend.
+    - type: scenarios
+      id: weakened-vs-changed
+      title: "Weakened, broken, confirmed"
+      intro: These three states are often confused. The difference is which point has been lost.
+      items:
+        - title: Structure weakened
+          tone: neutral
+          text: A first LH has formed, or price wicked towards the last important low, but the close stayed **above** it. The rising structure still holds.
+        - title: Structure broken
+          tone: down
+          text: A **close below** the last important HL has come. The uptrend no longer holds, but the new direction is not clear yet; price may also turn sideways.
+        - title: New downtrend confirmed
+          tone: down
+          text: After the break, at least one **LH and one LL** have formed. The structure can now be read as a downtrend.
+    - type: bullets
+      id: close-vs-wick
+      title: The close or the wick?
+      items:
+        - text: A **wick** below the last important low does not break the structure if the close stays above it. It often shows the low being tested.
+          marker: neutral
+        - text: The **close** is what measures a broken structure. Say which timeframe's close you are using.
+          marker: accent
+        - text: If the close comes just below the low and price turns back up in the next candles, the move may be a false breakout. The next candles matter too.
+          marker: neutral
+    - type: limits
+      shows:
+        - At which point a rising or falling structure stops holding
+        - A measurable difference between weakened, broken and confirmed
+        - A way to read trend change from the sequence of highs and lows rather than a single candle
+      not_proves:
+        - That price will move the other way after a break
+        - How long the new trend will last or how far it will go
+        - That a change on one timeframe holds on other timeframes
+    - type: zones
+      paragraphs:
+        - >-
+          The last important low often forms inside a **support zone**. That is why it is sounder to
+          measure a broken structure by a close **below the zone's lower edge** rather than at a single
+          price. A close inside the zone only shows that the zone is being tested.
+        - >-
+          The lost zone can then act as a **resistance zone**. Price coming up to it from below and
+          staying under it often shows where the new lower high forms.
+    - type: box
+      title: Timeframes and crypto
+      text: >-
+        The structure can be broken on the 1H chart while the uptrend on the 4H or daily chart is
+        still intact. Crypto trades 24/7, so closes can differ slightly from exchange to exchange;
+        closes just below the low are best read with caution.
+  confusions:
+    - id: pullback-vs-reversal
+      text: A decline that stays above the last important low can be read as a pullback; a close below that low is the first sign of a possible reversal.
+    - id: false-breakout
+      text: A wick below the low, or a close that is quickly reclaimed, can show the low being tested rather than the structure breaking.
+  key_points:
+    - In an uptrend the reference is the last important higher low; in a downtrend, the last important lower high.
+    - A first lower high shows weakening; on its own it does not change the trend.
+    - The close, not the wick, breaks the structure.
+    - A break is not the same as a confirmed new trend; confirmation needs an LH and LL sequence.
+  svg_labels:
+    hh: HH
+    hl: HL
+    zone_1: Last important
+    zone_2: higher low
+    lh_1: First lower high
+    lh_2: structure weakens
+    break_1: Close below the zone
+    break_2: structure breaks
+    confirm_1: LH and LL
+    confirm_2: downtrend confirmed
+  svg_alt: "An uptrend changing: the last important higher low is shown as an orange zone, price fails to make a new high and forms a lower high, then closes below the zone and forms a lower high and a lower low"
+  svg_caption: The orange band marks the zone of the last important higher low and the orange dot the close below it. The green part shows the rising structure, the neutral-coloured part the weakening and the red part what follows the break.

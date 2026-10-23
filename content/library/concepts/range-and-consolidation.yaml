@@ -1,0 +1,181 @@
+id: range-and-consolidation
+kind: structure
+order: 70
+related: [trend, rectangle, false-breakout, support-and-resistance]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: yatay-piyasa-ve-konsolidasyon
+  name: Yatay piyasa ve konsolidasyon
+  alt_name: Range and consolidation
+  summary: >-
+    Yatay piyasa, fiyatın belirgin bir yöne ilerlemeden iki bölge arasında gidip gelmesidir.
+    Konsolidasyon, çoğu zaman bir trendin ardından gelen bu duraklama evresine verilen addır. Aralık,
+    kenarlarından birinin dışında kapanışla ve fiyatın orada kalmasıyla sona erer.
+  sections:
+    - type: text
+      id: definition
+      title: Yatay piyasa nedir?
+      paragraphs:
+        - >-
+          Trendde tepeler ve dipler bir yöne kayar. Yatay piyasada ise tepeler aşağı yukarı aynı
+          yerde, dipler de aşağı yukarı aynı yerde kalır. Fiyat bir üst ve bir alt sınır arasında
+          gidip gelir; bu alana **aralık** denir.
+        - >-
+          **Konsolidasyon** genellikle belirgin bir yükseliş ya da düşüşün ardından fiyatın
+          dinlendiği evreyi anlatır. Her konsolidasyon bir aralık şeklinde görünmez; daralan bir
+          üçgen ya da kısa bir bayrak da konsolidasyondur. Bu sayfa yatay biçimini ele alır.
+    - type: bullets
+      id: inside
+      title: Aralığın içinde genellikle ne olur?
+      items:
+        - Fiyat bir kenardan diğerine gider; tepkiler çoğu zaman **kenarlarda** görülür.
+        - Aralığın ortasında fiyat kararsız kalır, kısa ve yönsüz hareketler artar.
+        - Kenarlar fitillerle sık sık denenir. Kenarın kısa süre aşılıp içeride kapanılması bu evrede yaygındır.
+        - Aralık sürdükçe hareketler çoğu zaman sakinleşir, mumlar küçülür.
+      note: Bu gözlemler eğilimdir; her aralık aynı davranmaz.
+    - type: scenarios
+      id: how-it-ends
+      title: Aralık nasıl sona erer?
+      intro: Aralık ancak fiyat kenarlardan birinin dışında kapanış yapıp orada kalırsa sona ermiş sayılır. Üç tablo oluşabilir.
+      items:
+        - title: Yukarı çıkış
+          tone: up
+          text: Kapanış üst bölgenin **üst kenarının üzerinde** gelir ve sonraki mumlar da bölgenin üzerinde kalır.
+        - title: Aşağı çıkış
+          tone: down
+          text: Kapanış alt bölgenin **alt kenarının altında** gelir ve sonraki mumlar da bölgenin altında kalır.
+        - title: Sahte kırılım
+          tone: neutral
+          text: Fiyat bir kenarın dışına geçer ama kısa sürede yeniden aralığın içine döner. Aralık sürer; bazen fiyat karşı kenara yönelir.
+    - type: limits
+      shows:
+        - Fiyatın şimdilik iki bölge arasında bir denge bulduğunu
+        - Tepkilerin hangi bölgelerde geldiğini
+        - Aralığın hangi kapanışla sona ermiş sayılacağını
+      not_proves:
+        - Aralığın hangi yöne kırılacağını
+        - Aralığın ne kadar süreceğini
+        - Kenarların bir sonraki denemede de tutacağını
+    - type: zones
+      paragraphs:
+        - >-
+          Aralığın kenarları tek bir fiyat değil, birer **bölgedir**. Tepeler ve dipler tam olarak aynı
+          fiyata gelmez; birbirine yakın bir alana dağılır. Üst kenar bir **direnç bölgesi**, alt kenar
+          bir **destek bölgesi** olarak okunur.
+        - >-
+          Kenarları bant olarak okumak, aralığın içindeki fitilli denemeleri kırılımdan ayırmayı
+          kolaylaştırır. Bölgenin içine gelen bir kapanış henüz çıkış değildir; çıkış, bölgenin uzak
+          kenarının dışında kapanışla ölçülür. Aralığın ortası ise iki bölgenin arasında kalan
+          boşluktur ve buradaki tepkiler kenarlardakiler kadar anlam taşımaz.
+    - type: box
+      title: Dikdörtgen formasyonuyla ilişkisi
+      text: >-
+        Kenarları belirgin, her kenarda en az iki dokunuşu olan ve bir trendin ardından gelen yatay bir
+        aralık, dikdörtgen formasyonu olarak da okunur. Dikdörtgen sayfası bu formasyonun tanımını ve
+        ölçümünü ayrıntılı anlatır; bu sayfa ise yatay piyasayı genel bir piyasa hali olarak ele alır.
+  confusions:
+    - id: rectangle
+      text: Dikdörtgen, belirli kurallara uyan yatay bir aralıktır; her yatay piyasa bir dikdörtgen değildir.
+    - id: false-breakout
+      text: Aralığın kenarlarında sık görülür; kenarı fitille aşıp içeride kapanan hareket henüz bir çıkış değildir.
+  key_points:
+    - Yatay piyasada tepeler ve dipler aşağı yukarı aynı yerde kalır.
+    - Aralığın kenarları çizgi değil, bölgedir.
+    - Tepkiler kenarlarda, kararsızlık ortada görülür.
+    - Aralık, kenarın dışında bir kapanış ve fiyatın orada kalmasıyla sona erer.
+  svg_labels:
+    upper: Direnç bölgesi (üst kenar)
+    lower: Destek bölgesi (alt kenar)
+    exit: Kırılım?
+    prior: Önceki hareket
+  svg_alt: "Yatay piyasa çizimi: bir yükselişin ardından fiyat üstte bir direnç bölgesi ile altta bir destek bölgesi arasında gidip geliyor; sonda iki olası çıkış yönü kesikli çizgilerle gösteriliyor"
+  svg_caption: Turuncu bantlar aralığın kenarlarını, noktalar kenarlara gelen tepe ve dipleri gösterir. Noktalı çizgi aralığın ortasıdır. Kesikli çizgiler, yönün ancak bir kenarın dışında kapanışla belirleneceğini anlatır.
+
+en:
+  slug: ranges-and-consolidation
+  name: Ranges and consolidation
+  summary: >-
+    A range is price moving back and forth between two zones without a clear direction.
+    Consolidation is the name often given to this pause, usually after a trend. A range ends with a
+    close outside one of its edges and price staying there.
+  sections:
+    - type: text
+      id: definition
+      title: What is a range?
+      paragraphs:
+        - >-
+          In a trend, highs and lows shift in one direction. In a range, the highs stay at roughly the
+          same level and so do the lows. Price moves back and forth between an upper and a lower bound;
+          this area is called a **range**.
+        - >-
+          **Consolidation** usually describes the phase in which price rests after a clear rise or
+          fall. Not every consolidation looks like a range; a narrowing triangle or a short flag is a
+          consolidation too. This page covers the horizontal form.
+    - type: bullets
+      id: inside
+      title: What usually happens inside a range
+      items:
+        - Price travels from one edge to the other; reactions usually come **at the edges**.
+        - In the middle of the range price is undecided, with more short, directionless moves.
+        - The edges are often tested with wicks. Briefly crossing an edge and closing back inside is common in this phase.
+        - As the range goes on, moves often calm down and candles get smaller.
+      note: These are tendencies; not every range behaves the same way.
+    - type: scenarios
+      id: how-it-ends
+      title: How a range ends
+      intro: A range only counts as over when price closes outside one of its edges and stays there. Three pictures can follow.
+      items:
+        - title: Break upwards
+          tone: up
+          text: The close comes **above the upper zone's top edge** and the next candles stay above the zone too.
+        - title: Break downwards
+          tone: down
+          text: The close comes **below the lower zone's bottom edge** and the next candles stay below the zone too.
+        - title: False breakout
+          tone: neutral
+          text: Price moves outside an edge but soon returns inside the range. The range continues; sometimes price heads for the opposite edge.
+    - type: limits
+      shows:
+        - That price has, for now, found a balance between two zones
+        - Which zones the reactions come from
+        - Which close would count as the end of the range
+      not_proves:
+        - Which way the range will break
+        - How long the range will last
+        - That the edges will hold on the next test too
+    - type: zones
+      paragraphs:
+        - >-
+          The edges of a range are not single prices but **zones**. Highs and lows do not land on
+          exactly the same price; they spread over a nearby area. The upper edge reads as a
+          **resistance zone** and the lower edge as a **support zone**.
+        - >-
+          Reading the edges as bands makes it easier to tell wicked tests inside the range from a
+          breakout. A close inside the zone is not yet a break; a break is measured by a close beyond
+          the zone's far edge. The middle of the range is the gap between the two zones, and reactions
+          there mean less than those at the edges.
+    - type: box
+      title: How it relates to the rectangle
+      text: >-
+        A horizontal range with clear edges, at least two touches on each edge and a trend before it
+        can also be read as a rectangle pattern. The rectangle page covers that pattern's definition
+        and measurement in detail; this page looks at ranges as a general market state.
+  confusions:
+    - id: rectangle
+      text: A rectangle is a horizontal range that meets specific rules; not every range is a rectangle.
+    - id: false-breakout
+      text: Common at the edges of a range; a move that wicks past an edge and closes back inside is not yet a break.
+  key_points:
+    - In a range, highs and lows stay at roughly the same levels.
+    - The edges of a range are zones, not lines.
+    - Reactions come at the edges; indecision sits in the middle.
+    - A range ends with a close outside an edge and price staying there.
+  svg_labels:
+    upper: Resistance zone (upper edge)
+    lower: Support zone (lower edge)
+    exit: Breakout?
+    prior: Prior move
+  svg_alt: "Range illustration: after a rise, price moves back and forth between a resistance zone above and a support zone below; at the end two possible exit directions are shown with dashed lines"
+  svg_caption: The orange bands mark the edges of the range and the dots the highs and lows that reach them. The dotted line is the middle of the range. The dashed lines show that direction is only decided by a close outside one of the edges.

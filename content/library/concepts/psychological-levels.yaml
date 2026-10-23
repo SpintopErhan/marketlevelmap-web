@@ -1,0 +1,183 @@
+id: psychological-levels
+kind: levels
+order: 70
+related: [support-and-resistance, historical-highs-and-lows, false-breakout]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: psikolojik-seviyeler
+  name: "Psikolojik seviyeler: yuvarlak sayılar neden önemlidir?"
+  alt_name: Psychological (round-number) levels
+  summary: >-
+    Psikolojik seviyeler, BTC için 100.000 ya da bazı varlıklar için 1,00 gibi yuvarlak sayılardır.
+    Dikkat ve emirler bu sayıların çevresinde yoğunlaşabilir, bu yüzden fiyat buralarda çoğu zaman
+    tepki verir. Tepki tam sayıda değil, çevresindeki bir bölgede görülür.
+  sections:
+    - type: text
+      id: definition
+      title: Psikolojik seviye nedir?
+      paragraphs:
+        - >-
+          İnsanlar fiyatları yuvarlak sayılarla düşünür ve konuşur. "BTC 100.000'i geçti mi?" sorusu,
+          "BTC 99.740'ı geçti mi?" sorusundan çok daha sık sorulur. Bu yüzden yuvarlak sayılar,
+          grafikte çizgi olmasa da **herkesin aklındaki seviyelerdir**.
+        - >-
+          Psikolojik seviye, fiyatın bu tür bir yuvarlak sayıya yaklaştığı yerdir: 100.000, 50.000,
+          10.000 ya da daha küçük fiyatlı varlıklarda 1,00 ve 0,50 gibi. Bu sayıların çevresinde
+          fiyatın **duraksaması, dönmesi ya da hızlanması** sık görülür.
+    - type: bullets
+      id: why-attention
+      title: Neden dikkat çeker?
+      items:
+        - "**Emirler yoğunlaşır:** bekleyen alım ve satım emirleri çoğu zaman yuvarlak sayılara ya da hemen yakınlarına girilir."
+        - "**Alarmlar ve hedefler:** fiyat alarmları ve planlanan seviyeler yuvarlak sayılarda toplanma eğilimindedir."
+        - "**Haber ve gündem:** bir yuvarlak sayının aşılması ya da kaybedilmesi haber başlıklarına taşınır ve dikkati artırır."
+    - type: text
+      id: zone-not-price
+      title: Neden tam fiyat değil, bölge?
+      paragraphs:
+        - >-
+          Herkes aynı sayıyı bildiği için emirler tam o sayıya değil, **biraz önüne ya da biraz
+          ötesine** dağılır. Bu yüzden fiyat yuvarlak sayıya ulaşmadan dönebilir ya da onu kısa bir
+          süre aşıp geri gelebilir.
+        - >-
+          Kriptoda fiyat borsadan borsaya da küçük farklar gösterir. Bir borsada 100.000'e dokunan
+          fiyat, diğerinde 99.950'de kalmış olabilir. Psikolojik seviyeyi yuvarlak sayının
+          **çevresindeki bir bant** olarak okumak bu farkları hesaba katar.
+    - type: bullets
+      id: limits-of-the-idea
+      title: Fikrin sınırları
+      items:
+        - Her yuvarlak sayı aynı önemi taşımaz; 100.000 gibi büyük bir sayı, 101.000'den çok daha fazla dikkat çeker.
+        - Önem fiyatın ölçeğine bağlıdır; 1,00 bir varlık için kritik bir seviyeyken başka bir varlık için anlamsız olabilir.
+        - Yuvarlak sayı daha önceki bir destek ya da direnç bölgesiyle çakışıyorsa daha belirgin olabilir; tek başına zayıf kalabilir.
+        - Yuvarlak sayılara ilişkin beklenti çok yaygın olduğu için fiyat bu sayıların çevresinde sık sık sahte kırılım yapabilir.
+    - type: limits
+      shows:
+        - Piyasanın dikkatinin yoğunlaşabileceği fiyat alanlarını
+        - Fiyatın neden belirli sayıların çevresinde duraksayabildiğini
+        - Yuvarlak sayının daha önceki bir bölgeyle çakışıp çakışmadığını
+      not_proves:
+        - Fiyatın yuvarlak sayıdan döneceğini ya da onu aşacağını
+        - Tepkinin tam olarak yuvarlak sayıda geleceğini
+        - Her yuvarlak sayının bir destek ya da direnç bölgesi olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          Psikolojik seviyeler, geçmiş fiyat hareketinden değil **beklentiden** doğar. Fiyat bir
+          yuvarlak sayıda daha önce tepki vermişse, o sayı aynı zamanda bir destek ya da direnç
+          bölgesine dönüşür. İki referansın çakıştığı alanlar genellikle daha çok dikkat çeker.
+        - >-
+          Yuvarlak sayıyı tek bir çizgi olarak okumak, onu birkaç birim aşan her fitili kırılım gibi
+          gösterebilir. Sayının çevresindeki **bandı** esas almak ve kırılımı bandın uzak kenarının
+          ötesindeki kapanışla ölçmek, daha tutarlı bir okuma sağlar.
+  confusions:
+    - id: historical-highs-and-lows
+      text: ATH'ın üzerinde eski bir fiyat bölgesi olmadığında, yuvarlak sayılar çoğu zaman öne çıkan referanslar olur.
+    - id: false-breakout
+      text: Yuvarlak sayıyı kısa süre aşıp geri dönen fitiller, bu seviyelerde sık görülen sahte kırılımlardır.
+  key_points:
+    - Yuvarlak sayılar dikkat ve emirlerin yoğunlaşabildiği seviyelerdir.
+    - Tepki tam sayıda değil, çevresindeki bir bölgede görülür.
+    - Her yuvarlak sayı önemli değildir; ölçek ve geçmiş bölgeler belirleyicidir.
+    - Yuvarlak sayı tek başına dönüşün ya da kırılımın kanıtı değildir.
+  svg_labels:
+    zone: Yuvarlak sayı bölgesi
+    p_high: "101.000"
+    p_round: "100.000"
+    p_low: "99.000"
+    before_1: Sayıdan önce
+    before_2: döner
+    over_1: Sayıyı biraz
+    over_2: aşar
+  svg_alt: "Psikolojik seviye çizimi: yükselen mumlar 100.000 seviyesinin çevresindeki bölgeye geliyor; bir mum sayıya ulaşmadan dönüyor, bir başkasının fitili sayıyı biraz aşıyor ama kapanışı altında kalıyor"
+  svg_caption: Düz turuncu çizgi yuvarlak sayıyı (100.000), turuncu bant çevresindeki bölgeyi gösterir. Tepkiler tam sayıda değil, bandın içinde farklı noktalarda gelir.
+
+en:
+  slug: psychological-levels
+  name: "Psychological levels: why round numbers matter"
+  summary: >-
+    Psychological levels are round numbers such as 100,000 for BTC or 1.00 for some assets.
+    Attention and orders can cluster around them, so price often reacts there. The reaction comes in
+    a zone around the number, not at the exact number.
+  sections:
+    - type: text
+      id: definition
+      title: What is a psychological level?
+      paragraphs:
+        - >-
+          People think and talk about prices in round numbers. "Has BTC passed 100,000?" is asked far
+          more often than "Has BTC passed 99,740?". So round numbers are **levels everyone has in
+          mind**, even when nothing is drawn on the chart.
+        - >-
+          A psychological level is where price nears a round number like this: 100,000, 50,000, 10,000,
+          or 1.00 and 0.50 for lower-priced assets. Price often **pauses, turns or speeds up** around
+          these numbers.
+    - type: bullets
+      id: why-attention
+      title: Why do they attract attention?
+      items:
+        - "**Orders cluster:** pending buy and sell orders are often placed at round numbers or just next to them."
+        - "**Alerts and plans:** price alerts and planned levels tend to gather at round numbers."
+        - "**News and headlines:** a round number being cleared or lost makes headlines and draws more attention."
+    - type: text
+      id: zone-not-price
+      title: Why a zone and not an exact price?
+      paragraphs:
+        - >-
+          Because everyone knows the same number, orders spread **just before or just beyond it**
+          rather than sitting exactly on it. So price can turn before reaching the round number, or
+          briefly go past it and come back.
+        - >-
+          In crypto, price also differs slightly from one exchange to another. Price that touched
+          100,000 on one exchange may have stopped at 99,950 on another. Reading a psychological level
+          as **a band around the round number** allows for these differences.
+    - type: bullets
+      id: limits-of-the-idea
+      title: Limits of the idea
+      items:
+        - Not every round number matters equally; a big number like 100,000 draws far more attention than 101,000.
+        - Importance depends on the price scale; 1.00 can be a key level for one asset and meaningless for another.
+        - A round number can stand out more when it lines up with an earlier support or resistance zone; on its own it can be weak.
+        - Because expectations around round numbers are so widespread, price can often make false breakouts around them.
+    - type: limits
+      shows:
+        - Price areas where the market's attention may cluster
+        - Why price can pause around certain numbers
+        - Whether a round number lines up with an earlier zone
+      not_proves:
+        - That price will turn at a round number or clear it
+        - That the reaction will come exactly at the round number
+        - That every round number is a support or resistance zone
+    - type: zones
+      paragraphs:
+        - >-
+          Psychological levels come from **expectation**, not from past price action. If price has
+          reacted at a round number before, that number also becomes a support or resistance zone.
+          Areas where the two references line up usually draw more attention.
+        - >-
+          Reading a round number as a single line can make every wick that crosses it by a few units
+          look like a breakout. Using the **band** around the number and measuring a breakout by a
+          close beyond the band's far edge gives a more consistent reading.
+  confusions:
+    - id: historical-highs-and-lows
+      text: When there is no old price zone above an ATH, round numbers often become the references that stand out.
+    - id: false-breakout
+      text: Wicks that briefly cross a round number and come back are common false breakouts at these levels.
+  key_points:
+    - Round numbers are levels where attention and orders can cluster.
+    - The reaction comes in a zone around the number, not at the exact number.
+    - Not every round number matters; scale and earlier zones decide.
+    - A round number on its own is not proof of a turn or a breakout.
+  svg_labels:
+    zone: Round-number zone
+    p_high: "101,000"
+    p_round: "100,000"
+    p_low: "99,000"
+    before_1: Turns before
+    before_2: the number
+    over_1: Goes slightly
+    over_2: past it
+  svg_alt: "Psychological level illustration: rising candles reach the zone around the 100,000 level; one candle turns before reaching the number, another's wick goes slightly past it but closes below"
+  svg_caption: The solid orange line marks the round number (100,000) and the orange band the zone around it. Reactions come at different points inside the band, not exactly at the number.

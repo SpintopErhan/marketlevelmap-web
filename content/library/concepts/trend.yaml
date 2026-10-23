@@ -1,0 +1,159 @@
+id: trend
+kind: structure
+order: 10
+related: [false-breakout, ascending-triangle, flag]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: trend-nedir
+  name: Trend nedir?
+  alt_name: Trend
+  summary: >-
+    Trend, fiyatın belirli bir süre boyunca ağırlıklı olarak aynı yönde ilerlemesidir. Tepe ve
+    diplerin sırasıyla okunur: yükselen, düşen ya da yatay. Trendi tanımlamak, grafikteki diğer
+    her şeyi doğru bağlamda okumanın ilk adımıdır.
+  sections:
+    - type: text
+      id: definition
+      title: Trend nedir?
+      paragraphs:
+        - >-
+          Fiyat hiçbir zaman düz bir çizgide ilerlemez. Yükselişlerin arasında geri çekilmeler,
+          düşüşlerin arasında tepkiler olur. Trend, bu iniş çıkışların **toplamda hangi yöne
+          ilerlediğini** anlatır.
+        - >-
+          Trendi en sade haliyle tepe ve dip noktalarıyla tanımlarız. Her yeni tepe ve dip bir
+          öncekinden yüksekse yükselen, alçaksa düşen trend vardır. Tepeler ve dipler aşağı yukarı
+          aynı yerlerde kalıyorsa piyasa yataydır.
+    - type: scenarios
+      id: three-states
+      title: Piyasanın üç hali
+      items:
+        - title: Yükselen trend
+          tone: up
+          text: Tepeler ve dipler bir öncekinden yüksektir. Geri çekilmeler önceki dibe kadar inmez.
+        - title: Düşen trend
+          tone: down
+          text: Tepeler ve dipler bir öncekinden alçaktır. Tepkiler önceki tepeye kadar çıkmaz.
+        - title: Yatay piyasa
+          tone: neutral
+          text: Fiyat iki seviye arasında gidip gelir. Ne yeni tepe ne de yeni dip kalıcı olur.
+    - type: steps
+      id: how-to-read
+      title: Grafikte nasıl okunur?
+      items:
+        - title: Zaman dilimini seç.
+          text: Trend her zaman bir zaman dilimine göre söylenir. 1H grafikte düşen bir fiyat, günlük grafikte yükselen trendin içindeki bir geri çekilme olabilir.
+        - title: Belirgin tepe ve dipleri işaretle.
+          text: Küçük kıpırtıları değil, fiyatın açıkça yön değiştirdiği noktaları al. Her mumun tepesi bir tepe değildir.
+        - title: Sıralarını karşılaştır.
+          text: Son birkaç tepe ve dibin bir öncekine göre yüksek mi, alçak mı, yoksa aynı yerde mi kaldığına bak.
+        - title: Son önemli dibi ya da tepeyi not et.
+          text: Yükselen trendde son önemli dip, düşen trendde son önemli tepe, yapının ne zaman bozulmuş sayılacağının referansıdır.
+    - type: limits
+      shows:
+        - Fiyatın bu zaman diliminde şimdiye kadar hangi yönde ilerlediğini
+        - Geri çekilmelerin ve tepkilerin trendin içinde mi kaldığını
+        - Yapının bozulmuş sayılacağı referans noktasını (son önemli dip ya da tepe)
+      not_proves:
+        - Trendin devam edeceğini; yalnızca bugüne kadarki davranışı anlatır
+        - Hareketin ne kadar süreceğini ya da nereye kadar gideceğini
+        - Diğer zaman dilimlerinde de aynı yönün geçerli olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          Trend, bölgelerin nasıl okunacağını değiştirir. Yükselen bir trendde geri çekilmeler çoğu
+          zaman aşağıdaki bir **destek bölgesine** kadar iner. Bu bölgede gelen tepki, trendin
+          sürdüğüne dair bir ipucu olarak okunabilir.
+        - >-
+          Trendin bozulması da genellikle bir bölgenin kaybedilmesiyle görülür. Son önemli dibin
+          bulunduğu bölgenin altında kapanış, yükselen yapının artık geçerli olmadığını gösterebilir.
+          Bu yüzden trendi tek başına bir çizgiyle değil, tepe ve diplerin oturduğu bölgelerle birlikte
+          okumak daha sağlıklıdır.
+  key_points:
+    - Trend, tepe ve diplerin sırasıyla tanımlanır.
+    - Trend her zaman bir zaman dilimine göre söylenir.
+    - Son önemli dip ya da tepe, yapının bozulduğunu anlamanın referansıdır.
+    - Trend geçmişi anlatır; devam edeceğini garanti etmez.
+  svg_labels:
+    up: Yükselen
+    down: Düşen
+    range: Yatay
+  svg_alt: "Üç piyasa hali: tepe ve dipleri yükselen bir trend, tepe ve dipleri alçalan bir trend ve iki seviye arasında gidip gelen yatay bir piyasa"
+  svg_caption: Noktalar belirgin tepe ve dipleri, kesikli çizgiler trendin yönünü ya da yatay piyasanın sınırlarını gösterir.
+
+en:
+  slug: what-is-a-trend
+  name: What is a trend?
+  summary: >-
+    A trend is price moving mostly in one direction over a period of time. It is read from the
+    sequence of highs and lows: rising, falling or sideways. Identifying the trend is the first step
+    to reading everything else on the chart in the right context.
+  sections:
+    - type: text
+      id: definition
+      title: What is a trend?
+      paragraphs:
+        - >-
+          Price never moves in a straight line. Rises are interrupted by pullbacks and declines by
+          bounces. A trend describes **which way these swings add up to**.
+        - >-
+          In its simplest form, a trend is defined by swing highs and lows. If each new high and low
+          is above the previous one, the trend is up; if below, it is down. If the highs and lows stay
+          at roughly the same levels, the market is moving sideways.
+    - type: scenarios
+      id: three-states
+      title: Three states of the market
+      items:
+        - title: Uptrend
+          tone: up
+          text: Highs and lows are each above the previous ones. Pullbacks do not reach the previous low.
+        - title: Downtrend
+          tone: down
+          text: Highs and lows are each below the previous ones. Bounces do not reach the previous high.
+        - title: Sideways market
+          tone: neutral
+          text: Price moves back and forth between two levels. Neither a new high nor a new low holds.
+    - type: steps
+      id: how-to-read
+      title: How to read it on a chart
+      items:
+        - title: Choose a timeframe.
+          text: A trend is always stated for a timeframe. Price falling on the 1H chart can be a pullback inside an uptrend on the daily chart.
+        - title: Mark the clear highs and lows.
+          text: Take the points where price clearly changed direction, not every small wiggle. Not every candle's high is a swing high.
+        - title: Compare their sequence.
+          text: Check whether the last few highs and lows are above, below or level with the previous ones.
+        - title: Note the last important low or high.
+          text: In an uptrend the last important low, and in a downtrend the last important high, is the reference for when the structure counts as broken.
+    - type: limits
+      shows:
+        - Which way price has moved so far on this timeframe
+        - Whether pullbacks and bounces have stayed inside the trend
+        - The reference point at which the structure would count as broken (the last important low or high)
+      not_proves:
+        - That the trend will continue; it only describes behaviour so far
+        - How long the move will last or how far it will go
+        - That the same direction holds on other timeframes
+    - type: zones
+      paragraphs:
+        - >-
+          The trend changes how zones are read. In an uptrend, pullbacks often reach a **support
+          zone** below. A reaction at that zone can be read as a hint that the trend is still intact.
+        - >-
+          A trend usually breaks by losing a zone, too. A close below the zone where the last
+          important low sits can show that the rising structure no longer holds. That is why it is
+          sounder to read a trend together with the zones its highs and lows sit in, rather than with
+          a single line.
+  key_points:
+    - A trend is defined by the sequence of highs and lows.
+    - A trend is always stated for a timeframe.
+    - The last important low or high is the reference for when the structure breaks.
+    - A trend describes the past; it does not guarantee it will continue.
+  svg_labels:
+    up: Uptrend
+    down: Downtrend
+    range: Sideways
+  svg_alt: "Three market states: an uptrend with rising highs and lows, a downtrend with falling highs and lows, and a sideways market moving between two levels"
+  svg_caption: The dots mark clear highs and lows; the dashed lines show the trend's direction or the bounds of the sideways market.

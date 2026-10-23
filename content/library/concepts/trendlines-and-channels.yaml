@@ -1,0 +1,210 @@
+id: trendlines-and-channels
+kind: structure
+order: 60
+related: [trend, swing-points, trend-change, flag]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: trend-cizgileri-ve-kanallar
+  name: Trend çizgileri ve kanallar
+  alt_name: Trendlines and channels
+  summary: >-
+    Trend çizgisi, yükselen trendde diplerin, düşen trendde tepelerin birleştirilmesiyle çizilen eğik
+    bir çizgidir. Karşı taraftaki tepe ya da diplerden geçen paralel bir çizgiyle birlikte kanal
+    oluşur. Trendin eğimini ve temposunu görselleştirir, ama çizimi yoruma açıktır.
+  sections:
+    - type: text
+      id: definition
+      title: Trend çizgisi nedir?
+      paragraphs:
+        - >-
+          Yükselen bir trendde dipler bir öncekinden yüksektir. Bu dipleri birleştiren çizgi yukarı
+          eğimlidir ve fiyatın bu çizginin üzerinde kalması trendin aynı **tempoda** sürdüğünü
+          gösterir. Düşen trendde çizgi tepelerden geçer ve aşağı eğimlidir.
+        - >-
+          Trend çizgisi yeni bir bilgi üretmez; tepe ve dip sırasının zaten anlattığı yönü **görünür
+          kılar**. Asıl referans yine tepe ve diplerin kendisidir.
+    - type: steps
+      id: how-to-draw
+      title: Nasıl çizilir?
+      items:
+        - title: Trendin yönünü belirle.
+          text: Yükselen trendde dipleri, düşen trendde tepeleri kullan. Önce tepe ve dip sırasının gerçekten bir trend gösterdiğinden emin ol.
+        - title: En az iki belirgin noktayı birleştir.
+          text: İki dip (ya da tepe) bir çizgi çizmeye yeter. Küçük kıpırtılar yerine fiyatın açıkça yön değiştirdiği noktaları al.
+        - title: Üçüncü dokunuşu bekle.
+          text: İki nokta her zaman bir çizgi verir; bu yüzden çizgi henüz yalnızca bir varsayımdır. Fiyat üçüncü kez çizgiye gelip tepki verirse çizgi daha anlamlı hale gelir.
+        - title: Çizgiyi ileriye uzat.
+          text: Uzatılan çizgi, fiyatın bir sonraki geri çekilmede nereye kadar gelebileceğine dair kaba bir referans verir.
+    - type: text
+      id: channels
+      title: Kanal nedir?
+      paragraphs:
+        - >-
+          Trend çizgisine paralel ikinci bir çizgi, karşı taraftaki tepelerden (ya da diplerden)
+          geçirilirse **kanal** oluşur. Fiyat bir süre bu iki çizgi arasında, belirli bir genişlikte
+          ilerler.
+        - >-
+          Kanal, trendin hem yönünü hem de dalgalanmanın genişliğini gösterir. Fiyatın kanalın üst
+          çizgisine ulaşamaması ya da kanalın dışına taşması, trendin temposunun değiştiğine dair bir
+          ipucu olabilir. Yatay bir kanal ise bir **aralıktır**.
+    - type: bullets
+      id: subjectivity
+      title: Çizim neden yoruma açıktır?
+      items:
+        - "**Fitil mi gövde mi?** Çizgi fitillerin uçlarından ya da gövdelerden geçirilebilir. İki seçim farklı eğimler ve farklı kırılım noktaları verir."
+        - "**Hangi noktalar?** Aynı grafikte farklı dip çiftleri seçmek farklı çizgiler üretir. Herkesin aynı çizgiyi görmesi beklenemez."
+        - "**Zaman dilimi.** 1H grafikteki bir çizgi günlük grafikte görünmeyebilir; uzun vadeli çizgiler daha az sayıda ama daha belirgin noktaya dayanır."
+        - "**Ölçek.** Kripto gibi geniş hareketlerin olduğu piyasalarda doğrusal ve logaritmik grafikte çizilen çizgiler zamanla birbirinden uzaklaşır."
+      note: Çizgiyi kesin bir sınır yerine yaklaşık bir rehber olarak okumak, bu belirsizliği hesaba katar.
+    - type: scenarios
+      id: break-vs-structure
+      title: Trend çizgisinin kırılması yapının değişmesi midir?
+      intro: Yükselen bir trend çizgisinin altında kapanış geldiğinde iki farklı tablo oluşabilir.
+      items:
+        - title: Yalnızca çizgi kırıldı
+          tone: neutral
+          text: Fiyat çizginin altına iner ama **son önemli dibin üzerinde** kalır. Trendin temposu yavaşlamış olabilir; yapı henüz korunuyor.
+        - title: Yapı da bozuldu
+          tone: down
+          text: Fiyat çizginin altında kalır ve ardından **son önemli dibin altında** kapanır. Bu, yükselen yapının bozulduğunu gösterebilir.
+    - type: limits
+      shows:
+        - Trendin eğimini ve hangi tempoda ilerlediğini
+        - Geri çekilmelerin bugüne kadar hangi hat çevresinde durduğunu
+        - Kanal varsa fiyatın dalgalanma genişliğini
+      not_proves:
+        - Fiyatın bir sonraki dokunuşta da çizgiden tepki alacağını
+        - Çizginin kırılmasının trendin bittiği anlamına geldiğini
+        - Çizginin tek doğru çizim olduğunu; başka noktalarla başka çizgiler çizilebilir
+    - type: zones
+      paragraphs:
+        - >-
+          Trend çizgisi eğik, destek ve direnç bölgeleri yataydır. İkisi aynı yerde buluştuğunda, yani
+          yükselen bir trend çizgisi bir **destek bölgesinden** geçtiğinde, o alan iki farklı okumanın
+          kesiştiği bir yer olarak daha dikkat çekici hale gelebilir.
+        - >-
+          Çizginin kırılması tek başına yeterli bilgi vermez. Yapının bozulup bozulmadığı, son önemli
+          dibin bulunduğu **bölgenin** korunup korunmadığıyla okunur. Çizgiyi de bölge gibi bir
+          genişliği olan yaklaşık bir hat olarak düşünmek, fitil ve gövde seçiminden doğan farkları
+          yumuşatır.
+  confusions:
+    - id: trend-change
+      text: Trend çizgisinin kırılması çoğu zaman bir tempo değişikliğidir; trend değişimi ise tepe ve dip sırasının bozulmasıyla okunur.
+  key_points:
+    - Trend çizgisi en az iki dip ya da tepeyle çizilir; üçüncü dokunuş çizgiyi güçlendirir.
+    - Kanal, trend çizgisine paralel ikinci bir çizgiyle oluşur.
+    - Fitil ya da gövde seçimi çizgiyi değiştirir; çizim yoruma açıktır.
+    - Çizginin kırılması yapının bozulması demek değildir.
+  svg_labels:
+    trendline: Trend çizgisi
+    channel: Kanal çizgisi
+    third_1: Üçüncü dokunuş
+    third_2: çizgiyi güçlendirir
+    break_1: Çizgi kırılır,
+    break_2: yapı korunur
+    low: Son önemli dip
+  svg_alt: "Yükselen bir kanal: üç dipten geçen bir trend çizgisi ve tepelerden geçen paralel bir kanal çizgisi; sonunda fiyat trend çizgisinin altına iniyor ama son önemli dibin üzerinde kalıyor"
+  svg_caption: Düz çizgi diplerden geçen trend çizgisini, kesikli çizgi kanalın üst çizgisini gösterir. 1, 2 ve 3 çizgiye yapılan dokunuşlardır. Turuncu bant son önemli dibin bölgesidir; fiyat çizgiyi kırsa da bu bölgenin üzerinde kalır.
+
+en:
+  slug: trendlines-and-channels
+  name: Trendlines and channels
+  summary: >-
+    A trendline is a sloping line drawn by joining the lows in an uptrend or the highs in a
+    downtrend. Together with a parallel line through the opposite highs or lows, it forms a channel.
+    It makes the trend's slope and pace visible, but drawing it is open to interpretation.
+  sections:
+    - type: text
+      id: definition
+      title: What is a trendline?
+      paragraphs:
+        - >-
+          In an uptrend each low is above the previous one. The line joining these lows slopes upwards,
+          and price staying above it shows the trend continuing at the same **pace**. In a downtrend
+          the line runs through the highs and slopes downwards.
+        - >-
+          A trendline adds no new information; it **makes visible** the direction that the sequence of
+          highs and lows already describes. The highs and lows themselves remain the main reference.
+    - type: steps
+      id: how-to-draw
+      title: How to draw one
+      items:
+        - title: Identify the trend's direction.
+          text: Use the lows in an uptrend and the highs in a downtrend. First make sure the sequence of highs and lows really shows a trend.
+        - title: Join at least two clear points.
+          text: Two lows (or highs) are enough to draw a line. Take the points where price clearly changed direction, not small wiggles.
+        - title: Wait for a third touch.
+          text: Any two points give a line, so at this stage the line is only an assumption. If price comes back to it a third time and reacts, the line becomes more meaningful.
+        - title: Extend the line forward.
+          text: The extended line gives a rough reference for how far the next pullback might reach.
+    - type: text
+      id: channels
+      title: What is a channel?
+      paragraphs:
+        - >-
+          If a second line, parallel to the trendline, is drawn through the opposite highs (or lows), a
+          **channel** forms. For a while price moves between these two lines within a certain width.
+        - >-
+          A channel shows both the trend's direction and the width of its swings. Price failing to
+          reach the upper line, or moving outside the channel, can be a hint that the trend's pace is
+          changing. A horizontal channel is a **range**.
+    - type: bullets
+      id: subjectivity
+      title: Why drawing it is subjective
+      items:
+        - "**Wicks or bodies?** The line can run through the wick ends or through the bodies. The two choices give different slopes and different break points."
+        - "**Which points?** Picking different pairs of lows on the same chart gives different lines. Not everyone will see the same line."
+        - "**Timeframe.** A line on the 1H chart may not show on the daily chart; longer-term lines rest on fewer but clearer points."
+        - "**Scale.** In markets with large moves, such as crypto, lines drawn on a linear and a logarithmic chart drift apart over time."
+      note: Reading the line as a rough guide rather than an exact boundary takes this uncertainty into account.
+    - type: scenarios
+      id: break-vs-structure
+      title: Is a trendline break a change of structure?
+      intro: When a close comes below a rising trendline, two different pictures can follow.
+      items:
+        - title: Only the line broke
+          tone: neutral
+          text: Price drops below the line but stays **above the last important low**. The trend's pace may have slowed; the structure still holds.
+        - title: The structure broke too
+          tone: down
+          text: Price stays below the line and then closes **below the last important low**. This can show that the rising structure has broken.
+    - type: limits
+      shows:
+        - The trend's slope and the pace at which it is moving
+        - The line around which pullbacks have stopped so far
+        - The width of price swings, when there is a channel
+      not_proves:
+        - That price will react to the line on the next touch too
+        - That a break of the line means the trend is over
+        - That the line is the only correct drawing; other points give other lines
+    - type: zones
+      paragraphs:
+        - >-
+          A trendline slopes, while support and resistance zones are horizontal. When the two meet, for
+          example when a rising trendline passes through a **support zone**, that area can draw more
+          attention as a place where two different readings overlap.
+        - >-
+          A break of the line alone says little. Whether the structure has broken is read from whether
+          the **zone** of the last important low holds. Thinking of the line, like a zone, as an
+          approximate path with some width smooths out the differences that come from choosing wicks
+          or bodies.
+  confusions:
+    - id: trend-change
+      text: A trendline break is often a change of pace; a trend change is read from a break in the sequence of highs and lows.
+  key_points:
+    - A trendline is drawn through at least two lows or highs; a third touch strengthens it.
+    - A channel forms with a second line parallel to the trendline.
+    - Choosing wicks or bodies changes the line; drawing it is subjective.
+    - A break of the line is not the same as a break of structure.
+  svg_labels:
+    trendline: Trendline
+    channel: Channel line
+    third_1: A third touch
+    third_2: strengthens the line
+    break_1: Line breaks,
+    break_2: structure holds
+    low: Last important low
+  svg_alt: "A rising channel: a trendline through three lows and a parallel channel line through the highs; at the end price drops below the trendline but stays above the last important low"
+  svg_caption: The solid line is the trendline through the lows and the dashed line is the channel's upper line. 1, 2 and 3 are touches of the line. The orange band is the zone of the last important low; price breaks the line but stays above this zone.

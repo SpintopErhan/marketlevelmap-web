@@ -1,10 +1,12 @@
-// Builds the pattern library: content/library (YAML + SVG) → static HTML pages, sitemap.xml.
+// Builds the library: content/library (YAML + SVG) → static HTML pages, sitemap.xml.
+// Two kinds of pages: patterns (content/library/patterns, a fixed pattern layout) and concepts
+// (content/library/concepts, flexible typed sections). Both live in categories, grouped in sections.
 //
 //   cd scripts && npm ci && node build-library.mjs           write the pages
 //   node build-library.mjs --check                            fail if the committed pages are out of date
 //
 // The generated pages are committed, so Cloudflare Pages needs no build step. A validation error stops the
-// build and nothing is written; references to patterns that are not written yet are only warnings.
+// build and nothing is written; references to pages that are not written yet are only warnings.
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
@@ -35,7 +37,8 @@ const WORDS = {
       "MarketLevelMap’te yapılan analizleri daha iyi anlamak ve grafikleri kendi başınıza yorumlayabilmek için hazırlandı. Formasyonlar, seviyeler ve diğer kavramlar birbirinden bağımsız değil, birlikte okunacak şekilde anlatılır. İçerikler zamanla genişleyecek.",
     ],
     libraryDescription: "Piyasa okuryazarlığı için temel kavramlar ve açıklamalar: formasyonlar, seviyeler ve diğer kavramlar, birlikte okunacak şekilde.",
-    seeAll: (cat, n) => `Tüm ${cat.toLocaleLowerCase("tr")} (${n}) →`, search: "Formasyon ara", noMatch: "Bu filtreyle eşleşen formasyon yok.", filters: "Filtreler",
+    seeAll: (cat, n) => `Tümü (${n}) →`, search: "Bu kategoride ara", noMatch: "Bu filtreyle eşleşen sayfa yok.", filters: "Filtreler",
+    shows: "Ne gösterir", notProves: "Neyi kanıtlamaz", limitsTitle: "Neyi gösterir, neyi kanıtlamaz?", limitsToc: "Sınırları", related: "İlgili sayfalar", keyPoints: "Akılda kalsın",
     topics: "Konular", overview: "Genel bakış", toggle: (cat) => `${cat}: alt başlıkları aç ya da kapat`, onThisPage: "Bu sayfada", facts: "Kısa özet",
     formation: "Nasıl oluşur", meaning: "Neye işaret eder", strength: "Ne zaman güçlenir, ne zaman zayıflar", strengthToc: "Güçlendirenler ve zayıflatanlar",
     strengthens: "Güçlendirenler", weakens: "Zayıflatanlar", mlmView: "MarketLevelMap bakışı", zones: "Bölgelerle ilişkisi",
@@ -63,8 +66,9 @@ const WORDS = {
       "Prepared to help you better understand the analyses on MarketLevelMap and interpret charts on your own. Formations, levels, and other concepts are explained in relation to one another rather than in isolation. Content will expand over time.",
     ],
     libraryDescription: "Core concepts and explanations for market literacy: formations, levels and other concepts, explained in relation to one another.",
-    seeAll: (cat, n) => `All ${cat.toLowerCase()} (${n}) →`, search: "Search patterns", noMatch: "No patterns match this filter.", filters: "Filters",
-    topics: "Topics", overview: "Overview", toggle: (cat) => `${cat}: show or hide the patterns`, onThisPage: "On this page", facts: "At a glance",
+    seeAll: (cat, n) => `All (${n}) →`, search: "Search this category", noMatch: "No pages match this filter.", filters: "Filters",
+    shows: "What it shows", notProves: "What it does not prove", limitsTitle: "What it shows, what it does not prove", limitsToc: "Limits", related: "Related pages", keyPoints: "Key points",
+    topics: "Topics", overview: "Overview", toggle: (cat) => `${cat}: show or hide its pages`, onThisPage: "On this page", facts: "At a glance",
     formation: "How it forms", meaning: "What it suggests", strength: "When it strengthens, when it weakens", strengthToc: "Strengthens and weakens",
     strengthens: "Strengthens", weakens: "Weakens", mlmView: "The MarketLevelMap view", zones: "How it relates to zones",
     completion: "When it completes", completionToc: "Completion", invalidation: "When it is invalidated", invalidationToc: "Invalidation",
@@ -102,16 +106,19 @@ const readYaml = (file) => {
 // ---------------------------------------------------------------- load + validate
 
 const ENUMS = {
-  kind: ["candle", "chart"],
   direction: ["bullish", "bearish", "neutral"],
   pattern_type: ["reversal", "continuation", "indecision"],
   candles: ["1", "2", "3", "multi"],
 };
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
-const categories = (readYaml(join(CONTENT, "categories.yaml")) || []).sort((a, b) => a.order - b.order);
+const sections = (readYaml(join(CONTENT, "sections.yaml")) || []).sort((a, b) => a.order - b.order);
+for (const g of sections) for (const lang of LANGS) if (!SLUG.test(g.id || "") || !isText(g[lang]?.name)) fail("sections.yaml", `${g.id}: needs id and ${lang}.name`);
+const sectionOrder = (c) => sections.find((g) => g.id === c.section)?.order ?? 999;
+const categories = (readYaml(join(CONTENT, "categories.yaml")) || []).sort((a, b) => sectionOrder(a) - sectionOrder(b) || a.order - b.order);
 for (const c of categories) {
-  if (!ENUMS.kind.includes(c.kind)) fail("categories.yaml", `unknown kind "${c.kind}"`);
+  if (!SLUG.test(c.kind || "")) fail("categories.yaml", `kind "${c.kind}" must be lowercase kebab-case`);
+  if (!sections.some((g) => g.id === c.section)) fail("categories.yaml", `${c.kind}: unknown section "${c.section}"`);
   for (const lang of LANGS) {
     if (!c[lang] || !SLUG.test(c[lang].slug || "") || !isText(c[lang].name) || !isText(c[lang].singular) || !isText(c[lang].summary)) {
       fail("categories.yaml", `${c.kind}.${lang} needs slug, name, singular and summary`);
@@ -120,7 +127,7 @@ for (const c of categories) {
 }
 const planned = readYaml(join(CONTENT, "planned.yaml")) || {};
 
-function validateLang(where, t, svgKeys) {
+function validateLang(where, t) {
   if (!t || typeof t !== "object") return fail(where, "missing");
   for (const key of ["slug", "name", "summary"]) if (!isText(t[key])) fail(where, `"${key}" is required`);
   if (t.slug && !SLUG.test(t.slug)) fail(where, `slug "${t.slug}" must be lowercase kebab-case`);
@@ -139,10 +146,30 @@ function validateLang(where, t, svgKeys) {
   if (!Array.isArray(t.facts) || !t.facts.length || !t.facts.every((r) => Array.isArray(r) && r.length === 2 && r.every((x) => isText(String(x ?? ""))))) fail(where, "facts must be a list of [label, value] pairs");
   if (t.measurement && !(isText(t.measurement.title) && isText(t.measurement.text))) fail(where, "measurement needs title and text");
   if (t.confusions && !(Array.isArray(t.confusions) && t.confusions.every((c) => isText(c?.id) && isText(c?.text)))) fail(where, "confusions items need id and text");
-  const labels = t.svg_labels || {};
+}
+
+// Shared by patterns and concepts: the drawing (svg/<id>.svg), its labels and the update date.
+function loadSvg(where, id) {
+  const svgFile = join(CONTENT, "svg", `${id}.svg`);
+  const svg = existsSync(svgFile) ? readFileSync(svgFile, "utf8").trim() : "";
+  if (!svg) fail(where, `svg/${id}.svg is missing`);
+  else {
+    if (!/^<svg[^>]*\sviewBox="/.test(svg)) fail(`svg/${id}.svg`, "needs a viewBox");
+    if (/^<svg[^>]*\s(width|height)=/.test(svg)) fail(`svg/${id}.svg`, "must not set width or height");
+    if (/#[0-9a-f]{3,8}\b|font-family=/i.test(svg)) fail(`svg/${id}.svg`, "use the colour/text classes instead of fixed colours or fonts (see content/library/README.md)");
+  }
+  return svg;
+}
+function svgLabels(where, t, svgKeys) {
+  const labels = t?.svg_labels || {};
   for (const key of svgKeys) if (!isText(labels[key])) fail(where, `svg_labels.${key} is missing (used in the SVG)`);
   for (const key of Object.keys(labels)) if (!svgKeys.includes(key)) warnings.push(`${where}: svg_labels.${key} is not used in the SVG`);
-  if (!isText(t.svg_alt)) fail(where, "svg_alt is required");
+  if (!isText(t?.svg_alt)) fail(where, "svg_alt is required");
+}
+const svgKeysOf = (svg) => [...new Set([...svg.matchAll(/\{\{(\w+)\}\}/g)].map((m) => m[1]))];
+function loadDate(where, item) {
+  item.updated = item.updated instanceof Date ? item.updated.toISOString().slice(0, 10) : String(item.updated ?? "");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(item.updated)) fail(where, "updated must be a date (YYYY-MM-DD)");
 }
 
 const patterns = [];
@@ -157,38 +184,87 @@ for (const name of readdirSync(join(CONTENT, "patterns")).filter((n) => n.endsWi
     if (!values.includes(String(p[key]))) fail(where, `${key} must be one of ${values.join(", ")}`);
   }
   if (!categories.some((c) => c.kind === p.kind)) fail(where, `no category for kind "${p.kind}"`);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(p.updated instanceof Date ? p.updated.toISOString().slice(0, 10) : p.updated ?? ""))) fail(where, "updated must be a date (YYYY-MM-DD)");
-  p.updated = p.updated instanceof Date ? p.updated.toISOString().slice(0, 10) : String(p.updated);
-  const svgFile = join(CONTENT, "svg", `${id}.svg`);
-  p.svg = existsSync(svgFile) ? readFileSync(svgFile, "utf8").trim() : "";
-  if (!p.svg) fail(where, `svg/${id}.svg is missing`);
-  else {
-    if (!/^<svg[^>]*\sviewBox="/.test(p.svg)) fail(`svg/${id}.svg`, "needs a viewBox");
-    if (/^<svg[^>]*\s(width|height)=/.test(p.svg)) fail(`svg/${id}.svg`, "must not set width or height");
-    if (/#[0-9a-f]{3,8}\b|font-family=/i.test(p.svg)) fail(`svg/${id}.svg`, "use the colour/text classes instead of fixed colours or fonts (see content/library/README.md)");
-  }
-  const svgKeys = [...new Set([...p.svg.matchAll(/\{\{(\w+)\}\}/g)].map((m) => m[1]))];
-  for (const lang of LANGS) validateLang(`${where} (${lang})`, p[lang], svgKeys);
+  loadDate(where, p);
+  p.type = "pattern";
+  p.svg = loadSvg(where, id);
+  const svgKeys = svgKeysOf(p.svg);
+  for (const lang of LANGS) { validateLang(`${where} (${lang})`, p[lang]); svgLabels(`${where} (${lang})`, p[lang], svgKeys); }
   patterns.push(p);
 }
 
-const byId = new Map(patterns.map((p) => [p.id, p]));
+// Concepts: flexible pages made of typed sections (see content/library/README.md).
+const SECTION_TYPES = {
+  text: (x) => isTextList(x.paragraphs),
+  bullets: (x) => Array.isArray(x.items) && x.items.length && x.items.every((b) => isText(b) || (isText(b?.text) && (!b.marker || ["up", "down", "accent", "neutral"].includes(b.marker)))),
+  steps: (x) => Array.isArray(x.items) && x.items.length && x.items.every((st) => isText(st?.title) && isText(st?.text)),
+  scenarios: (x) => Array.isArray(x.items) && x.items.length >= 2 && x.items.every((sc) => isText(sc?.title) && isText(sc?.text) && (!sc.tone || ["up", "down", "neutral"].includes(sc.tone))),
+  limits: (x) => isTextList(x.shows) && isTextList(x.not_proves),
+  zones: (x) => isTextList(x.paragraphs) || isTextList(x.points),
+  box: (x) => isText(x.text),
+};
+function validateConcept(where, t) {
+  if (!t || typeof t !== "object") return fail(where, "missing");
+  for (const key of ["slug", "name", "summary"]) if (!isText(t[key])) fail(where, `"${key}" is required`);
+  if (t.slug && !SLUG.test(t.slug)) fail(where, `slug "${t.slug}" must be lowercase kebab-case`);
+  if (!Array.isArray(t.sections) || !t.sections.length) return fail(where, "sections must be a list");
+  const anchors = new Set();
+  t.sections.forEach((x, i) => {
+    const at = `${where} section ${i + 1}`;
+    if (!SECTION_TYPES[x?.type]) return fail(at, `type must be one of ${Object.keys(SECTION_TYPES).join(", ")}`);
+    if (x.type !== "zones" && x.type !== "limits" && !isText(x.title)) fail(at, "title is required");
+    if (!SECTION_TYPES[x.type](x)) fail(at, `missing or invalid fields for a "${x.type}" section`);
+    if (x.id && !SLUG.test(x.id)) fail(at, `id "${x.id}" must be lowercase kebab-case`);
+    const anchor = x.id || x.type;
+    if (anchors.has(anchor)) fail(at, `two sections share the anchor "${anchor}"; give one an id`);
+    anchors.add(anchor);
+  });
+  if (!t.sections.some((x) => x.type === "limits")) fail(where, 'every concept needs a "limits" section (what it shows, what it does not prove)');
+  if (!isTextList(t.key_points)) fail(where, "key_points must be a list");
+  if (t.confusions && !(Array.isArray(t.confusions) && t.confusions.every((c) => isText(c?.id) && isText(c?.text)))) fail(where, "confusions items need id and text");
+}
+
+const concepts = [];
+const CONCEPTS = join(CONTENT, "concepts");
+for (const name of (existsSync(CONCEPTS) ? readdirSync(CONCEPTS) : []).filter((n) => n.endsWith(".yaml")).sort()) {
+  const where = `concepts/${name}`;
+  const p = readYaml(join(CONCEPTS, name));
+  if (!p) continue;
+  const id = name.replace(/\.yaml$/, "");
+  if (p.id !== id) fail(where, `id "${p.id}" must match the file name "${id}"`);
+  if (!categories.some((c) => c.kind === p.kind)) fail(where, `no category for kind "${p.kind}"`);
+  if (patterns.some((x) => x.id === id)) fail(where, `id "${id}" is also a pattern`);
+  loadDate(where, p);
+  p.type = "concept";
+  p.svg = loadSvg(where, id);
+  const svgKeys = svgKeysOf(p.svg);
+  for (const lang of LANGS) { validateConcept(`${where} (${lang})`, p[lang]); svgLabels(`${where} (${lang})`, p[lang], svgKeys); }
+  concepts.push(p);
+}
+const items = [...patterns, ...concepts];
+
+const byId = new Map(items.map((p) => [p.id, p]));
 for (const lang of LANGS) {
   const seen = new Map();
   for (const c of categories) seen.set(c[lang]?.slug, `category ${c.kind}`);
-  for (const p of patterns) {
+  for (const p of items) {
     const slug = p[lang]?.slug;
-    if (seen.has(slug)) fail(`patterns/${p.id}.yaml (${lang})`, `slug "${slug}" is already used by ${seen.get(slug)}`);
+    if (seen.has(slug)) fail(`${p.type}s/${p.id}.yaml (${lang})`, `slug "${slug}" is already used by ${seen.get(slug)}`);
     seen.set(slug, p.id);
   }
 }
-for (const p of patterns) {
+for (const p of items) {
   const refs = [...(p.related || []), ...(p.tr?.confusions || []).map((c) => c.id), ...(p.en?.confusions || []).map((c) => c.id)];
   for (const ref of new Set(refs)) {
     if (byId.has(ref)) continue;
     if (planned[ref]) warnings.push(`${p.id}: "${ref}" is not written yet (shown without a link)`);
-    else fail(`patterns/${p.id}.yaml`, `"${ref}" is neither a pattern nor listed in planned.yaml`);
+    else fail(`${p.type}s/${p.id}.yaml`, `"${ref}" is neither a pattern, a concept nor listed in planned.yaml`);
   }
+}
+// Only categories with pages are shown; each needs a cover drawing from its own pages.
+const activeCategories = categories.filter((c) => items.some((p) => p.kind === c.kind));
+for (const c of activeCategories) {
+  const cover = byId.get(c.cover);
+  if (!cover || cover.kind !== c.kind) warnings.push(`categories.yaml: ${c.kind}: cover "${c.cover}" is not a page of this category yet (its first page is used)`);
 }
 
 if (errors.length) {
@@ -205,8 +281,10 @@ const urls = {
   pattern: (p, lang) => `${BASE[lang]}${p[lang].slug}/`,
 };
 const nameOf = (id, lang) => byId.get(id)?.[lang].name || planned[id]?.[lang] || id;
-// Category first (candle patterns before chart patterns), then each pattern's order.
-const sorted = (list) => [...list].sort((a, b) => categoryOf(a).order - categoryOf(b).order || (a.order ?? 999) - (b.order ?? 999) || a.en.name.localeCompare(b.en.name));
+// Section, then category, then each page's order.
+const categoryRank = (p) => categories.indexOf(categoryOf(p));
+const sorted = (list) => [...list].sort((a, b) => categoryRank(a) - categoryRank(b) || (a.order ?? 999) - (b.order ?? 999) || a.en.name.localeCompare(b.en.name));
+const inCategory = (c) => sorted(items.filter((p) => p.kind === c.kind));
 
 // ---------------------------------------------------------------- page shell
 
@@ -216,13 +294,16 @@ const sorted = (list) => [...list].sort((a, b) => categoryOf(a).order - category
 function libNav(lang, path) {
   const w = WORDS[lang];
   const link = (href, label, cls = "") => `<a${cls ? ` class="${cls}"` : ""} href="${esc(href)}"${href === path ? ' aria-current="page"' : ""}>${esc(label)}</a>`;
-  const groups = categories.map((c) => {
-    const items = sorted(patterns.filter((p) => p.kind === c.kind));
-    if (!items.length) return "";
+  const group = (c) => {
+    const list = inCategory(c);
     // The group of the page being read starts open; the others start closed. The arrow toggles it.
-    const open = path === urls.category(c, lang) || items.some((p) => path === urls.pattern(p, lang));
+    const open = path === urls.category(c, lang) || list.some((p) => path === urls.pattern(p, lang));
     const id = `nav-${c.kind}`;
-    return `<div class="nav-group${open ? " open" : ""}"><div class="nav-cat-row">${link(urls.category(c, lang), c[lang].name, "nav-cat")}<button class="nav-toggle" type="button" aria-expanded="${open}" aria-controls="${id}" aria-label="${esc(w.toggle(c[lang].name))}"></button></div><ul id="${id}">${items.map((p) => `<li>${link(urls.pattern(p, lang), p[lang].name)}</li>`).join("")}</ul></div>`;
+    return `<div class="nav-group${open ? " open" : ""}"><div class="nav-cat-row">${link(urls.category(c, lang), c[lang].name, "nav-cat")}<button class="nav-toggle" type="button" aria-expanded="${open}" aria-controls="${id}" aria-label="${esc(w.toggle(c[lang].name))}"></button></div><ul id="${id}">${list.map((p) => `<li>${link(urls.pattern(p, lang), p[lang].name)}</li>`).join("")}</ul></div>`;
+  };
+  const groups = sections.map((g) => {
+    const cats = activeCategories.filter((c) => c.section === g.id);
+    return cats.length ? `<p class="nav-section">${esc(g[lang].name)}</p>${cats.map(group).join("")}` : "";
   }).join("");
   return `<details class="lib-nav"><summary>${esc(w.topics)}</summary><nav aria-label="${esc(w.topics)}">${link(urls.home(lang), w.overview, "nav-home")}${groups}</nav></details>`;
 }
@@ -273,6 +354,10 @@ function tags(p, lang) {
 
 function card(p, lang) {
   const t = p[lang];
+  if (p.type === "concept") {
+    const search = [t.name, t.alt_name].filter(Boolean).join(" ").toLocaleLowerCase(lang);
+    return `<li class="pattern-card" data-kind="${esc(p.kind)}" data-search="${esc(search)}"><a href="${esc(urls.pattern(p, lang))}"><div class="card-svg">${svgFor(p, lang, { decorative: true })}</div><h3>${esc(t.name)}</h3>${t.alt_name ? `<p class="alt">${esc(t.alt_name)}</p>` : ""}<ul class="tags"><li class="tag tag-cat">${esc(categoryOf(p)[lang].singular)}</li></ul><p>${esc(firstSentence(t.summary))}</p></a></li>`;
+  }
   const search = [t.name, t.alt_name].filter(Boolean).join(" ").toLocaleLowerCase(lang);
   return `<li class="pattern-card" data-kind="${esc(p.kind)}" data-direction="${esc(p.direction)}" data-search="${esc(search)}"><a href="${esc(urls.pattern(p, lang))}"><div class="card-svg">${svgFor(p, lang, { decorative: true })}</div><h3>${esc(t.name)}</h3>${t.alt_name ? `<p class="alt">${esc(t.alt_name)}</p>` : ""}${tags(p, lang)}<p>${esc(firstSentence(t.summary))}</p></a></li>`;
 }
@@ -280,6 +365,16 @@ function card(p, lang) {
 const breadcrumb = (lang, items) => `<nav class="crumbs" aria-label="Breadcrumb"><ol>${items.map(([label, href]) => `<li>${href ? `<a href="${esc(href)}">${esc(label)}</a>` : `<span aria-current="page">${esc(label)}</span>`}</li>`).join("")}</ol></nav>`;
 
 // ---------------------------------------------------------------- pattern page
+
+// "Often confused with" cards; a page that is not written yet is shown without a link.
+function confusionsHtml(list, lang) {
+  const w = WORDS[lang];
+  return `<h2>${w.confusions}</h2><ul class="confusions">${list.map((x) => {
+    const target = byId.get(x.id);
+    const inner = `<strong>${esc(nameOf(x.id, lang))}</strong><span>${inline(x.text)}</span>`;
+    return target ? `<li><a href="${esc(urls.pattern(target, lang))}">${inner}</a></li>` : `<li class="pending" title="${esc(w.soon)}">${inner}</li>`;
+  }).join("")}</ul>`;
+}
 
 function patternPage(p, lang) {
   const w = WORDS[lang], t = p[lang], c = categoryOf(p);
@@ -307,11 +402,7 @@ function patternPage(p, lang) {
     ? inv.map((x) => `<p>${inline(x)}</p>`).join("")
     : `<p><strong>${w.before}</strong> ${inline(inv.before)}</p><p><strong>${w.after}</strong> ${inline(inv.after)}</p>`));
 
-  if (t.confusions?.length) add("confusions", w.confusions, `<h2>${w.confusions}</h2><ul class="confusions">${t.confusions.map((x) => {
-    const target = byId.get(x.id);
-    const inner = `<strong>${esc(nameOf(x.id, lang))}</strong><span>${inline(x.text)}</span>`;
-    return target ? `<li><a href="${esc(urls.pattern(target, lang))}">${inner}</a></li>` : `<li class="pending" title="${esc(w.soon)}">${inner}</li>`;
-  }).join("")}</ul>`);
+  if (t.confusions?.length) add("confusions", w.confusions, confusionsHtml(t.confusions, lang));
 
   const aside = `<aside class="side">
 <nav class="side-card toc" aria-label="${esc(w.onThisPage)}"><p class="eyebrow">${w.onThisPage}</p><ul>${sections.map((s) => `<li><a href="#${s.id}">${esc(s.toc)}</a></li>`).join("")}</ul></nav>
@@ -341,32 +432,102 @@ ${aside}</div>`;
   });
 }
 
+// ---------------------------------------------------------------- concept page
+
+// Section types, in the order the author lists them. "limits" (what it shows / does not prove) is on every
+// concept page; "zones" is the orange MarketLevelMap box, as on pattern pages.
+const SECTION_HTML = {
+  text: (x) => x.paragraphs.map((p) => `<p>${inline(p)}</p>`).join("") + (isText(x.note) ? `<p class="note">${inline(x.note)}</p>` : ""),
+  bullets: (x) => (isText(x.intro) ? `<p>${inline(x.intro)}</p>` : "") + `<ul class="bullets">${x.items.map((b) => isText(b) ? `<li class="m-neutral">${inline(b)}</li>` : `<li class="m-${esc(b.marker || "neutral")}">${inline(b.text)}</li>`).join("")}</ul>` + (isText(x.note) ? `<p class="note">${inline(x.note)}</p>` : ""),
+  steps: (x) => (isText(x.intro) ? `<p>${inline(x.intro)}</p>` : "") + `<ol class="steps">${x.items.map((st) => `<li><strong>${inline(st.title)}</strong> ${inline(st.text)}</li>`).join("")}</ol>`,
+  scenarios: (x) => (isText(x.intro) ? `<p>${inline(x.intro)}</p>` : "") + `<div class="scenarios">${x.items.map((sc) => `<div class="scenario ${esc(sc.tone || "neutral")}"><h3>${inline(sc.title)}</h3><p>${inline(sc.text)}</p></div>`).join("")}</div>`,
+  box: (x) => `<aside class="box">${isText(x.label) ? `<h3>${inline(x.label)}</h3>` : ""}<p>${inline(x.text)}</p></aside>`,
+};
+
+function conceptPage(p, lang) {
+  const w = WORDS[lang], t = p[lang], c = categoryOf(p);
+  const sectionsHtml = [];
+  for (const x of t.sections) {
+    const id = x.id || x.type;
+    let toc, html;
+    if (x.type === "limits") {
+      toc = w.limitsToc;
+      html = `<h2>${esc(x.title || w.limitsTitle)}</h2>${isText(x.intro) ? `<p>${inline(x.intro)}</p>` : ""}<div class="two-cards"><div class="list-card up"><h3>${w.shows}</h3><ul>${x.shows.map((y) => `<li>${inline(y)}</li>`).join("")}</ul></div><div class="list-card down"><h3>${w.notProves}</h3><ul>${x.not_proves.map((y) => `<li>${inline(y)}</li>`).join("")}</ul></div></div>`;
+    } else if (x.type === "zones") {
+      toc = x.toc || x.title || w.zones;
+      html = `<div class="mlm-view"><p class="eyebrow">${w.mlmView}</p><h2>${esc(x.title || w.zones)}</h2>${isText(x.intro) ? `<p>${inline(x.intro)}</p>` : ""}${isTextList(x.points) ? `<ul>${x.points.map((y) => `<li>${inline(y)}</li>`).join("")}</ul>` : ""}${(x.paragraphs || []).map((y) => `<p>${inline(y)}</p>`).join("")}</div>`;
+    } else if (x.type === "box") {
+      toc = null;
+      html = SECTION_HTML.box({ ...x, label: x.title });
+    } else {
+      toc = x.toc || x.title;
+      html = `<h2>${esc(x.title)}</h2>${SECTION_HTML[x.type](x)}`;
+    }
+    sectionsHtml.push({ id, toc, html });
+  }
+  if (t.confusions?.length) sectionsHtml.push({ id: "confusions", toc: w.confusions, html: confusionsHtml(t.confusions, lang) });
+  const related = (p.related || []).map((id) => byId.get(id)).filter(Boolean);
+  if (related.length) sectionsHtml.push({ id: "related", toc: w.related, html: `<h2>${w.related}</h2><ul class="related">${related.map((r) => `<li><a href="${esc(urls.pattern(r, lang))}"><span>${esc(categoryOf(r)[lang].singular)}</span><strong>${esc(r[lang].name)}</strong></a></li>`).join("")}</ul>` });
+
+  const aside = `<aside class="side">
+<nav class="side-card toc" aria-label="${esc(w.onThisPage)}"><p class="eyebrow">${w.onThisPage}</p><ul>${sectionsHtml.filter((x) => x.toc).map((x) => `<li><a href="#${x.id}">${esc(x.toc)}</a></li>`).join("")}</ul></nav>
+<div class="side-card"><p class="eyebrow">${w.keyPoints}</p><ul class="key-points">${t.key_points.map((k) => `<li>${inline(k)}</li>`).join("")}</ul></div>
+</aside>`;
+
+  const body = `${breadcrumb(lang, [[w.library, urls.home(lang)], [c[lang].name, urls.category(c, lang)], [t.name]])}
+<div class="lib-grid"><article class="pattern concept">
+<div class="pattern-head"><ul class="tags"><li class="tag tag-cat">${esc(c[lang].singular)}</li></ul><h1>${esc(t.name)}</h1>${t.alt_name ? `<p class="alt">${esc(t.alt_name)}</p>` : ""}<p class="summary">${inline(t.summary)}</p></div>
+<figure class="figure">${svgFor(p, lang)}${isText(t.svg_caption) ? `<figcaption>${inline(t.svg_caption)}</figcaption>` : ""}</figure>
+${sectionsHtml.map((x) => `<section id="${esc(x.id)}">${x.html}</section>`).join("\n")}
+<p class="page-foot"><span>${w.disclaimer}</span><span>${w.updated}: <time datetime="${esc(p.updated)}">${esc(w.date(p.updated))}</time></span></p>
+</article>
+${aside}</div>`;
+
+  return page({
+    lang, body,
+    path: urls.pattern(p, lang),
+    alternates: { tr: urls.pattern(p, "tr"), en: urls.pattern(p, "en") },
+    title: `${t.name} | ${w.titleSuffix}`,
+    description: plain(t.summary),
+    jsonLd: {
+      "@context": "https://schema.org", "@type": "DefinedTerm", name: t.name, alternateName: t.alt_name || undefined,
+      description: plain(t.summary), url: ORIGIN + urls.pattern(p, lang), inLanguage: lang, dateModified: p.updated,
+      inDefinedTermSet: { "@type": "DefinedTermSet", name: w.libraryTitle, url: ORIGIN + urls.home(lang) },
+    },
+  });
+}
+
 // ---------------------------------------------------------------- library home + category pages
 
-// Library home: one section per category with its first few patterns and a link to the category page,
-// so the page stays short as the library grows. Category pages list everything, with filters and search.
+// Library home: one card per category, grouped by section (drawing, summary, first pages),
+// so the page stays short as the library grows. Category pages list every page, with search (and the
+// direction filter where the category holds patterns).
 const PREVIEW = 3;
+
+function categoryCard(c, lang) {
+  const w = WORDS[lang], list = inCategory(c);
+  const cover = byId.get(c.cover)?.kind === c.kind ? byId.get(c.cover) : list[0];
+  return `<li class="cat-card"><a class="cat-cover" href="${esc(urls.category(c, lang))}" tabindex="-1" aria-hidden="true">${svgFor(cover, lang, { decorative: true })}</a><div class="cat-body"><h3><a href="${esc(urls.category(c, lang))}">${esc(c[lang].name)}</a></h3><p>${inline(c[lang].summary)}</p><ul class="cat-links">${list.slice(0, PREVIEW).map((p) => `<li><a href="${esc(urls.pattern(p, lang))}">${esc(p[lang].name)}</a></li>`).join("")}</ul><a class="section-more" href="${esc(urls.category(c, lang))}">${esc(w.seeAll(c[lang].name, list.length))}</a></div></li>`;
+}
 
 function listPage(lang, category) {
   const w = WORDS[lang];
-  const list = sorted(category ? patterns.filter((p) => p.kind === category.kind) : patterns);
+  const list = category ? inCategory(category) : sorted(items);
   const filterButton = (value, label) => `<button class="filter-btn" type="button" data-filter="direction" data-value="${value}" aria-pressed="false">${esc(label)}</button>`;
   let body;
   if (category) {
-    const directions = ["bullish", "bearish", "neutral"].filter((d) => list.some((p) => p.direction === d));
+    const directions = ["bullish", "bearish", "neutral"].filter((d) => list.some((p) => p.type === "pattern" && p.direction === d));
     body = `${breadcrumb(lang, [[w.library, urls.home(lang)], [category[lang].name]])}<div class="lib-intro"><h1>${esc(category[lang].name)}</h1><p>${inline(category[lang].summary)}</p></div>
-<div class="lib-filters" role="group" aria-label="${esc(w.filters)}"><div class="filter-row">${directions.map((d) => filterButton(d, w.direction[d])).join("")}</div><input class="lib-search" type="search" placeholder="${esc(w.search)}" aria-label="${esc(w.search)}"></div>
+<div class="lib-filters" role="group" aria-label="${esc(w.filters)}">${directions.length ? `<div class="filter-row">${directions.map((d) => filterButton(d, w.direction[d])).join("")}</div>` : ""}<input class="lib-search" type="search" placeholder="${esc(w.search)}" aria-label="${esc(w.search)}"></div>
 <ul class="pattern-grid">${list.map((p) => card(p, lang)).join("\n")}</ul>
 <p class="lib-empty" hidden>${esc(w.noMatch)}</p>`;
   } else {
-    const sections = categories.map((c) => {
-      const items = list.filter((p) => p.kind === c.kind);
-      if (!items.length) return "";
-      return `<section class="lib-section" aria-labelledby="cat-${esc(c.kind)}"><div class="section-head"><h2 id="cat-${esc(c.kind)}"><a href="${esc(urls.category(c, lang))}">${esc(c[lang].name)}</a></h2><p>${inline(c[lang].summary)}</p></div>
-<ul class="pattern-grid preview">${items.slice(0, PREVIEW).map((p) => card(p, lang)).join("\n")}</ul>
-<a class="section-more" href="${esc(urls.category(c, lang))}">${esc(w.seeAll(c[lang].name, items.length))}</a></section>`;
+    const groups = sections.map((g) => {
+      const cats = activeCategories.filter((c) => c.section === g.id);
+      if (!cats.length) return "";
+      return `<section class="lib-section" aria-labelledby="sec-${esc(g.id)}"><h2 id="sec-${esc(g.id)}">${esc(g[lang].name)}</h2><ul class="cat-grid">${cats.map((c) => categoryCard(c, lang)).join("\n")}</ul></section>`;
     }).join("\n");
-    body = `<div class="lib-intro"><h1>${esc(w.libraryTitle)}</h1><p class="lead">${esc(w.libraryLead)}</p>${w.libraryIntro.map((x) => `<p>${inline(x)}</p>`).join("")}</div>\n${sections}`;
+    body = `<div class="lib-intro"><h1>${esc(w.libraryTitle)}</h1><p class="lead">${esc(w.libraryLead)}</p>${w.libraryIntro.map((x) => `<p>${inline(x)}</p>`).join("")}</div>\n${groups}`;
   }
   const path = category ? urls.category(category, lang) : urls.home(lang);
   const title = category ? `${category[lang].name} | ${w.titleSuffix}` : `${w.libraryTitle} | MarketLevelMap`;
@@ -379,7 +540,7 @@ function listPage(lang, category) {
       description, url: ORIGIN + path, inLanguage: lang,
       hasPart: category
         ? list.map((p) => ({ "@type": "DefinedTerm", name: p[lang].name, url: ORIGIN + urls.pattern(p, lang) }))
-        : categories.map((c) => ({ "@type": "CollectionPage", name: c[lang].name, url: ORIGIN + urls.category(c, lang) })),
+        : activeCategories.map((c) => ({ "@type": "CollectionPage", name: c[lang].name, url: ORIGIN + urls.category(c, lang) })),
     },
   });
 }
@@ -390,8 +551,8 @@ const files = new Map();
 const out = (path, html) => files.set(join(ROOT, path, "index.html"), html);
 for (const lang of LANGS) {
   out(urls.home(lang), listPage(lang, null));
-  for (const c of categories) out(urls.category(c, lang), listPage(lang, c));
-  for (const p of patterns) out(urls.pattern(p, lang), patternPage(p, lang));
+  for (const c of activeCategories) out(urls.category(c, lang), listPage(lang, c));
+  for (const p of items) out(urls.pattern(p, lang), p.type === "concept" ? conceptPage(p, lang) : patternPage(p, lang));
 }
 
 // The sitemap lists the site's indexable pages; library pages carry their last update.
@@ -403,9 +564,9 @@ const sitemap = [
   `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
   entry("/"), entry("/weekly-events"),
   ...LANGS.flatMap((lang) => [
-    entry(urls.home(lang), lastmod(patterns)),
-    ...categories.map((c) => entry(urls.category(c, lang), lastmod(patterns.filter((p) => p.kind === c.kind)))),
-    ...sorted(patterns).map((p) => entry(urls.pattern(p, lang), p.updated)),
+    entry(urls.home(lang), lastmod(items)),
+    ...activeCategories.map((c) => entry(urls.category(c, lang), lastmod(inCategory(c)))),
+    ...sorted(items).map((p) => entry(urls.pattern(p, lang), p.updated)),
   ]),
   `</urlset>`, "",
 ].join("\n");
@@ -426,9 +587,9 @@ if (CHECK) {
     console.error(`The library pages are out of date. Run "node scripts/build-library.mjs" and commit the result.\n  ${[...stale.map((f) => `changed: ${f}`), ...extra.map((f) => `not generated: ${f}`)].join("\n  ")}`);
     process.exit(1);
   }
-  console.log(`Library pages are up to date (${patterns.length} patterns, ${files.size} files).`);
+  console.log(`Library pages are up to date (${patterns.length} patterns, ${concepts.length} concepts, ${files.size} files).`);
 } else {
   OWNED.forEach((dir) => rmSync(dir, { recursive: true, force: true }));
   for (const [file, html] of files) { mkdirSync(dirname(file), { recursive: true }); writeFileSync(file, html); }
-  console.log(`Built ${files.size} files from ${patterns.length} patterns.`);
+  console.log(`Built ${files.size} files from ${patterns.length} patterns and ${concepts.length} concepts.`);
 }

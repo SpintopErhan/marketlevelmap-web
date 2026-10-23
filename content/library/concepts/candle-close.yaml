@@ -1,0 +1,223 @@
+id: candle-close
+kind: basics
+order: 30
+related: [false-breakout, breakout-and-close, candlestick-chart, timeframes]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: mum-kapanisi
+  name: Mum kapanışı neden önemlidir?
+  alt_name: Candle close
+  summary: >-
+    Bir mum, zaman dilimi dolana kadar kesinleşmez. Mum içinde fiyat bir bölgenin ötesine geçebilir,
+    sonra geri dönebilir. Kapanışla birlikte mumun dört fiyatı sabitlenir. Bu yüzden bir bölgenin
+    kırılıp kırılmadığı ya da bir mum formasyonunun oluşup oluşmadığı kapanışla değerlendirilir.
+  sections:
+    - type: text
+      id: definition
+      title: Mum ne zaman kesinleşir?
+      paragraphs:
+        - >-
+          Bir mum açıldığı anda yalnızca **açılış fiyatı** bellidir. Mum sürdükçe en yüksek ve en
+          düşük fiyat genişleyebilir, son fiyat ise her işlemle değişir. Grafikte en sağdaki mum bu
+          yüzden sürekli şekil değiştirir.
+        - >-
+          Zaman dilimi dolduğunda son işlem fiyatı **kapanış** olur ve mum artık değişmez. 4H bir
+          mumun ilk saatinde görülen uzun yeşil gövde, kapanışta küçük bir gövde ve uzun bir fitile
+          dönüşebilir.
+    - type: steps
+      id: candle-life
+      title: Bir mumun ömrü
+      items:
+        - title: Mum açılır.
+          text: Açılış fiyatı belirlenir. Kriptoda bu fiyat çoğu zaman önceki mumun kapanışına çok yakındır.
+        - title: Fiyat mum içinde hareket eder.
+          text: Fiyat yukarı ve aşağı gider; en yüksek ve en düşük noktalar bu sırada oluşur. Gövdenin rengi ve boyu birçok kez değişebilir.
+        - title: Mum kapanır.
+          text: Zaman dilimi dolduğunda son fiyat kapanış olur. Mumun dört fiyatı artık sabittir.
+        - title: Okuma kapanıştan sonra yapılır.
+          text: Mumun şekli, bölgeye göre yeri ve formasyon tanımları kapanmış mum üzerinden değerlendirilir.
+    - type: scenarios
+      id: intra-candle
+      title: Mum içinde görünen ile kapanış
+      intro: Fiyat mum içinde bir direnç bölgesinin üzerine çıktığında, kapanışta üç farklı tablo ortaya çıkabilir.
+      items:
+        - title: Kapanışta da korunur
+          tone: up
+          text: Mum bölgenin **üst kenarının üzerinde** kapanır. Mum içinde görülen hareket kapanışla da kayda geçer.
+        - title: Kapanışta geri döner
+          tone: down
+          text: Fiyat bölgenin altına dönerek kapanır. Bölgenin üzerinde yalnızca **bir fitil** kalır; bu, sahte kırılımın tipik görüntüsüdür.
+        - title: Bölgenin içinde kapanır
+          tone: neutral
+          text: Kapanış bandın içinde gelir. Bölge test edilmiştir, ama ne kırılım ne de geri çevrilme henüz netleşmiştir.
+    - type: bullets
+      id: why-close
+      title: Kapanış neden ölçü olarak kullanılır?
+      items:
+        - text: "**Sabittir:** kapandıktan sonra değişmez; aynı mum herkese aynı görünür."
+          marker: accent
+        - text: "**Dönemin sonucunu gösterir:** mum içindeki kısa süreli sıçramalar değil, dönemin nerede bittiği ölçülür."
+          marker: neutral
+        - text: "**Tanımlar ona göre yazılır:** mum formasyonları, kırılım ve geri test gibi kavramlar kapanmış mumlar üzerinden tanımlanır."
+          marker: neutral
+        - text: "**Gürültüyü azaltır:** fitiller ani ve kısa hareketleri de kaydeder; kapanış bunlardan daha az etkilenir."
+          marker: neutral
+    - type: limits
+      shows:
+        - Dönemin sonunda fiyatın hangi seviyede kabul gördüğünü
+        - Mum içinde görülen bir hareketin kapanışa kadar korunup korunmadığını
+        - Bir bölgenin kapanış bazında aşılıp aşılmadığını
+      not_proves:
+        - Bir sonraki mumun aynı yönde ilerleyeceğini
+        - Kapanışın tek başına bir kırılımı ya da dönüşü kesinleştirdiğini; sonraki mumlar da önemlidir
+        - Farklı borsalarda ve farklı zaman dilimlerinde aynı sonucun görüleceğini
+    - type: zones
+      paragraphs:
+        - >-
+          Bir bölgenin aşılıp aşılmadığı, mum içindeki en uç fiyatla değil **kapanışın bölgeye göre
+          yeriyle** okunur. Bölge bir bant olarak düşünüldüğünde, kırılım bandın **uzak kenarının**
+          ötesinde gelen bir kapanışla ölçülür. Bandın içindeki kapanış, bölgenin yalnızca test
+          edildiğini gösterir.
+        - >-
+          Mum içinde bölgenin ötesine geçip kapanışta geri dönen hareket, grafikte bir fitil olarak
+          kalır. Bu görüntü **sahte kırılım** sayfasında ayrıntılı anlatılır: fitil bölgenin ötesine
+          uzansa da kapanış bölgenin gerisinde kalmıştır.
+    - type: box
+      title: Hangi zaman diliminin kapanışı?
+      text: >-
+        Bir 4H mum kapanana kadar dört 1H mum kapanır. 1H grafikte bölgenin üzerinde kapanan bir mum,
+        4H mum kapandığında yalnızca bir fitil olarak kalabilir. Bu yüzden "kapanış" derken hangi zaman
+        diliminin kapanışından söz edildiğini belirtmek gerekir. Kriptoda kapanış saatleri çoğu borsada
+        UTC'ye göredir ve kapanış fiyatı borsadan borsaya biraz farklı olabilir.
+  key_points:
+    - Mum, zaman dilimi dolana kadar kesinleşmez.
+    - Mum içinde görülen hareket kapanışta tamamen geri alınabilir.
+    - Kırılım ve formasyonlar kapanmış mum üzerinden değerlendirilir.
+    - Kapanıştan söz ederken zaman dilimini belirtmek gerekir.
+  svg_labels:
+    zone: Direnç bölgesi
+    price: Anlık fiyat
+    above: bölgenin üzerinde
+    close_1: Kapanış bölgenin
+    close_2: altında
+    wick_1: Geriye
+    wick_2: fitil kalır
+    t1: 4H mum, 1. saat
+    t2: 4H mum, 3. saat
+    t3: 4H mum, kapanış
+    pending: Mum açık
+    final: Mum kapandı
+  svg_alt: "Aynı 4H mumun üç anı: ilk saatte fiyat direnç bölgesinin altında yükseliyor, üçüncü saatte bölgenin üzerine çıkıyor, kapanışta ise bölgenin altına dönüyor ve bölgenin üzerinde yalnızca bir fitil kalıyor"
+  svg_caption: >-
+    Soluk gövdeler henüz kapanmamış mumu, dolu gövde kapanmış mumu gösterir. Turuncu nokta o anki
+    fiyatı ya da kapanışı, turuncu bant direnç bölgesini işaretler.
+
+en:
+  slug: why-the-candle-close-matters
+  name: Why the candle close matters
+  summary: >-
+    A candle is not final until its timeframe is over. Within the candle, price can move beyond a zone
+    and then come back. At the close the candle's four prices are fixed. That is why whether a zone has
+    broken, or whether a candlestick pattern has formed, is judged on the close.
+  sections:
+    - type: text
+      id: definition
+      title: When is a candle final?
+      paragraphs:
+        - >-
+          When a candle opens, only its **open** is known. As the candle runs, its high and low can
+          extend and its last price changes with every trade. That is why the right-most candle on a
+          chart keeps changing shape.
+        - >-
+          When the period is over, the last traded price becomes the **close** and the candle no longer
+          changes. A long green body seen in the first hour of a 4H candle can turn into a small body and
+          a long wick by the close.
+    - type: steps
+      id: candle-life
+      title: The life of a candle
+      items:
+        - title: The candle opens.
+          text: The open is set. In crypto it is usually very close to the previous candle's close.
+        - title: Price moves within the candle.
+          text: Price goes up and down; the high and low form along the way. The body's colour and size can change many times.
+        - title: The candle closes.
+          text: When the period is over, the last price becomes the close. The candle's four prices are now fixed.
+        - title: The reading comes after the close.
+          text: The candle's shape, its position relative to a zone and pattern definitions are all judged on the closed candle.
+    - type: scenarios
+      id: intra-candle
+      title: Within the candle versus the close
+      intro: When price moves above a resistance zone within a candle, three different pictures can show at the close.
+      items:
+        - title: Held at the close
+          tone: up
+          text: The candle closes **above the zone's upper edge**. The move seen within the candle is confirmed by the close.
+        - title: Reversed by the close
+          tone: down
+          text: Price closes back below the zone. Only **a wick** is left above it; this is the typical look of a false breakout.
+        - title: Closes inside the zone
+          tone: neutral
+          text: The close comes inside the band. The zone has been tested, but neither a breakout nor a rejection is clear yet.
+    - type: bullets
+      id: why-close
+      title: Why the close is used as the measure
+      items:
+        - text: "**It is fixed:** once closed it does not change; the same candle looks the same to everyone."
+          marker: accent
+        - text: "**It shows the period's result:** it measures where the period ended, not brief spikes within it."
+          marker: neutral
+        - text: "**Definitions use it:** candlestick patterns, breakouts and retests are defined on closed candles."
+          marker: neutral
+        - text: "**It reduces noise:** wicks record sudden, brief moves too; the close is less affected by them."
+          marker: neutral
+    - type: limits
+      shows:
+        - At what level price was accepted at the end of the period
+        - Whether a move seen within the candle held until the close
+        - Whether a zone was cleared on a closing basis
+      not_proves:
+        - That the next candle will move the same way
+        - That a close on its own confirms a breakout or a reversal; the next candles matter too
+        - That the same result will show on other exchanges and other timeframes
+    - type: zones
+      paragraphs:
+        - >-
+          Whether a zone has been cleared is read from **where the close sits relative to the zone**,
+          not from the most extreme price within the candle. Thinking of the zone as a band, a breakout
+          is measured by a close beyond the band's **far edge**. A close inside the band only shows that
+          the zone was tested.
+        - >-
+          A move that goes beyond the zone within the candle and comes back by the close is left as a
+          wick on the chart. This picture is covered in detail on the **false breakout** page: the wick
+          reaches beyond the zone, but the close stays behind it.
+    - type: box
+      title: Which timeframe's close?
+      text: >-
+        Four 1H candles close before one 4H candle does. A candle closing above the zone on the 1H chart
+        can be left as just a wick when the 4H candle closes. So when talking about "the close", it is
+        worth saying which timeframe's close you mean. In crypto, closes are on UTC time on most exchanges,
+        and the closing price can differ slightly from one exchange to another.
+  key_points:
+    - A candle is not final until its timeframe is over.
+    - A move seen within the candle can be fully undone by the close.
+    - Breakouts and patterns are judged on the closed candle.
+    - When talking about a close, state the timeframe.
+  svg_labels:
+    zone: Resistance zone
+    price: Current price
+    above: above the zone
+    close_1: Close below
+    close_2: the zone
+    wick_1: A wick
+    wick_2: is left
+    t1: 4H candle, hour 1
+    t2: 4H candle, hour 3
+    t3: 4H candle, at the close
+    pending: Candle still open
+    final: Candle closed
+  svg_alt: "Three moments of the same 4H candle: in the first hour price rises below a resistance zone, by the third hour it is above the zone, and at the close it is back below the zone with only a wick left above it"
+  svg_caption: >-
+    The faded bodies show a candle that has not closed yet; the solid body shows the closed candle. The
+    orange dot marks the current price or the close, and the orange band marks the resistance zone.

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="206" y="162" width="334" height="18" opacity="0.14"/>
+  <line class="s-accent" x1="206" y1="162" x2="540" y2="162" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="206" y1="180" x2="540" y2="180" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <g class="t-accent" text-anchor="end">
+    <text x="538" y="136">{{zone_1}}</text>
+    <text x="538" y="152">{{zone_2}}</text>
+  </g>
+  <polyline class="s-up" points="24,262 80,182 120,214 180,116 222,172 276,70" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline class="s-line" points="276,70 316,146 360,104 400,198" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline class="s-down" points="400,198 430,232 464,194 528,264" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point"><circle cx="222" cy="172" r="3.5"/><circle cx="276" cy="70" r="3.5"/><circle cx="360" cy="104" r="3.5"/><circle cx="464" cy="194" r="3.5"/><circle cx="528" cy="264" r="3.5"/></g>
+  <circle class="f-accent" cx="400" cy="198" r="4.5"/>
+  <g class="t-mono" text-anchor="middle" font-weight="600">
+    <text class="f-up" x="276" y="56">{{hh}}</text>
+    <text class="f-up" x="208" y="200">{{hl}}</text>
+  </g>
+  <g class="t-label">
+    <text x="374" y="98">{{lh_1}}</text>
+    <text x="374" y="114">{{lh_2}}</text>
+  </g>
+  <g class="t-label" text-anchor="end">
+    <text x="388" y="222">{{break_1}}</text>
+    <text x="388" y="238">{{break_2}}</text>
+    <text x="512" y="292">{{confirm_1}}</text>
+    <text x="512" y="308">{{confirm_2}}</text>
+  </g>
+</svg>

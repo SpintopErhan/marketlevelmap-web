@@ -1,0 +1,214 @@
+id: level-test
+kind: levels
+order: 20
+related: [support-and-resistance, breakout-and-close, retest-and-role-reversal, trend]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: seviye-testi
+  name: Seviye testi
+  alt_name: Level test
+  summary: >-
+    Seviye testi, fiyatın bir destek ya da direnç bölgesine yeniden gelip orada tepki vermesidir. Test,
+    bölgenin hâlâ dikkate alındığını gösterir; ama sonucunu kapanış ve sonraki mumlar belirler. Tekrarlanan
+    testlerin bölgeyi güçlendirip güçlendirmediği ise koşullara göre farklı okunur.
+  sections:
+    - type: text
+      id: definition
+      title: Seviye testi nedir?
+      paragraphs:
+        - >-
+          Fiyat bir destek ya da direnç bölgesine geldiğinde bölge **test edilir**. Fiyat bölgenin
+          yakın kenarına dokunabilir, fitille bölgenin içine girebilir ya da bir süre bölgenin içinde
+          işlem görebilir.
+        - >-
+          Testin sonucu üç şekilde görülür: fiyat bölgeden **geri döner**, mum **bölgenin içinde
+          kapanır** ve sonuç henüz netleşmez ya da mum **uzak kenarın ötesinde kapanır** ve test bir
+          kırılıma dönüşür. Bu sayfa ilk iki durumu ve tekrarlanan testleri anlatır.
+    - type: steps
+      id: how-to-read
+      title: Bir test nasıl okunur?
+      items:
+        - title: Bölgeyi ve zaman dilimini belirt.
+          text: Testin hangi bölgede ve hangi zaman diliminin mumlarıyla okunduğunu not et. 1H grafikteki bir test, günlük grafikte tek bir mumun fitili olabilir.
+        - title: Fiyatın bölgeye nasıl geldiğine bak.
+          text: Sert ve hızlı bir yaklaşım ile yavaş, küçük mumlarla gelen bir yaklaşım farklı tablolar oluşturabilir.
+        - title: Kapanışın yerine bak.
+          text: Mum bölgenin gerisinde mi, içinde mi, yoksa uzak kenarın ötesinde mi kapandı? Fitil yalnızca fiyatın nereye kadar uzandığını gösterir.
+        - title: Tepkinin büyüklüğünü ölç.
+          text: Fiyatın bölgeden ne kadar uzaklaştığı, testin ne kadar belirgin olduğunu anlatır. Hemen bölgeye dönen bir fiyat, zayıf bir tepki olarak okunabilir.
+    - type: scenarios
+      id: two-readings
+      title: Her test bölgeyi güçlendirir mi, zayıflatır mı?
+      intro: >-
+        Tekrarlanan testler üzerine iki yaygın okuma vardır. İkisi de belirli koşullarda makuldür; hangisinin
+        öne çıktığını tek bir test değil, testlerin birbirine göre nasıl değiştiği gösterir.
+      items:
+        - title: Testler bölgeyi teyit eder
+          tone: up
+          text: >-
+            Fiyat her gelişte bölgeden belirgin bir tepkiyle dönüyorsa, bölge hâlâ dikkate alınıyor
+            demektir. Her yeni tepki, bölgeyi daha fazla katılımcının görmesini sağlayabilir.
+        - title: Testler bölgeyi aşındırır
+          tone: down
+          text: >-
+            Her testte bölgedeki alış ya da satış ilgisinin bir kısmı tükenebilir. Tepkiler küçülüyor,
+            fiyat bölgeye giderek daha hızlı dönüyor ve kapanışlar bölgenin daha içinde geliyorsa,
+            bölgenin zayıfladığı düşünülebilir.
+        - title: Koşullar belirler
+          tone: neutral
+          text: >-
+            Test sayısı tek başına bir şey söylemez. Belirleyici olan, tepkilerin büyüklüğü, testler
+            arasındaki süre ve kapanışların bölgeye göre konumudur.
+    - type: bullets
+      id: conditions
+      title: Hangi okumanın öne çıktığını gösteren işaretler
+      items:
+        - "**Tepki büyüklüğü:** Her testten sonraki hareket büyüyor mu, küçülüyor mu?"
+        - "**Testler arası süre:** Fiyat bölgeye her seferinde daha kısa sürede mi dönüyor?"
+        - "**Kapanışların derinliği:** Kapanışlar bölgenin gerisinde mi kalıyor, yoksa uzak kenara doğru mu ilerliyor?"
+        - "**Tepe ve dipler:** Bir destek testinde, testler arasındaki tepeler alçalıyorsa fiyat bölgeye giderek daha fazla baskı yapıyor olabilir."
+        - "**Trend:** Daha büyük zaman dilimindeki trend, bölgenin hangi yönden test edildiğini ve testin nasıl okunacağını etkiler."
+      note: Bu işaretler birbirini destekledikçe okuma netleşir; tek bir işaret tek başına yeterli değildir.
+    - type: limits
+      shows:
+        - Bölgenin hâlâ fiyatın tepki verdiği bir alan olduğunu
+        - Tepkilerin testten teste nasıl değiştiğini
+        - Kapanışların bölgeye göre nerede kaldığını
+      not_proves:
+        - Bir sonraki testin de aynı sonucu vereceğini
+        - Belirli bir test sayısından sonra bölgenin kırılacağını ya da tutacağını
+        - Fiyatın bölgeden ne kadar uzaklaşacağını
+    - type: zones
+      paragraphs:
+        - >-
+          Test, bölgeyi **bir bant** olarak okuyunca anlam kazanır. Fitil ya da kapanış bandın içinde
+          kaldığı sürece bölge test edilmektedir. Bölgenin aşıldığından söz etmek için **uzak kenarın**
+          ötesinde bir kapanış gerekir.
+        - >-
+          Tek bir çizgiyle bakıldığında, çizgiye birkaç birim varamayan bir dönüş test sayılmayabilir,
+          birkaç birim aşan bir fitil ise kırılım gibi görünebilir. Bant, fiyatın daha önce tepki verdiği
+          genişliği hesaba kattığı için testleri daha tutarlı saymayı sağlar.
+  confusions:
+    - id: retest-and-role-reversal
+      text: Test, fiyatın bir bölgeye ilk kez ya da yeniden gelmesidir; geri test ise kırılımdan sonra kırılan bölgeye diğer taraftan dönüştür.
+    - id: triple-bottom
+      text: Aynı destek bölgesinin üç kez test edilip tutması, üçlü dip formasyonunun temelini oluşturur.
+  key_points:
+    - Test, fiyatın bir bölgeye gelip orada tepki vermesidir.
+    - Testin sonucunu fitil değil, kapanış ve sonraki mumlar belirler.
+    - Tekrarlanan testler bölgeyi teyit edebilir de, aşındırabilir de.
+    - Test sayısından çok tepkilerin nasıl değiştiğine bakılır.
+  svg_labels:
+    zone: Destek bölgesi
+    test_1: 1. test
+    test_2: 2. test
+    test_3: 3. test
+    note_1: Her testte fiyat bölgeye döner ve tepki verir.
+    note_2: Bölgenin güçlenip zayıfladığını tepkilerin seyri gösterir.
+  svg_alt: "Seviye testi çizimi: fiyat bir destek bandına üç kez iniyor, her seferinde bandın içinde dönüp yukarı çıkıyor"
+  svg_caption: Turuncu bant destek bölgesini, turuncu noktalar fiyatın bölgeyi test ettiği yerleri gösterir. Her testte dönüş bandın içinde gelir.
+
+en:
+  slug: testing-a-level
+  name: Testing a level
+  summary: >-
+    A level test is when price comes back to a support or resistance zone and reacts there. A test shows
+    the zone is still being watched, but the close and the next candles decide the outcome. Whether repeated
+    tests strengthen a zone or wear it down is read differently depending on the conditions.
+  sections:
+    - type: text
+      id: definition
+      title: What is a level test?
+      paragraphs:
+        - >-
+          When price reaches a support or resistance zone, the zone is **tested**. Price can touch the
+          zone's near edge, wick into the zone, or trade inside it for a while.
+        - >-
+          A test can end in three ways: price **turns away** from the zone, the candle **closes inside
+          the zone** and nothing is settled yet, or the candle **closes beyond the far edge** and the
+          test becomes a breakout. This page covers the first two and what repeated tests mean.
+    - type: steps
+      id: how-to-read
+      title: How to read a test
+      items:
+        - title: State the zone and the timeframe.
+          text: Note which zone is being tested and which timeframe's candles you are reading. A test on the 1H chart can be a single wick on the daily chart.
+        - title: Look at how price arrived.
+          text: A sharp, fast approach and a slow approach with small candles can set up different pictures.
+        - title: Look at where the candle closed.
+          text: Did it close behind the zone, inside it, or beyond the far edge? The wick only shows how far price reached.
+        - title: Measure the size of the reaction.
+          text: How far price moved away from the zone shows how clear the test was. Price that comes straight back to the zone can be read as a weak reaction.
+    - type: scenarios
+      id: two-readings
+      title: Does each test strengthen or weaken a zone?
+      intro: >-
+        There are two common readings of repeated tests. Each is reasonable under certain conditions; which one
+        fits better is shown not by a single test but by how the tests change from one to the next.
+      items:
+        - title: Tests confirm the zone
+          tone: up
+          text: >-
+            If price turns away from the zone with a clear reaction each time, the zone is still being
+            watched. Each new reaction can bring the zone to the attention of more participants.
+        - title: Tests wear the zone down
+          tone: down
+          text: >-
+            Each test can use up part of the buying or selling interest at the zone. If reactions get
+            smaller, price returns to the zone faster and closes come deeper inside it, the zone may be
+            weakening.
+        - title: The conditions decide
+          tone: neutral
+          text: >-
+            The number of tests alone says little. What matters is the size of the reactions, the time
+            between tests and where the closes sit relative to the zone.
+    - type: bullets
+      id: conditions
+      title: Signs of which reading fits better
+      items:
+        - "**Reaction size:** Is the move after each test getting bigger or smaller?"
+        - "**Time between tests:** Is price coming back to the zone sooner each time?"
+        - "**Depth of the closes:** Do closes stay behind the zone, or are they creeping towards the far edge?"
+        - "**Highs and lows:** When support is being tested, falling highs between the tests can mean price is pressing on the zone more and more."
+        - "**Trend:** The trend on the higher timeframe affects which side the zone is tested from and how the test is read."
+      note: The reading gets clearer as these signs agree; a single sign on its own is not enough.
+    - type: limits
+      shows:
+        - That the zone is still an area where price reacts
+        - How the reactions change from test to test
+        - Where the closes sit relative to the zone
+      not_proves:
+        - That the next test will end the same way
+        - That a zone will break, or hold, after a certain number of tests
+        - How far price will move away from the zone
+    - type: zones
+      paragraphs:
+        - >-
+          A test makes sense when the zone is read as **a band**. As long as the wick or the close stays
+          inside the band, the zone is being tested. To say the zone has been cleared, a close beyond the
+          **far edge** is needed.
+        - >-
+          With a single line, a turn that stops a few units short may not count as a test, while a wick
+          that crosses it by a few units can look like a breakout. Because the band takes into account the
+          width over which price has reacted before, it lets tests be counted more consistently.
+  confusions:
+    - id: retest-and-role-reversal
+      text: A test is price arriving at a zone, for the first time or again; a retest is price returning to a broken zone from the other side after a breakout.
+    - id: triple-bottom
+      text: The same support zone being tested three times and holding is the basis of the triple bottom pattern.
+  key_points:
+    - A test is price arriving at a zone and reacting there.
+    - The close and the next candles, not the wick, decide a test's outcome.
+    - Repeated tests can confirm a zone or wear it down.
+    - Look at how the reactions change, more than at how many tests there have been.
+  svg_labels:
+    zone: Support zone
+    test_1: Test 1
+    test_2: Test 2
+    test_3: Test 3
+    note_1: In each test price comes back to the zone and reacts.
+    note_2: How the reactions develop shows if the zone is getting stronger or weaker.
+  svg_alt: "Level test illustration: price falls into a support band three times, turning up inside the band each time"
+  svg_caption: The orange band marks the support zone and the orange dots the points where price tested it. Each turn comes inside the band.
