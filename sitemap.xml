@@ -3,9 +3,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://marketlevelmap.com/</loc></url>
   <url><loc>https://marketlevelmap.com/weekly-events</loc></url>
-  <url><loc>https://marketlevelmap.com/tr/kutuphane/</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://marketlevelmap.com/tr/kutuphane/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/grafik-formasyonlari/</loc><lastmod>2026-10-22</lastmod></url>
-  <url><loc>https://marketlevelmap.com/tr/kutuphane/mum-formasyonlari/</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://marketlevelmap.com/tr/kutuphane/mum-formasyonlari/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/omuz-bas-omuz/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/ters-omuz-bas-omuz/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/ikili-tepe/</loc><lastmod>2026-10-22</lastmod></url>
@@ -17,16 +17,19 @@
   <url><loc>https://marketlevelmap.com/tr/kutuphane/flama/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/yutan-boga/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/yutan-ayi/</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://marketlevelmap.com/tr/kutuphane/boga-harami/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://marketlevelmap.com/tr/kutuphane/ayi-harami/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/cekic/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/ters-cekic/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/kayan-yildiz/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/pin-bar/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/doji/</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://marketlevelmap.com/tr/kutuphane/topac/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/sabah-yildizi/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/aksam-yildizi/</loc><lastmod>2026-10-22</lastmod></url>
-  <url><loc>https://marketlevelmap.com/en/library/</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://marketlevelmap.com/en/library/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/chart-patterns/</loc><lastmod>2026-10-22</lastmod></url>
-  <url><loc>https://marketlevelmap.com/en/library/candlestick-patterns/</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://marketlevelmap.com/en/library/candlestick-patterns/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/head-and-shoulders/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/inverse-head-and-shoulders/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/double-top/</loc><lastmod>2026-10-22</lastmod></url>
@@ -38,11 +41,14 @@
   <url><loc>https://marketlevelmap.com/en/library/pennant/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/bullish-engulfing/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/bearish-engulfing/</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://marketlevelmap.com/en/library/bullish-harami/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://marketlevelmap.com/en/library/bearish-harami/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/hammer/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/inverted-hammer/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/shooting-star/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/pin-bar/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/doji/</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://marketlevelmap.com/en/library/spinning-top/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/morning-star/</loc><lastmod>2026-10-22</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/evening-star/</loc><lastmod>2026-10-22</lastmod></url>
 </urlset>

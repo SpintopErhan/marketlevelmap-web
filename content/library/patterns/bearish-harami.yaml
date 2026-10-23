@@ -1,0 +1,182 @@
+id: bearish-harami
+kind: candle
+direction: bearish
+pattern_type: reversal
+candles: 2
+order: 28
+related: [bearish-engulfing, bullish-harami, evening-star]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: ayi-harami
+  name: Ayı Harami
+  alt_name: Bearish Harami
+  summary: >-
+    Bir yükselişin ardından, büyük bir yeşil mumu gövdesi tamamen onun gövdesinin içinde kalan küçük
+    bir kırmızı mumun izlemesiyle oluşan dönüş formasyonu. Alış baskısının durakladığını gösterebilir.
+    Yutan ayıya göre daha zayıf bir işaret kabul edilir ve çoğu zaman onay beklenir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde belirgin bir yükseliş vardır. Formasyon bir dönüş işareti olduğu için dönecek bir hareket olması gerekir.
+        marker: neutral
+      - text: "**1. mum** yeşildir ve gövdesi büyüktür: kapanışı açılışının belirgin biçimde üstündedir."
+        marker: up
+      - text: "**2. mum** kırmızıdır ve gövdesi küçüktür: 1. mumun gövdesinin yaklaşık **yarısını** geçmez."
+        marker: down
+      - text: "2. mumun gövdesi 1. mumun gövdesinin **tamamen içinde** kalır: açılışı 1. mumun kapanışına eşit ya da altında, kapanışı 1. mumun açılışının üstündedir."
+        marker: accent
+    note: >-
+      Kural gövdelerle ilgilidir. 2. mumun fitilleri 1. mumun gövdesinin dışına taşabilir. Kriptoda
+      2. mum çoğu zaman 1. mumun kapanış fiyatından açılır. Bu durum formasyonu geçersiz kılmaz,
+      ayrıca bir boşluk aranmaz. 2. mum bir doji ise (gövde aralığın en fazla %10'u) formasyona
+      **harami cross** denir ve biraz daha belirgin bir duraksama olarak okunur.
+  meaning:
+    - >-
+      İlk mum, alıcıların hâlâ kontrolde olduğunu gösterir. İkinci mum ise o hareketi
+      sürdüremez: fiyat ilk mumun gövdesinin içinde, dar bir alanda kalır ve açılışının altında
+      kapanır. Bu, alış baskısının yavaşladığına ve yükselişin durakladığına işaret edebilir.
+    - >-
+      Yutan ayıda satıcılar alıcıların bütün kazanımını geri verdirir. Haramide ise yalnızca
+      yükselişin durduğu görülür. Bu yüzden harami daha zayıf bir işaret kabul edilir. Birçok
+      kaynak, sonraki mumların 1. mumun gövdesinin alt kenarının (açılışının) altında kapanmasını
+      bir onay olarak bekler.
+  strengthens:
+    - Bir direnç bölgesinde oluşması
+    - Öncesindeki yükselişin belirgin olması
+    - 1. mumun çevresindeki mumlara göre büyük olması
+    - 2. mumun fitilleriyle birlikte 1. mumun gövdesinin içinde kalması
+    - Sonraki mumun 1. mumun gövdesinin altında kapanması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasada oluşması
+    - 1. mumun küçük olması
+    - 2. mumun gövdesinin 1. mumun gövdesine göre büyük olması
+    - Hemen altında güçlü bir destek bölgesi bulunması
+    - Sonraki mumun 1. mumun kapanışının üzerine çıkması
+  zones:
+    paragraphs:
+      - >-
+        Ayı haraminin en çok dikkat çektiği yer, büyük yeşil mumun fiyatı bir **direnç bölgesine**
+        taşıdığı andır. 2. mum bölgenin içinde ya da hemen altında, dar bir aralıkta kalıyorsa,
+        yükselişin bölgede durduğu düşünülebilir. 2. mumun bölgenin üzerinde oluşması ise bölgenin
+        zaten aşılmış olabileceğini gösterir.
+      - >-
+        Formasyonun hemen altındaki **ilk destek bölgesi** de önemlidir. 1. mumun açılışı çoğu zaman
+        bu bölgeye yakın bir yerdedir. Fiyatın onay için kırması gereken seviye bir destek bölgesiyle
+        çakışıyorsa, düşüş için alan dardır ve formasyon daha zayıf kabul edilir.
+  invalidation:
+    - >-
+      Fiyat, formasyonun **en yüksek noktasının** (iki mumun fitilleri dahil) üzerinde kapanış
+      yaparsa düşüş senaryosu geçersiz kabul edilir. Formasyon bir direnç bölgesinde oluştuysa,
+      bölgenin üzerinde kapanış da aynı anlama gelir.
+    - Yalnızca fitille en yüksek noktanın üzerine çıkıp altında kapanan bir mum, formasyonu tek başına geçersiz kılmaz.
+  confusions:
+    - id: bullish-harami
+      text: "Tersi: düşüşten sonra küçük yeşil mum büyük kırmızı gövdenin içinde kalır."
+    - id: bearish-engulfing
+      text: "Tersine ilişki: büyük kırmızı mum önceki yeşil gövdeyi tamamen kapsar."
+    - id: dark-cloud-cover
+      text: Kırmızı mum yeşil gövdenin üzerinde açılır ve yarısının altında kapanır; gövdenin içinde başlamaz.
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Düşüş]
+    - [Mum, "2"]
+    - [Bağlam, Yükseliş sonrası]
+    - [Kural, 2. gövde 1. gövdenin içinde]
+    - [Geçersiz, En yükseğin üzerinde kapanış]
+  svg_labels:
+    candle_1: 1. mum
+    candle_2: 2. mum
+    note_1: 2. gövde,
+    note_2: 1. gövdenin
+    note_3: içinde kalır
+  svg_alt: "Ayı harami çizimi: büyük bir yeşil mumun ardından, gövdesi onun gövdesinin içinde kalan küçük bir kırmızı mum"
+  svg_caption: Kesikli çizgiler ilk mumun gövdesini gösterir. Turuncu ayraç, bu sınırların içinde kalması gereken ikinci gövdeyi işaretler. Fitiller bu kurala dahil değildir.
+
+en:
+  slug: bearish-harami
+  name: Bearish Harami
+  summary: >-
+    A reversal pattern that forms after a rise, when a large green candle is followed by a small
+    red candle whose body sits entirely inside the green body. It can signal that buying pressure
+    is pausing. It is considered a weaker signal than a bearish engulfing and usually waits for
+    confirmation.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a clear rise. Since it is a reversal signal, there needs to be a move to reverse.
+        marker: neutral
+      - text: "**Candle 1** is green with a large body: it closes well above its open."
+        marker: up
+      - text: "**Candle 2** is red with a small body: no more than about **half** of candle 1's body."
+        marker: down
+      - text: "The body of candle 2 sits **entirely inside** the body of candle 1: it opens at or below candle 1's close and closes above candle 1's open."
+        marker: accent
+    note: >-
+      The rule is about bodies, so candle 2's wicks may reach outside candle 1's body. In crypto,
+      candle 2 usually opens at candle 1's closing price. This does not invalidate the pattern, and
+      no gap is required. If candle 2 is a doji (body at most 10% of its range), the pattern is called
+      a **harami cross** and is read as a slightly clearer pause.
+  meaning:
+    - >-
+      The first candle shows buyers are still in control. The second candle fails to carry that move
+      on: price stays in a narrow band inside the first body and closes below its open. This suggests
+      buying pressure may be slowing and the rise pausing.
+    - >-
+      In a bearish engulfing, sellers wipe out all of the buyers' gains. A harami only shows that the
+      rise has stalled, so it is considered a weaker signal. Many sources look for later candles to
+      close below the bottom of candle 1's body (its open) as confirmation.
+  strengthens:
+    - Forming at a resistance zone
+    - A clear rise before the pattern
+    - Candle 1 being large compared with the candles around it
+    - Candle 2, wicks included, staying inside candle 1's body
+    - The next candle closing below candle 1's body
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in a flat, directionless market
+    - Candle 1 being small
+    - Candle 2's body being large relative to candle 1's
+    - A strong support zone just below
+    - The next candle rising above candle 1's close
+  zones:
+    paragraphs:
+      - >-
+        A bearish harami stands out most when the large green candle carries price into a **resistance
+        zone**. If candle 2 stays in a narrow range inside the zone or just below it, the rise can be
+        read as having stalled there. If candle 2 forms above the zone, the zone may already have been
+        cleared.
+      - >-
+        The **first support zone below** the pattern matters too. Candle 1's open often sits near such a
+        zone. If the level price would need to break for confirmation lines up with a support zone, there
+        is little room for a decline and the pattern is considered weaker.
+  invalidation:
+    - >-
+      If price closes above the pattern's **highest point** (including both candles' wicks), the
+      bearish scenario is considered invalid. If the pattern formed at a resistance zone, a close
+      above the zone means the same.
+    - A candle that only wicks above the high and closes back below it does not invalidate the pattern on its own.
+  confusions:
+    - id: bullish-harami
+      text: "The opposite: after a decline, a small green candle sits inside a large red body."
+    - id: bearish-engulfing
+      text: "The inverse relationship: a large red candle fully covers the previous green body."
+    - id: dark-cloud-cover
+      text: The red candle opens above the green body and closes below its middle; it does not start inside the body.
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bearish]
+    - [Candles, "2"]
+    - [Context, After a rise]
+    - [Rule, Body 2 inside body 1]
+    - [Invalid, Close above the high]
+  svg_labels:
+    candle_1: Candle 1
+    candle_2: Candle 2
+    note_1: Body 2
+    note_2: stays inside
+    note_3: body 1
+  svg_alt: "Bearish harami illustration: a large green candle followed by a small red candle whose body sits inside the green body"
+  svg_caption: The dashed lines mark the first candle's body. The orange bracket marks the second body, which must stay within these lines. Wicks are not part of this rule.
