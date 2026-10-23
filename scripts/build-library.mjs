@@ -328,7 +328,7 @@ function page({ lang, path, alternates, title, description, body, jsonLd }) {
     `<meta property="og:site_name" content="MarketLevelMap"><meta property="og:type" content="article"><meta property="og:locale" content="${lang === "tr" ? "tr_TR" : "en_GB"}">`,
     `<meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${esc(canonical)}"><meta property="og:image" content="${ORIGIN}${asset("assets/og-image.png")}">`,
     `<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(description)}"><meta name="twitter:image" content="${ORIGIN}${asset("assets/og-image.png")}">`,
-    `<link rel="icon" type="image/svg+xml" href="/assets/MarketLevelMap-symbol-color.svg">`,
+    `<link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">`,
     `<link rel="stylesheet" href="${asset("assets/site.css")}"><link rel="stylesheet" href="${asset("assets/library.css")}">`,
     `<script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>`,
     `<script src="${asset("assets/disclaimer.js")}" defer></script><script src="${asset("assets/library.js")}" defer></script><script src="${asset("assets/pwa.js")}" defer></script>`,
