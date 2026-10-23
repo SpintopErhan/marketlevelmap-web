@@ -1,0 +1,195 @@
+id: dark-cloud-cover
+kind: candle
+direction: bearish
+pattern_type: reversal
+candles: 2
+order: 24
+related: [piercing-line, bearish-engulfing, evening-star]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: kara-bulut
+  name: Kara Bulut
+  alt_name: Dark Cloud Cover
+  summary: >-
+    Bir yükselişin ardından, kırmızı bir mumun önceki büyük yeşil mumun gövdesinin ortasının
+    altında kapanmasıyla oluşan iki mumluk dönüş formasyonu. Yeşil mumun kazancının yarısından
+    fazlasının geri verildiğini ve satıcıların ağırlık kazanmaya başladığını gösterebilir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde belirgin bir yükseliş vardır. Formasyon bir dönüş işareti olduğu için dönecek bir hareket olması gerekir.
+        marker: neutral
+      - text: "**1. mum** yeşildir ve gövdesi belirgindir: çevresindeki mumlara göre büyüktür, gövdesi aralığının yaklaşık **yarısından** fazlasını kaplar."
+        marker: up
+      - text: "**2. mum** kırmızıdır ve 1. mumun kapanışına eşit ya da üstünde açılır."
+        marker: down
+      - text: "2. mum, 1. mumun **gövde ortasının altında** ama 1. mumun **açılışının üstünde** kapanır. Açılışın da altında kapanırsa formasyon yutan ayıya dönüşür."
+        marker: accent
+    note: >-
+      Klasik tanımda 2. mum, 1. mumun en yükseğinin üzerinde, yani bir boşlukla (gap) açılır.
+      Kripto piyasası 7/24 işlem gördüğü için 2. mum çoğu zaman 1. mumun kapanışından açılır.
+      Bu durumda açılış koşulu "kapanışa eşit ya da üstünde" olarak okunur ve ağırlık kapanışa
+      geçer: 2. mumun 1. gövdenin ne kadar derinine indiği belirleyicidir. 2. mumun üst fitilinin
+      1. mumun en yükseğini aşması, boşluğun anlattığı "yukarı deneme ve ret" hikâyesini kısmen
+      karşılar.
+  meaning:
+    - >-
+      İlk mum, alıcıların güçlü bir mumla kontrolde olduğunu gösterir. İkinci mum yukarıdan ya da
+      aynı seviyeden başlar, ama aynı zaman aralığında ilk mumun kazancının yarısından fazlasını
+      geri verir. Bu, yükselişin üzerine bir satış bulutu çöktüğü ve dengenin satıcılar lehine
+      değişmeye başlamış olabileceği şeklinde okunur.
+    - >-
+      Kara bulut, yutan ayıdan bir adım zayıf kabul edilir: satıcılar ilk mumun tamamını değil,
+      yalnızca bir kısmını geri almıştır. Formasyon tek başına yükselişin bittiğini kanıtlamaz.
+      Sonraki mumun 2. mumun kapanışının altında kapanması bu okumayı destekleyen bir onay olarak
+      kabul edilir.
+  strengthens:
+    - Bir direnç bölgesinde oluşması
+    - Öncesindeki yükselişin belirgin olması
+    - 2. mumun 1. gövdenin derinine, açılışa yakın kapanması
+    - 2. mumun üst fitilinin 1. mumun en yükseğini aşması
+    - 2. mumun hacminin yüksek olması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasada oluşması
+    - 2. mumun gövde ortasının hemen altında kapanması
+    - 1. mumun küçük olması
+    - Hemen altında güçlü bir destek bölgesi bulunması
+    - Çok küçük zaman dilimlerinde (1 dk, 5 dk) oluşması
+  zones:
+    paragraphs:
+      - >-
+        Kara bulutun en anlamlı olduğu yer bir **direnç bölgesidir**. 1. mum fiyatı bölgeye taşır,
+        2. mum ise bölgenin içinde ya da hemen altında kalıp 1. gövdenin derinine iner. Bu tablo,
+        bölgeyi aşma denemesinin geri çevrildiği şeklinde okunabilir. 2. mumun fitili bölgenin
+        içine uzanıp gövdesi bölgenin altında kapanıyorsa okuma daha nettir.
+      - >-
+        1. mumun **açılışı** ilk somut referanstır. Çoğu zaman 1. gövdenin alt kısmı, yükselişin
+        başladığı küçük bir destek bölgesine denk gelir. Fiyat sonraki mumlarda bu seviyenin altında
+        kapanırsa, formasyon fiilen yutan ayı kadar güçlü bir tabloya dönüşmüş olur.
+      - >-
+        Formasyonun hemen altındaki **ilk destek bölgesi** de önemlidir. Destek çok yakınsa, düşüş
+        için alan dardır ve formasyon daha zayıf kabul edilir.
+  invalidation:
+    - >-
+      Fiyat, formasyonun **en yüksek noktasının** (iki mumun fitilleri dahil) üzerinde kapanış
+      yaparsa düşüş senaryosu geçersiz kabul edilir. Formasyon bir direnç bölgesinde oluştuysa,
+      bölgenin üzerinde kapanış da aynı anlama gelir.
+    - Sonraki mumların 1. mumun gövde ortasının yeniden üzerinde kapanması da formasyonun gücünü belirgin biçimde azaltır.
+  confusions:
+    - id: bearish-engulfing
+      text: "Daha güçlü akrabası: kırmızı mum yeşil gövdenin tamamını kapsar ve açılışının da altında kapanır."
+    - id: piercing-line
+      text: "Tersi: düşüşten sonra yeşil mum kırmızı gövdenin ortasının üzerinde kapanır."
+    - id: bearish-harami
+      text: "Küçük kırmızı gövde yeşil gövdenin içinde kalır: 1. mumun kapanışının altında açılır ve genellikle gövde ortasına kadar inmez."
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Düşüş]
+    - [Mum, "2"]
+    - [Bağlam, Yükseliş sonrası]
+    - [Kural, 2. kapanış 1. gövde ortasının altında]
+    - [Geçersiz, En yükseğin üzerinde kapanış]
+  svg_labels:
+    candle_1: 1. mum
+    candle_2: 2. mum
+    close_1: 1. kapanış
+    midpoint: Gövde ortası
+    close_2: 2. kapanış
+    open_1: 1. açılış
+  svg_alt: "Kara bulut formasyonu çizimi: büyük bir yeşil mumun ardından, onun kapanışından açılıp gövdesinin ortasının altında ama açılışının üstünde kapanan bir kırmızı mum"
+  svg_caption: Gri kesikli çizgiler ilk mumun açılışını ve kapanışını gösterir. Turuncu çizgi ilk gövdenin ortasıdır. 2. mum bu çizginin altında, ilk açılışın üstünde kapanır.
+
+en:
+  slug: dark-cloud-cover
+  name: Dark Cloud Cover
+  summary: >-
+    A two-candle reversal pattern that forms after a rise, when a red candle closes below the
+    middle of the previous large green candle's body. It can show that more than half of the
+    green candle's gain has been given back and that sellers are starting to gain ground.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a clear rise. Since it is a reversal signal, there needs to be a move to reverse.
+        marker: neutral
+      - text: "**Candle 1** is green with a clear body: large compared with the candles around it, covering roughly **more than half** of its range."
+        marker: up
+      - text: "**Candle 2** is red and opens at or above candle 1's close."
+        marker: down
+      - text: "Candle 2 closes **below the midpoint** of candle 1's body but **above candle 1's open**. If it closes below the open too, the pattern becomes a bearish engulfing."
+        marker: accent
+    note: >-
+      In the classic definition, candle 2 opens above candle 1's high, with a gap. Crypto trades
+      around the clock, so candle 2 usually opens at candle 1's close. The opening condition is then
+      read as "at or above the close", and the weight shifts to the close: how deep candle 2 reaches
+      into body 1 is what decides it. An upper wick on candle 2 that clears candle 1's high partly
+      replaces the "push higher, then rejection" story the gap tells.
+  meaning:
+    - >-
+      The first candle shows buyers in control with a strong candle. The second starts higher or at
+      the same level, but over the same length of time gives back more than half of the first
+      candle's gain. This is read as a cloud of selling settling over the rise, with the balance
+      possibly starting to shift in favour of sellers.
+    - >-
+      A dark cloud cover is considered a step weaker than a bearish engulfing: sellers have taken
+      back only part of the first candle, not all of it. On its own, the pattern does not prove the
+      rise is over. The next candle closing below candle 2's close is considered a confirmation that
+      supports this reading.
+  strengthens:
+    - Forming at a resistance zone
+    - A clear rise before the pattern
+    - Candle 2 closing deep into body 1, close to its open
+    - Candle 2's upper wick clearing candle 1's high
+    - High volume on candle 2
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in a flat, directionless market
+    - Candle 2 closing only just below the midpoint
+    - Candle 1 being small
+    - A strong support zone just below
+    - Forming on very low timeframes (1m, 5m)
+  zones:
+    paragraphs:
+      - >-
+        A dark cloud cover means most at a **resistance zone**. Candle 1 carries price into the zone;
+        candle 2 stays inside or just below it and cuts deep into body 1. This can be read as the
+        attempt to clear the zone being rejected. When candle 2's wick reaches into the zone and its
+        body closes below it, the reading is clearer.
+      - >-
+        Candle 1's **open** is the first concrete reference. The lower part of body 1 often lines up
+        with a small support zone where the rise began. If later candles close below that level, the
+        pattern has in effect turned into a picture as strong as a bearish engulfing.
+      - >-
+        The **first support zone below** the pattern matters too. If support is very close, there is
+        little room for a decline and the pattern is considered weaker.
+  invalidation:
+    - >-
+      If price closes above the pattern's **highest point** (including both candles' wicks), the
+      bearish scenario is considered invalid. If the pattern formed at a resistance zone, a close
+      above the zone means the same.
+    - Later candles closing back above the midpoint of candle 1's body also clearly weaken the pattern.
+  confusions:
+    - id: bearish-engulfing
+      text: "Its stronger relative: the red candle covers the whole green body and closes below its open too."
+    - id: piercing-line
+      text: "The opposite: after a decline, a green candle closes above the middle of the red body."
+    - id: bearish-harami
+      text: "A small red body sits inside the green body: it opens below candle 1's close and usually does not reach the midpoint."
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bearish]
+    - [Candles, "2"]
+    - [Context, After a rise]
+    - [Rule, Close 2 below the midpoint of body 1]
+    - [Invalid, Close above the high]
+  svg_labels:
+    candle_1: Candle 1
+    candle_2: Candle 2
+    close_1: Close 1
+    midpoint: Body midpoint
+    close_2: Close 2
+    open_1: Open 1
+  svg_alt: "Dark cloud cover illustration: a large green candle followed by a red candle that opens at its close and closes below the middle of its body but above its open"
+  svg_caption: The grey dashed lines mark the first candle's open and close. The orange line is the middle of the first body. Candle 2 closes below it and above the first open.

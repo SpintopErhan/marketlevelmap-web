@@ -1,0 +1,195 @@
+id: piercing-line
+kind: candle
+direction: bullish
+pattern_type: reversal
+candles: 2
+order: 22
+related: [dark-cloud-cover, bullish-engulfing, morning-star]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: delen-mum
+  name: Delen Mum
+  alt_name: Piercing Line
+  summary: >-
+    Bir düşüşün ardından, yeşil bir mumun önceki büyük kırmızı mumun gövdesinin ortasının
+    üzerinde kapanmasıyla oluşan iki mumluk dönüş formasyonu. Kırmızı mumun kaybının yarısından
+    fazlasının geri alındığını ve alıcıların ağırlık kazanmaya başladığını gösterebilir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde belirgin bir düşüş vardır. Formasyon bir dönüş işareti olduğu için dönecek bir hareket olması gerekir.
+        marker: neutral
+      - text: "**1. mum** kırmızıdır ve gövdesi belirgindir: çevresindeki mumlara göre büyüktür, gövdesi aralığının yaklaşık **yarısından** fazlasını kaplar."
+        marker: down
+      - text: "**2. mum** yeşildir ve 1. mumun kapanışına eşit ya da altında açılır."
+        marker: up
+      - text: "2. mum, 1. mumun **gövde ortasının üzerinde** ama 1. mumun **açılışının altında** kapanır. Açılışın da üzerinde kapanırsa formasyon yutan boğaya dönüşür."
+        marker: accent
+    note: >-
+      Klasik tanımda 2. mum, 1. mumun en düşüğünün altında, yani bir boşlukla (gap) açılır.
+      Kripto piyasası 7/24 işlem gördüğü için 2. mum çoğu zaman 1. mumun kapanışından açılır.
+      Bu durumda açılış koşulu "kapanışa eşit ya da altında" olarak okunur ve ağırlık kapanışa
+      geçer: 2. mumun 1. gövdenin ne kadar derinine çıktığı belirleyicidir. 2. mumun alt fitilinin
+      1. mumun en düşüğünün altına inmesi, boşluğun anlattığı "aşağı deneme ve ret" hikâyesini
+      kısmen karşılar.
+  meaning:
+    - >-
+      İlk mum, satıcıların güçlü bir mumla kontrolde olduğunu gösterir. İkinci mum aşağıdan ya da
+      aynı seviyeden başlar, ama aynı zaman aralığında ilk mumun kaybının yarısından fazlasını geri
+      alır. Bu, alıcıların düşüşü delip içeri girdiği ve dengenin alıcılar lehine değişmeye
+      başlamış olabileceği şeklinde okunur.
+    - >-
+      Delen mum, yutan boğadan bir adım zayıf kabul edilir: alıcılar ilk mumun tamamını değil,
+      yalnızca bir kısmını geri almıştır. Formasyon tek başına düşüşün bittiğini kanıtlamaz.
+      Sonraki mumun 2. mumun kapanışının üzerinde kapanması bu okumayı destekleyen bir onay olarak
+      kabul edilir.
+  strengthens:
+    - Bir destek bölgesinde oluşması
+    - Öncesindeki düşüşün belirgin olması
+    - 2. mumun 1. gövdenin derinine, açılışa yakın kapanması
+    - 2. mumun alt fitilinin 1. mumun en düşüğünün altına inmesi
+    - 2. mumun hacminin yüksek olması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasada oluşması
+    - 2. mumun gövde ortasının hemen üzerinde kapanması
+    - 1. mumun küçük olması
+    - Hemen üstünde güçlü bir direnç bölgesi bulunması
+    - Çok küçük zaman dilimlerinde (1 dk, 5 dk) oluşması
+  zones:
+    paragraphs:
+      - >-
+        Delen mumun en anlamlı olduğu yer bir **destek bölgesidir**. 1. mum fiyatı bölgeye indirir,
+        2. mum ise bölgenin içinde ya da hemen üzerinde kalıp 1. gövdenin derinine çıkar. Bu tablo,
+        bölgenin aşağı kırılma denemesinin geri çevrildiği şeklinde okunabilir. 2. mumun fitili
+        bölgenin içine uzanıp gövdesi bölgenin üzerinde kapanıyorsa okuma daha nettir.
+      - >-
+        1. mumun **açılışı** ilk somut referanstır. Çoğu zaman 1. gövdenin üst kısmı, düşüşün
+        başladığı küçük bir direnç bölgesine denk gelir. Fiyat sonraki mumlarda bu seviyenin üzerinde
+        kapanırsa, formasyon fiilen yutan boğa kadar güçlü bir tabloya dönüşmüş olur.
+      - >-
+        Formasyonun hemen üstündeki **ilk direnç bölgesi** de önemlidir. Direnç çok yakınsa,
+        toparlanma için alan dardır ve formasyon daha zayıf kabul edilir.
+  invalidation:
+    - >-
+      Fiyat, formasyonun **en düşük noktasının** (iki mumun fitilleri dahil) altında kapanış
+      yaparsa yükseliş senaryosu geçersiz kabul edilir. Formasyon bir destek bölgesinde oluştuysa,
+      bölgenin altında kapanış da aynı anlama gelir.
+    - Sonraki mumların 1. mumun gövde ortasının yeniden altında kapanması da formasyonun gücünü belirgin biçimde azaltır.
+  confusions:
+    - id: bullish-engulfing
+      text: "Daha güçlü akrabası: yeşil mum kırmızı gövdenin tamamını kapsar ve açılışının da üzerinde kapanır."
+    - id: dark-cloud-cover
+      text: "Tersi: yükselişten sonra kırmızı mum yeşil gövdenin ortasının altında kapanır."
+    - id: bullish-harami
+      text: "Küçük yeşil gövde kırmızı gövdenin içinde kalır: 1. mumun kapanışının üzerinde açılır ve genellikle gövde ortasına kadar çıkmaz."
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Yükseliş]
+    - [Mum, "2"]
+    - [Bağlam, Düşüş sonrası]
+    - [Kural, 2. kapanış 1. gövde ortasının üzerinde]
+    - [Geçersiz, En düşüğün altında kapanış]
+  svg_labels:
+    candle_1: 1. mum
+    candle_2: 2. mum
+    open_1: 1. açılış
+    close_2: 2. kapanış
+    midpoint: Gövde ortası
+    close_1: 1. kapanış
+  svg_alt: "Delen mum formasyonu çizimi: büyük bir kırmızı mumun ardından, onun kapanışından açılıp gövdesinin ortasının üzerinde ama açılışının altında kapanan bir yeşil mum"
+  svg_caption: Gri kesikli çizgiler ilk mumun açılışını ve kapanışını gösterir. Turuncu çizgi ilk gövdenin ortasıdır. 2. mum bu çizginin üzerinde, ilk açılışın altında kapanır.
+
+en:
+  slug: piercing-line
+  name: Piercing Line
+  summary: >-
+    A two-candle reversal pattern that forms after a decline, when a green candle closes above the
+    middle of the previous large red candle's body. It can show that more than half of the red
+    candle's loss has been taken back and that buyers are starting to gain ground.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a clear decline. Since it is a reversal signal, there needs to be a move to reverse.
+        marker: neutral
+      - text: "**Candle 1** is red with a clear body: large compared with the candles around it, covering roughly **more than half** of its range."
+        marker: down
+      - text: "**Candle 2** is green and opens at or below candle 1's close."
+        marker: up
+      - text: "Candle 2 closes **above the midpoint** of candle 1's body but **below candle 1's open**. If it closes above the open too, the pattern becomes a bullish engulfing."
+        marker: accent
+    note: >-
+      In the classic definition, candle 2 opens below candle 1's low, with a gap. Crypto trades
+      around the clock, so candle 2 usually opens at candle 1's close. The opening condition is then
+      read as "at or below the close", and the weight shifts to the close: how deep candle 2 reaches
+      into body 1 is what decides it. A lower wick on candle 2 that drops below candle 1's low partly
+      replaces the "push lower, then rejection" story the gap tells.
+  meaning:
+    - >-
+      The first candle shows sellers in control with a strong candle. The second starts lower or at
+      the same level, but over the same length of time takes back more than half of the first
+      candle's loss. This is read as buyers piercing into the decline, with the balance possibly
+      starting to shift in favour of buyers.
+    - >-
+      A piercing line is considered a step weaker than a bullish engulfing: buyers have taken back
+      only part of the first candle, not all of it. On its own, the pattern does not prove the
+      decline is over. The next candle closing above candle 2's close is considered a confirmation
+      that supports this reading.
+  strengthens:
+    - Forming at a support zone
+    - A clear decline before the pattern
+    - Candle 2 closing deep into body 1, close to its open
+    - Candle 2's lower wick dropping below candle 1's low
+    - High volume on candle 2
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in a flat, directionless market
+    - Candle 2 closing only just above the midpoint
+    - Candle 1 being small
+    - A strong resistance zone just above
+    - Forming on very low timeframes (1m, 5m)
+  zones:
+    paragraphs:
+      - >-
+        A piercing line means most at a **support zone**. Candle 1 carries price into the zone;
+        candle 2 stays inside or just above it and pushes deep into body 1. This can be read as the
+        attempt to break below the zone being rejected. When candle 2's wick reaches into the zone
+        and its body closes above it, the reading is clearer.
+      - >-
+        Candle 1's **open** is the first concrete reference. The upper part of body 1 often lines up
+        with a small resistance zone where the decline began. If later candles close above that
+        level, the pattern has in effect turned into a picture as strong as a bullish engulfing.
+      - >-
+        The **first resistance zone above** the pattern matters too. If resistance is very close,
+        there is little room for a recovery and the pattern is considered weaker.
+  invalidation:
+    - >-
+      If price closes below the pattern's **lowest point** (including both candles' wicks), the
+      bullish scenario is considered invalid. If the pattern formed at a support zone, a close below
+      the zone means the same.
+    - Later candles closing back below the midpoint of candle 1's body also clearly weaken the pattern.
+  confusions:
+    - id: bullish-engulfing
+      text: "Its stronger relative: the green candle covers the whole red body and closes above its open too."
+    - id: dark-cloud-cover
+      text: "The opposite: after a rise, a red candle closes below the middle of the green body."
+    - id: bullish-harami
+      text: "A small green body sits inside the red body: it opens above candle 1's close and usually does not reach the midpoint."
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bullish]
+    - [Candles, "2"]
+    - [Context, After a decline]
+    - [Rule, Close 2 above the midpoint of body 1]
+    - [Invalid, Close below the low]
+  svg_labels:
+    candle_1: Candle 1
+    candle_2: Candle 2
+    open_1: Open 1
+    close_2: Close 2
+    midpoint: Body midpoint
+    close_1: Close 1
+  svg_alt: "Piercing line illustration: a large red candle followed by a green candle that opens at its close and closes above the middle of its body but below its open"
+  svg_caption: The grey dashed lines mark the first candle's open and close. The orange line is the middle of the first body. Candle 2 closes above it and below the first open.

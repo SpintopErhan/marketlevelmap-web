@@ -1,0 +1,185 @@
+id: hanging-man
+kind: candle
+direction: bearish
+pattern_type: reversal
+candles: 1
+order: 35
+related: [hammer, shooting-star, bearish-engulfing]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: asili-adam
+  name: Asılı Adam
+  alt_name: Hanging Man
+  summary: >-
+    Bir yükselişin ardından oluşan, küçük gövdeli ve uzun alt fitilli tek mumluk dönüş formasyonu.
+    Şekli çekiçle aynıdır, farkı bağlamdadır. Fiyatın mum içinde belirgin biçimde düştüğünü ve
+    yükselişin ilk kez ciddi bir satışla karşılaştığını gösterebilir.
+  formation:
+    style: bullets
+    items:
+      - text: Öncesinde belirgin bir yükseliş vardır. Aynı şekil bir düşüşten sonra oluşursa çekiç adını alır.
+        marker: neutral
+      - text: "**Alt fitil**, gövdenin **en az 2 katı** uzunluğundadır."
+        marker: accent
+      - text: "Üst fitil ya hiç yoktur ya da çok kısadır: mumun toplam boyunun (en yüksek ile en düşük arası) yaklaşık **onda birini** geçmez."
+        marker: neutral
+      - text: "Gövde küçüktür ve mumun **üst üçte birlik** kısmında yer alır. Rengi kuralı değiştirmez. Kırmızı gövde biraz daha güçlü kabul edilir."
+        marker: down
+    note: >-
+      Asılı adam, onaya en çok ihtiyaç duyan tek mumlardan biri kabul edilir. Mum yine tepeye
+      yakın kapandığı için birçok kaynak, sonraki mumun asılı adamın gövdesinin altında
+      kapanmasını bekler.
+  meaning:
+    - >-
+      Mum açıldıktan sonra satıcılar fiyatı belirgin biçimde aşağı iter. Kapanışa doğru alıcılar
+      fiyatı yeniden açılış seviyesinin yakınına taşır. Mum toparlanmış görünse de uzun alt fitil,
+      yükseliş boyunca ilk kez güçlü bir satış dalgasının geldiğini gösterebilir.
+    - >-
+      Yükseliş trendinde mumlar genellikle tepeye yakın kapanır ve aşağıda fazla zaman geçirmez.
+      Asılı adam, alıcıların hâlâ güçlü olduğunu ama satıcıların artık sahnede olduğunu gösterir.
+      Bu, yükselişin yorulmaya başlamış olabileceğine dair bir ipucudur, yönün değiştiğinin kanıtı
+      değildir.
+  strengthens:
+    - Bir direnç bölgesinde oluşması
+    - Öncesindeki yükselişin belirgin olması
+    - Alt fitilin gövdeye göre çok uzun olması
+    - Kırmızı gövde
+    - Sonraki mumun asılı adamın gövdesinin altında kapanması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasada oluşması
+    - Belirgin bir üst fitil bulunması
+    - Mumun çevresindeki mumlara göre çok küçük olması
+    - Hemen altında güçlü bir destek bölgesi bulunması
+    - Sonraki mumun asılı adamın en yükseğinin üzerinde kapanması
+  zones:
+    paragraphs:
+      - >-
+        Asılı adamın en anlamlı olduğu yer bir **direnç bölgesidir**. Fiyat bölgeye ulaşmış ama
+        mum içinde belirgin biçimde geri çekilmiştir. Bu tablo, bölgede satıcıların ortaya çıktığı
+        ve yükselişin ilk kez zorlandığı şeklinde okunabilir.
+      - >-
+        Alt fitilin ucu önemli bir referanstır. Fitil hemen alttaki bir **destek bölgesine** kadar
+        uzanıyorsa, satıcıların ulaştığı yer o bölgedir ve oranın tekrar test edilip edilmediği
+        izlenebilir. Sonraki mumlarda fiyat fitilin ucunun altında kapanırsa, mum içindeki satış
+        artık mumlar arasında da kabul görmeye başlamış olabilir.
+      - >-
+        Asılı adam bir direncin içinde değil de iki bölge arasında, boş bir alanda oluştuysa daha
+        zayıf kabul edilir. Bu durumda uzun alt fitil sıradan bir dalgalanma olabilir.
+  invalidation:
+    - >-
+      Fiyat, asılı adamın **en yüksek noktasının** üzerinde kapanış yaparsa düşüş senaryosu
+      geçersiz kabul edilir. Bu, yükselişin satışı sindirip devam ettiği anlamına gelir.
+    - Asılı adam bir direnç bölgesinde oluştuysa, bölgenin üzerinde kapanış da aynı anlama gelir.
+  confusions:
+    - id: hammer
+      text: "Aynı şekil, farklı bağlam: düşüşten sonra oluşur ve yükseliş yönlü okunur."
+    - id: shooting-star
+      text: "Yükselişten sonra oluşan diğer tek mum: fitil üstte, gövde mumun alt kısmında."
+    - id: pin-bar
+      text: "Daha geniş bir terim: uzun fitilli her ret mumu. Asılı adam, yükseliş sonrası alt fitilli olanıdır."
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Düşüş]
+    - [Mum, "1"]
+    - [Bağlam, Yükseliş sonrası]
+    - [Kural, Alt fitil ≥ 2 × gövde]
+    - [Geçersiz, En yükseğin üzerinde kapanış]
+  svg_labels:
+    context: Önceki yükseliş
+    candle: Asılı adam
+    body: Gövde
+    note_1: Alt fitil
+    note_2: gövdenin en az
+    note_3: 2 katı
+  svg_alt: "Asılı adam formasyonu çizimi: birkaç küçük yeşil mumdan oluşan yükselişin ardından, küçük gövdesi üstte ve alt fitili uzun bir kırmızı mum"
+  svg_caption: Kesikli çizgiler asılı adamın gövdesini gösterir. Turuncu ayraç, en az gövdenin iki katı olması gereken alt fitili işaretler.
+
+en:
+  slug: hanging-man
+  name: Hanging Man
+  summary: >-
+    A single-candle reversal pattern that forms after a rise, with a small body and a long lower
+    wick. Its shape is the same as a hammer; the difference is the context. It can show price
+    dropping clearly within the candle and the rise meeting serious selling for the first time.
+  formation:
+    style: bullets
+    items:
+      - text: It follows a clear rise. The same shape after a decline is called a hammer.
+        marker: neutral
+      - text: "The **lower wick** is **at least twice** the length of the body."
+        marker: accent
+      - text: "The upper wick is absent or very short: no more than about **a tenth** of the candle's full range (high to low)."
+        marker: neutral
+      - text: "The body is small and sits in the **upper third** of the range. Its colour does not change the rule; a red body is considered slightly stronger."
+        marker: down
+    note: >-
+      The hanging man is considered one of the single candles that most needs confirmation. Since
+      it still closes near its high, many sources look for the next candle to close below the
+      hanging man's body.
+  meaning:
+    - >-
+      After the open, sellers push price clearly lower. Towards the close, buyers carry it back
+      near the opening level. The candle may look like a recovery, but the long lower wick can show
+      that a strong wave of selling has appeared for the first time during the rise.
+    - >-
+      In an uptrend, candles usually close near their highs and spend little time lower down. A
+      hanging man shows buyers are still strong, but sellers are now present. This is a hint that
+      the rise may be starting to tire, not proof that the direction has changed.
+  strengthens:
+    - Forming at a resistance zone
+    - A clear rise before the pattern
+    - A lower wick that is very long relative to the body
+    - A red body
+    - The next candle closing below the hanging man's body
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in a flat, directionless market
+    - A noticeable upper wick
+    - The candle being very small compared with those around it
+    - A strong support zone just below
+    - The next candle closing above the hanging man's high
+  zones:
+    paragraphs:
+      - >-
+        A hanging man means most at a **resistance zone**. Price has reached the zone but pulled
+        back clearly within the candle. This can be read as sellers appearing at the zone and the
+        rise being tested for the first time.
+      - >-
+        The tip of the lower wick is a useful reference. If the wick reaches down to a **support
+        zone** just below, that zone is where sellers got to, and it is worth watching whether it is
+        tested again. If later candles close below the tip of the wick, the selling seen inside the
+        candle may be starting to hold across candles too.
+      - >-
+        A hanging man that forms between zones, in open space rather than at resistance, is
+        considered weaker. The long lower wick may then be ordinary noise.
+  invalidation:
+    - >-
+      If price closes above the hanging man's **highest point**, the bearish scenario is considered
+      invalid. It means the rise has absorbed the selling and carried on.
+    - If the hanging man formed at a resistance zone, a close above the zone means the same.
+  confusions:
+    - id: hammer
+      text: "Same shape, different context: it forms after a decline and is read as bullish."
+    - id: shooting-star
+      text: "The other single candle after a rise: the wick is at the top and the body at the bottom."
+    - id: pin-bar
+      text: "A broader term for any long-wick rejection candle. A hanging man is the lower-wick one after a rise."
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bearish]
+    - [Candles, "1"]
+    - [Context, After a rise]
+    - [Rule, Lower wick ≥ 2 × body]
+    - [Invalid, Close above the high]
+  svg_labels:
+    context: Prior rise
+    candle: Hanging man
+    body: Body
+    note_1: Lower wick
+    note_2: at least twice
+    note_3: the body
+  svg_alt: "Hanging man illustration: after a rise of several small green candles, a red candle with a small body at the top and a long lower wick"
+  svg_caption: The dashed lines mark the hanging man's body. The orange bracket marks the lower wick, which must be at least twice the body.
