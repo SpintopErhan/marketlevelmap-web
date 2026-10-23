@@ -1,0 +1,257 @@
+id: equity-indices-risk-appetite
+kind: macro
+order: 90
+related: [dollar-index, bond-yields, economic-calendar, volatility]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: hisse-endeksleri-ve-risk-istahi
+  name: Hisse endeksleri ve risk iştahı
+  alt_name: Stock indices and risk appetite
+  summary: >-
+    S&P 500 ve Nasdaq 100, ABD hisse piyasasının genel yönünü özetleyen endekslerdir ve piyasanın
+    risk iştahını okumak için sık kullanılır. Kripto zaman zaman bu endekslerle birlikte hareket eder,
+    özellikle ABD seansının açılışı ve kapanışı çevresinde. Bu ilişki zamanla değişir ve bir neden-sonuç
+    ilişkisi değildir.
+  sections:
+    - type: text
+      id: definition
+      title: Hisse endeksleri ne anlatır?
+      paragraphs:
+        - >-
+          Bir hisse endeksi, bir grup şirketin hisse fiyatlarını tek bir sayıda toplar. **S&P 500**,
+          ABD'nin yaklaşık 500 büyük şirketini piyasa değerine göre ağırlıklandırarak izler ve ABD
+          hisse piyasasının genel ölçüsü olarak görülür. **Nasdaq 100**, Nasdaq borsasında işlem gören
+          finans dışı en büyük 100 şirketi kapsar; teknoloji şirketlerinin ağırlığı yüksektir.
+        - >-
+          **Risk iştahı**, yatırımcıların daha oynak varlıkları tutmaya ne kadar istekli olduğunu
+          anlatan genel bir ifadedir. Endeksler geniş çapta yükselirken risk iştahının güçlü,
+          sert düşerken zayıf olduğu söylenir. Kripto da oynak bir varlık sınıfı olduğu için bu
+          genel havadan etkilenebilir.
+    - type: bullets
+      id: reading-risk-appetite
+      title: Risk iştahı nasıl okunur?
+      items:
+        - text: Endekslerin yönü ve hareketin genişliği. Yalnızca birkaç büyük şirketin taşıdığı bir yükseliş, geniş tabanlı bir yükselişten farklı okunur.
+          marker: neutral
+        - text: Nasdaq 100 ile S&P 500 arasındaki fark. Teknoloji ağırlıklı endeksin daha güçlü olduğu dönemler çoğu zaman risk iştahının yüksek olduğu dönemler olarak yorumlanır.
+          marker: up
+        - text: Sert ve hızlı endeks düşüşleri. Bu tür günlerde oynak varlıklardan genel bir çıkış görülebilir ve kripto da bundan etkilenebilir.
+          marker: down
+        - text: Dolar ve faiz verileriyle birlikte okumak. Endeksleri hareket ettiren neden çoğu zaman aynı anda doları ve tahvil faizlerini de hareket ettirir.
+          marker: accent
+    - type: box
+      title: VIX kısaca
+      text: >-
+        **VIX**, Cboe'nin S&P 500 opsiyon fiyatlarından hesapladığı, önümüzdeki 30 gün için beklenen
+        oynaklık ölçüsüdür. Genellikle endeksler sert düştüğünde yükselir, sakin yükseliş dönemlerinde
+        düşük kalır. Bir yön tahmini değil, piyasanın beklediği **dalgalanmanın büyüklüğüdür**.
+    - type: text
+      id: market-hours
+      title: ABD seans saatleri ve 7/24 kripto
+      paragraphs:
+        - >-
+          ABD hisse piyasasının normal seansı New York saatiyle **09:30–16:00** arasındadır. ABD yaz
+          saatinde bu UTC 13:30–20:00 (Türkiye saatiyle 16:30–23:00), kış saatinde UTC 14:30–21:00
+          (Türkiye saatiyle 17:30–00:00) eder. Endeks vadeli işlemleri hafta içinde neredeyse gün boyu
+          işlem görür, ama hacmin ve hareketin önemli bir kısmı normal seansta yoğunlaşır.
+        - >-
+          Kripto ise 7/24 işlem görür. Bu yüzden kripto grafiklerinde ABD seansının **açılışı ve
+          kapanışı** çevresinde hacmin ve oynaklığın arttığı saatler sık görülür. Hafta sonu hisse
+          piyasası kapalıdır; kripto bu sürede işlem görmeye devam eder ama endekslerden gelen bir
+          etki yoktur ve likidite çoğu zaman daha incedir.
+    - type: text
+      id: correlation
+      title: "Korelasyon: değişen bir ilişki"
+      paragraphs:
+        - >-
+          Korelasyon, iki fiyatın belirli bir dönemde ne ölçüde birlikte hareket ettiğini ölçer. Kripto
+          ile hisse endeksleri arasındaki korelasyon **sabit değildir**: bazı dönemlerde belirgin biçimde
+          birlikte hareket ederler, bazı dönemlerde ilişki zayıflar ya da tamamen kaybolur. Hangi
+          dönemin ve hangi zaman diliminin ölçüldüğü sonucu değiştirir.
+        - >-
+          Birlikte hareket etmek, birinin diğerini hareket ettirdiği anlamına gelmez. Faiz beklentileri,
+          dolar ya da genel likidite gibi **ortak bir etken** ikisini aynı anda etkileyebilir. Endeks
+          yükseldiği için kriptonun da yükseleceği sonucunu çıkarmak, bu ilişkiyi olduğundan güçlü
+          okumak olur.
+    - type: scenarios
+      id: three-pictures
+      title: Aynı gün, üç farklı tablo
+      intro: ABD seansı açıldığında kripto ile endeksler arasında farklı tablolar görülebilir.
+      items:
+        - title: Birlikte yükseliş
+          tone: up
+          text: Endeksler geniş çapta yükselir, kripto da aynı saatlerde yukarı ilerler. Ortak bir risk iştahı havası olabilir.
+        - title: Birlikte düşüş
+          tone: down
+          text: Endeksler sert düşer, kripto da aynı saatlerde baskı altında kalır. Oynak varlıklardan genel bir çıkış olabilir.
+        - title: Ayrışma
+          tone: neutral
+          text: Endeksler bir yöne giderken kripto kendi haberleriyle ya da kendi yapısıyla farklı hareket eder. İlişki o gün belirleyici değildir.
+    - type: limits
+      shows:
+        - Hisse piyasasındaki genel risk iştahının o günkü yönünü
+        - Kripto hareketinin ABD seans saatleriyle zamanlama olarak örtüşüp örtüşmediğini
+        - Belirli bir dönemde kripto ile endeksler arasındaki ilişkinin ne kadar güçlü olduğunu
+      not_proves:
+        - Endekslerin kriptoyu hareket ettirdiğini; ortak bir etken ikisini birden etkileyebilir
+        - Geçmişte görülen korelasyonun bundan sonra da süreceğini
+        - Endeksler yükseldiğinde kriptonun da yükseleceğini ya da tersini
+    - type: zones
+      paragraphs:
+        - >-
+          ABD seansının açılışı çevresinde oynaklık arttığı için fiyat bir destek ya da direnç
+          bölgesine hızla girip çıkabilir. Bu saatlerdeki ilk hareket çoğu zaman uzun fitiller bırakır.
+          Bölgeyi **bir bant** olarak okumak ve 1H ya da 4H mumun **kapanışına** bakmak, ilk tepkiyi
+          kalıcı bir kırılım sanmayı önler.
+        - >-
+          Hafta sonu ince likiditede bir bölgeye gelen hareket, hafta içi seanslar başladığında farklı
+          bir tepkiyle karşılaşabilir. Endekslerdeki genel hava, bir bölgedeki tepkinin bağlamını
+          anlamaya yardım eder; bölgenin yerine geçmez.
+  key_points:
+    - S&P 500 ve Nasdaq 100, ABD hisse piyasasındaki risk iştahının genel göstergeleridir.
+    - Kriptoda hacim ve oynaklık çoğu zaman ABD seansının açılışı ve kapanışı çevresinde artar.
+    - Kripto ile endeksler arasındaki korelasyon zamanla değişir.
+    - Birlikte hareket etmek neden-sonuç ilişkisi değildir; ortak bir etken olabilir.
+  svg_labels:
+    index: Hisse endeksi (örnek)
+    crypto: Kripto (örnek)
+    session: ABD normal seansı
+    weekend: "Hafta sonu: hisse işlemi yok"
+    d1: Pzt
+    d2: Sal
+    d3: Çar
+    d4: Per
+    d5: Cum
+    d6: Cmt
+    d7: Paz
+  svg_alt: "Bir haftalık şematik grafik: üstte yalnızca hafta içi ABD seans saatlerinde işlem gören bir hisse endeksi, altta yedi gün kesintisiz işlem gören bir kripto fiyatı; seans saatleri gri şeritlerle işaretli"
+  svg_caption: >-
+    Gri şeritler ABD normal seansını gösterir. Endeks çizgisi yalnızca bu saatlerde ilerler, kesikli
+    çizgiler kapalı saatleri birleştirir. Kripto çizgisi hafta sonu da devam eder; turuncu noktalar
+    seans açılışı çevresindeki hareketleri işaretler. Veriler örnektir.
+
+en:
+  slug: stock-indices-and-risk-appetite
+  name: Stock indices and risk appetite
+  summary: >-
+    The S&P 500 and Nasdaq 100 are indices that sum up the overall direction of the US stock market,
+    and they are widely used to read the market's risk appetite. Crypto sometimes moves together with
+    them, especially around the US session open and close. The relationship changes over time and is
+    not one of cause and effect.
+  sections:
+    - type: text
+      id: definition
+      title: What do stock indices tell you?
+      paragraphs:
+        - >-
+          A stock index combines the share prices of a group of companies into a single number. The
+          **S&P 500** tracks about 500 large US companies, weighted by market value, and is seen as the
+          broad gauge of the US stock market. The **Nasdaq 100** covers the 100 largest non-financial
+          companies listed on the Nasdaq exchange, with a heavy weighting in technology.
+        - >-
+          **Risk appetite** is a loose term for how willing investors are to hold more volatile assets.
+          When indices rise broadly, risk appetite is said to be strong; when they fall sharply, weak.
+          Crypto is a volatile asset class too, so it can be affected by this general mood.
+    - type: bullets
+      id: reading-risk-appetite
+      title: How to read risk appetite
+      items:
+        - text: The direction of the indices and the breadth of the move. A rise carried by a handful of large companies reads differently from a broad one.
+          marker: neutral
+        - text: The gap between the Nasdaq 100 and the S&P 500. Periods when the tech-heavy index is stronger are often read as periods of high risk appetite.
+          marker: up
+        - text: Sharp, fast index declines. On such days there can be a general move out of volatile assets, and crypto can be caught up in it.
+          marker: down
+        - text: Reading them together with the dollar and rates. Whatever moves the indices often moves the dollar and bond yields at the same time.
+          marker: accent
+    - type: box
+      title: VIX in brief
+      text: >-
+        The **VIX** is Cboe's measure of expected volatility over the next 30 days, calculated from
+        S&P 500 option prices. It usually rises when the indices fall sharply and stays low in calm,
+        rising periods. It is not a forecast of direction but of **how large the swings** are expected
+        to be.
+    - type: text
+      id: market-hours
+      title: US market hours and 24/7 crypto
+      paragraphs:
+        - >-
+          The regular US stock market session runs from **09:30 to 16:00** New York time. During US
+          daylight saving time that is 13:30–20:00 UTC; in winter it is 14:30–21:00 UTC. Index futures
+          trade almost around the clock on weekdays, but much of the volume and movement is
+          concentrated in the regular session.
+        - >-
+          Crypto trades 24/7. So crypto charts often show volume and volatility picking up around the
+          **open and close** of the US session. At weekends the stock market is closed; crypto keeps
+          trading, but there is no influence from the indices and liquidity is often thinner.
+    - type: text
+      id: correlation
+      title: "Correlation: a relationship that changes"
+      paragraphs:
+        - >-
+          Correlation measures how far two prices moved together over a given period. The correlation
+          between crypto and stock indices is **not fixed**: in some periods they move together clearly,
+          in others the link weakens or disappears altogether. Which period and which timeframe you
+          measure changes the result.
+        - >-
+          Moving together does not mean one moves the other. **A common driver** such as rate
+          expectations, the dollar or overall liquidity can affect both at once. Concluding that crypto
+          will rise because the index is rising reads more into the relationship than it holds.
+    - type: scenarios
+      id: three-pictures
+      title: Same day, three pictures
+      intro: When the US session opens, crypto and the indices can show different pictures.
+      items:
+        - title: Rising together
+          tone: up
+          text: The indices rise broadly and crypto moves up in the same hours. There may be a shared mood of risk appetite.
+        - title: Falling together
+          tone: down
+          text: The indices fall sharply and crypto is under pressure in the same hours. There may be a general move out of volatile assets.
+        - title: Diverging
+          tone: neutral
+          text: The indices go one way while crypto moves differently on its own news or its own structure. The link is not decisive that day.
+    - type: limits
+      shows:
+        - The direction of general risk appetite in the stock market that day
+        - Whether a crypto move lines up in time with US session hours
+        - How strong the link between crypto and the indices has been over a given period
+      not_proves:
+        - That the indices move crypto; a common driver can affect both
+        - That a correlation seen in the past will continue
+        - That crypto will rise when the indices rise, or the reverse
+    - type: zones
+      paragraphs:
+        - >-
+          Because volatility picks up around the US session open, price can move quickly into and out
+          of a support or resistance zone. The first move in these hours often leaves long wicks.
+          Reading the zone as **a band** and looking at the **close** of the 1H or 4H candle helps
+          avoid mistaking the first reaction for a lasting breakout.
+        - >-
+          A move that reaches a zone in thin weekend liquidity can meet a different reaction once the
+          weekday sessions begin. The general mood in the indices helps put a reaction at a zone in
+          context; it does not replace the zone.
+  key_points:
+    - The S&P 500 and Nasdaq 100 are broad gauges of risk appetite in the US stock market.
+    - In crypto, volume and volatility often pick up around the US session open and close.
+    - The correlation between crypto and the indices changes over time.
+    - Moving together is not cause and effect; there may be a common driver.
+  svg_labels:
+    index: Stock index (example)
+    crypto: Crypto (example)
+    session: US regular session
+    weekend: "Weekend: no stock trading"
+    d1: Mon
+    d2: Tue
+    d3: Wed
+    d4: Thu
+    d5: Fri
+    d6: Sat
+    d7: Sun
+  svg_alt: "A schematic one-week chart: at the top a stock index that trades only during US weekday session hours, below it a crypto price that trades without a break for seven days; session hours are marked with grey strips"
+  svg_caption: >-
+    The grey strips mark the US regular session. The index line moves only during these hours, and
+    dashed lines join the closed hours. The crypto line carries on through the weekend; the orange dots
+    mark moves around the session open. The data is illustrative.

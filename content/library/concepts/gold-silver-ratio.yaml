@@ -1,0 +1,233 @@
+id: gold-silver-ratio
+kind: gold-silver
+order: 10
+related: [real-rates-and-dollar, gold-silver-on-crypto-exchanges, volatility, support-and-resistance]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: altin-gumus-orani
+  name: Altın/gümüş oranı
+  alt_name: Gold/silver ratio
+  summary: >-
+    Altın/gümüş oranı, bir ons altının fiyatıyla kaç ons gümüş alınabileceğini gösterir. İki metalin
+    birbirine göre ne kadar pahalı ya da ucuz olduğunu tek bir sayıyla özetler. Oran on yıllar boyunca
+    çok geniş bir aralıkta hareket etmiştir ve bir uca gitmesi, geri döneceği anlamına gelmez.
+  sections:
+    - type: text
+      id: definition
+      title: Altın/gümüş oranı nedir?
+      paragraphs:
+        - >-
+          Oran, **bir ons altının fiyatının bir ons gümüşün fiyatına bölünmesiyle** bulunur. İki fiyat
+          da aynı birimle (genellikle dolar cinsinden troy ons fiyatı) alınır; bu yüzden sonuç birimsiz
+          bir sayıdır. Örneğin altının fiyatı gümüşün 70 katıysa oran 70'tir: bir ons altınla 70 ons
+          gümüş alınabilir.
+        - >-
+          Oran yükseldiğinde altın gümüşe göre **daha pahalı** hale gelmiştir; düştüğünde gümüş altına
+          göre daha güçlü seyretmiştir. Oranın yükselmesi için altının yükselmesi gerekmez: iki metal
+          birlikte düşerken gümüş daha çok düşerse oran yine yükselir. Oran bir yön değil, **göreli
+          performans** ölçüsüdür.
+    - type: bullets
+      id: why-it-moves
+      title: Oran neden hareket eder?
+      items:
+        - text: Gümüş talebinin büyük bir kısmı, kabaca yarısı ya da daha fazlası, **sanayiden** gelir (elektronik, güneş panelleri vb.). Altında bu pay çok daha küçüktür. Bu yüzden gümüş ekonomik büyüme beklentilerine daha duyarlıdır.
+          marker: neutral
+        - text: Altın daha çok bir değer saklama aracı ve rezerv varlığı olarak tutulur. Belirsizlik ve risk iştahının azaldığı dönemlerde altın görece güçlü kalma eğilimindedir; bu dönemlerde oran sıklıkla yükselir.
+          marker: neutral
+        - text: Gümüşün piyasası değer olarak altınınkinden **çok daha küçüktür**. Aynı büyüklükte bir para akışı gümüş fiyatını daha çok hareket ettirebilir.
+          marker: neutral
+        - text: Gümüş genellikle altından **daha oynaktır**. Güçlü yükselişlerde altından hızlı yükselip oranı düşürebilir, sert düşüşlerde daha çok düşüp oranı yükseltebilir.
+          marker: accent
+      note: >-
+        Bu etkiler eğilim olarak görülür, kural olarak değil. Oranı belirli bir dönemde hangi etkenin
+        sürüklediği, ancak o dönemin koşullarına bakılarak yorumlanabilir.
+    - type: text
+      id: history
+      title: Tarihsel olarak geniş bir aralık
+      paragraphs:
+        - >-
+          Oran on yıllar boyunca çok farklı seviyelerde bulunmuştur. Son elli yılda 20'nin altına
+          indiği de, 100'ün üzerine çıktığı da görülmüştür. Uzun dönemler boyunca bu iki ucun arasında,
+          geniş bir orta bölgede dolaşmıştır.
+        - >-
+          Bu geçmiş, oranın "normal" bir seviyesi olduğu fikrini zayıflatır. Hangi dönemin ortalaması
+          alındığına göre "ortalama" değişir; ortalama da zamanla kayabilir.
+    - type: scenarios
+      id: mean-reversion
+      title: "\"Ortalamaya dönüş\" okumaları"
+      intro: Oran tarihsel aralığının bir ucuna yaklaştığında sık sık "ortalamaya dönecek" yorumu yapılır. Aynı uç okumadan farklı sonuçlar çıkabilir.
+      items:
+        - title: Oran geri döner
+          tone: up
+          text: Uç seviyeden sonra iki metalin göreli performansı değişir ve oran **orta bölgeye doğru** geri gelir.
+        - title: Oran uçta kalır
+          tone: down
+          text: Oranı sürükleyen koşullar sürer ve oran **uzun süre** uç bölgede kalır, hatta daha da uzaklaşır.
+        - title: Ortalama kayar
+          tone: neutral
+          text: Oran geri dönmez; zamanla **yeni bir aralık** oluşur ve eski ortalama artık referans olmaktan çıkar.
+    - type: limits
+      shows:
+        - Altının gümüşe göre ne kadar pahalı ya da ucuz olduğunu
+        - İki metalin belirli bir dönemdeki göreli performansını
+        - Oranın kendi geçmişine göre nerede bulunduğunu
+      not_proves:
+        - Oranın ortalamaya ya da belirli bir seviyeye döneceğini
+        - Altının ya da gümüşün kendi başına yükseleceğini veya düşeceğini
+        - Dönüşün ne zaman ve hangi metalin hareketiyle olacağını
+    - type: zones
+      paragraphs:
+        - >-
+          Oranın grafiği de bir fiyat grafiği gibi okunabilir: geçmişte tepki verdiği seviyeler
+          **destek ve direnç bölgeleri** olarak görülebilir. "Oran 80'de döner" gibi tek bir sayı
+          yerine, oranın daha önce yavaşladığı ya da döndüğü alanı **bir bant** olarak okumak daha
+          gerçekçidir.
+        - >-
+          Oranın bir uçta olması, altın ya da gümüş grafiğindeki bölgelerin yerine geçmez. Her iki
+          metalin kendi destek ve direnç bölgeleri ayrı ayrı okunur; oran, bu okumaya göreli bir bağlam
+          ekler.
+    - type: box
+      title: Kripto borsalarında oran
+      text: >-
+        Kripto borsalarında altın ve gümüş, tokenlar ya da sürekli vadeli (perpetual) sözleşmeler
+        üzerinden işlem görebilir. Bu fiyatlarla hesaplanan oran, geleneksel piyasa fiyatlarıyla
+        hesaplanandan biraz farklı çıkabilir; özellikle hafta sonu ve düşük likiditede fark büyüyebilir.
+  confusions:
+    - id: real-rates-and-dollar
+      text: Reel faiz ve dolar daha çok altının kendi fiyatını etkiler; oran ise altınla gümüşün birbirine göre seyrini ölçer.
+    - id: volatility
+      text: Gümüşün daha yüksek oynaklığı oranın hareketlerinin önemli bir kaynağıdır; ama oran oynaklığın kendisini değil, göreli fiyatı gösterir.
+  key_points:
+    - Oran = bir ons altının fiyatı ÷ bir ons gümüşün fiyatı.
+    - Oran yön değil, iki metalin göreli performansını ölçer.
+    - Gümüşün sanayi talebi, daha yüksek oynaklığı ve küçük piyasası oranı hareket ettirir.
+    - Oran on yıllar boyunca çok geniş bir aralıkta dolaşmıştır; "normal" seviye sabit değildir.
+    - Uç bir okuma, ortalamaya dönüşü garanti etmez.
+  svg_labels:
+    ratio: Altın/gümüş oranı
+    high_band: Aralığın üst kesimi
+    low_band: Aralığın alt kesimi
+    mid: Dönem ortalaması
+    stay_1: Uç bölgede
+    stay_2: uzun süre kalabilir
+    time: Zaman
+  svg_alt: "Altın/gümüş oranının şematik çizimi: oran zaman içinde iniş çıkışlarla dolaşıyor; üstte ve altta iki turuncu bant tarihsel aralığın uç kesimlerini, ortadaki kesikli çizgi dönem ortalamasını gösteriyor; sağda oran üst banda çıkıp orada bir süre kalıyor"
+  svg_caption: >-
+    Çizim örnek veriyle hazırlanmıştır. Turuncu bantlar oranın tarihsel aralığının üst ve alt
+    kesimlerini, kesikli çizgi dönem ortalamasını gösterir. Sağdaki bölümde oran üst banda çıkar ve
+    hemen geri dönmez.
+
+en:
+  slug: gold-silver-ratio
+  name: The gold/silver ratio
+  summary: >-
+    The gold/silver ratio shows how many ounces of silver one ounce of gold can buy. It sums up in one
+    number how expensive or cheap the two metals are relative to each other. The ratio has moved within
+    a very wide range over the decades, and reaching an extreme does not mean it will come back.
+  sections:
+    - type: text
+      id: definition
+      title: What is the gold/silver ratio?
+      paragraphs:
+        - >-
+          The ratio is **the price of one ounce of gold divided by the price of one ounce of silver**.
+          Both prices are taken in the same unit (usually the dollar price per troy ounce), so the result
+          is a plain number. For example, if gold costs 70 times as much as silver, the ratio is 70: one
+          ounce of gold buys 70 ounces of silver.
+        - >-
+          When the ratio rises, gold has become **more expensive** relative to silver; when it falls,
+          silver has done better than gold. Gold does not have to rise for the ratio to rise: if both
+          metals fall and silver falls more, the ratio still goes up. The ratio measures **relative
+          performance**, not direction.
+    - type: bullets
+      id: why-it-moves
+      title: Why does the ratio move?
+      items:
+        - text: A large share of silver demand, roughly half or more, comes from **industry** (electronics, solar panels and so on). For gold that share is much smaller. So silver is more sensitive to expectations for economic growth.
+          marker: neutral
+        - text: Gold is held more as a store of value and a reserve asset. In periods of uncertainty and weaker risk appetite gold tends to hold up relatively well, and the ratio often rises in those periods.
+          marker: neutral
+        - text: The silver market is **much smaller** in value than the gold market. The same size of money flow can move the silver price more.
+          marker: neutral
+        - text: Silver is usually **more volatile** than gold. In strong rallies it can rise faster and pull the ratio down; in sharp falls it can drop further and push the ratio up.
+          marker: accent
+      note: >-
+        These effects are tendencies, not rules. Which factor is driving the ratio at a given time can
+        only be judged by looking at the conditions of that period.
+    - type: text
+      id: history
+      title: A wide range over history
+      paragraphs:
+        - >-
+          The ratio has sat at very different levels over the decades. In the last fifty years it has
+          been below 20 and above 100. For long stretches it has moved within a broad middle area
+          between those two extremes.
+        - >-
+          That history weakens the idea that the ratio has a "normal" level. The "average" depends on
+          which period you take, and the average itself can drift over time.
+    - type: scenarios
+      id: mean-reversion
+      title: "\"Mean reversion\" readings"
+      intro: When the ratio nears one end of its historical range, people often say it will "revert to the mean". The same extreme reading can lead to different outcomes.
+      items:
+        - title: The ratio comes back
+          tone: up
+          text: After the extreme, the relative performance of the two metals changes and the ratio moves back **towards the middle**.
+        - title: The ratio stays extreme
+          tone: down
+          text: The conditions driving the ratio persist and it stays in the extreme area **for a long time**, or moves further away.
+        - title: The average shifts
+          tone: neutral
+          text: The ratio does not come back; over time **a new range** forms and the old average stops being a useful reference.
+    - type: limits
+      shows:
+        - How expensive or cheap gold is relative to silver
+        - The relative performance of the two metals over a period
+        - Where the ratio stands against its own history
+      not_proves:
+        - That the ratio will return to its average or to any given level
+        - That gold or silver on its own will rise or fall
+        - When a reversal will happen, or which metal's move will drive it
+    - type: zones
+      paragraphs:
+        - >-
+          The ratio's chart can be read like a price chart: levels where it reacted before can be seen
+          as **support and resistance zones**. Rather than a single number such as "the ratio turns at
+          80", it is more realistic to read the area where the ratio slowed or turned before as **a
+          band**.
+        - >-
+          An extreme ratio does not replace the zones on the gold or silver chart. Each metal's own
+          support and resistance zones are read separately; the ratio adds relative context to that
+          reading.
+    - type: box
+      title: The ratio on crypto exchanges
+      text: >-
+        On crypto exchanges, gold and silver can trade through tokens or perpetual futures. A ratio
+        calculated from those prices can differ slightly from one calculated from traditional market
+        prices, and the gap can widen at weekends and in thin liquidity.
+  confusions:
+    - id: real-rates-and-dollar
+      text: Real rates and the dollar mostly affect the gold price itself; the ratio measures how gold and silver move against each other.
+    - id: volatility
+      text: Silver's higher volatility is a major source of the ratio's moves, but the ratio shows relative price, not volatility itself.
+  key_points:
+    - Ratio = price of one ounce of gold ÷ price of one ounce of silver.
+    - The ratio measures the two metals' relative performance, not direction.
+    - Silver's industrial demand, higher volatility and smaller market move the ratio.
+    - The ratio has ranged very widely over the decades; there is no fixed "normal" level.
+    - An extreme reading does not guarantee a return to the mean.
+  svg_labels:
+    ratio: Gold/silver ratio
+    high_band: Upper part of the range
+    low_band: Lower part of the range
+    mid: Period average
+    stay_1: It can stay in
+    stay_2: the extreme for long
+    time: Time
+  svg_alt: "Schematic of the gold/silver ratio: the ratio wanders up and down over time; two orange bands at the top and bottom mark the extreme parts of its historical range and a dashed line in the middle marks the period average; on the right the ratio rises into the upper band and stays there for a while"
+  svg_caption: >-
+    The drawing uses example data. The orange bands mark the upper and lower parts of the ratio's
+    historical range and the dashed line the period average. On the right, the ratio reaches the upper
+    band and does not come straight back.

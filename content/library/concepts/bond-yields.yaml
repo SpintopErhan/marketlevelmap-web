@@ -1,0 +1,234 @@
+id: bond-yields
+kind: macro
+order: 70
+related: [real-rates-and-dollar, fed-rate-decisions, dollar-index, inflation-cpi-pce]
+example: null
+updated: 2026-10-23
+event_keywords: ["Treasury auction", "bond auction", "tahvil ihalesi", "Hazine ihalesi"]
+event_countries: [US]
+
+tr:
+  slug: tahvil-faizleri
+  name: Tahvil faizleri ve getiri eğrisi
+  alt_name: Bond yields and the yield curve
+  summary: >-
+    ABD hazine tahvillerinin faizi (getirisi), piyasanın faiz, büyüme ve enflasyon beklentilerini tek
+    bir rakamda toplar. Farklı vadelerdeki faizlerin yan yana çizilmesiyle getiri eğrisi oluşur. Faizler
+    dolar ve risk iştahı üzerinden kripto dahil birçok piyasayı etkileyebilir.
+  sections:
+    - type: text
+      id: definition
+      title: Tahvil faizi nedir?
+      paragraphs:
+        - >-
+          ABD Hazinesi borçlanmak için farklı vadelerde tahvil ve bono çıkarır. Bir tahvilin
+          **faizi (getirisi)**, onu bugünkü fiyatından alıp vadesine kadar tutan birinin yıllık olarak
+          elde edeceği getiridir. Piyasada en çok izlenenler **2 yıllık** ve **10 yıllık** tahvil
+          faizleridir.
+        - >-
+          Fiyat ile faiz **ters yönde** hareket eder. Tahvilin ödediği kupon sabittir; tahvilin
+          fiyatı düştüğünde aynı kupon daha düşük bir fiyata karşılık gelir ve faiz yükselir. Fiyat
+          yükseldiğinde faiz düşer. "Tahvil satışı" ile "faizlerin yükselmesi" bu yüzden aynı hareketi
+          anlatır.
+    - type: bullets
+      id: maturities
+      title: Vadeler neyi yansıtır?
+      items:
+        - text: "**2 yıllık faiz:** Fed'in önümüzdeki dönemde politika faizini nereye götüreceğine dair beklentilere en duyarlı vadedir."
+          marker: neutral
+        - text: "**10 yıllık faiz:** uzun vadeli büyüme ve enflasyon beklentilerini, ayrıca uzun süre borç vermenin karşılığı olarak istenen ek getiriyi yansıtır. Birçok kredi faizi için referans alınır."
+          marker: neutral
+        - text: "**Tahvil ihaleleri:** Hazine yeni tahvilleri düzenli ihalelerle satar. Talebin zayıf ya da güçlü gelmesi, ihale saatinde faizleri hareket ettirebilir."
+          marker: accent
+    - type: text
+      id: yield-curve
+      title: Getiri eğrisi ve tersine dönme
+      paragraphs:
+        - >-
+          **Getiri eğrisi**, aynı anda farklı vadelerdeki tahvil faizlerinin yan yana çizilmesidir.
+          Olağan durumda uzun vadeler daha yüksek faiz öder ve eğri **yukarı eğimlidir**. Kısa vadeli
+          faizler uzun vadelilerin üzerine çıktığında eğri **tersine dönmüş** (inverted) sayılır.
+        - >-
+          En sık izlenen ölçü, 10 yıllık faiz ile 2 yıllık faiz arasındaki farktır (**2s10s**). Bu
+          farkın negatife dönmesi geçmişte ABD'de birçok resesyondan önce görülmüştür. Ancak aradaki
+          süre çok değişken olmuştur; eğrinin tersine dönmesi bir zamanlama aracı değil, bir uyarı
+          işaretidir.
+        - >-
+          Manşette görülen faizler **nominaldir**. Bunlardan beklenen enflasyon çıkarıldığında **reel
+          faiz** elde edilir. Reel faizlerin dolar ve altınla ilişkisi ayrı bir sayfada ele alınır.
+    - type: scenarios
+      id: risk-assets
+      title: Faizler riskli varlıkları nasıl etkileyebilir?
+      intro: >-
+        Faizlerle riskli varlıklar arasındaki ilişki sabit değildir. Aşağıdakiler sık görülen
+        eğilimlerdir; faizin **neden** hareket ettiği, yönü kadar önemlidir.
+      items:
+        - title: Sıkılaşma beklentisiyle yükselen faiz
+          tone: down
+          text: Risksiz getiri artar, finansman koşulları sıkılaşır ve dolar güçlenebilir. Bu durum hisseler ve kripto gibi riskli varlıklar üzerinde baskı yaratabilir.
+        - title: Gevşeme beklentisiyle düşen faiz
+          tone: up
+          text: Fed'in faiz indireceği beklentisiyle düşen faizler, riskli varlıklar için daha elverişli bir ortam olarak okunabilir.
+        - title: Büyüme ya da korku kaynaklı hareket
+          tone: neutral
+          text: Güçlü büyümeyle yükselen faiz riskli varlıklarla birlikte yükselebilir. Panikle güvenli limana kaçışta düşen faiz ise riskli varlıklardaki düşüşe eşlik edebilir.
+    - type: limits
+      shows:
+        - Piyasanın faiz, büyüme ve enflasyon beklentilerinin o anki toplamını
+        - Kısa ve uzun vadeler arasındaki farkın genişleyip daraldığını
+        - Finansman koşullarının sıkılaşma mı gevşeme mi yönünde değiştiğini
+      not_proves:
+        - Getiri eğrisi tersine döndüğünde resesyonun ne zaman geleceğini, hatta geleceğini
+        - Faiz yükseldiğinde kripto ya da hisselerin düşeceğini
+        - Faiz hareketinin tek bir nedene bağlı olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          Faizlerde sert bir hareket, kriptoda bir **destek ya da direnç bölgesinin** test edilmesine
+          eşlik edebilir. Bu, bölgenin geçerliliğini değiştirmez; fiyatın bölgeye hangi bağlamda
+          geldiğini anlatır.
+        - >-
+          Faiz baskısı altında gelen bir test ile sakin bir ortamda gelen test farklı okunabilir.
+          Yine de belirleyici olan, bölgenin **bir bant** olarak ve 1H, 4H ya da günlük **kapanışlarla**
+          değerlendirilmesidir; makro tablo bu okumaya bağlam ekler.
+    - type: box
+      title: Tahvil piyasası ve kripto saatleri
+      text: >-
+        ABD tahvil piyasası hafta sonları kapalıdır, kripto ise 7/24 işlem görür. Hafta sonu kriptoda
+        görülen hareketler faizlerden gelmez; faizlerin etkisi daha çok hafta içi, ABD piyasa
+        saatlerinde öne çıkar.
+  confusions:
+    - id: real-rates-and-dollar
+      text: Nominal faiz manşette görülen rakamdır; reel faiz, bundan beklenen enflasyon çıkarıldıktan sonra kalan kısımdır.
+    - id: fed-rate-decisions
+      text: Fed politika faizini belirler; tahvil faizlerini ise piyasa belirler. 2 yıllık faiz Fed beklentilerine yakın hareket etse de aynı şey değildir.
+  key_points:
+    - Tahvil fiyatı ile faizi ters yönde hareket eder.
+    - 2 yıllık faiz Fed beklentilerine, 10 yıllık faiz uzun vadeli beklentilere daha duyarlıdır.
+    - Tersine dönmüş getiri eğrisi bir uyarı işaretidir, zamanlama aracı değildir.
+    - Faizin neden hareket ettiği, riskli varlıklara etkisini değiştirebilir.
+  svg_labels:
+    yield: Faiz
+    maturity: Vade
+    m3: 3 ay
+    y2: 2 yıl
+    y5: 5 yıl
+    y10: 10 yıl
+    y30: 30 yıl
+    normal: Normal eğri
+    inverted: Ters eğri
+    spread_1: 2 yıl – 10 yıl
+    spread_2: farkı
+  svg_alt: "Getiri eğrisi çizimi: kısa vadeden uzun vadeye yükselen normal bir eğri ile kısa vadelerin uzun vadelerden yüksek olduğu ters bir eğri; ters eğride 2 yıllık ve 10 yıllık faiz arasındaki fark işaretli"
+  svg_caption: Yatay eksen vadeleri, dikey eksen faizi gösterir. Yeşil çizgi normal, kırmızı çizgi tersine dönmüş eğridir; turuncu ok 2 yıllık ile 10 yıllık faiz arasındaki farkı işaretler. Veriler örnektir.
+
+en:
+  slug: bond-yields-and-the-yield-curve
+  name: Bond yields and the yield curve
+  summary: >-
+    The yield on US Treasuries sums up the market's rate, growth and inflation expectations in a
+    single number. Plotting the yields of different maturities side by side gives the yield curve.
+    Yields can affect many markets, crypto included, through the dollar and risk appetite.
+  sections:
+    - type: text
+      id: definition
+      title: What is a bond yield?
+      paragraphs:
+        - >-
+          The US Treasury borrows by issuing bills, notes and bonds of different maturities. A bond's
+          **yield** is the annual return someone would earn by buying it at today's price and holding it
+          to maturity. The most watched are the **2-year** and **10-year** Treasury yields.
+        - >-
+          Price and yield move **in opposite directions**. The coupon a bond pays is fixed; when the
+          bond's price falls, the same coupon is earned on a lower price and the yield rises. When the
+          price rises, the yield falls. That is why "bonds selling off" and "yields rising" describe
+          the same move.
+    - type: bullets
+      id: maturities
+      title: What the maturities reflect
+      items:
+        - text: "**2-year yield:** the maturity most sensitive to expectations of where the Fed will take its policy rate in the coming period."
+          marker: neutral
+        - text: "**10-year yield:** reflects long-term growth and inflation expectations, plus the extra return asked for lending over a long period. A benchmark for many borrowing rates."
+          marker: neutral
+        - text: "**Treasury auctions:** the Treasury sells new debt at regular auctions. Weak or strong demand can move yields around the auction time."
+          marker: accent
+    - type: text
+      id: yield-curve
+      title: The yield curve and inversion
+      paragraphs:
+        - >-
+          The **yield curve** plots the yields of different maturities side by side at the same moment.
+          Normally longer maturities pay more and the curve **slopes upwards**. When short-term yields
+          rise above long-term ones, the curve counts as **inverted**.
+        - >-
+          The most watched measure is the gap between the 10-year and the 2-year yield (**2s10s**). This
+          gap turning negative has come before several US recessions in the past. But the time in
+          between has varied widely; an inverted curve is a warning sign, not a timing tool.
+        - >-
+          The yields quoted in headlines are **nominal**. Taking expected inflation away from them gives
+          the **real yield**. How real yields relate to the dollar and gold is covered on a separate page.
+    - type: scenarios
+      id: risk-assets
+      title: How yields can affect risk assets
+      intro: >-
+        The link between yields and risk assets is not constant. The cards below are common tendencies;
+        **why** yields move matters as much as which way.
+      items:
+        - title: Yields rising on tighter expectations
+          tone: down
+          text: The risk-free return rises, financial conditions tighten and the dollar can strengthen. This can weigh on risk assets such as equities and crypto.
+        - title: Yields falling on easing expectations
+          tone: up
+          text: Yields falling on expected Fed rate cuts can be read as a friendlier backdrop for risk assets.
+        - title: Moves driven by growth or fear
+          tone: neutral
+          text: Yields rising on strong growth can rise together with risk assets. Yields falling in a rush to safety can come alongside falling risk assets.
+    - type: limits
+      shows:
+        - The market's combined rate, growth and inflation expectations at that moment
+        - Whether the gap between short and long maturities is widening or narrowing
+        - Whether financial conditions are tightening or easing
+      not_proves:
+        - When a recession will follow an inverted curve, or that one will follow at all
+        - That crypto or equities will fall when yields rise
+        - That a move in yields has a single cause
+    - type: zones
+      paragraphs:
+        - >-
+          A sharp move in yields can come with a test of a **support or resistance zone** in crypto.
+          It does not change whether the zone is valid; it describes the context in which price reached
+          the zone.
+        - >-
+          A test under pressure from yields and a test in a calm backdrop can be read differently. Even
+          so, what decides is reading the zone as **a band** and judging it by 1H, 4H or daily
+          **closes**; the macro picture adds context to that reading.
+    - type: box
+      title: Bond market hours and crypto
+      text: >-
+        The US bond market is closed at weekends, while crypto trades 24/7. Weekend moves in crypto do
+        not come from yields; their effect shows mostly on weekdays, during US market hours.
+  confusions:
+    - id: real-rates-and-dollar
+      text: The nominal yield is the headline figure; the real yield is what is left after taking expected inflation away.
+    - id: fed-rate-decisions
+      text: The Fed sets the policy rate; the market sets Treasury yields. The 2-year yield tracks Fed expectations closely, but they are not the same thing.
+  key_points:
+    - A bond's price and its yield move in opposite directions.
+    - The 2-year yield is more sensitive to Fed expectations, the 10-year to long-term expectations.
+    - An inverted yield curve is a warning sign, not a timing tool.
+    - Why yields move can change how they affect risk assets.
+  svg_labels:
+    yield: Yield
+    maturity: Maturity
+    m3: 3M
+    y2: 2Y
+    y5: 5Y
+    y10: 10Y
+    y30: 30Y
+    normal: Normal curve
+    inverted: Inverted curve
+    spread_1: 2Y–10Y
+    spread_2: gap
+  svg_alt: "Yield curve illustration: a normal curve rising from short to long maturities, and an inverted curve where short maturities yield more than long ones; the gap between the 2-year and 10-year yields is marked on the inverted curve"
+  svg_caption: The horizontal axis shows maturities and the vertical axis yield. The green line is a normal curve and the red line an inverted one; the orange arrow marks the gap between the 2-year and 10-year yields. The data is illustrative.

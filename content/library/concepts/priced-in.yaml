@@ -1,0 +1,218 @@
+id: priced-in
+kind: macro
+order: 20
+related: [economic-calendar, fed-rate-decisions, inflation-cpi-pce]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: beklentinin-fiyatlanmasi
+  name: Beklentinin önceden fiyatlanması
+  alt_name: Priced in
+  summary: >-
+    Piyasalar olaylara yalnızca gerçekleştikleri anda değil, beklendikleri andan itibaren tepki verir.
+    Geniş ölçüde beklenen bir sonuç olaydan önce fiyata yansımış olabilir; olay anında hareketi
+    çoğu zaman beklenmeyen kısım belirler. Bu yüzden beklenen bir faiz indirimi fiyatı yükseltmeyebilir.
+  sections:
+    - type: text
+      id: definition
+      title: Fiyatlanmış ne demek?
+      paragraphs:
+        - >-
+          Fiyat, piyasadaki katılımcıların o an bildiklerini ve beklediklerini yansıtır. Bir faiz
+          indirimi haftalar öncesinden geniş ölçüde bekleniyorsa, bu beklenti piyasadaki işlemlere
+          zaten girmiştir. Sonuç açıklandığında fiyatın **yeniden ayarlanacağı** pek bir şey kalmamış
+          olabilir.
+        - >-
+          Buna sonucun **fiyatlanmış** olması denir. Olay anında fiyatı hareket ettiren, çoğu zaman
+          olayın kendisi değil, sonucun beklentiden **ne kadar ve hangi yönde** farklı olduğudur.
+    - type: steps
+      id: how-it-gets-priced
+      title: Beklenti fiyata nasıl yansır?
+      items:
+        - title: Beklenti oluşur.
+          text: Önceki veriler, yetkililerin açıklamaları ve ekonomistlerin tahminleri, olaydan çok önce ortak bir beklenti oluşturur.
+        - title: Piyasa bir olasılık ima eder.
+          text: Vadeli işlemler gibi araçlar, farklı sonuçlara piyasanın ne olasılık verdiğini gösterir. Bu olasılık olaya yaklaştıkça değişebilir.
+        - title: Fiyat olaydan önce ayarlanır.
+          text: Beklenti güçlendikçe fiyat, sonuç henüz açıklanmadan ona göre konumlanır. Hareketin bir kısmı olaydan önce gerçekleşmiş olur.
+        - title: Olay anında sürpriz kalır.
+          text: Sonuç açıklandığında fiyata yansımamış olan yalnızca beklentiden sapan kısımdır. Tepkinin büyüklüğü bu sapmayla ilişkilidir.
+    - type: text
+      id: expected-cut
+      title: Beklenen bir faiz indirimi neden fiyatı yükseltmeyebilir?
+      paragraphs:
+        - >-
+          Faiz indirimi genellikle riskli varlıklar için destekleyici bir gelişme olarak görülür. Ama
+          indirim neredeyse kesin olarak bekleniyorsa, bu destek **olaydan önce** fiyata yansımış
+          olabilir. Karar beklendiği gibi geldiğinde fiyat yatay kalabilir, hatta düşebilir.
+        - >-
+          Böyle bir günde dikkat kararın kendisinden **sonraki adımlara** kayar: karar metnindeki
+          ifadeler, projeksiyonlar ve basın toplantısı. İndirim gelse bile ileride daha az indirim
+          yapılacağına dair bir işaret, beklenenden **daha sıkı** bir tablo olarak okunabilir. İndirimin
+          ekonomideki bir zayıflamaya karşı yapıldığı düşünülürse, bu da risk iştahını sınırlayabilir.
+    - type: scenarios
+      id: same-decision
+      title: Aynı karar, farklı tepkiler
+      intro: Beklenen bir indirimin geldiği bir günde tepkiyi çoğu zaman kararın kendisi değil, onunla gelen yönlendirme belirler.
+      items:
+        - title: Beklentiden daha gevşek
+          tone: up
+          text: Karar beklendiği gibidir ama metin ya da projeksiyonlar ileride **daha fazla indirim** ima eder. Fiyata yansımamış bu kısım yukarı yönlü bir tepkiye yol açabilir.
+        - title: Beklendiği gibi
+          tone: neutral
+          text: Karar da yönlendirme de beklentiye uyar. Fiyatlanmamış bir şey kalmadığı için tepki **sınırlı** kalabilir.
+        - title: Beklentiden daha sıkı
+          tone: down
+          text: İndirim gelir ama ileride **daha az indirim** yapılacağı işareti verilir. Karar olumlu görünse de tepki aşağı yönlü olabilir.
+    - type: limits
+      shows:
+        - Olay anındaki tepkinin neden sonucun kendisinden çok sürpriz kısmıyla ilgili olduğunu
+        - Hareketin bir bölümünün neden olaydan önce gerçekleşebildiğini
+        - Beklenen bir sonucun neden sınırlı ya da ters yönde bir tepki görebildiğini
+      not_proves:
+        - Bir sonucun tam olarak ne kadar fiyatlandığını; bu doğrudan ölçülemez, yalnızca tahmin edilir
+        - Olaydan önceki hareketin olaydan sonra tersine döneceğini
+        - Piyasanın ima ettiği olasılığın doğru çıkacağını
+    - type: zones
+      paragraphs:
+        - >-
+          Beklenti olaydan önce fiyata yansırken fiyat çoğu zaman bir destek ya da direnç **bölgesine**
+          doğru ilerler. Olay anında bu bölgede gelen tepki, hem bölgenin hem de sürprizin etkisini
+          birlikte taşır. Bölgeyi bir bant olarak okumak ve olaydan sonraki mum kapanışına bakmak,
+          anlık fitilleri gerçek bir kırılımdan ayırmaya yardımcı olur.
+        - >-
+          Olaydan önce bir bölgenin üzerine ya da altına geçen fiyat, olaydan sonra o bölgeye geri
+          dönebilir. Böyle bir dönüş, kırılımın beklentiyle birlikte geldiğini ve sonucun yeni bir
+          şey eklemediğini gösterebilir; ama bunun bir kural olmadığını, yalnızca olası bir okuma
+          olduğunu akılda tutmak gerekir.
+  confusions:
+    - id: economic-calendar
+      text: Takvimdeki beklenti sütunu, piyasanın neyi fiyatlamış olabileceğine dair en doğrudan ipucudur; gerçekleşen değerle farkı sürprizi verir.
+    - id: fed-rate-decisions
+      text: Fed kararlarında piyasanın ima ettiği olasılıklar açıkça izlenebildiği için beklentinin fiyatlanması en net bu olaylarda görülür.
+  key_points:
+    - Fiyat, bilinenleri ve beklenenleri önceden yansıtır.
+    - Olay anında tepkiyi çoğu zaman beklenmeyen kısım belirler.
+    - Beklenen bir faiz indirimi, yönlendirme beklentiden sıkıysa fiyatı yükseltmeyebilir.
+    - Neyin ne kadar fiyatlandığı doğrudan ölçülemez, yalnızca tahmin edilir.
+  svg_labels:
+    price: Fiyat
+    event: Karar ya da veri
+    priced_1: Beklenti olaydan önce
+    priced_2: fiyata yansır
+    after_1: Sonuç beklendiği gibi,
+    after_2: tepki sınırlı
+    prob: Beklenen sonuca piyasanın verdiği olasılık
+    p100: "%100"
+    p0: "%0"
+  svg_alt: "Beklentinin fiyatlanması çizimi: üstte olaydan önce yükselen, olaydan sonra yatay kalan bir fiyat çizgisi; altta beklenen sonuca piyasanın verdiği olasılığın olaya kadar artıp olayla birlikte yüzde yüze ulaştığı bir çizgi"
+  svg_caption: >-
+    Kesikli turuncu çizgi olayın anını gösterir. Olasılık arttıkça fiyat olaydan önce ayarlanır;
+    sonuç beklendiği gibi geldiğinde fiyata yansıyacak yeni bir şey kalmadığı için hareket sınırlı kalır.
+
+en:
+  slug: priced-in
+  name: "Priced in: why expectations matter"
+  summary: >-
+    Markets react to events not only when they happen but from the moment they are expected. An
+    outcome that is widely expected may already be reflected in price before the event; at the event,
+    the move is often decided by the unexpected part. That is why an expected rate cut may not lift
+    prices.
+  sections:
+    - type: text
+      id: definition
+      title: What does priced in mean?
+      paragraphs:
+        - >-
+          Price reflects what market participants know and expect at the time. If a rate cut has been
+          widely expected for weeks, that expectation is already part of how the market trades. When the
+          outcome is announced, there may be little left for price to **adjust to**.
+        - >-
+          This is what it means for an outcome to be **priced in**. What moves price at the event is
+          often not the event itself but **how far, and which way**, the outcome differs from
+          expectations.
+    - type: steps
+      id: how-it-gets-priced
+      title: How expectations get into price
+      items:
+        - title: An expectation forms.
+          text: Earlier data, officials' statements and economists' forecasts build a common expectation long before the event.
+        - title: The market implies a probability.
+          text: Instruments such as futures show what probability the market gives to different outcomes. That probability can change as the event approaches.
+        - title: Price adjusts before the event.
+          text: As the expectation firms up, price positions for it before the outcome is announced. Part of the move has already happened before the event.
+        - title: The surprise is what remains.
+          text: When the outcome is announced, only the part that differs from expectations is not yet in price. The size of the reaction relates to that difference.
+    - type: text
+      id: expected-cut
+      title: Why an expected rate cut may not lift prices
+      paragraphs:
+        - >-
+          A rate cut is generally seen as supportive for risk assets. But if the cut is almost certain,
+          that support may be reflected in price **before the event**. When the decision comes as
+          expected, price can stay flat or even fall.
+        - >-
+          On such a day attention shifts to **what comes after** the decision: the wording of the
+          statement, the projections and the press conference. Even with a cut, a hint of fewer cuts
+          ahead can read as **tighter** than expected. If the cut is seen as a response to a weakening
+          economy, that can weigh on risk appetite too.
+    - type: scenarios
+      id: same-decision
+      title: Same decision, different reactions
+      intro: On a day when an expected cut arrives, the reaction is often decided not by the decision itself but by the guidance that comes with it.
+      items:
+        - title: Looser than expected
+          tone: up
+          text: The decision is as expected, but the statement or projections imply **more cuts** ahead. That part, not yet in price, can bring an upward reaction.
+        - title: As expected
+          tone: neutral
+          text: Both the decision and the guidance match expectations. With nothing left unpriced, the reaction may stay **limited**.
+        - title: Tighter than expected
+          tone: down
+          text: The cut comes, but with a signal of **fewer cuts** ahead. The decision may look positive, yet the reaction can be downward.
+    - type: limits
+      shows:
+        - Why the reaction at an event relates more to the surprise than to the outcome itself
+        - Why part of a move can happen before the event
+        - Why an expected outcome can see a limited reaction, or one in the other direction
+      not_proves:
+        - Exactly how much of an outcome is priced in; this cannot be measured directly, only estimated
+        - That the move before the event will reverse after it
+        - That the market-implied probability will turn out to be right
+    - type: zones
+      paragraphs:
+        - >-
+          While an expectation is being reflected in price before an event, price often moves towards a
+          support or resistance **zone**. A reaction at that zone at the event carries the effect of
+          both the zone and the surprise. Reading the zone as a band and looking at the candle close
+          after the event helps separate brief wicks from a real breakout.
+        - >-
+          Price that moves above or below a zone before an event can return to that zone afterwards.
+          Such a return can show that the breakout came with the expectation and the outcome added
+          nothing new; but it is worth remembering that this is a possible reading, not a rule.
+  confusions:
+    - id: economic-calendar
+      text: The forecast column in the calendar is the most direct hint of what the market may have priced in; its difference from the actual value gives the surprise.
+    - id: fed-rate-decisions
+      text: For Fed decisions the market-implied probabilities can be followed openly, so expectations being priced in is seen most clearly at these events.
+  key_points:
+    - Price reflects what is known and expected in advance.
+    - At the event, the reaction is often decided by the unexpected part.
+    - An expected rate cut may not lift prices if the guidance is tighter than expected.
+    - How much is priced in cannot be measured directly, only estimated.
+  svg_labels:
+    price: Price
+    event: Decision or release
+    priced_1: The expectation is reflected
+    priced_2: in price before the event
+    after_1: Outcome as expected,
+    after_2: limited reaction
+    prob: Probability the market gives the expected outcome
+    p100: 100%
+    p0: 0%
+  svg_alt: "Priced-in illustration: at the top, a price line rising before an event and staying flat after it; below, the probability the market gives the expected outcome rising up to the event and reaching one hundred per cent with it"
+  svg_caption: >-
+    The dashed orange line marks the moment of the event. As the probability rises, price adjusts
+    before the event; when the outcome comes as expected, there is nothing new for price to reflect,
+    so the move stays limited.

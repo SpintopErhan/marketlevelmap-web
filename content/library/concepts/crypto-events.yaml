@@ -1,0 +1,272 @@
+id: crypto-events
+kind: macro
+order: 100
+related: [priced-in, economic-calendar, volatility, volume]
+example: null
+updated: 2026-10-23
+event_keywords: [unlock, "kilit açılış", "token unlock", halving, ETF, "hard fork", upgrade, "güncelleme"]
+event_countries: [CRYPTO]
+
+tr:
+  slug: kriptoya-ozgu-olaylar
+  name: "Kriptoya özgü olaylar: token kilit açılışları, halving, ETF akımları"
+  alt_name: "Crypto-specific events: token unlocks, halvings, ETF flows"
+  summary: >-
+    Token kilit açılışları, Bitcoin halving'i, spot ETF akımları ve ağ güncellemeleri, kripto
+    piyasasına özgü olaylardır. Çoğunun tarihi önceden bilinir; bu yüzden beklenen etki olaydan önce
+    fiyatlanmış olabilir. Bir olayın fiyata nasıl yansıyacağı her zaman belirsizdir.
+  sections:
+    - type: text
+      id: definition
+      title: Kriptoya özgü olaylar nelerdir?
+      paragraphs:
+        - >-
+          Makro veriler bütün piyasaları etkiler. Bunların yanında yalnızca kriptoyu, hatta çoğu zaman
+          yalnızca tek bir coin'i ilgilendiren olaylar da vardır: yeni arzın dolaşıma girmesi, ödül
+          kurallarının değişmesi, fon akımları ya da ağın kurallarının güncellenmesi.
+        - >-
+          Bu olayların ortak özelliği, çoğunun **tarihinin önceden bilinmesidir**. Bilinen bir olayın
+          beklenen etkisi, olay günü gelmeden fiyata yansımış olabilir. Bu yüzden olay günü beklenenin
+          tersine bir hareket görmek şaşırtıcı değildir.
+    - type: text
+      id: token-unlocks
+      title: Token kilit açılışları
+      paragraphs:
+        - >-
+          Birçok projede ekip, erken yatırımcılar ve vakıf için ayrılan tokenlar bir **hak ediş
+          takvimine** (vesting) bağlıdır. Bu tokenlar belirli bir süre kilitli kalır, sonra bir anda ya
+          da aylara yayılan dilimlerle serbest kalır. Kilit açıldığında bu tokenlar **dolaşıma girebilir**.
+        - >-
+          Bir kilit açılışının büyüklüğü, dolaşımdaki arza oranla değerlendirilir. Örnek olarak,
+          dolaşımdaki arzın %1'i kadar bir açılış ile %10'u kadar bir açılış aynı ağırlıkta değildir.
+          Açılan tokenların kime gittiği de önemlidir: hepsinin satılacağı kesin değildir, bir kısmı
+          uzun süre tutulabilir ya da yeniden kilitlenebilir.
+    - type: text
+      id: halving
+      title: Bitcoin halving'i
+      paragraphs:
+        - >-
+          Bitcoin'de her yeni blokla birlikte yeni coin üretilir; buna **blok ödülü** denir. Protokol
+          gereği bu ödül her **210.000 blokta bir yarıya iner**. Bloklar ortalama on dakikada bir
+          üretildiği için bu yaklaşık **dört yılda bir** gerçekleşir. Ödül 50 BTC ile başlamış, her
+          halving'de yarıya inmiştir; işlem ücretleri bu kuraldan etkilenmez.
+        - >-
+          Halving, yeni arzın artış hızını düşürür. Tarihi yıllar öncesinden yaklaşık olarak bilinir ve
+          piyasada yaygın biçimde konuşulur. Geçmiş halving dönemlerinden sonra görülen hareketler az
+          sayıda örneğe dayanır ve o dönemlerin başka koşullarından ayrıştırılması zordur.
+    - type: text
+      id: etf-flows
+      title: Spot ETF akımları
+      paragraphs:
+        - >-
+          Spot Bitcoin ve Ether ETF'leri, borsada işlem gören ve dayandığı kripto varlığı tutan
+          fonlardır. Talep arttığında yetkili katılımcılar yeni pay **oluşturur** (creation) ve fon buna
+          karşılık varlık tutar; talep azaldığında paylar **geri alınır** (redemption) ve fonun tuttuğu
+          varlık azalır.
+        - >-
+          Bu hareketlerin günlük toplamı **net giriş ya da çıkış** olarak izlenir. Veriler genellikle
+          ABD işlem gününün ardından yayımlanır, yani o günün fiyat hareketinden sonra gelir. Akımlar
+          fiyatı etkileyebileceği gibi, fiyat hareketinin peşinden de gelebilir.
+    - type: bullets
+      id: network-upgrades
+      title: Ağ güncellemeleri ve hard fork
+      items:
+        - text: Ağ güncellemeleri, bir blok zincirinin kurallarını ya da işleyişini değiştirir. Tarihleri çoğu zaman önceden duyurulur.
+          marker: neutral
+        - text: Hard fork, eski yazılımla uyumlu olmayan bir kural değişikliğidir. Ağdaki tarafların büyük çoğunluğu güncellemeyi benimserse zincir tek kalır; benimsemezse ikiye ayrılabilir.
+          marker: neutral
+        - text: Güncelleme sırasında bazı borsalar o coin için yatırma ve çekme işlemlerini geçici olarak durdurabilir.
+          marker: accent
+        - text: Ertelenen ya da sorunlu geçen bir güncelleme, beklenmeyen bir hareketin kaynağı olabilir.
+          marker: down
+    - type: scenarios
+      id: three-reactions
+      title: Bilinen bir olay, üç farklı tepki
+      intro: Tarihi önceden bilinen bir olayın çevresinde farklı tablolar görülebilir.
+      items:
+        - title: Öncesinde fiyatlanma
+          tone: up
+          text: Fiyat olaydan önceki haftalarda beklenen yönde ilerler, olay günü ise sınırlı ya da ters yönde bir hareket görülür.
+        - title: Sonrasında tepki
+          tone: down
+          text: Olaydan önce belirgin bir hareket yoktur; olay sonrasında, örneğin büyük bir kilit açılışının ardından satış baskısı görülür.
+        - title: Belirgin etki yok
+          tone: neutral
+          text: Olay geçer ve fiyat kendi yapısını sürdürür. Olay, o dönemdeki diğer etkenlerin yanında belirleyici olmamıştır.
+    - type: limits
+      shows:
+        - Arzın, ödül kurallarının ya da fon akımlarının ne zaman ve ne ölçüde değiştiğini
+        - Hangi tarihlerde oynaklığın artabileceğini
+        - Bir olayın, örneğin kilit açılışının, mevcut arza göre ne kadar büyük olduğunu
+      not_proves:
+        - Olayın fiyatı hangi yöne hareket ettireceğini
+        - Kilidi açılan tokenların satılacağını
+        - Geçmiş halving ya da ETF akımı dönemlerindeki hareketlerin tekrarlanacağını
+    - type: zones
+      paragraphs:
+        - >-
+          Bir olayın çevresinde oynaklık artabilir ve fiyat bir destek ya da direnç bölgesine
+          beklenenden hızlı ulaşabilir. Bu hareketler çoğu zaman uzun fitiller bırakır. Bölgeyi **bir
+          bant** olarak okumak ve 1H, 4H ya da günlük mumun **kapanışına** bakmak, olay günü oluşan ilk
+          tepkiyi kalıcı bir kırılımdan ayırmaya yardım eder.
+        - >-
+          Olay, bir bölgedeki tepkinin bağlamını açıklayabilir ama bölgenin yerine geçmez. Olay geçtikten
+          sonra fiyatın yeniden bölgelere göre okunması, olayın etkisinin kalıcı olup olmadığını
+          anlamanın daha sağlıklı bir yoludur.
+    - type: box
+      title: Takvimleri karşılaştırmak
+      text: >-
+        Kilit açılışı ve güncelleme tarihleri farklı kaynaklarda farklı görünebilir. Bir tarihi yorumlarken
+        projenin kendi duyurusunu esas almak ve olayın büyüklüğünü dolaşımdaki arza göre not etmek,
+        okumayı netleştirir.
+  key_points:
+    - Kriptoya özgü olayların çoğunun tarihi önceden bilinir.
+    - Kilit açılışının büyüklüğü dolaşımdaki arza oranla değerlendirilir.
+    - Halving yaklaşık dört yılda bir yeni arzın artış hızını yarıya indirir.
+    - Bilinen bir olayın etkisi önceden fiyatlanmış olabilir; olay günkü tepki belirsizdir.
+  svg_labels:
+    price: Fiyat (örnek)
+    supply: Dolaşımdaki arz (örnek)
+    event: Olay günü
+    before_1: Beklenti olaydan
+    before_2: önce fiyatlanabilir
+    after_1: Sonrası
+    after_2: belirsiz
+    step: "+%8"
+    step_label: Kilit açılışı
+  svg_alt: "Şematik bir olay grafiği: üstte olay gününe kadar ilerleyen bir fiyat çizgisi ve olaydan sonra yukarı, aşağı ve yatay ayrılan üç kesikli yol; altta olay gününde basamak yapan dolaşımdaki arz çizgisi"
+  svg_caption: >-
+    Dikey kesikli çizgi önceden bilinen olay gününü gösterir. Olaydan sonraki üç kesikli yol, tepkinin
+    yönünün belirsiz olduğunu anlatır. Alttaki basamak, örnek bir kilit açılışıyla dolaşımdaki arzın
+    artışını gösterir. Veriler örnektir.
+
+en:
+  slug: crypto-specific-events
+  name: "Crypto-specific events: token unlocks, halvings, ETF flows"
+  summary: >-
+    Token unlocks, the Bitcoin halving, spot ETF flows and network upgrades are events specific to the
+    crypto market. Most have dates known in advance, so the expected effect may already be priced in
+    before the event. How an event will show up in price is always uncertain.
+  sections:
+    - type: text
+      id: definition
+      title: What are crypto-specific events?
+      paragraphs:
+        - >-
+          Macro data affects all markets. Alongside it there are events that concern only crypto, and
+          often only a single coin: new supply entering circulation, changes to reward rules, fund flows
+          or changes to a network's rules.
+        - >-
+          What most of these events share is that **their dates are known in advance**. The expected
+          effect of a known event can be reflected in price before the day arrives. So a move against
+          expectations on the day itself is not surprising.
+    - type: text
+      id: token-unlocks
+      title: Token unlocks
+      paragraphs:
+        - >-
+          In many projects, the tokens set aside for the team, early investors and the foundation follow
+          a **vesting schedule**. They stay locked for a set period and are then released all at once or
+          in instalments spread over months. Once unlocked, these tokens **can enter circulation**.
+        - >-
+          The size of an unlock is judged relative to the circulating supply. As an example, an unlock
+          worth 1% of circulating supply does not carry the same weight as one worth 10%. Who receives
+          the tokens matters too: it is not certain they will all be sold; some may be held for a long
+          time or locked again.
+    - type: text
+      id: halving
+      title: The Bitcoin halving
+      paragraphs:
+        - >-
+          Each new Bitcoin block creates new coins; this is the **block subsidy**. By protocol, the
+          subsidy **halves every 210,000 blocks**. As blocks are produced about every ten minutes on
+          average, this happens roughly **every four years**. The subsidy started at 50 BTC and has
+          halved at each halving; transaction fees are not affected by this rule.
+        - >-
+          A halving slows the rate at which new supply is added. Its date is known roughly years in
+          advance and it is widely discussed in the market. The moves seen after past halvings rest on
+          very few examples, and they are hard to separate from the other conditions of those periods.
+    - type: text
+      id: etf-flows
+      title: Spot ETF flows
+      paragraphs:
+        - >-
+          Spot Bitcoin and Ether ETFs are exchange-traded funds that hold the underlying crypto asset.
+          When demand rises, authorised participants **create** new shares and the fund holds more of the
+          asset in return; when demand falls, shares are **redeemed** and the fund's holdings shrink.
+        - >-
+          The daily total of these moves is tracked as **net inflow or outflow**. The figures are usually
+          published after the US trading day, so they arrive after that day's price move. Flows can
+          affect price, but they can also follow it.
+    - type: bullets
+      id: network-upgrades
+      title: Network upgrades and hard forks
+      items:
+        - text: Network upgrades change a blockchain's rules or how it works. Their dates are often announced in advance.
+          marker: neutral
+        - text: A hard fork is a rule change that older software does not accept. If nearly all participants adopt it, the chain stays as one; if not, it can split in two.
+          marker: neutral
+        - text: During an upgrade, some exchanges may temporarily pause deposits and withdrawals for that coin.
+          marker: accent
+        - text: An upgrade that is delayed or goes badly can be the source of an unexpected move.
+          marker: down
+    - type: scenarios
+      id: three-reactions
+      title: One known event, three reactions
+      intro: Different pictures can appear around an event whose date is known in advance.
+      items:
+        - title: Priced in beforehand
+          tone: up
+          text: Price moves in the expected direction in the weeks before the event, while the day itself brings a limited move or one the other way.
+        - title: Reaction afterwards
+          tone: down
+          text: There is no clear move before the event; selling pressure appears afterwards, for example following a large unlock.
+        - title: No clear effect
+          tone: neutral
+          text: The event passes and price keeps its own structure. Among the other factors of the period, the event was not decisive.
+    - type: limits
+      shows:
+        - When and by how much supply, reward rules or fund flows change
+        - On which dates volatility may pick up
+        - How large an event, such as an unlock, is relative to existing supply
+      not_proves:
+        - Which way the event will move price
+        - That unlocked tokens will be sold
+        - That moves seen around past halvings or ETF flows will repeat
+    - type: zones
+      paragraphs:
+        - >-
+          Volatility can pick up around an event, and price can reach a support or resistance zone
+          faster than expected. These moves often leave long wicks. Reading the zone as **a band** and
+          looking at the **close** of the 1H, 4H or daily candle helps tell the first reaction on the day
+          apart from a lasting breakout.
+        - >-
+          An event can explain the context of a reaction at a zone, but it does not replace the zone.
+          Reading price against the zones again once the event has passed is a sounder way to judge
+          whether its effect has lasted.
+    - type: box
+      title: Comparing calendars
+      text: >-
+        Unlock and upgrade dates can differ between sources. When reading a date, relying on the
+        project's own announcement and noting the event's size relative to circulating supply makes the
+        reading clearer.
+  key_points:
+    - Most crypto-specific events have dates known in advance.
+    - The size of an unlock is judged relative to circulating supply.
+    - A halving cuts the rate of new Bitcoin supply in half roughly every four years.
+    - The effect of a known event may already be priced in; the reaction on the day is uncertain.
+  svg_labels:
+    price: Price (example)
+    supply: Circulating supply (example)
+    event: Event day
+    before_1: Expectations may be
+    before_2: priced in beforehand
+    after_1: Afterwards
+    after_2: uncertain
+    step: "+8%"
+    step_label: Unlock
+  svg_alt: "A schematic event chart: at the top a price line moving up to the event day and three dashed paths splitting up, down and sideways after it; at the bottom a circulating supply line that steps up on the event day"
+  svg_caption: >-
+    The vertical dashed line marks the event day, known in advance. The three dashed paths after the
+    event show that the direction of the reaction is uncertain. The step below shows circulating supply
+    rising with an example unlock. The data is illustrative.

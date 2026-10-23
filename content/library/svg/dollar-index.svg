@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <text class="t-label" x="24" y="40">{{title}}</text>
+  <line class="s-guide" x1="188" y1="60" x2="188" y2="300" stroke-width="1.2"/>
+  <g class="t-label" text-anchor="end">
+    <text x="178" y="86">{{eur}}</text>
+    <text x="178" y="126">{{jpy}}</text>
+    <text x="178" y="166">{{gbp}}</text>
+    <text x="178" y="206">{{cad}}</text>
+    <text x="178" y="246">{{sek}}</text>
+    <text x="178" y="286">{{chf}}</text>
+  </g>
+  <rect class="f-accent" x="188" y="70" width="300" height="20" rx="2"/>
+  <g class="f-point" opacity="0.55">
+    <rect x="188" y="110" width="71" height="20" rx="2"/>
+    <rect x="188" y="150" width="62" height="20" rx="2"/>
+    <rect x="188" y="190" width="47" height="20" rx="2"/>
+    <rect x="188" y="230" width="22" height="20" rx="2"/>
+    <rect x="188" y="270" width="19" height="20" rx="2"/>
+  </g>
+  <text class="t-accent t-mono" x="496" y="85">{{p_eur}}</text>
+  <g class="t-label t-mono">
+    <text x="267" y="125">{{p_jpy}}</text>
+    <text x="258" y="165">{{p_gbp}}</text>
+    <text x="243" y="205">{{p_cad}}</text>
+    <text x="218" y="245">{{p_sek}}</text>
+    <text x="215" y="285">{{p_chf}}</text>
+  </g>
+</svg>

@@ -1,0 +1,266 @@
+id: economic-calendar
+kind: macro
+order: 10
+related: [priced-in, fed-rate-decisions, inflation-cpi-pce, volatility]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: ekonomik-takvim
+  name: Ekonomik takvim nasıl okunur?
+  alt_name: Economic calendar
+  summary: >-
+    Ekonomik takvim, açıklanacak verilerin ve kararların saatini, önemini ve önceki, beklenen ve
+    gerçekleşen değerlerini tek bir tabloda gösterir. Piyasaların tepki verdiği şey çoğu zaman verinin
+    kendisi değil, gerçekleşen değerin beklentiden ne kadar saptığıdır. 7/24 işlem gören kriptoda bu
+    tepki açıklama anında grafiğe yansır.
+  sections:
+    - type: text
+      id: definition
+      title: Ekonomik takvim nedir?
+      paragraphs:
+        - >-
+          Enflasyon, istihdam, büyüme gibi veriler ve Fed faiz kararları belirli günlerde ve saatlerde
+          açıklanır. **Ekonomik takvim**, bu açıklamaları tarih ve saat sırasıyla listeleyen tablodur.
+          Her satır bir olaydır: ne açıklanacak, ne zaman açıklanacak ve piyasa ne bekliyor.
+        - >-
+          Takvim bir tahmin aracı değildir; yalnızca **ne zaman ve neye göre** tepki gelebileceğini
+          gösterir. Sitenin **Haftalık olaylar** sayfası da o haftanın önemli olaylarını bu mantıkla
+          listeler.
+    - type: bullets
+      id: columns
+      title: Sütunlar ne anlatır?
+      items:
+        - text: "**Saat:** açıklamanın saati. Bu sitede saatler UTC olarak verilir."
+          marker: neutral
+        - text: "**Olay:** açıklanan veri ya da karar ve çoğu zaman ölçü birimi, örneğin aylık ya da yıllık değişim."
+          marker: neutral
+        - text: "**Etki:** olayın piyasayı ne kadar hareket ettirebileceğine dair kabaca bir derece (düşük, orta, yüksek). Takvimi hazırlayanın değerlendirmesidir, ölçülmüş bir değer değildir."
+          marker: neutral
+        - text: "**Önceki:** aynı verinin bir önceki dönemdeki değeri. Bazı veriler sonradan düzeltilir; bu sütun düzeltilmiş değeri gösterebilir."
+          marker: neutral
+        - text: "**Beklenti (konsensüs):** ekonomistlerin tahminlerinden derlenen ortak beklenti. Kaynağa göre küçük farklar olabilir."
+          marker: neutral
+        - text: "**Gerçekleşen:** açıklama yapıldığında dolan değer. Sürpriz bu değerin beklentiyle karşılaştırılmasıyla okunur."
+          marker: accent
+    - type: text
+      id: surprise
+      title: Sürpriz ve düzeltmeler
+      paragraphs:
+        - >-
+          **Sürpriz**, gerçekleşen değer ile beklenti arasındaki farktır. Beklenti zaten fiyata
+          yansımış olabileceği için piyasa çoğu zaman verinin yüksek ya da düşük olmasına değil,
+          **beklentiden ne kadar saptığına** tepki verir. Beklentiye çok yakın gelen bir veri, kendisi
+          ne kadar önemli olursa olsun sınırlı bir tepki görebilir.
+        - >-
+          Önceki değerin **düzeltilmesi** de sonucu değiştirebilir. Gerçekleşen değer beklentiye uysa
+          bile önceki ay belirgin biçimde yukarı ya da aşağı düzeltildiyse, tablonun bütünü farklı
+          okunabilir. Bazı açıklamalarda birden fazla rakam vardır (örneğin manşet ve çekirdek
+          enflasyon, aylık ve yıllık değişim); bunlar birbirinden farklı yönde sapabilir.
+    - type: text
+      id: time-zones
+      title: Saatler ve yaz saati uygulaması
+      paragraphs:
+        - >-
+          ABD verilerinin çoğu ABD Doğu saatiyle (ET) **08:30**'da açıklanır. ABD'de yaz saati
+          uygulanırken bu **12:30 UTC**'ye, kış saatinde **13:30 UTC**'ye denk gelir. Türkiye saati
+          (UTC+3) ile yaz aylarında 15:30, kışın 16:30 demektir. Fed kararı ise 14:00 ET'de, yani yazın
+          18:00 UTC'de, kışın 19:00 UTC'de açıklanır.
+        - >-
+          ABD'de yaz saati mart ayının ikinci pazarı başlar, kasım ayının ilk pazarı biter. Avrupa'daki
+          geçiş tarihleri farklıdır; bu yüzden yılda birkaç hafta boyunca saat farkları alışılmış
+          düzenden sapar. UTC kullanan bir takvimde bu kaymayı akılda tutmak, olayı doğru saatte
+          beklemeyi sağlar.
+    - type: bullets
+      id: crypto-volatility
+      title: Açıklama anında kripto grafiği
+      items:
+        - text: Kripto 7/24 işlem gördüğü için açıklamaya **anında** tepki verir; borsaların kapalı olduğu bir aralık yoktur.
+          marker: neutral
+        - text: Açıklamadan önceki dakikalarda işlem çoğu zaman azalır ve fiyat dar bir aralıkta kalabilir.
+          marker: neutral
+        - text: Açıklama anında likidite incelir, fiyat kısa sürede iki yöne de uzun **fitiller** bırakabilir.
+          marker: down
+        - text: İlk hareket kalıcı olmayabilir; ilk dakikalardaki yön sonradan tersine dönebilir. Tepkiyi 1H ya da 4H mumun **kapanışıyla** okumak daha sakin bir ölçü verir.
+          marker: accent
+      note: >-
+        Tepkinin büyüklüğü ve yönü her seferinde farklıdır. Aynı veri bir dönem güçlü, başka bir dönem
+        sınırlı bir tepki görebilir; piyasanın o sırada neye odaklandığı belirleyicidir.
+    - type: limits
+      shows:
+        - Hangi olayların ne zaman açıklanacağını ve piyasanın ne beklediğini
+        - Gerçekleşen değerin beklentiden ne kadar saptığını
+        - Volatilitenin hangi saatlerde artabileceğini
+      not_proves:
+        - Fiyatın açıklamadan sonra hangi yöne gideceğini
+        - Bir sürprizin her zaman aynı yönde tepki doğuracağını
+        - Etki derecesinin o gün gerçekleşecek hareketin büyüklüğünü belirlediğini
+    - type: zones
+      paragraphs:
+        - >-
+          Yüksek etkili bir açıklama sırasında fiyat, kısa süreliğine bir destek ya da direnç
+          bölgesinin ötesine fitil atabilir. Bölgeyi tek bir çizgi yerine **bir bant** olarak okumak ve
+          kırılımı açıklamadan sonraki **mum kapanışıyla** değerlendirmek, bu anlık hareketleri
+          kırılımdan ayırmaya yardımcı olur.
+        - >-
+          Fiyat önemli bir açıklamaya bir bölgenin hemen yakınında giriyorsa, açıklama o bölgenin test
+          edildiği an olabilir. Takvim, bir bölgedeki tepkinin hangi olayla aynı saate denk geldiğini
+          görmeyi sağlar.
+  confusions:
+    - id: priced-in
+      text: Takvim beklentiyi gösterir; beklentinin önceden fiyata yansıması, sürprizin neden tepkinin asıl kaynağı olduğunu açıklar.
+    - id: volatility
+      text: Açıklama saatlerinde volatilite artabilir; ama yüksek volatilite tek başına bir yön bilgisi taşımaz.
+  key_points:
+    - Piyasa çoğu zaman veriye değil, verinin beklentiden sapmasına tepki verir.
+    - Önceki değerin düzeltilmesi sonucu farklı okutabilir.
+    - ABD verileri çoğunlukla 08:30 ET'de, yani yaz saatine göre 12:30 ya da 13:30 UTC'de gelir.
+    - Açıklama anındaki fitiller yerine mum kapanışına bakmak daha sakin bir ölçüdür.
+  svg_labels:
+    col_time: Saat
+    col_event: Olay
+    col_impact: Etki
+    col_previous: Önceki
+    col_forecast: Beklenti
+    col_actual: Gerçekleşen
+    event: ABD TÜFE (yıllık)
+    val_previous: "%3,1"
+    val_forecast: "%3,0"
+    val_actual: "%3,3"
+    surprise: Sürpriz = gerçekleşen − beklenti
+    release: Veri açıklanır
+    before: Öncesi dar aralık
+    after: Sonrası geniş mumlar
+  svg_alt: "Ekonomik takvim çizimi: üstte saat, olay, etki, önceki, beklenti ve gerçekleşen sütunlarından oluşan bir satır; altta açıklama saatine kadar dar aralıkta ilerleyen, açıklamayla birlikte uzun fitilli bir mum ve ardından daha geniş mumlar çizen fiyat"
+  svg_caption: >-
+    Değerler örnektir. Turuncu kutu gerçekleşen değeri, kesikli turuncu çizgi açıklama saatini
+    gösterir. Sürpriz, gerçekleşen değerin beklentiyle farkıdır; açıklamayla birlikte mumlar genişler.
+
+en:
+  slug: how-to-read-an-economic-calendar
+  name: How to read an economic calendar
+  summary: >-
+    An economic calendar shows the time and importance of upcoming data releases and decisions, with
+    their previous, expected and actual values, in a single table. What markets react to is often not
+    the figure itself but how far the actual value differs from the forecast. In crypto, which trades
+    24/7, that reaction shows on the chart the moment the figure is released.
+  sections:
+    - type: text
+      id: definition
+      title: What is an economic calendar?
+      paragraphs:
+        - >-
+          Data such as inflation, jobs and growth, and Fed rate decisions, are released on set days and
+          at set times. An **economic calendar** is the table that lists these releases by date and
+          time. Each row is one event: what will be released, when, and what the market expects.
+        - >-
+          A calendar is not a forecasting tool; it only shows **when, and against what**, a reaction may
+          come. The site's **Weekly events** page lists the week's main events in the same way.
+    - type: bullets
+      id: columns
+      title: What the columns tell you
+      items:
+        - text: "**Time:** when the release comes out. On this site times are given in UTC."
+          marker: neutral
+        - text: "**Event:** the figure or decision being released, often with its unit, such as the monthly or yearly change."
+          marker: neutral
+        - text: "**Impact:** a rough grade (low, medium, high) of how much the event might move markets. It is the calendar provider's judgement, not a measured value."
+          marker: neutral
+        - text: "**Previous:** the figure for the prior period. Some data are revised later; this column may show the revised value."
+          marker: neutral
+        - text: "**Forecast (consensus):** the common expectation compiled from economists' estimates. It can differ slightly between sources."
+          marker: neutral
+        - text: "**Actual:** the value filled in at the release. The surprise is read by comparing it with the forecast."
+          marker: accent
+    - type: text
+      id: surprise
+      title: Surprises and revisions
+      paragraphs:
+        - >-
+          The **surprise** is the difference between the actual value and the forecast. Because the
+          forecast may already be reflected in price, markets often react not to whether a figure is
+          high or low but to **how far it differs from expectations**. A figure close to the forecast
+          can see a limited reaction, however important the release.
+        - >-
+          A **revision** to the previous figure can change the picture too. Even if the actual value
+          matches the forecast, a clear upward or downward revision to the prior month can make the
+          release read differently overall. Some releases carry more than one number (for example
+          headline and core inflation, or the monthly and yearly change), and these can miss in
+          different directions.
+    - type: text
+      id: time-zones
+      title: Times and daylight saving
+      paragraphs:
+        - >-
+          Most US data are released at **08:30** US Eastern Time (ET). While the US is on daylight
+          saving time this is **12:30 UTC**, and in winter it is **13:30 UTC**. The Fed decision comes
+          at 14:00 ET, which is 18:00 UTC in summer and 19:00 UTC in winter.
+        - >-
+          In the US, daylight saving starts on the second Sunday in March and ends on the first Sunday
+          in November. Europe changes on different dates, so for a few weeks a year the usual time
+          differences shift. Keeping this in mind with a calendar in UTC means waiting for the event at
+          the right time.
+    - type: bullets
+      id: crypto-volatility
+      title: The crypto chart at the moment of release
+      items:
+        - text: Crypto trades 24/7, so it reacts to a release **immediately**; there is no closed session in between.
+          marker: neutral
+        - text: In the minutes before a release, trading often thins out and price can stay in a narrow range.
+          marker: neutral
+        - text: At the release, liquidity thins and price can leave long **wicks** in both directions within a short time.
+          marker: down
+        - text: The first move may not hold; the direction of the first minutes can reverse later. Reading the reaction from the **close** of the 1H or 4H candle gives a calmer measure.
+          marker: accent
+      note: >-
+        The size and direction of the reaction differ each time. The same release can see a strong
+        reaction in one period and a limited one in another; what the market is focused on at the time
+        is what matters.
+    - type: limits
+      shows:
+        - Which events will be released when, and what the market expects
+        - How far the actual value differs from the forecast
+        - At which times volatility may rise
+      not_proves:
+        - Which way price will move after the release
+        - That a surprise always brings a reaction in the same direction
+        - That the impact grade decides the size of the move on the day
+    - type: zones
+      paragraphs:
+        - >-
+          During a high-impact release, price can briefly wick beyond a support or resistance zone.
+          Reading the zone as **a band** rather than a single line, and judging a breakout by the
+          **candle close** after the release, helps separate these brief moves from a breakout.
+        - >-
+          If price goes into an important release right next to a zone, the release may be the moment
+          the zone is tested. The calendar shows which event a reaction at a zone coincided with.
+  confusions:
+    - id: priced-in
+      text: The calendar shows the expectation; expectations being reflected in price beforehand explains why the surprise is the main source of the reaction.
+    - id: volatility
+      text: Volatility can rise around release times, but high volatility on its own carries no information about direction.
+  key_points:
+    - Markets often react not to the figure but to how far it differs from the forecast.
+    - A revision to the previous figure can change how a release reads.
+    - US data mostly come at 08:30 ET, which is 12:30 or 13:30 UTC depending on daylight saving.
+    - Looking at the candle close rather than the wicks at the release is a calmer measure.
+  svg_labels:
+    col_time: Time
+    col_event: Event
+    col_impact: Impact
+    col_previous: Previous
+    col_forecast: Forecast
+    col_actual: Actual
+    event: US CPI (y/y)
+    val_previous: "3.1%"
+    val_forecast: "3.0%"
+    val_actual: "3.3%"
+    surprise: Surprise = actual − forecast
+    release: Release
+    before: Narrow range before
+    after: Wider candles after
+  svg_alt: "Economic calendar illustration: at the top, a row with time, event, impact, previous, forecast and actual columns; below, price moving in a narrow range until the release time, a long-wicked candle at the release and wider candles afterwards"
+  svg_caption: >-
+    The values are illustrative. The orange box marks the actual value and the dashed orange line the
+    release time. The surprise is the difference between the actual value and the forecast; the
+    candles widen after the release.

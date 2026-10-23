@@ -1,0 +1,248 @@
+id: gold-silver-on-crypto-exchanges
+kind: gold-silver
+order: 30
+related: [price-gaps, gold-silver-ratio, real-rates-and-dollar, volatility]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: kripto-borsalarinda-altin-ve-gumus
+  name: Kripto borsalarında altın ve gümüş
+  alt_name: Gold and silver on crypto exchanges
+  summary: >-
+    Kripto borsalarında altın ve gümüş iki yoldan işlem görebilir: fiziksel altınla desteklenen
+    tokenlar ve altın ya da gümüş fiyatını izleyen sürekli vadeli (perpetual) sözleşmeler. Bu ürünler
+    7/24 işlem görür; geleneksel piyasa ise hafta sonu kapalıdır. Bu fark, hafta sonu fiyatlarının ve
+    pazartesi açılışlarının nasıl okunacağını değiştirir.
+  sections:
+    - type: text
+      id: tokenised-gold
+      title: Tokenleştirilmiş altın
+      paragraphs:
+        - >-
+          Tokenleştirilmiş altın, her biri belirli miktarda fiziksel altını temsil eden bir kripto
+          tokendır. En bilinen iki örnek **PAXG** (Paxos Gold) ve **XAUT**'tur (Tether Gold). Her PAXG,
+          LBMA standartlarındaki altından bir troy ons saf altınla; her XAUT, bir London Good Delivery
+          külçesi üzerindeki bir troy ons altınla desteklenir.
+        - >-
+          Token, altının kendisi değil, **ihraççının tuttuğu altın üzerinde bir hak** gibidir. Fiyatı
+          genellikle spot altına yakın seyreder ama tokenın kendi alım satımı belirler; bu yüzden spota
+          göre küçük bir **prim ya da iskonto** ile işlem görebilir.
+    - type: text
+      id: perpetuals
+      title: Altın ve gümüş sürekli vadelileri
+      paragraphs:
+        - >-
+          Bazı kripto borsaları altın ve gümüş fiyatını izleyen **sürekli vadeli sözleşmeler** sunar
+          (çoğu zaman XAU ve XAG kısaltmalarıyla). Bunlar fiziksel teslimat içermez; kâr ve zarar
+          genellikle bir stablecoin ile hesaplanır. Sözleşme fiyatı, borsanın belirlediği bir referans
+          fiyata (endeks) yakın tutulmaya çalışılır.
+        - >-
+          Fiyatı endekse yakın tutan mekanizma **fonlama oranıdır** (funding rate): uzun ve kısa
+          pozisyonlar arasında belirli aralıklarla, çoğu borsada birkaç saatte bir yapılan ödemelerdir.
+          Sözleşme endeksin üzerinde işlem görüyorsa uzun pozisyonlar öder, altındaysa kısa pozisyonlar.
+          Oran ve hesaplama yöntemi borsadan borsaya değişir.
+    - type: text
+      id: trading-hours
+      title: 7/24 ile geleneksel piyasa saatleri
+      paragraphs:
+        - >-
+          Geleneksel piyasada altın ve gümüş, hafta içinde **neredeyse 24 saat** işlem görür:
+          tezgâhüstü (OTC) spot piyasa ve COMEX vadelileri gün içinde yalnızca kısa bir ara verir. Ama
+          **hafta sonu** bu piyasalar kapalıdır; kabaca cuma akşamından pazar akşamına kadar (ABD Doğu
+          saatiyle) işlem yoktur.
+        - >-
+          Tokenlar ve sürekli vadeliler ise hafta sonu da işlem görmeye devam eder. Bu saatlerde fiyatı
+          belirleyen, geleneksel piyasa değil, **o borsadaki alıcı ve satıcılardır**.
+    - type: steps
+      id: weekend
+      title: Hafta sonu fiyatı nasıl oluşur?
+      items:
+        - title: Geleneksel piyasa cuma akşamı kapanır.
+          text: Spot ve vadeli fiyatlar son işlem seviyesinde kalır. Token ve sürekli vadeli fiyatları işlem görmeye devam eder.
+        - title: Hafta sonu fiyat ince likiditeyle kayar.
+          text: Az sayıda işlemle fiyat, kapanış seviyesinden yukarı ya da aşağı uzaklaşabilir. Haberler bu fiyata yansıyabilir ama hareketi taşıyan hacim küçüktür.
+        - title: Pazar akşamı geleneksel piyasa yeniden açılır.
+          text: Açılış fiyatı hafta sonu tokenın ulaştığı seviyeden farklı olabilir. Bu durumda token ya da sürekli vadeli fiyatı açılış fiyatına doğru **sıçrayabilir**.
+        - title: Fark kapanır ya da kalır.
+          text: Çoğu zaman token fiyatı açılıştan sonra spota yaklaşır. Hafta sonu hareketi bazen geleneksel piyasanın açılışıyla doğrulanır, bazen tamamen geri alınır.
+    - type: bullets
+      id: risks
+      title: Dikkate alınması gerekenler
+      items:
+        - text: "**İhraççı ve karşı taraf.** Token, ihraççının altını gerçekten ve tam olarak tuttuğuna dayanır. Bunun nasıl denetlendiği ve raporlandığı ihraççıdan ihraççıya değişir."
+          marker: neutral
+        - text: "**Fiziksel teslim alma.** Tokenı fiziksel altına çevirmek mümkün olabilir ama çoğu zaman en az miktar (örneğin tam bir külçe), ücretler ve ihraççının koyduğu koşullar vardır."
+          marker: neutral
+        - text: "**Prim ve iskonto.** Token ya da sürekli vadeli fiyatı spottan sapabilir; fark özellikle hafta sonu ve sert hareketlerde büyüyebilir."
+          marker: accent
+        - text: "**Borsa ve fonlama.** Sürekli vadelide fiyat borsanın endeksine, fonlama oranına ve teminat kurallarına bağlıdır. Fonlama ödemeleri, pozisyon uzun süre tutulduğunda maliyeti belirgin biçimde değiştirebilir."
+          marker: down
+      note: >-
+        Bu sayfa ürünleri karşılaştırmaz ve önermez. Ayrıntılar ihraççının ve borsanın kendi
+        belgelerinde yer alır ve zamanla değişebilir.
+    - type: limits
+      shows:
+        - Altın ve gümüşün hafta sonu kripto piyasasında nasıl fiyatlandığını
+        - Haberlere geleneksel piyasa kapalıyken verilen ilk tepkiyi
+        - Token ya da sürekli vadeli fiyatının spottan ne kadar saptığını
+      not_proves:
+        - Geleneksel piyasanın hafta sonu fiyatına yakın açılacağını
+        - Tokenın her zaman spot fiyatla birebir işlem göreceğini
+        - İhraççının ya da borsanın risksiz olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          Hafta sonu ince likiditeyle oluşan hareketler, bir **destek ya da direnç bölgesine**
+          girmiş gibi görünebilir. Bu fiyatlar az işlemle oluştuğu için, bölgenin hafta sonu test
+          edilmesi, hafta içindeki bir testle aynı ağırlığı taşımayabilir.
+        - >-
+          Bölgeleri **bir bant** olarak okumak burada da yardımcı olur: hafta sonu fitilleri ve
+          pazartesi açılışındaki sıçramalar çoğu zaman bandın içinde kalır. Kripto borsasındaki altın
+          grafiği ile geleneksel spot grafik arasında bölgeler hafifçe kayabilir; hangi verinin
+          kullanıldığını belirtmek yorumu netleştirir.
+  confusions:
+    - id: price-gaps
+      text: Geleneksel altın piyasasının hafta sonu kapanışı, CME Bitcoin vadelilerindeki gibi pazartesi açılışında boşluklara yol açabilir; 7/24 işlem gören token grafiğinde ise bu fark boşluk değil, hafta sonu mumları olarak görünür.
+    - id: gold-silver-ratio
+      text: Token ya da sürekli vadeli fiyatlarıyla hesaplanan oran, geleneksel fiyatlarla hesaplanandan biraz farklı çıkabilir.
+  key_points:
+    - Kripto borsalarında altın ve gümüş tokenlar ve sürekli vadeliler üzerinden işlem görür.
+    - Geleneksel piyasa hafta içinde neredeyse 24 saat açıktır ama hafta sonu kapalıdır.
+    - Hafta sonu fiyatı ince likiditeyle kayabilir ve açılışta sıçrayabilir.
+    - Token ihraççıya, sürekli vadeli borsanın endeksine ve fonlama oranına bağlıdır.
+  svg_labels:
+    spot: Geleneksel piyasa
+    token: Token / sürekli vadeli
+    closed_1: Hafta sonu
+    closed_2: geleneksel piyasa kapalı
+    fri: Cuma kapanışı
+    reopen_1: Açılışta
+    reopen_2: fark kapanır
+    time: Zaman
+  svg_alt: "Şematik çizim: hafta içinde geleneksel piyasa fiyatı ile token fiyatı birlikte ilerliyor; gri gölgeli hafta sonu bölümünde geleneksel piyasa kapalı, token fiyatı yukarı kayıyor; açılışta geleneksel fiyat daha aşağıdan açılıyor ve token fiyatı ona doğru sıçrıyor"
+  svg_caption: >-
+    Çizim örnek veriyle hazırlanmıştır. Kesintisiz ince çizgi token ya da sürekli vadeli fiyatını,
+    kalın çizgi geleneksel piyasa fiyatını gösterir. Gölgeli bölümde geleneksel piyasa kapalıdır;
+    turuncu kesikli çizgi cuma kapanış seviyesini, turuncu nokta
+    tokenın açılıştan hemen önceki fiyatını gösterir.
+
+en:
+  slug: gold-and-silver-on-crypto-exchanges
+  name: Gold and silver on crypto exchanges
+  summary: >-
+    On crypto exchanges gold and silver can trade in two ways: tokens backed by physical gold, and
+    perpetual futures that track the gold or silver price. These products trade 24/7, while the
+    traditional market is closed at weekends. That difference changes how weekend prices and Monday
+    opens should be read.
+  sections:
+    - type: text
+      id: tokenised-gold
+      title: Tokenised gold
+      paragraphs:
+        - >-
+          Tokenised gold is a crypto token that represents a set amount of physical gold. The two
+          best-known examples are **PAXG** (Paxos Gold) and **XAUT** (Tether Gold). Each PAXG is backed
+          by one fine troy ounce of gold meeting LBMA standards; each XAUT by one troy ounce of gold on
+          a London Good Delivery bar.
+        - >-
+          A token is not the gold itself but something like **a claim on gold held by the issuer**. Its
+          price usually stays close to spot gold, but it is set by trading in the token, so it can trade
+          at a small **premium or discount** to spot.
+    - type: text
+      id: perpetuals
+      title: Gold and silver perpetuals
+      paragraphs:
+        - >-
+          Some crypto exchanges offer **perpetual futures** that track the gold and silver price (often
+          under the tickers XAU and XAG). These involve no physical delivery; profit and loss are
+          usually settled in a stablecoin. The exchange tries to keep the contract price close to a
+          reference price (an index) that it defines.
+        - >-
+          The mechanism that keeps the price near the index is the **funding rate**: payments between
+          long and short positions at set intervals, every few hours on most exchanges. If the contract
+          trades above the index, longs pay; if below, shorts pay. The rate and how it is calculated
+          vary from exchange to exchange.
+    - type: text
+      id: trading-hours
+      title: 24/7 versus traditional market hours
+      paragraphs:
+        - >-
+          In the traditional market, gold and silver trade **nearly 24 hours** on weekdays: the
+          over-the-counter (OTC) spot market and COMEX futures pause only briefly each day. But at
+          **weekends** these markets are closed; roughly from Friday evening to Sunday evening (US
+          Eastern time) there is no trading.
+        - >-
+          Tokens and perpetuals keep trading through the weekend. During those hours the price is set
+          not by the traditional market but by **the buyers and sellers on that exchange**.
+    - type: steps
+      id: weekend
+      title: How the weekend price forms
+      items:
+        - title: The traditional market closes on Friday evening.
+          text: Spot and futures prices stay at their last traded level. Token and perpetual prices keep trading.
+        - title: The price drifts on thin liquidity at the weekend.
+          text: With few trades, price can move away from the closing level, up or down. News can show up in this price, but the volume behind the move is small.
+        - title: The traditional market reopens on Sunday evening.
+          text: The opening price can differ from where the token got to over the weekend. If so, the token or perpetual price can **jump** towards the opening price.
+        - title: The difference closes, or it does not.
+          text: The token price often moves back towards spot after the open. Sometimes the weekend move is confirmed by the traditional open; sometimes it is fully reversed.
+    - type: bullets
+      id: risks
+      title: Things to consider
+      items:
+        - text: "**Issuer and counterparty.** A token relies on the issuer actually holding the gold, in full. How that is audited and reported varies between issuers."
+          marker: neutral
+        - text: "**Physical redemption.** Turning a token into physical gold may be possible, but there are often minimum amounts (for example a whole bar), fees and conditions set by the issuer."
+          marker: neutral
+        - text: "**Premiums and discounts.** A token or perpetual price can drift away from spot; the gap can widen especially at weekends and in sharp moves."
+          marker: accent
+        - text: "**Exchange and funding.** On a perpetual, the price depends on the exchange's index, the funding rate and the margin rules. Funding payments can noticeably change the cost of a position held for a long time."
+          marker: down
+      note: >-
+        This page does not compare or recommend products. The details are in the issuer's and the
+        exchange's own documents and can change over time.
+    - type: limits
+      shows:
+        - How gold and silver are priced on the crypto market at weekends
+        - The first reaction to news while the traditional market is closed
+        - How far a token or perpetual price has drifted from spot
+      not_proves:
+        - That the traditional market will open near the weekend price
+        - That a token will always trade exactly at the spot price
+        - That the issuer or the exchange is free of risk
+    - type: zones
+      paragraphs:
+        - >-
+          Weekend moves on thin liquidity can look as if they have reached a **support or resistance
+          zone**. Because those prices form on few trades, a weekend test of a zone may not carry the
+          same weight as a test during the week.
+        - >-
+          Reading zones as **a band** helps here too: weekend wicks and jumps at the Monday open often
+          stay inside the band. Zones can shift slightly between a gold chart on a crypto exchange and
+          the traditional spot chart; saying which data you use makes the reading clearer.
+  confusions:
+    - id: price-gaps
+      text: The traditional gold market's weekend close can leave gaps at the open, as with CME Bitcoin futures; on a 24/7 token chart that difference shows as weekend candles, not a gap.
+    - id: gold-silver-ratio
+      text: A ratio calculated from token or perpetual prices can differ slightly from one calculated from traditional prices.
+  key_points:
+    - On crypto exchanges gold and silver trade through tokens and perpetual futures.
+    - The traditional market is open nearly 24 hours on weekdays but closed at weekends.
+    - The weekend price can drift on thin liquidity and jump at the open.
+    - A token depends on its issuer; a perpetual on the exchange's index and funding rate.
+  svg_labels:
+    spot: Traditional market
+    token: Token / perpetual
+    closed_1: Weekend
+    closed_2: traditional market closed
+    fri: Friday close
+    reopen_1: The gap closes
+    reopen_2: at the open
+    time: Time
+  svg_alt: "Schematic drawing: during the week the traditional market price and the token price move together; in the grey-shaded weekend section the traditional market is closed and the token price drifts higher; at the open the traditional price opens lower and the token price jumps towards it"
+  svg_caption: >-
+    The drawing uses example data. The thin continuous line shows the token or perpetual price and the
+    thick line the traditional market price. The traditional market is closed in the shaded section;
+    the dashed orange line is the Friday closing level and the orange
+    dot the token's price just before the open.

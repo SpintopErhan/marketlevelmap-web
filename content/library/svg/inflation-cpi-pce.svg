@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <text class="t-label" x="24" y="24">{{yy}}</text>
+  <polyline class="s-line" points="30,82 50,77 70,59 90,54 110,50 130,40 150,40 170,50 190,77 210,86 230,86 250,86 270,96 290,105 310,119 330,132 350,146 370,160 390,160 410,151 430,137 450,137" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline class="s-accent" points="30,82 50,82 70,77 90,73 110,68 130,63 150,63 170,63 190,63 210,63 230,63 250,68 270,68 290,68 310,73 330,82 350,91 370,96 390,96 410,100 430,105 450,109" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <text class="t-label" x="462" y="141">{{headline}}</text>
+  <text class="t-accent" x="462" y="113">{{core}}</text>
+  <line class="s-guide" x1="24" y1="182" x2="536" y2="182" stroke-width="1" stroke-dasharray="3 5"/>
+  <text class="t-label" x="24" y="204">{{mm}}</text>
+  <line class="s-guide" x1="20" y1="262" x2="460" y2="262" stroke-width="1"/>
+  <rect class="f-up" x="24" y="238" width="12" height="24" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="44" y="230" width="12" height="32" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="64" y="214" width="12" height="48" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="84" y="222" width="12" height="40" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="104" y="230" width="12" height="32" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="124" y="238" width="12" height="24" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="144" y="246" width="12" height="16" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="164" y="254" width="12" height="8" rx="1.5" opacity="0.6"/>
+  <rect class="f-down" x="184" y="262" width="12" height="8" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="204" y="246" width="12" height="16" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="224" y="238" width="12" height="24" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="244" y="246" width="12" height="16" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="264" y="254" width="12" height="8" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="284" y="246" width="12" height="16" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="304" y="238" width="12" height="24" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="324" y="246" width="12" height="16" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="344" y="254" width="12" height="8" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="384" y="246" width="12" height="16" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="404" y="238" width="12" height="24" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="424" y="246" width="12" height="16" rx="1.5" opacity="0.6"/>
+  <rect class="f-up" x="444" y="246" width="12" height="16" rx="1.5" opacity="0.6"/>
+  <path class="s-guide" d="M224 280 V286 H456 V280" fill="none" stroke-width="1"/>
+  <text class="t-label" x="340" y="304" text-anchor="middle">{{window}}</text>
+</svg>

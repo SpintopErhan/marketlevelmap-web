@@ -107,6 +107,8 @@ id: false-breakout          # dosya adıyla aynı
 kind: levels                # kategori (categories.yaml'daki kind)
 order: 40                   # kategori içindeki sıra
 related: [trend, pin-bar]   # formasyon ya da kavram id'leri; "İlgili sayfalar" olarak gösterilir
+event_keywords: [CPI, TÜFE]  # isteğe bağlı: haftalık olay başlığında geçerse olay bu sayfaya bağlanır
+event_countries: [US]       # isteğe bağlı: yalnızca bu ülke kodlu olaylar (US, CRYPTO …)
 example: null
 updated: 2026-10-23
 tr:

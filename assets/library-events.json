@@ -1,4 +1,141 @@
 {
  "generated": "scripts/build-library.mjs",
- "links": []
+ "links": [
+  {
+   "id": "fed-rate-decisions",
+   "keywords": [
+    "FOMC",
+    "Fed",
+    "faiz kararı",
+    "rate decision",
+    "Fed tutanakları",
+    "FOMC minutes"
+   ],
+   "countries": [
+    "US"
+   ],
+   "tr": {
+    "name": "Fed faiz kararları (FOMC)",
+    "url": "/tr/kutuphane/fed-faiz-kararlari/"
+   },
+   "en": {
+    "name": "Fed rate decisions (FOMC)",
+    "url": "/en/library/fed-rate-decisions/"
+   }
+  },
+  {
+   "id": "inflation-cpi-pce",
+   "keywords": [
+    "CPI",
+    "TÜFE",
+    "PCE",
+    "PPI",
+    "ÜFE",
+    "enflasyon",
+    "inflation"
+   ],
+   "countries": [
+    "US"
+   ],
+   "tr": {
+    "name": "Enflasyon verileri (CPI, PCE)",
+    "url": "/tr/kutuphane/enflasyon-verileri/"
+   },
+   "en": {
+    "name": "Inflation data (CPI, PCE)",
+    "url": "/en/library/inflation-data/"
+   }
+  },
+  {
+   "id": "us-jobs-data",
+   "keywords": [
+    "NFP",
+    "tarım dışı",
+    "nonfarm",
+    "payrolls",
+    "işsizlik",
+    "unemployment",
+    "jobless claims",
+    "JOLTS",
+    "ADP"
+   ],
+   "countries": [
+    "US"
+   ],
+   "tr": {
+    "name": "İstihdam verileri (tarım dışı istihdam, işsizlik başvuruları)",
+    "url": "/tr/kutuphane/istihdam-verileri/"
+   },
+   "en": {
+    "name": "Jobs data (nonfarm payrolls, jobless claims)",
+    "url": "/en/library/jobs-data/"
+   }
+  },
+  {
+   "id": "growth-data",
+   "keywords": [
+    "GDP",
+    "GSYH",
+    "PMI",
+    "ISM",
+    "retail sales",
+    "perakende satış"
+   ],
+   "countries": [
+    "US"
+   ],
+   "tr": {
+    "name": "Büyüme verileri (GSYH, PMI)",
+    "url": "/tr/kutuphane/buyume-verileri/"
+   },
+   "en": {
+    "name": "Growth data (GDP, PMI)",
+    "url": "/en/library/growth-data/"
+   }
+  },
+  {
+   "id": "bond-yields",
+   "keywords": [
+    "Treasury auction",
+    "bond auction",
+    "tahvil ihalesi",
+    "Hazine ihalesi"
+   ],
+   "countries": [
+    "US"
+   ],
+   "tr": {
+    "name": "Tahvil faizleri ve getiri eğrisi",
+    "url": "/tr/kutuphane/tahvil-faizleri/"
+   },
+   "en": {
+    "name": "Bond yields and the yield curve",
+    "url": "/en/library/bond-yields-and-the-yield-curve/"
+   }
+  },
+  {
+   "id": "crypto-events",
+   "keywords": [
+    "unlock",
+    "kilit açılış",
+    "token unlock",
+    "halving",
+    "ETF",
+    "hard fork",
+    "upgrade",
+    "güncelleme"
+   ],
+   "countries": [
+    "CRYPTO"
+   ],
+   "tr": {
+    "name": "Kriptoya özgü olaylar: token kilit açılışları, halving, ETF akımları",
+    "url": "/tr/kutuphane/kriptoya-ozgu-olaylar/"
+   },
+   "en": {
+    "name": "Crypto-specific events: token unlocks, halvings, ETF flows",
+    "url": "/en/library/crypto-specific-events/"
+   }
+  }
+ ]
 }

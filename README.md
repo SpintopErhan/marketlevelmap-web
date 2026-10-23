@@ -155,6 +155,11 @@ The generated pages are committed, so Pages still has no build step: after chang
 (schema, SVG colour classes, URLs) are in `content/library/README.md`. Each language has its own URL so search
 engines index both; the other pages link to the library in the visitor's language.
 
+Weekly events link to the library: a concept with `event_keywords` (and optional `event_countries`) is listed in
+the generated `assets/library-events.json`; `assets/event-links.js` adds a small book icon after an event title on
+the weekly events page and the market page when a keyword appears in the title (whole word, case-insensitive) and
+the event's country matches. Nothing needs to be added to the hand-made events files.
+
 `_routes.json` keeps `assets/`, the library pages, `sitemap.xml` and `robots.txt` out of Pages Functions, so they
 do not run the middleware or count towards the Functions quota (library pages carry their own preview tags).
 
