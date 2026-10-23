@@ -577,7 +577,7 @@ const sitemap = [
 files.set(join(ROOT, "sitemap.xml"), sitemap);
 
 // Weekly events link to the library: an event whose title contains one of a page's event_keywords
-// (case-insensitive, whole words), and whose country is in event_countries if given, shows a link to that
+// (case-insensitive, at the start of a word), and whose country is in event_countries if given, shows a link to that
 // page (assets/event-links.js, used by weekly-events.html and index.html).
 const eventLinks = sorted(concepts.filter((p) => p.event_keywords)).map((p) => ({
   id: p.id, keywords: p.event_keywords, countries: p.event_countries || null,
