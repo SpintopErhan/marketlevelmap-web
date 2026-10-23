@@ -1,6 +1,6 @@
-# MarketLevelMap — Formasyon kütüphanesi planı
+# MarketLevelMap — Kütüphane rehberi
 
-Bu belge kütüphanenin altyapısını ve yeni formasyon eklerken uyulacak kuralları tarif eder. Görsel tasarımın referansı, mockup canvas'taki **Kütüphane · Yutan Boğa** ve **Kütüphane · Omuz Baş Omuz** sayfalarıdır.
+Bu belge kütüphanenin altyapısını ve yeni formasyon ya da kavram eklerken uyulacak kuralları tarif eder. Kütüphanede iki sayfa türü vardır: **formasyon** (sabit bir düzen) ve **kavram** (esnek bölümler; bkz. 3a). Görsel tasarımın referansı, mockup canvas'taki **Kütüphane · Yutan Boğa** ve **Kütüphane · Omuz Baş Omuz** sayfalarıdır.
 
 **Kapsam (ilk sürüm):** klasik bir kütüphane. Gerçek grafik örnekleri, motorla ve analizlerle bağlantı **yok**. Bunlar sonraki sürümde eklenecek. Veri yapısı bunlara şimdiden yer bırakır.
 
@@ -23,8 +23,10 @@ Bu belge kütüphanenin altyapısını ve yeni formasyon eklerken uyulacak kural
 ```
 content/library/
 ├─ patterns/<id>.yaml       # her formasyon bir dosya, iki dil aynı dosyada
-├─ svg/<id>.svg             # formasyon çizimi
-├─ categories.yaml          # kategori adları, slug'ları, açıklamaları ve sıralama (iki dil)
+├─ concepts/<id>.yaml       # her kavram bir dosya (trend, sahte kırılım …), iki dil aynı dosyada
+├─ svg/<id>.svg             # formasyon ya da kavram çizimi (id ikisi arasında da benzersiz)
+├─ sections.yaml            # üst bölümler (Grafik okuma …): sol menünün ve ana sayfanın grupları
+├─ categories.yaml          # kategoriler: bölümü, sırası, kapak çizimi (cover), adları ve açıklamaları
 └─ planned.yaml             # henüz yazılmamış ama bağlantı verilen formasyonların adları
 
 scripts/build-library.mjs   # YAML + SVG → statik HTML (tr/kutuphane/, en/library/) ve sitemap.xml
@@ -98,6 +100,40 @@ en:
 
 ---
 
+## 3a. Kavram şeması
+
+```yaml
+id: false-breakout          # dosya adıyla aynı
+kind: levels                # kategori (categories.yaml'daki kind)
+order: 40                   # kategori içindeki sıra
+related: [trend, pin-bar]   # formasyon ya da kavram id'leri; "İlgili sayfalar" olarak gösterilir
+example: null
+updated: 2026-10-23
+tr:
+  slug: sahte-kirilim
+  name: …
+  alt_name: …               # yalnızca tr: İngilizce karşılık
+  summary: …
+  sections:                 # yazıldığı sırayla gösterilir; her bölüm bir tür
+    - { type: text, id: definition, title: …, paragraphs: [ … ], note: … }
+    - { type: steps, title: …, items: [ { title, text } ] }
+    - { type: bullets, title: …, items: [ metin ya da { text, marker } ], note: … }
+    - { type: scenarios, title: …, intro: …, items: [ { title, text, tone: up|down|neutral } ] }   # en az 2 kart
+    - { type: limits, shows: [ … ], not_proves: [ … ] }   # ZORUNLU: "Neyi gösterir, neyi kanıtlamaz?"
+    - { type: zones, intro: …, points: [ … ], paragraphs: [ … ] }   # turuncu "MarketLevelMap bakışı" kutusu
+    - { type: box, title: …, text: … }   # kısa not kutusu ("Bu sayfada" listesine girmez)
+  confusions: [ { id, text } ]   # isteğe bağlı
+  key_points: [ … ]              # sağdaki "Akılda kalsın": 3–5 madde
+  svg_labels: { … }
+  svg_alt: …
+  svg_caption: …
+en: { … }                        # aynı yapı, alt_name yok
+```
+
+- Her bölümün bir başlığı vardır (`limits` ve `zones` için başlık isteğe bağlı, varsayılan başlık kullanılır).
+- Aynı türden iki bölüm varsa birine `id` verilir; `id` sayfa içi bağlantıdır ("Bu sayfada").
+- Kavramlar da formasyonlarla aynı ilkelere uyar: al-sat dili yok, olasılık dili, ölçülebilir tanımlar, sahte veriyle elle çizilmiş SVG.
+
 ## 4. SVG kuralları
 
 - `viewBox` tanımlı, sabit `width/height` yok. Sayfada `width: 100%` ile ölçeklenir.
@@ -156,23 +192,22 @@ Boş isteğe bağlı alanların bölümü **hiç gösterilmez** ve "Bu sayfada" 
 
 ### Sol menü (bütün kütüphane sayfaları)
 
-- "Genel bakış" (kütüphane ana sayfası), sonra her kategori başlığı (kategori sayfasına bağlantı) ve yanındaki okla
-  açılıp kapanan formasyon listesi. Bulunulan sayfanın kategorisi açık, diğerleri kapalı başlar. Sıra kategori ve formasyon
+- "Genel bakış" (kütüphane ana sayfası), sonra her üst bölümün adı (sections.yaml) ve altında kategori başlıkları
+  (kategori sayfasına bağlantı); yanındaki okla açılıp kapanan sayfa listesi. Henüz sayfası olmayan kategori gösterilmez. Bulunulan sayfanın kategorisi açık, diğerleri kapalı başlar. Sıra kategori ve formasyon
   sırasıyla. Bulunulan sayfa vurgulanır. Yeni formasyon ya da kategori eklenince menü kendiliğinden güncellenir.
 - Geniş ekranda (≥ 1100 px) solda sabit durur; daha dar ekranda içeriğin üstünde kapalı bir "Konular" kutusudur.
 
 ### Kütüphane ana sayfası
 
-- Kısa giriş paragrafı (formasyonlar nedir, bölgelerle neden birlikte okunmalı).
-- Her kategori bir bölüm: başlık, kısa açıklama, `order`'a göre ilk **3** kart ve kategori sayfasına giden
-  "Tüm … (sayı) →" düğmesi. Bölümlerin sırası `categories.yaml`'daki `order`'dır (şu an önce grafik, sonra mum).
-  Kütüphane büyüdükçe ana sayfa uzamaz; yeni bir konu (örneğin emtialar) yeni bir bölüm olarak eklenir.
-- Kart: küçük SVG, ad, etiketler, özetin ilk cümlesi. Kartın tamamı tıklanabilir.
+- Başlık, alt başlık ve giriş paragrafı.
+- Üst bölüm başına (Grafik okuma …) **kategori kartları**: kapak çizimi (`cover`), kategori adı, açıklama, sayfa
+  sayısı, ilk 3 sayfanın bağlantısı ve "Tümü (sayı) →". Kütüphane büyüdükçe ana sayfa uzamaz; yeni bir kategori
+  yeni bir kart, yeni bir bölüm yeni bir kart grubu olarak eklenir.
 
 ### Kategori sayfası
 
-- Kategorideki bütün formasyonlar. Yön filtresi (Yükseliş / Düşüş / Nötr, yalnızca o kategoride olanlar) ve
-  arama kutusu (ad ve alternatif ad içinde).
+- Kategorideki bütün sayfalar (kart: küçük SVG, ad, etiketler, özetin ilk cümlesi). Arama kutusu (ad ve alternatif
+  ad içinde); formasyon kategorilerinde ayrıca yön filtresi (Yükseliş / Düşüş / Nötr, yalnızca o kategoride olanlar).
 - Filtre ve arama tarayıcıda çalışır, ama kartların hepsi statik HTML olarak sayfada bulunur (SEO).
 
 ---

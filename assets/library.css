@@ -17,6 +17,7 @@ button,select,input{font:inherit}button{color:inherit}
 .lib-nav a:hover{color:var(--accent)}
 .lib-nav a[aria-current="page"]{color:var(--accent);font-weight:600}
 .lib-nav .nav-home{margin-bottom:6px}
+.lib-nav .nav-section{margin:18px 0 2px;color:var(--muted);font-size:11px;font-weight:600}
 .lib-nav .nav-group{margin-top:12px}
 .lib-nav .nav-cat-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .lib-nav .nav-cat{flex:1;color:var(--fg);font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}
@@ -97,6 +98,17 @@ button,select,input{font:inherit}button{color:inherit}
 .confusions li>a:hover{border-color:var(--accent)}
 .confusions strong{font-size:14px}.confusions span{color:var(--muted)}
 .confusions li.pending{opacity:.7}
+/* Concept pages: scenario cards, related pages, key points. */
+.scenarios{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.scenario{padding:14px 16px;border:1px solid var(--line);border-top:3px solid var(--muted);border-radius:10px;background:var(--panel)}
+.scenario.up{border-top-color:var(--up)}.scenario.down{border-top-color:var(--down)}
+.scenario h3{margin-bottom:6px}.scenario p{margin:0;color:var(--muted);font-size:14px}
+.related{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
+.related a{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);text-decoration:none;font-size:13px}
+.related a:hover{border-color:var(--accent)}.related span{color:var(--muted);font-size:11px}
+.key-points{margin:0;padding:0 0 0 16px!important;list-style:disc!important}
+.key-points li{color:var(--fg)}.key-points li::marker{color:var(--cz)}
+.key-points li+li{margin-top:8px!important}
 .page-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;margin:48px 0 0!important;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
 
 /* Right column: on this page, at a glance, other patterns */
@@ -132,12 +144,25 @@ button,select,input{font:inherit}button{color:inherit}
 .pattern-card p{margin:0;color:var(--muted);font-size:13px}
 .lib-empty{margin:24px 0 0;color:var(--muted)}
 .lib-section{margin-top:46px}
-.section-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px 24px;margin-bottom:16px}
-.section-head h2{margin:0}.section-head h2 a{text-decoration:none}.section-head h2 a:hover{color:var(--accent)}
-.section-head p{flex:1 1 360px;max-width:620px;margin:0;color:var(--muted);font-size:13px}
-.pattern-grid.preview{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:0}
+.lib-section>h2{margin-bottom:16px}
+/* Category cards on the library home: cover drawing, summary, page count, first pages. */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin:0;padding:0;list-style:none}
+.cat-card{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+.cat-card:hover{border-color:color-mix(in srgb,var(--accent) 60%,var(--line))}
+.cat-cover{display:block;padding:14px 18px;background:var(--panel-2)}
+.cat-cover .pattern-svg{height:110px}.cat-cover text{display:none}
+.cat-body{display:flex;flex-direction:column;flex:1;padding:16px 18px 18px}
+.cat-body h3{font-size:16px}.cat-body h3 a{text-decoration:none}.cat-body h3 a:hover{color:var(--accent)}
+.cat-body p{margin:8px 0 0;color:var(--muted);font-size:13px}
+.cat-body .cat-count{color:var(--fg);font-size:12px;font-weight:600}
+.cat-links{margin:8px 0 0;padding:0;list-style:none;font-size:13px}
+.cat-links li+li{margin-top:4px}
+.cat-links a{color:var(--muted);text-decoration:none}.cat-links a:hover{color:var(--accent)}
+.cat-links a:before{content:"→ ";color:var(--line)}
+.cat-body .section-more{align-self:flex-start;margin-top:auto;padding-top:7px}
+.cat-links+.section-more{margin-top:16px}
 .section-more{display:inline-flex;align-items:center;min-height:36px;margin-top:16px;padding:7px 16px;border:1px solid var(--accent);border-radius:999px;color:var(--accent)!important;font-size:13px;font-weight:600;text-decoration:none}
 .section-more:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
 
-@media(max-width:900px){.pattern-grid.preview{grid-template-columns:repeat(2,minmax(0,1fr))}.lib-grid{grid-template-columns:minmax(0,1fr)}.side{position:static}.pattern{max-width:none}}
-@media(max-width:600px){.pattern-grid.preview{grid-template-columns:minmax(0,1fr)}.lib h1{font-size:25px}.two-cards{grid-template-columns:1fr}.figure{padding:14px 12px 10px}.mlm-view{padding:18px}.lib-search{max-width:none}}
+@media(max-width:900px){.lib-grid{grid-template-columns:minmax(0,1fr)}.side{position:static}.pattern{max-width:none}}
+@media(max-width:600px){.cat-grid{grid-template-columns:minmax(0,1fr)}.lib h1{font-size:25px}.two-cards{grid-template-columns:1fr}.figure{padding:14px 12px 10px}.mlm-view{padding:18px}.lib-search{max-width:none}}

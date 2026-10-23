@@ -1,19 +1,52 @@
-# Library categories. `kind` in a pattern file picks its category; `order` sorts the categories
-# (also the order of the sections on the library home page).
-- kind: candle
-  order: 20
-  tr:
-    slug: mum-formasyonlari
-    name: Mum formasyonları
-    singular: Mum formasyonu
-    summary: Bir ile üç mumdan oluşan, fiyatın kısa vadede yön değiştirebileceğine ya da kararsız kaldığına işaret eden formasyonlar.
-  en:
-    slug: candlestick-patterns
-    name: Candlestick patterns
-    singular: Candlestick pattern
-    summary: Patterns of one to three candles that can point to a short-term change of direction or to indecision.
-- kind: chart
+# Library categories. `kind` in a pattern or concept file picks its category; `order` sorts the categories
+# within their `section` (sections.yaml). `cover` is the pattern or concept whose drawing represents the
+# category on the library home page. Categories with no pages yet are not shown.
+- kind: basics
+  section: reading
   order: 10
+  cover: candlestick-chart
+  tr:
+    slug: grafik-okumanin-temelleri
+    name: Grafik okumanın temelleri
+    singular: Grafik okuma
+    summary: Mum grafiğinin nasıl okunduğu, zaman dilimleri ve mum kapanışının neden önemli olduğu.
+  en:
+    slug: chart-reading-basics
+    name: Chart reading basics
+    singular: Chart reading
+    summary: How a candlestick chart is read, what timeframes are, and why the candle close matters.
+- kind: structure
+  section: reading
+  order: 20
+  cover: trend
+  tr:
+    slug: piyasa-yapisi-ve-trend
+    name: Piyasa yapısı ve trend
+    singular: Piyasa yapısı
+    summary: Fiyatın hangi yapıda ilerlediğini okumanın temeli; trend, tepe ve dip noktaları, yapının ne zaman değiştiği.
+  en:
+    slug: market-structure-and-trend
+    name: Market structure and trend
+    singular: Market structure
+    summary: The basis for reading what structure price is moving in; trend, swing highs and lows, and when the structure changes.
+- kind: levels
+  section: reading
+  order: 30
+  cover: false-breakout
+  tr:
+    slug: destek-direnc-ve-fiyat-bolgeleri
+    name: Destek, direnç ve fiyat bölgeleri
+    singular: Destek ve direnç
+    summary: Fiyatın tepki verdiği alanlar; seviye testleri, kırılım, sahte kırılım ve geri test.
+  en:
+    slug: support-resistance-and-price-zones
+    name: Support, resistance and price zones
+    singular: Support and resistance
+    summary: The areas where price reacts; level tests, breakouts, false breakouts and retests.
+- kind: chart
+  section: reading
+  order: 40
+  cover: head-and-shoulders
   tr:
     slug: grafik-formasyonlari
     name: Grafik formasyonları
@@ -24,3 +57,17 @@
     name: Chart patterns
     singular: Chart pattern
     summary: Patterns read from the peaks, troughs and lines that many candles form, pointing to a possible reversal or continuation of the trend.
+- kind: candle
+  section: reading
+  order: 50
+  cover: bullish-engulfing
+  tr:
+    slug: mum-formasyonlari
+    name: Mum formasyonları
+    singular: Mum formasyonu
+    summary: Bir ile üç mumdan oluşan, fiyatın kısa vadede yön değiştirebileceğine ya da kararsız kaldığına işaret eden formasyonlar.
+  en:
+    slug: candlestick-patterns
+    name: Candlestick patterns
+    singular: Candlestick pattern
+    summary: Patterns of one to three candles that can point to a short-term change of direction or to indecision.
