@@ -29,12 +29,12 @@ const WORDS = {
   tr: {
     library: "Kütüphane", market: "Piyasa", events: "Haftalık olaylar", language: "Dil",
     titleSuffix: "MarketLevelMap Kütüphane", patternWord: "Formasyonu",
-    libraryTitle: "Formasyon kütüphanesi",
+    libraryTitle: "Kütüphane",
+    libraryLead: "Piyasa okuryazarlığı için temel kavramlar ve açıklamalar.",
     libraryIntro: [
-      "Mum ve grafik formasyonları, fiyatın belirli koşullarda nasıl davrandığını anlatan kalıplardır. Hiçbiri tek başına yönü kanıtlamaz; her biri bir olasılığa işaret eder.",
-      "MarketLevelMap'te formasyonları **destek ve direnç bölgeleriyle birlikte** okuruz. Bir formasyonun nerede oluştuğu, ne olduğu kadar önemlidir: aynı mum bir bölgede anlamlı, boşlukta anlamsız olabilir.",
+      "MarketLevelMap’te yapılan analizleri daha iyi anlamak ve grafikleri kendi başınıza yorumlayabilmek için hazırlandı. Formasyonlar, seviyeler ve diğer kavramlar birbirinden bağımsız değil, birlikte okunacak şekilde anlatılır. İçerikler zamanla genişleyecek.",
     ],
-    libraryDescription: "Mum ve grafik formasyonlarının ne olduğu, nasıl oluştuğu ve destek ve direnç bölgeleriyle birlikte nasıl okunduğu.",
+    libraryDescription: "Piyasa okuryazarlığı için temel kavramlar ve açıklamalar: formasyonlar, seviyeler ve diğer kavramlar, birlikte okunacak şekilde.",
     seeAll: (cat, n) => `Tüm ${cat.toLocaleLowerCase("tr")} (${n}) →`, search: "Formasyon ara", noMatch: "Bu filtreyle eşleşen formasyon yok.", filters: "Filtreler",
     topics: "Konular", overview: "Genel bakış", toggle: (cat) => `${cat}: alt başlıkları aç ya da kapat`, onThisPage: "Bu sayfada", facts: "Kısa özet",
     formation: "Nasıl oluşur", meaning: "Neye işaret eder", strength: "Ne zaman güçlenir, ne zaman zayıflar", strengthToc: "Güçlendirenler ve zayıflatanlar",
@@ -57,12 +57,12 @@ const WORDS = {
   en: {
     library: "Library", market: "Market", events: "Weekly events", language: "Language",
     titleSuffix: "MarketLevelMap Library", patternWord: "Pattern",
-    libraryTitle: "Pattern library",
+    libraryTitle: "Library",
+    libraryLead: "Core concepts and explanations for market literacy.",
     libraryIntro: [
-      "Candlestick and chart patterns describe how price tends to behave in certain conditions. None of them proves a direction on its own; each points to a possibility.",
-      "At MarketLevelMap we read patterns **together with support and resistance zones**. Where a pattern forms matters as much as what it is: the same candle can mean something at a zone and little in open space.",
+      "Prepared to help you better understand the analyses on MarketLevelMap and interpret charts on your own. Formations, levels, and other concepts are explained in relation to one another rather than in isolation. Content will expand over time.",
     ],
-    libraryDescription: "What candlestick and chart patterns are, how they form, and how to read them together with support and resistance zones.",
+    libraryDescription: "Core concepts and explanations for market literacy: formations, levels and other concepts, explained in relation to one another.",
     seeAll: (cat, n) => `All ${cat.toLowerCase()} (${n}) →`, search: "Search patterns", noMatch: "No patterns match this filter.", filters: "Filters",
     topics: "Topics", overview: "Overview", toggle: (cat) => `${cat}: show or hide the patterns`, onThisPage: "On this page", facts: "At a glance",
     formation: "How it forms", meaning: "What it suggests", strength: "When it strengthens, when it weakens", strengthToc: "Strengthens and weakens",
@@ -366,7 +366,7 @@ function listPage(lang, category) {
 <ul class="pattern-grid preview">${items.slice(0, PREVIEW).map((p) => card(p, lang)).join("\n")}</ul>
 <a class="section-more" href="${esc(urls.category(c, lang))}">${esc(w.seeAll(c[lang].name, items.length))}</a></section>`;
     }).join("\n");
-    body = `<div class="lib-intro"><h1>${esc(w.libraryTitle)}</h1>${w.libraryIntro.map((x) => `<p>${inline(x)}</p>`).join("")}</div>\n${sections}`;
+    body = `<div class="lib-intro"><h1>${esc(w.libraryTitle)}</h1><p class="lead">${esc(w.libraryLead)}</p>${w.libraryIntro.map((x) => `<p>${inline(x)}</p>`).join("")}</div>\n${sections}`;
   }
   const path = category ? urls.category(category, lang) : urls.home(lang);
   const title = category ? `${category[lang].name} | ${w.titleSuffix}` : `${w.libraryTitle} | MarketLevelMap`;
