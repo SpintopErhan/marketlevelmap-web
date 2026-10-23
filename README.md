@@ -157,7 +157,7 @@ engines index both; the other pages link to the library in the visitor's languag
 
 Weekly events link to the library: a concept with `event_keywords` (and optional `event_countries`) is listed in
 the generated `assets/library-events.json`; `assets/event-links.js` adds a small book icon after an event title on
-the weekly events page and the market page when a keyword appears in the title (whole word, case-insensitive) and
+the weekly events page and the market page when a keyword appears in the title at the start of a word (case-insensitive, so Turkish suffixes match) and
 the event's country matches. Nothing needs to be added to the hand-made events files.
 
 `_routes.json` keeps `assets/`, the library pages, `sitemap.xml` and `robots.txt` out of Pages Functions, so they
