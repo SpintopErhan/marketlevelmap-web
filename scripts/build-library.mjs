@@ -438,8 +438,8 @@ ${aside}</div>`;
 // concept page; "zones" is the orange MarketLevelMap box, as on pattern pages.
 const SECTION_HTML = {
   text: (x) => x.paragraphs.map((p) => `<p>${inline(p)}</p>`).join("") + (isText(x.note) ? `<p class="note">${inline(x.note)}</p>` : ""),
-  bullets: (x) => `<ul class="bullets">${x.items.map((b) => isText(b) ? `<li class="m-neutral">${inline(b)}</li>` : `<li class="m-${esc(b.marker || "neutral")}">${inline(b.text)}</li>`).join("")}</ul>` + (isText(x.note) ? `<p class="note">${inline(x.note)}</p>` : ""),
-  steps: (x) => `<ol class="steps">${x.items.map((st) => `<li><strong>${inline(st.title)}</strong> ${inline(st.text)}</li>`).join("")}</ol>`,
+  bullets: (x) => (isText(x.intro) ? `<p>${inline(x.intro)}</p>` : "") + `<ul class="bullets">${x.items.map((b) => isText(b) ? `<li class="m-neutral">${inline(b)}</li>` : `<li class="m-${esc(b.marker || "neutral")}">${inline(b.text)}</li>`).join("")}</ul>` + (isText(x.note) ? `<p class="note">${inline(x.note)}</p>` : ""),
+  steps: (x) => (isText(x.intro) ? `<p>${inline(x.intro)}</p>` : "") + `<ol class="steps">${x.items.map((st) => `<li><strong>${inline(st.title)}</strong> ${inline(st.text)}</li>`).join("")}</ol>`,
   scenarios: (x) => (isText(x.intro) ? `<p>${inline(x.intro)}</p>` : "") + `<div class="scenarios">${x.items.map((sc) => `<div class="scenario ${esc(sc.tone || "neutral")}"><h3>${inline(sc.title)}</h3><p>${inline(sc.text)}</p></div>`).join("")}</div>`,
   box: (x) => `<aside class="box">${isText(x.label) ? `<h3>${inline(x.label)}</h3>` : ""}<p>${inline(x.text)}</p></aside>`,
 };
