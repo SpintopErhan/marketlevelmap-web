@@ -84,7 +84,7 @@ tbody tr:last-child td{border-bottom:0}
 <script>
 try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
 </script>
-<script src="assets/disclaimer.js?v=76512242" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=037b531f"></script><script src="assets/demo-data.js?v=9e9f55c7"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
+<script src="assets/disclaimer.js?v=76512242" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=037b531f"></script><script src="assets/event-links.js?v=b5ca9bbf"></script><script src="assets/demo-data.js?v=9e9f55c7"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
 <body>
 <div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
@@ -240,6 +240,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
       tr.innerHTML='<td></td><td class="num"></td><td></td>';
       var c=tr.children;c[0].textContent=fmtDay(t);c[1].textContent=e.datePrecision==="DAY"?w.allDay:new Date(t).toISOString().slice(11,16);
       c[2].textContent=(e.title&&(e.title[lang]||e.title.en))||"";
+      if(window.EventLinks)EventLinks.decorate(c[2],e,lang);
       body.appendChild(tr);
     });
   }
@@ -258,6 +259,8 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   }
   load();
   render();
+  // Links from events to library pages arrive separately; draw again once they are known.
+  if(window.EventLinks)EventLinks.load().then(render);
 })();
 </script>
 </body></html>

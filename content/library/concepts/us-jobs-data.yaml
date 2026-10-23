@@ -1,0 +1,241 @@
+id: us-jobs-data
+kind: macro
+order: 50
+related: [fed-rate-decisions, economic-calendar, priced-in, inflation-cpi-pce]
+example: null
+updated: 2026-10-23
+event_keywords: [NFP, "tarım dışı", nonfarm, payrolls, "işsizlik", unemployment, "jobless claims", JOLTS, ADP]
+event_countries: [US]
+
+tr:
+  slug: istihdam-verileri
+  name: İstihdam verileri (tarım dışı istihdam, işsizlik başvuruları)
+  alt_name: Nonfarm payrolls, jobless claims
+  summary: >-
+    ABD istihdam verileri, iş gücü piyasasının ne kadar güçlü olduğunu gösterir. En çok izleneni, ayda
+    bir yayımlanan tarım dışı istihdam raporudur; her hafta açıklanan işsizlik başvuruları ise daha sık
+    bir ara okuma sunar. Piyasalar bu verileri çoğu zaman Fed'in faiz kararlarına etkisi üzerinden okur.
+  sections:
+    - type: text
+      id: definition
+      title: Tarım dışı istihdam raporu nedir?
+      paragraphs:
+        - >-
+          Resmi adı **Employment Situation** olan bu rapor, ABD Çalışma Bakanlığı'na bağlı Çalışma
+          İstatistikleri Bürosu (BLS) tarafından ayda bir yayımlanır. Genellikle ayın **ilk cuması,
+          ABD Doğu saatiyle 08:30'da** açıklanır. Bu saat, ABD'nin yaz saati uygulamasına göre
+          **12:30 ya da 13:30 UTC**'ye (Türkiye saatiyle 15:30 ya da 16:30) denk gelir. Tatiller ve
+          takvim nedeniyle tarih zaman zaman kayabilir.
+        - >-
+          Rapor iki ayrı ankete dayanır. İşyeri anketi, tarım dışı sektörlerde bir ayda **kaç kişilik
+          istihdam eklendiğini** ve ücretleri ölçer. Hane anketi ise **işsizlik oranını** verir. Bu iki
+          anket farklı yöntemlerle yapıldığı için zaman zaman birbirinden farklı bir tablo çizebilir.
+    - type: bullets
+      id: key-figures
+      title: Raporda öne çıkan kalemler
+      items:
+        - text: "**Tarım dışı istihdam (NFP):** bir önceki aya göre eklenen ya da kaybedilen iş sayısı. Manşet rakam budur."
+          marker: accent
+        - text: "**İşsizlik oranı:** iş arayan ama bulamayan kişilerin iş gücüne oranı. Yüzde olarak verilir ve küçük değişimler bile dikkat çeker."
+          marker: neutral
+        - text: "**Ortalama saatlik kazançlar:** ücret artışını gösterir. Enflasyon baskısı hakkında ipucu verdiği için ayrıca izlenir."
+          marker: neutral
+        - text: "**Revizyonlar:** her raporda önceki iki ayın istihdam rakamları da güncellenir. Büyük bir revizyon, yeni ayın rakamının algısını değiştirebilir."
+          marker: down
+      note: >-
+        Piyasa tek bir rakama değil, kalemlerin toplamına tepki verir. Güçlü bir manşet rakam, aşağı
+        revize edilmiş önceki aylar ya da yükselen işsizlik oranıyla birlikte geldiğinde tepki karışık
+        olabilir.
+    - type: text
+      id: other-releases
+      title: Haftalık başvurular ve diğer veriler
+      paragraphs:
+        - >-
+          **İlk işsizlik başvuruları** (initial jobless claims), ABD Çalışma Bakanlığı tarafından her
+          **perşembe, ABD Doğu saatiyle 08:30'da** yayımlanır. Bir haftada ilk kez işsizlik yardımı
+          için başvuranların sayısını gösterir. Haftalık rakamlar oynak olduğu için dört haftalık
+          ortalamaya ve süregelen başvurulara (continuing claims) da bakılır.
+        - >-
+          **JOLTS** raporu, BLS'nin açık iş ilanı sayısını ve işten ayrılmaları ölçtüğü aylık veridir;
+          yaklaşık bir ay geriden gelir. **ADP** raporu ise özel bir şirketin kendi bordro verisinden
+          hazırladığı bir tahmindir. Resmi raporla aynı şeyi ölçmez ve iki rakam arasındaki fark büyük
+          olabilir.
+    - type: scenarios
+      id: fed-lens
+      title: Veri neden Fed beklentisiyle okunur?
+      intro: >-
+        Piyasa, açıklanan rakamı mutlak değeriyle değil, **beklentiyle (konsensüs)** karşılaştırarak
+        okur. Kripto tarafındaki tepki de çoğu zaman faiz beklentisi, dolar ve risk iştahı üzerinden
+        gelir. Aşağıdakiler kural değil, sık görülen eğilimlerdir.
+      items:
+        - title: Beklentiden güçlü veri
+          tone: down
+          text: Fed'in faiz indirimlerini erteleyebileceği şeklinde okunabilir. Tahvil faizleri ve dolar yükselirse riskli varlıklar üzerinde baskı oluşabilir.
+        - title: Beklentiden zayıf veri
+          tone: up
+          text: Daha erken ya da daha fazla faiz indirimi beklentisini güçlendirebilir. Faizler ve dolar gerilerse riskli varlıklar bundan destek bulabilir.
+        - title: Çok zayıf ya da karışık veri
+          tone: neutral
+          text: Belirgin bir zayıflık büyüme ve resesyon endişesi olarak da okunabilir. Bu durumda zayıf veri riskli varlıklara destek olmak yerine baskı yaratabilir.
+    - type: limits
+      shows:
+        - İş gücü piyasasının o ayki genel görünümünü ve önceki aylara göre yönünü
+        - Açıklanan rakamın piyasa beklentisinden ne kadar saptığını
+        - Açıklama anında oynaklığın neden arttığını
+      not_proves:
+        - Fed'in bir sonraki toplantıda ne karar vereceğini
+        - Fiyatın açıklamadan sonra hangi yönde kalıcı olarak ilerleyeceğini
+        - İlk açıklanan rakamın kesin olduğunu; revizyonlar tabloyu değiştirebilir
+    - type: zones
+      paragraphs:
+        - >-
+          Veri açıklandığı anda fiyat kısa sürede iki yöne de sert hareket edebilir. Bu sırada oluşan
+          uzun fitiller, yakındaki bir **destek ya da direnç bölgesine** girip çıkabilir. Bölgeyi tek
+          bir çizgi yerine **bir bant** olarak okumak, bu ani fitilleri kırılımdan ayırmaya yardım eder.
+        - >-
+          Açıklama mumunun fitilinden çok, **kapanışına** ve sonraki mumlara bakmak daha sağlıklıdır.
+          1H grafikte sert görünen bir hareket, 4H ya da günlük grafikte bölge içinde kalan tek bir
+          fitil olabilir.
+    - type: box
+      title: Kripto 7/24, veri belirli bir saatte
+      text: >-
+        Kripto piyasası açıklama saatinde açıktır ve tepki genellikle ilk dakikalarda görülür. Ama ABD
+        hisse piyasaları bir saat sonra açıldığında hareket yön değiştirebilir. İlk tepkiyi son tepki
+        gibi okumamak gerekir.
+  confusions:
+    - id: inflation-cpi-pce
+      text: Ortalama saatlik kazançlar ücret artışını ölçer; enflasyon verileri ise fiyatların genel değişimini. İkisi birlikte okunur ama aynı şey değildir.
+    - id: fed-rate-decisions
+      text: İstihdam verisi Fed'in kararını belirlemez, yalnızca kararı etkileyen bilgilerden biridir.
+  key_points:
+    - Tarım dışı istihdam raporu genellikle ayın ilk cuması 08:30 ET'de açıklanır.
+    - İşsizlik başvuruları her perşembe 08:30 ET'de yayımlanır.
+    - Piyasa rakamı beklentiyle karşılaştırır; revizyonlar da tepkiyi etkiler.
+    - Güçlü veri çoğu zaman daha sıkı Fed beklentisi olarak okunur, ama bu bir kural değildir.
+  svg_labels:
+    zone: Direnç bölgesi
+    release: "Veri: 08:30 ET"
+    before_1: Açıklama öncesi
+    before_2: dar aralık
+    spike_1: İki yöne
+    spike_2: uzun fitil
+    after_1: Kapanış ve sonraki
+    after_2: mumlar belirleyici
+  svg_alt: "Veri günü çizimi: açıklama öncesinde dar aralıkta küçük mumlar, 08:30 ET'de iki yöne uzun fitilli büyük bir mum, fitil yukarıdaki direnç bölgesine giriyor, ardından mumlar sakinleşiyor"
+  svg_caption: Kesikli dikey çizgi verinin açıklandığı anı, turuncu bant direnç bölgesini gösterir. Açıklama mumunun fitili bölgeye girer ama kapanış bölgenin altında kalır.
+
+en:
+  slug: jobs-data
+  name: Jobs data (nonfarm payrolls, jobless claims)
+  summary: >-
+    US jobs data shows how strong the labour market is. The most watched release is the monthly
+    nonfarm payrolls report; weekly jobless claims give a more frequent reading in between. Markets
+    usually read these figures through their likely effect on the Fed's rate decisions.
+  sections:
+    - type: text
+      id: definition
+      title: What is the nonfarm payrolls report?
+      paragraphs:
+        - >-
+          Officially called the **Employment Situation** report, it is published monthly by the Bureau
+          of Labor Statistics (BLS), part of the US Department of Labor. It is usually released on the
+          **first Friday of the month at 08:30 US Eastern time**. Depending on US daylight saving time,
+          that is **12:30 or 13:30 UTC**. Holidays and the calendar can shift the date now and then.
+        - >-
+          The report rests on two separate surveys. The establishment survey measures **how many jobs
+          were added** outside farming in the month, and wages. The household survey gives the
+          **unemployment rate**. Because the two surveys use different methods, they can sometimes
+          paint different pictures.
+    - type: bullets
+      id: key-figures
+      title: The main figures in the report
+      items:
+        - text: "**Nonfarm payrolls (NFP):** the number of jobs added or lost since the previous month. This is the headline figure."
+          marker: accent
+        - text: "**Unemployment rate:** the share of the labour force looking for work but not finding it. Given as a percentage; even small changes draw attention."
+          marker: neutral
+        - text: "**Average hourly earnings:** shows wage growth. Watched separately because it hints at inflation pressure."
+          marker: neutral
+        - text: "**Revisions:** each report also updates the payroll figures for the previous two months. A large revision can change how the new month's figure is seen."
+          marker: down
+      note: >-
+        Markets react to the figures as a whole, not to a single number. A strong headline that comes
+        with downward revisions or a rising unemployment rate can bring a mixed reaction.
+    - type: text
+      id: other-releases
+      title: Weekly claims and other releases
+      paragraphs:
+        - >-
+          **Initial jobless claims** are published by the US Department of Labor every **Thursday at
+          08:30 US Eastern time**. They show how many people filed for unemployment benefits for the
+          first time in a week. Because the weekly figure is noisy, the four-week average and
+          continuing claims are watched too.
+        - >-
+          The **JOLTS** report is a monthly BLS release on job openings and people leaving jobs; it
+          runs about a month behind. The **ADP** report is an estimate a private company builds from
+          its own payroll data. It does not measure the same thing as the official report, and the
+          two figures can differ widely.
+    - type: scenarios
+      id: fed-lens
+      title: Why the data is read through Fed expectations
+      intro: >-
+        Markets read the figure against the **forecast (consensus)**, not on its own. In crypto the
+        reaction usually comes through rate expectations, the dollar and risk appetite. The cards below
+        are common tendencies, not rules.
+      items:
+        - title: Stronger than expected
+          tone: down
+          text: Can be read as the Fed delaying rate cuts. If Treasury yields and the dollar rise, risk assets can come under pressure.
+        - title: Weaker than expected
+          tone: up
+          text: Can strengthen expectations of earlier or larger rate cuts. If yields and the dollar ease, risk assets can find support.
+        - title: Very weak or mixed
+          tone: neutral
+          text: Clear weakness can also be read as a growth or recession worry. Then weak data can weigh on risk assets instead of supporting them.
+    - type: limits
+      shows:
+        - The overall picture of the labour market that month, and its direction against previous months
+        - How far the figure differed from the market's forecast
+        - Why volatility rises at the moment of release
+      not_proves:
+        - What the Fed will decide at its next meeting
+        - Which way price will move for good after the release
+        - That the first published figure is final; revisions can change the picture
+    - type: zones
+      paragraphs:
+        - >-
+          At the moment of release price can move sharply both ways within a short time. The long wicks
+          this leaves can reach into and back out of a nearby **support or resistance zone**. Reading
+          the zone as **a band** rather than a single line helps to tell these sudden wicks apart from
+          a breakout.
+        - >-
+          It is sounder to look at the release candle's **close** and the next candles than at its
+          wick. A move that looks sharp on the 1H chart can be a single wick inside the zone on the 4H
+          or daily chart.
+    - type: box
+      title: Crypto trades 24/7, the data comes at a set time
+      text: >-
+        The crypto market is open at release time and the reaction usually shows in the first minutes.
+        But the move can change direction when US stock markets open an hour later. The first reaction
+        should not be read as the final one.
+  confusions:
+    - id: inflation-cpi-pce
+      text: Average hourly earnings measure wage growth; inflation data measures the overall change in prices. They are read together but are not the same thing.
+    - id: fed-rate-decisions
+      text: Jobs data does not decide the Fed's move; it is one of the inputs the decision weighs.
+  key_points:
+    - The nonfarm payrolls report usually comes on the first Friday of the month at 08:30 ET.
+    - Jobless claims are published every Thursday at 08:30 ET.
+    - Markets compare the figure with the forecast; revisions shape the reaction too.
+    - Strong data is often read as a tighter Fed outlook, but that is not a rule.
+  svg_labels:
+    zone: Resistance zone
+    release: "Release: 08:30 ET"
+    before_1: Before the release
+    before_2: a narrow range
+    spike_1: Long wicks
+    spike_2: both ways
+    after_1: The close and next
+    after_2: candles matter
+  svg_alt: "Release-day illustration: small candles in a narrow range before the release, a large candle with long wicks both ways at 08:30 ET whose upper wick reaches a resistance zone above, then calmer candles"
+  svg_caption: The dashed vertical line marks the moment of release and the orange band the resistance zone. The release candle's wick reaches into the zone but the close stays below it.

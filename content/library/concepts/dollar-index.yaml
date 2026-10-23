@@ -1,0 +1,213 @@
+id: dollar-index
+kind: macro
+order: 80
+related: [real-rates-and-dollar, bond-yields, equity-indices-risk-appetite, gold-silver-ratio]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: dolar-endeksi
+  name: Dolar endeksi (DXY)
+  alt_name: US Dollar Index (DXY)
+  summary: >-
+    Dolar endeksi (DXY), ABD dolarının altı büyük para birimine karşı değerini tek bir rakamla ölçer.
+    Sepetin yarısından fazlasını euro oluşturur. Kripto ve altınla sık sık ters yönde hareket ettiği
+    söylenir, ama bu ilişki sabit değildir.
+  sections:
+    - type: text
+      id: definition
+      title: Dolar endeksi nedir?
+      paragraphs:
+        - >-
+          **DXY**, ABD dolarının bir para birimi sepetine karşı ağırlıklı ortalama değerini gösteren
+          bir endekstir. Bugün Intercontinental Exchange (ICE) tarafından hesaplanır. Başlangıç değeri
+          **Mart 1973'te 100** olarak alınmıştır; endeksin 100'ün üzerinde olması doların o tarihe göre
+          sepete karşı daha değerli olduğunu gösterir.
+        - >-
+          Endeks yükseldiğinde dolar sepetteki para birimlerine karşı **güçleniyor**, düştüğünde
+          **zayıflıyor** demektir. Endeksin değeri onlarca yıl içinde geniş bir aralıkta dalgalanmıştır.
+    - type: bullets
+      id: basket
+      title: Sepette neler var?
+      intro: Sepet altı para biriminden oluşur ve ağırlıklar 1999'da euronun gelişinden bu yana değişmemiştir.
+      items:
+        - text: "**Euro (EUR):** yaklaşık %57,6. Endeksin hareketinin büyük kısmı EUR/USD paritesinden gelir."
+          marker: accent
+        - text: "**Japon yeni (JPY)** yaklaşık %13,6, **İngiliz sterlini (GBP)** yaklaşık %11,9."
+          marker: neutral
+        - text: "**Kanada doları (CAD)** yaklaşık %9,1, **İsveç kronu (SEK)** yaklaşık %4,2, **İsviçre frangı (CHF)** yaklaşık %3,6."
+          marker: neutral
+        - text: Çin yuanı ya da Meksika pesosu gibi bugün ABD ticaretinde büyük yer tutan para birimleri sepette yoktur. DXY bu yüzden doların genel değerinin dar bir ölçüsüdür.
+          marker: down
+    - type: bullets
+      id: drivers
+      title: DXY'yi ne hareket ettirir?
+      items:
+        - text: "**Faiz farkları:** ABD faizlerinin diğer ülkelere göre yükselmesi ya da yükseleceği beklentisi, doları çoğu zaman güçlendirir. Fed beklentileri ve tahvil faizleri bu yüzden yakından izlenir."
+          marker: neutral
+        - text: "**Risk iştahı:** piyasada korku arttığında dolar sıklıkla güvenli liman olarak talep görür. Risk iştahı yüksekken bu talep azalabilir."
+          marker: neutral
+        - text: "**Diğer ekonomiler:** sepet görece bir ölçü olduğu için euro bölgesi ya da Japonya'daki gelişmeler de endeksi hareket ettirir. Dolar, kendi tarafında hiçbir şey değişmeden de güçlenebilir."
+          marker: neutral
+    - type: scenarios
+      id: crypto-gold
+      title: Kripto ve altınla ters ilişki
+      intro: >-
+        Güçlü doların kripto ve altın üzerinde baskı yarattığı sık söylenir. Bu bir eğilimdir;
+        ilişkinin gücü ve hatta yönü dönemden döneme değişir.
+      items:
+        - title: Sık görülen tablo
+          tone: down
+          text: Dolar güçlenirken finansman koşulları sıkılaşabilir ve dolar cinsinden fiyatlanan varlıklar diğer para birimlerindeki alıcılar için pahalılaşır. Kripto ve altın bu dönemlerde baskı görebilir.
+        - title: Ters tablo
+          tone: up
+          text: Dolar zayıflarken daha gevşek finansman koşulları ve daha yüksek risk iştahı, kripto ve altın için destekleyici bir ortam olarak okunabilir.
+        - title: İlişkinin bozulduğu dönemler
+          tone: neutral
+          text: Kriz anlarında dolar ve altın birlikte yükselebilir. Kripto da kendi gündemine bağlı haberlerle doların yönünden bağımsız hareket edebilir.
+    - type: limits
+      shows:
+        - Doların altı büyük para birimine karşı genel yönünü
+        - Faiz farkları ve risk iştahındaki değişimin dolara nasıl yansıdığını
+        - Kripto ve altın için makro bağlamın sıkılaşma mı gevşeme mi yönünde olduğunu
+      not_proves:
+        - Doların tüm para birimlerine karşı aynı yönde hareket ettiğini
+        - DXY yükseldiğinde kriptonun ya da altının düşeceğini
+        - Geçmişteki ters ilişkinin bugün de aynı güçte geçerli olduğunu
+    - type: zones
+      paragraphs:
+        - >-
+          DXY de her grafik gibi okunabilir; geçmişte tepki verdiği **destek ve direnç bölgeleri**
+          vardır. DXY'nin önemli bir bölgeyi test ettiği dönemler, kriptodaki hareketlere makro bağlam
+          ekleyebilir.
+        - >-
+          Bu bağlam kripto grafiğindeki bölgelerin yerini değiştirmez. Kriptoda bir bölgenin tutup
+          tutmadığı, o bölgenin **bir bant** olarak ve 1H, 4H ya da günlük **kapanışlarla**
+          değerlendirilmesiyle anlaşılır; DXY yalnızca arka plandaki rüzgârı anlatır.
+  confusions:
+    - id: real-rates-and-dollar
+      text: DXY doların diğer para birimlerine karşı değerini ölçer; reel faizler ise doları etkileyen etkenlerden biridir.
+  key_points:
+    - DXY, doların altı para biriminden oluşan bir sepete karşı değerini ölçer.
+    - Sepetin yaklaşık %57,6'sı eurodur; endeks büyük ölçüde EUR/USD ile hareket eder.
+    - Faiz farkları ve risk iştahı DXY'nin başlıca belirleyicileridir.
+    - Kripto ve altınla ters ilişki bir eğilimdir, sabit bir kural değildir.
+  svg_labels:
+    title: DXY sepetindeki ağırlıklar
+    eur: Euro (EUR)
+    jpy: Japon yeni (JPY)
+    gbp: İngiliz sterlini (GBP)
+    cad: Kanada doları (CAD)
+    sek: İsveç kronu (SEK)
+    chf: İsviçre frangı (CHF)
+    p_eur: "%57,6"
+    p_jpy: "%13,6"
+    p_gbp: "%11,9"
+    p_cad: "%9,1"
+    p_sek: "%4,2"
+    p_chf: "%3,6"
+  svg_alt: "Dolar endeksi sepeti: altı para biriminin ağırlıklarını gösteren yatay çubuklar; euro yaklaşık yüzde 57,6 ile en uzun çubuk, ardından Japon yeni, İngiliz sterlini, Kanada doları, İsveç kronu ve İsviçre frangı geliyor"
+  svg_caption: Her çubuk bir para biriminin DXY içindeki ağırlığını gösterir. Turuncu çubuk euronun tek başına sepetin yarısından fazlasını oluşturduğunu vurgular.
+
+en:
+  slug: dollar-index
+  name: The dollar index (DXY)
+  summary: >-
+    The dollar index (DXY) measures the US dollar against six major currencies in a single number. The
+    euro makes up more than half of the basket. It is often said to move against crypto and gold, but
+    that link is not constant.
+  sections:
+    - type: text
+      id: definition
+      title: What is the dollar index?
+      paragraphs:
+        - >-
+          **DXY** is an index of the US dollar's weighted average value against a basket of currencies.
+          Today it is calculated by Intercontinental Exchange (ICE). Its base value was set at **100 in
+          March 1973**; a reading above 100 means the dollar is worth more against the basket than it
+          was then.
+        - >-
+          When the index rises, the dollar is **strengthening** against the currencies in the basket;
+          when it falls, the dollar is **weakening**. Its value has varied widely over the decades.
+    - type: bullets
+      id: basket
+      title: What is in the basket?
+      intro: The basket holds six currencies, and the weights have not changed since the euro arrived in 1999.
+      items:
+        - text: "**Euro (EUR):** about 57.6%. Most of the index's movement comes from EUR/USD."
+          marker: accent
+        - text: "**Japanese yen (JPY)** about 13.6%, **British pound (GBP)** about 11.9%."
+          marker: neutral
+        - text: "**Canadian dollar (CAD)** about 9.1%, **Swedish krona (SEK)** about 4.2%, **Swiss franc (CHF)** about 3.6%."
+          marker: neutral
+        - text: Currencies that now carry a large share of US trade, such as the Chinese yuan or the Mexican peso, are not in the basket. That makes DXY a narrow measure of the dollar's overall value.
+          marker: down
+    - type: bullets
+      id: drivers
+      title: What moves DXY?
+      items:
+        - text: "**Rate differentials:** US rates rising against other countries, or expected to, often strengthen the dollar. That is why Fed expectations and Treasury yields are watched closely."
+          marker: neutral
+        - text: "**Risk appetite:** when fear rises in markets, the dollar is often sought as a safe haven. When risk appetite is high, that demand can fade."
+          marker: neutral
+        - text: "**Other economies:** the basket is a relative measure, so events in the euro area or Japan move the index too. The dollar can strengthen without anything changing on the US side."
+          marker: neutral
+    - type: scenarios
+      id: crypto-gold
+      title: The inverse link with crypto and gold
+      intro: >-
+        A strong dollar is often said to weigh on crypto and gold. It is a tendency; the strength and
+        even the direction of the link change from one period to another.
+      items:
+        - title: The common picture
+          tone: down
+          text: As the dollar strengthens, financial conditions can tighten and assets priced in dollars become dearer for buyers in other currencies. Crypto and gold can come under pressure in these periods.
+        - title: The reverse picture
+          tone: up
+          text: As the dollar weakens, looser financial conditions and stronger risk appetite can be read as a supportive backdrop for crypto and gold.
+        - title: When the link breaks down
+          tone: neutral
+          text: In a crisis the dollar and gold can rise together. Crypto can also move on its own news, regardless of the dollar's direction.
+    - type: limits
+      shows:
+        - The dollar's overall direction against six major currencies
+        - How changes in rate differentials and risk appetite show up in the dollar
+        - Whether the macro backdrop for crypto and gold is tightening or easing
+      not_proves:
+        - That the dollar is moving the same way against every currency
+        - That crypto or gold will fall when DXY rises
+        - That the past inverse link holds with the same strength today
+    - type: zones
+      paragraphs:
+        - >-
+          DXY can be read like any chart; it has **support and resistance zones** where it has reacted
+          before. Periods when DXY is testing an important zone can add macro context to moves in
+          crypto.
+        - >-
+          That context does not move the zones on a crypto chart. Whether a crypto zone holds is judged
+          by reading it as **a band** and by 1H, 4H or daily **closes**; DXY only describes the wind in
+          the background.
+  confusions:
+    - id: real-rates-and-dollar
+      text: DXY measures the dollar against other currencies; real rates are one of the forces that move the dollar.
+  key_points:
+    - DXY measures the dollar against a basket of six currencies.
+    - About 57.6% of the basket is the euro; the index largely moves with EUR/USD.
+    - Rate differentials and risk appetite are the main drivers of DXY.
+    - The inverse link with crypto and gold is a tendency, not a fixed rule.
+  svg_labels:
+    title: Weights in the DXY basket
+    eur: Euro (EUR)
+    jpy: Japanese yen (JPY)
+    gbp: British pound (GBP)
+    cad: Canadian dollar (CAD)
+    sek: Swedish krona (SEK)
+    chf: Swiss franc (CHF)
+    p_eur: "57.6%"
+    p_jpy: "13.6%"
+    p_gbp: "11.9%"
+    p_cad: "9.1%"
+    p_sek: "4.2%"
+    p_chf: "3.6%"
+  svg_alt: "The dollar index basket: horizontal bars showing the weights of six currencies; the euro is the longest bar at about 57.6 per cent, followed by the Japanese yen, British pound, Canadian dollar, Swedish krona and Swiss franc"
+  svg_caption: Each bar shows one currency's weight in DXY. The orange bar highlights that the euro alone makes up more than half of the basket.

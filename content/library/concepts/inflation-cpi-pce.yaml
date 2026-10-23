@@ -1,0 +1,241 @@
+id: inflation-cpi-pce
+kind: macro
+order: 40
+related: [fed-rate-decisions, economic-calendar, priced-in, real-rates-and-dollar]
+example: null
+updated: 2026-10-23
+event_keywords: [CPI, TÜFE, PCE, PPI, ÜFE, enflasyon, inflation]
+event_countries: [US]
+
+tr:
+  slug: enflasyon-verileri
+  name: Enflasyon verileri (CPI, PCE)
+  alt_name: Inflation data (CPI, PCE)
+  summary: >-
+    ABD'de enflasyon her ay iki ana veriyle izlenir: BLS'nin yayımladığı tüketici fiyat endeksi (CPI)
+    ve BEA'nın yayımladığı kişisel tüketim harcamaları fiyat endeksi (PCE). Fed'in enflasyon hedefi
+    PCE'ye göre tanımlıdır. Piyasalar manşet ve çekirdek değerleri, aylık ve yıllık değişimleri
+    beklentiyle karşılaştırır.
+  sections:
+    - type: text
+      id: cpi
+      title: Tüketici fiyat endeksi (CPI)
+      paragraphs:
+        - >-
+          **CPI** (Consumer Price Index, Türkçede TÜFE karşılığı), kentte yaşayan tüketicilerin bir mal
+          ve hizmet sepeti için ödediği fiyatların değişimini ölçer. ABD Çalışma İstatistikleri Bürosu
+          (**BLS**) tarafından her ay, genellikle ayın ortasına yakın bir günde, bir önceki ayın verisi
+          olarak yayımlanır. Açıklama saati **08:30 ET**'dir; yaz saatinde 12:30 UTC, kışın 13:30 UTC.
+        - >-
+          **Manşet** CPI sepetteki her şeyi kapsar. **Çekirdek** CPI ise fiyatları çok oynak olan gıda
+          ve enerjiyi dışarıda bırakır. Enerji fiyatlarındaki sert bir hareket manşeti kısa sürede
+          değiştirebilir; çekirdek değer, fiyat artışlarının genele ne kadar yayıldığına dair daha
+          istikrarlı bir tablo verir. Piyasalar çoğu zaman çekirdek değere daha çok dikkat eder.
+    - type: bullets
+      id: mm-yy
+      title: Aylık ve yıllık değişim
+      items:
+        - text: "**Aylık değişim (a/a):** bu ayın endeksinin bir önceki aya göre değişimi. Mevsimsel etkilerden arındırılmış olarak verilir ve son eğilimi daha hızlı gösterir."
+          marker: neutral
+        - text: "**Yıllık değişim (y/y):** endeksin bir yıl önceki aynı aya göre değişimi. Kabaca son on iki aylık değişimin toplamıdır."
+          marker: neutral
+        - text: "**Baz etkisi:** bir yıl önceki ayda büyük bir artış varsa, o ay hesaptan çıktığında yıllık değişim, bu ayın artışı küçük olmasa da düşebilir."
+          marker: accent
+        - text: Takvimlerde beklenti genellikle hem manşet hem çekirdek için, hem aylık hem yıllık değişim için verilir. Değerler bir ondalık basamağa yuvarlandığı için **0,1 puanlık** bir fark bile sürpriz sayılabilir.
+          marker: neutral
+    - type: text
+      id: ppi
+      title: Üretici fiyat endeksi (PPI)
+      paragraphs:
+        - >-
+          **PPI** (Producer Price Index, ÜFE karşılığı) da BLS tarafından her ay yayımlanır ve yurt içi
+          üreticilerin sattıkları mal ve hizmetler için aldıkları fiyatların değişimini ölçer. Açıklama
+          saati yine 08:30 ET'dir. Bazen tüketiciye yansıyacak fiyat baskısının erken bir işareti olarak
+          okunur.
+        - >-
+          PCE fiyat endeksinin bazı kalemleri CPI ve PPI verilerinden türetilir. Bu yüzden iki veri de
+          açıklandıktan sonra ekonomistler PCE'yi daha isabetli tahmin edebilir; PCE'nin sürprizleri
+          çoğu zaman CPI'ınkinden küçük kalır.
+    - type: text
+      id: pce
+      title: PCE fiyat endeksi
+      paragraphs:
+        - >-
+          **PCE fiyat endeksi** (Personal Consumption Expenditures), ABD Ekonomik Analiz Bürosu
+          (**BEA**) tarafından her ay, kişisel gelir ve harcamalar raporunun içinde, genellikle ayın son
+          günlerinde 08:30 ET'de yayımlanır. Fed, uzun vadeli yüzde 2'lik enflasyon hedefini bu endekse
+          göre tanımlar; bu yüzden **Fed'in tercih ettiği ölçü** olarak bilinir.
+        - >-
+          **Çekirdek PCE** de gıda ve enerjiyi dışarıda bırakır. PCE, CPI'dan daha geniş bir harcama
+          kapsamına sahiptir ve kalemlerin ağırlıkları farklıdır; örneğin konut kalemi PCE'de daha az
+          ağırlık taşır. Bu yüzden iki endeksin değerleri aynı dönemde birbirinden farklı olabilir.
+    - type: bullets
+      id: why-crypto
+      title: Kripto neden tepki verebilir?
+      items:
+        - text: Beklentiden yüksek enflasyon, faizlerin daha uzun süre yüksek kalabileceği beklentisini güçlendirebilir; düşük enflasyon tersini.
+          marker: neutral
+        - text: Faiz beklentisindeki değişim çoğu zaman **dolara** ve **tahvil faizlerine** yansır; bunlar da riskli varlıklara olan iştahı etkileyebilir.
+          marker: neutral
+        - text: Kripto 7/24 işlem gördüğü için tepki açıklama anında başlar ve ilk dakikalarda iki yöne de uzun fitiller görülebilir.
+          marker: down
+      note: >-
+        Bunlar eğilimlerdir, kural değildir. Piyasanın o dönemde enflasyona mı, büyümeye mi, başka bir
+        konuya mı odaklandığına göre aynı sürpriz farklı tepkiler doğurabilir.
+    - type: limits
+      shows:
+        - Fiyatların genel düzeyinin son ayda ve son bir yılda ne kadar değiştiğini
+        - Verinin beklentiden ne kadar saptığını ve bu sapmanın manşette mi, çekirdekte mi olduğunu
+        - Faiz beklentilerinin hangi yönde değişebileceğine dair bir ipucunu
+      not_proves:
+        - Fed'in bir sonraki toplantıda ne karar vereceğini
+        - Kriptonun ya da başka bir varlığın veriden sonra hangi yöne gideceğini
+        - Tek bir ayın verisinin bir eğilim başlattığını; aylık veriler oynaktır ve sonradan düzeltilebilir
+    - type: zones
+      paragraphs:
+        - >-
+          Enflasyon verisinin açıklandığı dakikalarda fiyat bir destek ya da direnç bölgesinin ötesine
+          fitil atabilir. Bölgeyi **bir bant** olarak okumak ve tepkiyi açıklamadan sonraki 1H ya da 4H
+          **mum kapanışıyla** değerlendirmek, anlık hareketi kalıcı bir kırılımdan ayırmaya yardımcı
+          olur.
+        - >-
+          CPI genellikle PCE'den önce açıklanır ve çoğu zaman daha büyük bir tepki görür. Haftalık
+          takvimde bir enflasyon verisi varken, fiyatın yakınındaki bölgeleri not etmek, açıklama
+          sırasında tepkinin nerede yavaşlayabileceğine dair bir referans verir.
+  confusions:
+    - id: fed-rate-decisions
+      text: Enflasyon verisi Fed'in kararını doğrudan belirlemez; Fed'in hedefini ve piyasanın faiz beklentisini etkileyen girdilerden biridir.
+    - id: priced-in
+      text: Verinin yüksek ya da düşük olması değil, beklentiden sapması tepkinin asıl kaynağıdır.
+  key_points:
+    - CPI'ı BLS, PCE fiyat endeksini BEA her ay yayımlar; ikisi de çoğunlukla 08:30 ET'de gelir.
+    - Çekirdek değerler gıda ve enerjiyi dışarıda bırakır; piyasalar çoğu zaman çekirdeğe daha çok bakar.
+    - Fed'in yüzde 2'lik hedefi PCE'ye göre tanımlıdır.
+    - Aylık değişim son eğilimi, yıllık değişim son on iki ayı gösterir; baz etkisi yıllık değeri değiştirebilir.
+  svg_labels:
+    yy: Yıllık değişim
+    headline: Manşet
+    core: Çekirdek
+    mm: Aylık değişim (manşet)
+    window: Son 12 ayın toplamı ≈ yıllık değişim
+  svg_alt: "Enflasyon verileri çizimi: üstte oynak bir manşet yıllık enflasyon çizgisi ve daha yumuşak bir çekirdek çizgi; altta her ayın aylık değişimini gösteren çubuklar ve son on iki ayı kapsayan bir parantez"
+  svg_caption: >-
+    Örnek verilerle çizilmiştir. Manşet çizgi gıda ve enerjinin etkisiyle daha oynaktır, turuncu
+    çekirdek çizgi daha yumuşak ilerler. Alttaki çubuklar aylık değişimi gösterir; son on iki ayın
+    toplamı kabaca yıllık değişimi verir.
+
+en:
+  slug: inflation-data
+  name: Inflation data (CPI, PCE)
+  summary: >-
+    In the US, inflation is followed every month through two main releases: the Consumer Price Index
+    (CPI) from the BLS and the Personal Consumption Expenditures (PCE) price index from the BEA. The
+    Fed's inflation goal is defined in terms of PCE. Markets compare the headline and core figures, and
+    the monthly and yearly changes, with expectations.
+  sections:
+    - type: text
+      id: cpi
+      title: The Consumer Price Index (CPI)
+      paragraphs:
+        - >-
+          **CPI** (Consumer Price Index) measures the change in prices that urban consumers pay for a
+          basket of goods and services. It is published monthly by the US Bureau of Labor Statistics
+          (**BLS**), usually around the middle of the month, for the previous month. It is released at
+          **08:30 ET**; 12:30 UTC during US daylight saving time and 13:30 UTC in winter.
+        - >-
+          **Headline** CPI covers everything in the basket. **Core** CPI leaves out food and energy,
+          whose prices are very volatile. A sharp move in energy prices can change the headline figure
+          quickly; the core figure gives a steadier picture of how widely price rises have spread.
+          Markets often pay more attention to the core figure.
+    - type: bullets
+      id: mm-yy
+      title: Monthly and yearly change
+      items:
+        - text: "**Monthly change (m/m):** this month's index compared with the previous month. It is seasonally adjusted and shows the recent trend sooner."
+          marker: neutral
+        - text: "**Yearly change (y/y):** the index compared with the same month a year earlier. Roughly the sum of the last twelve monthly changes."
+          marker: neutral
+        - text: "**Base effect:** if the same month a year ago had a large rise, the yearly change can fall when that month drops out of the calculation, even if this month's rise is not small."
+          marker: accent
+        - text: Calendars usually give forecasts for both headline and core, and for both the monthly and yearly change. Because the figures are rounded to one decimal place, even a **0.1-point** difference can count as a surprise.
+          marker: neutral
+    - type: text
+      id: ppi
+      title: The Producer Price Index (PPI)
+      paragraphs:
+        - >-
+          **PPI** (Producer Price Index) is also published monthly by the BLS and measures the change in
+          prices that domestic producers receive for the goods and services they sell. It is also
+          released at 08:30 ET. It is sometimes read as an early sign of price pressure that may reach
+          consumers.
+        - >-
+          Some components of the PCE price index are derived from CPI and PPI data. So once both are
+          out, economists can estimate PCE more accurately; PCE surprises are often smaller than CPI
+          surprises.
+    - type: text
+      id: pce
+      title: The PCE price index
+      paragraphs:
+        - >-
+          The **PCE price index** (Personal Consumption Expenditures) is published monthly by the US
+          Bureau of Economic Analysis (**BEA**) as part of the personal income and outlays report,
+          usually in the last days of the month, at 08:30 ET. The Fed defines its longer-run 2 per cent
+          inflation goal in terms of this index, which is why it is known as **the Fed's preferred
+          gauge**.
+        - >-
+          **Core PCE** also leaves out food and energy. PCE covers a wider range of spending than CPI and
+          weights its components differently; housing, for example, carries less weight in PCE. So the
+          two indices can show different figures for the same period.
+    - type: bullets
+      id: why-crypto
+      title: Why crypto can react
+      items:
+        - text: Higher-than-expected inflation can strengthen the expectation that rates stay high for longer; lower inflation the opposite.
+          marker: neutral
+        - text: A change in rate expectations often shows in the **dollar** and in **bond yields**; these in turn can affect appetite for risk assets.
+          marker: neutral
+        - text: Crypto trades 24/7, so the reaction starts the moment the data are released, and long wicks in both directions can appear in the first minutes.
+          marker: down
+      note: >-
+        These are tendencies, not rules. The same surprise can bring different reactions depending on
+        whether the market is focused on inflation, growth or something else at the time.
+    - type: limits
+      shows:
+        - How much the general level of prices has changed over the last month and the last year
+        - How far the release differs from the forecast, and whether the miss is in headline or core
+        - A hint about which way rate expectations may shift
+      not_proves:
+        - What the Fed will decide at its next meeting
+        - Which way crypto or any other asset will move after the release
+        - That one month's figure starts a trend; monthly data are volatile and can be revised
+    - type: zones
+      paragraphs:
+        - >-
+          In the minutes after an inflation release, price can wick beyond a support or resistance zone.
+          Reading the zone as **a band** and judging the reaction by the 1H or 4H **candle close** after
+          the release helps separate a brief move from a lasting breakout.
+        - >-
+          CPI usually comes out before PCE and often sees a bigger reaction. When an inflation release is
+          on the weekly calendar, noting the zones near price gives a reference for where the reaction
+          may slow down during the release.
+  confusions:
+    - id: fed-rate-decisions
+      text: Inflation data do not decide the Fed's move directly; they are one of the inputs that shape the Fed's view and the market's rate expectations.
+    - id: priced-in
+      text: It is not whether a figure is high or low but how far it differs from the forecast that is the main source of the reaction.
+  key_points:
+    - The BLS publishes CPI and the BEA publishes the PCE price index each month; both mostly come at 08:30 ET.
+    - Core figures leave out food and energy; markets often look at core more closely.
+    - The Fed's 2 per cent goal is defined in terms of PCE.
+    - The monthly change shows the recent trend, the yearly change the last twelve months; base effects can move the yearly figure.
+  svg_labels:
+    yy: Yearly change
+    headline: Headline
+    core: Core
+    mm: Monthly change (headline)
+    window: Sum of the last 12 months ≈ yearly change
+  svg_alt: "Inflation data illustration: at the top, a volatile headline yearly inflation line and a smoother core line; below, bars showing each month's change and a bracket covering the last twelve months"
+  svg_caption: >-
+    Drawn with illustrative data. The headline line is more volatile because of food and energy; the
+    orange core line moves more smoothly. The bars below show the monthly change; the sum of the last
+    twelve roughly gives the yearly change.

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <line class="s-guide" x1="50" y1="40" x2="50" y2="262" stroke-width="1.2"/>
+  <line class="s-guide" x1="50" y1="262" x2="540" y2="262" stroke-width="1.2"/>
+  <text class="t-label" x="50" y="30" text-anchor="middle">{{yield}}</text>
+  <g class="s-guide" stroke-width="1">
+    <line x1="80" y1="262" x2="80" y2="267"/><line x1="190" y1="262" x2="190" y2="267"/><line x1="300" y1="262" x2="300" y2="267"/><line x1="410" y1="262" x2="410" y2="267"/><line x1="520" y1="262" x2="520" y2="267"/>
+  </g>
+  <g class="t-label" text-anchor="middle">
+    <text x="80" y="284">{{m3}}</text><text x="190" y="284">{{y2}}</text><text x="300" y="284">{{y5}}</text><text x="410" y="284">{{y10}}</text><text x="520" y="284">{{y30}}</text>
+  </g>
+  <text class="t-label" x="300" y="308" text-anchor="middle">{{maturity}}</text>
+  <polyline class="s-up" points="80,236 190,204 300,180 410,160 520,148" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline class="s-down" points="80,70 190,78 300,102 410,112 520,108" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point">
+    <circle cx="80" cy="236" r="3.5"/><circle cx="190" cy="204" r="3.5"/><circle cx="300" cy="180" r="3.5"/><circle cx="410" cy="160" r="3.5"/><circle cx="520" cy="148" r="3.5"/>
+    <circle cx="80" cy="70" r="3.5"/><circle cx="190" cy="78" r="3.5"/><circle cx="300" cy="102" r="3.5"/><circle cx="410" cy="112" r="3.5"/><circle cx="520" cy="108" r="3.5"/>
+  </g>
+  <line class="s-guide" x1="196" y1="78" x2="416" y2="78" stroke-width="1" stroke-dasharray="3 4"/>
+  <line class="s-accent" x1="410" y1="82" x2="410" y2="106" stroke-width="1.6"/>
+  <polyline class="s-accent" points="406,86 410,81 414,86" fill="none" stroke-width="1.6"/>
+  <polyline class="s-accent" points="406,102 410,107 414,102" fill="none" stroke-width="1.6"/>
+  <g class="t-accent">
+    <text x="426" y="76">{{spread_1}}</text>
+    <text x="426" y="92">{{spread_2}}</text>
+  </g>
+  <text class="t-down" x="72" y="54">{{inverted}}</text>
+  <text class="f-up" x="520" y="180" text-anchor="end">{{normal}}</text>
+</svg>

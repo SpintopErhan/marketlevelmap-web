@@ -235,6 +235,9 @@ for (const name of (existsSync(CONCEPTS) ? readdirSync(CONCEPTS) : []).filter((n
   if (!categories.some((c) => c.kind === p.kind)) fail(where, `no category for kind "${p.kind}"`);
   if (patterns.some((x) => x.id === id)) fail(where, `id "${id}" is also a pattern`);
   loadDate(where, p);
+  // Optional: words that, found in a weekly event's title, link that event to this page (see assets/library-events.json).
+  if (p.event_keywords != null && !isTextList(p.event_keywords)) fail(where, "event_keywords must be a list of words");
+  if (p.event_countries != null && !(Array.isArray(p.event_countries) && p.event_countries.every((x) => /^[A-Z]{2,6}$/.test(x)))) fail(where, "event_countries must be a list of country codes (US, CRYPTO …)");
   p.type = "concept";
   p.svg = loadSvg(where, id);
   const svgKeys = svgKeysOf(p.svg);
@@ -572,6 +575,15 @@ const sitemap = [
   `</urlset>`, "",
 ].join("\n");
 files.set(join(ROOT, "sitemap.xml"), sitemap);
+
+// Weekly events link to the library: an event whose title contains one of a page's event_keywords
+// (case-insensitive, whole words), and whose country is in event_countries if given, shows a link to that
+// page (assets/event-links.js, used by weekly-events.html and index.html).
+const eventLinks = sorted(concepts.filter((p) => p.event_keywords)).map((p) => ({
+  id: p.id, keywords: p.event_keywords, countries: p.event_countries || null,
+  tr: { name: p.tr.name, url: urls.pattern(p, "tr") }, en: { name: p.en.name, url: urls.pattern(p, "en") },
+}));
+files.set(join(ROOT, "assets/library-events.json"), `${JSON.stringify({ generated: "scripts/build-library.mjs", links: eventLinks }, null, 1)}\n`);
 
 // Every library page lives under these folders, so a renamed or removed page is cleaned up too.
 const OWNED = LANGS.map((lang) => join(ROOT, BASE[lang]));

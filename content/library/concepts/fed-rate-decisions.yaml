@@ -1,0 +1,260 @@
+id: fed-rate-decisions
+kind: macro
+order: 30
+related: [priced-in, inflation-cpi-pce, economic-calendar, bond-yields]
+example: null
+updated: 2026-10-23
+event_keywords: [FOMC, Fed, "faiz kararı", "rate decision", "Fed tutanakları", "FOMC minutes"]
+event_countries: [US]
+
+tr:
+  slug: fed-faiz-kararlari
+  name: Fed faiz kararları (FOMC)
+  alt_name: Fed rate decisions (FOMC)
+  summary: >-
+    ABD Merkez Bankası Fed'in politika faizini, Federal Açık Piyasa Komitesi (FOMC) yılda sekiz planlı
+    toplantıda belirler. Karar 14:00 ET'de açıklanır, 14:30 ET'de basın toplantısı yapılır. Piyasalar
+    kararın yanında metni, projeksiyonları ve sonraki adımlara dair işaretleri beklentiyle karşılaştırır.
+  sections:
+    - type: text
+      id: definition
+      title: FOMC nedir, neye karar verir?
+      paragraphs:
+        - >-
+          **FOMC** (Federal Open Market Committee), Fed'in para politikasını belirleyen komitedir. Oy
+          hakkı olan 12 üyesi vardır: Fed Yönetim Kurulu'nun yedi üyesi, New York Fed başkanı ve diğer
+          on bir bölgesel Fed başkanından dönüşümlü olarak dördü. Komite, Fed Başkanı'nın başkanlığında
+          toplanır.
+        - >-
+          Komitenin en çok izlenen kararı **federal fon oranı** için belirlediği hedef aralıktır. Bu,
+          bankaların birbirine gecelik borç verdiği faizin hedeflendiği çeyrek puan genişliğinde bir
+          aralıktır. Değişiklikler çoğunlukla 0,25 puanlık adımlarla yapılır; daha büyük adımlar da
+          görülmüştür. Komite bunun yanında Fed bilançosuna ilişkin kararlar da alır.
+    - type: steps
+      id: decision-day
+      title: Takvim ve karar günü
+      items:
+        - title: Yılda sekiz planlı toplantı
+          text: Toplantılar yaklaşık altı haftada bir yapılır ve çoğu iki gün sürer. Tarihler bir yıl önceden açıklanır; gerektiğinde plan dışı toplantı da yapılabilir.
+        - title: "14:00 ET: karar metni"
+          text: Kararın ve gerekçesinin yer aldığı metin toplantının son günü açıklanır. Bu saat yaz saatinde 18:00 UTC'ye, kış saatinde 19:00 UTC'ye denk gelir.
+        - title: "14:30 ET: basın toplantısı"
+          text: Fed Başkanı kararı anlatır ve soruları yanıtlar. Piyasalar burada sonraki adımlara dair ipuçları arar; tepki karar metninden sonra ikinci bir dalga olarak gelebilir.
+        - title: Mart, haziran, eylül ve aralık toplantıları
+          text: Bu dört toplantıda **Ekonomik Projeksiyonlar Özeti** (SEP) de yayımlanır. İçindeki **nokta grafiği** (dot plot), her katılımcının önümüzdeki yıllar için uygun gördüğü faiz düzeyini bir nokta olarak gösterir.
+        - title: Üç hafta sonra tutanaklar
+          text: Toplantı **tutanakları** (minutes) karardan üç hafta sonra, yine 14:00 ET'de yayımlanır. Komite içindeki görüş farklılıklarını daha ayrıntılı gösterir.
+    - type: text
+      id: market-expectations
+      title: Piyasanın beklentisi nasıl izlenir?
+      paragraphs:
+        - >-
+          Federal fon oranına bağlı **vadeli işlemlerin** fiyatları, piyasanın gelecekteki faiz düzeyi
+          hakkında ne beklediğini ima eder. Bu fiyatlardan hesaplanan **olasılık araçları**, bir sonraki
+          toplantıda faizin değişmemesine, indirilmesine ya da artırılmasına piyasanın ne olasılık
+          verdiğini gösterir.
+        - >-
+          Bu olasılıklar bir tahmin değil, o anki fiyatlamanın bir özetidir. Yeni verilerle ve
+          yetkililerin açıklamalarıyla günden güne değişebilir. Karar gününe gelindiğinde olasılık
+          yüzde yüze yakınsa, kararın kendisi büyük ölçüde fiyatlanmış olabilir; o zaman dikkat metne,
+          projeksiyonlara ve basın toplantısına kayar.
+    - type: bullets
+      id: what-markets-watch
+      title: Karar gününde neye bakılır?
+      items:
+        - text: "**Karar ve beklenti:** faiz kararının, piyasanın ima ettiği olasılıkla karşılaştırılması."
+          marker: neutral
+        - text: "**Metindeki değişiklikler:** bir önceki karar metnine göre eklenen ya da çıkarılan ifadeler."
+          marker: neutral
+        - text: "**Nokta grafiği:** projeksiyon toplantılarında, katılımcıların faiz yolu beklentisinin önceki projeksiyona göre nasıl değiştiği."
+          marker: accent
+        - text: "**Basın toplantısı:** sonraki adımlara dair verilen işaretler. Daha **güvercin** (gevşemeye yatkın) ya da daha **şahin** (sıkılaştırmaya yatkın) bir ton olarak okunabilir."
+          marker: neutral
+        - text: "**Karşı oylar:** kararın oy birliğiyle mi alındığı, karşı oy verenlerin hangi yönde ayrıştığı."
+          marker: neutral
+      note: >-
+        Faiz beklentileri dolar ve tahvil faizleri üzerinden risk iştahını etkileyebildiği için kripto
+        da Fed kararlarına sık tepki verir. Bu bir eğilimdir; tepkinin yönü ve büyüklüğü dönemden döneme
+        değişir.
+    - type: limits
+      shows:
+        - Fed'in politika faizini ve bundan sonraki adımlara bakışını
+        - Kararın ve yönlendirmenin piyasanın beklentisinden ne kadar saptığını
+        - Volatilitenin hangi saatlerde artabileceğini (karar metni ve basın toplantısı)
+      not_proves:
+        - Kripto ya da başka bir varlığın karardan sonra hangi yöne gideceğini
+        - Nokta grafiğindeki faiz yolunun gerçekleşeceğini; projeksiyonlar verilere göre değişir
+        - İlk tepkinin kalıcı olacağını; basın toplantısı ilk hareketi değiştirebilir
+    - type: zones
+      paragraphs:
+        - >-
+          Karar günü fiyat birkaç dakika içinde iki yöne de hareket edebilir: önce karar metnine, yarım
+          saat sonra basın toplantısına tepki verir. Bu sırada bir destek ya da direnç bölgesinin
+          ötesine atılan fitiller sık görülür. Bölgeyi **bir bant** olarak okumak ve kırılımı
+          toplantıdan sonraki 1H ya da 4H **mum kapanışıyla** değerlendirmek, bu dalgalanmaları
+          kırılımdan ayırmaya yardımcı olur.
+        - >-
+          Fiyatın karar gününe yakın olduğu bölgeler, tepkinin nerede yavaşlayabileceğine dair bir
+          referans verir. Karar gününden sonra bölgenin korunup korunmadığı, olayın grafiğe nasıl
+          yansıdığını gösterir.
+  confusions:
+    - id: priced-in
+      text: Kararın kendisi çoğu zaman önceden fiyatlanmıştır; tepkiyi genellikle beklenmeyen kısım, yani metin, projeksiyonlar ve basın toplantısı belirler.
+    - id: bond-yields
+      text: Tahvil faizlerini piyasa belirler, federal fon oranını ise Fed; iki faiz ilişkilidir ama aynı şey değildir.
+  key_points:
+    - FOMC yılda sekiz planlı toplantıda federal fon oranı için hedef aralığı belirler.
+    - Karar 14:00 ET'de, basın toplantısı 14:30 ET'de; yaz saatine göre 18:00 ya da 19:00 UTC.
+    - Nokta grafiği mart, haziran, eylül ve aralık toplantılarında yayımlanır; tutanaklar üç hafta sonra gelir.
+    - Tepkiyi çoğu zaman kararın beklentiden ve önceki yönlendirmeden sapan kısmı belirler.
+  svg_labels:
+    year: Yılda sekiz planlı toplantı (tarihler her yıl değişir)
+    m1: Oca
+    m2: Şub
+    m3: Mar
+    m4: Nis
+    m5: May
+    m6: Haz
+    m7: Tem
+    m8: Ağu
+    m9: Eyl
+    m10: Eki
+    m11: Kas
+    m12: Ara
+    meeting: Toplantı
+    sep: Projeksiyonlar ve nokta grafiği
+    day: Karar günü ve sonrası (ABD Doğu saati)
+    statement: Karar metni
+    presser: Basın toplantısı
+    minutes: Tutanaklar
+    plus3: +3 hafta
+  svg_alt: "FOMC takvimi çizimi: üstte bir yıl boyunca yaklaşık altı haftada bir yapılan sekiz toplantı, mart, haziran, eylül ve aralık toplantıları ayrıca işaretli; altta karar günü 14:00 ET karar metni, 14:30 ET basın toplantısı ve üç hafta sonra tutanaklar"
+  svg_caption: >-
+    Şematiktir; toplantı tarihleri her yıl değişir. Turuncu noktalar projeksiyonların ve nokta
+    grafiğinin yayımlandığı toplantıları gösterir. Altta karar günü saatleri ET ve UTC olarak verilir
+    (yaz / kış saati).
+
+en:
+  slug: fed-rate-decisions
+  name: Fed rate decisions (FOMC)
+  summary: >-
+    The Federal Open Market Committee (FOMC) sets the US Federal Reserve's policy rate at eight
+    scheduled meetings a year. The decision is released at 14:00 ET and a press conference follows at
+    14:30 ET. Markets compare not only the decision but also the statement, the projections and hints
+    about next steps with expectations.
+  sections:
+    - type: text
+      id: definition
+      title: What is the FOMC and what does it decide?
+      paragraphs:
+        - >-
+          The **FOMC** (Federal Open Market Committee) is the committee that sets the Fed's monetary
+          policy. It has 12 voting members: the seven members of the Fed's Board of Governors, the
+          president of the New York Fed and four of the other eleven regional Fed presidents on a
+          rotating basis. It is chaired by the Fed Chair.
+        - >-
+          Its most watched decision is the target range for the **federal funds rate**. This is a range,
+          a quarter of a percentage point wide, for the rate at which banks lend to each other
+          overnight. Changes are usually made in steps of 0.25 points; larger steps have also been
+          seen. The committee also makes decisions about the Fed's balance sheet.
+    - type: steps
+      id: decision-day
+      title: The schedule and decision day
+      items:
+        - title: Eight scheduled meetings a year
+          text: Meetings are held roughly every six weeks and most last two days. Dates are published a year ahead; unscheduled meetings can be held if needed.
+        - title: "14:00 ET: the statement"
+          text: The statement with the decision and its reasoning is released on the last day of the meeting. That is 18:00 UTC during US daylight saving time and 19:00 UTC in winter.
+        - title: "14:30 ET: the press conference"
+          text: The Fed Chair explains the decision and takes questions. Markets look here for hints about next steps; the reaction can come as a second wave after the statement.
+        - title: The March, June, September and December meetings
+          text: At these four meetings the **Summary of Economic Projections** (SEP) is also published. Its **dot plot** shows, as one dot each, the rate level each participant sees as appropriate for the coming years.
+        - title: Minutes three weeks later
+          text: The **minutes** of the meeting are published three weeks after the decision, also at 14:00 ET. They show differences of view within the committee in more detail.
+    - type: text
+      id: market-expectations
+      title: How the market's expectation is followed
+      paragraphs:
+        - >-
+          Prices of **futures** tied to the federal funds rate imply what the market expects the rate to
+          be in the future. **Probability tools** calculated from these prices show what probability the
+          market gives to a hold, a cut or a hike at the next meeting.
+        - >-
+          These probabilities are not a forecast but a summary of current pricing. They can change from
+          day to day with new data and officials' remarks. If the probability is close to one hundred
+          per cent by decision day, the decision itself may be largely priced in; attention then shifts
+          to the statement, the projections and the press conference.
+    - type: bullets
+      id: what-markets-watch
+      title: What to look at on decision day
+      items:
+        - text: "**Decision versus expectation:** the rate decision compared with the market-implied probability."
+          marker: neutral
+        - text: "**Changes to the statement:** wording added or removed compared with the previous statement."
+          marker: neutral
+        - text: "**The dot plot:** at projection meetings, how participants' expected rate path has changed from the previous projections."
+          marker: accent
+        - text: "**The press conference:** the signals given about next steps. They can read as more **dovish** (leaning towards easing) or more **hawkish** (leaning towards tightening)."
+          marker: neutral
+        - text: "**Dissents:** whether the decision was unanimous, and which way any dissenting members leaned."
+          marker: neutral
+      note: >-
+        Because rate expectations can affect risk appetite through the dollar and bond yields, crypto
+        often reacts to Fed decisions too. This is a tendency; the direction and size of the reaction
+        vary from one period to another.
+    - type: limits
+      shows:
+        - The Fed's policy rate and its view of next steps
+        - How far the decision and guidance differ from the market's expectation
+        - At which times volatility may rise (the statement and the press conference)
+      not_proves:
+        - Which way crypto or any other asset will move after the decision
+        - That the rate path in the dot plot will happen; projections change with the data
+        - That the first reaction will hold; the press conference can change the first move
+    - type: zones
+      paragraphs:
+        - >-
+          On decision day price can move both ways within minutes: first in reaction to the statement,
+          then half an hour later to the press conference. Wicks beyond a support or resistance zone are
+          common at these times. Reading the zone as **a band** and judging a breakout by the 1H or 4H
+          **candle close** after the meeting helps separate these swings from a breakout.
+        - >-
+          The zones price is near going into decision day give a reference for where the reaction may
+          slow down. Whether the zone holds after decision day shows how the event played out on the
+          chart.
+  confusions:
+    - id: priced-in
+      text: The decision itself is often priced in beforehand; the reaction is usually decided by the unexpected part, namely the statement, the projections and the press conference.
+    - id: bond-yields
+      text: Bond yields are set by the market and the federal funds rate by the Fed; the two are related but not the same thing.
+  key_points:
+    - The FOMC sets the target range for the federal funds rate at eight scheduled meetings a year.
+    - The decision comes at 14:00 ET and the press conference at 14:30 ET; 18:00 or 19:00 UTC depending on daylight saving.
+    - The dot plot is published at the March, June, September and December meetings; minutes follow three weeks later.
+    - The reaction is often decided by how far the decision differs from expectations and earlier guidance.
+  svg_labels:
+    year: Eight scheduled meetings a year (dates change each year)
+    m1: Jan
+    m2: Feb
+    m3: Mar
+    m4: Apr
+    m5: May
+    m6: Jun
+    m7: Jul
+    m8: Aug
+    m9: Sep
+    m10: Oct
+    m11: Nov
+    m12: Dec
+    meeting: Meeting
+    sep: Projections and dot plot
+    day: Decision day and after (US Eastern Time)
+    statement: Statement
+    presser: Press conference
+    minutes: Minutes
+    plus3: +3 weeks
+  svg_alt: "FOMC schedule illustration: at the top, eight meetings held roughly every six weeks over a year, with the March, June, September and December meetings marked separately; below, decision day with the statement at 14:00 ET, the press conference at 14:30 ET and the minutes three weeks later"
+  svg_caption: >-
+    Schematic; meeting dates change each year. The orange dots mark the meetings where the projections
+    and dot plot are published. Below, decision-day times are given in ET and UTC (summer / winter
+    time).

@@ -1,0 +1,216 @@
+id: growth-data
+kind: macro
+order: 60
+related: [us-jobs-data, economic-calendar, priced-in, equity-indices-risk-appetite]
+example: null
+updated: 2026-10-23
+event_keywords: [GDP, GSYH, PMI, ISM, "retail sales", "perakende satış"]
+event_countries: [US]
+
+tr:
+  slug: buyume-verileri
+  name: Büyüme verileri (GSYH, PMI)
+  alt_name: GDP, PMI
+  summary: >-
+    Büyüme verileri, ABD ekonomisinin ne hızla genişlediğini ya da yavaşladığını gösterir. GSYH
+    üç ayda bir geçmişe dönük kapsamlı bir ölçü sunar; PMI anketleri ve perakende satışlar ise her ay
+    daha erken sinyal verir. Piyasalar bu verileri büyüme ve faiz beklentileri üzerinden okur.
+  sections:
+    - type: text
+      id: gdp
+      title: GSYH nedir?
+      paragraphs:
+        - >-
+          **Gayrisafi yurt içi hasıla (GSYH)**, bir ülkede belirli bir dönemde üretilen mal ve
+          hizmetlerin toplam değeridir. ABD'de Ekonomik Analiz Bürosu (BEA) tarafından **üç ayda bir**
+          yayımlanır. Manşet rakam, enflasyondan arındırılmış büyümenin bir önceki çeyreğe göre
+          değişiminin **yıllığa çevrilmiş** halidir. Yani çeyreklik büyüme, yıl boyunca aynı hızda
+          sürseydi ulaşılacak orana dönüştürülür.
+        - >-
+          Her çeyreğin verisi aşamalı olarak açıklanır: önce çeyrek bitiminden yaklaşık bir ay sonra
+          **öncü tahmin** (advance), ardından aylık aralarla **ikinci** ve **üçüncü tahmin** gelir.
+          Piyasa en çok öncü tahmine tepki verir; sonraki tahminler rakamı yukarı ya da aşağı
+          düzeltebilir. Açıklamalar genellikle ABD Doğu saatiyle **08:30**'da yapılır; bu saat yaz
+          saati uygulamasına göre 12:30 ya da 13:30 UTC'ye denk gelir.
+    - type: text
+      id: pmi
+      title: PMI nedir?
+      paragraphs:
+        - >-
+          **Satın alma yöneticileri endeksi (PMI)**, şirketlere sipariş, üretim, istihdam ve fiyatlar
+          hakkında sorulan anketlerden türetilir. Endeks **50 çizgisi** etrafında okunur: 50'nin
+          üzeri o alanda genişlemeyi, altı daralmayı gösterir. Uzaklık, değişimin ne kadar yaygın
+          olduğunu anlatır; büyümenin büyüklüğünü doğrudan ölçmez.
+        - >-
+          ABD'de iki ana PMI ailesi izlenir. **ISM** imalat PMI'ı genellikle ayın ilk iş günü, ISM
+          hizmet PMI'ı ise ayın üçüncü iş günü, ABD Doğu saatiyle 10:00'da yayımlanır. **S&P
+          Global** ise ay bitmeden önce **öncü (flash)** PMI'ları açıklar, ardından nihai rakamlar
+          gelir. Öncü PMI'lar o aya dair ilk verilerden biri olduğu için dikkat çeker.
+    - type: bullets
+      id: other-indicators
+      title: İzlenen diğer kalemler
+      items:
+        - text: "**Perakende satışlar:** ABD Nüfus Sayım Bürosu tarafından ayda bir, 08:30 ET'de açıklanır. Tüketici harcamasının ilk ölçülerinden biridir ve enflasyondan arındırılmamış (nominal) olarak verilir."
+          marker: neutral
+        - text: "**PMI alt kalemleri:** yeni siparişler talebin yönüne, fiyatlar kalemi maliyet baskısına dair ipucu verir. Manşet rakam kadar dikkat çekebilirler."
+          marker: neutral
+        - text: "**Revizyonlar:** hem GSYH hem perakende satışlar sonradan düzeltilebilir. İlk rakam her zaman son söz değildir."
+          marker: down
+    - type: scenarios
+      id: market-reading
+      title: Piyasa büyüme verisini nasıl okur?
+      intro: >-
+        Tepkiyi belirleyen, rakamın kendisinden çok **beklentiden (konsensüs) sapmasıdır**. Kriptoya
+        etkisi çoğu zaman faiz beklentisi, dolar ve genel risk iştahı üzerinden gelir. Aşağıdakiler
+        kural değil, sık görülen eğilimlerdir.
+      items:
+        - title: Beklentiden güçlü büyüme
+          tone: neutral
+          text: Ekonominin sağlam olduğu şeklinde okunabilir. Ama enflasyon kaygısı varken güçlü veri, faiz indirimlerinin gecikeceği beklentisini de güçlendirebilir.
+        - title: Beklentiden zayıf büyüme
+          tone: down
+          text: Yavaşlama ya da resesyon endişesi olarak okunursa riskli varlıklar üzerinde baskı oluşabilir.
+        - title: Zayıf ama ılımlı veri
+          tone: up
+          text: Yavaşlamanın sınırlı kaldığı ve faiz indirimine alan açtığı şeklinde okunursa riskli varlıklar destek bulabilir.
+    - type: limits
+      shows:
+        - Ekonominin genişleme mi yoksa daralma mı yönünde ilerlediğini
+        - Açıklanan rakamın piyasa beklentisinden ne kadar saptığını
+        - PMI'da 50 çizgisine göre değişimin yaygın mı yoksa sınırlı mı olduğunu
+      not_proves:
+        - Gelecek çeyreklerde büyümenin nasıl olacağını; GSYH geçmiş bir dönemi anlatır
+        - Fiyatın açıklamadan sonra hangi yönde ilerleyeceğini
+        - Tek bir PMI okumasının bir eğilim başlattığını
+    - type: zones
+      paragraphs:
+        - >-
+          Büyüme verilerinin açıklandığı saatlerde fiyat bir **destek ya da direnç bölgesine** hızla
+          girip çıkabilir. Bölgeyi **bir bant** olarak okumak, açıklama anındaki uzun fitilleri kalıcı
+          bir kırılımdan ayırmaya yardım eder.
+        - >-
+          ISM verileri ABD hisse piyasasının açılışından sonra, 10:00 ET'de geldiği için tepki
+          hisselerle birlikte şekillenebilir. Hareketi açıklama mumunun fitiliyle değil, 1H ya da 4H
+          **kapanışlarla** ve sonraki mumlarla değerlendirmek daha sağlıklıdır.
+  confusions:
+    - id: us-jobs-data
+      text: İstihdam verileri iş gücü piyasasını, büyüme verileri üretim ve harcamayı ölçer. İkisi çoğu zaman aynı yönü gösterir ama her zaman değil.
+  key_points:
+    - GSYH üç ayda bir, yıllığa çevrilmiş çeyreklik büyüme olarak açıklanır.
+    - GSYH öncü, ikinci ve üçüncü tahmin olarak üç aşamada yayımlanır.
+    - PMI'da 50'nin üzeri genişlemeyi, altı daralmayı gösterir.
+    - Piyasa rakamı beklentiyle karşılaştırır; aynı veri farklı bağlamda farklı okunabilir.
+  svg_labels:
+    pmi: PMI (aylık)
+    fifty: "50"
+    expansion: Genişleme
+    contraction: Daralma
+    cross_1: 50'nin altına
+    cross_2: iniş
+    months: Aylar
+  svg_alt: "PMI çizimi: aylık bir PMI çizgisi 50 çizgisinin üzerinde başlıyor, bir süre 50'nin altına inip daralma alanında kalıyor, sonra yeniden 50'nin üzerine çıkıyor"
+  svg_caption: Kesikli turuncu çizgi 50 sınırını, noktalar aylık okumaları gösterir. Çizginin üzerindeki alan genişlemeyi, altındaki alan daralmayı temsil eder; veriler örnektir.
+
+en:
+  slug: growth-data
+  name: Growth data (GDP, PMI)
+  summary: >-
+    Growth data shows how fast the US economy is expanding or slowing. GDP gives a broad,
+    backward-looking measure every quarter; PMI surveys and retail sales give earlier signals each
+    month. Markets read these figures through growth and rate expectations.
+  sections:
+    - type: text
+      id: gdp
+      title: What is GDP?
+      paragraphs:
+        - >-
+          **Gross domestic product (GDP)** is the total value of goods and services produced in a
+          country over a period. In the US it is published **quarterly** by the Bureau of Economic
+          Analysis (BEA). The headline figure is inflation-adjusted growth against the previous quarter,
+          **expressed as an annualised rate**. In other words, quarterly growth is converted into the
+          rate it would reach if it held at the same pace for a full year.
+        - >-
+          Each quarter's figure arrives in stages: first the **advance estimate**, about a month after
+          the quarter ends, then the **second** and **third estimates** at monthly intervals. Markets
+          react most to the advance estimate; later estimates can revise the figure up or down. The
+          releases usually come at **08:30** US Eastern time, which is 12:30 or 13:30 UTC depending on
+          US daylight saving time.
+    - type: text
+      id: pmi
+      title: What is a PMI?
+      paragraphs:
+        - >-
+          A **purchasing managers' index (PMI)** is built from surveys asking companies about orders,
+          output, employment and prices. It is read around the **50 line**: above 50 points to
+          expansion in that area, below 50 to contraction. The distance from 50 says how widespread the
+          change is; it does not measure the size of growth directly.
+        - >-
+          Two main PMI families are watched in the US. The **ISM** manufacturing PMI usually comes on
+          the first business day of the month and the ISM services PMI on the third business day, at
+          10:00 US Eastern time. **S&P Global** publishes **flash** PMIs before the month ends, with
+          final figures following later. Flash PMIs draw attention because they are among the first
+          readings on that month.
+    - type: bullets
+      id: other-indicators
+      title: Other figures worth watching
+      items:
+        - text: "**Retail sales:** released monthly at 08:30 ET by the US Census Bureau. One of the first measures of consumer spending, given in nominal terms (not adjusted for inflation)."
+          marker: neutral
+        - text: "**PMI sub-indices:** new orders hint at the direction of demand and the prices component at cost pressure. They can draw as much attention as the headline."
+          marker: neutral
+        - text: "**Revisions:** both GDP and retail sales can be revised later. The first figure is not always the last word."
+          marker: down
+    - type: scenarios
+      id: market-reading
+      title: How markets read growth data
+      intro: >-
+        What drives the reaction is less the figure itself than its **gap from the forecast
+        (consensus)**. The effect on crypto usually comes through rate expectations, the dollar and
+        overall risk appetite. The cards below are common tendencies, not rules.
+      items:
+        - title: Stronger growth than expected
+          tone: neutral
+          text: Can be read as a sign of a sound economy. But when inflation is a worry, strong data can also strengthen the view that rate cuts will be delayed.
+        - title: Weaker growth than expected
+          tone: down
+          text: If it is read as a slowdown or recession worry, risk assets can come under pressure.
+        - title: Softer but moderate data
+          tone: up
+          text: If it is read as a limited slowdown that leaves room for rate cuts, risk assets can find support.
+    - type: limits
+      shows:
+        - Whether the economy is moving towards expansion or contraction
+        - How far the figure differed from the market's forecast
+        - For a PMI, whether the change against the 50 line is widespread or limited
+      not_proves:
+        - How growth will turn out in the coming quarters; GDP describes a past period
+        - Which way price will move after the release
+        - That a single PMI reading starts a trend
+    - type: zones
+      paragraphs:
+        - >-
+          Around growth releases price can move quickly into and out of a **support or resistance
+          zone**. Reading the zone as **a band** helps to tell the long wicks at release time apart
+          from a lasting breakout.
+        - >-
+          ISM data comes at 10:00 ET, after the US stock market opens, so the reaction can take shape
+          together with equities. It is sounder to judge the move by 1H or 4H **closes** and the next
+          candles than by the release candle's wick.
+  confusions:
+    - id: us-jobs-data
+      text: Jobs data measures the labour market; growth data measures output and spending. They often point the same way, but not always.
+  key_points:
+    - GDP is released quarterly as an annualised quarter-on-quarter growth rate.
+    - "GDP comes in three stages: advance, second and third estimates."
+    - On a PMI, above 50 points to expansion and below 50 to contraction.
+    - Markets compare the figure with the forecast; the same data can be read differently in a different context.
+  svg_labels:
+    pmi: PMI (monthly)
+    fifty: "50"
+    expansion: Expansion
+    contraction: Contraction
+    cross_1: Drops
+    cross_2: below 50
+    months: Months
+  svg_alt: "PMI illustration: a monthly PMI line starts above the 50 line, drops below 50 and stays in contraction for a while, then rises back above 50"
+  svg_caption: The dashed orange line marks the 50 threshold and the dots the monthly readings. The area above the line stands for expansion, the area below for contraction; the data is illustrative.
