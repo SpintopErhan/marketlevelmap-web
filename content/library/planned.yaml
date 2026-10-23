@@ -1,29 +1,5 @@
-# Names of patterns that are referenced (related / confusions) but not written yet.
+# Names of patterns that are referenced (related / confusions) but not written yet, as
+#   <id>: { tr: <Turkish name>, en: <English name> }
 # Their cards are shown as plain text; once the pattern file exists they become links automatically.
-bearish-engulfing: { tr: Yutan Ayı, en: Bearish Engulfing }
-hammer: { tr: Çekiç, en: Hammer }
-inverted-hammer: { tr: Ters Çekiç, en: Inverted Hammer }
-doji: { tr: Doji, en: Doji }
-morning-star: { tr: Sabah Yıldızı, en: Morning Star }
-evening-star: { tr: Akşam Yıldızı, en: Evening Star }
-shooting-star: { tr: Kayan Yıldız, en: Shooting Star }
-pin-bar: { tr: Pin Bar, en: Pin Bar }
-piercing-line: { tr: Delen Mum, en: Piercing Line }
-bullish-harami: { tr: Boğa Harami, en: Bullish Harami }
-inverse-head-and-shoulders: { tr: Ters Omuz Baş Omuz, en: Inverse Head and Shoulders }
-double-top: { tr: İkili Tepe, en: Double Top }
-double-bottom: { tr: İkili Dip, en: Double Bottom }
-triple-top: { tr: Üçlü Tepe, en: Triple Top }
-ascending-triangle: { tr: Yükselen Üçgen, en: Ascending Triangle }
-descending-triangle: { tr: Alçalan Üçgen, en: Descending Triangle }
-symmetrical-triangle: { tr: Simetrik Üçgen, en: Symmetrical Triangle }
-flag: { tr: Bayrak, en: Flag }
-pennant: { tr: Flama, en: Pennant }
-triple-bottom: { tr: Üçlü Dip, en: Triple Bottom }
-dark-cloud-cover: { tr: Kara Bulut, en: Dark Cloud Cover }
-bearish-harami: { tr: Ayı Harami, en: Bearish Harami }
-hanging-man: { tr: Asılı Adam, en: Hanging Man }
-spinning-top: { tr: Topaç, en: Spinning Top }
-rising-wedge: { tr: Yükselen Takoz, en: Rising Wedge }
-falling-wedge: { tr: Alçalan Takoz, en: Falling Wedge }
-rectangle: { tr: Dikdörtgen, en: Rectangle }
+# Every pattern referenced so far is written, so the list is empty.
+{}

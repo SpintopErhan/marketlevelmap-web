@@ -1,0 +1,237 @@
+id: falling-wedge
+kind: chart
+direction: bullish
+pattern_type: reversal
+candles: multi
+order: 76
+related: [rising-wedge, descending-triangle, flag]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: alcalan-takoz
+  name: Alçalan Takoz
+  alt_name: Falling Wedge
+  summary: >-
+    İki çizginin de aşağı eğimli olduğu ve sağa doğru birbirine yaklaştığı formasyon. Fiyat
+    alçalan tepeler ve alçalan dipler yapmaya devam eder, ancak üst çizgi alt çizgiden daha
+    diktir ve her yeni dip bir öncekinin altına daha az iner. Çoğunlukla yükseliş yönlü okunur
+    ve üst çizginin üzerinde kapanışla tamamlanır.
+  formation:
+    style: steps
+    items:
+      - title: Önceki hareket.
+        text: >-
+          Formasyon en çok bir düşüşün sonunda görülür ve dönüş formasyonu olarak okunur. Bir
+          yükseliş trendinin içinde, yükselişe karşı aşağı doğru bir düzeltme olarak da oluşabilir.
+          Bu durumda devam formasyonu gibi okunur.
+      - title: Daha dik alçalan tepeler.
+        text: >-
+          Fiyat en az iki kez, her seferinde bir öncekinden daha alçak bir tepe yapar. Bu tepeleri
+          birleştiren üst çizgi aşağı eğimlidir ve alt çizgiden **daha diktir**. Bu yüzden iki
+          çizgi sağa doğru birbirine yaklaşır.
+      - title: Alçalan dipler.
+        text: >-
+          Aynı süre içinde fiyat en az iki kez, her seferinde bir öncekinden daha alçak bir dip
+          yapar. Bu dipler birleştirilerek aşağı eğimli bir alt çizgi çizilir.
+      - title: Daralma.
+        text: >-
+          Her yeni dip bir öncekinin altına biraz daha az iner ve salınımlar küçülür. Toplam en az
+          dört dokunuş (her çizgide iki) gerekir, beş ya da daha fazlası formasyonu daha belirgin
+          kılar. Bu sırada hacim çoğu zaman azalır.
+      - title: Kırılım bölgesi.
+        text: >-
+          Kırılım genellikle çizgilerin kesiştiği uç noktaya varmadan, takozun uzunluğunun
+          yaklaşık üçte ikisi ile dörtte üçü arasında gelir. Fiyat uç noktaya kadar sıkışıp
+          kalırsa formasyon anlamını yitirmeye başlar.
+      - title: Tamamlanma.
+        text: >-
+          Fiyat üst çizginin üzerinde **kapanış** yaptığında formasyon tamamlanmış sayılır.
+          Çizginin üzerine çıkıp kapanışı altında yapan bir fitil kırılım sayılmaz.
+    note: Buradaki eşikler ders kitaplarında yaygın kabul gören yaklaşık değerlerdir, kesin kurallar değildir.
+  meaning:
+    - >-
+      Fiyat düşmeye devam eder, ama her yeni dip bir öncekinin altına daha az iner. Satıcılar
+      tepeleri aşağı çekmeyi sürdürürken diplerdeki ilerleme küçülür. Bu, düşüşün gücünü
+      yitirdiğine ve satıcıların giderek daha dar bir alanda fiyatı bastırmaya çalıştığına
+      işaret edebilir.
+    - >-
+      Bir düşüşün sonunda oluştuğunda formasyon, trendin yorulduğu şeklinde yorumlanır. Bir
+      yükseliş trendinin içinde oluştuğunda ise düşüş yalnızca bir düzeltme olarak görülür ve üst
+      çizginin kırılması yükselişin devam edebileceğine işaret eder. Her iki durumda da kırılım
+      gelmeden yön kesin değildir. Fiyat alt çizginin altında kapanış yaparsa tablo değişir.
+  measurement:
+    title: Sık kullanılan bir ölçüm
+    text: >-
+      Teknik analizde takozun en geniş yerindeki yüksekliği (h), kırılım noktasından yukarı doğru
+      ölçülerek olası hareketin büyüklüğü hakkında kaba bir fikir verilir. Bir başka yaygın
+      referans, takozun başladığı seviyedir. Bunlar hedef değil, ölçek referansıdır. Fiyat bu
+      mesafeye ulaşmadan dönebilir ya da çok daha ileri gidebilir. Yoldaki direnç bölgeleri
+      genellikle daha gerçekçi bir referanstır.
+  strengthens:
+    - Öncesinde belirgin bir düşüş ya da yükseliş trendi olması
+    - Alt çizginin bir destek bölgesine doğru alçalması
+    - Her çizgide ikiden fazla dokunuş
+    - Formasyon boyunca hacmin azalması, kırılımda artması
+    - Kırılımın takozun son üçte birinde, uç noktadan önce gelmesi
+  weakens:
+    - Çizgilerin az dokunuşla, zorlanarak çizilmesi
+    - İki çizginin eğiminin birbirine çok yakın olması (daralma yok)
+    - Fiyatın uç noktaya kadar sıkışması
+    - Üst çizginin hemen üstünde güçlü bir direnç bölgesi bulunması
+    - Fitille çizgiyi aşıp altında kapanan sahte kırılımlar
+  zones:
+    intro: "Alçalan takozun kenarları eğimlidir. Bu yüzden bölgeler en çok takozun nereye doğru alçaldığı ve kırılımın nereye çıktığı açısından anlam kazanır:"
+    points:
+      - "**Alt çizgi bir destek bölgesinin içine doğru alçalıyorsa**, fiyatın o bölgeye giderek zayıflayan diplerle yaklaştığı görülür. Bölgedeki alıcılar düşüşün son adımlarını karşılıyor olabilir."
+      - "**Yükseliş trendi içindeki takoz eski bir direnç bölgesinin üstünde bitiyorsa**, düşüş o bölgeye yapılan bir geri test gibi okunabilir. Bölge bu kez destek gibi davranıyor olabilir."
+      - "**Kırılımın hemen üstünde bir direnç bölgesi varsa**, fiyatın kısa sürede yeniden durabileceği bir alan vardır. Bu, ölçüm yönteminden daha gerçekçi bir referanstır."
+    paragraphs:
+      - >-
+        Kırılımdan sonra fiyat bazen üst çizgiye geri dönüp onu yukarıdan test eder. Çizgi eğimli
+        olduğu için test noktası zamanla aşağı kayar. Kırılan çizgi bir bölgenin sınırına yakınsa,
+        test o bölgenin içinde de gerçekleşebilir. Fiyat geri dönüşte bölgenin altında kapanış
+        yapmazsa kırılım daha sağlam kabul edilir.
+  completion: Üst çizginin üzerinde kapanış.
+  invalidation:
+    before: >-
+      Fiyat üst çizgiyi kırmadan alt çizginin altında **kapanış** yaparsa daralma bozulur ve
+      formasyon oluşmamış kabul edilir. Bu durumda düşüş hız kazanıyor olabilir.
+    after: >-
+      Üst çizginin üzerinde kapanış gelmiş olsa bile fiyat yeniden takozun içine döner ve **son
+      dibin altında kapanış** yaparsa yükseliş senaryosu geçersiz sayılır. Bu tür sahte kırılımlar
+      bazen sert aşağı hareketlerle sonuçlanır.
+  confusions:
+    - id: descending-triangle
+      text: "Alt çizgi yataydır: dipler aynı seviyede kalır, yalnızca tepeler alçalır."
+    - id: symmetrical-triangle
+      text: "Çizgiler zıt yönlere eğimlidir: tepeler alçalır, dipler yükselir."
+    - id: flag
+      text: "Öncesinde sert bir direk vardır ve çizgiler birbirine yaklaşmaz: kısa, paralel bir kanaldır."
+  facts:
+    - [Tür, Dönüş ya da devam]
+    - [Yön, Yükseliş]
+    - [Süre, Çok mumlu]
+    - [Bağlam, Düşüş sonrası ya da yükseliş içinde]
+    - [Tamamlanma, Üst çizgi üzerinde kapanış]
+    - [Geçersiz, Son dip altında kapanış]
+  svg_labels:
+    lower_highs: Alçalan tepeler
+    lower_lows: Alçalan dipler
+    apex: Uç nokta
+    breakout: Kırılım
+  svg_alt: "Alçalan takoz çizimi: düşen fiyat, ikisi de aşağı eğimli ve birbirine yaklaşan iki çizgi arasında giderek küçülen tepeler ve dipler yapıyor, ardından uç noktaya varmadan üst çizginin üzerine çıkıyor"
+  svg_caption: Turuncu noktalar iki çizgiye yapılan dokunuşları gösterir. Üst çizgi alt çizgiden daha diktir, bu yüzden çizgiler uç noktada birleşir. h, takozun en geniş yerindeki yüksekliğidir.
+
+en:
+  slug: falling-wedge
+  name: Falling Wedge
+  summary: >-
+    A pattern in which both lines slope downwards and converge to the right. Price keeps making
+    lower highs and lower lows, but the upper line is steeper than the lower one, so each new low
+    undercuts the last by less. It is usually read as bullish, and it completes with a close above
+    the upper line.
+  formation:
+    style: steps
+    items:
+      - title: Prior move.
+        text: >-
+          The pattern is most often seen at the end of a downtrend, where it is read as a reversal
+          pattern. It can also form within an uptrend, as a downward correction against the rise.
+          There it is read as a continuation pattern.
+      - title: Steeper lower highs.
+        text: >-
+          Price makes at least two peaks, each lower than the one before. The line joining them
+          slopes downwards and is **steeper** than the lower line. So the two lines converge to the
+          right.
+      - title: Lower lows.
+        text: >-
+          Over the same period, price makes at least two troughs, each lower than the one before.
+          Joining them gives a downward-sloping lower line.
+      - title: Narrowing.
+        text: >-
+          Each new low undercuts the last by a little less, and the swings get smaller. At least four
+          touches in total (two on each line) are needed; five or more make the pattern clearer.
+          Volume often falls during this phase.
+      - title: Breakout zone.
+        text: >-
+          The break usually comes before the apex where the lines meet, roughly two thirds to three
+          quarters of the way along the wedge. If price drifts all the way into the apex, the pattern
+          starts to lose meaning.
+      - title: Completion.
+        text: >-
+          The pattern is complete when price **closes** above the upper line. A wick above the line
+          that closes back below it is not a breakout.
+    note: The thresholds here are approximate values commonly used in textbooks, not strict rules.
+  meaning:
+    - >-
+      Price keeps falling, but each new low undercuts the last by less. Sellers keep pushing the
+      highs down while progress at the lows shrinks. This can suggest the fall is losing strength
+      and sellers are holding price down within an ever narrower range.
+    - >-
+      At the end of a downtrend, the pattern is read as the trend tiring. Within an uptrend, the fall
+      is seen as just a correction, and a break of the upper line can suggest the rise may resume.
+      Either way, the direction is not settled before the break. If price closes below the lower
+      line, the picture changes.
+  measurement:
+    title: A common measurement
+    text: >-
+      In technical analysis, the wedge's height at its widest part (h) is measured up from the
+      breakout point to give a rough sense of the possible move's size. Another common reference is
+      the level where the wedge began. These are scale references, not targets. Price can turn
+      before covering that distance, or go much further. Resistance zones along the way are usually
+      a more realistic reference.
+  strengthens:
+    - A clear downtrend or uptrend before the pattern
+    - The lower line falling into a support zone
+    - More than two touches on each line
+    - Volume falling during the pattern and rising at the break
+    - The break coming in the last third, before the apex
+  weakens:
+    - Lines drawn with few touches, or forced to fit
+    - Lines with almost the same slope (no real narrowing)
+    - Price drifting all the way into the apex
+    - A strong resistance zone just above the upper line
+    - False breakouts, where a wick crosses the line but the close stays below
+  zones:
+    intro: "The sides of a falling wedge are sloped. So zones mostly matter in terms of where the wedge is falling into and where the break is heading:"
+    points:
+      - "**If the lower line is falling into a support zone**, price can be seen approaching that zone with ever weaker lows. Buyers in the zone may be meeting the last steps of the fall."
+      - "**If a wedge within an uptrend ends just above a former resistance zone**, the fall can be read as a retest of that zone. The zone may now be acting as support."
+      - "**If a resistance zone sits just above the break**, there is an area where price may stall again soon. It is a more realistic reference than the measured move."
+    paragraphs:
+      - >-
+        After the break, price sometimes returns to retest the upper line from above. Because the
+        line is sloped, the retest point moves down over time. If the broken line is close to the
+        edge of a zone, the retest may also happen inside that zone. If price does not close below
+        the zone on the retest, the break is considered more solid.
+  completion: Close above the upper line.
+  invalidation:
+    before: >-
+      If price **closes** below the lower line before breaking the upper line, the narrowing is
+      broken and the pattern is considered not to have formed. The fall may be gaining pace instead.
+    after: >-
+      Even after a close above the upper line, if price falls back into the wedge and **closes below
+      the last low**, the bullish scenario is considered invalid. False breakouts like this sometimes
+      lead to sharp moves down.
+  confusions:
+    - id: descending-triangle
+      text: "The lower line is flat: the troughs stay at one level and only the highs fall."
+    - id: symmetrical-triangle
+      text: "The lines slope in opposite directions: lower highs and higher lows."
+    - id: flag
+      text: "It follows a sharp pole, and its lines do not converge: it is a short, parallel channel."
+  facts:
+    - [Type, Reversal or continuation]
+    - [Direction, Bullish]
+    - [Duration, Multi-candle]
+    - [Context, After a downtrend or within an uptrend]
+    - [Completion, Close above the upper line]
+    - [Invalid, Close below the last low]
+  svg_labels:
+    lower_highs: Lower highs
+    lower_lows: Lower lows
+    apex: Apex
+    breakout: Breakout
+  svg_alt: "Falling wedge illustration: falling price makes ever smaller highs and lows between two downward-sloping lines that converge, then breaks above the upper line before reaching the apex"
+  svg_caption: The orange dots mark the touches on the two lines. The upper line is steeper than the lower one, so the lines meet at the apex. h is the wedge's height at its widest part.

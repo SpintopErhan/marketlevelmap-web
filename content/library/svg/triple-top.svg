@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <line class="s-accent" x1="150" y1="178" x2="520" y2="178" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text class="t-accent" x="522" y="168" text-anchor="end">{{neckline}}</text>
+  <polyline class="s-line" points="20,282 50,246 66,256 120,86 170,178 230,84 285,178 345,88 420,208 445,192 520,274" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point">
+    <circle cx="120" cy="86" r="4"/>
+    <circle cx="230" cy="84" r="4"/>
+    <circle cx="345" cy="88" r="4"/>
+  </g>
+  <g class="f-accent">
+    <circle cx="170" cy="178" r="3.5"/>
+    <circle cx="285" cy="178" r="3.5"/>
+  </g>
+  <g class="t-label" text-anchor="middle">
+    <text x="120" y="72">{{peak_1}}</text>
+    <text x="230" y="70">{{peak_2}}</text>
+    <text x="345" y="74">{{peak_3}}</text>
+  </g>
+  <circle class="s-down" cx="401" cy="178" r="9" fill="none" stroke-width="1.5"/>
+  <text class="t-down" x="388" y="204" text-anchor="end">{{breakdown}}</text>
+  <path class="s-guide" d="M285 92 V172 M280 98 l5 -6 l5 6 M280 166 l5 6 l5 -6" stroke-width="1.2" fill="none"/>
+  <text class="t-guide t-mono" x="277" y="136" text-anchor="end">h</text>
+</svg>

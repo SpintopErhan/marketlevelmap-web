@@ -1,0 +1,220 @@
+id: triple-top
+kind: chart
+direction: bearish
+pattern_type: reversal
+candles: multi
+order: 42
+related: [triple-bottom, double-top, head-and-shoulders]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: uclu-tepe
+  name: Üçlü Tepe
+  alt_name: Triple Top
+  summary: >-
+    Bir yükselişin sonunda, fiyatın yaklaşık aynı seviyede üç tepe yapmasıyla oluşan dönüş
+    formasyonu. Tepeler arasındaki iki dipten geçen boyun çizgisinin altına inilmesiyle
+    tamamlanır. Fiyatın aynı seviyeyi üç kez geçemediğini ve yükselişin güç kaybettiğini
+    gösterebilir.
+  formation:
+    style: steps
+    items:
+      - title: Önceki yükseliş.
+        text: Formasyon bir dönüş işaretidir. Öncesinde belirgin bir yükseliş trendi olmalıdır.
+      - title: Birinci tepe ve ilk dip.
+        text: >-
+          Fiyat yeni bir tepe yapar, ardından görünür bir geri çekilmeyle bir dibe iner. Günlük
+          grafiklerde sık verilen ölçü, tepeden yaklaşık **%10 ya da daha fazla** düşüştür. Küçük
+          zaman dilimlerinde bu oran daha düşük olabilir.
+      - title: İkinci tepe ve ikinci dip.
+        text: >-
+          Fiyat yeniden yükselir, ilk tepeye yakın bir seviyede durur ve tekrar geri çekilir.
+          İkinci dip çoğu zaman ilk dibe yakın bir seviyede biter.
+      - title: Üçüncü tepe.
+        text: >-
+          Fiyat üçüncü kez aynı seviyeye çıkar ama onu geçemez. Üç tepe arasındaki fark genellikle
+          **yaklaşık %3'ün altındadır**. Tepeler birkaç mumluk aralıkla değil, belirgin bir süreyle
+          ayrılır.
+      - title: Boyun çizgisi.
+        text: >-
+          İki dibi birleştiren çizgidir. Dipler aynı seviyede değilse çoğu zaman daha alçak olan
+          dipten geçen yatay çizgi esas alınır.
+      - title: Tamamlanma.
+        text: Fiyat boyun çizgisinin altında **kapanış** yaptığında formasyon tamamlanmış sayılır. O ana kadar üç tepe yalnızca bir olasılıktır.
+    note: Oranlar yaklaşıktır. Ders kitaplarında yaygın kabul gören değerlerdir, kesin sınırlar değildir.
+  meaning:
+    - >-
+      Satıcılar fiyatı aynı seviyeden üç kez geri iter. Her denemede alıcılar o seviyeye kadar
+      gelir ama üzerine çıkacak gücü bulamaz. Bu, o seviyede satış baskısının sürdüğünü ve
+      yükselişin yorulduğunu gösterebilir. İki dipten geçen boyun çizgisinin kırılması ise
+      alıcıların iki kez savunduğu seviyenin de kaybedildiğine işaret eder.
+    - >-
+      Üç tepe, kırılım gelene kadar bir yatay aralıktan ayırt edilemez. Fiyat iki yatay seviye
+      arasında gidip gelirken formasyonun yönü belli değildir. Boyun çizgisi kırılmadan fiyat
+      tepelerin üzerine çıkabilir ve yükseliş devam edebilir.
+  measurement:
+    title: Sık kullanılan bir ölçüm
+    text: >-
+      Teknik analizde tepelerin boyun çizgisine olan yüksekliği (h), kırılım noktasından aşağı
+      doğru ölçülerek olası hareketin büyüklüğü hakkında kaba bir fikir verilir. Bu bir hedef
+      değil, bir ölçek referansıdır. Fiyat bu mesafeye ulaşmadan dönebilir ya da çok daha ileri
+      gidebilir. Yoldaki destek bölgeleri genellikle daha gerçekçi bir referanstır.
+  strengthens:
+    - Üç tepenin de aynı direnç bölgesinde oluşması
+    - Hacmin her tepede bir öncekine göre düşük kalması
+    - Boyun çizgisi kırılırken hacmin artması
+    - İki dibin de yaklaşık aynı seviyede olması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Öncesinde belirgin bir yükseliş olmaması
+    - Tepelerin çok kısa aralıkla oluşması
+    - Diplerin çok sığ olması
+    - Kırılımın düşük hacimle gelmesi
+    - Boyun çizgisinin hemen altında güçlü bir destek bölgesi bulunması
+  zones:
+    intro: "Üçlü tepe, aynı direnç bölgesinin üç kez test edilmesidir. Bölgelerle ilişkisi üç yerde okunur:"
+    points:
+      - "**Üç tepe bir direnç bölgesine denk geliyorsa**, formasyon o bölgenin üç kez savunulduğunu gösterir. Tepelerin tam aynı fiyatta olması gerekmez, üçünün de aynı bölgenin içinde kalması yeterlidir. Tepelerden biri bölgenin üst sınırını fitille aşıp içeride kapanıyorsa bu da bir savunma sayılabilir."
+      - "**İki dip bir destek bölgesiyle örtüşüyorsa**, boyun çizgisi aslında bir çizgi değil, iki kez tutunulmuş bir destek bölgesidir. Kırılım ancak fiyat bu bölgenin altında kapanış yaptığında anlam kazanır."
+      - "**Kırılımın altındaki ilk destek bölgesi**, fiyatın nerede yeniden tepki verebileceğine dair ölçüm yönteminden daha gerçekçi bir referanstır."
+    paragraphs:
+      - >-
+        Kırılımdan sonra fiyat bazen boyun çizgisine geri dönüp onu aşağıdan test eder. Daha önce
+        destek olan bölge bu kez direnç gibi davranabilir. Fiyat bu testte boyun çizgisinin
+        üzerinde kapanış yapıp tutunursa kırılım zayıflamış kabul edilir.
+  completion: Boyun çizgisinin (iki dibin) altında kapanış.
+  invalidation:
+    before: >-
+      Fiyat boyun çizgisini kırmadan üç tepenin üzerinde kapanış yaparsa formasyon oluşmamış
+      kabul edilir. Bu durumda tepeler bir direnç değil, aşılan bir seviye olur.
+    after: >-
+      Boyun çizgisinin altında kapanış gelmiş olsa bile fiyat yeniden boyun çizgisinin üzerine
+      çıkar ve **üçüncü tepenin üzerinde kapanış** yaparsa düşüş senaryosu geçersiz sayılır.
+  confusions:
+    - id: double-top
+      text: Aynı seviyede üç değil iki tepe oluşur, aralarında tek bir dip vardır.
+    - id: head-and-shoulders
+      text: "Ortadaki tepe (baş) iki yanındakilerden belirgin şekilde yüksektir."
+    - id: rectangle
+      text: Üst ve alt sınır aynı olabilir, ama kırılım gelmeden yön belli değildir ve fiyat yukarı da çıkabilir.
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Düşüş]
+    - [Süre, Çok mumlu]
+    - [Bağlam, Yükseliş sonrası]
+    - [Tamamlanma, İki dibin altında kapanış]
+    - [Geçersiz, Üçüncü tepe üzerinde kapanış]
+  svg_labels:
+    neckline: Boyun çizgisi
+    peak_1: 1. tepe
+    peak_2: 2. tepe
+    peak_3: 3. tepe
+    breakdown: Kırılım
+  svg_alt: "Üçlü tepe çizimi: yükselen fiyat aynı seviyede üç tepe yapıyor, aralarında yaklaşık aynı seviyede iki dibe geri çekiliyor ve ardından iki dipten geçen boyun çizgisinin altına iniyor"
+  svg_caption: Turuncu noktalar, boyun çizgisini belirleyen iki dibi gösterir. h, tepelerin boyun çizgisine olan yüksekliğidir.
+
+en:
+  slug: triple-top
+  name: Triple Top
+  summary: >-
+    A reversal pattern that forms at the end of an uptrend, when price makes three peaks at roughly
+    the same level. It completes when price falls below the neckline drawn through the two troughs
+    between the peaks. It can signal that price failed to clear the same level three times and that
+    the uptrend is losing strength.
+  formation:
+    style: steps
+    items:
+      - title: Prior uptrend.
+        text: The pattern is a reversal signal. It needs a clear uptrend before it.
+      - title: First peak and first trough.
+        text: >-
+          Price makes a new high, then pulls back visibly to a trough. A figure often quoted for
+          daily charts is a drop of about **10% or more** from the peak. On lower timeframes it can
+          be smaller.
+      - title: Second peak and second trough.
+        text: >-
+          Price rises again, stalls near the first peak and pulls back once more. The second trough
+          often ends near the first.
+      - title: Third peak.
+        text: >-
+          Price reaches the same level a third time but cannot get past it. The three peaks are
+          usually **within about 3%** of each other. They are separated by a clear stretch of time,
+          not just a few candles.
+      - title: Neckline.
+        text: >-
+          A line joining the two troughs. If the troughs are not level, a horizontal line through
+          the lower one is often used instead.
+      - title: Completion.
+        text: The pattern is complete when price **closes** below the neckline. Until then, three peaks are only a possibility.
+    note: The figures are approximate. They are commonly accepted textbook values, not hard limits.
+  meaning:
+    - >-
+      Sellers push price back from the same level three times. Each time, buyers reach that level
+      but lack the strength to get above it. This can show that selling pressure is still there and
+      that the uptrend is tiring. A break of the neckline through the two troughs suggests that the
+      level buyers defended twice has also been lost.
+    - >-
+      Until the break, three peaks cannot be told apart from a sideways range. While price moves
+      between two flat levels, the direction of the pattern is not settled. Before the neckline
+      breaks, price can rise above the peaks and the uptrend can carry on.
+  measurement:
+    title: A common measurement
+    text: >-
+      In technical analysis, the height of the peaks above the neckline (h) is measured down from the
+      breakout point to give a rough sense of the possible move's size. It is a scale reference, not
+      a target. Price can turn before covering that distance, or go much further. Support zones along
+      the way are usually a more realistic reference.
+  strengthens:
+    - All three peaks forming in the same resistance zone
+    - Volume falling at each peak compared with the one before
+    - Volume rising as the neckline breaks
+    - Both troughs sitting at roughly the same level
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - No clear uptrend before the pattern
+    - Peaks forming very close together in time
+    - Very shallow troughs between the peaks
+    - The break coming on low volume
+    - A strong support zone just below the neckline
+  zones:
+    intro: "A triple top is the same resistance zone being tested three times. Its link to zones is read in three places:"
+    points:
+      - "**If all three peaks fall in a resistance zone**, the pattern shows that zone being defended three times. The peaks need not be at exactly the same price; it is enough that all three sit inside the same zone. A peak whose wick pokes above the zone but closes back inside can also count as a defence."
+      - "**If the two troughs line up with a support zone**, the neckline is really a support zone that has held twice, not a single line. The break only means something once price closes below that zone."
+      - "**The first support zone below the break** is a more realistic reference than the measured move for where price may react again."
+    paragraphs:
+      - >-
+        After the break, price sometimes returns to retest the neckline from below. The zone that was
+        support may now act as resistance. If price closes back above the neckline in this test and
+        holds there, the break is considered to have weakened.
+  completion: Close below the neckline (the two troughs).
+  invalidation:
+    before: >-
+      If price closes above all three peaks without breaking the neckline, the pattern is considered
+      not to have formed. The peaks then become a level that has been cleared, not resistance.
+    after: >-
+      Even after a close below the neckline, if price climbs back above it and **closes above the
+      third peak**, the bearish scenario is considered invalid.
+  confusions:
+    - id: double-top
+      text: Two peaks form at the same level instead of three, with a single trough between them.
+    - id: head-and-shoulders
+      text: The middle peak (the head) is clearly higher than the ones on either side.
+    - id: rectangle
+      text: The top and bottom can be the same, but the direction is not known before the break and price can go up as well.
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bearish]
+    - [Duration, Multi-candle]
+    - [Context, After an uptrend]
+    - [Completion, Close below the two troughs]
+    - [Invalid, Close above the third peak]
+  svg_labels:
+    neckline: Neckline
+    peak_1: Peak 1
+    peak_2: Peak 2
+    peak_3: Peak 3
+    breakdown: Breakdown
+  svg_alt: "Triple top illustration: rising price makes three peaks at the same level, pulls back to two troughs at roughly the same level between them, then falls below the neckline through the troughs"
+  svg_caption: The orange dots mark the two troughs that define the neckline. h is the height of the peaks above the neckline.

@@ -221,4 +221,4 @@ node build-library.mjs      # tr/kutuphane/, en/library/ ve sitemap.xml'i yenide
 | Mum | Yutan Boğa, Yutan Ayı, Çekiç, Ters Çekiç, Kayan Yıldız, Pin Bar, Doji, Sabah Yıldızı, Akşam Yıldızı |
 | Grafik | Omuz Baş Omuz, Ters Omuz Baş Omuz, İkili Tepe, İkili Dip, Yükselen / Alçalan / Simetrik Üçgen, Bayrak, Flama |
 
-İlk listedeki formasyonların hepsi yazıldı. Sıradaki adaylar `planned.yaml` dosyasında.
+İlk listedeki formasyonlar ve sayfalarda adı geçen 11 formasyon (Asılı Adam, Kara Bulut, Delen Mum, Topaç, Boğa ve Ayı Harami, Üçlü Tepe ve Dip, Dikdörtgen, Yükselen ve Alçalan Takoz) yazıldı; toplam 29 formasyon. Yeni bir formasyona bağlantı verilecek ama sayfası henüz yazılmayacaksa adı `planned.yaml` dosyasına eklenir.

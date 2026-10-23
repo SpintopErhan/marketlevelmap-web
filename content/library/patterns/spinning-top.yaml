@@ -1,0 +1,189 @@
+id: spinning-top
+kind: candle
+direction: neutral
+pattern_type: indecision
+candles: 1
+order: 75
+related: [doji, morning-star, evening-star]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: topac
+  name: Topaç
+  alt_name: Spinning Top
+  summary: >-
+    Küçük ama belirgin bir gövdesi ve iki yanında benzer uzunlukta fitilleri olan tek mum. Mum
+    içinde fiyat iki yöne de hareket etmiş, ama kapanış açılışa yakın kalmıştır. O zaman aralığında
+    alıcıların da satıcıların da üstünlük kuramadığını, yani kararsızlığı gösterebilir.
+  formation:
+    style: bullets
+    items:
+      - text: "**Gövde** küçüktür: mumun toplam aralığının (en yüksek ile en düşük arası) yaklaşık **%10 ile %30'u** arasındadır. Mumun rengi önemli değildir."
+        marker: accent
+      - text: "**Üst fitil** ve **alt fitil**, ikisi de gövdeden uzundur."
+        marker: neutral
+      - text: "İki fitilin uzunluğu birbirine yakındır: kısa olan, uzun olanın yaklaşık **yarısından** az değildir. Bu yüzden gövde aralığın ortasına yakın durur."
+        marker: neutral
+    note: >-
+      Gövde aralığın %10'unu geçmiyorsa mum doji sayılır. Topaç, gövdesi dojiden büyük ama yine de
+      küçük olan mumdur. Fitillerden biri belirgin biçimde uzunsa ve gövde bir uca kayıyorsa, şekil
+      çekiç ya da pin bara yaklaşır.
+  meaning:
+    - >-
+      Topaç tek başına bir yön bildirmez. Mum içinde iki taraf da fiyatı kendi yönüne taşımayı
+      denemiş, ama ikisi de bunu kapanışa kadar koruyamamıştır. Küçük gövde, kapanışın açılıştan
+      fazla uzaklaşmadığını gösterir.
+    - >-
+      Dojiye göre biraz daha zayıf bir kararsızlık işareti kabul edilir, çünkü bir taraf az da olsa
+      öne geçmiştir. Güçlü bir hareketin ardından gelen topaç, o hareketin hızının kesildiğine
+      işaret edebilir. Sabah ve akşam yıldızı gibi formasyonlarda ortadaki mum çoğu zaman bir
+      topaçtır.
+  strengthens:
+    - Bir destek ya da direnç bölgesinde oluşması
+    - Öncesinde belirgin, hızlı bir hareket olması
+    - Fitillerin önceki mumların aralığının dışına taşması
+    - Hacmin ortalamanın üzerinde olması
+    - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+    - Yatay, yönsüz bir piyasanın ortasında oluşması
+    - Arka arkaya çok sayıda küçük mum olması
+    - Mumun çevresindeki mumlara göre çok küçük olması
+    - Düşük hacim
+    - Çok küçük zaman dilimlerinde (1 dk, 5 dk) oluşması
+  zones:
+    paragraphs:
+      - >-
+        Bir **destek ya da direnç bölgesinde** oluşan topaç, fiyatın bölgeye kadar gelen hareketinin
+        orada **yavaşladığını** gösterir. Fitiller çoğu zaman bölgenin içine uzanır: fiyat bölgeyi
+        iki yönde de yoklamış, ama kapanış bölgenin içinde ya da hemen kenarında kalmıştır. Bu,
+        bölgenin hâlâ tepki aldığına dair bir ipucu olabilir.
+      - >-
+        Topacın aralığı, bölgeye göre küçük bir **karar alanı** gibi okunabilir. Sonraki mumlar bu
+        aralığın hangi tarafında kapanış yaparsa, bölgenin korunup korunmadığı daha net görülür.
+        Kapanış bölgeden uzaklaşan yöndeyse bölge savunulmuş olabilir. Bölgenin öbür tarafındaysa
+        bölge kaybedilmiş olabilir.
+      - >-
+        İki bölgenin ortasında, fiyatın tepki verebileceği bir seviyeden uzakta oluşan topaç
+        çoğunlukla sıradan bir duraklamadır.
+  invalidation:
+    - >-
+      Topaç bir yön bildirmediği için geçersiz sayılacak bir senaryosu da yoktur. Kararsızlık
+      okuması, fiyat topacın **en yüksek ya da en düşük noktasının ötesinde kapanış** yaptığında
+      önemini yitirir. Bu kapanışın yönü, topacın değil, sonraki fiyat hareketinin bilgisidir.
+    - >-
+      Fiyat birkaç mum boyunca topacın aralığı içinde kalırsa, tek mumun kararsızlığı yerini daha
+      geniş bir yatay harekete bırakır.
+  confusions:
+    - id: doji
+      text: "Gövde neredeyse hiç yoktur (aralığın en fazla %10'u); topaçta gövde küçük ama belirgindir."
+    - id: pin-bar
+      text: "Tek bir uzun fitil vardır ve gövde mumun bir ucundadır; topaçta iki fitil benzer uzunluktadır."
+    - id: hammer
+      text: "Gövde mumun üst kısmındadır, üst fitil çok kısadır ve düşüş sonrası okunur."
+  facts:
+    - [Tür, Kararsızlık]
+    - [Yön, Kararsız]
+    - [Mum, "1"]
+    - [Ölçüt, "Gövde ≈ aralığın %10–30'u"]
+    - [Bağlam, Bir hareketin sonunda ya da bölgede]
+    - [Önemini yitirir, Aralığın dışında kapanış]
+  svg_labels:
+    candle: Topaç (renk fark etmez)
+    upper_1: Üst fitil
+    upper_2: gövdeden uzun
+    body_1: Küçük gövde
+    body_rule: "%10–30"
+    lower_1: Alt fitil
+    lower_2: gövdeden uzun
+  svg_alt: "Topaç çizimi: biri yeşil biri kırmızı iki mum; ikisinin de gövdesi küçük ve aralığın ortasında, üst ve alt fitilleri benzer uzunlukta"
+  svg_caption: Kesikli çizgiler gövdeyi gösterir. Turuncu ayraç, aralığın yaklaşık %10–30'u kadar olan gövdeyi, gri ayraçlar gövdeden uzun olan fitilleri işaretler.
+
+en:
+  slug: spinning-top
+  name: Spinning Top
+  summary: >-
+    A single candle with a small but visible body and wicks of similar length on both sides. Price
+    moved both ways during the candle, but the close stayed near the open. It can show indecision:
+    neither buyers nor sellers took control over that period.
+  formation:
+    style: bullets
+    items:
+      - text: "The **body** is small: roughly **10% to 30%** of the candle's full range (from high to low). The candle's colour does not matter."
+        marker: accent
+      - text: "The **upper wick** and the **lower wick** are both longer than the body."
+        marker: neutral
+      - text: "The two wicks are similar in length: the shorter one is at least about **half** the longer one. So the body sits near the middle of the range."
+        marker: neutral
+    note: >-
+      If the body is no more than 10% of the range, the candle counts as a doji. A spinning top has a
+      body larger than a doji's, but still small. If one wick is clearly longer and the body moves to
+      one end, the shape moves towards a hammer or a pin bar.
+  meaning:
+    - >-
+      On its own, a spinning top gives no direction. Both sides tried to push price their way during
+      the candle, but neither held it until the close. The small body shows that the close did not
+      move far from the open.
+    - >-
+      It is considered a slightly weaker sign of indecision than a doji, because one side did get a
+      little ahead. A spinning top after a strong move may suggest that the move is losing pace. In
+      patterns such as the morning and evening star, the middle candle is often a spinning top.
+  strengthens:
+    - Forming at a support or resistance zone
+    - A clear, fast move before it
+    - The wicks sticking out beyond the previous candles' range
+    - Above-average volume
+    - Forming on a higher timeframe (4H, 1D)
+  weakens:
+    - Forming in the middle of a flat, directionless market
+    - Many small candles in a row
+    - The candle being very small compared with those around it
+    - Low volume
+    - Forming on very low timeframes (1m, 5m)
+  zones:
+    paragraphs:
+      - >-
+        A spinning top at a **support or resistance zone** shows that the move which carried price to
+        the zone has **slowed** there. The wicks often reach into the zone: price probed it in both
+        directions, but the close stayed inside it or just at its edge. This can be a hint that the
+        zone is still drawing a reaction.
+      - >-
+        The spinning top's range can be read as a small **decision area** at the zone. Whichever side
+        of that range the next candles close on shows more clearly whether the zone held. A close
+        away from the zone suggests it may have been defended; a close on the far side of it suggests
+        it may have been lost.
+      - >-
+        A spinning top between two zones, away from any level where price might react, is usually an
+        ordinary pause.
+  invalidation:
+    - >-
+      A spinning top has no direction, so it has no scenario to invalidate. The indecision read stops
+      being relevant once price **closes beyond the candle's high or low**. The direction of that close
+      belongs to the price action that follows, not to the spinning top.
+    - >-
+      If price stays inside the spinning top's range for several candles, the single candle's
+      indecision turns into a wider sideways move.
+  confusions:
+    - id: doji
+      text: "Almost no body (at most 10% of the range); a spinning top's body is small but visible."
+    - id: pin-bar
+      text: "One long wick with the body at one end; a spinning top has two wicks of similar length."
+    - id: hammer
+      text: "The body sits at the top, the upper wick is very short, and it is read after a decline."
+  facts:
+    - [Type, Indecision]
+    - [Direction, Undecided]
+    - [Candles, "1"]
+    - [Rule, Body ≈ 10–30% of range]
+    - [Context, After a move or at a zone]
+    - [Loses relevance, Close outside its range]
+  svg_labels:
+    candle: Spinning top (either colour)
+    upper_1: Upper wick
+    upper_2: longer than body
+    body_1: Small body
+    body_rule: "10–30%"
+    lower_1: Lower wick
+    lower_2: longer than body
+  svg_alt: "Spinning top illustration: two candles, one green and one red, each with a small body in the middle of the range and upper and lower wicks of similar length"
+  svg_caption: The dashed lines mark the body. The orange bracket marks the body, roughly 10–30% of the range; the grey brackets mark the wicks, each longer than the body.
