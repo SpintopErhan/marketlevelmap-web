@@ -12,3 +12,9 @@
     name: Hareketin niteliği
   en:
     name: Quality of the move
+- id: markets
+  order: 30
+  tr:
+    name: Piyasalar ve olaylar
+  en:
+    name: Markets and events

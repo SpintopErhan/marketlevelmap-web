@@ -99,3 +99,31 @@
     name: Technical indicators
     singular: Technical indicator
     summary: Indicators calculated from price and volume; how they are calculated, which question they answer and where they can mislead.
+- kind: macro
+  section: markets
+  order: 10
+  cover: economic-calendar
+  tr:
+    slug: makroekonomi-ve-olaylar
+    name: Makroekonomi ve olaylar
+    singular: Makroekonomi
+    summary: Piyasaların izlediği ABD verileri ve Fed kararları; beklenti ile gerçekleşen arasındaki fark ve kriptoya özgü olaylar.
+  en:
+    slug: macroeconomics-and-events
+    name: Macroeconomics and events
+    singular: Macroeconomics
+    summary: The US data and Fed decisions markets watch; the gap between expectations and outcomes, and crypto-specific events.
+- kind: gold-silver
+  section: markets
+  order: 20
+  cover: gold-silver-ratio
+  tr:
+    slug: altin-ve-gumus
+    name: Altın ve gümüş
+    singular: Altın ve gümüş
+    summary: Altın/gümüş oranı, reel faiz ve dolarla ilişki ve kripto borsalarında altın ile gümüşün nasıl işlem gördüğü.
+  en:
+    slug: gold-and-silver
+    name: Gold and silver
+    singular: Gold and silver
+    summary: The gold/silver ratio, the link with real rates and the dollar, and how gold and silver trade on crypto exchanges.
