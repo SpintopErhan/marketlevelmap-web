@@ -200,8 +200,8 @@ Boş isteğe bağlı alanların bölümü **hiç gösterilmez** ve "Bu sayfada" 
 ### Kütüphane ana sayfası
 
 - Başlık, alt başlık ve giriş paragrafı.
-- Üst bölüm başına (Grafik okuma …) **kategori kartları**: kapak çizimi (`cover`), kategori adı, açıklama, sayfa
-  sayısı, ilk 3 sayfanın bağlantısı ve "Tümü (sayı) →". Kütüphane büyüdükçe ana sayfa uzamaz; yeni bir kategori
+- Üst bölüm başına (Grafik okuma …) **kategori kartları**: kapak çizimi (`cover`), kategori adı, açıklama, ilk 3
+  sayfanın bağlantısı ve "Tümü (sayı) →". Kütüphane büyüdükçe ana sayfa uzamaz; yeni bir kategori
   yeni bir kart, yeni bir bölüm yeni bir kart grubu olarak eklenir.
 
 ### Kategori sayfası

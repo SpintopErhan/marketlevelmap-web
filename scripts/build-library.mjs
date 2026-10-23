@@ -37,7 +37,7 @@ const WORDS = {
       "MarketLevelMap’te yapılan analizleri daha iyi anlamak ve grafikleri kendi başınıza yorumlayabilmek için hazırlandı. Formasyonlar, seviyeler ve diğer kavramlar birbirinden bağımsız değil, birlikte okunacak şekilde anlatılır. İçerikler zamanla genişleyecek.",
     ],
     libraryDescription: "Piyasa okuryazarlığı için temel kavramlar ve açıklamalar: formasyonlar, seviyeler ve diğer kavramlar, birlikte okunacak şekilde.",
-    seeAll: (cat, n) => `Tümü (${n}) →`, pages: (n) => `${n} sayfa`, search: "Bu kategoride ara", noMatch: "Bu filtreyle eşleşen sayfa yok.", filters: "Filtreler",
+    seeAll: (cat, n) => `Tümü (${n}) →`, search: "Bu kategoride ara", noMatch: "Bu filtreyle eşleşen sayfa yok.", filters: "Filtreler",
     shows: "Ne gösterir", notProves: "Neyi kanıtlamaz", limitsTitle: "Neyi gösterir, neyi kanıtlamaz?", limitsToc: "Sınırları", related: "İlgili sayfalar", keyPoints: "Akılda kalsın",
     topics: "Konular", overview: "Genel bakış", toggle: (cat) => `${cat}: alt başlıkları aç ya da kapat`, onThisPage: "Bu sayfada", facts: "Kısa özet",
     formation: "Nasıl oluşur", meaning: "Neye işaret eder", strength: "Ne zaman güçlenir, ne zaman zayıflar", strengthToc: "Güçlendirenler ve zayıflatanlar",
@@ -66,7 +66,7 @@ const WORDS = {
       "Prepared to help you better understand the analyses on MarketLevelMap and interpret charts on your own. Formations, levels, and other concepts are explained in relation to one another rather than in isolation. Content will expand over time.",
     ],
     libraryDescription: "Core concepts and explanations for market literacy: formations, levels and other concepts, explained in relation to one another.",
-    seeAll: (cat, n) => `All (${n}) →`, pages: (n) => (n === 1 ? "1 page" : `${n} pages`), search: "Search this category", noMatch: "No pages match this filter.", filters: "Filters",
+    seeAll: (cat, n) => `All (${n}) →`, search: "Search this category", noMatch: "No pages match this filter.", filters: "Filters",
     shows: "What it shows", notProves: "What it does not prove", limitsTitle: "What it shows, what it does not prove", limitsToc: "Limits", related: "Related pages", keyPoints: "Key points",
     topics: "Topics", overview: "Overview", toggle: (cat) => `${cat}: show or hide its pages`, onThisPage: "On this page", facts: "At a glance",
     formation: "How it forms", meaning: "What it suggests", strength: "When it strengthens, when it weakens", strengthToc: "Strengthens and weakens",
@@ -499,7 +499,7 @@ ${aside}</div>`;
 
 // ---------------------------------------------------------------- library home + category pages
 
-// Library home: one card per category, grouped by section (drawing, summary, page count, first pages),
+// Library home: one card per category, grouped by section (drawing, summary, first pages),
 // so the page stays short as the library grows. Category pages list every page, with search (and the
 // direction filter where the category holds patterns).
 const PREVIEW = 3;
@@ -507,7 +507,7 @@ const PREVIEW = 3;
 function categoryCard(c, lang) {
   const w = WORDS[lang], list = inCategory(c);
   const cover = byId.get(c.cover)?.kind === c.kind ? byId.get(c.cover) : list[0];
-  return `<li class="cat-card"><a class="cat-cover" href="${esc(urls.category(c, lang))}" tabindex="-1" aria-hidden="true">${svgFor(cover, lang, { decorative: true })}</a><div class="cat-body"><h3><a href="${esc(urls.category(c, lang))}">${esc(c[lang].name)}</a></h3><p>${inline(c[lang].summary)}</p><p class="cat-count">${esc(w.pages(list.length))}</p><ul class="cat-links">${list.slice(0, PREVIEW).map((p) => `<li><a href="${esc(urls.pattern(p, lang))}">${esc(p[lang].name)}</a></li>`).join("")}</ul><a class="section-more" href="${esc(urls.category(c, lang))}">${esc(w.seeAll(c[lang].name, list.length))}</a></div></li>`;
+  return `<li class="cat-card"><a class="cat-cover" href="${esc(urls.category(c, lang))}" tabindex="-1" aria-hidden="true">${svgFor(cover, lang, { decorative: true })}</a><div class="cat-body"><h3><a href="${esc(urls.category(c, lang))}">${esc(c[lang].name)}</a></h3><p>${inline(c[lang].summary)}</p><ul class="cat-links">${list.slice(0, PREVIEW).map((p) => `<li><a href="${esc(urls.pattern(p, lang))}">${esc(p[lang].name)}</a></li>`).join("")}</ul><a class="section-more" href="${esc(urls.category(c, lang))}">${esc(w.seeAll(c[lang].name, list.length))}</a></div></li>`;
 }
 
 function listPage(lang, category) {

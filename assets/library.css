@@ -154,7 +154,6 @@ button,select,input{font:inherit}button{color:inherit}
 .cat-body{display:flex;flex-direction:column;flex:1;padding:16px 18px 18px}
 .cat-body h3{font-size:16px}.cat-body h3 a{text-decoration:none}.cat-body h3 a:hover{color:var(--accent)}
 .cat-body p{margin:8px 0 0;color:var(--muted);font-size:13px}
-.cat-body .cat-count{color:var(--fg);font-size:12px;font-weight:600}
 .cat-links{margin:8px 0 0;padding:0;list-style:none;font-size:13px}
 .cat-links li+li{margin-top:4px}
 .cat-links a{color:var(--muted);text-decoration:none}.cat-links a:hover{color:var(--accent)}
