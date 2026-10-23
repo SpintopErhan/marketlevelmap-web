@@ -1,0 +1,236 @@
+id: bollinger-bands
+kind: indicators
+order: 50
+related: [volatility, moving-averages, atr, range-and-consolidation]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: bollinger-bantlari
+  name: Bollinger Bantları
+  alt_name: Bollinger Bands
+  summary: >-
+    Bollinger Bantları, 20 periyotluk basit hareketli ortalamanın etrafına iki standart sapma
+    uzaklıkta çizilen iki banttır. Bantlar fiyat sakinleşince daralır, hareketlenince genişler; bu
+    yüzden volatiliteyi grafiğin üzerinde gösterir. Fiyatın bir banda değmesi tek başına bir sinyal
+    değildir.
+  sections:
+    - type: text
+      id: definition
+      title: Bollinger Bantları hangi soruya cevap verir?
+      paragraphs:
+        - >-
+          Bollinger Bantları şu soruyu cevaplar: **fiyat, son 20 mumun ortalamasına göre ne kadar
+          uzakta ve bu uzaklık o dönemin olağan oynaklığına göre büyük mü?** Orta bant ortalamayı,
+          dış bantlar ise kapanışların bu ortalamanın etrafında ne kadar dağıldığını gösterir.
+        - >-
+          Bantların genişliği sabit değildir. Kapanışlar birbirine yakın kaldıkça standart sapma
+          küçülür ve bantlar daralır; kapanışlar dağıldıkça bantlar genişler. Bu yüzden Bollinger
+          Bantları, bir yönden çok **volatilitenin değişimini** anlatır.
+    - type: steps
+      id: calculation
+      title: Nasıl hesaplanır?
+      items:
+        - title: Orta bandı hesapla.
+          text: "Orta bant = son 20 kapanışın basit hareketli ortalaması (20 SMA). Her kapanış eşit ağırlık taşır."
+        - title: Standart sapmayı bul.
+          text: Aynı 20 kapanışın orta banttan ne kadar uzaklaştığı standart sapmayla ölçülür. Kapanışlar ortalamaya yakınsa sapma küçük, dağınıksa büyüktür.
+        - title: Dış bantları çiz.
+          text: "Üst bant = orta bant + 2 × standart sapma. Alt bant = orta bant − 2 × standart sapma. Varsayılan ayar 20 periyot ve 2 standart sapmadır."
+        - title: Bant genişliğini ölç.
+          text: "Bant genişliği = (üst bant − alt bant) ÷ orta bant. Oran olduğu için farklı fiyat düzeylerinde ve farklı varlıklarda karşılaştırılabilir."
+    - type: bullets
+      id: common-readings
+      title: Genellikle nasıl okunur?
+      items:
+        - text: "**Daralma (squeeze):** bant genişliği son dönemin en düşük düzeyine iner. Sakin bir dönemi anlatır; ardından genişleme gelebilir, ama yönünü ve zamanını söylemez."
+          marker: accent
+        - text: "**Genişleme:** bantlar hızla açılır. Fiyat bir kırılımla ya da sert bir hareketle sakin aralığın dışına çıkmıştır."
+          marker: neutral
+        - text: "**Banda yürüme:** güçlü bir trendde kapanışlar art arda üst bandın yakınında ya da üzerinde gelir (düşüşte alt bandın). Bu, hareketin güçlü olduğunu gösterir; aşırılığın sona erdiğini değil."
+          marker: up
+        - text: "**Orta bant:** trendde geri çekilmelerin sık uğradığı ortalamadır. Fiyatın orta bandın hangi tarafında kaldığı, kısa vadeli yön hakkında kaba bir fikir verir."
+          marker: neutral
+      note: >-
+        Daralma ve genişleme için ayrıntı volatilite sayfasında anlatılır. Orta bant bir basit hareketli
+        ortalamadır; hareketli ortalamalar sayfası SMA ile EMA arasındaki farkı açıklar.
+    - type: scenarios
+      id: band-touch
+      title: Banda değmek ne anlatır?
+      intro: Fiyatın üst ya da alt banda değmesi, tek başına "fazla yükseldi" ya da "fazla düştü" anlamına gelmez. Bağlam okumayı değiştirir.
+      items:
+        - title: Güçlü yükselen trend
+          tone: up
+          text: Kapanışlar **üst bandın boyunca** ilerler. Her dokunuş yeni bir zirveye eşlik edebilir; bant burada bir sınır değil, hareketin gücünün ölçüsüdür.
+        - title: Güçlü düşen trend
+          tone: down
+          text: Fiyat **alt bandın boyunca** iner. Alt banda değmek düşüşün bittiğini göstermez; bantlar fiyatla birlikte aşağı açılır.
+        - title: Yatay piyasa
+          tone: neutral
+          text: Fiyat iki bant arasında gidip gelir. Bantlara yaklaşma, aralığın kenarlarıyla örtüşebilir; ama aralık kırıldığında aynı dokunuş bir başlangıç olabilir.
+    - type: limits
+      shows:
+        - Fiyatın son 20 mumun ortalamasından ne kadar uzaklaştığını, o dönemin oynaklığına göre
+        - Volatilitenin daralıp genişlediğini
+        - Güçlü bir trendde kapanışların ne kadar tek yönlü geldiğini (banda yürüme)
+      not_proves:
+        - Banda değen fiyatın geri döneceğini
+        - Bir daralmanın hangi yöne ve ne zaman sonuçlanacağını
+        - Bantların bir destek ya da direnç seviyesi olduğunu; her mumda yeniden hesaplanır ve fiyatla birlikte yer değiştirir
+    - type: zones
+      paragraphs:
+        - >-
+          Bollinger Bantları her mumda yeniden hesaplanan **hareketli** sınırlardır; fiyatın daha önce
+          tepki verdiği sabit bir alanı göstermez. Destek ve direnç bölgeleri ise geçmişte fiyatın
+          döndüğü ya da duraksadığı yerlere dayanır. İkisi farklı şeyleri ölçer.
+        - >-
+          Bu yüzden ikisini birlikte okumak bilgi verir. Bir direnç bölgesine bantlar daralmışken
+          yaklaşmak, sakin bir dönemin bölgenin hemen altında sürdüğünü anlatır. Bölgenin ötesinde
+          kapanışla birlikte bantların açılması, kırılımın volatilitede de bir genişlemeyle geldiğini
+          gösterebilir. Bölgenin bir bant olarak kalınlığı ise Bollinger Bantlarının genişliğinden
+          bağımsızdır.
+    - type: box
+      title: Kriptoda Bollinger Bantları
+      text: >-
+        Kripto 7/24 işlem gördüğü için bantlar seans boşluğu olmadan hesaplanır. Ama 20 periyot,
+        zaman dilimine göre çok farklı sürelere karşılık gelir: 1H grafikte 20 saat, 4H grafikte yaklaşık
+        üç buçuk gün, 1D grafikte 20 gün. Aynı anda bir zaman diliminde daralma, diğerinde genişleme
+        görmek olağandır.
+  confusions:
+    - id: atr
+      text: İkisi de volatiliteyi ölçer. ATR mumların aralığını fiyat birimiyle verir; Bollinger Bantları kapanışların standart sapmasını grafiğin üzerine bant olarak çizer.
+    - id: moving-averages
+      text: Orta bant 20 periyotluk bir basit hareketli ortalamadır; dış bantlar ortalamaya volatiliteyi ekler.
+  key_points:
+    - "Varsayılan ayar: 20 SMA ± 2 standart sapma."
+    - Bantlar volatilite düşünce daralır, yükselince genişler.
+    - Güçlü trendde fiyat bandın boyunca ilerleyebilir; banda değmek tek başına sinyal değildir.
+    - Daralma bir genişlemeye işaret edebilir, ama yönünü söylemez.
+  svg_labels:
+    upper: Üst bant
+    lower: Alt bant
+    middle_1: Orta bant
+    middle_2: (20 SMA)
+    bandwidth: Bant genişliği
+    squeeze: Daralma
+    walk_1: Fiyat üst bandın
+    walk_2: boyunca ilerler
+    squeeze_bw: En dar nokta
+  svg_alt: "Üstte bir fiyat çizgisi ve etrafında Bollinger Bantları: bantlar yatay bir dönemde daralıyor, ardından fiyat yükselip üst bandın boyunca ilerlerken bantlar genişliyor; altta aynı dönemin bant genişliği çizgisi"
+  svg_caption: >-
+    Gri çizgiler üst ve alt bandı, turuncu kesikli çizgi 20 periyotluk orta bandı gösterir. Alt
+    paneldeki bant genişliği daralmada en düşük düzeyine iner, yükselişle birlikte hızla artar.
+
+en:
+  slug: bollinger-bands
+  name: Bollinger Bands
+  summary: >-
+    Bollinger Bands are two bands drawn two standard deviations either side of a 20-period simple moving
+    average. The bands narrow when price calms down and widen when it becomes active, so they show
+    volatility on the price chart. Price touching a band is not a signal on its own.
+  sections:
+    - type: text
+      id: definition
+      title: Which question do Bollinger Bands answer?
+      paragraphs:
+        - >-
+          Bollinger Bands answer this question: **how far is price from the average of the last 20
+          candles, and is that distance large compared with the usual variability of the period?** The
+          middle band shows the average; the outer bands show how widely the closes are spread around it.
+        - >-
+          The width of the bands is not fixed. When closes stay close together the standard deviation
+          shrinks and the bands narrow; when closes spread out the bands widen. So Bollinger Bands say
+          more about **changes in volatility** than about direction.
+    - type: steps
+      id: calculation
+      title: How it is calculated
+      items:
+        - title: Calculate the middle band.
+          text: "Middle band = simple moving average of the last 20 closes (20 SMA). Every close carries equal weight."
+        - title: Find the standard deviation.
+          text: How far the same 20 closes stray from the middle band is measured by the standard deviation. If the closes sit near the average it is small; if they are scattered it is large.
+        - title: Draw the outer bands.
+          text: "Upper band = middle band + 2 × standard deviation. Lower band = middle band − 2 × standard deviation. The default setting is 20 periods and 2 standard deviations."
+        - title: Measure the bandwidth.
+          text: "Bandwidth = (upper band − lower band) ÷ middle band. Because it is a ratio, it can be compared across price levels and assets."
+    - type: bullets
+      id: common-readings
+      title: How it is commonly read
+      items:
+        - text: "**Squeeze:** bandwidth drops to its lowest level in a while. It describes a quiet period; an expansion may follow, but the squeeze says nothing about its direction or timing."
+          marker: accent
+        - text: "**Expansion:** the bands open quickly. Price has left the quiet range with a breakout or a sharp move."
+          marker: neutral
+        - text: "**Walking the band:** in a strong trend, closes come one after another near or above the upper band (or the lower band in a decline). This shows the move is strong, not that it is overstretched and ending."
+          marker: up
+        - text: "**Middle band:** the average that pullbacks in a trend often visit. Which side of it price stays on gives a rough idea of short-term direction."
+          marker: neutral
+      note: >-
+        Squeezes and expansions are covered in more detail on the volatility page. The middle band is a
+        simple moving average; the moving averages page explains the difference between SMA and EMA.
+    - type: scenarios
+      id: band-touch
+      title: What does a band touch tell you?
+      intro: Price touching the upper or lower band does not on its own mean "too high" or "too low". The context changes the reading.
+      items:
+        - title: Strong uptrend
+          tone: up
+          text: Closes move **along the upper band**. Each touch can come with a new high; here the band is not a limit but a measure of the move's strength.
+        - title: Strong downtrend
+          tone: down
+          text: Price falls **along the lower band**. Touching it does not show the decline has ended; the bands open downwards with price.
+        - title: Sideways market
+          tone: neutral
+          text: Price moves back and forth between the bands. Approaches to the bands can line up with the range's edges, but when the range breaks the same touch can be a start.
+    - type: limits
+      shows:
+        - How far price is from the 20-candle average, relative to the variability of the period
+        - That volatility is contracting or expanding
+        - How one-sided the closes are in a strong trend (walking the band)
+      not_proves:
+        - That price touching a band will turn back
+        - Which way, or when, a squeeze will resolve
+        - That the bands are support or resistance levels; they are recalculated every candle and move with price
+    - type: zones
+      paragraphs:
+        - >-
+          Bollinger Bands are **moving** limits, recalculated every candle; they do not mark a fixed area
+          where price has reacted before. Support and resistance zones rest on places where price turned
+          or paused in the past. The two measure different things.
+        - >-
+          That is why reading them together is informative. Approaching a resistance zone with narrow
+          bands describes a quiet period continuing just below the zone. A close beyond the zone with the
+          bands opening can show that the breakout came with an expansion in volatility too. The zone's
+          thickness as a band, however, is independent of the width of the Bollinger Bands.
+    - type: box
+      title: Bollinger Bands in crypto
+      text: >-
+        Crypto trades 24/7, so the bands are calculated without session gaps. But 20 periods means very
+        different spans on different timeframes: 20 hours on the 1H chart, about three and a half days
+        on the 4H chart and 20 days on the 1D chart. Seeing a squeeze on one timeframe and an expansion
+        on another at the same time is normal.
+  confusions:
+    - id: atr
+      text: Both measure volatility. ATR gives the candles' range in price units; Bollinger Bands draw the standard deviation of closes as bands on the chart.
+    - id: moving-averages
+      text: The middle band is a 20-period simple moving average; the outer bands add volatility to the average.
+  key_points:
+    - "Default setting: 20 SMA ± 2 standard deviations."
+    - The bands narrow as volatility falls and widen as it rises.
+    - In a strong trend price can walk along a band; a touch is not a signal on its own.
+    - A squeeze can point to an expansion, but not to its direction.
+  svg_labels:
+    upper: Upper band
+    lower: Lower band
+    middle_1: Middle band
+    middle_2: (20 SMA)
+    bandwidth: Bandwidth
+    squeeze: Squeeze
+    walk_1: Price moves along
+    walk_2: the upper band
+    squeeze_bw: Narrowest point
+  svg_alt: "A price line with Bollinger Bands around it: the bands narrow during a sideways period, then widen as price rises and moves along the upper band; below, the bandwidth line for the same period"
+  svg_caption: >-
+    The grey lines are the upper and lower bands and the dashed orange line the 20-period middle band.
+    In the lower pane, bandwidth reaches its lowest point in the squeeze and rises quickly with the
+    advance.

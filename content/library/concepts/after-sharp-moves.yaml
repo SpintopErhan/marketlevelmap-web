@@ -1,0 +1,213 @@
+id: after-sharp-moves
+kind: volume-volatility
+order: 70
+related: [volatility, pullback-vs-reversal, range-and-consolidation, flag]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: sert-hareketlerden-sonra
+  name: Sert hareketlerden sonra fiyat davranışı
+  alt_name: Price behaviour after sharp moves
+  summary: >-
+    Kısa sürede gelen büyük bir hareketten sonra fiyat üç genel yoldan birini izleyebilir: aynı yönde
+    devam edebilir, yatay bir seyre geçebilir ya da hareketin bir kısmını geri verebilir. Hangisinin
+    gerçekleşeceği ilk mumlarda çoğu zaman belli olmaz. Sert hareketlerin ardından volatilite bir süre
+    yüksek kalma eğilimindedir.
+  sections:
+    - type: text
+      id: definition
+      title: Sert hareket nedir?
+      paragraphs:
+        - >-
+          Sert hareket, fiyatın kısa bir sürede, piyasanın **olağan oynaklığına göre** büyük bir mesafe
+          kat etmesidir. Grafikte genellikle art arda gelen uzun gövdeli mumlar ya da tek bir çok büyük
+          mum olarak görünür. Neyin sert sayılacağı mutlak değildir; aynı yüzdelik hareket sakin bir
+          piyasada sert, hareketli bir piyasada sıradan olabilir.
+        - >-
+          Sert hareketler çoğu zaman bir bölgenin kırılımıyla, beklenmedik bir haberle ya da kaldıraçlı
+          pozisyonların toplu kapanmasıyla birlikte görülür. Kripto piyasasında bu hareketler hafta
+          sonu ya da gece saatlerinde, işlemin seyrek olduğu dönemlerde de gelebilir.
+    - type: scenarios
+      id: three-paths
+      title: Sonrasında üç olası yol
+      intro: Sert bir yükselişten sonra fiyatın izleyebileceği üç genel tablo vardır. Düşüşte aynıları ters yönde geçerlidir.
+      items:
+        - title: Devam
+          tone: up
+          text: Kısa bir duraklamadan sonra fiyat aynı yönde **yeni tepeler** yapar. Geri çekilmeler sığ kalır.
+        - title: Konsolidasyon
+          tone: neutral
+          text: Fiyat hareketin tepesine yakın **dar bir aralıkta** gidip gelir. Hareket ne devam eder ne de geri verilir; mumlar giderek küçülür.
+        - title: Kısmi geri çekilme
+          tone: down
+          text: Fiyat hareketin **bir kısmını geri verir**, çoğu zaman hareketin ortalarına ya da başladığı bölgeye doğru iner. Bu, hareketin tamamen silindiği anlamına gelmez.
+    - type: text
+      id: clustering
+      title: Volatilite kümelenmesi
+      paragraphs:
+        - >-
+          Büyük hareketler çoğu zaman tek başına gelmez. Sert bir mumdan sonraki mumların da büyük
+          olma olasılığı, sakin bir dönemdekinden yüksektir. Buna **volatilite kümelenmesi** denir:
+          hareketli dönemler bir arada, sakin dönemler bir arada görülme eğilimindedir.
+        - >-
+          Bu kümelenme yön hakkında bilgi vermez. Sert bir yükselişten sonra gelen büyük mumlar yukarı
+          da aşağı da olabilir. Söylediği tek şey, hareketin hemen ardından fiyatın **geniş aralıklarla**
+          oynamaya devam edebileceğidir.
+    - type: text
+      id: first-reaction
+      title: İlk tepki neden yanıltıcı olabilir?
+      paragraphs:
+        - >-
+          Sert bir hareketin hemen ardından gelen mumlar, piyasanın yeni fiyata alışmaya çalıştığı
+          dönemdir. Bu sırada fiyat hızla bir yöne, sonra öbür yöne gidebilir; uzun fitiller ve
+          birbirini tutmayan mumlar sık görülür.
+        - >-
+          Bu yüzden ilk geri çekilme ya da ilk yeni tepe, sonraki tablonun hangisi olacağını tek başına
+          göstermez. Küçük zaman diliminde (1H) görülen ilk tepki, 4H ya da 1D grafikte tek bir mumun
+          fitili olarak kalabilir. Tabloyu netleştiren çoğu zaman sonraki **kapanışlar** ve fiyatın
+          hangi bölgede tutunduğudur.
+    - type: limits
+      shows:
+        - Fiyatın kısa sürede, olağan oynaklığına göre büyük bir mesafe kat ettiğini
+        - Hareketin ardından volatilitenin bir süre yüksek kalabileceğini
+        - Sonraki mumların devam, konsolidasyon ya da geri çekilme tablolarından hangisine yaklaştığını
+      not_proves:
+        - Hareketin devam edeceğini ya da geri verileceğini
+        - Geri çekilmenin ne kadar derin olacağını
+        - İlk tepkinin sonraki hareketin yönünü belirlediğini
+    - type: zones
+      paragraphs:
+        - >-
+          Sert bir hareket çoğu zaman bir veya birkaç bölgeyi hızla geçer. Fiyat bu bölgelerde
+          duraklamadığı için, sonradan geri gelirse aynı bölgeler **ilk kez sınanır**. Kısmi geri
+          çekilmelerde fiyatın hareketin başladığı bölgeye ya da yolda geçtiği bir bölgeye doğru inmesi
+          bu yüzden sık görülen bir tablodur.
+        - >-
+          Sert hareketlerin ardından mumlar geniş olduğu için, fiyat bir bölgenin içine ve dışına uzun
+          fitillerle girip çıkabilir. Bölgeyi tek bir çizgi yerine **bir bant** olarak okumak ve kırılımı
+          kapanışla değerlendirmek, bu dönemdeki gürültüyü ayıklamaya yardımcı olur.
+  confusions:
+    - id: pullback-vs-reversal
+      text: Sert hareketten sonraki kısmi geri çekilme bir dönüş değildir; yapının bozulup bozulmadığı son önemli dip ya da tepeyle anlaşılır.
+    - id: flag
+      text: Sert bir hareketin ardından gelen kısa, eğimli duraklama bayrak formasyonu olarak da okunabilir; bu sayfa ise genel davranışı anlatır.
+  key_points:
+    - Sert hareketten sonra devam, konsolidasyon ve kısmi geri çekilme üç olası tablodur.
+    - Volatilite kümelenir; büyük mumların ardından büyük mumlar gelme eğilimindedir.
+    - İlk tepki tek başına sonraki tabloyu göstermez; kapanışlar ve bölgeler netleştirir.
+    - Hızla geçilen bölgeler, fiyat geri gelirse ilk kez sınanır.
+  svg_labels:
+    origin: Hareketin başladığı bölge
+    spike: Sert hareket
+    first: İlk tepki
+    cont: Devam
+    cons: Konsolidasyon
+    retr_1: Kısmi geri
+    retr_2: çekilme
+  svg_alt: "Sert hareket çizimi: bir bölgede yatay seyreden küçük mumlar, ardından art arda büyük yükselen mumlar ve küçük bir ilk tepki mumu; buradan devam, konsolidasyon ve kısmi geri çekilme olmak üzere üç kesikli olası yol ayrılıyor"
+  svg_caption: >-
+    Turuncu bant hareketin başladığı bölgeyi gösterir. Kesikli çizgiler olası yollardır, tahmin değildir.
+    İlk tepki mumu, hangi yolun izleneceğini tek başına göstermez.
+
+en:
+  slug: after-sharp-moves
+  name: Price behaviour after sharp moves
+  summary: >-
+    After a large move in a short time, price can follow one of three broad paths: it can continue in
+    the same direction, move sideways, or give back part of the move. Which one it will be is often not
+    clear from the first candles. After sharp moves, volatility tends to stay high for a while.
+  sections:
+    - type: text
+      id: definition
+      title: What is a sharp move?
+      paragraphs:
+        - >-
+          A sharp move is price covering a large distance in a short time, **compared with the market's
+          usual volatility**. On a chart it usually shows as several long-bodied candles in a row or a
+          single very large candle. What counts as sharp is not absolute; the same percentage move can
+          be sharp in a calm market and ordinary in an active one.
+        - >-
+          Sharp moves often come with a zone breaking, unexpected news or leveraged positions being
+          closed out in bulk. In crypto they can also come at weekends or overnight, when trading is
+          thin.
+    - type: scenarios
+      id: three-paths
+      title: Three possible paths afterwards
+      intro: After a sharp rise there are three broad pictures price can follow. After a decline the same apply the other way round.
+      items:
+        - title: Continuation
+          tone: up
+          text: After a short pause price makes **new highs** in the same direction. Pullbacks stay shallow.
+        - title: Consolidation
+          tone: neutral
+          text: Price moves back and forth in **a narrow range** near the top of the move. The move is neither extended nor given back; the candles get smaller.
+        - title: Partial retracement
+          tone: down
+          text: Price **gives back part of the move**, often towards its middle or towards the zone it started from. That does not mean the whole move is erased.
+    - type: text
+      id: clustering
+      title: Volatility clustering
+      paragraphs:
+        - >-
+          Large moves rarely come alone. After a sharp candle, the chance that the next candles are large
+          too is higher than in a calm period. This is called **volatility clustering**: active periods
+          tend to come together, and so do calm ones.
+        - >-
+          Clustering says nothing about direction. The large candles after a sharp rise can go up or
+          down. All it says is that, right after the move, price may keep moving in **wide ranges**.
+    - type: text
+      id: first-reaction
+      title: Why the first reaction can mislead
+      paragraphs:
+        - >-
+          The candles right after a sharp move are the period in which the market adjusts to the new
+          price. Price can move quickly one way and then the other; long wicks and candles that
+          contradict each other are common.
+        - >-
+          So the first pullback or the first new high does not on its own show which picture will
+          follow. A first reaction on a small timeframe (1H) can be just a wick on a single 4H or 1D
+          candle. What usually makes the picture clearer is the next **closes** and the zone price holds
+          in.
+    - type: limits
+      shows:
+        - That price covered a large distance in a short time, compared with its usual volatility
+        - That volatility may stay high for a while after the move
+        - Which of continuation, consolidation or retracement the next candles are closer to
+      not_proves:
+        - That the move will continue or be given back
+        - How deep a retracement will be
+        - That the first reaction decides the direction of the next move
+    - type: zones
+      paragraphs:
+        - >-
+          A sharp move often passes through one or more zones quickly. Because price did not pause in
+          them, if it comes back those zones are **tested for the first time**. That is why, in a partial
+          retracement, price moving towards the zone the move started from, or a zone it passed on the
+          way, is a common picture.
+        - >-
+          Because candles are wide after sharp moves, price can move in and out of a zone with long
+          wicks. Reading the zone as **a band** rather than a single line, and judging a breakout on the
+          close, helps filter out the noise of this period.
+  confusions:
+    - id: pullback-vs-reversal
+      text: A partial retracement after a sharp move is not a reversal; whether the structure has broken is judged by the last important low or high.
+    - id: flag
+      text: The short, sloping pause after a sharp move can also be read as a flag pattern; this page describes the general behaviour.
+  key_points:
+    - After a sharp move, continuation, consolidation and partial retracement are three possible pictures.
+    - Volatility clusters; large candles tend to be followed by large candles.
+    - The first reaction does not on its own show what follows; closes and zones make it clearer.
+    - Zones passed through quickly are tested for the first time if price comes back.
+  svg_labels:
+    origin: Zone where the move started
+    spike: Sharp move
+    first: First reaction
+    cont: Continuation
+    cons: Consolidation
+    retr_1: Partial
+    retr_2: retracement
+  svg_alt: "Sharp move illustration: small candles moving sideways in a zone, then several large rising candles in a row and a small first-reaction candle; from there three dashed possible paths branch off: continuation, consolidation and partial retracement"
+  svg_caption: >-
+    The orange band marks the zone the move started from. The dashed lines are possible paths, not a
+    forecast. The first-reaction candle does not on its own show which path will follow.

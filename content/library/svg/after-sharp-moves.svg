@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="24" y="220" width="420" height="22" opacity="0.14"/>
+  <line class="s-accent" x1="24" y1="220" x2="444" y2="220" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="24" y1="242" x2="444" y2="242" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <text class="t-accent" x="30" y="262">{{origin}}</text>
+  <g stroke-width="2">
+    <line class="s-up" x1="40" y1="222" x2="40" y2="238"/><rect class="f-up" x="33" y="228" width="14" height="4" rx="2"/>
+    <line class="s-down" x1="64" y1="224" x2="64" y2="240"/><rect class="f-down" x="57" y="228" width="14" height="6" rx="2"/>
+    <line class="s-up" x1="88" y1="225" x2="88" y2="240"/><rect class="f-up" x="81" y="229" width="14" height="5" rx="2"/>
+    <line class="s-down" x1="112" y1="223" x2="112" y2="236"/><rect class="f-down" x="105" y="229" width="14" height="3" rx="2"/>
+    <line class="s-up" x1="136" y1="192" x2="136" y2="234"/><rect class="f-up" x="129" y="196" width="14" height="35" rx="2"/>
+    <line class="s-up" x1="160" y1="150" x2="160" y2="200"/><rect class="f-up" x="153" y="158" width="14" height="38" rx="2"/>
+    <line class="s-up" x1="184" y1="112" x2="184" y2="162"/><rect class="f-up" x="177" y="120" width="14" height="38" rx="2"/>
+    <line class="s-up" x1="208" y1="94" x2="208" y2="124"/><rect class="f-up" x="201" y="104" width="14" height="16" rx="2"/>
+    <line class="s-down" x1="232" y1="98" x2="232" y2="124"/><rect class="f-down" x="225" y="104" width="14" height="14" rx="2"/>
+  </g>
+  <g fill="none" stroke-width="2" stroke-dasharray="5 5" stroke-linejoin="round" stroke-linecap="round">
+    <polyline class="s-up" points="240,118 270,100 290,108 330,76 350,84 400,52 440,44"/>
+    <polyline class="s-line" points="240,118 270,104 300,126 330,106 360,124 400,108 440,116"/>
+    <polyline class="s-down" points="240,118 270,132 290,126 330,156 350,150 400,178 440,186"/>
+  </g>
+  <text class="t-label" x="232" y="82" text-anchor="middle">{{first}}</text>
+  <text class="t-label" x="124" y="170" text-anchor="end">{{spike}}</text>
+  <text class="f-up" x="450" y="49">{{cont}}</text>
+  <text class="t-label" x="450" y="121">{{cons}}</text>
+  <g class="t-down">
+    <text x="450" y="184">{{retr_1}}</text>
+    <text x="450" y="200">{{retr_2}}</text>
+  </g>
+</svg>

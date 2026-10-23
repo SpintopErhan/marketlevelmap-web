@@ -71,3 +71,31 @@
     name: Candlestick patterns
     singular: Candlestick pattern
     summary: Patterns of one to three candles that can point to a short-term change of direction or to indecision.
+- kind: volume-volatility
+  section: movement
+  order: 10
+  cover: volume
+  tr:
+    slug: hacim-ve-volatilite
+    name: Hacim ve volatilite
+    singular: Hacim ve volatilite
+    summary: Fiyat hareketine eşlik eden işlem hacmi, hareketin ne kadar oynak olduğu ve bunların bir hareketi nasıl yorumlattığı.
+  en:
+    slug: volume-and-volatility
+    name: Volume and volatility
+    singular: Volume and volatility
+    summary: The trading volume behind a price move, how volatile the move is, and how both shape the way a move is read.
+- kind: indicators
+  section: movement
+  order: 20
+  cover: rsi
+  tr:
+    slug: teknik-gostergeler
+    name: Teknik göstergeler
+    singular: Teknik gösterge
+    summary: Fiyat ve hacimden hesaplanan göstergeler; nasıl hesaplandıkları, hangi soruya cevap verdikleri ve nerede yanıltabildikleri.
+  en:
+    slug: technical-indicators
+    name: Technical indicators
+    singular: Technical indicator
+    summary: Indicators calculated from price and volume; how they are calculated, which question they answer and where they can mislead.

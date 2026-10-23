@@ -1,0 +1,211 @@
+id: volatility
+kind: volume-volatility
+order: 50
+related: [atr, bollinger-bands, range-and-consolidation, after-sharp-moves]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: volatilite-nedir
+  name: "Volatilite nedir? Daralan ve genişleyen aralıklar"
+  alt_name: Volatility
+  summary: >-
+    Volatilite, fiyat değişimlerinin büyüklüğüdür; yönünü değil, ne kadar oynadığını anlatır. Piyasalar
+    sakin ve hareketli dönemler arasında gidip gelir: aralıklar daralır, sonra genişler. Aynı yüzdelik
+    hareket, sakin bir piyasada olağan dışı, hareketli bir piyasada sıradan olabilir.
+  sections:
+    - type: text
+      id: definition
+      title: Volatilite nedir?
+      paragraphs:
+        - >-
+          Volatilite, fiyatın belirli bir süre içinde **ne kadar değiştiğini** ölçer. Fiyatın yukarı
+          mı aşağı mı gittiğiyle ilgilenmez. Yükselen bir piyasa da düşen bir piyasa da yüksek ya da
+          düşük volatiliteli olabilir.
+        - >-
+          Grafikte volatilite en kolay **mumların boyunda** görülür. Kısa gövdeli, kısa fitilli mumlar
+          sakin bir dönemi; uzun gövdeli, uzun fitilli mumlar hareketli bir dönemi anlatır. Volatilite
+          her zaman bir zaman dilimine göre söylenir: 1H grafikte hareketli görünen bir gün, 1D grafikte
+          tek bir orta boy mum olabilir.
+    - type: text
+      id: cycles
+      title: Daralma ve genişleme
+      paragraphs:
+        - >-
+          Volatilite sabit kalmaz. Fiyat bir süre dar bir aralıkta, küçük mumlarla ilerler; sonra
+          birkaç büyük mumla aralığın dışına çıkar ve hareket bir süre geniş kalır. Ardından mumlar
+          yeniden küçülür. Bu **daralma ve genişleme** döngüsü hemen her piyasada ve her zaman
+          diliminde görülür.
+        - >-
+          Daralma çoğu zaman yatay bir piyasada ya da bir formasyonun (üçgen, flama) içinde görülür.
+          Genişleme ise genellikle bir kırılımla ya da sert bir hareketle başlar. Sakin bir dönem
+          hareketin geleceğine işaret edebilir, ama **ne zaman ve hangi yöne** olacağını söylemez.
+    - type: bullets
+      id: how-measured
+      title: Volatilite genellikle nasıl ölçülür?
+      items:
+        - text: "**Aralık:** bir mumun en yüksek ile en düşük fiyatı arasındaki fark. En sade ölçüdür; tek bir mumun ne kadar oynadığını gösterir."
+          marker: neutral
+        - text: "**ATR (Average True Range):** mumların, boşlukları da hesaba katan gerçek aralığının ortalaması. Varsayılan ayar 14 mumdur; fiyatın tipik olarak ne kadar oynadığını fiyat birimiyle verir."
+          marker: accent
+        - text: "**Standart sapma:** kapanışların ortalamalarından ne kadar uzaklaştığını ölçer. Bollinger Bantları bu ölçüyü kullanır; bantların daralıp genişlemesi volatilitenin değişimini gösterir."
+          marker: neutral
+        - text: "**Yüzdelik değişim:** hareketi fiyata oranlar. Farklı fiyat düzeyindeki varlıkları ya da dönemleri karşılaştırmayı kolaylaştırır."
+          marker: neutral
+      note: >-
+        Bu ölçülerin hepsi geçmiş fiyatlardan hesaplanır. Bugüne kadar ne kadar oynandığını söyler,
+        bundan sonra ne kadar oynanacağını söylemez.
+    - type: text
+      id: relative-move
+      title: Aynı hareket, farklı anlam
+      paragraphs:
+        - >-
+          Yüzde 3'lük bir hareket tek başına büyük ya da küçük değildir. Mumların günlerdir yüzde 1'in
+          altında oynadığı sakin bir piyasada yüzde 3 **olağan dışı** bir harekettir. Mumların her gün
+          yüzde 5 oynadığı hareketli bir dönemde ise aynı hareket **sıradan** kalır.
+        - >-
+          Bu yüzden bir hareketin büyüklüğü, o piyasanın o dönemdeki olağan oynaklığıyla birlikte
+          okunur. Kripto piyasasında volatilite varlıktan varlığa çok değişir: büyük kripto paralar
+          çoğu zaman daha az, düşük hacimli olanlar daha çok oynar. Aynı varlık da farklı dönemlerde
+          çok farklı volatilite gösterebilir.
+    - type: limits
+      shows:
+        - Fiyatın bu zaman diliminde ne kadar oynadığını
+        - Piyasanın sakin bir dönemde mi, hareketli bir dönemde mi olduğunu
+        - Bir hareketin, piyasanın olağan oynaklığına göre büyük mü küçük mü olduğunu
+      not_proves:
+        - Fiyatın hangi yöne gideceğini
+        - Daralmanın ne zaman sona ereceğini ya da genişlemenin ne kadar süreceğini
+        - Yüksek volatilitenin bir dönüşe, düşük volatilitenin bir devama işaret ettiğini
+    - type: zones
+      paragraphs:
+        - >-
+          Volatilite, bir bölgenin ne kadar geniş okunacağını etkiler. Hareketli bir dönemde fiyat bir
+          bölgeye gelip giderken daha uzun fitiller bırakır; bölgenin ötesine kısa süre uzanan bir
+          fitil, sakin bir dönemdekinden daha az şey anlatır. Bu yüzden bölgeyi tek bir çizgi yerine
+          **bir bant** olarak okumak, oynaklığı hesaba katmanın sade bir yoludur.
+        - >-
+          Sakin dönemde ise fiyat bir bölgenin içinde ya da iki bölge arasında küçük mumlarla
+          sıkışabilir. Bu daralmadan sonra gelen genişleme, çoğu zaman bandın kenarlarından birinin
+          sınanmasıyla başlar. Kırılımın değerlendirilmesi yine kapanışla yapılır.
+  confusions:
+    - id: atr
+      text: ATR volatilitenin yaygın bir ölçüsüdür; volatilitenin kendisi değil, onu sayıya döken bir göstergedir.
+    - id: range-and-consolidation
+      text: Yatay piyasa yönle ilgilidir, volatilite oynaklıkla. Yatay bir piyasa geniş bir aralıkta hareketli de olabilir.
+  key_points:
+    - Volatilite, fiyat değişimlerinin büyüklüğüdür; yönünü anlatmaz.
+    - Piyasalar daralma ve genişleme dönemleri arasında gidip gelir.
+    - Aynı yüzdelik hareket, piyasanın olağan oynaklığına göre farklı anlam taşır.
+    - Volatilite ölçüleri geçmişi anlatır; sonraki hareketin yönünü söylemez.
+  svg_labels:
+    calm: Sakin dönem
+    expansion: Genişleme
+    contraction: Yeniden daralma
+    range: Mum aralığı (en yüksek − en düşük)
+  svg_alt: "Volatilite döngüsü çizimi: önce dar aralıklı küçük mumlar, ardından uzun gövdeli ve uzun fitilli büyük mumlar, sonra yeniden küçülen mumlar; altta her mumun aralığını gösteren çubuklar"
+  svg_caption: >-
+    Alttaki çubuklar her mumun en yüksek ile en düşük fiyatı arasındaki farkı gösterir. Çubuklar sakin
+    dönemde kısalır, genişlemede uzar, sonra yeniden kısalır. Volatilite yönü değil, hareketin
+    büyüklüğünü anlatır.
+
+en:
+  slug: what-is-volatility
+  name: "What is volatility? Contracting and expanding ranges"
+  summary: >-
+    Volatility is the size of price changes; it describes how much price moves, not which way. Markets
+    swing between calm and active periods: ranges contract, then expand. The same percentage move can
+    be unusual in a calm market and ordinary in a volatile one.
+  sections:
+    - type: text
+      id: definition
+      title: What is volatility?
+      paragraphs:
+        - >-
+          Volatility measures **how much price changes** over a period. It does not care whether price
+          goes up or down. A rising market and a falling market can each have high or low volatility.
+        - >-
+          On a chart, volatility is easiest to see in **the size of the candles**. Short bodies and short
+          wicks describe a calm period; long bodies and long wicks describe an active one. Volatility is
+          always stated for a timeframe: a day that looks busy on the 1H chart can be a single
+          medium-sized candle on the 1D chart.
+    - type: text
+      id: cycles
+      title: Contraction and expansion
+      paragraphs:
+        - >-
+          Volatility does not stay constant. Price moves in a narrow range with small candles for a
+          while, then leaves the range with a few large candles, and the move stays wide for some time.
+          After that the candles shrink again. This cycle of **contraction and expansion** shows up in
+          almost every market and on every timeframe.
+        - >-
+          Contraction is often seen in a sideways market or inside a pattern such as a triangle or a
+          pennant. Expansion usually starts with a breakout or a sharp move. A quiet period can hint that
+          a move is coming, but it does not say **when or in which direction**.
+    - type: bullets
+      id: how-measured
+      title: How volatility is usually measured
+      items:
+        - text: "**Range:** the difference between a candle's high and low. The simplest measure; it shows how much a single candle moved."
+          marker: neutral
+        - text: "**ATR (Average True Range):** the average of the candles' true range, which also accounts for gaps. The default setting is 14 candles; it gives how much price typically moves, in price units."
+          marker: accent
+        - text: "**Standard deviation:** measures how far closes stray from their average. Bollinger Bands use it; the bands narrowing and widening shows volatility changing."
+          marker: neutral
+        - text: "**Percentage change:** relates the move to the price. It makes assets at different price levels, or different periods, easier to compare."
+          marker: neutral
+      note: >-
+        All of these measures are calculated from past prices. They say how much price has moved so
+        far, not how much it will move next.
+    - type: text
+      id: relative-move
+      title: The same move, a different meaning
+      paragraphs:
+        - >-
+          A 3% move is not large or small on its own. In a calm market where candles have moved less
+          than 1% for days, 3% is an **unusual** move. In an active period where candles move 5% a day,
+          the same move is **ordinary**.
+        - >-
+          So the size of a move is read together with that market's usual volatility at the time.
+          Volatility varies a lot between crypto assets: the large coins often move less, low-volume
+          ones more. The same asset can also show very different volatility in different periods.
+    - type: limits
+      shows:
+        - How much price has moved on this timeframe
+        - Whether the market is in a calm or an active period
+        - Whether a move is large or small compared with the market's usual volatility
+      not_proves:
+        - Which way price will go
+        - When a contraction will end or how long an expansion will last
+        - That high volatility signals a reversal or low volatility a continuation
+    - type: zones
+      paragraphs:
+        - >-
+          Volatility affects how wide a zone should be read. In an active period price leaves longer
+          wicks as it moves in and out of a zone; a wick briefly reaching beyond the zone says less than
+          it would in a calm period. That is why reading a zone as **a band** rather than a single line
+          is a simple way of allowing for volatility.
+        - >-
+          In a calm period price can squeeze inside a zone, or between two zones, with small candles.
+          The expansion after such a contraction often starts with one of the band's edges being tested.
+          A breakout is still judged on the close.
+  confusions:
+    - id: atr
+      text: ATR is a common measure of volatility; it is not volatility itself but an indicator that turns it into a number.
+    - id: range-and-consolidation
+      text: A sideways market is about direction, volatility about the size of moves. A sideways market can be volatile within a wide range.
+  key_points:
+    - Volatility is the size of price changes; it does not describe direction.
+    - Markets swing between periods of contraction and expansion.
+    - The same percentage move means different things depending on the market's usual volatility.
+    - Volatility measures describe the past; they do not say which way the next move goes.
+  svg_labels:
+    calm: Calm period
+    expansion: Expansion
+    contraction: Contraction again
+    range: Candle range (high − low)
+  svg_alt: "Volatility cycle illustration: first small candles with narrow ranges, then large candles with long bodies and wicks, then candles shrinking again; below, bars showing each candle's range"
+  svg_caption: >-
+    The bars below show the difference between each candle's high and low. They shorten in the calm
+    period, lengthen in the expansion and shorten again. Volatility describes the size of the move, not
+    its direction.

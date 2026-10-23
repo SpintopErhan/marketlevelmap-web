@@ -1,0 +1,209 @@
+id: moving-averages
+kind: indicators
+order: 20
+related: [indicators-basics, macd, trend, support-and-resistance]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: hareketli-ortalamalar
+  name: Hareketli ortalamalar (SMA, EMA)
+  alt_name: Moving averages (SMA, EMA)
+  summary: >-
+    Hareketli ortalama, son belirli sayıda mumun kapanış fiyatlarının ortalamasıdır ve her yeni mumla
+    yeniden hesaplanır. Basit ortalama (SMA) her kapanışa eşit ağırlık verir; üstel ortalama (EMA) son
+    kapanışlara daha çok ağırlık verir. İkisi de fiyatı yumuşatır ve fiyatın gerisinden gelir.
+  sections:
+    - type: text
+      id: definition
+      title: Hareketli ortalama hangi soruya cevap verir?
+      paragraphs:
+        - >-
+          Hareketli ortalama şu soruyu cevaplar: **son N mumda fiyat ortalama olarak nerede işlem
+          gördü ve bu ortalama hangi yöne ilerliyor?** Mum mum iniş çıkışları yumuşatarak fiyatın
+          genel yönünü daha sakin bir çizgiyle gösterir.
+        - >-
+          Ortalama geçmiş kapanışlardan hesaplandığı için her zaman fiyatın **gerisinden** gelir.
+          Periyot uzadıkça çizgi daha düz, gecikme daha büyük olur. Bu bir hata değil, yumuşatmanın
+          bedelidir.
+    - type: steps
+      id: calculation
+      title: Nasıl hesaplanır?
+      items:
+        - title: SMA (basit hareketli ortalama)
+          text: Son N kapanışın toplamı N'e bölünür. Yeni bir mum kapandığında en eski kapanış hesaptan çıkar, yenisi girer. Her kapanışın ağırlığı eşittir.
+        - title: EMA (üstel hareketli ortalama)
+          text: "Çarpan k = 2 ÷ (N + 1). EMA = bu mumun kapanışı × k + önceki EMA × (1 − k). 20 periyotluk EMA'da k = 2 ÷ 21 ≈ 0,095'tir."
+        - title: Başlangıç değeri
+          text: EMA'nın ilk değeri için genellikle ilk N kapanışın SMA'sı kullanılır. Bu yüzden grafiğin başında farklı platformlar biraz farklı değerler gösterebilir.
+      note: >-
+        EMA'da eski kapanışların etkisi hiç sıfırlanmaz, ama giderek küçülür. Son kapanışlar daha ağır
+        bastığı için EMA fiyattaki dönüşlere SMA'dan daha erken tepki verir; buna karşılık kısa
+        dalgalanmalara da daha duyarlıdır.
+    - type: bullets
+      id: common-periods
+      title: Sık kullanılan periyotlar
+      items:
+        - text: "**20:** kısa vadeli ortalama. Son birkaç dalganın ortalamasını izler."
+          marker: neutral
+        - text: "**50:** orta vadeli ortalama. Daha büyük dalgaların yönünü gösterir."
+          marker: neutral
+        - text: "**200:** uzun vadeli ortalama. Özellikle günlük grafikte geniş bağlamı göstermek için sık kullanılır."
+          marker: accent
+      note: >-
+        Bu periyotlar yaygın tercihlerdir, özel bir anlamları yoktur. Aynı periyot farklı zaman
+        dilimlerinde farklı süreleri kapsar: 1H grafikte 200 mum yaklaşık 8 gün, 1D grafikte 200 gündür.
+    - type: scenarios
+      id: crossovers
+      title: Kesişimler nasıl okunur?
+      intro: Fiyatın ortalamayı ya da kısa ortalamanın uzun ortalamayı kesmesi sık izlenir. Bunlar bir yön değişikliğini tarif eder, sonucunu bildirmez.
+      items:
+        - title: Kısa ortalama uzunun üzerine çıkar
+          tone: up
+          text: Son kapanışların ortalaması daha uzun dönemin ortalamasını geçmiştir. Yükselişin bir süredir sürdüğü şeklinde okunabilir; gecikme yüzünden hareketin bir kısmı geride kalmış olur.
+        - title: Kısa ortalama uzunun altına iner
+          tone: down
+          text: Son kapanışlar daha uzun dönemin ortalamasının altında kalmaya başlamıştır. Düşüşün bir süredir sürdüğü şeklinde okunabilir.
+        - title: Yatay piyasada kesişimler
+          tone: neutral
+          text: Fiyat bir aralıkta gidip geldiğinde ortalamalar düzleşir ve birbirini sık sık keser. Bu kesişimlerin çoğu kalıcı bir yöne dönüşmez.
+    - type: limits
+      shows:
+        - Son N mumda fiyatın ortalama olarak nerede işlem gördüğünü
+        - Bu ortalamanın yönünü ve eğiminin dikleşip düzleştiğini
+        - Fiyatın ortalamanın üzerinde mi altında mı kaldığını
+      not_proves:
+        - Fiyatın ortalamaya dokunduğunda tepki vereceğini
+        - Bir kesişimden sonra hareketin süreceğini; kesişim geçmişi özetler
+        - Dönüşün zamanını; her ortalama fiyatın gerisinden gelir
+    - type: zones
+      paragraphs:
+        - >-
+          Hareketli ortalamalar sık sık **hareketli bir referans alanı** gibi okunur: yükselen bir
+          trendde geri çekilmelerin ortalama çevresinde durduğu görülebilir. Ama ortalama her mumla yer
+          değiştirir; geçmişte fiyatın tepki verdiği sabit bir destek ya da direnç bölgesi değildir.
+        - >-
+          Bu yüzden ortalamayı ince bir çizgi değil, çevresinde bir **bant** gibi düşünmek daha
+          gerçekçidir. Bir ortalama bir destek ya da direnç bölgesiyle aynı yere denk geldiğinde iki
+          gözlem örtüşür. Fiyatın bu alanda nasıl kapandığı, ortalamaya dokunup dokunmamasından daha
+          çok bilgi verir.
+  confusions:
+    - id: macd
+      text: MACD, 12 ve 26 periyotluk EMA'lar arasındaki farktır. İki EMA'nın kesişmesi, MACD'nin sıfır çizgisini kesmesiyle aynı andır.
+    - id: trend
+      text: Trend tepe ve diplerin sırasıyla tanımlanır. Ortalamanın eğimi trendi özetler ama trendin tanımı değildir.
+  key_points:
+    - SMA son N kapanışa eşit, EMA son kapanışlara daha çok ağırlık verir.
+    - EMA çarpanı 2 ÷ (N + 1)'dir.
+    - Her hareketli ortalama fiyatın gerisinden gelir; periyot uzadıkça gecikme artar.
+    - 20, 50 ve 200 yaygın tercihlerdir, kural değildir.
+    - Kesişimler yön değişikliğini tarif eder, sonucunu bildirmez.
+  svg_labels:
+    ema: EMA 20
+    sma: SMA 20
+    lag: Gecikme
+  svg_alt: "Mum grafiği üzerinde 20 periyotluk EMA ve SMA: fiyat yükselip tepe yapıyor ve düşüyor, EMA birkaç mum sonra, SMA daha da sonra tepe yapıyor"
+  svg_caption: >-
+    Turuncu çizgi EMA 20, diğer çizgi SMA 20'dir. Dikey çizgiler fiyatın, EMA'nın ve SMA'nın tepe yaptığı
+    mumları gösterir. EMA dönüşü daha erken, SMA daha geç yansıtır; aradaki fark gecikmedir.
+
+en:
+  slug: moving-averages
+  name: Moving averages (SMA, EMA)
+  summary: >-
+    A moving average is the average of the closing prices of the last given number of candles,
+    recalculated with every new candle. The simple average (SMA) gives every close equal weight; the
+    exponential average (EMA) gives recent closes more weight. Both smooth price, and both lag behind it.
+  sections:
+    - type: text
+      id: definition
+      title: Which question does a moving average answer?
+      paragraphs:
+        - >-
+          A moving average answers this question: **where has price traded on average over the last N
+          candles, and which way is that average moving?** By smoothing the candle-to-candle swings, it
+          shows the general direction of price as a calmer line.
+        - >-
+          Because the average is calculated from past closes, it always **trails** price. The longer
+          the period, the flatter the line and the greater the lag. This is not a flaw but the cost of
+          smoothing.
+    - type: steps
+      id: calculation
+      title: How it is calculated
+      items:
+        - title: SMA (simple moving average)
+          text: The sum of the last N closes is divided by N. When a new candle closes, the oldest close drops out and the new one comes in. Every close has equal weight.
+        - title: EMA (exponential moving average)
+          text: "Multiplier k = 2 ÷ (N + 1). EMA = this candle's close × k + previous EMA × (1 − k). For a 20-period EMA, k = 2 ÷ 21 ≈ 0.095."
+        - title: Starting value
+          text: The SMA of the first N closes is usually used as the EMA's first value. That is why different platforms can show slightly different values at the start of a chart.
+      note: >-
+        In an EMA the effect of old closes never drops to zero, but it keeps shrinking. Because recent
+        closes weigh more, the EMA reacts to turns in price earlier than the SMA; in return, it is also
+        more sensitive to short swings.
+    - type: bullets
+      id: common-periods
+      title: Commonly used periods
+      items:
+        - text: "**20:** a short-term average. It follows the average of the last few swings."
+          marker: neutral
+        - text: "**50:** a medium-term average. It shows the direction of larger swings."
+          marker: neutral
+        - text: "**200:** a long-term average. It is often used to show the wider context, especially on the daily chart."
+          marker: accent
+      note: >-
+        These periods are common choices with no special meaning. The same period covers different spans
+        on different timeframes: 200 candles are about 8 days on the 1H chart and 200 days on the 1D chart.
+    - type: scenarios
+      id: crossovers
+      title: How crossovers are read
+      intro: Price crossing an average, or a short average crossing a long one, is widely watched. These describe a change of direction; they do not announce its outcome.
+      items:
+        - title: The short average rises above the long one
+          tone: up
+          text: The average of recent closes has passed the average of a longer period. It can be read as a rise that has been under way for a while; because of the lag, part of the move is already behind.
+        - title: The short average falls below the long one
+          tone: down
+          text: Recent closes have started to stay below the longer-period average. It can be read as a decline that has been under way for a while.
+        - title: Crossovers in a sideways market
+          tone: neutral
+          text: When price moves back and forth in a range, the averages flatten and cross each other often. Most of these crossovers do not turn into a lasting direction.
+    - type: limits
+      shows:
+        - Where price has traded on average over the last N candles
+        - The direction of that average, and whether its slope is steepening or flattening
+        - Whether price is above or below the average
+      not_proves:
+        - That price will react when it touches the average
+        - That a move will continue after a crossover; a crossover summarises the past
+        - When a reversal will happen; every average trails price
+    - type: zones
+      paragraphs:
+        - >-
+          Moving averages are often read as a **moving reference area**: in an uptrend, pullbacks can be
+          seen to pause around the average. But the average shifts with every candle; it is not a fixed
+          support or resistance zone where price has reacted before.
+        - >-
+          So it is more realistic to think of an average as a **band** around the line rather than a
+          thin line. When an average lines up with a support or resistance zone, two observations
+          overlap. How price closes in that area says more than whether it touched the average.
+  confusions:
+    - id: macd
+      text: MACD is the difference between the 12- and 26-period EMAs. The two EMAs crossing happens at the same moment as MACD crossing its zero line.
+    - id: trend
+      text: A trend is defined by the sequence of highs and lows. An average's slope summarises the trend but is not its definition.
+  key_points:
+    - The SMA weights the last N closes equally; the EMA gives recent closes more weight.
+    - The EMA multiplier is 2 ÷ (N + 1).
+    - Every moving average trails price; the longer the period, the larger the lag.
+    - 20, 50 and 200 are common choices, not rules.
+    - Crossovers describe a change of direction; they do not announce its outcome.
+  svg_labels:
+    ema: EMA 20
+    sma: SMA 20
+    lag: Lag
+  svg_alt: "A 20-period EMA and SMA on a candlestick chart: price rises, peaks and falls; the EMA peaks a few candles later and the SMA later still"
+  svg_caption: >-
+    The orange line is the EMA 20 and the other line the SMA 20. The vertical lines mark the candles where
+    price, the EMA and the SMA peak. The EMA reflects the turn earlier and the SMA later; the gap between
+    them is the lag.

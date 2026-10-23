@@ -1,0 +1,218 @@
+id: volume
+kind: volume-volatility
+order: 10
+related: [price-volume-relationship, breakout-volume, volume-profile, candlestick-chart]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: hacim-nedir
+  name: Hacim nedir?
+  alt_name: Volume
+  summary: >-
+    Hacim, bir mumun kapsadığı süre içinde işlem gören miktardır. Grafiğin altında her muma bir çubuk
+    olarak gösterilir. Hacim piyasadaki katılımın ölçüsüdür; tek başına fiyatın yönünü söylemez.
+    Kriptoda aynı varlığın hacmi borsaya ve veri kaynağına göre değişir.
+  sections:
+    - type: text
+      id: definition
+      title: Hacim nedir?
+      paragraphs:
+        - >-
+          Her işlemde bir alıcı ve bir satıcı vardır. **Hacim**, bir mumun süresi boyunca bu
+          işlemlerde el değiştiren toplam miktardır. 1H grafikte her çubuk bir saatin, 1D grafikte
+          bir günün hacmini gösterir.
+        - >-
+          Hacim çubukları genellikle fiyat grafiğinin altında ayrı bir bölmede çizilir. Çubuğun
+          rengi çoğu platformda mumun rengini izler: yükselen mumun çubuğu yeşil, düşen mumun çubuğu
+          kırmızıdır. Bu renk **alış ya da satış miktarını değil**, yalnızca mumun yönünü gösterir.
+    - type: bullets
+      id: base-and-quote
+      title: Taban ve karşı birim hacmi
+      items:
+        - text: "**Taban birim hacmi (base volume):** işlem gören varlığın adedi. BTC/USDT paritesinde kaç BTC el değiştirdiğidir."
+          marker: neutral
+        - text: "**Karşı birim hacmi (quote volume):** aynı işlemlerin karşı birimdeki değeri. BTC/USDT paritesinde kaç USDT'lik işlem yapıldığıdır."
+          marker: neutral
+        - text: "Karşı birim hacmi kabaca **adet × fiyat** olduğu için fiyat yükseldikçe, aynı adet işlemle bile büyür."
+          marker: accent
+      note: >-
+        Uzun dönemleri karşılaştırırken hangi birimin gösterildiğini bilmek önemlidir. Fiyatı iki
+        katına çıkmış bir varlıkta karşı birim hacmi, işlem gören adet değişmese de iki katına
+        çıkmış görünür.
+    - type: text
+      id: why-it-differs
+      title: Kriptoda hacim neden farklı görünür?
+      paragraphs:
+        - >-
+          Hisse senetlerinde işlemler çoğunlukla merkezi bir borsada toplanır. Kriptoda ise aynı
+          varlık onlarca borsada ve farklı paritelerde (USDT, USDC, USD) işlem görür. Her borsanın
+          grafiği **yalnızca kendi işlemlerini** gösterir. Veri sağlayıcılar ise seçtikleri
+          borsaların hacmini toplar; hangi borsaları dahil ettikleri sağlayıcıdan sağlayıcıya
+          değişir.
+        - >-
+          Bazı borsalarda komisyonsuz pariteler ya da kendi kendine yapılan işlemler hacmi
+          olduğundan yüksek gösterebilir. Bu yüzden iki farklı kaynaktaki hacim rakamlarını doğrudan
+          karşılaştırmak yerine, **aynı kaynak içinde** hacmin önceki mumlara göre nasıl değiştiğine
+          bakmak daha anlamlıdır.
+    - type: text
+      id: spot-and-derivatives
+      title: Spot ve türev hacmi
+      paragraphs:
+        - >-
+          **Spot hacim**, varlığın kendisinin alınıp satıldığı piyasadaki işlemlerdir. **Türev
+          hacmi** ise vadeli ve sürekli vadeli (perpetual) sözleşmelerdeki işlemlerdir. Kaldıraç
+          kullanıldığı için büyük kripto varlıklarda türev hacmi çoğu zaman spot hacmin birkaç
+          katıdır.
+        - >-
+          İki hacim aynı şeyi ölçmez. Spot grafiğe bakarken türev hacmini, türev grafiğine bakarken
+          spot hacmini görmezsin. Bir hacim artışını yorumlarken hangi piyasanın verisine bakıldığını
+          belirtmek, okumayı netleştirir. Açık pozisyon miktarı (open interest) ise hacimden farklı
+          bir ölçüdür: işlem görenleri değil, açık kalan sözleşmeleri sayar.
+    - type: limits
+      shows:
+        - Bir mum boyunca piyasada ne kadar işlem yapıldığını, yani katılımın düzeyini
+        - Bir hareketin önceki mumlara göre daha çok mu, daha az mı işlemle geldiğini
+        - Fiyatın hangi mumlarda ve hangi bölgelerde daha çok ilgi gördüğünü
+      not_proves:
+        - Fiyatın hangi yöne gideceğini; her işlemin bir alıcısı ve bir satıcısı vardır
+        - İşlemleri kimin, hangi amaçla yaptığını
+        - Tüm piyasanın hacmini; grafikte çoğu zaman yalnızca tek bir borsanın ya da seçili borsaların verisi görünür
+    - type: zones
+      paragraphs:
+        - >-
+          Destek ve direnç bölgeleri fiyatın geçmişte tepki verdiği alanlardır. Fiyat bir bölgeye
+          geldiğinde hacmin önceki mumlara göre artması, bölgede **katılımın yükseldiğini**
+          gösterir; bu, bölgenin piyasa tarafından fark edildiğine dair bir ipucu olarak okunabilir.
+        - >-
+          Hacim bölgenin yerini belirlemez, bölgedeki hareketin ne kadar işlemle geldiğini anlatır.
+          Bu yüzden bölgeyi yine **bir bant** olarak fiyat ve kapanışlarla okumak, hacmi ise bu
+          okumaya eşlik eden bir bilgi olarak kullanmak daha sağlıklıdır.
+    - type: box
+      title: Kapanmamış mumun hacmi
+      text: >-
+        Henüz kapanmamış bir mumun hacim çubuğu, mum kapanana kadar büyümeye devam eder. Bir 4H mumun
+        ilk saatinde görülen hacim, önceki tam mumlarla karşılaştırıldığında düşük görünebilir.
+        Karşılaştırmayı kapanmış mumlar arasında yapmak yanıltıcı okumaları önler.
+  confusions:
+    - id: obv
+      text: OBV hacimden türetilen bir göstergedir; hacmi mumun yönüne göre toplar. Hacim ise her mumda işlem gören ham miktardır.
+    - id: volume-profile
+      text: Hacim çubukları işlemleri zamana göre, hacim profili ise fiyata göre dağıtır.
+  key_points:
+    - Hacim, bir mumun süresi içinde işlem gören miktardır.
+    - Çubuğun rengi alış ya da satışı değil, mumun yönünü gösterir.
+    - Kriptoda hacim borsaya ve veri kaynağına göre değişir; aynı kaynak içinde karşılaştır.
+    - Spot ve türev hacmi farklı piyasaları ölçer.
+    - Hacim katılımı anlatır, yönü tek başına söylemez.
+  svg_labels:
+    price: Fiyat
+    volume: Hacim
+    bar_1: Uzun çubuk, o mumda
+    bar_2: daha çok işlem demektir
+  svg_alt: "Hacim çizimi: üstte yükselen, geri çekilen ve yeniden yükselen mumlar, altta her mumun hacmini gösteren çubuklar; en uzun çubuklar güçlü yükseliş mumlarının altında"
+  svg_caption: Üst bölme fiyatı, alt bölme her mumun hacmini gösterir. Çubukların rengi mumun yönünü izler; çubuğun boyu o mumda işlem gören miktardır.
+
+en:
+  slug: what-is-volume
+  name: What is volume?
+  summary: >-
+    Volume is the amount traded during the period a candle covers. It is shown as a bar for each
+    candle below the chart. Volume measures participation in the market; on its own it does not say
+    which way price will go. In crypto, the volume of the same asset varies by exchange and data
+    provider.
+  sections:
+    - type: text
+      id: definition
+      title: What is volume?
+      paragraphs:
+        - >-
+          Every trade has a buyer and a seller. **Volume** is the total amount that changed hands in
+          those trades during a candle. On the 1H chart each bar shows one hour's volume; on the 1D
+          chart, one day's.
+        - >-
+          Volume bars are usually drawn in a separate pane below the price chart. On most platforms the
+          bar's colour follows the candle: green under a rising candle, red under a falling one. That
+          colour shows **the candle's direction, not the amount bought or sold**.
+    - type: bullets
+      id: base-and-quote
+      title: Base and quote volume
+      items:
+        - text: "**Base volume:** the number of units of the asset traded. On BTC/USDT, it is how many BTC changed hands."
+          marker: neutral
+        - text: "**Quote volume:** the value of the same trades in the quote currency. On BTC/USDT, it is how many USDT were traded."
+          marker: neutral
+        - text: "Quote volume is roughly **units × price**, so it grows as price rises, even with the same number of units traded."
+          marker: accent
+      note: >-
+        When comparing long periods, it matters which unit is shown. For an asset whose price has
+        doubled, quote volume looks twice as large even if the number of units traded has not changed.
+    - type: text
+      id: why-it-differs
+      title: Why crypto volume looks different from place to place
+      paragraphs:
+        - >-
+          Shares mostly trade on one central exchange. A crypto asset trades on dozens of exchanges and
+          against different quote currencies (USDT, USDC, USD). Each exchange's chart shows **only its
+          own trades**. Data providers add up the volume of the exchanges they choose, and which
+          exchanges they include varies from provider to provider.
+        - >-
+          On some exchanges, zero-fee pairs or trades with oneself can make volume look higher than it
+          is. So rather than comparing volume figures from two different sources directly, it is more
+          useful to look at how volume changes against earlier candles **within the same source**.
+    - type: text
+      id: spot-and-derivatives
+      title: Spot and derivatives volume
+      paragraphs:
+        - >-
+          **Spot volume** is trading in the market where the asset itself is bought and sold.
+          **Derivatives volume** is trading in futures and perpetual contracts. Because leverage is
+          used, derivatives volume in the large crypto assets is often several times spot volume.
+        - >-
+          The two do not measure the same thing. A spot chart does not show derivatives volume, and a
+          derivatives chart does not show spot volume. When reading a rise in volume, saying which
+          market's data you are looking at makes the reading clearer. Open interest is a different
+          measure again: it counts contracts still open, not contracts traded.
+    - type: limits
+      shows:
+        - How much was traded during a candle, that is, the level of participation
+        - Whether a move came with more or less trading than the earlier candles
+        - In which candles and at which zones price drew more activity
+      not_proves:
+        - Which way price will go; every trade has a buyer and a seller
+        - Who made the trades, or why
+        - The volume of the whole market; a chart usually shows only one exchange or a selection of exchanges
+    - type: zones
+      paragraphs:
+        - >-
+          Support and resistance zones are areas where price has reacted before. When price reaches a
+          zone and volume rises against the earlier candles, **participation is rising** at the zone;
+          this can be read as a hint that the market has noticed the zone.
+        - >-
+          Volume does not decide where the zone is; it describes how much trading came with the move at
+          the zone. So it is sounder to keep reading the zone as **a band** through price and closes,
+          and to use volume as information that goes alongside that reading.
+    - type: box
+      title: The volume of an open candle
+      text: >-
+        The volume bar of a candle that has not closed yet keeps growing until the candle closes. The
+        volume seen in the first hour of a 4H candle can look low next to the earlier, complete candles.
+        Comparing closed candles with closed candles avoids misleading readings.
+  confusions:
+    - id: obv
+      text: OBV is an indicator derived from volume; it adds volume up by the candle's direction. Volume is the raw amount traded in each candle.
+    - id: volume-profile
+      text: Volume bars spread trading over time; a volume profile spreads it over price.
+  key_points:
+    - Volume is the amount traded during a candle.
+    - The bar's colour shows the candle's direction, not buying or selling.
+    - Crypto volume varies by exchange and data source; compare within one source.
+    - Spot and derivatives volume measure different markets.
+    - Volume describes participation; on its own it does not give direction.
+  svg_labels:
+    price: Price
+    volume: Volume
+    bar_1: A taller bar means more
+    bar_2: was traded in that candle
+  svg_alt: "Volume illustration: rising, pulling back and rising candles on top, and below them bars showing each candle's volume; the tallest bars sit under the strong rising candles"
+  svg_caption: The upper pane shows price and the lower pane each candle's volume. The bars' colour follows the candle's direction; a bar's height is the amount traded in that candle.

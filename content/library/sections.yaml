@@ -6,3 +6,9 @@
     name: Grafik okuma
   en:
     name: Chart reading
+- id: movement
+  order: 20
+  tr:
+    name: Hareketin niteliği
+  en:
+    name: Quality of the move

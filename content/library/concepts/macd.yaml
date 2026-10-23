@@ -1,0 +1,214 @@
+id: macd
+kind: indicators
+order: 40
+related: [moving-averages, rsi, divergence, indicators-basics]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: macd
+  name: MACD
+  alt_name: Moving Average Convergence Divergence (MACD)
+  summary: >-
+    MACD, 12 ve 26 periyotluk üstel hareketli ortalamalar arasındaki farktır. Bu farkın 9 periyotluk
+    ortalaması sinyal çizgisini, ikisi arasındaki fark da histogramı oluşturur. Kısa vadeli ortalamanın
+    uzun vadeliden ne kadar uzaklaştığını ve bu uzaklığın artıp azaldığını gösterir.
+  sections:
+    - type: text
+      id: definition
+      title: MACD hangi soruya cevap verir?
+      paragraphs:
+        - >-
+          MACD şu soruyu cevaplar: **kısa vadeli ortalama, uzun vadeli ortalamanın ne kadar
+          üzerinde ya da altında ve bu fark büyüyor mu, küçülüyor mu?** Fark büyüyorsa hareket
+          hızlanıyor, küçülüyorsa yavaşlıyor olarak okunabilir.
+        - >-
+          Adındaki "yakınsama ve ıraksama" bu iki ortalamanın birbirine yaklaşıp uzaklaşmasını anlatır.
+          RSI'ın aksine MACD'nin sabit bir üst ya da alt sınırı yoktur; değeri fiyatın birimiyle
+          ölçülür.
+    - type: steps
+      id: calculation
+      title: Nasıl hesaplanır?
+      items:
+        - title: İki üstel ortalama hesapla.
+          text: Kapanış fiyatlarının 12 periyotluk ve 26 periyotluk EMA'sı alınır.
+        - title: MACD çizgisini bul.
+          text: MACD = EMA 12 − EMA 26. Kısa ortalama uzun ortalamanın üzerindeyse değer pozitif, altındaysa negatiftir.
+        - title: Sinyal çizgisini çiz.
+          text: Sinyal = MACD çizgisinin 9 periyotluk EMA'sı. MACD'nin yumuşatılmış, biraz daha geriden gelen halidir.
+        - title: Histogramı hesapla.
+          text: Histogram = MACD − sinyal. Çubuklar, iki çizgi arasındaki mesafenin büyüyüp küçüldüğünü gösterir.
+      note: >-
+        Varsayılan ayar 12, 26, 9'dur. Ayarlar değişirse çizgilerin şekli ve kesişimlerin zamanı da
+        değişir.
+    - type: bullets
+      id: common-readings
+      title: Genellikle nasıl okunur?
+      items:
+        - text: "**Sıfır çizgisi:** MACD sıfırın üzerindeyse EMA 12, EMA 26'nın üzerindedir. Sıfırın kesilmesi, iki ortalamanın kesişmesiyle aynı şeydir."
+          marker: neutral
+        - text: "**MACD sinyalin üzerine çıkar:** kısa vadeli momentumun yukarı döndüğü şeklinde okunabilir. Histogram pozitife geçer."
+          marker: up
+        - text: "**MACD sinyalin altına iner:** kısa vadeli momentumun aşağı döndüğü şeklinde okunabilir. Histogram negatife geçer."
+          marker: down
+        - text: "**Histogramın küçülmesi:** çizgiler birbirine yaklaşıyor, hareketin hızı azalıyor demektir. Yönün değiştiğini tek başına göstermez."
+          marker: accent
+    - type: text
+      id: lag
+      title: Gecikme ve yatay piyasa
+      paragraphs:
+        - >-
+          MACD üç kez ortalama alınarak elde edilir; bu yüzden fiyatın gerisinden gelir. Kesişimler
+          çoğu zaman fiyattaki dönüşten **birkaç mum sonra** görülür. Hızlı ve sert hareketlerde bu
+          gecikme, hareketin önemli bir kısmını kapsayabilir.
+        - >-
+          Fiyat dar bir aralıkta gidip geldiğinde iki ortalama birbirine çok yakın kalır. MACD sıfır
+          çevresinde dolanır ve sinyal çizgisini sık sık keser. Bu kesişimlerin çoğu kalıcı bir yön
+          değişikliğine dönüşmez.
+        - >-
+          Fiyat yeni bir tepe yaparken MACD'nin daha alçak bir tepe yapması gibi farklar uyumsuzluk
+          olarak okunur; bu konu uyumsuzluk sayfasında ayrıca anlatılır.
+    - type: limits
+      shows:
+        - Kısa ve uzun vadeli ortalamaların birbirinden ne kadar uzak olduğunu
+        - Bu uzaklığın büyüyüp küçüldüğünü, yani hareketin hızlanıp yavaşladığını
+        - Ortalamaların hangi sırada durduğunu (sıfır çizgisinin hangi tarafında)
+      not_proves:
+        - Bir kesişimden sonra fiyatın o yönde ilerleyeceğini
+        - Dönüşün zamanını; üç kez ortalama alındığı için geriden gelir
+        - Farklı fiyattaki iki varlığın MACD değerlerini karşılaştırmayı; değer fiyatın birimiyle ölçülür
+    - type: zones
+      paragraphs:
+        - >-
+          MACD bir fiyat seviyesi göstermez; bir bölgeye yaklaşırken hareketin **hızlanıp
+          yavaşladığını** anlatır. Bir direnç bölgesine yaklaşırken histogramın küçülmesi, yükselişin
+          ivme kaybettiği şeklinde okunabilir. Bölgenin tutup tutmadığını ise yine bölgenin kenarlarına
+          göre gelen kapanışlar belirler.
+        - >-
+          Gecikme yüzünden MACD kesişimi çoğu zaman fiyat bölgeden uzaklaştıktan sonra gelir. Bu
+          nedenle bölgedeki fiyat davranışı önce, MACD ise onu destekleyen ya da desteklemeyen ikinci bir
+          gözlem olarak okunur.
+  confusions:
+    - id: moving-averages
+      text: MACD iki EMA'nın farkıdır. İki ortalamanın grafikteki kesişimi, MACD'nin sıfır çizgisini kesmesiyle aynı andır.
+    - id: rsi
+      text: İkisi de momentum göstergesidir. RSI 0–100 arasında sınırlıdır; MACD'nin sınırı yoktur ve fiyatın birimiyle ölçülür.
+  key_points:
+    - MACD = EMA 12 − EMA 26; sinyal çizgisi MACD'nin 9 periyotluk EMA'sıdır.
+    - Histogram, MACD ile sinyal çizgisi arasındaki farktır.
+    - Sıfır çizgisinin kesilmesi, iki ortalamanın kesişmesidir.
+    - Kesişimler fiyatın gerisinden gelir; yatay piyasada sık ve yanıltıcı olabilir.
+  svg_labels:
+    price: Fiyat
+    macd_line: MACD (12, 26)
+    signal_line: Sinyal (9)
+    histogram: Histogram
+  svg_alt: "Üstte yükselen, sonra düşen ve toparlanan bir fiyat çizgisi; altta aynı dönemin MACD çizgisi, sinyal çizgisi ve sıfır çizgisi çevresinde yeşil ve kırmızı histogram çubukları"
+  svg_caption: >-
+    Kesikli çizgi sıfır çizgisidir. Noktalar MACD'nin sinyal çizgisini kestiği yerleri gösterir:
+    histogram bu noktalarda işaret değiştirir. Kesişimlerin fiyattaki tepe ve dipten birkaç mum sonra
+    geldiğine dikkat edin.
+
+en:
+  slug: macd
+  name: MACD
+  summary: >-
+    MACD is the difference between the 12- and 26-period exponential moving averages. A 9-period
+    average of that difference forms the signal line, and the gap between the two forms the histogram.
+    It shows how far the short-term average is from the long-term one, and whether that distance is
+    growing or shrinking.
+  sections:
+    - type: text
+      id: definition
+      title: Which question does MACD answer?
+      paragraphs:
+        - >-
+          MACD answers this question: **how far above or below the long-term average is the short-term
+          average, and is that gap growing or shrinking?** A growing gap can be read as the move
+          speeding up, a shrinking one as it slowing down.
+        - >-
+          The "convergence and divergence" in its name describes the two averages moving towards and
+          away from each other. Unlike RSI, MACD has no fixed upper or lower bound; its value is measured
+          in the price's own units.
+    - type: steps
+      id: calculation
+      title: How it is calculated
+      items:
+        - title: Calculate two exponential averages.
+          text: Take the 12-period and 26-period EMA of closing prices.
+        - title: Find the MACD line.
+          text: MACD = EMA 12 − EMA 26. The value is positive when the short average is above the long one and negative when it is below.
+        - title: Draw the signal line.
+          text: Signal = the 9-period EMA of the MACD line. It is a smoothed version of MACD that lags a little further behind.
+        - title: Calculate the histogram.
+          text: Histogram = MACD − signal. The bars show whether the distance between the two lines is growing or shrinking.
+      note: >-
+        The default setting is 12, 26, 9. If the settings change, so do the shape of the lines and the
+        timing of the crossovers.
+    - type: bullets
+      id: common-readings
+      title: How it is commonly read
+      items:
+        - text: "**The zero line:** when MACD is above zero, EMA 12 is above EMA 26. MACD crossing zero is the same event as the two averages crossing."
+          marker: neutral
+        - text: "**MACD rises above the signal line:** can be read as short-term momentum turning up. The histogram turns positive."
+          marker: up
+        - text: "**MACD falls below the signal line:** can be read as short-term momentum turning down. The histogram turns negative."
+          marker: down
+        - text: "**A shrinking histogram:** the lines are converging and the move is slowing. On its own it does not show a change of direction."
+          marker: accent
+    - type: text
+      id: lag
+      title: Lag and sideways markets
+      paragraphs:
+        - >-
+          MACD is built by averaging three times, so it trails price. Crossovers often appear **a few
+          candles after** the turn in price. In fast, sharp moves this lag can cover a large part of the
+          move.
+        - >-
+          When price moves back and forth in a narrow range, the two averages stay very close. MACD
+          hovers around zero and crosses the signal line often. Most of these crossovers do not turn into
+          a lasting change of direction.
+        - >-
+          Differences such as price making a new high while MACD makes a lower one are read as
+          divergence; that topic is covered on the divergence page.
+    - type: limits
+      shows:
+        - How far apart the short- and long-term averages are
+        - Whether that distance is growing or shrinking, so whether the move is speeding up or slowing down
+        - Which order the averages are in (which side of the zero line)
+      not_proves:
+        - That price will move in the direction of a crossover
+        - When a reversal will happen; averaging three times makes it lag
+        - Anything when comparing two assets at different prices; the value is in the price's own units
+    - type: zones
+      paragraphs:
+        - >-
+          MACD does not show a price level; it describes whether a move is **speeding up or slowing
+          down** as it approaches a zone. A shrinking histogram on the way to a resistance zone can be
+          read as the rise losing pace. Whether the zone holds is still decided by closes relative to the
+          zone's edges.
+        - >-
+          Because of the lag, a MACD crossover often comes after price has already moved away from the
+          zone. So price behaviour at the zone comes first, and MACD is read as a second observation that
+          does or does not support it.
+  confusions:
+    - id: moving-averages
+      text: MACD is the difference between two EMAs. The two averages crossing on the chart happens at the same moment as MACD crossing its zero line.
+    - id: rsi
+      text: Both are momentum indicators. RSI is bounded between 0 and 100; MACD has no bounds and is measured in the price's units.
+  key_points:
+    - MACD = EMA 12 − EMA 26; the signal line is the 9-period EMA of MACD.
+    - The histogram is the difference between MACD and the signal line.
+    - MACD crossing zero is the two averages crossing.
+    - Crossovers trail price and can be frequent and misleading in sideways markets.
+  svg_labels:
+    price: Price
+    macd_line: MACD (12, 26)
+    signal_line: Signal (9)
+    histogram: Histogram
+  svg_alt: "At the top, a price line that rises, falls and recovers; below, the MACD line, the signal line and green and red histogram bars around the zero line for the same period"
+  svg_caption: >-
+    The dashed line is the zero line. The dots mark where MACD crosses the signal line: the histogram
+    changes sign at those points. Note that the crossovers come a few candles after the price high and
+    low.

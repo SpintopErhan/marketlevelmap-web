@@ -1,0 +1,223 @@
+id: rsi
+kind: indicators
+order: 30
+related: [indicators-basics, divergence, macd, trend]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: rsi
+  name: RSI (Göreceli Güç Endeksi)
+  alt_name: Relative Strength Index (RSI)
+  summary: >-
+    RSI, son dönemdeki yükseliş kapanışlarının düşüş kapanışlarına göre ne kadar güçlü olduğunu 0 ile
+    100 arasında gösteren bir momentum göstergesidir. Varsayılan ayar 14 periyottur. 70 ve 30 çizgileri
+    sık kullanılır, ama 70'in üzeri "düşmek zorunda", 30'un altı "yükselmek zorunda" anlamına gelmez.
+  sections:
+    - type: text
+      id: definition
+      title: RSI hangi soruya cevap verir?
+      paragraphs:
+        - >-
+          RSI şu soruyu cevaplar: **son 14 mumda kapanıştan kapanışa yükselişler mi, düşüşler mi
+          ağır basıyor ve ne kadar?** Değer 50'nin üzerindeyse ortalama yükseliş ortalama düşüşten
+          büyüktür; 50'nin altındaysa tersi geçerlidir.
+        - >-
+          RSI fiyatın kendisini değil, **değişimlerin dengesini** ölçer. Bu yüzden fiyat yeni bir tepe
+          yaparken RSI daha alçak bir tepe yapabilir. Bu farkın nasıl okunduğu uyumsuzluk sayfasında
+          anlatılır.
+    - type: steps
+      id: calculation
+      title: Nasıl hesaplanır?
+      items:
+        - title: Her mumun değişimini bul.
+          text: Değişim = bu mumun kapanışı − önceki mumun kapanışı. Pozitif değişimler kazanç, negatif değişimlerin mutlak değeri kayıp olarak ayrılır.
+        - title: İlk ortalamaları al.
+          text: İlk 14 mumun kazançlarının ve kayıplarının basit ortalaması alınır.
+        - title: Wilder yöntemiyle yumuşat.
+          text: "Sonraki her mumda: yeni ortalama = (önceki ortalama × 13 + bu mumun değeri) ÷ 14. Kazanç ve kayıp için ayrı ayrı yapılır."
+        - title: Oranı 0–100 ölçeğine çevir.
+          text: "RS = ortalama kazanç ÷ ortalama kayıp. RSI = 100 − 100 ÷ (1 + RS). Hiç kayıp yoksa RSI 100'dür."
+    - type: bullets
+      id: common-readings
+      title: Genellikle nasıl okunur?
+      items:
+        - text: "**70'in üzeri:** son dönemde yükselişlerin belirgin biçimde ağır bastığı bölge. Sık sık **aşırı alım** olarak adlandırılır."
+          marker: up
+        - text: "**30'un altı:** düşüşlerin belirgin biçimde ağır bastığı bölge. Sık sık **aşırı satım** olarak adlandırılır."
+          marker: down
+        - text: "**50 çizgisi:** yükselişlerle düşüşlerin dengede olduğu yer. RSI'ın 50'nin hangi tarafında kaldığı, momentumun yönü hakkında kaba bir fikir verir."
+          marker: neutral
+        - text: "**Fiyatla karşılaştırma:** fiyat ve RSI aynı yönde yeni tepe ya da dip yapıyor mu? Yapmıyorsa bu fark uyumsuzluk olarak okunur."
+          marker: accent
+      note: >-
+        70 ve 30 yaygın eşiklerdir, kural değildir. Bazı kullanıcılar 80/20 gibi daha uç eşikler seçer.
+        Periyot kısaldıkça RSI daha oynak olur ve eşiklere daha sık ulaşır.
+    - type: scenarios
+      id: strong-trends
+      title: Aynı okuma, farklı bağlam
+      intro: 70 ya da 30 eşiğinin anlamı, piyasanın içinde bulunduğu yapıya göre değişir.
+      items:
+        - title: Güçlü yükselen trend
+          tone: up
+          text: Kapanışların çoğu yukarı geldiği için RSI **uzun süre 70'in üzerinde** kalabilir. Bu, düşüşün yaklaştığını değil, yükselişin güçlü olduğunu gösterir.
+        - title: Güçlü düşen trend
+          tone: down
+          text: RSI **uzun süre 30'un altında** kalabilir. Fiyat düşmeye devam ederken "aşırı satım" okuması da sürer.
+        - title: Yatay piyasa
+          tone: neutral
+          text: Fiyat bir aralıkta gidip geldiğinde RSI da 30 ile 70 arasında salınır. Eşiklere yaklaşma, aralığın kenarlarıyla daha çok örtüşebilir.
+    - type: limits
+      shows:
+        - Son 14 mumda kapanıştan kapanışa yükselişlerin mi düşüşlerin mi ağır bastığını
+        - Momentumun güçlenip zayıfladığını, fiyatla karşılaştırıldığında
+        - Fiyat hareketinin ne kadar tek yönlü olduğunu
+      not_proves:
+        - 70'in üzerinde fiyatın düşeceğini ya da 30'un altında yükseleceğini
+        - Bir dönüşün zamanını; RSI kapanışlardan hesaplandığı için geriden gelir
+        - Fitilleri ve mum içi hareketleri; yalnızca kapanışları kullanır
+    - type: zones
+      paragraphs:
+        - >-
+          RSI tek başına bir fiyat seviyesi söylemez; bir bölgeye **hangi momentumla** gelindiğini
+          anlatır. Bir direnç bölgesine RSI 70'in üzerindeyken yaklaşmak, hareketin güçlü olduğunu
+          gösterir; bölgenin tutup tutmayacağını ise yine bölgenin içindeki kapanışlar belirler.
+        - >-
+          Bu yüzden RSI'ı bölgelerle birlikte okumak daha sağlıklıdır. Bölgede gelen bir ret ile
+          birlikte RSI'ın 70'in altına inmesi, iki ayrı gözlemin aynı yöne işaret ettiği bir durumdur.
+          Ama ikisi de aynı kapanış fiyatlarından türediği için bu, kesinlik değil, olasılık dilidir.
+    - type: box
+      title: Kriptoda RSI
+      text: >-
+        Kripto 7/24 işlem gördüğü için RSI kesintisiz hesaplanır; seans boşluğu yoktur. Ama değer
+        borsaya ve mumların açılış saatine göre küçük farklar gösterebilir. 1H, 4H ve 1D grafiklerde
+        aynı anda farklı RSI değerleri görmek de olağandır; her biri farklı bir zaman diliminin
+        kapanışlarını kullanır.
+  confusions:
+    - id: macd
+      text: İkisi de momentum göstergesidir. RSI 0–100 arasında sınırlıdır; MACD iki ortalamanın farkıdır ve sınırı yoktur.
+    - id: divergence
+      text: RSI ile fiyatın farklı yönlerde tepe ya da dip yapması. RSI'ın kendisi değil, fiyatla karşılaştırılmasıdır.
+  key_points:
+    - RSI, 14 mumluk kazanç ve kayıpların Wilder yöntemiyle yumuşatılmış oranıdır.
+    - Ölçek 0–100'dür; 50 dengeyi gösterir.
+    - 70'in üzeri düşüş, 30'un altı yükseliş zorunluluğu anlamına gelmez.
+    - Güçlü trendlerde RSI uzun süre uç bölgelerde kalabilir.
+  svg_labels:
+    price: Fiyat
+    rsi_label: RSI 14
+    above_70: RSI 70'in üzerinde kalır
+    below_30: RSI 30'un altında kalır
+  svg_alt: "Üstte önce güçlü yükselen, sonra düşen ve biraz toparlanan bir fiyat çizgisi; altta aynı dönemin RSI çizgisi, 70, 50 ve 30 seviyelerinde kesikli çizgilerle"
+  svg_caption: >-
+    Alt paneldeki kesikli çizgiler 70, 50 ve 30 seviyeleridir. Güçlü yükseliş boyunca RSI 70'in
+    üzerinde, düşüş boyunca 30'un altında kalır; uç bölgeye ulaşmak hareketin hemen döndüğü anlamına
+    gelmez.
+
+en:
+  slug: rsi
+  name: RSI (Relative Strength Index)
+  summary: >-
+    RSI is a momentum indicator that shows, on a scale of 0 to 100, how strong recent up closes have
+    been compared with down closes. The default setting is 14 periods. The 70 and 30 lines are widely
+    used, but a reading above 70 does not mean price "must fall", nor one below 30 that it "must rise".
+  sections:
+    - type: text
+      id: definition
+      title: Which question does RSI answer?
+      paragraphs:
+        - >-
+          RSI answers this question: **over the last 14 candles, have close-to-close rises or falls
+          dominated, and by how much?** Above 50, the average gain is larger than the average loss;
+          below 50, the reverse holds.
+        - >-
+          RSI does not measure price itself but **the balance of changes**. So price can make a new
+          high while RSI makes a lower one. How that difference is read is covered on the divergence
+          page.
+    - type: steps
+      id: calculation
+      title: How it is calculated
+      items:
+        - title: Find each candle's change.
+          text: Change = this candle's close − the previous candle's close. Positive changes are counted as gains, and the absolute value of negative changes as losses.
+        - title: Take the first averages.
+          text: The gains and losses of the first 14 candles are each given a simple average.
+        - title: Smooth them with Wilder's method.
+          text: "For every later candle: new average = (previous average × 13 + this candle's value) ÷ 14. This is done separately for gains and losses."
+        - title: Turn the ratio into a 0–100 scale.
+          text: "RS = average gain ÷ average loss. RSI = 100 − 100 ÷ (1 + RS). With no losses at all, RSI is 100."
+    - type: bullets
+      id: common-readings
+      title: How it is commonly read
+      items:
+        - text: "**Above 70:** the area where rises have clearly dominated recently. It is often called **overbought**."
+          marker: up
+        - text: "**Below 30:** the area where falls have clearly dominated. It is often called **oversold**."
+          marker: down
+        - text: "**The 50 line:** where rises and falls are in balance. Which side of 50 RSI stays on gives a rough idea of momentum's direction."
+          marker: neutral
+        - text: "**Comparison with price:** are price and RSI making new highs or lows together? If not, the difference is read as divergence."
+          marker: accent
+      note: >-
+        70 and 30 are common thresholds, not rules. Some users choose more extreme ones such as 80/20.
+        The shorter the period, the more volatile RSI becomes and the more often it reaches the thresholds.
+    - type: scenarios
+      id: strong-trends
+      title: The same reading, different contexts
+      intro: What the 70 or 30 threshold means depends on the structure the market is in.
+      items:
+        - title: Strong uptrend
+          tone: up
+          text: Because most closes come in higher, RSI can stay **above 70 for a long time**. This shows a strong rise, not that a fall is near.
+        - title: Strong downtrend
+          tone: down
+          text: RSI can stay **below 30 for a long time**. An "oversold" reading can remain in place while price keeps falling.
+        - title: Sideways market
+          tone: neutral
+          text: When price moves back and forth in a range, RSI also swings between 30 and 70. Approaches to the thresholds may line up more with the edges of the range.
+    - type: limits
+      shows:
+        - Whether close-to-close rises or falls have dominated over the last 14 candles
+        - Whether momentum is strengthening or fading, when compared with price
+        - How one-sided the price move has been
+      not_proves:
+        - That price will fall above 70 or rise below 30
+        - When a reversal will happen; RSI is calculated from closes, so it lags
+        - Anything about wicks or moves inside the candle; it only uses closes
+    - type: zones
+      paragraphs:
+        - >-
+          RSI does not name a price level on its own; it describes **with what momentum** price
+          reaches a zone. Approaching a resistance zone with RSI above 70 shows a strong move; whether
+          the zone holds is still decided by the closes around it.
+        - >-
+          That is why RSI is better read together with zones. A rejection at a zone together with RSI
+          falling back below 70 is a case of two observations pointing the same way. But both come
+          from the same closing prices, so this is the language of probability, not certainty.
+    - type: box
+      title: RSI in crypto
+      text: >-
+        Because crypto trades 24/7, RSI is calculated without interruption; there are no session gaps.
+        Still, the value can differ slightly between exchanges and with the time candles open. Seeing
+        different RSI values on the 1H, 4H and 1D charts at the same moment is normal too; each uses the
+        closes of a different timeframe.
+  confusions:
+    - id: macd
+      text: Both are momentum indicators. RSI is bounded between 0 and 100; MACD is the difference between two averages and has no bounds.
+    - id: divergence
+      text: RSI and price making highs or lows in different directions. It is not RSI itself but its comparison with price.
+  key_points:
+    - RSI is the ratio of 14-candle gains to losses, smoothed with Wilder's method.
+    - The scale is 0–100; 50 marks balance.
+    - Above 70 does not mean price must fall, nor below 30 that it must rise.
+    - In strong trends RSI can stay in the extreme areas for a long time.
+  svg_labels:
+    price: Price
+    rsi_label: RSI 14
+    above_70: RSI stays above 70
+    below_30: RSI stays below 30
+  svg_alt: "At the top, a price line that first rises strongly, then falls and recovers a little; below, the RSI line for the same period with dashed lines at 70, 50 and 30"
+  svg_caption: >-
+    The dashed lines in the lower pane are the 70, 50 and 30 levels. RSI stays above 70 through the
+    strong rise and below 30 through the decline; reaching an extreme area does not mean the move turns
+    at once.

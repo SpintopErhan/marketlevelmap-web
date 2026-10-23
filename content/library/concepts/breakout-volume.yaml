@@ -1,0 +1,186 @@
+id: breakout-volume
+kind: volume-volatility
+order: 30
+related: [breakout-and-close, false-breakout, volume, range-and-consolidation]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: kirilim-ve-hacim
+  name: Kırılım ve hacim
+  alt_name: Breakout volume
+  summary: >-
+    Bir kırılımı değerlendirirken kırılım mumunun hacmi, son mumların ortalama hacmiyle karşılaştırılır.
+    Ortalamanın belirgin biçimde üzerindeki hacim, bölgenin ötesine geçişe katılımın yüksek olduğunu
+    gösterir. Kırılımı yine kapanış belirler; hacim bu okumaya eşlik eden bir bilgidir.
+  sections:
+    - type: text
+      id: definition
+      title: Kırılımda hacme neden bakılır?
+      paragraphs:
+        - >-
+          Kırılım, mumun bölgenin uzak kenarının ötesinde kapanmasıyla ölçülür; bu ölçü kırılım ve
+          kapanış sayfasında anlatılır. Hacim ise aynı soruya başka bir açıdan bakar: fiyat bölgenin
+          ötesine geçerken **ne kadar işlem yapıldı?**
+        - >-
+          Bölgenin ötesine çok işlemle geçilmesi, o fiyatlarda geniş bir katılım olduğunu gösterir.
+          Az işlemle gelen bir geçiş ise yalnızca küçük bir kesimin hareketi olabilir. İki durumda da
+          kırılım kapanışla gerçekleşmiş olabilir; hacim, kapanışın ne kadar katılımla geldiğini anlatır.
+    - type: steps
+      id: how-to-measure
+      title: Kırılım hacmi nasıl ölçülür?
+      items:
+        - title: Bir karşılaştırma dönemi seç.
+          text: Yaygın bir seçim, kırılım mumundan önceki **son 20 mumun** ortalama hacmidir. 10 ya da 50 mum da kullanılır; seçtiğin sayıyı belirt.
+        - title: Oranı hesapla.
+          text: "Kırılım mumunun hacmini bu ortalamaya böl: göreli hacim = kırılım mumunun hacmi ÷ son 20 mumun ortalama hacmi. Sonuç 1'in üzerindeyse hacim ortalamanın üzerindedir. Belirgin artış için evrensel bir eşik yoktur; bazı kişiler 1,5 ya da 2 katını belirgin sayar."
+        - title: Mumun kapanmasını bekle.
+          text: Kapanmamış bir mumun hacmi hâlâ büyümektedir. Oranı kapanmış mumla hesaplamak, hem hacmi hem de kırılımın kendisini doğru ölçmeyi sağlar.
+        - title: Sonraki mumlara bak.
+          text: Kırılımdan sonraki mumlarda hacmin ve fiyatın nasıl davrandığı, devam hareketinin katılımla sürüp sürmediğini gösterir.
+    - type: scenarios
+      id: readings
+      title: Kırılım mumunda hacim
+      intro: Direnç bölgesinin üst kenarının üzerinde bir kapanış geldiğinde, hacim farklı tablolar çizebilir.
+      items:
+        - title: Kapanış bölgenin üzerinde, hacim belirgin biçimde yüksek
+          tone: up
+          text: "Bölgenin ötesine geçişe katılım yüksektir. Kırılımın **kabul gördüğü** şeklinde okunabilir. Sınırı: yüksek hacimli kırılımlar da geri dönebilir."
+        - title: Kapanış bölgenin üzerinde, hacim ortalamanın altında
+          tone: neutral
+          text: "Geçiş az işlemle gelmiştir. Kırılımın **daha zayıf** olduğu şeklinde okunabilir. Sınırı: sakin saatlerde ya da hafta sonunda düşük hacimli kırılımlar da sürebilir."
+        - title: Fitil bölgenin üzerinde, yüksek hacimle; kapanış bölgenin içinde
+          tone: down
+          text: Bölgenin ötesinde çok işlem yapılmış ama bu fiyatlar kapanışta **kabul görmemiştir**. Sahte kırılımın sık görülen bir biçimidir; ayrıntısı sahte kırılım sayfasındadır.
+    - type: limits
+      shows:
+        - Kırılım mumunun, son mumlara göre ne kadar katılımla geldiğini
+        - Kırılımın sakin bir dönemde mi, yoğun bir işlem anında mı gerçekleştiğini
+        - Sonraki mumlarla birlikte, devam hareketinin katılımla sürüp sürmediğini
+      not_proves:
+        - Kırılımın kalıcı olacağını; yüksek hacimli kırılımlar da geri dönebilir
+        - Düşük hacimli bir kırılımın mutlaka başarısız olacağını
+        - Hacmin alış mı satış mı olduğunu ya da kimin işlem yaptığını
+    - type: zones
+      paragraphs:
+        - >-
+          Kırılım hacmi, bölgenin **bir bant** olarak okunmasıyla birlikte anlam kazanır. Önce kapanışın
+          bandın uzak kenarının ötesinde gelip gelmediğine bakılır; hacim ancak bundan sonra
+          değerlendirilir. Bandın içinde kapanan yüksek hacimli bir mum kırılım değil, bölgede yoğun
+          işlem gören bir testtir.
+        - >-
+          Uzun süre aynı aralıkta kalan fiyatın kenar bölgesinden çıkışı, çoğu zaman aralık boyunca
+          sakinleşen hacmin ardından gelir. Bu yüzden kırılım hacmini aralığın kendi hacim düzeyiyle
+          karşılaştırmak anlamlı bir başlangıç noktasıdır.
+    - type: box
+      title: Hangi hacim?
+      text: >-
+        Kriptoda kırılım hacmi borsaya göre değişir. Bir borsada belirgin görünen hacim artışı başka
+        bir borsada daha sönük olabilir; türev piyasasındaki hacim ise spot grafikte görünmez.
+        Karşılaştırmayı aynı kaynakta ve aynı zaman diliminde yapmak gerekir.
+  confusions:
+    - id: breakout-and-close
+      text: Kırılımın kapanışla nasıl ölçüldüğü o sayfadadır; bu sayfa yalnızca kırılım mumunun hacmine bakar.
+    - id: false-breakout
+      text: Sahte kırılımda fiyat bölgenin ötesinde kapanamaz; o fitil yüksek hacimle oluşmuş olsa bile.
+  key_points:
+    - Kırılımı kapanış belirler; hacim ona eşlik eden bir bilgidir.
+    - Kırılım mumunun hacmi çoğu zaman son 20 mumun ortalamasıyla karşılaştırılır.
+    - Belirgin hacim için evrensel bir eşik yoktur.
+    - Yüksek hacim kırılımın kalıcı olacağını, düşük hacim de başarısız olacağını kanıtlamaz.
+  svg_labels:
+    zone: Direnç bölgesi
+    avg: Son mumların ortalama hacmi
+    spike_1: Kırılım mumu
+    spike_2: ortalamanın ~2,5 katı
+  svg_alt: "Kırılım hacmi çizimi: mumlar bir direnç bandının altında gidip geliyor, bir mum bandın üzerinde kapanıyor; alttaki hacim bölmesinde bu mumun çubuğu kesikli ortalama çizgisinin belirgin biçimde üzerinde"
+  svg_caption: Turuncu bant direnç bölgesini, turuncu nokta kırılım mumunun kapanışını gösterir. Alttaki kesikli çizgi önceki mumların ortalama hacmidir; kırılım mumunun çubuğu bu ortalamanın yaklaşık 2,5 katıdır.
+
+en:
+  slug: breakouts-and-volume
+  name: Breakouts and volume
+  summary: >-
+    When judging a breakout, the breakout candle's volume is compared with the average volume of recent
+    candles. Volume clearly above that average shows high participation in the move beyond the zone.
+    The close still decides the breakout; volume is information that goes alongside it.
+  sections:
+    - type: text
+      id: definition
+      title: Why look at volume on a breakout?
+      paragraphs:
+        - >-
+          A breakout is measured by a candle closing beyond the zone's far edge; that measure is covered
+          on the breakouts and the close page. Volume looks at the same moment from another angle:
+          **how much was traded** as price moved beyond the zone?
+        - >-
+          Moving beyond the zone on heavy trading shows broad participation at those prices. A move on
+          light trading may be the work of only a small part of the market. In both cases the breakout
+          may have happened on the close; volume describes how much participation came with that close.
+    - type: steps
+      id: how-to-measure
+      title: How to measure breakout volume
+      items:
+        - title: Choose a comparison period.
+          text: A common choice is the average volume of the **last 20 candles** before the breakout candle. 10 or 50 candles are used too; state the number you chose.
+        - title: Work out the ratio.
+          text: "Divide the breakout candle's volume by that average: relative volume = breakout candle's volume ÷ average volume of the last 20 candles. Above 1 means volume is above average. There is no universal threshold for a clear rise; some treat 1.5 or 2 times the average as clearly higher."
+        - title: Wait for the candle to close.
+          text: The volume of an open candle is still growing. Working out the ratio on the closed candle measures both the volume and the breakout itself correctly.
+        - title: Look at the next candles.
+          text: How volume and price behave in the candles after the breakout shows whether the follow-through keeps its participation.
+    - type: scenarios
+      id: readings
+      title: Volume on the breakout candle
+      intro: When a candle closes above a resistance zone's upper edge, volume can draw different pictures.
+      items:
+        - title: Close above the zone, volume clearly high
+          tone: up
+          text: "Participation in the move beyond the zone is high. It can be read as the breakout being **accepted**. Limit: high-volume breakouts can come back too."
+        - title: Close above the zone, volume below average
+          tone: neutral
+          text: "The move came on light trading. It can be read as a **weaker** breakout. Limit: low-volume breakouts in quiet hours or at the weekend can carry on as well."
+        - title: Wick above the zone on high volume; close inside the zone
+          tone: down
+          text: A lot was traded beyond the zone, but those prices were **not accepted** by the close. This is a common form of false breakout; the details are on the false breakout page.
+    - type: limits
+      shows:
+        - How much participation the breakout candle had compared with recent candles
+        - Whether the breakout happened in a quiet period or during heavy trading
+        - Together with the next candles, whether the follow-through keeps its participation
+      not_proves:
+        - That the breakout will hold; high-volume breakouts can come back too
+        - That a low-volume breakout is bound to fail
+        - Whether the volume was buying or selling, or who traded
+    - type: zones
+      paragraphs:
+        - >-
+          Breakout volume makes sense together with reading the zone as **a band**. First check whether
+          the close came beyond the band's far edge; only then is volume weighed. A high-volume candle
+          that closes inside the band is not a breakout but a test with heavy trading at the zone.
+        - >-
+          When price leaves a range through one of its edge zones, the move often follows a stretch in
+          which volume quietened during the range. So comparing breakout volume with the range's own
+          volume level is a useful starting point.
+    - type: box
+      title: Which volume?
+      text: >-
+        In crypto, breakout volume varies by exchange. A rise in volume that looks clear on one exchange
+        can be fainter on another, and derivatives volume does not show on a spot chart. The comparison
+        has to be made in the same source and on the same timeframe.
+  confusions:
+    - id: breakout-and-close
+      text: How a breakout is measured by the close is covered on that page; this page only looks at the breakout candle's volume.
+    - id: false-breakout
+      text: In a false breakout price fails to close beyond the zone, even if that wick formed on high volume.
+  key_points:
+    - The close decides the breakout; volume is information that goes alongside it.
+    - The breakout candle's volume is often compared with the average of the last 20 candles.
+    - There is no universal threshold for clearly high volume.
+    - High volume does not prove a breakout will hold, nor low volume that it will fail.
+  svg_labels:
+    zone: Resistance zone
+    avg: Average volume of recent candles
+    spike_1: Breakout candle
+    spike_2: about 2.5× the average
+  svg_alt: "Breakout volume illustration: candles move back and forth below a resistance band, then one candle closes above the band; in the volume pane below, that candle's bar stands well above the dashed average line"
+  svg_caption: The orange band marks the resistance zone and the orange dot the breakout candle's close. The dashed line below is the average volume of the earlier candles; the breakout candle's bar is about 2.5 times that average.
