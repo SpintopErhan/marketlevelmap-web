@@ -526,7 +526,7 @@ function listPage(lang, category) {
       const cats = activeCategories.filter((c) => c.section === g.id);
       if (!cats.length) return "";
       return `<section class="lib-section" aria-labelledby="sec-${esc(g.id)}"><h2 id="sec-${esc(g.id)}">${esc(g[lang].name)}</h2><ul class="cat-grid">${cats.map((c) => categoryCard(c, lang)).join("\n")}</ul></section>`;
-    }).join("\n");
+    }).filter(Boolean).join("\n");
     body = `<div class="lib-intro"><h1>${esc(w.libraryTitle)}</h1><p class="lead">${esc(w.libraryLead)}</p>${w.libraryIntro.map((x) => `<p>${inline(x)}</p>`).join("")}</div>\n${groups}`;
   }
   const path = category ? urls.category(category, lang) : urls.home(lang);
