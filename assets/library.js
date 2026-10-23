@@ -15,6 +15,10 @@
   function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
   if(toggle){toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme()}
 
+  // Topics menu: always open on wide screens (its toggle is hidden there), collapsed on narrow ones.
+  var nav=document.querySelector(".lib-nav");
+  if(nav&&window.matchMedia){var wide=matchMedia("(min-width:1100px)");var syncNav=function(){if(wide.matches)nav.open=true};syncNav();if(wide.addEventListener)wide.addEventListener("change",syncNav)}
+
   // Category pages: every card is in the HTML; the direction filter and search only hide cards.
   var cards=[].slice.call(document.querySelectorAll(".pattern-card")),search=document.querySelector(".lib-search"),empty=document.querySelector(".lib-empty");
   if(!search)return;

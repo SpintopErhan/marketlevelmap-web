@@ -154,6 +154,12 @@ Sağ sütun: "Bu sayfada" (sadece var olan bölümler), Kısa özet (`facts`), a
 
 Boş isteğe bağlı alanların bölümü **hiç gösterilmez** ve "Bu sayfada" listesinde de yer almaz.
 
+### Sol menü (bütün kütüphane sayfaları)
+
+- "Genel bakış" (kütüphane ana sayfası), sonra her kategori ve altında formasyonları, kategori ve formasyon
+  sırasıyla. Bulunulan sayfa vurgulanır. Yeni formasyon ya da kategori eklenince menü kendiliğinden güncellenir.
+- Geniş ekranda (≥ 1100 px) solda sabit durur; daha dar ekranda içeriğin üstünde kapalı bir "Konular" kutusudur.
+
 ### Kütüphane ana sayfası
 
 - Kısa giriş paragrafı (formasyonlar nedir, bölgelerle neden birlikte okunmalı).

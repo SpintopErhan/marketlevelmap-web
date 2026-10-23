@@ -36,7 +36,7 @@ const WORDS = {
     ],
     libraryDescription: "Mum ve grafik formasyonlarının ne olduğu, nasıl oluştuğu ve destek ve direnç bölgeleriyle birlikte nasıl okunduğu.",
     seeAll: (cat, n) => `Tüm ${cat.toLocaleLowerCase("tr")} (${n}) →`, search: "Formasyon ara", noMatch: "Bu filtreyle eşleşen formasyon yok.", filters: "Filtreler",
-    onThisPage: "Bu sayfada", facts: "Kısa özet", others: (cat) => `Diğer ${cat.toLocaleLowerCase("tr")}`, allIn: (cat) => `Tüm ${cat.toLocaleLowerCase("tr")} →`,
+    topics: "Konular", overview: "Genel bakış", onThisPage: "Bu sayfada", facts: "Kısa özet", others: (cat) => `Diğer ${cat.toLocaleLowerCase("tr")}`, allIn: (cat) => `Tüm ${cat.toLocaleLowerCase("tr")} →`,
     formation: "Nasıl oluşur", meaning: "Neye işaret eder", strength: "Ne zaman güçlenir, ne zaman zayıflar", strengthToc: "Güçlendirenler ve zayıflatanlar",
     strengthens: "Güçlendirenler", weakens: "Zayıflatanlar", mlmView: "MarketLevelMap bakışı", zones: "Bölgelerle ilişkisi",
     completion: "Ne zaman tamamlanır", completionToc: "Tamamlanma", invalidation: "Ne zaman geçersiz sayılır", invalidationToc: "Geçersiz sayılma",
@@ -64,7 +64,7 @@ const WORDS = {
     ],
     libraryDescription: "What candlestick and chart patterns are, how they form, and how to read them together with support and resistance zones.",
     seeAll: (cat, n) => `All ${cat.toLowerCase()} (${n}) →`, search: "Search patterns", noMatch: "No patterns match this filter.", filters: "Filters",
-    onThisPage: "On this page", facts: "At a glance", others: (cat) => `Other ${cat.toLowerCase()}`, allIn: (cat) => `All ${cat.toLowerCase()} →`,
+    topics: "Topics", overview: "Overview", onThisPage: "On this page", facts: "At a glance", others: (cat) => `Other ${cat.toLowerCase()}`, allIn: (cat) => `All ${cat.toLowerCase()} →`,
     formation: "How it forms", meaning: "What it suggests", strength: "When it strengthens, when it weakens", strengthToc: "Strengthens and weakens",
     strengthens: "Strengthens", weakens: "Weakens", mlmView: "The MarketLevelMap view", zones: "How it relates to zones",
     completion: "When it completes", completionToc: "Completion", invalidation: "When it is invalidated", invalidationToc: "Invalidation",
@@ -210,6 +210,19 @@ const sorted = (list) => [...list].sort((a, b) => categoryOf(a).order - category
 
 // ---------------------------------------------------------------- page shell
 
+// Left column on every library page: the library's topics (categories and their patterns) for quick access.
+// On narrow screens it is a collapsed box above the content (assets/library.js opens it on wide screens).
+function libNav(lang, path) {
+  const w = WORDS[lang];
+  const link = (href, label, cls = "") => `<a${cls ? ` class="${cls}"` : ""} href="${esc(href)}"${href === path ? ' aria-current="page"' : ""}>${esc(label)}</a>`;
+  const groups = categories.map((c) => {
+    const items = sorted(patterns.filter((p) => p.kind === c.kind));
+    if (!items.length) return "";
+    return `<div class="nav-group">${link(urls.category(c, lang), c[lang].name, "nav-cat")}<ul>${items.map((p) => `<li>${link(urls.pattern(p, lang), p[lang].name)}</li>`).join("")}</ul></div>`;
+  }).join("");
+  return `<details class="lib-nav"><summary>${esc(w.topics)}</summary><nav aria-label="${esc(w.topics)}">${link(urls.home(lang), w.overview, "nav-home")}${groups}</nav></details>`;
+}
+
 function page({ lang, path, alternates, title, description, body, jsonLd }) {
   const w = WORDS[lang];
   const canonical = ORIGIN + path;
@@ -234,7 +247,7 @@ function page({ lang, path, alternates, title, description, body, jsonLd }) {
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="/">${w.market}</a><a href="/weekly-events">${w.events}</a><a href="${BASE[lang]}" aria-current="page">${w.library}</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">${w.language}</label><select id="lang" data-href-tr="${esc(alternates.tr)}" data-href-en="${esc(alternates.en)}"><option value="en"${lang === "en" ? " selected" : ""}>EN</option><option value="tr"${lang === "tr" ? " selected" : ""}>TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>`;
   const footer = `<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span>${esc(w.footer)}</span><br><button class="disclaimer-link" type="button" data-disclaimer>${esc(w.riskNotice)}</button></p></footer></div>`;
-  return `<!doctype html>\n${GENERATED}\n<html lang="${lang}"><head>\n${head}\n</head><body>\n${header}\n<main class="shell lib">\n${body}\n</main>\n${footer}\n</body></html>\n`;
+  return `<!doctype html>\n${GENERATED}\n<html lang="${lang}"><head>\n${head}\n</head><body>\n${header}\n<main class="shell lib"><div class="lib-layout">\n${libNav(lang, path)}\n<div class="lib-main">\n${body}\n</div></div></main>\n${footer}\n</body></html>\n`;
 }
 
 // ---------------------------------------------------------------- pieces
