@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <line class="s-accent" x1="120" y1="100" x2="510" y2="100" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="120" y1="198" x2="510" y2="198" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text class="t-accent" x="198" y="86" text-anchor="middle">{{top_edge}}</text>
+  <text class="t-accent" x="255" y="222" text-anchor="middle">{{bottom_edge}}</text>
+  <polyline class="s-line" points="20,288 55,242 72,254 140,100 200,198 255,102 310,198 365,101 410,196 470,60 488,80 530,30" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-accent">
+    <circle cx="140" cy="100" r="3.5"/>
+    <circle cx="255" cy="102" r="3.5"/>
+    <circle cx="365" cy="101" r="3.5"/>
+    <circle cx="200" cy="198" r="3.5"/>
+    <circle cx="310" cy="198" r="3.5"/>
+    <circle cx="410" cy="196" r="3.5"/>
+  </g>
+  <circle class="s-up" cx="452" cy="100" r="9" fill="none" stroke-width="1.5"/>
+  <text class="f-up" x="438" y="84" text-anchor="end">{{breakout}}</text>
+  <path class="s-guide" d="M500 104 V194 M495 110 l5 -6 l5 6 M495 188 l5 6 l5 -6" stroke-width="1.2" fill="none"/>
+  <text class="t-guide t-mono" x="508" y="153" text-anchor="start">h</text>
+</svg>

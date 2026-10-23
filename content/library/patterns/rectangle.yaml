@@ -1,0 +1,230 @@
+id: rectangle
+kind: chart
+direction: neutral
+pattern_type: continuation
+candles: multi
+order: 72
+related: [ascending-triangle, symmetrical-triangle, flag]
+example: null
+updated: 2026-10-23
+
+tr:
+  slug: dikdortgen
+  name: Dikdörtgen
+  alt_name: Rectangle
+  summary: >-
+    Fiyatın bir süre iki yatay seviye arasında gidip gelmesiyle oluşan formasyon. Üst seviyede
+    satıcılar, alt seviyede alıcılar fiyatı durdurur ve iki taraf da üstünlük kuramaz. Çoğunlukla
+    önceki trendin yönünde kırıldığı için devam formasyonu olarak okunur, ancak her iki yöne de
+    kırılabilir. Yönü kırılım belirler.
+  formation:
+    style: steps
+    items:
+      - title: Önceki hareket.
+        text: >-
+          Formasyon genellikle belirgin bir yükseliş ya da düşüşün ardından bir duraklama olarak
+          görülür. Önceki trend, kırılımın hangi yönde daha sık beklendiğine dair bağlam verir.
+      - title: Yatay üst sınır.
+        text: >-
+          Fiyat en az iki kez yaklaşık aynı seviyede tepe yapar ve geri döner. Tepeler birbirine
+          yaklaşık **%1–2** mesafe içinde kalır. Bu tepelerden geçen çizgi yataydır.
+      - title: Yatay alt sınır.
+        text: >-
+          Aynı süre içinde fiyat en az iki kez yaklaşık aynı seviyede dip yapar ve yukarı döner.
+          Dipler de birbirine yaklaşık **%1–2** mesafe içinde kalır ve yatay bir çizgi oluşturur.
+      - title: Sınırlar arasında gidip gelme.
+        text: >-
+          Dokunuşlar sırayla gelir: fiyat bir sınırdan diğerine gider. Toplam en az dört dokunuş
+          (her sınırda iki) gerekir, daha fazlası formasyonu daha belirgin kılar. Üçgenlerin aksine
+          aralık daralmaz. Bu sırada hacim çoğu zaman azalır.
+      - title: Tamamlanma.
+        text: >-
+          Fiyat sınırlardan birinin dışında **kapanış** yaptığında formasyon tamamlanmış sayılır ve
+          yön o kapanışla belirlenir. Sınırı fitille aşıp içeride kapanan bir mum kırılım sayılmaz.
+    note: Buradaki eşikler ders kitaplarında yaygın kabul gören yaklaşık değerlerdir, kesin kurallar değildir.
+  meaning:
+    - >-
+      Üst sınır satıcıların, alt sınır alıcıların aynı seviyeleri tekrar tekrar savunduğunu
+      gösterir. Fiyat bu iki seviye arasında bir denge bulmuştur. Önceki trendin içinde bu, bir
+      dinlenme ya da birikim evresine işaret edebilir.
+    - >-
+      Formasyon kendi başına bir yön söylemez. Önceki trendin yönünde kırılım daha sık görülür,
+      ancak ters yönde kırılım da yaygındır. Böyle bir kırılımda dikdörtgen bir dönüş formasyonu
+      gibi okunur. Bu yüzden kırılım gelmeden yön hakkında sonuç çıkarmak doğru olmaz.
+  measurement:
+    title: Sık kullanılan bir ölçüm
+    text: >-
+      Teknik analizde dikdörtgenin yüksekliği (h), yani üst ve alt sınır arasındaki mesafe,
+      kırılım noktasından kırılım yönünde ölçülerek olası hareketin büyüklüğü hakkında kaba bir
+      fikir verilir. Bu bir hedef değil, bir ölçek referansıdır. Fiyat bu mesafeye ulaşmadan
+      dönebilir ya da çok daha ileri gidebilir. Kırılım yönündeki ilk bölge genellikle daha
+      gerçekçi bir referanstır.
+  strengthens:
+    - Öncesinde belirgin bir trend olması
+    - Sınırların haritadaki bölgelerle örtüşmesi
+    - Her sınırda ikiden fazla dokunuş
+    - Formasyon boyunca hacmin azalması, kırılımda artması
+    - Kırılımın sınır bölgesinin tamamen dışında bir kapanışla gelmesi
+  weakens:
+    - Tepelerin ya da diplerin aynı seviyede olmaması
+    - Aralığın çok dar olması, fiyatın sınırlar arasında belirgin hareket etmemesi
+    - Kırılımın düşük hacimle gelmesi
+    - Kırılım yönünde hemen yakında güçlü bir bölge bulunması
+    - Fitille sınırı aşıp içeride kapanan sahte kırılımlar
+  zones:
+    intro: "Dikdörtgen, destek ve direnç bölgeleriyle en doğrudan örtüşen formasyondur. Üst ve alt sınırı çoğu zaman haritadaki iki bölgenin kendisidir:"
+    points:
+      - "**Sınır bir çizgi değil, bir bant gibidir.** Dokunuşlar aynı fiyata değil, birbirine yaklaşık %1–2 mesafedeki bir alana gelir. Tek bir çizgi çizildiğinde fitillerin mi kapanışların mı esas alınacağı seçilmek zorundadır. MarketLevelMap bölgesi ise bu alanın tamamını bir genişlikle gösterir, böylece içine gelen her dokunuş aynı savunmanın parçası olarak okunur."
+      - "**Kırılım, bölgenin uzak kenarının dışında kapanıştır.** Fiyat üst bölgenin içine girip orada kapanıyorsa bu henüz kırılım değil, bölgenin bir testidir. Çizgiyle bakıldığında kırılım gibi görünen birçok hareket, bölgeyle bakıldığında hâlâ aralığın içindedir."
+      - "**Aralığın ortası iki bölgenin arasında kalan boşluktur.** Fiyatın burada verdiği tepkiler sınırlardaki tepkiler kadar anlam taşımaz."
+      - "**Kırılım yönündeki ilk bölge**, fiyatın nerede yeniden tepki verebileceğine dair ölçüm yönteminden daha gerçekçi bir referanstır."
+    paragraphs:
+      - >-
+        Kırılımdan sonra fiyat bazen kırılan sınıra geri dönüp onu test eder. Yukarı kırılımda
+        eski direnç bölgesi bu kez destek, aşağı kırılımda eski destek bölgesi bu kez direnç gibi
+        davranabilir. Fiyat geri testte bölgenin içinde kalır ve karşı tarafında kapanış yapmazsa
+        kırılım daha sağlam kabul edilir.
+      - >-
+        Dikdörtgen bazen üst zaman dilimindeki tek bir geniş bölgenin içinde oluşur. Bu durumda
+        alt zaman dilimindeki kırılım, büyük bölgenin içinde kalan bir hareket olabilir. Hangi
+        bölgenin kırıldığına bakmak, hangi çizginin kırıldığına bakmaktan daha çok şey söyler.
+  completion: Sınırlardan birinin dışında kapanış.
+  invalidation:
+    before: >-
+      Tepeler ya da dipler yatay kalmaz ve belirgin bir eğim kazanırsa fiyat artık bir dikdörtgen
+      içinde değildir. Formasyon bu durumda bir üçgen, kanal ya da takoz olarak yeniden okunur.
+    after: >-
+      Kırılım yönünde kapanış gelmiş olsa bile fiyat aralığın içine döner ve **karşı sınırın
+      dışında kapanış** yaparsa ilk kırılım geçersiz sayılır. Bu tür sahte kırılımlar bazen ters
+      yönde sert hareketlerle sonuçlanır.
+  confusions:
+    - id: ascending-triangle
+      text: "Üst sınır yataydır ama dipler yükselir, aralık sağa doğru daralır."
+    - id: flag
+      text: "Öncesinde sert bir direk vardır, kanal kısa sürer ve harekete ters yönde eğimlidir."
+    - id: triple-top
+      text: "Yükselişten sonra üst sınır üç kez test edilir ve aralık aşağı kırılır. Bu durumda formasyon dönüş olarak okunur."
+  facts:
+    - [Tür, Devam]
+    - [Yön, Kırılım yönünde]
+    - [Süre, Çok mumlu]
+    - [Bağlam, Trend içinde]
+    - [Tamamlanma, Sınırlardan birinin dışında kapanış]
+    - [Geçersiz, Karşı sınırın dışında kapanış]
+  svg_labels:
+    top_edge: Üst sınır
+    bottom_edge: Alt sınır
+    breakout: Kırılım
+  svg_alt: "Dikdörtgen çizimi: yükselen fiyat iki yatay seviye arasında gidip geliyor, üst sınırda üç, alt sınırda üç dokunuş yapıyor ve ardından üst sınırın üzerine çıkıyor"
+  svg_caption: Turuncu noktalar iki sınıra yapılan dokunuşları gösterir. Bu çizimde kırılım yukarıdır, ama formasyon her iki yöne de kırılabilir. h, dikdörtgenin yüksekliğidir.
+
+en:
+  slug: rectangle
+  name: Rectangle
+  summary: >-
+    A pattern formed when price moves back and forth between two flat levels for a while. Sellers
+    stop price at the upper level, buyers stop it at the lower level, and neither side takes
+    control. It is most often read as a continuation pattern because it tends to break in the
+    direction of the prior trend, but it can break either way. The break decides the direction.
+  formation:
+    style: steps
+    items:
+      - title: Prior move.
+        text: >-
+          The pattern usually appears as a pause after a clear rise or fall. The prior trend gives
+          context for which way a break is more often expected.
+      - title: Flat upper boundary.
+        text: >-
+          Price peaks at roughly the same level at least twice and turns back. The peaks sit within
+          about **1–2%** of each other. The line through them is horizontal.
+      - title: Flat lower boundary.
+        text: >-
+          Over the same period, price makes at least two lows at roughly the same level and turns
+          up. The lows also sit within about **1–2%** of each other and form a horizontal line.
+      - title: Moving between the boundaries.
+        text: >-
+          The touches alternate: price travels from one boundary to the other. At least four touches
+          in total (two on each boundary) are needed; more make the pattern clearer. Unlike a
+          triangle, the range does not narrow. Volume often falls during this phase.
+      - title: Completion.
+        text: >-
+          The pattern is complete when price **closes** outside one of the boundaries, and that
+          close sets the direction. A candle whose wick crosses a boundary but closes back inside is
+          not a breakout.
+    note: The thresholds here are approximate values commonly used in textbooks, not strict rules.
+  meaning:
+    - >-
+      The upper boundary shows sellers defending the same level again and again; the lower one shows
+      buyers doing the same. Price has found a balance between the two levels. Within a trend, this
+      can point to a rest or a period of accumulation.
+    - >-
+      The pattern does not give a direction on its own. Breaks in the direction of the prior trend
+      are more common, but breaks the other way are also frequent. In that case the rectangle is read
+      more like a reversal pattern. So drawing conclusions about direction before the break is not
+      sound.
+  measurement:
+    title: A common measurement
+    text: >-
+      In technical analysis, the height of the rectangle (h), the distance between the upper and
+      lower boundaries, is measured from the breakout point in the direction of the break to give a
+      rough sense of the possible move's size. It is a scale reference, not a target. Price can turn
+      before covering that distance, or go much further. The first zone in the direction of the
+      break is usually a more realistic reference.
+  strengthens:
+    - A clear trend before the pattern
+    - The boundaries lining up with zones on the map
+    - More than two touches on each boundary
+    - Volume falling during the pattern and rising at the break
+    - The break coming with a close fully outside the boundary zone
+  weakens:
+    - Peaks or lows that are not at the same level
+    - A very narrow range, with no clear moves between the boundaries
+    - The break coming on low volume
+    - A strong zone close by in the direction of the break
+    - False breakouts, where a wick crosses a boundary but the close stays inside
+  zones:
+    intro: "A rectangle is the pattern that lines up most directly with support and resistance zones. Its upper and lower boundaries are often two zones on the map themselves:"
+    points:
+      - "**A boundary is a band, not a line.** The touches do not land on one price but in an area about 1–2% wide. A single line forces a choice between wicks and closes. A MarketLevelMap zone shows the whole area with its width, so every touch inside it is read as part of the same defence."
+      - "**A break is a close beyond the far edge of the zone.** If price pushes into the upper zone and closes there, that is a test of the zone, not yet a break. Many moves that look like a break against a line are still inside the range when read against the zone."
+      - "**The middle of the range is the gap between two zones.** Reactions there carry less meaning than reactions at the boundaries."
+      - "**The first zone in the direction of the break** is a more realistic reference than the measured move for where price may react again."
+    paragraphs:
+      - >-
+        After the break, price sometimes returns to retest the broken boundary. After an upward
+        break, the old resistance zone may now act as support; after a downward break, the old
+        support zone may now act as resistance. If price holds inside the zone on the retest and does
+        not close on its far side, the break is considered more solid.
+      - >-
+        A rectangle sometimes forms inside a single wide zone on a higher timeframe. A break on the
+        lower timeframe may then be a move that stays within the larger zone. Looking at which zone
+        has broken says more than looking at which line has broken.
+  completion: Close outside one of the boundaries.
+  invalidation:
+    before: >-
+      If the peaks or lows stop being flat and take on a clear slope, price is no longer in a
+      rectangle. The pattern is then read again as a triangle, channel or wedge.
+    after: >-
+      Even after a close in the direction of the break, if price returns into the range and
+      **closes beyond the opposite boundary**, the first break is considered invalid. False breakouts
+      like this sometimes lead to sharp moves the other way.
+  confusions:
+    - id: ascending-triangle
+      text: "The upper line is flat, but the lows rise and the range narrows to the right."
+    - id: flag
+      text: "A sharp pole comes first, and the channel is short and slopes against the move."
+    - id: triple-top
+      text: "After an uptrend, the top is tested three times and the range breaks downwards. The pattern is then read as a reversal."
+  facts:
+    - [Type, Continuation]
+    - [Direction, Direction of the break]
+    - [Duration, Multi-candle]
+    - [Context, Within a trend]
+    - [Completion, Close outside a boundary]
+    - [Invalid, Close beyond the opposite boundary]
+  svg_labels:
+    top_edge: Upper boundary
+    bottom_edge: Lower boundary
+    breakout: Breakout
+  svg_alt: "Rectangle illustration: rising price moves back and forth between two flat levels, touching the upper boundary three times and the lower boundary three times, then breaks above the upper boundary"
+  svg_caption: The orange dots mark the touches on the two boundaries. In this drawing the break is upwards, but the pattern can break either way. h is the height of the rectangle.
