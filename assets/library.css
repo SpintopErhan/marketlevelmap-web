@@ -3,6 +3,30 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.55}
 button,select,input{font:inherit}button{color:inherit}
+/* Library pages use more of a wide screen: topics on the left, content in the middle. */
+.shell{width:min(1560px,100%)}
+.lib-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:0 44px;align-items:start}
+.lib-main{min-width:0}
+.lib-nav{margin-top:22px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:13px}
+.lib-nav>summary{padding:11px 16px;font-weight:700;cursor:pointer;list-style:none}
+.lib-nav>summary::-webkit-details-marker{display:none}
+.lib-nav>summary:after{content:"▾";float:right;color:var(--muted)}
+.lib-nav[open]>summary:after{content:"▴"}
+.lib-nav nav{padding:4px 16px 14px}
+.lib-nav a{display:block;padding:4px 0;color:var(--muted);text-decoration:none}
+.lib-nav a:hover{color:var(--accent)}
+.lib-nav a[aria-current="page"]{color:var(--accent);font-weight:600}
+.lib-nav .nav-home{margin-bottom:6px}
+.lib-nav .nav-group{margin-top:12px}
+.lib-nav .nav-cat{color:var(--fg);font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}
+.lib-nav ul{margin:4px 0 0;padding:0 0 0 10px;list-style:none;border-left:1px solid var(--line)}
+@media(min-width:1100px){
+  .lib-layout{grid-template-columns:220px minmax(0,1fr)}
+  .lib-nav{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto;margin-top:26px;border:0;border-radius:0;background:none}
+  .lib-nav>summary{display:none}
+  .lib-nav nav{padding:0}
+}
+@media(max-width:1279px){.lib-grid{grid-template-columns:minmax(0,1fr)}.side{position:static}.pattern{max-width:none}}
 .lib{padding-bottom:70px;--lib-line:color-mix(in srgb,var(--fg) 72%,var(--muted));--lib-guide:color-mix(in srgb,var(--muted) 75%,transparent)}
 .lib a{color:inherit}
 .lib h1{margin:0;font-size:30px;font-weight:700;letter-spacing:-.6px;line-height:1.2}
