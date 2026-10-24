@@ -7,7 +7,7 @@ var DemoData=(function(){
   var host=location.hostname,query=new URLSearchParams(location.search);
   var enabled=query.get("demo")==="1"||/\.pages\.dev$/.test(host)||host==="localhost"||host==="127.0.0.1";
   if(query.get("demo")==="0")enabled=false;
-  var BASE={BTCUSDT:82500,ETHUSDT:3140,SOLUSDT:168,XRPUSDT:2.34,AVAXUSDT:24.9},DAY=86400000,anchors={};
+  var BASE={BTCUSDT:82500,ETHUSDT:3140,SOLUSDT:168,XRPUSDT:2.34,AVAXUSDT:24.9,BNBUSDT:612,DOGEUSDT:0.1834},DAY=86400000,anchors={};
 
   function step(price){return Math.pow(10,Math.floor(Math.log10(price))-2)}
   function round(value,price){var s=step(price);return Math.round(value/s)*s}
