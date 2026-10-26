@@ -74,7 +74,8 @@ view, not as more support/resistance zones.
   inside EQ, **discount** below EQ, or **above / below the range** outside RL–RH (then without a percentage).
   No "Formed" column.
 - **FVG table.** One row per FVG: direction, remaining gap, filled %, distance. Hidden when the report has no
-  `fvg`.
+  `fvg`. A note under it says when the fill was computed ("Fill as of `fvgAsOf`"): the analysis time belongs to
+  the range, while the fill follows the closed candles up to the publication.
 - **Link previews.** `method=pa` links get "BTCUSDT 1D price action range · MarketLevelMap" and a Price Action
   description (Turkish with `lang=tr`).
 
@@ -240,11 +241,12 @@ PA reports (`method: "pa"`) carry the range as three zones (`resistance` = RH, `
 ```json
 "fvg": [ { "id": "f1a2b3c4", "direction": "bullish", "low": 78490.79, "high": 79800.05,
            "gapLow": 78490.79, "gapHigh": 80555.54, "filledPercent": 36.6,
-           "state": "partially_mitigated", "createdAt": "2026-10-20T08:00:00Z" } ]
+           "state": "partially_mitigated", "createdAt": "2026-10-20T08:00:00Z" } ],
+"fvgAsOf": "2026-10-26T07:59:59Z"
 ```
 
-`low`–`high` is the remaining (drawn) gap, `gapLow`–`gapHigh` the original gap; the fill is as of the
-publication.
+`low`–`high` is the remaining (drawn) gap, `gapLow`–`gapHigh` the original gap. `fvgAsOf` (ISO-8601, present
+with `fvg`) is the close of the last candle the fill was computed with.
 Level codes are the engine's Market Reference Levels, in this order: `DO`, `MH`, `MM`, `ML` (Monday
 high/mid/low), `WO`, `PWO`, `MO`, `YO`, `OATH` (highest Binance candle; shown as the market table's ATH).
 `levelsAsOf` is when they were computed. `DO`, `WO` and `MO` prefer the live exchange feed and fall back
