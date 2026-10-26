@@ -71,7 +71,8 @@ view, not as more support/resistance zones.
 - **Range table** (instead of "Support and resistance zones"): range high, equilibrium and range low with
   their bands and distance; range width (`RH.high − RL.low`, also as % of the price); and where the live price
   sits: `(price − RL.low) / (RH.high − RL.low)` as a percentage, read as **premium** above EQ, **equilibrium**
-  inside EQ, **discount** below EQ, or **above / below the range** outside RL–RH. No "Formed" column.
+  inside EQ, **discount** below EQ, or **above / below the range** outside RL–RH (then without a percentage).
+  No "Formed" column.
 - **FVG table.** One row per FVG: direction, remaining gap, filled %, distance. Hidden when the report has no
   `fvg`.
 - **Link previews.** `method=pa` links get "BTCUSDT 1D price action range · MarketLevelMap" and a Price Action
