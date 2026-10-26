@@ -48,8 +48,34 @@ cache previews per link, so a link shared before a change keeps its old card for
 - `index.html` — market table (live price, 24h change and volume, daily/weekly/monthly/yearly opens, ATH)
   and this week's events.
 - `bulletin.html?asset=BTCUSDT&tf=4h` — analysis page: 1H/4H/1D chart, note, support/resistance zones,
-  key levels and earlier analyses. Only Critical Zones (CZ) entries are shown; Price Action stays hidden.
+  key levels and earlier analyses. A switch at the top chooses the discipline: Critical Zones (default) or
+  Price Action (`&method=pa`, see "Price Action view").
 - `weekly-events.html` — this/next week's events. `archive.html` — placeholder until archives are published.
+
+## Price Action view
+
+Price Action (PA) is a separate discipline from Critical Zones (CZ), so the analysis page shows it as its own
+view, not as more support/resistance zones.
+
+- **Switch.** Under the coin's name, before the timeframe tabs: "Critical Zones | Price Action". The choice
+  is in the address (`method=cz` / `method=pa`; CZ when absent) so shared links open the same view. The coin,
+  live price, key levels and earlier analyses stay the same; the timeframe tabs, chart and analysis tables
+  follow the discipline. Market-table rows still open Critical Zones. An asset with no CZ entry opens PA.
+- **Which timeframes.** CZ entries are `CZ:` and `CZ_SHORT:` graphic keys, PA entries `PA:`. A PA timeframe
+  is listed only when its report has a confirmed range (one `resistance` = range high RH, one `equilibrium`
+  = EQ, one `support` = range low RL); a PA chart without a confirmed range is not listed. With no listed PA
+  timeframe the "Price Action" side of the switch is disabled.
+- **Chart.** RH, EQ and RL bands (red, blue, green, as published) and the report's FVG boxes: neutral grey,
+  dashed edge, label `FVG ↑` (bullish) / `FVG ↓` (bearish), from `createdAt` to the right edge, drawing the
+  remaining gap (`low`–`high`) and fading as `filledPercent` grows.
+- **Range table** (instead of "Support and resistance zones"): range high, equilibrium and range low with
+  their bands and distance; range width (`RH.high − RL.low`, also as % of the price); and where the live price
+  sits: `(price − RL.low) / (RH.high − RL.low)` as a percentage, read as **premium** above EQ, **equilibrium**
+  inside EQ, **discount** below EQ, or **above / below the range** outside RL–RH. No "Formed" column.
+- **FVG table.** One row per FVG: direction, remaining gap, filled %, distance. Hidden when the report has no
+  `fvg`.
+- **Link previews.** `method=pa` links get "BTCUSDT 1D price action range · MarketLevelMap" and a Price Action
+  description (Turkish with `lang=tr`).
 
 ## Live market data
 
@@ -204,7 +230,20 @@ sections stay hidden on marketlevelmap.com and are filled with sample data on pr
 }
 ```
 
-`type` is `resistance` or `support`; `drawn: false` zones appear only under "Show all zones", dashed.
+`type` is `resistance` or `support` (and `equilibrium` in PA reports); `drawn: false` zones appear only
+under "Show all zones", dashed. `method` is `cz`, `cz_short` or `pa`.
+
+PA reports (`method: "pa"`) carry the range as three zones (`resistance` = RH, `equilibrium` = EQ, `support`
+= RL; no `formedAt`) and may carry the drawn FVG boxes, at most one per direction:
+
+```json
+"fvg": [ { "id": "f1a2b3c4", "direction": "bullish", "low": 78490.79, "high": 79800.05,
+           "gapLow": 78490.79, "gapHigh": 80555.54, "filledPercent": 36.6,
+           "state": "partially_mitigated", "createdAt": "2026-10-20T08:00:00Z" } ]
+```
+
+`low`–`high` is the remaining (drawn) gap, `gapLow`–`gapHigh` the original gap; the fill is as of the
+publication.
 Level codes are the engine's Market Reference Levels, in this order: `DO`, `MH`, `MM`, `ML` (Monday
 high/mid/low), `WO`, `PWO`, `MO`, `YO`, `OATH` (highest Binance candle; shown as the market table's ATH).
 `levelsAsOf` is when they were computed. `DO`, `WO` and `MO` prefer the live exchange feed and fall back

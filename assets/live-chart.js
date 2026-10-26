@@ -84,6 +84,11 @@ var LiveChart = (function () {
   // Same palette as the local program's band renderer.
   function palette(zone) {
     var layer = String(zone.layer || "").toUpperCase(), type = zone.type;
+    // Price Action FVG (README "Price Action view"): neutral grey, dashed, fading as the gap fills.
+    if (layer === "PA_FVG") {
+      var left = Math.max(0, Math.min(1, 1 - Number(zone.filledPercent || 0) / 100));
+      return { fill: "rgba(170,176,188," + (0.05 + 0.11 * left).toFixed(3) + ")", stroke: "rgba(196,202,214," + (0.45 + 0.45 * left).toFixed(3) + ")", dash: [4, 3], width: 1.5 };
+    }
     if (layer === "HISTORICAL_BROKEN_CONTEXT") return { fill: "rgba(224,133,77,0.14)", stroke: "rgba(238,158,108,0.96)", dash: [7, 4], width: 1.5 };
     if (layer === "CANONICAL_EXTENDED") return { fill: "rgba(61,207,224,0.08)", stroke: "rgba(61,207,224,0.95)", dash: [10, 5], width: 1.5 };
     if (layer === "SINGLETON_SWING_CONTEXT") return { fill: "rgba(165,140,255,0.12)", stroke: "rgba(185,157,255,0.98)", dash: [2, 5], width: 1.5 };
@@ -154,6 +159,16 @@ var LiveChart = (function () {
                 if (start.edge !== "clipped" && x0 >= 0) {
                   if (start.edge === "unknown") { ctx.globalAlpha = 0.45; ctx.setLineDash([3, 4]); }
                   ctx.beginPath(); ctx.moveTo(x0 + 0.5, top); ctx.lineTo(x0 + 0.5, top + height); ctx.stroke();
+                }
+                // A readable label (FVG boxes): dark pill inside the box, above it when the box is thin.
+                if (zone.label && right - Math.max(left, 0) > 48) {
+                  ctx.globalAlpha = 1; ctx.setLineDash([]);
+                  ctx.font = "600 12px " + WATERMARK_FONT; ctx.textBaseline = "middle";
+                  var pillW = ctx.measureText(zone.label).width + 12, pillH = 18, pillX = Math.max(left, 0) + 6;
+                  var pillY = height >= pillH + 6 ? top + 4 : top - pillH - 3;
+                  ctx.fillStyle = "rgba(14,16,22,0.9)"; ctx.strokeStyle = style.stroke; ctx.lineWidth = 1;
+                  ctx.beginPath(); ctx.rect(pillX, pillY, pillW, pillH); ctx.fill(); ctx.stroke();
+                  ctx.fillStyle = "#eef1f7"; ctx.fillText(zone.label, pillX + 6, pillY + pillH / 2 + 0.5);
                 }
                 ctx.restore();
               });
@@ -242,7 +257,7 @@ var LiveChart = (function () {
     var emaColors = ["#ff6975", "#6fb5ff", "#e7d98c"], emas = emaColors.map(function (color) {
       return chart.addSeries(LC.LineSeries, { color: color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
     });
-    var zones = new ZonesPrimitive(), zoneList = [];
+    var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [];
     candles.attachPrimitive(zones);
     var liveLine = null, loadingOlder = false, destroyed = false;
     var forming = null, liveStatus = "pending", socket = null, retryTimer = null, socketFailures = 0;
@@ -425,8 +440,18 @@ var LiveChart = (function () {
         return { open: new Date(last[0] * 1000).toISOString(), close: new Date((last[0] + STEP[state.tf]) * 1000).toISOString(), timeframe: state.tf };
       },
       setZones: function (list, priceDecimals) {
-        zoneList = (list || []).filter(function (z) { return z && z.drawn !== false && Number(z.low) > 0 && Number(z.high) > 0; });
+        baseZones = (list || []).filter(function (z) { return z && z.drawn !== false && Number(z.low) > 0 && Number(z.high) > 0; });
         if (priceDecimals != null && priceDecimals !== decimals) { decimals = priceDecimals; applyPrecision(); }
+        zoneList = baseZones.concat(fvgZones);
+        zones.set(zoneList, times());
+      },
+      // Price Action report FVG boxes (remaining gap, from the candle that formed it to the right edge).
+      setFvg: function (list) {
+        fvgZones = (list || []).filter(function (f) { return f && Number(f.low) > 0 && Number(f.high) > Number(f.low); }).map(function (f) {
+          return { type: "fvg", layer: "PA_FVG", low: Number(f.low), high: Number(f.high), formedAt: f.createdAt,
+            filledPercent: Number(f.filledPercent || 0), label: String(f.direction).toLowerCase() === "bullish" ? "FVG \u2191" : "FVG \u2193" };
+        });
+        zoneList = baseZones.concat(fvgZones);
         zones.set(zoneList, times());
       },
       liveStatus: function () { return liveStatus; },
