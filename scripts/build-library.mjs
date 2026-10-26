@@ -37,7 +37,7 @@ const WORDS = {
       "MarketLevelMap’te yapılan analizleri daha iyi anlamak ve grafikleri kendi başınıza yorumlayabilmek için hazırlandı. Formasyonlar, seviyeler ve diğer kavramlar birbirinden bağımsız değil, birlikte okunacak şekilde anlatılır. İçerikler zamanla genişleyecek.",
     ],
     libraryDescription: "Piyasa okuryazarlığı için temel kavramlar ve açıklamalar: formasyonlar, seviyeler ve diğer kavramlar, birlikte okunacak şekilde.",
-    seeAll: (cat, n) => `Tümü (${n}) →`, search: "Bu kategoride ara", noMatch: "Bu filtreyle eşleşen sayfa yok.", filters: "Filtreler",
+    seeAll: (cat, n) => `Tümü (${n}) →`, search: "Bu kategoride ara", find: "Kütüphanede ara", findEmpty: "Sonuç bulunamadı.", noMatch: "Bu filtreyle eşleşen sayfa yok.", filters: "Filtreler",
     shows: "Ne gösterir", notProves: "Neyi kanıtlamaz", limitsTitle: "Neyi gösterir, neyi kanıtlamaz?", limitsToc: "Sınırları", related: "İlgili sayfalar", keyPoints: "Akılda kalsın",
     topics: "Konular", overview: "Genel bakış", toggle: (cat) => `${cat}: alt başlıkları aç ya da kapat`, onThisPage: "Bu sayfada", facts: "Kısa özet",
     formation: "Nasıl oluşur", meaning: "Neye işaret eder", strength: "Ne zaman güçlenir, ne zaman zayıflar", strengthToc: "Güçlendirenler ve zayıflatanlar",
@@ -66,7 +66,7 @@ const WORDS = {
       "Prepared to help you better understand the analyses on MarketLevelMap and interpret charts on your own. Formations, levels, and other concepts are explained in relation to one another rather than in isolation. Content will expand over time.",
     ],
     libraryDescription: "Core concepts and explanations for market literacy: formations, levels and other concepts, explained in relation to one another.",
-    seeAll: (cat, n) => `All (${n}) →`, search: "Search this category", noMatch: "No pages match this filter.", filters: "Filters",
+    seeAll: (cat, n) => `All (${n}) →`, search: "Search this category", find: "Search the library", findEmpty: "No results.", noMatch: "No pages match this filter.", filters: "Filters",
     shows: "What it shows", notProves: "What it does not prove", limitsTitle: "What it shows, what it does not prove", limitsToc: "Limits", related: "Related pages", keyPoints: "Key points",
     topics: "Topics", overview: "Overview", toggle: (cat) => `${cat}: show or hide its pages`, onThisPage: "On this page", facts: "At a glance",
     formation: "How it forms", meaning: "What it suggests", strength: "When it strengthens, when it weakens", strengthToc: "Strengthens and weakens",
@@ -309,7 +309,14 @@ function libNav(lang, path) {
     const cats = activeCategories.filter((c) => c.section === g.id);
     return cats.length ? `<p class="nav-section">${esc(g[lang].name)}</p>${cats.map(group).join("")}` : "";
   }).join("");
-  return `<details class="lib-nav"><summary>${esc(w.topics)}</summary><nav aria-label="${esc(w.topics)}">${link(urls.home(lang), w.overview, "nav-home")}${groups}</nav></details>`;
+  return `<details class="lib-nav"><summary>${esc(w.topics)}</summary>${findBox(lang, "nav")}<nav aria-label="${esc(w.topics)}">${link(urls.home(lang), w.overview, "nav-home")}${groups}</nav></details>`;
+}
+
+// Library-wide word search (assets/library.js): the page names, alternative names, categories, summaries, section titles
+// and key points of every page in this language, in a small JSON file that is fetched on first use.
+function findBox(lang, where) {
+  const w = WORDS[lang];
+  return `<div class="lib-find lib-find-${where}" data-index="${esc(searchIndex[lang].url)}" data-empty="${esc(w.findEmpty)}"><input class="lib-find-input" type="search" placeholder="${esc(w.find)}" aria-label="${esc(w.find)}" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="find-${where}"><ul class="lib-find-results" id="find-${where}" role="listbox" aria-label="${esc(w.find)}" hidden></ul></div>`;
 }
 
 function page({ lang, path, alternates, title, description, body, jsonLd }) {
@@ -534,7 +541,7 @@ function listPage(lang, category) {
       if (!cats.length) return "";
       return `<section class="lib-section" aria-labelledby="sec-${esc(g.id)}"><h2 id="sec-${esc(g.id)}">${esc(g[lang].name)}</h2><ul class="cat-grid">${cats.map((c) => categoryCard(c, lang)).join("\n")}</ul></section>`;
     }).filter(Boolean).join("\n");
-    body = `<div class="lib-intro"><h1>${esc(w.libraryTitle)}</h1><p class="lead">${esc(w.libraryLead)}</p>${w.libraryIntro.map((x) => `<p>${inline(x)}</p>`).join("")}</div>\n${groups}`;
+    body = `<div class="lib-intro"><h1>${esc(w.libraryTitle)}</h1><p class="lead">${esc(w.libraryLead)}</p>${w.libraryIntro.map((x) => `<p>${inline(x)}</p>`).join("")}${findBox(lang, "home")}</div>\n${groups}`;
   }
   const path = category ? urls.category(category, lang) : urls.home(lang);
   const title = category ? `${category[lang].name} | ${w.titleSuffix}` : `${w.libraryTitle} | MarketLevelMap`;
@@ -554,7 +561,21 @@ function listPage(lang, category) {
 
 // ---------------------------------------------------------------- output
 
+// One search file per language (see findBox); its address carries a content hash so a new build is fetched at once.
+const searchIndex = Object.fromEntries(LANGS.map((lang) => {
+  const pages = sorted(items).map((p) => {
+    const t = p[lang];
+    const titles = p.type === "concept" ? t.sections.filter((x) => isText(x.title)).map((x) => plain(x.title)) : [];
+    const points = p.type === "concept" ? (t.key_points || []).map(plain) : (t.facts || []).map((r) => plain(r[1]));
+    return { n: t.name, a: t.alt_name || "", c: categoryOf(p)[lang].name, u: urls.pattern(p, lang), s: plain(t.summary), t: titles, k: points };
+  });
+  const json = `${JSON.stringify({ generated: "scripts/build-library.mjs", pages })}\n`;
+  const file = `assets/library-search-${lang}.json`;
+  return [lang, { file, json, url: `/${file}?v=${createHash("sha1").update(json).digest("hex").slice(0, 8)}` }];
+}));
+
 const files = new Map();
+for (const lang of LANGS) files.set(join(ROOT, searchIndex[lang].file), searchIndex[lang].json);
 const out = (path, html) => files.set(join(ROOT, path, "index.html"), html);
 for (const lang of LANGS) {
   out(urls.home(lang), listPage(lang, null));
