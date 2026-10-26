@@ -509,7 +509,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     g.fillStyle="#26303c";g.fillRect(0,head-Math.max(1,Math.round(k)),out.width,Math.max(1,Math.round(k)));g.fillRect(0,head+shot.height,out.width,Math.max(1,Math.round(k)));
     g.textBaseline="middle";
     g.fillStyle="#e6ebf2";g.font="700 "+Math.round(17*k)+"px"+font;g.textAlign="left";g.fillText(chartName.textContent,pad,Math.round(20*k));
-    g.fillStyle="#9aa6b8";g.font="500 "+Math.round(11*k)+"px"+font;g.fillText("Critical Zones · "+MarketUI.nameOf(asset),pad,Math.round(39*k));
+    g.fillStyle="#9aa6b8";g.font="500 "+Math.round(11*k)+"px"+font;g.fillText((method==="pa"?w.methodPa:w.methodCz)+" · "+MarketUI.nameOf(asset),pad,Math.round(39*k));
     g.textAlign="right";g.fillStyle="#e8a765";g.font="700 "+Math.round(15*k)+"px"+font;g.fillText("MarketLevelMap",out.width-pad,Math.round(20*k));
     g.fillStyle="#9aa6b8";g.font="500 "+Math.round(11*k)+"px"+font;g.fillText("marketlevelmap.com",out.width-pad,Math.round(39*k));
     var y=head+shot.height+Math.round(foot/2);
