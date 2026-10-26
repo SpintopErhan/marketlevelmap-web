@@ -84,8 +84,8 @@ tr:
   key_points:
     - AVWAP, seçilen bir noktadan bu yana hacim ağırlıklı ortalama fiyattır.
     - Çapa noktası değişince AVWAP da değişir.
-    - Fiyatın üzerinde kalması, o noktadan beri alanların ortalamada kârda olduğunu gösterir.
-    - AVWAP'ın destek ya da direnç gibi çalışacağı garanti değildir.
+    - Fiyatın üzerinde kalması, o noktadan beri alıcıların ortalamada kârda olduğunu gösterir.
+    - AVWAP kendi başına bir destek ya da direnç bölgesi değildir; o noktadan beri ortalama maliyeti gösterir. Fiyat ona yaklaştığında tepki görülebilir, ama bu bir kural değildir.
   svg_labels:
     anchor_1: "Çapa:"
     anchor_2: korunan dip
@@ -174,7 +174,7 @@ en:
     - An AVWAP is the volume-weighted average price since a chosen point.
     - When the anchor changes, the AVWAP changes.
     - Price holding above it means those who bought since that point are on average in profit.
-    - There is no guarantee that an AVWAP acts as support or resistance.
+    - An AVWAP is not a support or resistance zone in itself; it shows the average cost since that point. Price may react when it gets close, but that is not a rule.
   svg_labels:
     anchor_1: "Anchor:"
     anchor_2: protected low
