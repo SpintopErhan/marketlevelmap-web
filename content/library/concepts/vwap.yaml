@@ -1,7 +1,7 @@
 id: vwap
 kind: indicators
 order: 70
-related: [volume, volume-profile, moving-averages, support-and-resistance]
+related: [anchored-vwap, volume, volume-profile, moving-averages]
 example: null
 updated: 2026-10-23
 

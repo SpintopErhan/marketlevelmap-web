@@ -89,8 +89,8 @@ view, not as more support/resistance zones.
   AVWAP row right after the protected level: value, anchor date, distance; the explanation gains one AVWAP sentence.
 - **Library links.** A term can be a link to its library page, in the page language (dotted underline):
   `<a class="lib-link" href="<en url>" data-href-tr="<tr url>" aria-label="…" data-label-tr="…">FVG</a>`
-  (switched by `applyLanguage`). The FVG heading is one; in the Structure explanation BOS, CHoCH and Sweep are
-  links (`structureSub` is rebuilt by `renderStructure`). Pages:
+  (switched by `applyLanguage`). The FVG heading is one; in the Structure explanation BOS, CHoCH, Sweep and
+  AVWAP are links (`structureSub` is rebuilt by `renderStructure`). Pages:
 
   | Term | EN | TR |
   |---|---|---|
@@ -98,6 +98,7 @@ view, not as more support/resistance zones.
   | BOS | `/en/library/break-of-structure-bos/` | `/tr/kutuphane/yapi-kirilimi-bos/` |
   | CHoCH | `/en/library/change-of-character-choch/` | `/tr/kutuphane/karakter-degisimi-choch/` |
   | Sweep | `/en/library/sweep/` | `/tr/kutuphane/sweep/` |
+  | AVWAP | `/en/library/anchored-vwap-avwap/` | `/tr/kutuphane/avwap-sabitlenmis-vwap/` |
 - **Link previews.** `method=pa` links get "BTCUSDT 1D price action range · MarketLevelMap" and a Price Action
   description (Turkish with `lang=tr`).
 
