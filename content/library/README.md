@@ -199,6 +199,18 @@ Boş isteğe bağlı alanların bölümü **hiç gösterilmez** ve "Bu sayfada" 
   sırasıyla. Bulunulan sayfa vurgulanır. Yeni formasyon ya da kategori eklenince menü kendiliğinden güncellenir.
 - Geniş ekranda (≥ 1100 px) solda sabit durur; daha dar ekranda içeriğin üstünde kapalı bir "Konular" kutusudur.
 
+### Kütüphane araması
+
+- Sol menünün tepesinde ve kütüphane ana sayfasında "Kütüphanede ara" kutusu vardır. Yazdıkça altında en fazla 12
+  sonuç çıkar: sayfa adı, kategorisi ve aranan kelimenin geçtiği kısa satır (önce "Akılda kalsın", sonra özet,
+  sonra bölüm başlığı). Ok tuşları sonuçlarda gezer, Enter ilk sonucu açar, Esc listeyi kapatır.
+- Aranan alanlar: ad, alternatif ad, kategori, özet, bölüm başlıkları ve "Akılda kalsın" maddeleri (formasyonlarda
+  "Kısa özet" değerleri). Paragrafların tamamı aranmaz.
+- Büyük/küçük harf ve Türkçe harfler fark etmez ("kirilim" → "kırılım"); her kelime bir kelimenin başında
+  eşleşmelidir, bu yüzden ekler sorun olmaz. Ad eşleşmeleri en üstte gelir.
+- Derleyici her dil için `assets/library-search-<dil>.json` üretir; adresi içerik özetiyle (`?v=`) değişir ve
+  dosya yalnızca kutu ilk kullanıldığında indirilir.
+
 ### Kütüphane ana sayfası
 
 - Başlık, alt başlık ve giriş paragrafı.
