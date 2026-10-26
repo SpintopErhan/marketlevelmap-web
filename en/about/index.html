@@ -275,12 +275,12 @@
   <text class="t-fg" x="412" y="22" text-anchor="end">Analysis time</text>
   <text class="t-label" x="428" y="22">Live candles</text>
   <circle class="s-down" cx="631" cy="239.0" r="10" fill="none" stroke-width="1.5"/>
-  <text class="t-down" x="430" y="269.0">Potential violation: re-evaluation</text>
+  <text class="t-down" x="430" y="269.0">Possible breach: re-evaluation</text>
 </svg><figcaption>After the analysis time, candles keep coming in live while the zones stay where they are. If a candle closes beyond a zone's far edge, the zone is not silently deleted; the structure is re-evaluated.</figcaption></figure>
   <p>Zones are still not left to themselves:</p>
   <ol class="steps">
-    <li><b>Monitoring.</b> Newly closed candles are compared with the drawn zones: no contact, contact, or a potential violation.</li>
-    <li><b>Review.</b> A potential violation alone changes nothing; a re-evaluation is started deliberately.</li>
+    <li><b>Monitoring.</b> Newly closed candles are compared with the drawn zones: no contact, contact, or a possible breach.</li>
+    <li><b>Review.</b> A possible breach alone changes nothing; a re-evaluation is started deliberately.</li>
     <li><b>All or nothing.</b> A re-evaluation either succeeds as a whole and a new map is published, or nothing changes. A
     half-updated map is never published.</li>
     <li><b>A new date.</b> The updated analysis is published with a new analysis time.</li>
