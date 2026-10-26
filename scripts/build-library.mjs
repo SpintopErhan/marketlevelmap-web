@@ -45,7 +45,7 @@ const WORDS = {
     completion: "Ne zaman tamamlanır", completionToc: "Tamamlanma", invalidation: "Ne zaman geçersiz sayılır", invalidationToc: "Geçersiz sayılma",
     before: "Tamamlanmadan önce:", after: "Tamamlandıktan sonra:", confusions: "Sık karıştırılanlar", soon: "Yakında",
     disclaimer: "Genel bilgilendirme amaçlıdır. Yatırım tavsiyesi değildir.", updated: "Son güncelleme",
-    footer: "İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Kripto varlıklar yüksek risk taşır; analizler getiri garantisi sunmaz.",
+    footer: "İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.",
     riskNotice: "Bilgilendirme ve Risk Bildirimi",
     direction: { bullish: "Yükseliş", bearish: "Düşüş", neutral: "Nötr" },
     type: {
@@ -74,7 +74,7 @@ const WORDS = {
     completion: "When it completes", completionToc: "Completion", invalidation: "When it is invalidated", invalidationToc: "Invalidation",
     before: "Before completion:", after: "After completion:", confusions: "Often confused with", soon: "Coming soon",
     disclaimer: "For general information only. Not investment advice.", updated: "Last updated",
-    footer: "Content is for general information only and is not investment advice. Crypto assets carry high risk; analyses offer no guarantee of returns.",
+    footer: "Content is for general information only and is not investment advice. Trading in financial markets carries high risk; analyses offer no guarantee of returns.",
     riskNotice: "Information and Risk Notice",
     direction: { bullish: "Bullish", bearish: "Bearish", neutral: "Neutral" },
     type: {
