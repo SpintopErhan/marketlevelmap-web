@@ -73,10 +73,8 @@ main:not([data-state="live"]) #analysis,main:not([data-state="live"]) .head-meta
 .block-head h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.2px}
 .block-head p{margin:3px 0 0;color:var(--muted);font-size:11px}
 .block-head .right{display:flex;align-items:center;gap:10px}
-.lib-help{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:4px;vertical-align:2px;border:1px solid var(--line);border-radius:50%;color:var(--muted);font-size:11px;font-weight:700;text-decoration:none}
-.lib-help:hover,.lib-help:focus-visible{color:var(--accent);border-color:var(--accent)}
-.lib-term{white-space:nowrap}
-.block-head p .lib-help{width:15px;height:15px;margin:0 1px 0 3px;font-size:10px;vertical-align:0}
+.lib-link{color:inherit;text-decoration:underline dotted;text-decoration-color:var(--muted);text-underline-offset:3px}
+.lib-link:hover,.lib-link:focus-visible{color:var(--accent);text-decoration-color:var(--accent)}
 .demo-badge{white-space:nowrap;padding:1px 8px;border:1px dashed var(--muted);border-radius:4px;color:var(--muted);font-size:11px}
 .demo-badge[hidden]{display:none}
 .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
@@ -151,7 +149,7 @@ th.r,td.r{text-align:right}
 <section class="block" id="range-block" hidden><div class="block-head"><div><h2 data-i18n="rangeTitle">Price range</h2><p data-i18n="rangeSub">Confirmed range and its equilibrium · where the price sits</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span></div></div>
 <div class="range-summary" id="range-summary"></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colLevel">Level</th><th data-i18n="colZone">Zone</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="range-rows"></tbody></table></div></section>
-<section class="block" id="fvg-block" hidden><div class="block-head"><div><h2>FVG <a class="lib-help" href="/en/library/fair-value-gap-fvg/" data-href-tr="/tr/kutuphane/fvg-fair-value-gap/" aria-label="What is an FVG? (library)" data-label-tr="FVG nedir? (kütüphane)" title="What is an FVG? (library)">?</a></h2><p data-i18n="fvgSub">Nearest open fair value gaps · only the unfilled part is drawn</p></div></div>
+<section class="block" id="fvg-block" hidden><div class="block-head"><div><h2><a class="lib-link" href="/en/library/fair-value-gap-fvg/" data-href-tr="/tr/kutuphane/fvg-fair-value-gap/" aria-label="What is an FVG? (library)" data-label-tr="FVG nedir? (kütüphane)" title="What is an FVG? (library)">FVG</a></h2><p data-i18n="fvgSub">Nearest open fair value gaps · only the unfilled part is drawn</p></div></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colType">Type</th><th data-i18n="colZone">Zone</th><th class="r" data-i18n="colFilled">Filled</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="fvg-rows"></tbody></table></div><p class="levels-note" id="fvg-note" hidden></p></section>
 <section class="block" id="structure-block" hidden><div class="block-head"><div><h2 data-i18n="structureTitle">Structure</h2><p id="structure-sub">Whether the market is making higher highs (up) or lower lows (down). BOS: the trend continues past its last swing. CHoCH: the protected level broke and the trend turned. Sweep: a wick ran past a range edge and the candle closed back inside.</p></div></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colEvent">Event</th><th data-i18n="colLevel">Level</th><th class="r" data-i18n="colDate">Date</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="structure-rows"></tbody></table></div><p class="levels-note" id="structure-note" hidden></p></section>
@@ -341,7 +339,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     if(!placed)rows.appendChild(nowRow(4,p));
     fvgRows.textContent="";fvgRows.appendChild(rows);
   }
-  // The explanation above the Structure table, with a library "?" link after BOS, CHoCH and Sweep (README "Library links").
+  // The explanation above the Structure table, with BOS, CHoCH and Sweep as library links (README "Library links").
   var structureLib={
     BOS:{en:["/en/library/break-of-structure-bos/","What is a BOS? (library)"],tr:["/tr/kutuphane/yapi-kirilimi-bos/","BOS nedir? (kütüphane)"]},
     CHoCH:{en:["/en/library/change-of-character-choch/","What is a CHoCH? (library)"],tr:["/tr/kutuphane/karakter-degisimi-choch/","CHoCH nedir? (kütüphane)"]},
@@ -353,9 +351,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     w.structureSub.split(/(BOS|CHoCH|Sweep)(?=:)/).forEach(function(part){
       var lib=structureLib[part];
       if(!lib){sub.appendChild(document.createTextNode(part));return}
-      var a=document.createElement("a");a.className="lib-help";a.href=lib[lang][0];a.textContent="?";
+      var a=document.createElement("a");a.className="lib-link";a.href=lib[lang][0];a.textContent=part;
       a.setAttribute("aria-label",lib[lang][1]);a.title=lib[lang][1];
-      var term=document.createElement("span");term.className="lib-term";term.textContent=part;term.appendChild(a);sub.appendChild(term);
+      sub.appendChild(a);
     });
   }
   // Price Action structure (README "Price Action view"): direction, protected level, events and sweeps, newest first.
