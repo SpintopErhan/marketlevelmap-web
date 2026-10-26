@@ -76,7 +76,7 @@
 .about-fig .s-bos{stroke:#a99cf0}.about-fig .t-bos{fill:#a99cf0}.about-fig .s-choch{stroke:#e27bd0}.about-fig .t-choch{fill:#e27bd0}
 .about-fig .f-badge{fill:var(--fg)}.about-fig .t-badge{fill:var(--bg);font-weight:700;font-size:12px}
 
-.checklist{list-style:none;padding:0;margin:18px 0;display:grid;gap:10px;counter-reset:step -1}
+.checklist{list-style:none;padding:0;margin:18px 0;display:grid;gap:10px;counter-reset:step}
 .checklist li{counter-increment:step;display:flex;gap:14px;align-items:flex-start;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.6}
 .checklist li:before{content:counter(step);flex:0 0 30px;height:30px;border-radius:50%;background:var(--accent);color:var(--bg);display:grid;place-items:center;font-weight:700}
 .checklist li>div{flex:1}
@@ -112,9 +112,9 @@
 <section id="kontrol-listesi">
   <h2>Beş adımda bir grafik</h2>
   <p>Kısa tutuldu; her grafikte, her seferinde uygulanabilsin diye. Etiketler, bilginin hangi görünümde olduğunu gösterir.</p>
+  <div class="aside"><h3>Önce: tarihler</h3><p>Başlamadan grafiğin altındaki analiz tarihine ve son kapanan muma bakın. Bölgeler
+  ve aralık o tarihe aittir; aradan geçen zaman, gördüğünüzün ne kadar güncel olduğunu söyler.</p></div>
   <ol class="checklist">
-    <li><div><b>Tarihler.</b> Grafiğin altındaki analiz tarihine ve son kapanan muma bakın. Bölgeler ve aralık o tarihe
-    aittir; aradan geçen zaman, gördüğünüzün ne kadar güncel olduğunu söyler.</div><span class="tag">Her iki görünüm</span></li>
     <li><div><b>Büyük resim.</b> 1W ve 1D'de fiyat hangi bölgelerin ya da hangi aralığın içinde? Yapının yönü ne?</div>
     <span class="tag">Her iki görünüm</span></li>
     <li><div><b>Konum.</b> Fiyat aralığın neresinde: üst yarı (premium) mı, alt yarı (discount) mı? En yakın destek ve
@@ -175,7 +175,7 @@
       %28 aşağıda) yakın. Takip edilecek sorular: Fiyat AVWAP'ın üstünde kalabiliyor mu? Denge bandının üstünde mi kapanıyor,
       altında mı?</p></article>
       <article class="card"><h3>Ne söylemez?</h3><p>Yükselişin süreceğini söylemez. CHoCH bir yön değişimidir, kesinleşmiş bir
-      dönüş değildir; haftalık yapı ancak 57.800'ün altında bir kapanışla yeniden aşağı döner, ama bu aradaki her düşüşün
+      dönüş değildir; haftalık yapı ancak 57.800 kapanışla kırılırsa yeniden aşağı döner, ama bu aradaki her düşüşün
       önemsiz olduğu anlamına gelmez. Daha kısa zaman dilimleri aynı dönemde başka bir hikâye anlatıyor olabilir.</p></article>
     </div>
   </article>
@@ -196,8 +196,8 @@
       yapanlar ortalamada zararda: fiyat AVWAP'ın altında. Yapı ile katılımcıların durumu ayrışıyor. Takip edilecek sorular:
       Fiyat AVWAP'ı geri alabiliyor mu? Yoksa korunan dibe (74.968) doğru mu ilerliyor?</p></article>
       <article class="card"><h3>Ne söylemez?</h3><p>AVWAP'ın altına inmek yapının bozulduğu anlamına gelmez; bunu yalnızca korunan
-      dibin kapanışla kırılması söyler (CHoCH ↓). AVWAP bir destek ya da direnç çizgisi değildir; o noktadan beri ortalama
-      maliyeti gösterir.</p></article>
+      dibin kapanışla kırılması söyler (CHoCH ↓). AVWAP kendi başına bir destek ya da direnç bölgesi değildir; o noktadan beri
+      ortalama maliyeti gösterir. Fiyat ona yaklaştığında tepki görülebilir, ama bu bir kural değildir.</p></article>
     </div>
   </article>
 

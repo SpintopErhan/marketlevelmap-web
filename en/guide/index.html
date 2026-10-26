@@ -76,7 +76,7 @@
 .about-fig .s-bos{stroke:#a99cf0}.about-fig .t-bos{fill:#a99cf0}.about-fig .s-choch{stroke:#e27bd0}.about-fig .t-choch{fill:#e27bd0}
 .about-fig .f-badge{fill:var(--fg)}.about-fig .t-badge{fill:var(--bg);font-weight:700;font-size:12px}
 
-.checklist{list-style:none;padding:0;margin:18px 0;display:grid;gap:10px;counter-reset:step -1}
+.checklist{list-style:none;padding:0;margin:18px 0;display:grid;gap:10px;counter-reset:step}
 .checklist li{counter-increment:step;display:flex;gap:14px;align-items:flex-start;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.6}
 .checklist li:before{content:counter(step);flex:0 0 30px;height:30px;border-radius:50%;background:var(--accent);color:var(--bg);display:grid;place-items:center;font-weight:700}
 .checklist li>div{flex:1}
@@ -112,9 +112,9 @@
 <section id="checklist">
   <h2>A chart in five steps</h2>
   <p>Kept short so it can be used on every chart, every time. The tags show which view the information is in.</p>
+  <div class="aside"><h3>First: the dates</h3><p>Before you start, look at the analysis time and the last closed candle under
+  the chart. Zones and the range belong to that time; the time since tells you how current the picture is.</p></div>
   <ol class="checklist">
-    <li><div><b>Dates.</b> Look at the analysis time and the last closed candle under the chart. Zones and the range belong to
-    that time; the time since tells you how current the picture is.</div><span class="tag">Both views</span></li>
     <li><div><b>The big picture.</b> On 1W and 1D, which zones or which range is price in? Which way is the structure going?</div>
     <span class="tag">Both views</span></li>
     <li><div><b>Position.</b> Where is price in the range: the upper half (premium) or the lower half (discount)? How far are
@@ -176,7 +176,7 @@
       protected low (57,800, about 28% below). Questions to follow: Can price stay above AVWAP? Does it close above or below
       the equilibrium band?</p></article>
       <article class="card"><h3>What it does not say</h3><p>That the uptrend will continue. A CHoCH is a change of direction,
-      not a confirmed reversal; the weekly structure turns down again only on a close below 57,800, which does not make every
+      not a confirmed reversal; the weekly structure turns down again only if 57,800 breaks on a close, which does not make every
       drop in between unimportant. Shorter timeframes may be telling a different story over the same period.</p></article>
     </div>
   </article>
@@ -197,8 +197,8 @@
       bought since the protected low are, on average, at a loss: price is below AVWAP. Structure and participants are telling
       different things. Questions to follow: Can price win AVWAP back, or is it heading towards the protected low (74,968)?</p></article>
       <article class="card"><h3>What it does not say</h3><p>Dropping below AVWAP does not mean the structure has broken; only a
-      close through the protected low says that (CHoCH ↓). AVWAP is not a support or resistance line; it shows the average cost
-      since that point.</p></article>
+      close through the protected low says that (CHoCH ↓). AVWAP is not a support or resistance zone in itself; it shows the
+      average cost since that point. Price may react when it gets close, but that is not a rule.</p></article>
     </div>
   </article>
 
