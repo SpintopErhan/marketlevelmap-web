@@ -1,0 +1,207 @@
+id: change-of-character
+kind: structure
+order: 45
+related: [break-of-structure, trend-change, pullback-vs-reversal, swing-points]
+example: null
+updated: 2026-10-26
+
+tr:
+  slug: karakter-degisimi-choch
+  name: "CHoCH: karakter değişimi"
+  alt_name: Change of character (CHoCH)
+  summary: >-
+    CHoCH, yapının korunan seviyesinin kapanışla kırılmasıdır. Yükselişte korunan dibin altında,
+    düşüşte korunan tepenin üzerinde gelen kapanış, yapının yön değiştirdiğini gösterir. Aradaki
+    küçük dip ve tepelerin kırılması CHoCH sayılmaz.
+  sections:
+    - type: text
+      id: definition
+      title: CHoCH nedir?
+      paragraphs:
+        - >-
+          Her yapı kırılımı (BOS) bir **korunan seviye** bırakır: yükselişte, kırılan swing tepesi ile
+          BOS mumu arasındaki en düşük dip. Fiyat bu dibin üzerinde kaldıkça düşüşler yükselen yapının
+          içindeki geri çekilmeler olarak okunur.
+        - >-
+          Fiyat korunan dibin **altında kapanış** yaptığında yükselen yapı geçerliliğini yitirir ve
+          yön düşüşe döner. Bu kapanışa **karakter değişimi (CHoCH, change of character)** denir.
+          Düşen yapıda aynısı ters yönde, korunan tepenin üzerinde kapanışla geçerlidir.
+      note: CHoCH, ters yöndeki ilk küçük kırılımla karıştırılır. Bu sayfadaki tanımda belirleyici olan yalnızca korunan seviyedir.
+    - type: steps
+      id: how-it-forms
+      title: Nasıl oluşur?
+      items:
+        - title: Yükselen yapının bir korunan dibi vardır.
+          text: Son BOS, korunan dibi belirlemiştir. Fiyat bu dibin üzerinde kaldıkça yapı yükselen sayılır.
+        - title: Fiyat yeni tepe yapamaz.
+          text: Yükseliş zayıflar, fiyat geri çekilir. Bu sırada yapının içindeki küçük dipler kırılabilir.
+        - title: Kapanış korunan dibin altında gelir.
+          text: Bir mum korunan dibin **altında kapanır**. Bu kapanış CHoCH'tur; yön düşüşe döner.
+        - title: Yeni korunan tepe belirlenir.
+          text: Kırılan korunan dip ile CHoCH mumu arasındaki en yüksek tepe, yani düşüşü başlatan tepe, artık düşen yapının **korunan tepesidir**.
+    - type: scenarios
+      id: which-break
+      title: Hangi kırılım ne anlama gelir?
+      intro: Yükselen bir yapıda fiyat aşağı döndüğünde farklı seviyeler kırılabilir. Hangisinin kırıldığı, okumayı değiştirir.
+      items:
+        - title: İç dip kırıldı
+          tone: neutral
+          text: Kapanış, korunan dibin **üzerinde kalan** küçük bir dibin altında geldi. Bu bir olay değildir; yükselen yapı hâlâ geçerlidir.
+        - title: CHoCH
+          tone: down
+          text: Kapanış **korunan dibin altında** geldi. Yükselen yapı bozuldu, yön düşüşe döndü.
+        - title: Fitille temas
+          tone: neutral
+          text: Fitil korunan dibin altına indi ama kapanış **üzerinde** kaldı. Bu CHoCH değildir; çoğu zaman dibin denendiğini gösterir.
+    - type: bullets
+      id: rules
+      title: CHoCH'u ölçmek için
+      items:
+        - text: CHoCH yalnızca **korunan seviyenin** kırılmasıyla oluşur. Ters yöndeki ilk küçük kırılım CHoCH değildir.
+          marker: accent
+        - text: Kırılımı **kapanış** belirler ve kapanışın seviyeyi küçük bir payla geçmesi beklenir.
+          marker: neutral
+        - text: CHoCH'tan sonra yön değişir. Bundan sonraki BOS'lar yeni yönde aranır.
+          marker: neutral
+    - type: limits
+      shows:
+        - Yapının korunan seviyesinin kapanışla kaybedildiğini
+        - Yönün değiştiğini ve yeni korunan seviyenin nerede olduğunu
+        - Geri çekilme ile yapı bozulmasını ölçülebilir şekilde ayırmayı
+      not_proves:
+        - Yeni yönün süreceğini ya da fiyatın ne kadar ilerleyeceğini
+        - Kırılımın sonraki mumlarda geri alınmayacağını
+        - Bir zaman dilimindeki CHoCH'un daha büyük zaman dilimlerinde de trendi değiştirdiğini
+    - type: zones
+      intro: MarketLevelMap'in Price Action görünümünde CHoCH şu kurallarla işaretlenir.
+      points:
+        - Yalnızca **kapanmış mumlar** kullanılır; kırılım payı **ATR cinsinden** ölçülür.
+        - Yükselişte korunan dip, kırılan swing tepesi ile BOS mumu arasındaki en düşük **onaylı swing dibidir**; aralıkta onaylı dip yoksa en düşük fiyat alınır. Düşüşte simetriktir.
+        - Korunan seviyenin üzerinde kalan iç dip ve tepelerin kırılması **hiçbir olay üretmez**.
+        - Grafikte **CHoCH ↑** ve **CHoCH ↓** olarak gösterilir; "Yapı" panelinde yön satırı ve korunan seviye güncellenir.
+    - type: box
+      title: Zaman dilimi farkı
+      text: >-
+        1H grafikteki bir CHoCH, günlük grafikteki yükselen yapının içinde sıradan bir geri çekilme
+        olabilir. Küçük zaman dilimindeki yön değişimini, büyük zaman diliminin yapısıyla birlikte
+        okumak daha sağlıklıdır.
+  confusions:
+    - id: break-of-structure
+      text: BOS trend yönündeki son swing'in kırılması, yani devamdır; CHoCH korunan seviyenin kırılması, yani yön değişimidir.
+    - id: trend-change
+      text: Trend değişimi sayfasındaki "son önemli dibin altında kapanış" CHoCH'un genel karşılığıdır; CHoCH bu dibi korunan seviye kuralıyla tanımlar.
+  key_points:
+    - CHoCH, korunan seviyenin kapanışla kırılmasıdır.
+    - Ters yöndeki ilk küçük kırılım CHoCH değildir.
+    - Fitil yetmez; kapanış seviyenin ötesinde olmalıdır.
+    - CHoCH'tan sonra yön değişir ve yeni bir korunan seviye kurulur.
+  svg_labels:
+    bos: BOS ↑
+    choch: CHoCH ↓
+    protected_1: Korunan dip
+    protected_2: kapanışla kırılır
+    new_1: Yeni korunan tepe
+    inner_1: "İç dibin altı:"
+    inner_2: olay yok
+  svg_alt: "Karakter değişimi çizimi: yükselen yapı bir BOS ile korunan dip bırakıyor; fiyat yeni tepe yapamıyor, bir iç dibin altına iniyor ama bu olay sayılmıyor; ardından korunan dibin altında kapanış CHoCH olarak işaretleniyor ve düşüşü başlatan tepe yeni korunan tepe oluyor"
+  svg_caption: Alttaki turuncu bant korunan dibi, üstteki yeni korunan tepeyi gösterir. Noktalı gri çizgi kırılan iç dibi gösterir; bu kırılım bir olay değildir. Turuncu noktalar BOS ve CHoCH kapanışlarıdır.
+
+en:
+  slug: change-of-character-choch
+  name: "CHoCH: change of character"
+  summary: >-
+    A CHoCH is when the structure's protected level is broken by a close. In an uptrend a close
+    below the protected low, in a downtrend a close above the protected high, shows that the structure
+    has changed direction. Breaks of smaller lows and highs in between do not count as a CHoCH.
+  sections:
+    - type: text
+      id: definition
+      title: What is a CHoCH?
+      paragraphs:
+        - >-
+          Every break of structure (BOS) leaves a **protected level**: in an uptrend, the lowest low
+          between the broken swing high and the BOS candle. As long as price stays above that low,
+          declines are read as pullbacks inside the rising structure.
+        - >-
+          When price **closes below** the protected low, the rising structure no longer holds and
+          the direction turns down. That close is called a **change of character (CHoCH)**. In a
+          falling structure the same holds the other way round, with a close above the protected high.
+      note: A CHoCH is often confused with the first small break in the opposite direction. In the definition on this page only the protected level decides.
+    - type: steps
+      id: how-it-forms
+      title: How it forms
+      items:
+        - title: The rising structure has a protected low.
+          text: The last BOS set the protected low. As long as price stays above it, the structure counts as rising.
+        - title: Price fails to make a new high.
+          text: The rise weakens and price pulls back. Smaller lows inside the structure may break along the way.
+        - title: A close comes below the protected low.
+          text: A candle **closes below** the protected low. That close is the CHoCH; the direction turns down.
+        - title: The new protected high is set.
+          text: The highest high between the broken protected low and the CHoCH candle, the high the decline started from, is now the **protected high** of the falling structure.
+    - type: scenarios
+      id: which-break
+      title: Which break means what?
+      intro: When price turns down in a rising structure, different levels can break. Which one breaks changes the reading.
+      items:
+        - title: Inner low broken
+          tone: neutral
+          text: The close came below a smaller low that sits **above** the protected low. This is not an event; the rising structure still holds.
+        - title: CHoCH
+          tone: down
+          text: The close came **below the protected low**. The rising structure is broken and the direction has turned down.
+        - title: Wick touch
+          tone: neutral
+          text: The wick went below the protected low but the close stayed **above** it. This is not a CHoCH; it often shows the low being tested.
+    - type: bullets
+      id: rules
+      title: Measuring a CHoCH
+      items:
+        - text: A CHoCH forms only when the **protected level** breaks. The first small break in the opposite direction is not a CHoCH.
+          marker: accent
+        - text: The **close** decides the break, and it is expected to clear the level by a small margin.
+          marker: neutral
+        - text: After a CHoCH the direction changes. Later BOS events are looked for in the new direction.
+          marker: neutral
+    - type: limits
+      shows:
+        - That the structure's protected level was lost on a close
+        - That the direction has changed, and where the new protected level is
+        - A measurable way to tell a pullback from a broken structure
+      not_proves:
+        - That the new direction will last, or how far price will go
+        - That the break will not be reversed in the next candles
+        - That a CHoCH on one timeframe changes the trend on larger timeframes too
+    - type: zones
+      intro: In MarketLevelMap's Price Action view a CHoCH is marked by these rules.
+      points:
+        - Only **closed candles** are used; the break margin is measured **in ATR**.
+        - In an uptrend the protected low is the lowest **confirmed swing low** between the broken swing high and the BOS candle; if there is none in that span, the lowest price is used. A downtrend is symmetrical.
+        - Breaks of inner lows and highs that stay inside the protected level **produce no event**.
+        - On the chart it shows as **CHoCH ↑** and **CHoCH ↓**; the "Structure" panel updates the direction and the protected level.
+    - type: box
+      title: The timeframe matters
+      text: >-
+        A CHoCH on the 1H chart can be an ordinary pullback inside the rising structure on the daily
+        chart. A change of direction on a small timeframe is best read together with the structure of
+        the larger one.
+  confusions:
+    - id: break-of-structure
+      text: A BOS is a break of the last swing in the trend's direction, a continuation; a CHoCH is a break of the protected level, a change of direction.
+    - id: trend-change
+      text: The "close below the last important low" on the trend change page is the general counterpart of a CHoCH; a CHoCH defines that low through the protected-level rule.
+  key_points:
+    - A CHoCH is a close beyond the protected level.
+    - The first small break in the opposite direction is not a CHoCH.
+    - A wick is not enough; the close must be beyond the level.
+    - After a CHoCH the direction changes and a new protected level is set.
+  svg_labels:
+    bos: BOS ↑
+    choch: CHoCH ↓
+    protected_1: Protected low
+    protected_2: broken on a close
+    new_1: New protected high
+    inner_1: "Below inner low:"
+    inner_2: no event
+  svg_alt: "Change of character illustration: a rising structure leaves a protected low with a BOS; price fails to make a new high and dips below an inner low, which does not count as an event; then a close below the protected low is marked CHoCH and the high the decline started from becomes the new protected high"
+  svg_caption: The lower orange band is the protected low, the upper one the new protected high. The dotted grey line is the inner low that broke; that break is not an event. The orange dots are the BOS and CHoCH closes.

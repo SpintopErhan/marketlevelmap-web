@@ -1,0 +1,185 @@
+id: fair-value-gap
+kind: volume-volatility
+order: 65
+related: [price-gaps, atr, volatility, break-of-structure]
+example: null
+updated: 2026-10-26
+
+tr:
+  slug: fvg-fair-value-gap
+  name: "FVG: üç mumluk fiyat boşluğu"
+  alt_name: Fair value gap (FVG)
+  summary: >-
+    FVG, güçlü bir mumun iki yanındaki mumların fitilleri arasında kalan boşluktur. Fiyat o aralıkta
+    yalnızca tek yönde ve hızla işlem görmüştür. Sonraki mumlar boşluğa geri dönüp onu kısmen ya da
+    tamamen doldurabilir.
+  sections:
+    - type: text
+      id: definition
+      title: FVG nedir?
+      paragraphs:
+        - >-
+          Üç ardışık muma bakılır. Ortadaki mum güçlü bir itişle ilerlediğinde, **1. mumun fitili ile
+          3. mumun fitili birbirine değmeyebilir**. Aradaki aralıkta fiyat yalnızca ortadaki mumun
+          içinde, tek yönde geçmiştir. Bu aralığa **FVG (fair value gap)** denir.
+        - >-
+          Fiyat boşluklarından (gap) farkı şudur: gap'te iki mum arasında hiç işlem yoktur. FVG'de ise
+          mumlar kesintisizdir; boşluk yalnızca 1. ve 3. mumun fitilleri arasındadır.
+      note: FVG terimi de "Smart Money Concepts" yaklaşımından gelir. Bu sayfa onu ölçülebilir bir üç mum deseni olarak ele alır.
+    - type: bullets
+      id: types
+      title: Yönler
+      items:
+        - text: "**Boğa FVG (↑):** 3. mumun dibi, 1. mumun tepesinin üzerindedir. Boşluk, 1. mumun tepesi ile 3. mumun dibi arasıdır."
+          marker: up
+        - text: "**Ayı FVG (↓):** 3. mumun tepesi, 1. mumun dibinin altındadır. Boşluk, 3. mumun tepesi ile 1. mumun dibi arasıdır."
+          marker: down
+      note: Boğa FVG yukarıdan aşağı, ayı FVG aşağıdan yukarı dolar.
+    - type: steps
+      id: fill
+      title: Boşluk nasıl dolar?
+      intro: FVG oluştuktan sonraki mumlar boşluğa geri dönebilir. Boşluğun durumu bu dönüşün ne kadar derin olduğuna göre okunur.
+      items:
+        - title: Dokunulmamış
+          text: Hiçbir mum boşluğa değmemiştir.
+        - title: İlk temas
+          text: Bir fitil boşluğun yalnızca küçük bir kısmına girmiştir ve hiçbir mum gövdesi boşluğa girmemiştir.
+        - title: Kısmen dolmuş
+          text: Fiyat boşluğa daha derin girmiştir ama öbür ucuna ulaşmamıştır. Kalan boşluk küçülür.
+        - title: Tamamen dolmuş
+          text: Bir fitil boşluğun öbür ucuna ulaşmıştır. Boşluk kapanmıştır.
+        - title: Geçersiz
+          text: Bir mum boşluğun öbür ucunun ötesinde **kapanmıştır**. Boşluğu oluşturan itiş geri alınmıştır.
+    - type: limits
+      shows:
+        - Fiyatın bir aralıkta tek yönde ve hızla ilerlediğini
+        - O aralığın sonradan ne kadar yeniden ziyaret edildiğini
+        - Hareketin gücünü ATR'ye göre ölçmenin bir yolunu
+      not_proves:
+        - Fiyatın boşluğu doldurmak için mutlaka geri döneceğini
+        - Boşluğun destek ya da direnç gibi çalışacağını
+        - Boşluğun "adil değeri" ya da büyük oyuncuların emirlerini gösterdiğini
+    - type: zones
+      intro: MarketLevelMap'in Price Action görünümünde FVG şu kurallarla gösterilir.
+      points:
+        - FVG yalnızca **4H, 1D ve 1W** grafiklerinde hesaplanır; 1H'de ve Critical Zones grafiklerinde yoktur.
+        - Yalnızca **kapanmış mumlar** kullanılır. Ortadaki mumun gövdesi ve boşluğun genişliği, gürültüyü elemek için **ATR'ye göre** belirli bir büyüklüğü geçmelidir.
+        - Grafikte yalnızca **açık** FVG'ler (dokunulmamış, ilk temas, kısmen dolmuş) ve son fiyata yakın olanlar çizilir; yön başına en yakın bir tane, yani en fazla bir **FVG ↑** ve bir **FVG ↓**.
+        - Kutu yalnızca **kalan boşluğu** gösterir; dolum ilerledikçe küçülür ve soluklaşır. Renk nötr gridir, çünkü FVG bir bölge değil, bir harekettir.
+        - Doluluk analizden sonraki kapanmış mumlarla güncellenir; panelde "Doluluk … itibarıyla" yazar.
+    - type: box
+      title: Kripto ve zaman dilimi
+      text: >-
+        Kripto 7/24 işlem gördüğü için gap nadirdir; hızlı hareketler grafikte daha çok FVG olarak
+        görünür. Küçük zaman dilimlerinde FVG'ler çok sık oluşur ve çoğu hızla dolar; bu yüzden büyük
+        zaman dilimlerindeki FVG'ler daha anlamlı okunur.
+  confusions:
+    - id: price-gaps
+      text: Gap'te iki mum arasında hiç işlem yoktur; FVG'de mumlar kesintisizdir, boşluk 1. ve 3. mumun fitilleri arasındadır.
+    - id: atr
+      text: MarketLevelMap, bir üç mum deseninin FVG sayılacak kadar güçlü olup olmadığını ATR ile ölçer.
+  key_points:
+    - FVG, güçlü bir mumun iki yanındaki fitiller arasında kalan boşluktur.
+    - Boğa FVG yukarıdan, ayı FVG aşağıdan dolar.
+    - Kapanış boşluğun öbür ucunun ötesine geçerse FVG geçersiz olur.
+    - FVG'nin dolacağı ya da destek-direnç gibi çalışacağı garanti değildir.
+  svg_labels:
+    third_low: 3. mumun dibi
+    first_high: 1. mumun tepesi
+    fvg: FVG ↑
+    push_1: Güçlü itiş
+    push_2: (2. mum)
+    fill_1: Fitil boşluğa girer,
+    fill_2: kalan kısım küçülür
+  svg_alt: "FVG çizimi: güçlü bir yükseliş mumunun öncesindeki mumun tepesi ile sonrasındaki mumun dibi arasında kesikli çizgiyle gösterilen bir boşluk; sonraki mumlardan birinin fitili boşluğun üst kısmına giriyor ve kalan boşluk daha küçük gösteriliyor"
+  svg_caption: Kesikli kutu, 1. mumun tepesi ile 3. mumun dibi arasındaki boşluğu gösterir. Fitilin girdiği kısımdan sonra kutu yalnızca kalan boşluğu kaplar.
+
+en:
+  slug: fair-value-gap-fvg
+  name: "FVG: fair value gap"
+  summary: >-
+    An FVG is the gap left between the wicks of the candles on either side of a strong candle. In that
+    range price traded only in one direction, and quickly. Later candles can come back into the gap
+    and fill it partly or completely.
+  sections:
+    - type: text
+      id: definition
+      title: What is an FVG?
+      paragraphs:
+        - >-
+          Three consecutive candles are looked at. When the middle candle pushes strongly, **the wick
+          of the first candle and the wick of the third candle may not overlap**. In the range between
+          them price passed only within the middle candle, in one direction. That range is called a
+          **fair value gap (FVG)**.
+        - >-
+          The difference from a price gap is this: in a gap there is no trading at all between two
+          candles. In an FVG the candles are continuous; the gap is only between the wicks of the first
+          and third candles.
+      note: The term FVG also comes from the "Smart Money Concepts" approach. This page treats it as a measurable three-candle pattern.
+    - type: bullets
+      id: types
+      title: Directions
+      items:
+        - text: "**Bullish FVG (↑):** the third candle's low is above the first candle's high. The gap runs from the first candle's high to the third candle's low."
+          marker: up
+        - text: "**Bearish FVG (↓):** the third candle's high is below the first candle's low. The gap runs from the third candle's high to the first candle's low."
+          marker: down
+      note: A bullish FVG fills from the top down, a bearish FVG from the bottom up.
+    - type: steps
+      id: fill
+      title: How a gap fills
+      intro: The candles after an FVG forms can come back into the gap. The gap's state is read from how deep that return goes.
+      items:
+        - title: Untested
+          text: No candle has touched the gap.
+        - title: First touch
+          text: A wick has entered only a small part of the gap and no candle body has entered it.
+        - title: Partly filled
+          text: Price has gone deeper into the gap but has not reached its far end. The remaining gap gets smaller.
+        - title: Fully filled
+          text: A wick has reached the far end of the gap. The gap is closed.
+        - title: Invalidated
+          text: A candle has **closed** beyond the far end of the gap. The push that created the gap has been reversed.
+    - type: limits
+      shows:
+        - That price moved through a range in one direction, and quickly
+        - How much that range has been revisited since
+        - A way to measure the strength of a move against ATR
+      not_proves:
+        - That price must come back to fill the gap
+        - That the gap will act as support or resistance
+        - That the gap shows a "fair value" or the orders of large players
+    - type: zones
+      intro: In MarketLevelMap's Price Action view FVGs are shown by these rules.
+      points:
+        - FVGs are calculated only on the **4H, 1D and 1W** charts; there are none on 1H or on the Critical Zones charts.
+        - Only **closed candles** are used. The middle candle's body and the gap's width must exceed a certain size **relative to ATR** to filter out noise.
+        - Only **open** FVGs (untested, first touch, partly filled) close to the latest price are drawn; the nearest one per direction, so at most one **FVG ↑** and one **FVG ↓**.
+        - The box shows only the **remaining gap**; it shrinks and fades as the gap fills. The colour is neutral grey, because an FVG is a move, not a zone.
+        - The fill is updated with the closed candles after the analysis; the panel says "Fill as of …".
+    - type: box
+      title: Crypto and timeframes
+      text: >-
+        Crypto trades 24/7, so gaps are rare; fast moves show up on the chart mostly as FVGs. On small
+        timeframes FVGs form very often and most fill quickly, which is why FVGs on larger timeframes
+        are read as more meaningful.
+  confusions:
+    - id: price-gaps
+      text: In a gap there is no trading between two candles; in an FVG the candles are continuous and the gap is between the wicks of the first and third candles.
+    - id: atr
+      text: MarketLevelMap uses ATR to measure whether a three-candle pattern is strong enough to count as an FVG.
+  key_points:
+    - An FVG is the gap between the wicks on either side of a strong candle.
+    - A bullish FVG fills from above, a bearish FVG from below.
+    - If a close goes beyond the far end of the gap, the FVG is invalidated.
+    - There is no guarantee that an FVG will fill or act as support or resistance.
+  svg_labels:
+    third_low: 3rd candle low
+    first_high: 1st candle high
+    fvg: FVG ↑
+    push_1: Strong push
+    push_2: (second candle)
+    fill_1: A wick enters the gap,
+    fill_2: the rest gets smaller
+  svg_alt: "FVG illustration: a gap, drawn with a dashed outline, between the high of the candle before a strong rising candle and the low of the candle after it; a later candle's wick enters the top of the gap and the remaining gap is shown smaller"
+  svg_caption: The dashed box marks the gap between the first candle's high and the third candle's low. After the point where the wick enters, the box covers only the remaining gap.
