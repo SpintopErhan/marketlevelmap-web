@@ -1,0 +1,187 @@
+id: liquidity-sweep
+kind: levels
+order: 45
+related: [false-breakout, range-and-consolidation, level-test, break-of-structure]
+example: null
+updated: 2026-10-26
+
+tr:
+  slug: sweep
+  name: "Sweep: aralık kenarının fitille aşılması"
+  alt_name: Sweep (liquidity sweep)
+  summary: >-
+    Sweep, fiyatın bir aralığın tepesini ya da dibini fitille aşıp mumu yeniden aralığın içinde
+    kapatmasıdır. Kenarın ötesindeki fiyatlar o mumda kabul görmemiştir. Kapanış kenarın dışında
+    kalırsa hareket sweep değil, kırılım adayıdır.
+  sections:
+    - type: text
+      id: definition
+      title: Sweep nedir?
+      paragraphs:
+        - >-
+          Fiyat bir süre belirli bir aralıkta gidip geldiğinde aralığın üst ve alt sınırı belirginleşir.
+          Bir mum bu sınırlardan birinin ötesine uzanıp **kapanışta yeniden aralığın içine dönerse**,
+          grafikte kenarın ötesine taşan uzun bir fitil kalır. Buna **sweep** denir.
+        - >-
+          Terim çoğu zaman "likidite süpürme" olarak anlatılır: kenarın ötesinde bekleyen emirlerin
+          tetiklendiği varsayılır. Grafik bunu kanıtlamaz. Grafikte görülen yalnızca şudur: fiyat
+          kenarın ötesine gitti, orada **kalamadı** ve aralığa döndü.
+      note: Sweep, sahte kırılımla aynı fikre dayanır. Fark, sweep'in bir swing noktasına ya da tek bir seviyeye değil, aralığın kenarına göre tanımlanmasıdır.
+    - type: bullets
+      id: range
+      title: Aralığın parçaları
+      items:
+        - text: "**RH (aralık tepesi):** aralığın üst bandı. Fiyatın yukarıda tepki verdiği bölge."
+          marker: neutral
+        - text: "**EQ (denge):** aralığın orta çizgisi. Fiyatın aralık içinde hangi yarıda olduğunu gösterir."
+          marker: neutral
+        - text: "**RL (aralık dibi):** aralığın alt bandı. Fiyatın aşağıda tepki verdiği bölge."
+          marker: neutral
+      note: RH ve RL birer çizgi değil, bant olarak okunur. Sweep, bandın dış kenarına göre ölçülür.
+    - type: scenarios
+      id: three-outcomes
+      title: Aralık kenarında üç farklı sonuç
+      intro: Fiyat RH bandının üst kenarını aştığında üç farklı tablo oluşabilir. RL için aynısı ters yönde geçerlidir.
+      items:
+        - title: Sweep
+          tone: down
+          text: Fitil bandın üst kenarını **belirgin şekilde aşar**, kapanış **kenarın altında** gelir. Kenarın ötesindeki fiyatlar kabul görmemiştir.
+        - title: Kırılım adayı
+          tone: up
+          text: Kapanış bandın üst kenarının **üzerinde** gelir. Bu sweep değildir; aralığın yukarı kırılması olabilir ve sonraki mumlarla birlikte okunur.
+        - title: Kenara dokunma
+          tone: neutral
+          text: Fitil kenara ulaşır ama onu belirgin şekilde aşmaz. Bu bir sweep değil, bandın testidir.
+    - type: limits
+      shows:
+        - Kenarın ötesindeki fiyatların o mumda kabul görmediğini
+        - Aralığın sınırının hâlâ fiyatın tepki verdiği bir alan olduğunu
+        - Sweep ile kırılımı kapanışa bakarak ayırmayı
+      not_proves:
+        - Kenarın ötesinde emirlerin bulunduğunu ya da "toplandığını"
+        - Fiyatın aralığın öbür kenarına gideceğini
+        - Kimin, hangi amaçla fiyatı kenarın ötesine taşıdığını
+    - type: zones
+      intro: MarketLevelMap'in Price Action görünümünde sweep şu kurallarla işaretlenir.
+      points:
+        - Sweep, swing noktalarına göre değil, analizdeki **RH ve RL bantlarına** göre aranır.
+        - "**RH sweep:** fitil bandın üst kenarını küçük bir **ATR payı** kadar aşar ve kapanış üst kenarın altına döner. **RL sweep:** fitil alt kenarı aşar ve kapanış alt kenarın üstüne döner."
+        - Kapanış bandın dışında kalırsa sweep sayılmaz.
+        - Yalnızca **kapanmış mumlar** ve bantların bilinir hale geldiği andan sonraki mumlar taranır.
+        - Grafikte **Sweep** işareti RH'de mumun üstünde, RL'de altında gösterilir; "Yapı" tablosunda **Sweep RH** ya da **Sweep RL** rozetiyle listelenir.
+        - RH ve RL bantları analiz anındaki haliyle kalır; sweep'ler ise son kapanan muma kadar yeniden hesaplanır.
+    - type: box
+      title: Zaman dilimi farkı
+      text: >-
+        Bir zaman dilimindeki sweep, daha büyük bir zaman diliminde mumun ortasında kalan sıradan bir
+        fitil olabilir. Sweep'i, hangi aralığa ve hangi zaman dilimine göre ölçüldüğüyle birlikte
+        okumak gerekir.
+  confusions:
+    - id: false-breakout
+      text: İkisi de kenarın ötesine taşan fitil ve geri dönen kapanışla tanımlanır; sweep, aralığın RH ve RL bantlarına göre ölçülür.
+    - id: break-of-structure
+      text: BOS'ta kapanış seviyenin ötesinde kalır; sweep'te kapanış aralığın içine döner.
+  key_points:
+    - Sweep, fitilin aralık kenarını aşıp kapanışın aralığa dönmesidir.
+    - Kapanış kenarın dışında kalırsa sweep değil, kırılım adayıdır.
+    - RH ve RL bant olarak okunur; sweep dış kenara göre ölçülür.
+    - Grafik emirlerin varlığını değil, fiyatın kenarın ötesinde kalamadığını gösterir.
+  svg_labels:
+    rh: RH · Aralık tepesi
+    eq: EQ · Denge
+    rl: RL · Aralık dibi
+    sweep: Sweep
+    wick_1: Fitil kenarı aşar,
+    wick_2: kapanış içeride
+  svg_alt: "Sweep çizimi: fiyat RH ve RL bantları arasındaki bir aralıkta gidip geliyor; bir mumun fitili RH bandının üzerine taşıyor ama mum bandın altında kapanıyor; sonra bir mumun fitili RL bandının altına iniyor ama mum bandın üzerinde kapanıyor"
+  svg_caption: Turuncu bantlar aralığın tepesini (RH) ve dibini (RL), noktalı çizgi ortasını (EQ) gösterir. Turuncu noktalar sweep mumlarının kapanışıdır; ikisinde de kapanış aralığın içine dönmüştür.
+
+en:
+  slug: sweep
+  name: "Sweep: a wick past the range edge"
+  summary: >-
+    A sweep is when price wicks beyond the top or bottom of a range and closes the candle back inside
+    the range. Prices beyond the edge were not accepted in that candle. If the close stays outside
+    the edge, the move is not a sweep but a breakout candidate.
+  sections:
+    - type: text
+      id: definition
+      title: What is a sweep?
+      paragraphs:
+        - >-
+          When price moves back and forth within a range for a while, its upper and lower bounds
+          become clear. If a candle reaches beyond one of them and **closes back inside the range**,
+          a long wick is left reaching past the edge. This is called a **sweep**.
+        - >-
+          The term is often explained as a "liquidity sweep": orders waiting beyond the edge are
+          assumed to have been triggered. The chart does not prove this. All the chart shows is that
+          price went beyond the edge, **could not stay** there and returned to the range.
+      note: A sweep rests on the same idea as a false breakout. The difference is that a sweep is defined against the edge of a range, not a swing point or a single level.
+    - type: bullets
+      id: range
+      title: The parts of a range
+      items:
+        - text: "**RH (range high):** the upper band of the range, where price has reacted from above."
+          marker: neutral
+        - text: "**EQ (equilibrium):** the middle line of the range. It shows which half of the range price is in."
+          marker: neutral
+        - text: "**RL (range low):** the lower band of the range, where price has reacted from below."
+          marker: neutral
+      note: RH and RL are read as bands, not lines. A sweep is measured against the band's outer edge.
+    - type: scenarios
+      id: three-outcomes
+      title: Three outcomes at the range edge
+      intro: When price moves past the upper edge of the RH band, three different pictures can follow. The same holds the other way round for RL.
+      items:
+        - title: Sweep
+          tone: down
+          text: The wick **clearly clears** the band's upper edge and the close comes **below the edge**. Prices beyond the edge were not accepted.
+        - title: Breakout candidate
+          tone: up
+          text: The close comes **above** the band's upper edge. This is not a sweep; it may be the range breaking upward and is read together with the next candles.
+        - title: Edge touch
+          tone: neutral
+          text: The wick reaches the edge but does not clearly clear it. This is not a sweep but a test of the band.
+    - type: limits
+      shows:
+        - That prices beyond the edge were not accepted in that candle
+        - That the range boundary is still an area where price reacts
+        - A way to tell a sweep from a breakout by the close
+      not_proves:
+        - That orders sat beyond the edge or were "collected"
+        - That price will travel to the other edge of the range
+        - Who moved price beyond the edge, or why
+    - type: zones
+      intro: In MarketLevelMap's Price Action view a sweep is marked by these rules.
+      points:
+        - Sweeps are looked for against the analysis's **RH and RL bands**, not against swing points.
+        - "**RH sweep:** the wick clears the band's upper edge by a small **ATR margin** and the close returns below the upper edge. **RL sweep:** the wick clears the lower edge and the close returns above it."
+        - If the close stays outside the band, it is not a sweep.
+        - Only **closed candles** are scanned, and only those after the bands became known.
+        - On the chart the **Sweep** mark sits above the candle at RH and below it at RL; the "Structure" table lists it with a **Sweep RH** or **Sweep RL** badge.
+        - The RH and RL bands stay as they were at the time of analysis; sweeps are recalculated up to the last closed candle.
+    - type: box
+      title: The timeframe matters
+      text: >-
+        A sweep on one timeframe can be an ordinary wick in the middle of a candle on a larger
+        timeframe. A sweep should be read together with the range and the timeframe it was measured
+        against.
+  confusions:
+    - id: false-breakout
+      text: Both are defined by a wick past an edge and a close that comes back; a sweep is measured against the range's RH and RL bands.
+    - id: break-of-structure
+      text: In a BOS the close stays beyond the level; in a sweep the close returns inside the range.
+  key_points:
+    - A sweep is a wick past the range edge with a close back inside the range.
+    - If the close stays outside the edge, it is a breakout candidate, not a sweep.
+    - RH and RL are read as bands; a sweep is measured against the outer edge.
+    - The chart shows that price could not stay beyond the edge, not that orders were there.
+  svg_labels:
+    rh: RH · Range high
+    eq: EQ · Equilibrium
+    rl: RL · Range low
+    sweep: Sweep
+    wick_1: The wick clears the edge,
+    wick_2: the close is back inside
+  svg_alt: "Sweep illustration: price moves back and forth in a range between the RH and RL bands; one candle's wick reaches above the RH band but the candle closes below it; later a candle's wick dips below the RL band but the candle closes above it"
+  svg_caption: The orange bands mark the top (RH) and bottom (RL) of the range, the dotted line its middle (EQ). The orange dots are the closes of the sweep candles; in both, the close has returned inside the range.

@@ -83,6 +83,17 @@ view, not as more support/resistance zones.
   table: current direction (Up / Down / Undetermined), protected low / high with distance, then the events (newest
   first) and the sweeps (newest first) with level, date and distance; a short explanation above it and "Structure and
   events as of `structure.asOf`" under it (the range itself is as analysed). No eye toggles on the site.
+- **Library links ("?").** A small `?` after a heading opens the library page for the term, in the page
+  language: `<a class="lib-help" href="<en url>" data-href-tr="<tr url>" aria-label="…" data-label-tr="…">?</a>`
+  (switched by `applyLanguage`). The FVG heading has one; in the Structure explanation each of BOS, CHoCH and
+  Sweep is followed by one (`structureSub` is rebuilt by `renderStructure`). Pages:
+
+  | Term | EN | TR |
+  |---|---|---|
+  | FVG | `/en/library/fair-value-gap-fvg/` | `/tr/kutuphane/fvg-fair-value-gap/` |
+  | BOS | `/en/library/break-of-structure-bos/` | `/tr/kutuphane/yapi-kirilimi-bos/` |
+  | CHoCH | `/en/library/change-of-character-choch/` | `/tr/kutuphane/karakter-degisimi-choch/` |
+  | Sweep | `/en/library/sweep/` | `/tr/kutuphane/sweep/` |
 - **Link previews.** `method=pa` links get "BTCUSDT 1D price action range · MarketLevelMap" and a Price Action
   description (Turkish with `lang=tr`).
 

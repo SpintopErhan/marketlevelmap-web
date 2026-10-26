@@ -1,7 +1,7 @@
 id: trend-change
 kind: structure
 order: 40
-related: [higher-highs-lower-lows, pullback-vs-reversal, false-breakout, candle-close]
+related: [higher-highs-lower-lows, change-of-character, pullback-vs-reversal, false-breakout]
 example: null
 updated: 2026-10-23
 
