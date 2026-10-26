@@ -122,6 +122,27 @@ var LiveChart = (function () {
     return null; // formed after the last loaded candle: nothing to draw yet
   }
 
+  // Price Action structure (README "Price Action view"): BOS soft lavender dashed, CHoCH pink-violet solid,
+  // a short line from the broken swing's candle to the break candle with a label in the middle.
+  function drawStructureLine(ctx, timeScale, series, zone, start, times) {
+    var endSeconds = Math.floor(Date.parse(zone.endAt || "") / 1000), end = null;
+    for (var i = 0; i < times.length; i++) if (times[i] >= endSeconds) { end = times[i]; break; }
+    if (end === null) return;
+    var x0 = timeScale.timeToCoordinate(start.time), x1 = timeScale.timeToCoordinate(end), y = series.priceToCoordinate(Number(zone.low));
+    if (x0 === null || x1 === null || y === null || x1 <= x0) return;
+    var choch = zone.kind === "CHOCH", color = choch ? "#e27bd0" : "#a99cf0";
+    y = Math.round(y) + 0.5;
+    ctx.save();
+    ctx.strokeStyle = color; ctx.lineWidth = choch ? 2 : 1.25; ctx.setLineDash(choch ? [] : [5, 3]);
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font = (choch ? "700 " : "600 ") + "11px " + WATERMARK_FONT; ctx.textBaseline = "middle";
+    var w = ctx.measureText(zone.label).width + 10, h = 16, left = (x0 + x1) / 2 - w / 2;
+    ctx.fillStyle = "rgba(14,16,22,0.92)"; ctx.strokeStyle = color; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.rect(left, y - h / 2, w, h); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = color; ctx.fillText(zone.label, left + 5, y + 0.5);
+    ctx.restore();
+  }
+
   function ZonesPrimitive() { this.zones = []; this.times = []; this.chart = null; this.series = null; this.requestUpdate = null; }
   ZonesPrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
   ZonesPrimitive.prototype.detached = function () { this.chart = this.series = this.requestUpdate = null; };
@@ -144,6 +165,7 @@ var LiveChart = (function () {
               self.zones.forEach(function (zone) {
                 var start = zoneStart(zone, self.times);
                 if (!start) return;
+                if (zone.line) { drawStructureLine(ctx, timeScale, self.series, zone, start, self.times); return; }
                 var x0 = timeScale.timeToCoordinate(start.time);
                 var yHigh = self.series.priceToCoordinate(Number(zone.high)), yLow = self.series.priceToCoordinate(Number(zone.low));
                 if (x0 === null || yHigh === null || yLow === null || x0 > right) return;
@@ -257,8 +279,9 @@ var LiveChart = (function () {
     var emaColors = ["#ff6975", "#6fb5ff", "#e7d98c"], emas = emaColors.map(function (color) {
       return chart.addSeries(LC.LineSeries, { color: color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
     });
-    var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [];
+    var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [];
     candles.attachPrimitive(zones);
+    var sweepMarkers = LC.createSeriesMarkers ? LC.createSeriesMarkers(candles, []) : null;
     var liveLine = null, loadingOlder = false, destroyed = false;
     var forming = null, liveStatus = "pending", socket = null, retryTimer = null, socketFailures = 0;
     function allRows() { return state.rows.concat(state.tail); }
@@ -442,8 +465,25 @@ var LiveChart = (function () {
       setZones: function (list, priceDecimals) {
         baseZones = (list || []).filter(function (z) { return z && z.drawn !== false && Number(z.low) > 0 && Number(z.high) > 0; });
         if (priceDecimals != null && priceDecimals !== decimals) { decimals = priceDecimals; applyPrecision(); }
-        zoneList = baseZones.concat(fvgZones);
+        zoneList = baseZones.concat(fvgZones, structureZones);
         zones.set(zoneList, times());
+      },
+      // Price Action report structure: BOS / CHoCH lines and sweep markers (README "Price Action view").
+      setStructure: function (structure) {
+        var events = (structure && structure.events) || [], sweeps = (structure && structure.sweeps) || [];
+        structureZones = events.filter(function (e) { return Number(e.level) > 0; }).map(function (e) {
+          return { line: true, layer: "PA_STRUCTURE", kind: e.type, low: Number(e.level), high: Number(e.level), formedAt: e.swingTime, endAt: e.breakTime,
+            label: (e.type === "CHOCH" ? "CHoCH" : "BOS") + (e.direction === "bullish" ? " ↑" : " ↓") };
+        });
+        zoneList = baseZones.concat(fvgZones, structureZones);
+        zones.set(zoneList, times());
+        if (!sweepMarkers) return;
+        var candleTimes = times();
+        sweepMarkers.setMarkers(sweeps.map(function (s) {
+          var seconds = Math.floor(Date.parse(s.time || "") / 1000), time = null;
+          for (var i = 0; i < candleTimes.length; i++) if (candleTimes[i] >= seconds) { time = candleTimes[i]; break; }
+          return time === null ? null : { time: time, position: s.band === "RH" ? "aboveBar" : "belowBar", color: "#dfe3ea", shape: "circle", text: "Sweep" };
+        }).filter(Boolean).sort(function (a, b) { return a.time - b.time; }));
       },
       // Price Action report FVG boxes (remaining gap, from the candle that formed it to the right edge).
       setFvg: function (list) {
@@ -451,7 +491,7 @@ var LiveChart = (function () {
           return { type: "fvg", layer: "PA_FVG", low: Number(f.low), high: Number(f.high), formedAt: f.createdAt,
             filledPercent: Number(f.filledPercent || 0), label: String(f.direction).toLowerCase() === "bullish" ? "FVG \u2191" : "FVG \u2193" };
         });
-        zoneList = baseZones.concat(fvgZones);
+        zoneList = baseZones.concat(fvgZones, structureZones);
         zones.set(zoneList, times());
       },
       liveStatus: function () { return liveStatus; },

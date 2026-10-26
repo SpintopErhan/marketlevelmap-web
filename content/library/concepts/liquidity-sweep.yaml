@@ -68,7 +68,7 @@ tr:
         - "**RH sweep:** fitil bandın üst kenarını küçük bir **ATR payı** kadar aşar ve kapanış üst kenarın altına döner. **RL sweep:** fitil alt kenarı aşar ve kapanış alt kenarın üstüne döner."
         - Kapanış bandın dışında kalırsa sweep sayılmaz.
         - Yalnızca **kapanmış mumlar** ve bantların bilinir hale geldiği andan sonraki mumlar taranır.
-        - Grafikte **Sweep** işareti RH'de mumun üstünde, RL'de altında gösterilir; "Yapı" panelinde **Sweep RH** ya da **Sweep RL** rozetiyle listelenir.
+        - Grafikte **Sweep** işareti RH'de mumun üstünde, RL'de altında gösterilir; "Yapı" tablosunda **Sweep RH** ya da **Sweep RL** rozetiyle listelenir.
         - RH ve RL bantları analiz anındaki haliyle kalır; sweep'ler ise son kapanan muma kadar yeniden hesaplanır.
     - type: box
       title: Zaman dilimi farkı
@@ -158,7 +158,7 @@ en:
         - "**RH sweep:** the wick clears the band's upper edge by a small **ATR margin** and the close returns below the upper edge. **RL sweep:** the wick clears the lower edge and the close returns above it."
         - If the close stays outside the band, it is not a sweep.
         - Only **closed candles** are scanned, and only those after the bands became known.
-        - On the chart the **Sweep** mark sits above the candle at RH and below it at RL; the "Structure" panel lists it with a **Sweep RH** or **Sweep RL** badge.
+        - On the chart the **Sweep** mark sits above the candle at RH and below it at RL; the "Structure" table lists it with a **Sweep RH** or **Sweep RL** badge.
         - The RH and RL bands stay as they were at the time of analysis; sweeps are recalculated up to the last closed candle.
     - type: box
       title: The timeframe matters

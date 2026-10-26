@@ -78,7 +78,7 @@ tr:
         - Yalnızca **kapanmış mumlar** kullanılır; kırılım payı **ATR cinsinden** ölçülür.
         - Yükselişte korunan dip, kırılan swing tepesi ile BOS mumu arasındaki en düşük **onaylı swing dibidir**; aralıkta onaylı dip yoksa en düşük fiyat alınır. Düşüşte simetriktir.
         - Korunan seviyenin üzerinde kalan iç dip ve tepelerin kırılması **hiçbir olay üretmez**.
-        - Grafikte **CHoCH ↑** ve **CHoCH ↓** olarak gösterilir; "Yapı" panelinde yön satırı ve korunan seviye güncellenir.
+        - Grafikte kırılan korunan seviyeden kırılım mumuna uzanan kısa bir çizgi ve **CHoCH ↑** / **CHoCH ↓** etiketiyle gösterilir; "Yapı" tablosunda yön ve korunan seviye güncellenir.
     - type: box
       title: Zaman dilimi farkı
       text: >-
@@ -178,7 +178,7 @@ en:
         - Only **closed candles** are used; the break margin is measured **in ATR**.
         - In an uptrend the protected low is the lowest **confirmed swing low** between the broken swing high and the BOS candle; if there is none in that span, the lowest price is used. A downtrend is symmetrical.
         - Breaks of inner lows and highs that stay inside the protected level **produce no event**.
-        - On the chart it shows as **CHoCH ↑** and **CHoCH ↓**; the "Structure" panel updates the direction and the protected level.
+        - On the chart it shows as a short line from the broken protected level to the break candle, labelled **CHoCH ↑** / **CHoCH ↓**; the "Structure" table updates the direction and the protected level.
     - type: box
       title: The timeframe matters
       text: >-

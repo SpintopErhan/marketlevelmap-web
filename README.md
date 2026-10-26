@@ -76,9 +76,17 @@ view, not as more support/resistance zones.
 - **FVG table.** One row per FVG: direction, remaining gap, filled %, distance. Hidden when the report has no
   `fvg`. A note under it says when the fill was computed ("Fill as of `fvgAsOf`"): the analysis time belongs to
   the range, while the fill follows the closed candles up to the publication.
+- **Structure** (when the report has `structure`). On the chart: BOS / CHoCH as a short horizontal line from the
+  broken swing's candle to the break candle with a label in the middle (`BOS ↑ / ↓`, `CHoCH ↑ / ↓`; BOS soft lavender
+  `#a99cf0` dashed, CHoCH stronger pink-violet `#e27bd0` solid), sweeps as a small `#dfe3ea` circle marker above (RH) or
+  below (RL) their candle with the text "Sweep". The protected level is not drawn. Below the FVG table a **Structure**
+  table: current direction (Up / Down / Undetermined), protected low / high with distance, then the events (newest
+  first) and the sweeps (newest first) with level, date and distance; a short explanation above it and "Structure and
+  events as of `structure.asOf`" under it (the range itself is as analysed). No eye toggles on the site.
 - **Library links ("?").** A small `?` after a heading opens the library page for the term, in the page
   language: `<a class="lib-help" href="<en url>" data-href-tr="<tr url>" aria-label="…" data-label-tr="…">?</a>`
-  (switched by `applyLanguage`). The FVG table has one. Pages for the upcoming structure panel:
+  (switched by `applyLanguage`). The FVG heading has one; in the Structure explanation each of BOS, CHoCH and
+  Sweep is followed by one (`structureSub` is rebuilt by `renderStructure`). Pages:
 
   | Term | EN | TR |
   |---|---|---|
@@ -257,6 +265,19 @@ PA reports (`method: "pa"`) carry the range as three zones (`resistance` = RH, `
 
 `low`–`high` is the remaining (drawn) gap, `gapLow`–`gapHigh` the original gap. `fvgAsOf` (ISO-8601, present
 with `fvg`) is the close of the last candle the fill was computed with.
+
+PA reports may also carry the drawn structure (engine contract "PA raporunda Yapı"):
+
+```json
+"structure": { "state": "bearish",
+  "protectedLevel": { "price": 82060.88, "kind": "high", "time": "2026-10-23T12:00:00Z" },
+  "events": [ { "id": "bos-bearish-202610240400", "type": "BOS", "direction": "bearish", "level": 80939.54,
+                "swingTime": "2026-10-22T16:00:00Z", "breakTime": "2026-10-24T04:00:00Z" } ],
+  "sweeps": [ { "id": "sweep-rl-202610242200", "band": "RL", "time": "2026-10-24T22:00:00Z", "extreme": 80418.0 } ],
+  "asOf": "2026-10-26T07:59:59Z" }
+```
+
+`state` is `bullish` / `bearish` / `undetermined`; `protectedLevel` may be `null`; `type` is `BOS` or `CHOCH`.
 Level codes are the engine's Market Reference Levels, in this order: `DO`, `MH`, `MM`, `ML` (Monday
 high/mid/low), `WO`, `PWO`, `MO`, `YO`, `OATH` (highest Binance candle; shown as the market table's ATH).
 `levelsAsOf` is when they were computed. `DO`, `WO` and `MO` prefer the live exchange feed and fall back

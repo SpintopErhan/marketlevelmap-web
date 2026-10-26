@@ -80,7 +80,7 @@ tr:
         - Swing noktası, solundaki ve sağındaki belirli sayıda mumdan daha uç olduğunda oluşur ve **sağındaki mumlar kapandıktan sonra** kırılabilir.
         - Kapanışın swing'i geçme payı **ATR cinsinden** ölçülür; böylece eşik, o anki oynaklığa göre ayarlanır.
         - Yön henüz belirsizse, hangi taraf önce kapanışla kırılırsa yönü o belirler.
-        - Grafikte **BOS ↑** ve **BOS ↓** olarak gösterilir; "Yapı" panelinde güncel yön ve korunan seviye yazılır.
+        - Grafikte kırılan swing'in mumundan kırılım mumuna uzanan kısa bir çizgi ve **BOS ↑** / **BOS ↓** etiketiyle gösterilir. Korunan seviye grafikte çizilmez; "Yapı" tablosunda güncel yön ve korunan seviye yazılır.
     - type: box
       title: Zaman dilimi farkı
       text: >-
@@ -183,7 +183,7 @@ en:
         - A swing point forms when it is more extreme than a set number of candles on each side, and can be broken only **after the candles to its right have closed**.
         - The margin by which the close must clear the swing is measured **in ATR**, so the threshold adapts to current volatility.
         - While the direction is still undetermined, whichever side is broken by a close first sets the direction.
-        - On the chart it shows as **BOS ↑** and **BOS ↓**; the "Structure" panel shows the current direction and the protected level.
+        - On the chart it shows as a short line from the broken swing's candle to the break candle, labelled **BOS ↑** / **BOS ↓**. The protected level is not drawn; the "Structure" table shows the current direction and the protected level.
     - type: box
       title: The timeframe matters
       text: >-
