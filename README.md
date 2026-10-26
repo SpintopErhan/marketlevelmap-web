@@ -76,6 +76,16 @@ view, not as more support/resistance zones.
 - **FVG table.** One row per FVG: direction, remaining gap, filled %, distance. Hidden when the report has no
   `fvg`. A note under it says when the fill was computed ("Fill as of `fvgAsOf`"): the analysis time belongs to
   the range, while the fill follows the closed candles up to the publication.
+- **Library links ("?").** A small `?` after a heading opens the library page for the term, in the page
+  language: `<a class="lib-help" href="<en url>" data-href-tr="<tr url>" aria-label="…" data-label-tr="…">?</a>`
+  (switched by `applyLanguage`). The FVG table has one. Pages for the upcoming structure panel:
+
+  | Term | EN | TR |
+  |---|---|---|
+  | FVG | `/en/library/fair-value-gap-fvg/` | `/tr/kutuphane/fvg-fair-value-gap/` |
+  | BOS | `/en/library/break-of-structure-bos/` | `/tr/kutuphane/yapi-kirilimi-bos/` |
+  | CHoCH | `/en/library/change-of-character-choch/` | `/tr/kutuphane/karakter-degisimi-choch/` |
+  | Sweep | `/en/library/sweep/` | `/tr/kutuphane/sweep/` |
 - **Link previews.** `method=pa` links get "BTCUSDT 1D price action range · MarketLevelMap" and a Price Action
   description (Turkish with `lang=tr`).
 

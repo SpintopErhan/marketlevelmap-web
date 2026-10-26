@@ -73,6 +73,8 @@ main:not([data-state="live"]) #analysis,main:not([data-state="live"]) .head-meta
 .block-head h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.2px}
 .block-head p{margin:3px 0 0;color:var(--muted);font-size:11px}
 .block-head .right{display:flex;align-items:center;gap:10px}
+.lib-help{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:4px;vertical-align:2px;border:1px solid var(--line);border-radius:50%;color:var(--muted);font-size:11px;font-weight:700;text-decoration:none}
+.lib-help:hover,.lib-help:focus-visible{color:var(--accent);border-color:var(--accent)}
 .demo-badge{white-space:nowrap;padding:1px 8px;border:1px dashed var(--muted);border-radius:4px;color:var(--muted);font-size:11px}
 .demo-badge[hidden]{display:none}
 .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
@@ -144,7 +146,7 @@ th.r,td.r{text-align:right}
 <section class="block" id="range-block" hidden><div class="block-head"><div><h2 data-i18n="rangeTitle">Price range</h2><p data-i18n="rangeSub">Confirmed range and its equilibrium · where the price sits</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span></div></div>
 <div class="range-summary" id="range-summary"></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colLevel">Level</th><th data-i18n="colZone">Zone</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="range-rows"></tbody></table></div></section>
-<section class="block" id="fvg-block" hidden><div class="block-head"><div><h2>FVG</h2><p data-i18n="fvgSub">Nearest open fair value gaps · only the unfilled part is drawn</p></div></div>
+<section class="block" id="fvg-block" hidden><div class="block-head"><div><h2>FVG <a class="lib-help" href="/en/library/fair-value-gap-fvg/" data-href-tr="/tr/kutuphane/fvg-fair-value-gap/" aria-label="What is an FVG? (library)" data-label-tr="FVG nedir? (kütüphane)" title="What is an FVG? (library)">?</a></h2><p data-i18n="fvgSub">Nearest open fair value gaps · only the unfilled part is drawn</p></div></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colType">Type</th><th data-i18n="colZone">Zone</th><th class="r" data-i18n="colFilled">Filled</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="fvg-rows"></tbody></table></div><p class="levels-note" id="fvg-note" hidden></p></section>
 <section class="block" id="zones-block" hidden><div class="block-head"><div><h2 data-i18n="zonesTitle">Support and resistance zones</h2><p data-i18n="zonesSub">Sorted by price · distance to the zone's nearest edge</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span></div></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colType">Type</th><th data-i18n="colZone">Zone</th><th class="r formed" data-i18n="colFormed">Formed</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="zone-rows"></tbody></table></div></section>
@@ -169,6 +171,7 @@ function applyLanguage(value){
   document.querySelectorAll("[data-i18n]").forEach(function(el){if(t[el.dataset.i18n])el.textContent=t[el.dataset.i18n]});
   document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
   document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
+  document.querySelectorAll("[data-label-tr]").forEach(function(el){if(!el.dataset.labelEn)el.dataset.labelEn=el.getAttribute("aria-label");var l=value==="tr"?el.dataset.labelTr:el.dataset.labelEn;el.setAttribute("aria-label",l);el.title=l});
   try{localStorage.setItem("mlm-lang",value)}catch(e){}
 }
 var lang=document.getElementById("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
