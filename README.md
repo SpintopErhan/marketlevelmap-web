@@ -83,6 +83,10 @@ view, not as more support/resistance zones.
   table: current direction (Up / Down / Undetermined), protected low / high with distance, then the events (newest
   first) and the sweeps (newest first) with level, date and distance; a short explanation above it and "Structure and
   events as of `structure.asOf`" under it (the range itself is as analysed). No eye toggles on the site.
+- **AVWAP** (when `structure.avwap` exists). A near-white `#f2f4f8` 2 px long-dashed curve with an "AVWAP" price-axis
+  label, drawn from the report's points on the loaded candles only (the values are the engine's cumulative values
+  from the anchor; scrolling left reaches the anchor; the curve ends at `avwap.asOf`). In the Structure table an
+  AVWAP row right after the protected level: value, anchor date, distance; the explanation gains one AVWAP sentence.
 - **Link previews.** `method=pa` links get "BTCUSDT 1D price action range · MarketLevelMap" and a Price Action
   description (Turkish with `lang=tr`).
 
@@ -263,10 +267,13 @@ PA reports may also carry the drawn structure (engine contract "PA raporunda Yap
   "events": [ { "id": "bos-bearish-202610240400", "type": "BOS", "direction": "bearish", "level": 80939.54,
                 "swingTime": "2026-10-22T16:00:00Z", "breakTime": "2026-10-24T04:00:00Z" } ],
   "sweeps": [ { "id": "sweep-rl-202610242200", "band": "RL", "time": "2026-10-24T22:00:00Z", "extreme": 80418.0 } ],
+  "avwap": { "value": 81234.5, "anchorTime": "2026-10-23T12:00:00Z", "anchorPrice": 82060.88, "anchorKind": "high",
+             "points": [ { "time": "2026-10-23T12:00:00Z", "value": 81990.1 } ], "asOf": "2026-10-26T07:59:59Z" },
   "asOf": "2026-10-26T07:59:59Z" }
 ```
 
-`state` is `bullish` / `bearish` / `undetermined`; `protectedLevel` may be `null`; `type` is `BOS` or `CHOCH`.
+`state` is `bullish` / `bearish` / `undetermined`; `protectedLevel` may be `null`; `type` is `BOS` or `CHOCH`;
+`avwap` is optional (at most 1,000 points, one per candle from the anchor).
 Level codes are the engine's Market Reference Levels, in this order: `DO`, `MH`, `MM`, `ML` (Monday
 high/mid/low), `WO`, `PWO`, `MO`, `YO`, `OATH` (highest Binance candle; shown as the market table's ATH).
 `levelsAsOf` is when they were computed. `DO`, `WO` and `MO` prefer the live exchange feed and fall back

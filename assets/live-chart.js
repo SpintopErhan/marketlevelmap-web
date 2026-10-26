@@ -279,6 +279,9 @@ var LiveChart = (function () {
     var emaColors = ["#ff6975", "#6fb5ff", "#e7d98c"], emas = emaColors.map(function (color) {
       return chart.addSeries(LC.LineSeries, { color: color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
     });
+    // Price Action AVWAP (README "Price Action view"): near-white long-dashed curve from the report's points.
+    var avwap = chart.addSeries(LC.LineSeries, { color: "#f2f4f8", lineWidth: 2, lineStyle: LC.LineStyle.LargeDashed, priceLineVisible: false,
+      lastValueVisible: true, title: "AVWAP", crosshairMarkerVisible: false, visible: false }), avwapPoints = [];
     var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [];
     candles.attachPrimitive(zones);
     var sweepMarkers = LC.createSeriesMarkers ? LC.createSeriesMarkers(candles, []) : null;
@@ -294,6 +297,16 @@ var LiveChart = (function () {
       chart.applyOptions({ localization: localization() });
       candles.applyOptions({ priceFormat: format });
       emas.forEach(function (s) { s.applyOptions({ priceFormat: format }); });
+      avwap.applyOptions({ priceFormat: format });
+    }
+
+    // Only the points on the loaded candles: the values are the engine's cumulative ones from the anchor,
+    // so the first visible value is never a new average over the loaded window.
+    function drawAvwap() {
+      var rows = allRows(), first = rows.length ? rows[0][0] : null, last = rows.length ? rows[rows.length - 1][0] : null;
+      var data = first === null ? [] : avwapPoints.filter(function (p) { return p.time >= first && p.time <= last; });
+      avwap.setData(data);
+      avwap.applyOptions({ visible: data.length > 0 });
     }
 
     function setData() {
@@ -304,6 +317,7 @@ var LiveChart = (function () {
         series.setData(rows.filter(function (r) { return r[6 + i] != null; }).map(function (r) { return { time: r[0], value: r[6 + i] }; }));
       });
       zones.set(zoneList, rows.map(function (r) { return r[0]; }));
+      drawAvwap();
       drawForming();
     }
 
@@ -477,6 +491,10 @@ var LiveChart = (function () {
         });
         zoneList = baseZones.concat(fvgZones, structureZones);
         zones.set(zoneList, times());
+        var curve = structure && structure.state !== "undetermined" && structure.avwap && Array.isArray(structure.avwap.points) ? structure.avwap.points : [];
+        avwapPoints = curve.map(function (p) { return { time: Math.floor(Date.parse(p.time || "") / 1000), value: Number(p.value) }; })
+          .filter(function (p) { return isFinite(p.time) && p.value > 0; });
+        drawAvwap();
         if (!sweepMarkers) return;
         var candleTimes = times();
         sweepMarkers.setMarkers(sweeps.map(function (s) {
