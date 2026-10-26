@@ -1,7 +1,7 @@
 id: price-gaps
 kind: volume-volatility
 order: 60
-related: [volatility, candle-close, support-and-resistance, atr]
+related: [volatility, fair-value-gap, candle-close, atr]
 example: null
 updated: 2026-10-23
 

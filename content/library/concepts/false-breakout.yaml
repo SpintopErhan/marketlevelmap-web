@@ -1,7 +1,7 @@
 id: false-breakout
 kind: levels
 order: 40
-related: [trend, shooting-star, pin-bar, rectangle]
+related: [trend, liquidity-sweep, shooting-star, pin-bar]
 example: null
 updated: 2026-10-23
 
