@@ -184,3 +184,10 @@ button,select,input{font:inherit}button{color:inherit}
 .lib-find-results .find-snip{display:block;margin-top:2px;color:var(--muted);font-size:12px;line-height:1.45}
 .lib-find-results mark{background:none;color:var(--accent);font-weight:600}
 .lib-find-results .find-empty{padding:10px;color:var(--muted);font-size:13px}
+/* Featured reading guide card on the library home. */
+.lib-featured{display:grid;gap:6px;max-width:760px;margin:22px 0 6px;padding:18px 20px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;background:var(--panel);color:var(--fg);text-decoration:none}
+.lib-featured:hover{border-color:var(--accent)}
+.lib-featured b{font-size:20px}
+.lib-featured span{color:var(--muted);line-height:1.55}
+.lib-featured .lib-featured-tag{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.lib-featured .lib-featured-cta{color:var(--accent);font-weight:600}

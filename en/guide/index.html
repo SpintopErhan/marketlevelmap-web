@@ -1,0 +1,300 @@
+<!doctype html>
+<!-- About page. Built by a one-off script from a library page template; edit by hand. -->
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="color-scheme" content="dark light">
+<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap">
+<title>How to read a chart: the MarketLevelMap reading guide</title>
+<meta name="description" content="What to look at, and in which order, when you open a MarketLevelMap chart: a five-step checklist, real examples, common reading mistakes and a short glossary.">
+<link rel="canonical" href="https://marketlevelmap.com/en/guide/">
+<link rel="alternate" hreflang="tr" href="https://marketlevelmap.com/tr/rehber/">
+<link rel="alternate" hreflang="en" href="https://marketlevelmap.com/en/guide/">
+<link rel="alternate" hreflang="x-default" href="https://marketlevelmap.com/en/guide/">
+<meta property="og:site_name" content="MarketLevelMap">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="How to read a chart: the MarketLevelMap reading guide">
+<meta property="og:description" content="What to look at, and in which order, when you open a MarketLevelMap chart: a five-step checklist, real examples, common reading mistakes and a short glossary.">
+<meta property="og:url" content="https://marketlevelmap.com/en/guide/">
+<meta property="og:image" content="https://marketlevelmap.com/assets/og-image.png?v=18ecbfe9">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to read a chart: the MarketLevelMap reading guide">
+<meta name="twitter:description" content="What to look at, and in which order, when you open a MarketLevelMap chart: a five-step checklist, real examples, common reading mistakes and a short glossary.">
+<meta name="twitter:image" content="https://marketlevelmap.com/assets/og-image.png?v=18ecbfe9">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+<link rel="stylesheet" href="/assets/site.css?v=c0e6921b"><link rel="stylesheet" href="/assets/library.css?v=786403ca">
+<script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<script src="/assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/library.js?v=e1c49407" defer></script><script src="/assets/pwa.js?v=b0dd56f5" defer></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "How to read a chart: the MarketLevelMap reading guide", "description": "What to look at, and in which order, when you open a MarketLevelMap chart: a five-step checklist, real examples, common reading mistakes and a short glossary.", "url": "https://marketlevelmap.com/en/guide/", "inLanguage": "en", "publisher": {"@type": "Organization", "name": "MarketLevelMap", "url": "https://marketlevelmap.com/"}}</script>
+<style>
+.about{max-width:860px;margin:0 auto;padding:10px 0 80px}
+.about section{margin:56px 0}
+.about-hero{margin-top:28px!important}
+.about .eyebrow{color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:13px;margin:0 0 10px}
+.about h1{font-size:clamp(34px,6vw,56px);line-height:1.05;margin:0 0 18px;letter-spacing:-.02em}
+.about .lead{font-size:clamp(17px,2.2vw,20px);line-height:1.6;color:var(--fg);margin:0 0 26px;max-width:720px}
+.about h2{font-size:clamp(22px,3vw,28px);margin:0 0 14px;letter-spacing:-.01em}
+.about h3{margin:0 0 8px;font-size:18px}
+.about p,.about li,.about dd{line-height:1.7;color:color-mix(in srgb,var(--fg) 88%,var(--muted))}
+.about a{color:var(--accent)}
+.principles{list-style:none;padding:0;margin:26px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.principles li{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.55}
+.principles b{display:block;color:var(--fg);margin-bottom:2px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:18px 0}
+.steps li{counter-increment:s;position:relative;padding:0 0 14px 44px}
+.steps li:before{content:counter(s);position:absolute;left:0;top:1px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--accent)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0 8px}
+.four{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+.aside{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:14px 18px 2px}
+.card,.four>div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 6px}
+.card.cz{border-top:3px solid var(--cz)}.card.pa{border-top:3px solid var(--pa)}
+.card.cz h3{color:var(--cz)}.card.pa h3{color:var(--pa)}
+.card .q{font-style:italic;color:var(--muted);margin-top:0}
+.about-fig{margin:22px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.about-fig svg{display:block;width:100%;height:auto}
+.about-fig figcaption{color:var(--muted);font-size:14px;line-height:1.55;margin-top:8px}
+.defs dt{font-weight:700;margin-top:14px;color:var(--fg)}.defs dd{margin:4px 0 0}
+.levels{width:100%;border-collapse:collapse}.levels th,.levels td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+.levels th{color:var(--muted);font-weight:600;font-size:13px}.levels td:first-child{white-space:nowrap;color:var(--accent)}
+.note{color:var(--muted);font-size:14px}
+.tf{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}
+.tf div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.tf b{display:block;font-size:22px;color:var(--accent);margin-bottom:4px}.tf span{color:var(--muted);font-size:14px;line-height:1.5}
+.not{border-top:1px solid var(--line);padding-top:36px}
+.cta{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-block;padding:10px 16px;border-radius:10px;background:var(--accent);color:var(--bg)!important;text-decoration:none;font-weight:600}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--fg)!important}
+@media(max-width:720px){.principles,.two,.four{grid-template-columns:1fr}.tf{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.about-fig text{font-family:inherit;font-size:13px}
+.about-fig .t-head{fill:var(--fg);font-weight:600;font-size:14px}
+.about-fig .s-up{stroke:var(--up)}.about-fig .s-down{stroke:var(--down)}.about-fig .f-up{fill:var(--up)}.about-fig .f-down{fill:var(--down)}
+.about-fig .s-cz{stroke:var(--cz)}.about-fig .f-cz{fill:var(--cz)}.about-fig .t-cz{fill:var(--cz)}
+.about-fig .s-pa{stroke:var(--pa)}.about-fig .f-pa{fill:var(--pa)}.about-fig .t-pa{fill:var(--pa)}
+.about-fig .s-guide{stroke:var(--line)}.about-fig .t-label{fill:var(--muted)}.about-fig .t-up{fill:var(--up)}.about-fig .t-down{fill:var(--down)}
+.about-fig .s-fg{stroke:var(--fg)}.about-fig .t-fg{fill:var(--fg)}.about-fig .f-fg{fill:var(--fg)}
+.about-fig .s-avwap{stroke:var(--fg);opacity:.85}.about-fig .t-avwap{fill:var(--fg)}
+.about-fig .s-bos{stroke:#a99cf0}.about-fig .t-bos{fill:#a99cf0}.about-fig .s-choch{stroke:#e27bd0}.about-fig .t-choch{fill:#e27bd0}
+.about-fig .f-badge{fill:var(--fg)}.about-fig .t-badge{fill:var(--bg);font-weight:700;font-size:12px}
+
+.checklist{list-style:none;padding:0;margin:18px 0;display:grid;gap:10px;counter-reset:step -1}
+.checklist li{counter-increment:step;display:flex;gap:14px;align-items:flex-start;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.6}
+.checklist li:before{content:counter(step);flex:0 0 30px;height:30px;border-radius:50%;background:var(--accent);color:var(--bg);display:grid;place-items:center;font-weight:700}
+.checklist li>div{flex:1}
+.tag{flex:0 0 auto;font-size:12px;border-radius:999px;padding:3px 10px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.pa{border-color:color-mix(in srgb,var(--pa) 60%,transparent);color:var(--pa)}
+.tag.cz{border-color:color-mix(in srgb,var(--cz) 60%,transparent);color:var(--cz)}
+.example{margin:40px 0 0;padding-top:28px;border-top:1px solid var(--line)}
+.example h3{font-size:20px;margin:0 0 6px}
+.shot{margin:14px 0}.shot-box{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.shot-box img{display:block;width:100%;height:auto}.shot-box svg{position:absolute;inset:0;width:100%;height:100%}
+.n-dot{fill:#f2f4f8;stroke:#101820;stroke-width:2}.n-txt{fill:#101820;font:700 15px Inter,system-ui,sans-serif}
+.notes{counter-reset:n;list-style:none;padding:0;margin:14px 0}
+.notes li{counter-increment:n;position:relative;padding:0 0 10px 40px;line-height:1.65}
+.notes li:before{content:counter(n);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:#f2f4f8;color:#101820;display:grid;place-items:center;font-weight:700;font-size:13px}
+.mistakes{padding-left:20px}.mistakes li{margin:8px 0}
+.glossary td:first-child{white-space:nowrap}
+@media(max-width:720px){.checklist li{flex-wrap:wrap}.tag{order:3;margin-left:44px}}
+</style>
+</head><body>
+<div class="shell"><header>
+<a href="/" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="/assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="/assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="/">Market</a><a href="/weekly-events">Weekly events</a><a href="/en/library/">Library</a><a href="/en/about/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang" data-href-tr="/tr/rehber/" data-href-en="/en/guide/"><option value="en" selected>EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<main class="shell"><div class="about">
+<section class="about-hero">
+  <p class="eyebrow">Reading guide</p>
+  <h1>You opened the chart. What now?</h1>
+  <p class="lead">The <a href="/en/about/">About</a> page explains <em>what</em> the chart shows and <em>why</em> it is
+  calculated that way. This page teaches something else: <strong>an order of reading.</strong> Asking the same questions in
+  the same order on every chart keeps the eye from fixing on whichever line stands out most.</p>
+</section>
+
+<section id="checklist">
+  <h2>A chart in five steps</h2>
+  <p>Kept short so it can be used on every chart, every time. The tags show which view the information is in.</p>
+  <ol class="checklist">
+    <li><div><b>Dates.</b> Look at the analysis time and the last closed candle under the chart. Zones and the range belong to
+    that time; the time since tells you how current the picture is.</div><span class="tag">Both views</span></li>
+    <li><div><b>The big picture.</b> On 1W and 1D, which zones or which range is price in? Which way is the structure going?</div>
+    <span class="tag">Both views</span></li>
+    <li><div><b>Position.</b> Where is price in the range: the upper half (premium) or the lower half (discount)? How far are
+    the nearest support and resistance? The “Distance” column in the tables gives it as a percentage.</div><span class="tag">Both views</span></li>
+    <li><div><b>Structure.</b> What was the latest event: a BOS or a CHoCH? Where is the protected level, and how close is price
+    to it?</div><span class="tag pa">Price Action</span></li>
+    <li><div><b>Behaviour.</b> Any sweep in the latest candles? Is price above or below AVWAP? Is there an open FVG nearby?
+    (No FVGs on 1H.)</div><span class="tag pa">Price Action</span></li>
+    <li><div><b>Detail.</b> Do 4H and 1H tell the same story, or do they disagree with the big picture? A disagreement is not an
+    error but different spans of time telling different stories; know which span your question is about.</div><span class="tag">Both views</span></li>
+  </ol>
+</section>
+
+<section id="two-views">
+  <h2>Using the two views together</h2>
+  <p>Critical Zones and Price Action are calculated independently on purpose; neither uses the other's result. Reading them
+  side by side is like hearing two separate witnesses.</p>
+  <div class="two">
+    <article class="card">
+      <h3>When they point to the same area</h3>
+      <p>If a support band and the range low overlap, two different methods are looking at the same price area. That makes it
+      <b>an area to watch</b>, not proof that it will hold. We have no measurement showing such areas work more often, and we
+      make no such claim.</p>
+    </article>
+    <article class="card">
+      <h3>When they say different things</h3>
+      <p>Questions to ask: Which one comes from the more recent analysis? Am I looking at the same timeframe? Is price inside a
+      zone but in the middle of the range? Often both are right; one describes past reactions, the other today's range.</p>
+    </article>
+  </div>
+</section>
+
+<section id="examples">
+  <h2>Real examples</h2>
+  <p>All four examples were taken from the site's charts on 26 October 2026. Each shows the reading as of that date; what
+  happened next will be added in a separate note. They are not a showcase of wins; in one of them the zone was cleared
+  on a close.</p>
+
+  <article class="example" id="example-1">
+    <h3>1 · A sweep at the low, then a turn</h3>
+    <p class="note">BTCUSDT · 1W · Price Action. Analysis 18 October 2026; last closed candle 19–25 October 2026.</p>
+    <figure class="shot"><div class="shot-box"><img src="/assets/guide/btcusdt-1w-pa-2026-10-26.png" width="998" height="558" loading="lazy" alt="BTCUSDT weekly Price Action chart: range bands, sweep markers, BOS, CHoCH and AVWAP"><svg viewBox="0 0 998 558" aria-hidden="true"><g><circle cx="452" cy="112" r="14" class="n-dot"/><text x="452" y="117" text-anchor="middle" class="n-txt">1</text></g><g><circle cx="598" cy="308" r="14" class="n-dot"/><text x="598" y="313" text-anchor="middle" class="n-txt">2</text></g><g><circle cx="765" cy="350" r="14" class="n-dot"/><text x="765" y="355" text-anchor="middle" class="n-txt">3</text></g><g><circle cx="790" cy="216" r="14" class="n-dot"/><text x="790" y="221" text-anchor="middle" class="n-txt">4</text></g><g><circle cx="893" cy="302" r="14" class="n-dot"/><text x="893" y="307" text-anchor="middle" class="n-txt">5</text></g><g><circle cx="180" cy="236" r="14" class="n-dot"/><text x="180" y="241" text-anchor="middle" class="n-txt">6</text></g></svg></div></figure>
+    <ol class="notes">
+      <li><b>RH sweep (10 November 2025).</b> A wick went above the range high (107,500) and the candle closed back inside the
+      range. Prices above were not accepted that week.</li>
+      <li><b>BOS ↓ (1 June 2026).</b> A close below the latest low at 65,000; the downtrend continued.</li>
+      <li><b>RL sweep (29 June 2026).</b> A wick dipped below the range low (57,800) and the close stayed inside. This candle's
+      low will matter shortly.</li>
+      <li><b>CHoCH ↑ (21 September 2026).</b> The downtrend's protected high (82,850) was cleared on a close; the structure
+      turned up. The new protected low is the low of sweep 3: 57,800.</li>
+      <li><b>AVWAP (73,861).</b> The volume-weighted average price traded since the protected low. Price (≈79,900) is above it:
+      buyers since that low are, on average, in profit.</li>
+      <li><b>Position.</b> Price is at the lower edge of the equilibrium (EQ) band, at about 45% of the range, slightly on the
+      discount side.</li>
+    </ol>
+    <div class="two">
+      <article class="card"><h3>What it says</h3><p>The weekly structure has turned up, and price is above the average since
+      the low where the turn began. Price is in the middle of the range, close to neither the range high (≈100,400) nor the
+      protected low (57,800, about 28% below). Questions to follow: Can price stay above AVWAP? Does it close above or below
+      the equilibrium band?</p></article>
+      <article class="card"><h3>What it does not say</h3><p>That the uptrend will continue. A CHoCH is a change of direction,
+      not a confirmed reversal; the weekly structure turns down again only on a close below 57,800, which does not make every
+      drop in between unimportant. Shorter timeframes may be telling a different story over the same period.</p></article>
+    </div>
+  </article>
+
+  <article class="example" id="example-2">
+    <h3>2 · Structure intact, buyers under pressure</h3>
+    <p class="note">BTCUSDT · 1D · Price Action. Structure and AVWAP as of the 25 October 2026 close.</p>
+    <figure class="shot"><div class="shot-box"><img src="/assets/guide/btcusdt-1d-pa-2026-10-26.png" width="998" height="558" loading="lazy" alt="BTCUSDT daily Price Action chart: CHoCH, BOS, the protected low and AVWAP above price"><svg viewBox="0 0 998 558" aria-hidden="true"><g><circle cx="425" cy="268" r="14" class="n-dot"/><text x="425" y="273" text-anchor="middle" class="n-txt">1</text></g><g><circle cx="655" cy="78" r="14" class="n-dot"/><text x="655" y="83" text-anchor="middle" class="n-txt">2</text></g><g><circle cx="650" cy="200" r="14" class="n-dot"/><text x="650" y="205" text-anchor="middle" class="n-txt">3</text></g><g><circle cx="850" cy="70" r="14" class="n-dot"/><text x="850" y="75" text-anchor="middle" class="n-txt">4</text></g><g><circle cx="898" cy="152" r="14" class="n-dot"/><text x="898" y="157" text-anchor="middle" class="n-txt">5</text></g></svg></div></figure>
+    <ol class="notes">
+      <li><b>CHoCH ↑ (19 August 2026).</b> The downtrend's protected high (67,292) was cleared on a close; the daily structure turned up.</li>
+      <li><b>BOS ↑ (21 September 2026).</b> A close above the latest high at 82,300; the uptrend continued.</li>
+      <li><b>Protected low (15 September 2026, 74,968).</b> The low left by the latest BOS. AVWAP starts here.</li>
+      <li><b>AVWAP (82,768).</b> The volume-weighted average price traded since the protected low.</li>
+      <li><b>Price (≈80,070).</b> About 3% below AVWAP, just below equilibrium (discount), and about 7% above the protected low.</li>
+    </ol>
+    <div class="two">
+      <article class="card"><h3>What it says</h3><p>The structure is still up; the protected low has not broken. But those who
+      bought since the protected low are, on average, at a loss: price is below AVWAP. Structure and participants are telling
+      different things. Questions to follow: Can price win AVWAP back, or is it heading towards the protected low (74,968)?</p></article>
+      <article class="card"><h3>What it does not say</h3><p>Dropping below AVWAP does not mean the structure has broken; only a
+      close through the protected low says that (CHoCH ↓). AVWAP is not a support or resistance line; it shows the average cost
+      since that point.</p></article>
+    </div>
+  </article>
+
+  <article class="example" id="example-3">
+    <h3>3 · Timeframes disagree</h3>
+    <p class="note">BTCUSDT · 4H · Price Action. Structure and AVWAP as of 26 October 2026, 08:00 UTC. On the same day 1D (example 2) is up.</p>
+    <figure class="shot"><div class="shot-box"><img src="/assets/guide/btcusdt-4h-pa-2026-10-26.png" width="998" height="558" loading="lazy" alt="BTCUSDT 4-hour Price Action chart: CHoCH and BOS pointing down, price below AVWAP"><svg viewBox="0 0 998 558" aria-hidden="true"><g><circle cx="232" cy="190" r="14" class="n-dot"/><text x="232" y="195" text-anchor="middle" class="n-txt">1</text></g><g><circle cx="760" cy="345" r="14" class="n-dot"/><text x="760" y="350" text-anchor="middle" class="n-txt">2</text></g><g><circle cx="880" cy="305" r="14" class="n-dot"/><text x="880" y="310" text-anchor="middle" class="n-txt">3</text></g></svg></div></figure>
+    <ol class="notes">
+      <li><b>CHoCH ↓ (8 October 2026).</b> The 4H structure's protected low (83,186) broke on a close; the structure turned down.</li>
+      <li><b>BOS ↓ (24 October 2026).</b> A close below the latest low at 80,940; the downtrend continued. New protected high 82,061 (23 October).</li>
+      <li><b>AVWAP (80,585).</b> The average since the protected high. Price (≈80,040) is below it: sellers since that high are, on average, in profit.</li>
+    </ol>
+    <div class="two">
+      <article class="card"><h3>What it says</h3><p>On the same day 1D is up (protected low 74,968) and 4H is down (protected
+      high 82,061). Both are right: 1D tells the story of weeks, 4H the story of days. For now the 4H downtrend is a pullback
+      within the daily uptrend. There are two boundaries: if 4H closes above its protected high (82,061), the short-term
+      downtrend ends; if the drop reaches the daily protected low (74,968) and closes through it, the daily structure turns too.</p></article>
+      <article class="card"><h3>What it does not say</h3><p>Which one will “win”. The answer to “pullback or reversal?” only
+      comes later, at one of those two boundaries. A 4H event on its own should not be read as the end of the bigger trend.</p></article>
+    </div>
+  </article>
+
+  <article class="example" id="example-4">
+    <h3>4 · Breakout or false breakout?</h3>
+    <p class="note">BTCUSDT · 4H · Critical Zones. Analysis 21 October 2026. Support band 80,032–80,901 (formed 5 September 2026).</p>
+    <figure class="shot"><div class="shot-box"><img src="/assets/guide/btcusdt-4h-cz-2026-10-26.png" width="998" height="558" loading="lazy" alt="BTCUSDT 4-hour Critical Zones chart: wicks below the support band with closes back inside"><svg viewBox="0 0 998 558" aria-hidden="true"><g><circle cx="550" cy="392" r="14" class="n-dot"/><text x="550" y="397" text-anchor="middle" class="n-txt">1</text></g><g><circle cx="806" cy="414" r="14" class="n-dot"/><text x="806" y="419" text-anchor="middle" class="n-txt">2</text></g><g><circle cx="858" cy="410" r="14" class="n-dot"/><text x="858" y="415" text-anchor="middle" class="n-txt">3</text></g></svg></div></figure>
+    <ol class="notes">
+      <li><b>15 October 2026.</b> A wick went below the band's far edge to 79,800; the candle closed at 82,418, above the band. It
+      was not cleared on a close: a false breakout. The band held.</li>
+      <li><b>24 October 2026, 12:00 UTC candle.</b> This time the close is below the band too: 79,804. Unlike a wick, this is
+      the band being cleared on a close. The next candle closed back inside the band (80,489).</li>
+      <li><b>26 October 2026, 00:00 UTC candle.</b> Another close below the band (79,598). Price then returned inside the band
+      (80,416).</li>
+    </ol>
+    <div class="two">
+      <article class="card"><h3>What it says</h3><p>The same band shows two different situations. On 15 October only a wick went
+      through: prices below the edge were not accepted and the band held. On 24 and 26 October the closes stayed below as well:
+      that is not a wick but a clearance on a close. Because the chart shows the 21 October analysis, the band is still drawn;
+      these closes will be reviewed as a “possible breach” in the next evaluation. A zone is never deleted silently
+      (<a href="/en/about/">About: analysis time</a>).</p></article>
+      <article class="card"><h3>What it does not say</h3><p>Price returning inside the band does not undo the closes below it,
+      nor does it mean the zone has “recovered”. The re-evaluation decides the zone's future. We chose this example on purpose:
+      not every zone holds, and seeing that on a chart teaches as much as seeing one that does.</p></article>
+    </div>
+  </article>
+</section>
+
+<section id="near-a-zone">
+  <h2>When price approaches a zone</h2>
+  <p>The rules for reading a band are on the <a href="/en/about/">About</a> page. Here is what each situation says and what it
+  does not, side by side:</p>
+  <div class="table-wrap"><table class="levels">
+    <thead><tr><th>Situation</th><th>What it says</th><th>What it does not say</th></tr></thead>
+    <tbody>
+      <tr><td>A wick entered the band, the close stayed outside</td><td>There is a reaction at the zone.</td><td>That a reversal has started.</td></tr>
+      <tr><td>The close is inside the band</td><td>The zone is being tested; no decision yet.</td><td>Which side price will leave on.</td></tr>
+      <tr><td>A wick crossed the far edge, the close is inside</td><td>Prices beyond the edge were not accepted; possibly a <a href="/en/library/false-breakout/">false breakout</a>.</td><td>That the zone is now stronger.</td></tr>
+      <tr><td>The close is beyond the far edge</td><td>The zone has been cleared.</td><td>That the move will continue; a retest may come.</td></tr>
+      <tr><td>Broken, retested, and rejected from the other side</td><td>Role reversal: the old support behaves like resistance (<a href="/en/library/retests-and-role-reversal/">retest</a>).</td><td>That the new role will hold.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="mistakes">
+  <h2>Common reading mistakes</h2>
+  <ul class="mistakes">
+    <li><b>Ignoring the analysis time.</b> Trusting a zone from an analysis weeks old as if it were today's.</li>
+    <li><b>Taking a single wick for a break.</b> A close beyond the far edge says a zone broke, not a wick.</li>
+    <li><b>Preferring a 1H event over the bigger trend.</b> A CHoCH on 1H does not change the structure on 1W; it only describes its own span.</li>
+    <li><b>Treating a zone as a certain turning point.</b> A zone is where a reaction is worth watching for, not a place where price has promised to turn.</li>
+    <li><b>Reading a CHoCH as a confirmed reversal.</b> A CHoCH says the structure changed direction, not that the new direction will last.</li>
+    <li><b>Assuming every open FVG will fill.</b> An open FVG is only a gap that has not filled yet; it does not have to.</li>
+  </ul>
+</section>
+
+<section id="glossary">
+  <h2>Short glossary</h2>
+  <div class="table-wrap"><table class="levels glossary">
+    <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>RH · EQ · RL</td><td>Range high, equilibrium, range low: the three bands of the confirmed trading range (<a href="/en/library/ranges-and-consolidation/">ranges and consolidation</a>).</td></tr>
+      <tr><td>Premium · Discount</td><td>The halves of the range above and below equilibrium.</td></tr>
+      <tr><td>BOS</td><td>Break of structure: a close beyond the latest swing high or low in the trend's direction (<a href="/en/library/break-of-structure-bos/">BOS</a>).</td></tr>
+      <tr><td>CHoCH</td><td>Change of character: a close through the protected level that turns the structure (<a href="/en/library/change-of-character-choch/">CHoCH</a>).</td></tr>
+      <tr><td>Protected level</td><td>The low or high left by the latest BOS or CHoCH that defines the structure's direction.</td></tr>
+      <tr><td>Sweep</td><td>A wick past a range edge with the candle closing back inside (<a href="/en/library/sweep/">Sweep</a>).</td></tr>
+      <tr><td>FVG</td><td>A price gap left by a sharp move that has not filled yet (<a href="/en/library/fair-value-gap-fvg/">FVG</a>).</td></tr>
+      <tr><td>AVWAP</td><td>The volume-weighted average price since the protected level (<a href="/en/library/anchored-vwap-avwap/">AVWAP</a>).</td></tr>
+      <tr><td>Swing</td><td>A high or low where price changed direction (<a href="/en/library/swing-highs-and-lows/">swing highs and lows</a>).</td></tr>
+      <tr><td>DO · WO · PWO · MO · YO</td><td>Daily, weekly, previous weekly, monthly and yearly open (<a href="/en/about/">About: key levels</a>).</td></tr>
+      <tr><td>MH · MM · ML</td><td>Monday high, middle and low.</td></tr>
+      <tr><td>ATH</td><td>All-time high.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cta"><a class="btn" href="/">Go to the market table →</a> <a class="btn ghost" href="/en/library/">Library →</a></p>
+</section>
+</div></main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span>Content is for general information only and is not investment advice. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+</body></html>

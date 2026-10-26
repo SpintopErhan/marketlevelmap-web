@@ -1,0 +1,298 @@
+<!doctype html>
+<!-- About page. Built by a one-off script from a library page template; edit by hand. -->
+<html lang="tr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="color-scheme" content="dark light">
+<link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap">
+<title>Grafik nasıl okunur? MarketLevelMap okuma rehberi</title>
+<meta name="description" content="Bir MarketLevelMap grafiğini açtığınızda neye, hangi sırayla bakmalısınız? Beş adımlık kontrol listesi, gerçek örnekler, sık yapılan okuma hataları ve kısa sözlük.">
+<link rel="canonical" href="https://marketlevelmap.com/tr/rehber/">
+<link rel="alternate" hreflang="tr" href="https://marketlevelmap.com/tr/rehber/">
+<link rel="alternate" hreflang="en" href="https://marketlevelmap.com/en/guide/">
+<link rel="alternate" hreflang="x-default" href="https://marketlevelmap.com/en/guide/">
+<meta property="og:site_name" content="MarketLevelMap">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Grafik nasıl okunur? MarketLevelMap okuma rehberi">
+<meta property="og:description" content="Bir MarketLevelMap grafiğini açtığınızda neye, hangi sırayla bakmalısınız? Beş adımlık kontrol listesi, gerçek örnekler, sık yapılan okuma hataları ve kısa sözlük.">
+<meta property="og:url" content="https://marketlevelmap.com/tr/rehber/">
+<meta property="og:image" content="https://marketlevelmap.com/assets/og-image.png?v=18ecbfe9">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grafik nasıl okunur? MarketLevelMap okuma rehberi">
+<meta name="twitter:description" content="Bir MarketLevelMap grafiğini açtığınızda neye, hangi sırayla bakmalısınız? Beş adımlık kontrol listesi, gerçek örnekler, sık yapılan okuma hataları ve kısa sözlük.">
+<meta name="twitter:image" content="https://marketlevelmap.com/assets/og-image.png?v=18ecbfe9">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+<link rel="stylesheet" href="/assets/site.css?v=c0e6921b"><link rel="stylesheet" href="/assets/library.css?v=786403ca">
+<script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<script src="/assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/library.js?v=e1c49407" defer></script><script src="/assets/pwa.js?v=b0dd56f5" defer></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Grafik nasıl okunur? MarketLevelMap okuma rehberi", "description": "Bir MarketLevelMap grafiğini açtığınızda neye, hangi sırayla bakmalısınız? Beş adımlık kontrol listesi, gerçek örnekler, sık yapılan okuma hataları ve kısa sözlük.", "url": "https://marketlevelmap.com/tr/rehber/", "inLanguage": "tr", "publisher": {"@type": "Organization", "name": "MarketLevelMap", "url": "https://marketlevelmap.com/"}}</script>
+<style>
+.about{max-width:860px;margin:0 auto;padding:10px 0 80px}
+.about section{margin:56px 0}
+.about-hero{margin-top:28px!important}
+.about .eyebrow{color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:13px;margin:0 0 10px}
+.about h1{font-size:clamp(34px,6vw,56px);line-height:1.05;margin:0 0 18px;letter-spacing:-.02em}
+.about .lead{font-size:clamp(17px,2.2vw,20px);line-height:1.6;color:var(--fg);margin:0 0 26px;max-width:720px}
+.about h2{font-size:clamp(22px,3vw,28px);margin:0 0 14px;letter-spacing:-.01em}
+.about h3{margin:0 0 8px;font-size:18px}
+.about p,.about li,.about dd{line-height:1.7;color:color-mix(in srgb,var(--fg) 88%,var(--muted))}
+.about a{color:var(--accent)}
+.principles{list-style:none;padding:0;margin:26px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.principles li{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.55}
+.principles b{display:block;color:var(--fg);margin-bottom:2px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:18px 0}
+.steps li{counter-increment:s;position:relative;padding:0 0 14px 44px}
+.steps li:before{content:counter(s);position:absolute;left:0;top:1px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--accent)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0 8px}
+.four{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+.aside{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:14px 18px 2px}
+.card,.four>div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 6px}
+.card.cz{border-top:3px solid var(--cz)}.card.pa{border-top:3px solid var(--pa)}
+.card.cz h3{color:var(--cz)}.card.pa h3{color:var(--pa)}
+.card .q{font-style:italic;color:var(--muted);margin-top:0}
+.about-fig{margin:22px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.about-fig svg{display:block;width:100%;height:auto}
+.about-fig figcaption{color:var(--muted);font-size:14px;line-height:1.55;margin-top:8px}
+.defs dt{font-weight:700;margin-top:14px;color:var(--fg)}.defs dd{margin:4px 0 0}
+.levels{width:100%;border-collapse:collapse}.levels th,.levels td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+.levels th{color:var(--muted);font-weight:600;font-size:13px}.levels td:first-child{white-space:nowrap;color:var(--accent)}
+.note{color:var(--muted);font-size:14px}
+.tf{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}
+.tf div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.tf b{display:block;font-size:22px;color:var(--accent);margin-bottom:4px}.tf span{color:var(--muted);font-size:14px;line-height:1.5}
+.not{border-top:1px solid var(--line);padding-top:36px}
+.cta{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-block;padding:10px 16px;border-radius:10px;background:var(--accent);color:var(--bg)!important;text-decoration:none;font-weight:600}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--fg)!important}
+@media(max-width:720px){.principles,.two,.four{grid-template-columns:1fr}.tf{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.about-fig text{font-family:inherit;font-size:13px}
+.about-fig .t-head{fill:var(--fg);font-weight:600;font-size:14px}
+.about-fig .s-up{stroke:var(--up)}.about-fig .s-down{stroke:var(--down)}.about-fig .f-up{fill:var(--up)}.about-fig .f-down{fill:var(--down)}
+.about-fig .s-cz{stroke:var(--cz)}.about-fig .f-cz{fill:var(--cz)}.about-fig .t-cz{fill:var(--cz)}
+.about-fig .s-pa{stroke:var(--pa)}.about-fig .f-pa{fill:var(--pa)}.about-fig .t-pa{fill:var(--pa)}
+.about-fig .s-guide{stroke:var(--line)}.about-fig .t-label{fill:var(--muted)}.about-fig .t-up{fill:var(--up)}.about-fig .t-down{fill:var(--down)}
+.about-fig .s-fg{stroke:var(--fg)}.about-fig .t-fg{fill:var(--fg)}.about-fig .f-fg{fill:var(--fg)}
+.about-fig .s-avwap{stroke:var(--fg);opacity:.85}.about-fig .t-avwap{fill:var(--fg)}
+.about-fig .s-bos{stroke:#a99cf0}.about-fig .t-bos{fill:#a99cf0}.about-fig .s-choch{stroke:#e27bd0}.about-fig .t-choch{fill:#e27bd0}
+.about-fig .f-badge{fill:var(--fg)}.about-fig .t-badge{fill:var(--bg);font-weight:700;font-size:12px}
+
+.checklist{list-style:none;padding:0;margin:18px 0;display:grid;gap:10px;counter-reset:step -1}
+.checklist li{counter-increment:step;display:flex;gap:14px;align-items:flex-start;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.6}
+.checklist li:before{content:counter(step);flex:0 0 30px;height:30px;border-radius:50%;background:var(--accent);color:var(--bg);display:grid;place-items:center;font-weight:700}
+.checklist li>div{flex:1}
+.tag{flex:0 0 auto;font-size:12px;border-radius:999px;padding:3px 10px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.pa{border-color:color-mix(in srgb,var(--pa) 60%,transparent);color:var(--pa)}
+.tag.cz{border-color:color-mix(in srgb,var(--cz) 60%,transparent);color:var(--cz)}
+.example{margin:40px 0 0;padding-top:28px;border-top:1px solid var(--line)}
+.example h3{font-size:20px;margin:0 0 6px}
+.shot{margin:14px 0}.shot-box{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.shot-box img{display:block;width:100%;height:auto}.shot-box svg{position:absolute;inset:0;width:100%;height:100%}
+.n-dot{fill:#f2f4f8;stroke:#101820;stroke-width:2}.n-txt{fill:#101820;font:700 15px Inter,system-ui,sans-serif}
+.notes{counter-reset:n;list-style:none;padding:0;margin:14px 0}
+.notes li{counter-increment:n;position:relative;padding:0 0 10px 40px;line-height:1.65}
+.notes li:before{content:counter(n);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:#f2f4f8;color:#101820;display:grid;place-items:center;font-weight:700;font-size:13px}
+.mistakes{padding-left:20px}.mistakes li{margin:8px 0}
+.glossary td:first-child{white-space:nowrap}
+@media(max-width:720px){.checklist li{flex-wrap:wrap}.tag{order:3;margin-left:44px}}
+</style>
+</head><body>
+<div class="shell"><header>
+<a href="/" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="/assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="/assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="/">Piyasa</a><a href="/weekly-events">Haftalık olaylar</a><a href="/tr/kutuphane/">Kütüphane</a><a href="/tr/hakkinda/">Hakkında</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Dil</label><select id="lang" data-href-tr="/tr/rehber/" data-href-en="/en/guide/"><option value="en">EN</option><option value="tr" selected>TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<main class="shell"><div class="about">
+<section class="about-hero">
+  <p class="eyebrow">Okuma rehberi</p>
+  <h1>Grafiği açtınız. Şimdi neye bakmalı?</h1>
+  <p class="lead"><a href="/tr/hakkinda/">Hakkında</a> sayfası grafikte <em>ne</em> gösterildiğini ve <em>neden</em> öyle
+  hesaplandığını anlatır. Bu sayfa başka bir şey öğretir: <strong>okuma sırası.</strong> Her grafikte aynı soruları aynı
+  sırayla sormak, gözün en dikkat çekici çizgiye takılmasını önler.</p>
+</section>
+
+<section id="kontrol-listesi">
+  <h2>Beş adımda bir grafik</h2>
+  <p>Kısa tutuldu; her grafikte, her seferinde uygulanabilsin diye. Etiketler, bilginin hangi görünümde olduğunu gösterir.</p>
+  <ol class="checklist">
+    <li><div><b>Tarihler.</b> Grafiğin altındaki analiz tarihine ve son kapanan muma bakın. Bölgeler ve aralık o tarihe
+    aittir; aradan geçen zaman, gördüğünüzün ne kadar güncel olduğunu söyler.</div><span class="tag">Her iki görünüm</span></li>
+    <li><div><b>Büyük resim.</b> 1W ve 1D'de fiyat hangi bölgelerin ya da hangi aralığın içinde? Yapının yönü ne?</div>
+    <span class="tag">Her iki görünüm</span></li>
+    <li><div><b>Konum.</b> Fiyat aralığın neresinde: üst yarı (premium) mı, alt yarı (discount) mı? En yakın destek ve
+    direnç ne kadar uzakta? Tablolardaki “Uzaklık” sütunu bunu yüzde olarak verir.</div><span class="tag">Her iki görünüm</span></li>
+    <li><div><b>Yapı.</b> Son olay ne: BOS mu, CHoCH mu? Korunan seviye nerede ve fiyat ona ne kadar yakın?</div>
+    <span class="tag pa">Price Action</span></li>
+    <li><div><b>Davranış.</b> Son mumlarda sweep var mı? Fiyat AVWAP'ın üstünde mi, altında mı? Yakında açık bir FVG var mı?
+    (FVG 1H'de hesaplanmaz.)</div><span class="tag pa">Price Action</span></li>
+    <li><div><b>Ayrıntı.</b> 4H ve 1H aynı tabloyu mu çiziyor, yoksa büyük resimle çelişiyor mu? Çelişki bir hata değil, farklı
+    sürelerin farklı hikâyesidir; hangi sürenin sorusunu sorduğunuzu bilin.</div><span class="tag">Her iki görünüm</span></li>
+  </ol>
+</section>
+
+<section id="iki-gorunum">
+  <h2>İki görünümü birlikte kullanmak</h2>
+  <p>Kritik Bölgeler ile Price Action bilerek birbirinden bağımsız hesaplanır; biri diğerinin sonucunu kullanmaz. Bu yüzden
+  ikisini yan yana okumak iki ayrı tanığı dinlemek gibidir.</p>
+  <div class="two">
+    <article class="card">
+      <h3>Aynı alanı gösterdiklerinde</h3>
+      <p>Örneğin bir destek bandı ile aralık dibi üst üste geliyorsa, iki farklı yöntem aynı fiyat alanına bakıyor demektir.
+      Burası <b>dikkat edilecek bir alan</b>dır; tutacağının kanıtı değildir. Böyle alanların daha sık çalıştığını gösteren bir
+      ölçümümüz yok ve böyle bir iddiada bulunmuyoruz.</p>
+    </article>
+    <article class="card">
+      <h3>Farklı şeyler söylediklerinde</h3>
+      <p>Sorulacak sorular: Hangisi daha yeni bir analize ait? Aynı zaman diliminde mi bakıyorum? Fiyat bir bölgenin içinde
+      ama aralığın ortasında mı? Çoğu zaman ikisi de doğrudur; biri geçmiş tepkileri, öbürü bugünkü aralığı anlatır.</p>
+    </article>
+  </div>
+</section>
+
+<section id="ornekler">
+  <h2>Gerçek örnekler</h2>
+  <p>Dört örnek de 26 Ekim 2026'da sitedeki grafiklerden alındı. Her örneğin altında o tarihteki okuma var; sonrasında ne
+  olduğu ayrı bir notla eklenecek. Örnekler bir başarı vitrini değil; birinde bölge kapanışla aşıldı.</p>
+
+  <article class="example" id="ornek-1">
+    <h3>1 · Dipte sweep, sonra dönüş</h3>
+    <p class="note">BTCUSDT · 1W · Price Action. Analiz 18 Ekim 2026; son kapanan mum 19–25 Ekim 2026.</p>
+    <figure class="shot"><div class="shot-box"><img src="/assets/guide/btcusdt-1w-pa-2026-10-26.png" width="998" height="558" loading="lazy" alt="BTCUSDT haftalık Price Action grafiği: aralık bantları, sweep işaretleri, BOS, CHoCH ve AVWAP"><svg viewBox="0 0 998 558" aria-hidden="true"><g><circle cx="452" cy="112" r="14" class="n-dot"/><text x="452" y="117" text-anchor="middle" class="n-txt">1</text></g><g><circle cx="598" cy="308" r="14" class="n-dot"/><text x="598" y="313" text-anchor="middle" class="n-txt">2</text></g><g><circle cx="765" cy="350" r="14" class="n-dot"/><text x="765" y="355" text-anchor="middle" class="n-txt">3</text></g><g><circle cx="790" cy="216" r="14" class="n-dot"/><text x="790" y="221" text-anchor="middle" class="n-txt">4</text></g><g><circle cx="893" cy="302" r="14" class="n-dot"/><text x="893" y="307" text-anchor="middle" class="n-txt">5</text></g><g><circle cx="180" cy="236" r="14" class="n-dot"/><text x="180" y="241" text-anchor="middle" class="n-txt">6</text></g></svg></div></figure>
+    <ol class="notes">
+      <li><b>RH sweep (10 Kasım 2025).</b> Fitil aralık tepesinin üstüne çıktı (107.500), mum yine aralığın içinde kapandı. O
+      hafta yukarıdaki fiyatlar kabul görmedi.</li>
+      <li><b>BOS ↓ (1 Haziran 2026).</b> Kapanış 65.000'deki son dibin altına indi; düşüş yapısı sürdü.</li>
+      <li><b>RL sweep (29 Haziran 2026).</b> Fitil aralık dibinin altına sarktı (57.800), kapanış içeride kaldı. Bu mumun dibi
+      birazdan önem kazanacak.</li>
+      <li><b>CHoCH ↑ (21 Eylül 2026).</b> Düşüş yapısının korunan tepesi (82.850) kapanışla geçildi; yapı yükselişe döndü.
+      Yeni korunan dip, 3 numaralı sweep'in dibi: 57.800.</li>
+      <li><b>AVWAP (73.861).</b> Korunan dipten beri işlem gören fiyatın hacim ağırlıklı ortalaması. Fiyat (≈79.900) üstünde:
+      o dipten beri alıcılar ortalamada kârda.</li>
+      <li><b>Konum.</b> Fiyat aralığın denge (EQ) bandının alt kenarında; aralığın yaklaşık %45'inde, yani hafif discount
+      tarafında.</li>
+    </ol>
+    <div class="two">
+      <article class="card"><h3>Ne okunur?</h3><p>Haftalık yapı yukarı döndü ve fiyat, dönüşün başladığı dipten beri
+      ortalamanın üstünde. Fiyat şu an aralığın ortasında; ne aralık tepesine (≈100.400) ne de korunan dibe (57.800, yaklaşık
+      %28 aşağıda) yakın. Takip edilecek sorular: Fiyat AVWAP'ın üstünde kalabiliyor mu? Denge bandının üstünde mi kapanıyor,
+      altında mı?</p></article>
+      <article class="card"><h3>Ne söylemez?</h3><p>Yükselişin süreceğini söylemez. CHoCH bir yön değişimidir, kesinleşmiş bir
+      dönüş değildir; haftalık yapı ancak 57.800'ün altında bir kapanışla yeniden aşağı döner, ama bu aradaki her düşüşün
+      önemsiz olduğu anlamına gelmez. Daha kısa zaman dilimleri aynı dönemde başka bir hikâye anlatıyor olabilir.</p></article>
+    </div>
+  </article>
+
+  <article class="example" id="ornek-2">
+    <h3>2 · Yapı sağlam, alıcılar baskı altında</h3>
+    <p class="note">BTCUSDT · 1D · Price Action. Yapı ve AVWAP 25 Ekim 2026 kapanışı itibarıyla.</p>
+    <figure class="shot"><div class="shot-box"><img src="/assets/guide/btcusdt-1d-pa-2026-10-26.png" width="998" height="558" loading="lazy" alt="BTCUSDT günlük Price Action grafiği: CHoCH, BOS, korunan dip ve fiyatın üstünde kalan AVWAP"><svg viewBox="0 0 998 558" aria-hidden="true"><g><circle cx="425" cy="268" r="14" class="n-dot"/><text x="425" y="273" text-anchor="middle" class="n-txt">1</text></g><g><circle cx="655" cy="78" r="14" class="n-dot"/><text x="655" y="83" text-anchor="middle" class="n-txt">2</text></g><g><circle cx="650" cy="200" r="14" class="n-dot"/><text x="650" y="205" text-anchor="middle" class="n-txt">3</text></g><g><circle cx="850" cy="70" r="14" class="n-dot"/><text x="850" y="75" text-anchor="middle" class="n-txt">4</text></g><g><circle cx="898" cy="152" r="14" class="n-dot"/><text x="898" y="157" text-anchor="middle" class="n-txt">5</text></g></svg></div></figure>
+    <ol class="notes">
+      <li><b>CHoCH ↑ (19 Ağustos 2026).</b> Düşüş yapısının korunan tepesi (67.292) kapanışla geçildi; günlük yapı yükselişe döndü.</li>
+      <li><b>BOS ↑ (21 Eylül 2026).</b> Kapanış 82.300'deki son tepenin üstüne çıktı; yükseliş sürdü.</li>
+      <li><b>Korunan dip (15 Eylül 2026, 74.968).</b> Son BOS'un bıraktığı dip. AVWAP buradan başlar.</li>
+      <li><b>AVWAP (82.768).</b> Korunan dipten beri işlem gören fiyatın hacim ağırlıklı ortalaması.</li>
+      <li><b>Fiyat (≈80.070).</b> AVWAP'ın yaklaşık %3 altında, dengenin hemen altında (discount) ve korunan dibin yaklaşık %7 üstünde.</li>
+    </ol>
+    <div class="two">
+      <article class="card"><h3>Ne okunur?</h3><p>Yapı hâlâ yükselişte; korunan dip kırılmadı. Ama korunan dipten beri alım
+      yapanlar ortalamada zararda: fiyat AVWAP'ın altında. Yapı ile katılımcıların durumu ayrışıyor. Takip edilecek sorular:
+      Fiyat AVWAP'ı geri alabiliyor mu? Yoksa korunan dibe (74.968) doğru mu ilerliyor?</p></article>
+      <article class="card"><h3>Ne söylemez?</h3><p>AVWAP'ın altına inmek yapının bozulduğu anlamına gelmez; bunu yalnızca korunan
+      dibin kapanışla kırılması söyler (CHoCH ↓). AVWAP bir destek ya da direnç çizgisi değildir; o noktadan beri ortalama
+      maliyeti gösterir.</p></article>
+    </div>
+  </article>
+
+  <article class="example" id="ornek-3">
+    <h3>3 · Zaman dilimleri çelişiyor</h3>
+    <p class="note">BTCUSDT · 4H · Price Action. Yapı ve AVWAP 26 Ekim 2026 08:00 UTC itibarıyla. Aynı gün 1D (örnek 2) yükselişte.</p>
+    <figure class="shot"><div class="shot-box"><img src="/assets/guide/btcusdt-4h-pa-2026-10-26.png" width="998" height="558" loading="lazy" alt="BTCUSDT 4 saatlik Price Action grafiği: CHoCH ve BOS aşağı yönlü, fiyat AVWAP'ın altında"><svg viewBox="0 0 998 558" aria-hidden="true"><g><circle cx="232" cy="190" r="14" class="n-dot"/><text x="232" y="195" text-anchor="middle" class="n-txt">1</text></g><g><circle cx="760" cy="345" r="14" class="n-dot"/><text x="760" y="350" text-anchor="middle" class="n-txt">2</text></g><g><circle cx="880" cy="305" r="14" class="n-dot"/><text x="880" y="310" text-anchor="middle" class="n-txt">3</text></g></svg></div></figure>
+    <ol class="notes">
+      <li><b>CHoCH ↓ (8 Ekim 2026).</b> 4H yapının korunan dibi (83.186) kapanışla kırıldı; yapı düşüşe döndü.</li>
+      <li><b>BOS ↓ (24 Ekim 2026).</b> Kapanış 80.940'taki son dibin altına indi; düşüş sürdü. Yeni korunan tepe 82.061 (23 Ekim).</li>
+      <li><b>AVWAP (80.585).</b> Korunan tepeden beri ortalama. Fiyat (≈80.040) altında: o tepeden beri satanlar ortalamada kârda.</li>
+    </ol>
+    <div class="two">
+      <article class="card"><h3>Ne okunur?</h3><p>Aynı gün 1D yükselişte (korunan dip 74.968), 4H düşüşte (korunan tepe 82.061).
+      İkisi de doğru: 1D haftaların, 4H günlerin hikâyesini anlatır. Şimdilik 4H'teki düşüş, 1D'nin yükseliş yapısı içinde bir
+      geri çekilme. İki sınır var: 4H korunan tepeyi (82.061) kapanışla geçerse kısa vadeli düşüş biter; düşüş 1D'nin korunan
+      dibine (74.968) uzanır ve onu kapanışla kırarsa günlük yapı da döner.</p></article>
+      <article class="card"><h3>Ne söylemez?</h3><p>Hangisinin “kazanacağını” söylemez. “Düzeltme mi, dönüş mü?” sorusunun
+      cevabı ancak sonradan, bu iki sınırdan birinde verilir. 4H'teki bir olayı tek başına büyük trendin sonu gibi okumamak gerekir.</p></article>
+    </div>
+  </article>
+
+  <article class="example" id="ornek-4">
+    <h3>4 · Kırılım mı, sahte kırılım mı?</h3>
+    <p class="note">BTCUSDT · 4H · Kritik Bölgeler. Analiz 21 Ekim 2026. Destek bandı 80.032–80.901 (5 Eylül 2026'da oluştu).</p>
+    <figure class="shot"><div class="shot-box"><img src="/assets/guide/btcusdt-4h-cz-2026-10-26.png" width="998" height="558" loading="lazy" alt="BTCUSDT 4 saatlik Kritik Bölgeler grafiği: destek bandının altına inen fitiller ve bandın içinde kalan kapanışlar"><svg viewBox="0 0 998 558" aria-hidden="true"><g><circle cx="550" cy="392" r="14" class="n-dot"/><text x="550" y="397" text-anchor="middle" class="n-txt">1</text></g><g><circle cx="806" cy="414" r="14" class="n-dot"/><text x="806" y="419" text-anchor="middle" class="n-txt">2</text></g><g><circle cx="858" cy="410" r="14" class="n-dot"/><text x="858" y="415" text-anchor="middle" class="n-txt">3</text></g></svg></div></figure>
+    <ol class="notes">
+      <li><b>15 Ekim 2026.</b> Fitil bandın uzak kenarının altına, 79.800'e indi; mum 82.418'de, bandın üstünde kapandı. Kapanışla
+      aşılmadı: sahte kırılım. Bant tuttu.</li>
+      <li><b>24 Ekim 2026, 12:00 UTC mumu.</b> Bu kez kapanış da bandın altında: 79.804. Fitilden farklı olarak bu, bandın
+      kapanışla aşılmasıdır. Sonraki mum yine bandın içinde kapandı (80.489).</li>
+      <li><b>26 Ekim 2026, 00:00 UTC mumu.</b> Bir kapanış daha bandın altında (79.598). Ardından fiyat yeniden bandın içine
+      döndü (80.416).</li>
+    </ol>
+    <div class="two">
+      <article class="card"><h3>Ne okunur?</h3><p>Aynı bant üzerinde iki farklı durum var. 15 Ekim'de yalnız fitil aştı: kenarın
+      altındaki fiyatlar kabul görmedi, bant tuttu. 24 ve 26 Ekim'de ise kapanışlar da altında kaldı: bu bir fitil değil, kapanışla
+      aşılmadır. Grafik 21 Ekim analizini gösterdiği için bant hâlâ çizili; bu kapanışlar bir sonraki değerlendirmede “olası
+      ihlal” olarak incelenir. Bölge sessizce silinmez (<a href="/tr/hakkinda/">Hakkında: analiz zamanı</a>).</p></article>
+      <article class="card"><h3>Ne söylemez?</h3><p>Fiyatın bandın içine geri dönmesi, kapanışla aşılmayı geri almaz; bölgenin
+      “kurtulduğunu” da söylemez. Bölgenin geleceğine yeniden değerlendirme karar verir. Bu örneği bilerek seçtik: her bölge
+      tutmaz ve bunu grafikte görmek, tuttuğu örnekleri görmek kadar öğreticidir.</p></article>
+    </div>
+  </article>
+</section>
+
+<section id="bolgeye-yaklasinca">
+  <h2>Fiyat bir bölgeye yaklaştığında</h2>
+  <p>Bant okuma kuralları <a href="/tr/hakkinda/">Hakkında</a> sayfasında. Burada her durumun ne söylediği ve ne
+  söylemediği yan yana:</p>
+  <div class="table-wrap"><table class="levels">
+    <thead><tr><th>Durum</th><th>Ne söyler?</th><th>Ne söylemez?</th></tr></thead>
+    <tbody>
+      <tr><td>Fitil banda girdi, kapanış dışarıda kaldı</td><td>Bölgede tepki var.</td><td>Dönüşün başladığını.</td></tr>
+      <tr><td>Kapanış bandın içinde</td><td>Bölge test ediliyor; karar henüz verilmedi.</td><td>Hangi tarafa çıkılacağını.</td></tr>
+      <tr><td>Fitil uzak kenarı aştı, kapanış içeride</td><td>Kenarın ötesi kabul görmedi; <a href="/tr/kutuphane/sahte-kirilim/">sahte kırılım</a> olabilir.</td><td>Bölgenin artık daha güçlü olduğunu.</td></tr>
+      <tr><td>Kapanış uzak kenarın ötesinde</td><td>Bölge aşıldı.</td><td>Hareketin süreceğini; geri test gelebilir.</td></tr>
+      <tr><td>Kırıldı, geri test edildi, öbür taraftan tepki geldi</td><td>Rol değişimi: eski destek direnç gibi davranıyor (<a href="/tr/kutuphane/geri-test-ve-rol-degisimi/">geri test</a>).</td><td>Yeni rolün tutacağını.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="hatalar">
+  <h2>Sık yapılan okuma hataları</h2>
+  <ul class="mistakes">
+    <li><b>Analiz tarihine bakmamak.</b> Haftalar önceki bir analizin bölgesine bugünün bölgesi gibi güvenmek.</li>
+    <li><b>Tek bir fitili kırılım sanmak.</b> Kırılımı fitil değil, uzak kenarın ötesindeki kapanış söyler.</li>
+    <li><b>1H'teki bir olayı büyük trende tercih etmek.</b> 1H'teki CHoCH, 1W'deki yapıyı değiştirmez; yalnız kendi süresini anlatır.</li>
+    <li><b>Bölgeyi kesin bir dönüş noktası sanmak.</b> Bölge, tepki ihtimalinin incelendiği yerdir; fiyatın döneceği söz verilmiş bir yer değil.</li>
+    <li><b>CHoCH'u kesinleşmiş bir dönüş olarak okumak.</b> CHoCH yapının yön değiştirdiğini söyler; yeni yönün süreceğini değil.</li>
+    <li><b>Her açık FVG'nin dolacağını düşünmek.</b> Açık FVG yalnızca henüz dolmamış bir boşluktur; dolmak zorunda değildir.</li>
+  </ul>
+</section>
+
+<section id="sozluk">
+  <h2>Kısa sözlük</h2>
+  <div class="table-wrap"><table class="levels glossary">
+    <thead><tr><th>Kısaltma</th><th>Anlamı</th></tr></thead>
+    <tbody>
+      <tr><td>RH · EQ · RL</td><td>Aralık tepesi, denge, aralık dibi. Onaylı işlem aralığının üç bandı (<a href="/tr/kutuphane/yatay-piyasa-ve-konsolidasyon/">yatay piyasa ve konsolidasyon</a>).</td></tr>
+      <tr><td>Premium · Discount</td><td>Aralığın denge üstündeki ve altındaki yarıları.</td></tr>
+      <tr><td>BOS</td><td>Yapı kırılımı: trend yönündeki son tepe ya da dibin kapanışla geçilmesi (<a href="/tr/kutuphane/yapi-kirilimi-bos/">BOS</a>).</td></tr>
+      <tr><td>CHoCH</td><td>Karakter değişimi: korunan seviyenin kapanışla kırılıp yapının yön değiştirmesi (<a href="/tr/kutuphane/karakter-degisimi-choch/">CHoCH</a>).</td></tr>
+      <tr><td>Korunan seviye</td><td>Son BOS'un ya da CHoCH'un bıraktığı, yapının yönünü belirleyen dip ya da tepe.</td></tr>
+      <tr><td>Sweep</td><td>Fitilin aralık kenarını aşıp mumun içeride kapanması (<a href="/tr/kutuphane/sweep/">Sweep</a>).</td></tr>
+      <tr><td>FVG</td><td>Sert bir hareketin bıraktığı, henüz dolmamış fiyat boşluğu (<a href="/tr/kutuphane/fvg-fair-value-gap/">FVG</a>).</td></tr>
+      <tr><td>AVWAP</td><td>Korunan seviyeden beri hacim ağırlıklı ortalama fiyat (<a href="/tr/kutuphane/avwap-sabitlenmis-vwap/">AVWAP</a>).</td></tr>
+      <tr><td>Swing</td><td>Fiyatın yön değiştirdiği tepe ya da dip (<a href="/tr/kutuphane/tepe-ve-dip-noktalari/">tepe ve dip noktaları</a>).</td></tr>
+      <tr><td>DO · WO · PWO · MO · YO</td><td>Günlük, haftalık, önceki haftalık, aylık ve yıllık açılış (<a href="/tr/hakkinda/">Hakkında: anahtar seviyeler</a>).</td></tr>
+      <tr><td>MH · MM · ML</td><td>Pazartesi tepesi, ortası ve dibi.</td></tr>
+      <tr><td>ATH</td><td>Tüm zamanların en yükseği.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cta"><a class="btn" href="/">Piyasa tablosuna git →</a> <a class="btn ghost" href="/tr/kutuphane/">Kütüphane →</a></p>
+</section>
+</div></main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span>İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Bilgilendirme ve Risk Bildirimi</button></p></footer></div>
+</body></html>
