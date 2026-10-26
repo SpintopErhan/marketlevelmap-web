@@ -10,7 +10,7 @@
   <url><loc>https://marketlevelmap.com/tr/kutuphane/grafik-formasyonlari/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/mum-formasyonlari/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/hacim-ve-volatilite/</loc><lastmod>2026-10-26</lastmod></url>
-  <url><loc>https://marketlevelmap.com/tr/kutuphane/teknik-gostergeler/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://marketlevelmap.com/tr/kutuphane/teknik-gostergeler/</loc><lastmod>2026-10-26</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/makroekonomi-ve-olaylar/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/altin-ve-gumus/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/mum-grafigi-nasil-okunur/</loc><lastmod>2026-10-23</lastmod></url>
@@ -79,6 +79,7 @@
   <url><loc>https://marketlevelmap.com/tr/kutuphane/bollinger-bantlari/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/atr/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/vwap/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://marketlevelmap.com/tr/kutuphane/avwap-sabitlenmis-vwap/</loc><lastmod>2026-10-26</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/obv/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/adx/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/tr/kutuphane/uyumsuzluk/</loc><lastmod>2026-10-23</lastmod></url>
@@ -102,7 +103,7 @@
   <url><loc>https://marketlevelmap.com/en/library/chart-patterns/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/candlestick-patterns/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/volume-and-volatility/</loc><lastmod>2026-10-26</lastmod></url>
-  <url><loc>https://marketlevelmap.com/en/library/technical-indicators/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://marketlevelmap.com/en/library/technical-indicators/</loc><lastmod>2026-10-26</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/macroeconomics-and-events/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/gold-and-silver/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/how-to-read-a-candlestick-chart/</loc><lastmod>2026-10-23</lastmod></url>
@@ -171,6 +172,7 @@
   <url><loc>https://marketlevelmap.com/en/library/bollinger-bands/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/atr/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/vwap/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://marketlevelmap.com/en/library/anchored-vwap-avwap/</loc><lastmod>2026-10-26</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/obv/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/adx/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://marketlevelmap.com/en/library/divergence/</loc><lastmod>2026-10-23</lastmod></url>

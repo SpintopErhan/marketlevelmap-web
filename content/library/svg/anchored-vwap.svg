@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <polyline class="s-guide" points="110,250 160,234 200,226 250,212 290,204 340,190 380,184 420,180 470,174 530,168" fill="none" stroke-width="2.2" stroke-dasharray="9 6" stroke-linecap="round"/>
+  <polyline class="s-line" points="24,128 70,196 110,250" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" opacity="0.55"/>
+  <polyline class="s-up" points="110,250 160,190 200,214 250,150 290,178 340,110 380,150 420,174 470,122 530,92" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle class="f-accent" cx="110" cy="250" r="5"/>
+  <circle class="s-accent" cx="420" cy="177" r="8" fill="none" stroke-width="1.5"/>
+  <g class="t-accent" text-anchor="middle">
+    <text x="110" y="278">{{anchor_1}}</text>
+    <text x="110" y="294">{{anchor_2}}</text>
+  </g>
+  <text class="t-mono t-guide" x="536" y="192" text-anchor="end" font-weight="600">{{avwap}}</text>
+  <g class="t-label" text-anchor="middle">
+    <text x="420" y="214">{{touch_1}}</text>
+    <text x="420" y="230">{{touch_2}}</text>
+  </g>
+  <g class="t-label">
+    <text x="140" y="112">{{above_1}}</text>
+    <text x="140" y="128">{{above_2}}</text>
+  </g>
+</svg>

@@ -340,16 +340,17 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     if(!placed)rows.appendChild(nowRow(4,p));
     fvgRows.textContent="";fvgRows.appendChild(rows);
   }
-  // The explanation above the Structure table, with BOS, CHoCH and Sweep as library links (README "Library links").
+  // The explanation above the Structure table, with BOS, CHoCH, Sweep and AVWAP as library links (README "Library links").
   var structureLib={
     BOS:{en:["/en/library/break-of-structure-bos/","What is a BOS? (library)"],tr:["/tr/kutuphane/yapi-kirilimi-bos/","BOS nedir? (kütüphane)"]},
     CHoCH:{en:["/en/library/change-of-character-choch/","What is a CHoCH? (library)"],tr:["/tr/kutuphane/karakter-degisimi-choch/","CHoCH nedir? (kütüphane)"]},
-    Sweep:{en:["/en/library/sweep/","What is a sweep? (library)"],tr:["/tr/kutuphane/sweep/","Sweep nedir? (kütüphane)"]}
+    Sweep:{en:["/en/library/sweep/","What is a sweep? (library)"],tr:["/tr/kutuphane/sweep/","Sweep nedir? (kütüphane)"]},
+    AVWAP:{en:["/en/library/anchored-vwap-avwap/","What is an AVWAP? (library)"],tr:["/tr/kutuphane/avwap-sabitlenmis-vwap/","AVWAP nedir? (kütüphane)"]}
   };
   function renderStructureSub(w){
     var sub=document.getElementById("structure-sub"),lang=document.getElementById("lang").value==="tr"?"tr":"en";
     sub.textContent="";
-    w.structureSub.split(/(BOS|CHoCH|Sweep)(?=:)/).forEach(function(part){
+    w.structureSub.split(/(BOS|CHoCH|Sweep|AVWAP)(?=:)/).forEach(function(part){
       var lib=structureLib[part];
       if(!lib){sub.appendChild(document.createTextNode(part));return}
       var a=document.createElement("a");a.className="lib-link";a.href=lib[lang][0];a.textContent=part;

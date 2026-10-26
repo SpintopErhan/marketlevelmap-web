@@ -1,0 +1,187 @@
+id: anchored-vwap
+kind: indicators
+order: 75
+related: [vwap, change-of-character, break-of-structure, volume]
+example: null
+updated: 2026-10-26
+
+tr:
+  slug: avwap-sabitlenmis-vwap
+  name: "AVWAP: sabitlenmiş VWAP"
+  alt_name: Anchored VWAP (AVWAP)
+  summary: >-
+    AVWAP, belirli bir noktadan, örneğin önemli bir tepe ya da dipten bu yana işlem gören fiyatın hacim
+    ağırlıklı ortalamasıdır. Fiyatın AVWAP'ın üzerinde ya da altında kalması, o noktadan beri işlem
+    yapanların ortalama fiyatına göre nerede durduğunu gösterir.
+  sections:
+    - type: text
+      id: definition
+      title: AVWAP nedir?
+      paragraphs:
+        - >-
+          VWAP, bir başlangıç noktasından bu yana işlem gören fiyatların **hacimle ağırlıklandırılmış
+          ortalamasıdır**: yüksek hacimle işlem gören fiyatlar ortalamayı daha çok etkiler. Günlük ya
+          da haftalık VWAP takvimden başlar.
+        - >-
+          **Sabitlenmiş VWAP (AVWAP)** ise takvimden değil, grafikteki bir **olaydan** başlatılır:
+          önemli bir dip ya da tepe, bir kırılım mumu ya da sert bir hareketin başladığı mum. Böylece
+          AVWAP, o olaydan bu yana işlem yapanların **ortalama fiyatına** yaklaşık bir referans olur.
+      note: Hesaplamanın kendisi VWAP sayfasında anlatılıyor; AVWAP'ı ondan ayıran tek şey başlangıç noktasıdır.
+    - type: steps
+      id: how-it-forms
+      title: Nasıl oluşur?
+      items:
+        - title: Bir çapa noktası seçilir.
+          text: Genellikle anlamlı bir dönüş noktasıdır; örneğin yükselişin başladığı dip ya da düşüşün başladığı tepe.
+        - title: Toplamlar o mumdan başlar.
+          text: Her mumun tipik fiyatı hacmiyle çarpılır ve toplanır; ayrıca hacimler de toplanır. Toplamlar çapa mumundan başlar.
+        - title: Ortalama her mumda güncellenir.
+          text: "AVWAP = toplam (fiyat × hacim) ÷ toplam hacim. Her yeni mum ortalamayı biraz değiştirir."
+        - title: Etki zamanla azalır.
+          text: Çapadan uzaklaştıkça toplam hacim büyür; yeni mumlar ortalamayı daha az oynatır ve eğri yavaşlar.
+    - type: scenarios
+      id: readings
+      title: Fiyat ile AVWAP arasındaki üç durum
+      intro: AVWAP genellikle fiyatın ona göre nerede durduğuna bakılarak okunur.
+      items:
+        - title: Fiyat üzerinde
+          tone: up
+          text: Fiyat, çapadan bu yana işlem gören fiyatların **ortalamasının üzerinde**. O noktadan beri alanlar ortalamada kârdadır.
+        - title: Fiyat altında
+          tone: down
+          text: Fiyat ortalamanın **altında**. O noktadan beri alanlar ortalamada zarardadır.
+        - title: AVWAP'a dönüş
+          tone: neutral
+          text: Fiyat AVWAP'a geri gelir. Geri çekilmelerin bu ortalama civarında durup durmadığı ya da onu kapanışla geçip geçmediği izlenir.
+    - type: limits
+      shows:
+        - Çapa noktasından bu yana işlem gören fiyatların hacim ağırlıklı ortalamasını
+        - Fiyatın bu ortalamanın üzerinde mi altında mı olduğunu
+        - O noktadan beri işlem yapanların ortalamada kârda mı zararda mı olduğuna dair yaklaşık bir fikir
+      not_proves:
+        - AVWAP'ın destek ya da direnç gibi çalışacağını
+        - Herkesin gerçek alış maliyetini; mum verisi tek tek işlemleri değil, mumun özetini taşır
+        - Farklı bir çapa noktasından başlatılmış AVWAP'ın aynı sonucu vereceğini
+    - type: zones
+      intro: MarketLevelMap'in Price Action görünümünde AVWAP şu kurallarla gösterilir.
+      points:
+        - Çapa, yapının **korunan swing'idir** (korunan dip ya da tepe). Korunan seviye değişince AVWAP da yeni çapadan başlar.
+        - Yapının yönü **belirsizken** AVWAP gösterilmez.
+        - Değerler motorun çapadan itibaren hesapladığı kümülatif değerlerdir; site bunları yeniden hesaplamaz.
+        - Grafikte açık renkli, uzun kesikli bir eğri ve fiyat ekseninde **AVWAP** etiketiyle çizilir. Eğri, yapının hesaplandığı son kapanmış muma kadar uzanır.
+        - Price Action'daki "Yapı" tablosunda korunan seviyenin hemen altında bir **AVWAP** satırı vardır (değer, çapa tarihi ve fiyata uzaklık).
+    - type: box
+      title: Çapa seçimi her şeydir
+      text: >-
+        Aynı grafikte farklı noktalardan başlatılan AVWAP'lar farklı seviyeler verir. Bir AVWAP'tan söz
+        ederken nereden başlatıldığını belirtmek gerekir; MarketLevelMap'te bu nokta her zaman korunan
+        swing'dir.
+  confusions:
+    - id: vwap
+      text: VWAP takvime göre (gün, hafta) başlar; AVWAP grafikteki bir olaydan başlatılır.
+    - id: moving-averages
+      text: Hareketli ortalama sabit sayıda son mumu eşit ağırlıkla ortalar; AVWAP çapadan bu yana bütün mumları hacme göre ağırlıklandırır.
+  key_points:
+    - AVWAP, seçilen bir noktadan bu yana hacim ağırlıklı ortalama fiyattır.
+    - Çapa noktası değişince AVWAP da değişir.
+    - Fiyatın üzerinde kalması, o noktadan beri alanların ortalamada kârda olduğunu gösterir.
+    - AVWAP'ın destek ya da direnç gibi çalışacağı garanti değildir.
+  svg_labels:
+    anchor_1: "Çapa:"
+    anchor_2: korunan dip
+    avwap: AVWAP
+    touch_1: Geri çekilme
+    touch_2: AVWAP'a yaklaşır
+    above_1: Fiyat AVWAP'ın
+    above_2: üzerinde
+  svg_alt: "Sabitlenmiş VWAP çizimi: düşüşün bittiği dip turuncu noktayla çapa olarak işaretleniyor; ondan sonra yükselen fiyatın altında kesikli bir AVWAP eğrisi yavaşça yükseliyor; bir geri çekilmede fiyat eğriye yaklaşıyor"
+  svg_caption: Turuncu nokta çapayı (korunan dip), kesikli eğri o noktadan bu yana hacim ağırlıklı ortalamayı gösterir. Eğri, çapadan uzaklaştıkça daha yavaş hareket eder.
+
+en:
+  slug: anchored-vwap-avwap
+  name: "AVWAP: anchored VWAP"
+  summary: >-
+    An AVWAP is the volume-weighted average of the prices traded since a chosen point, such as an
+    important high or low. Whether price is above or below it shows where price stands against the
+    average price of those who traded since that point.
+  sections:
+    - type: text
+      id: definition
+      title: What is an AVWAP?
+      paragraphs:
+        - >-
+          VWAP is the **volume-weighted average** of the prices traded since a starting point: prices
+          traded on heavy volume affect the average more. A daily or weekly VWAP starts from the calendar.
+        - >-
+          An **anchored VWAP (AVWAP)** starts not from the calendar but from an **event** on the chart: an
+          important low or high, a breakout candle or the candle where a sharp move began. That makes the
+          AVWAP an approximate reference for the **average price** of those who have traded since that event.
+      note: The calculation itself is explained on the VWAP page; the only thing that sets AVWAP apart is its starting point.
+    - type: steps
+      id: how-it-forms
+      title: How it forms
+      items:
+        - title: An anchor point is chosen.
+          text: Usually a meaningful turning point, such as the low a rise started from or the high a decline started from.
+        - title: The totals start at that candle.
+          text: Each candle's typical price is multiplied by its volume and added up, and the volumes are added up too. Both totals start at the anchor candle.
+        - title: The average updates every candle.
+          text: "AVWAP = total (price × volume) ÷ total volume. Each new candle shifts the average a little."
+        - title: The effect fades over time.
+          text: The further from the anchor, the larger the total volume; new candles move the average less and the curve slows down.
+    - type: scenarios
+      id: readings
+      title: Three states between price and the AVWAP
+      intro: An AVWAP is usually read from where price stands against it.
+      items:
+        - title: Price above
+          tone: up
+          text: Price is **above the average** of the prices traded since the anchor. Those who bought since that point are on average in profit.
+        - title: Price below
+          tone: down
+          text: Price is **below the average**. Those who bought since that point are on average at a loss.
+        - title: Back to the AVWAP
+          tone: neutral
+          text: Price comes back to the AVWAP. Watch whether pullbacks stop around this average or clear it on a close.
+    - type: limits
+      shows:
+        - The volume-weighted average of the prices traded since the anchor
+        - Whether price is above or below that average
+        - A rough idea of whether those who traded since that point are on average in profit or at a loss
+      not_proves:
+        - That the AVWAP will act as support or resistance
+        - Anyone's actual entry price; candle data summarises the candle, not individual trades
+        - That an AVWAP started from a different anchor would give the same result
+    - type: zones
+      intro: In MarketLevelMap's Price Action view the AVWAP is shown by these rules.
+      points:
+        - The anchor is the structure's **protected swing** (protected low or high). When the protected level changes, the AVWAP starts again from the new anchor.
+        - While the structure's direction is **undetermined**, no AVWAP is shown.
+        - The values are the engine's cumulative values from the anchor; the site does not recalculate them.
+        - On the chart it is a light, long-dashed curve with an **AVWAP** label on the price axis. The curve runs up to the last closed candle the structure was computed with.
+        - In the "Structure" table an **AVWAP** row sits right below the protected level (value, anchor date and distance to price).
+    - type: box
+      title: The anchor is everything
+      text: >-
+        AVWAPs started from different points on the same chart give different levels. When you talk about
+        an AVWAP, say where it starts; on MarketLevelMap that point is always the protected swing.
+  confusions:
+    - id: vwap
+      text: A VWAP starts from the calendar (day, week); an AVWAP starts from an event on the chart.
+    - id: moving-averages
+      text: A moving average weights a fixed number of recent candles equally; an AVWAP weights every candle since the anchor by its volume.
+  key_points:
+    - An AVWAP is the volume-weighted average price since a chosen point.
+    - When the anchor changes, the AVWAP changes.
+    - Price holding above it means those who bought since that point are on average in profit.
+    - There is no guarantee that an AVWAP acts as support or resistance.
+  svg_labels:
+    anchor_1: "Anchor:"
+    anchor_2: protected low
+    avwap: AVWAP
+    touch_1: The pullback
+    touch_2: nears the AVWAP
+    above_1: Price above
+    above_2: the AVWAP
+  svg_alt: "Anchored VWAP illustration: the low where a decline ended is marked with an orange dot as the anchor; after it, a dashed AVWAP curve rises slowly below the rising price; in a pullback price comes close to the curve"
+  svg_caption: The orange dot marks the anchor (the protected low) and the dashed curve the volume-weighted average since that point. The curve moves more slowly the further it gets from the anchor.
