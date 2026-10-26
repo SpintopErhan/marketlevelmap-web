@@ -35,12 +35,22 @@ const ANALYSIS_TEXT = {
     description: (asset, tf) => `${asset}${tf ? " " + tf + " grafiğinin" : ""} Critical Zones analizi: destek ve direnç bölgeleri ve anahtar seviyeler.`,
   },
 };
+// The same for a Price Action link (`method=pa`, README "Price Action view").
+const PA_TEXT = {
+  en: {
+    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} price action range · ${SITE}`,
+    description: (asset, tf) => `Price Action analysis of ${asset}${tf ? " on the " + tf + " chart" : ""}: the confirmed range, its equilibrium, where the price sits and the nearest fair value gaps.`,
+  },
+  tr: {
+    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} price action aralığı · ${SITE}`,
+    description: (asset, tf) => `${asset}${tf ? " " + tf + " grafiğinin" : ""} Price Action analizi: onaylı aralık, dengesi, fiyatın aralıktaki yeri ve en yakın FVG'ler.`,
+  },
+};
 
-// Timeframes of the asset's active Critical Zones analyses (graphicKey "<source>:<ASSET>:<tf>:…"), or null
-// when the asset has none, so a preview never describes an analysis that does not exist. Price Action
-// entries are left out, as on the page.
+// Timeframes of the asset's active analyses of one discipline (graphicKey "<source>:<ASSET>:<tf>:…"), or
+// null when the asset has none, so a preview never describes an analysis that does not exist.
 const PRICE_ACTION = /(^|[^a-z])pa([^a-z]|$)|price[ _-]?action/;
-async function activeTimeframes(env, asset) {
+async function activeTimeframes(env, asset, priceAction = false) {
   const bucket = env.MARKETLEVELMAP_PUBLIC;
   if (!bucket) return null;
   try {
@@ -49,7 +59,7 @@ async function activeTimeframes(env, asset) {
     const pointer = await object.json();
     const tfs = (pointer?.entries || [])
       .filter((entry) => (entry.image || entry.report) && (entry.graphicKey || "").split(":")[1] === asset)
-      .filter((entry) => !PRICE_ACTION.test((entry.graphicKey || "").toLowerCase()))
+      .filter((entry) => PRICE_ACTION.test((entry.graphicKey || "").toLowerCase()) === priceAction)
       .map((entry) => ((entry.graphicKey || "").split(":")[2] || "").toLowerCase());
     return tfs.length ? tfs : null;
   } catch (_) {
@@ -72,8 +82,9 @@ export async function onRequest(context) {
     if (key === "/bulletin") {
       const asset = (url.searchParams.get("asset") || "").toUpperCase();
       const tf = (url.searchParams.get("tf") || "").toLowerCase();
-      const text = ANALYSIS_TEXT[url.searchParams.get("lang") === "tr" ? "tr" : "en"];
-      const tfs = /^[A-Z0-9]{2,20}$/.test(asset) ? await activeTimeframes(context.env, asset) : null;
+      const priceAction = (url.searchParams.get("method") || "").toLowerCase() === "pa";
+      const text = (priceAction ? PA_TEXT : ANALYSIS_TEXT)[url.searchParams.get("lang") === "tr" ? "tr" : "en"];
+      const tfs = /^[A-Z0-9]{2,20}$/.test(asset) ? await activeTimeframes(context.env, asset, priceAction) : null;
       if (tfs) {
         const label = tfs.includes(tf) ? tf.toUpperCase() : "";
         title = text.title(asset, label);

@@ -24,6 +24,16 @@ main:not([data-state="live"]) #analysis,main:not([data-state="live"]) .head-meta
 .tabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--line)}
 .tab{margin-bottom:-1px;padding:10px 16px;border:0;border-bottom:2px solid transparent;background:none;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer}
 .tab[aria-selected="true"]{color:var(--cz);border-color:var(--cz)}
+#analysis[data-method="pa"] .tab[aria-selected="true"]{color:var(--pa);border-color:var(--pa)}
+.method-switch{display:inline-flex;margin:0 0 14px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.method-switch button{padding:8px 16px;border:0;background:none;color:var(--muted);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.method-switch button+button{border-left:1px solid var(--line)}
+.method-switch button[aria-pressed="true"][data-method="cz"]{background:color-mix(in srgb,var(--cz) 16%,transparent);color:var(--cz)}
+.method-switch button[aria-pressed="true"][data-method="pa"]{background:color-mix(in srgb,var(--pa) 16%,transparent);color:var(--pa)}
+.method-switch button:disabled{opacity:.45;cursor:default}
+.range-summary{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0 0 10px;font-size:13px}
+.range-summary b{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-weight:600}
+.range-summary .where{color:var(--pa);font-weight:700}
 .panel{border:1px solid var(--line);border-radius:10px;background:var(--panel)}
 .chart-panel{overflow:hidden}
 .chart-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px}
@@ -76,6 +86,8 @@ th.r,td.r{text-align:right}
 .badge{display:inline-block;padding:2px 8px;border:1px solid transparent;border-radius:4px;font-size:11px;font-weight:700}
 .badge.resistance{background:color-mix(in srgb,var(--down) 16%,transparent);color:var(--down)}
 .badge.support{background:color-mix(in srgb,var(--up) 16%,transparent);color:var(--up)}
+.badge.equilibrium{background:rgba(83,139,215,.18);color:#5b8fd9}
+.badge.fvg{border:1px dashed rgba(196,202,214,.7);background:rgba(170,176,188,.12);color:var(--fg)}
 .badge.code{border-color:color-mix(in srgb,var(--cz) 55%,transparent);color:var(--cz);font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
 .ladder tr.undrawn td{opacity:.55}
 .ladder input.eye{appearance:none;-webkit-appearance:none;display:inline-block;width:16px;height:16px;margin:0 10px 0 0;padding:0;border:0;vertical-align:middle;cursor:pointer;background:var(--muted);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3l18 18'/%3E%3Cpath d='M10.6 5.1A10.9 10.9 0 0 1 12 5c6.5 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.2M6.6 6.6C3.8 8.4 2 12 2 12s3.5 7 10 7c1.9 0 3.6-.6 5-1.4'/%3E%3Cpath d='M9.9 9.9a3 3 0 0 0 4.2 4.2'/%3E%3C/svg%3E") center/16px no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3l18 18'/%3E%3Cpath d='M10.6 5.1A10.9 10.9 0 0 1 12 5c6.5 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.2M6.6 6.6C3.8 8.4 2 12 2 12s3.5 7 10 7c1.9 0 3.6-.6 5-1.4'/%3E%3Cpath d='M9.9 9.9a3 3 0 0 0 4.2 4.2'/%3E%3C/svg%3E") center/16px no-repeat}
@@ -94,7 +106,8 @@ th.r,td.r{text-align:right}
   .shell{width:min(1680px,100%)}
   .content{max-width:none}
   #analysis{display:grid;grid-template-columns:minmax(0,1fr) 460px;column-gap:28px;align-items:start}
-  #analysis>.tabs,#analysis>.chart-panel,#analysis>.note,#analysis>#archive-block{grid-column:1}
+  #analysis>.method-switch,#analysis>.tabs,#analysis>.chart-panel,#analysis>.note,#analysis>#archive-block{grid-column:1;justify-self:start}
+  #analysis>.tabs,#analysis>.chart-panel,#analysis>.note,#analysis>#archive-block{justify-self:stretch}
   #analysis>.side-col{grid-column:2;grid-row:1 / span 6;align-self:start;position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-x:hidden;overflow-y:auto}
   .side-col>.block{margin:0 0 24px}
   .side-col .ladder{min-width:0}
@@ -121,12 +134,18 @@ th.r,td.r{text-align:right}
 <div class="asset-head"><div><h1 id="title"></h1><p class="sub"><span id="pair-name"></span><span class="head-meta"> · <span id="feed-name"></span></span></p></div>
 <div class="head-price head-meta"><div><span class="num big" id="live-price">—</span><span class="num chg" id="live-change"></span></div><small id="analysis-at"></small></div></div>
 <div class="page-status" id="page-status" data-i18n="loadingPage">Loading analysis…</div>
-<div id="analysis">
+<div id="analysis" data-method="cz">
+<div class="method-switch" id="method-switch" role="group" aria-label="Analysis discipline"><button type="button" data-method="cz" aria-pressed="true" data-i18n="methodCz">Critical Zones</button><button type="button" data-method="pa" aria-pressed="false" disabled data-i18n="methodPa">Price Action</button></div>
 <div class="tabs" role="tablist" id="tf-tabs"></div>
 <section class="panel chart-panel"><div class="chart-head"><strong id="chart-name"></strong><div class="chart-actions"><div class="share-wrap" id="share-wrap" hidden><button class="ghost-btn" id="share" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="share-menu" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg><span data-i18n="share">Share</span></button><div class="share-menu" id="share-menu" role="menu" hidden><button type="button" role="menuitem" data-share="image" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4"/><circle cx="15.5" cy="8.5" r="1.5"/></svg><span data-i18n="shareImage">Share image…</span></button><a role="menuitem" data-share="x" target="_blank" rel="noopener noreferrer"><svg class="brand" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg><span>X (Twitter)</span></a><a role="menuitem" data-share="telegram" target="_blank" rel="noopener noreferrer"><svg class="brand" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.47l-.38 5.33c.54 0 .78-.23 1.06-.51l2.55-2.43 5.28 3.86c.97.53 1.66.25 1.92-.89l3.48-16.3c.31-1.44-.52-2-1.47-1.65L1.3 10.85c-1.4.55-1.38 1.33-.24 1.68l5.21 1.63L18.37 6.6c.57-.38 1.09-.17.66.21z"/></svg><span>Telegram</span></a><button type="button" role="menuitem" data-share="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span data-i18n="copyLink">Copy link</span></button></div></div><button class="ghost-btn" id="download" type="button" hidden disabled><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6z"/></svg><span data-i18n="download">Download</span></button><button class="ghost-btn" id="expand" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg><span data-i18n="expand">Expand</span></button></div></div>
 <div class="chart" id="chart" data-state="loading"><div class="live-chart" id="live-chart" hidden></div><img id="chart-img" alt=""></div><div class="chart-foot" id="chart-time"></div></section>
 <section class="panel note" id="note" hidden><div class="note-head"><h2 data-i18n="notes">Analysis note</h2><span class="note-by" id="note-by"></span></div><p id="note-text"></p></section>
 <aside class="side-col">
+<section class="block" id="range-block" hidden><div class="block-head"><div><h2 data-i18n="rangeTitle">Price range</h2><p data-i18n="rangeSub">Confirmed range and its equilibrium · where the price sits</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span></div></div>
+<div class="range-summary" id="range-summary"></div>
+<div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colLevel">Level</th><th data-i18n="colZone">Zone</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="range-rows"></tbody></table></div></section>
+<section class="block" id="fvg-block" hidden><div class="block-head"><div><h2>FVG</h2><p data-i18n="fvgSub">Nearest open fair value gaps · only the unfilled part is drawn</p></div></div>
+<div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colType">Type</th><th data-i18n="colZone">Zone</th><th class="r" data-i18n="colFilled">Filled</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="fvg-rows"></tbody></table></div></section>
 <section class="block" id="zones-block" hidden><div class="block-head"><div><h2 data-i18n="zonesTitle">Support and resistance zones</h2><p data-i18n="zonesSub">Sorted by price · distance to the zone's nearest edge</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span></div></div>
 <div class="table-wrap"><table class="ladder"><thead><tr><th data-i18n="colType">Type</th><th data-i18n="colZone">Zone</th><th class="r formed" data-i18n="colFormed">Formed</th><th class="r" data-i18n="colDistance">Distance</th></tr></thead><tbody id="zone-rows"></tbody></table></div></section>
 <section class="block" id="levels-block" hidden><div class="block-head"><div><h2 data-i18n="levelsTitle">Key levels</h2><p data-i18n="levelsSub">Period opens, Monday range and the all-time high</p></div><div class="right"><span class="demo-badge" data-i18n="demo" hidden>Sample data</span></div></div>
@@ -139,8 +158,8 @@ th.r,td.r{text-align:right}
 <dialog id="chart-zoom" aria-labelledby="zoom-title"><div class="zoom-heading"><strong id="zoom-title"></strong><button id="close-chart-zoom" type="button" autofocus>Close ×</button></div><div class="zoom-scroll"><img id="zoom-image" alt=""></div></dialog>
 <script>
 var copy={
-  en:{title:"MarketLevelMap — Analysis",back:"← Market table",loadingPage:"Loading analysis…",unavailable:"This analysis is not available right now. Please check back later.",notListed:"There is no active analysis for this asset right now.",expand:"Expand",download:"Download",downloadTitle:"Download the chart as PNG",premiumOnly:"For premium members",notAdvice:"Not investment advice.",share:"Share",shareImage:"Share image…",copyLink:"Copy link",linkCopied:"Link copied",shareText:"{asset} {tf} support and resistance zones",close:"Close ×",chartLoading:"Loading chart…",chartUnavailable:"The chart cannot be shown right now. Zones and levels are listed beside it.",notes:"Analysis note",zonesTitle:"Support and resistance zones",zonesSub:"Sorted by price · distance to the zone's nearest edge",showAll:"Show all zones",showDrawn:"Show drawn zones",colType:"Type",colZone:"Zone",colFormed:"Formed",colDistance:"Distance",levelsTitle:"Key levels",showOnChart:"Show on chart",levelsSub:"Period opens, Monday range and the all-time high",colCode:"Code",colLevel:"Level",colPrice:"Price",fullArchive:"Full archive →",archiveTitle:"Earlier {asset} analyses",demo:"Sample data",current:"Current price",resistance:"Resistance",support:"Support",inside:"inside",analysis:"Analysis",chartAsOf:"Chart data as of",chartUploaded:"Chart uploaded",published:"Published",lastCandle:"Last closed candle",liveOff:"Live candles unavailable",ATH:"All-time high",OATH:"Old ATH",PWO:"Previous weekly open",WO:"Weekly open",DO:"Daily open",MO:"Monthly open",YO:"Yearly open",MH:"Monday high",MM:"Monday mid",ML:"Monday low",levelsLive:"DO, WO and MO are live; other levels as of {date}.",levelsAsOf:"Levels as of {date}."},
-  tr:{title:"MarketLevelMap — Analiz",back:"← Piyasa tablosu",loadingPage:"Analiz yükleniyor…",unavailable:"Bu analiz şu anda görüntülenemiyor. Lütfen daha sonra tekrar deneyin.",notListed:"Bu varlık için şu anda yayında analiz yok.",expand:"Büyüt",download:"İndir",downloadTitle:"Grafiği PNG olarak indir",premiumOnly:"Premium üyelere özel",notAdvice:"Yatırım tavsiyesi değildir.",share:"Paylaş",shareImage:"Görseli paylaş…",copyLink:"Bağlantıyı kopyala",linkCopied:"Bağlantı kopyalandı",shareText:"{asset} {tf} destek ve direnç bölgeleri",close:"Kapat ×",chartLoading:"Grafik yükleniyor…",chartUnavailable:"Grafik şu an gösterilemiyor. Bölgeler ve seviyeler yandaki tablolarda.",notes:"Analiz notu",zonesTitle:"Destek ve Direnç Bölgeleri",zonesSub:"Fiyata göre sıralı · uzaklık bölgenin en yakın kenarına göre",showAll:"Tüm bölgeleri göster",showDrawn:"Çizilen bölgeleri göster",colType:"Tür",colZone:"Bölge",colFormed:"Oluşum",colDistance:"Uzaklık",levelsTitle:"Anahtar Seviyeler",showOnChart:"Grafikte göster",levelsSub:"Dönem açılışları, pazartesi aralığı ve tüm zamanların en yükseği",colCode:"Kod",colLevel:"Seviye",colPrice:"Fiyat",fullArchive:"Tüm arşiv →",archiveTitle:"Önceki {asset} analizleri",demo:"Örnek veriler",current:"Güncel fiyat",resistance:"Direnç",support:"Destek",inside:"içinde",analysis:"Analiz",chartAsOf:"Grafik verisi:",chartUploaded:"Grafik yüklendi:",published:"Yayınlandı",lastCandle:"Son kapanan mum",liveOff:"Canlı mumlar kullanılamıyor",ATH:"Tüm zamanların en yükseği",OATH:"Old ATH",PWO:"Önceki haftalık açılış",WO:"Haftalık açılış",DO:"Günlük açılış",MO:"Aylık açılış",YO:"Yıllık açılış",MH:"Pazartesi yüksek",MM:"Pazartesi orta",ML:"Pazartesi düşük",levelsLive:"DO, WO ve MO canlıdır; diğer seviyeler {date} itibarıyla.",levelsAsOf:"Seviyeler {date} itibarıyla."}
+  en:{title:"MarketLevelMap — Analysis",back:"← Market table",loadingPage:"Loading analysis…",unavailable:"This analysis is not available right now. Please check back later.",notListed:"There is no active analysis for this asset right now.",expand:"Expand",download:"Download",downloadTitle:"Download the chart as PNG",premiumOnly:"For premium members",notAdvice:"Not investment advice.",share:"Share",shareImage:"Share image…",copyLink:"Copy link",linkCopied:"Link copied",shareText:"{asset} {tf} support and resistance zones",close:"Close ×",chartLoading:"Loading chart…",chartUnavailable:"The chart cannot be shown right now. Zones and levels are listed beside it.",notes:"Analysis note",zonesTitle:"Support and resistance zones",zonesSub:"Sorted by price · distance to the zone's nearest edge",showAll:"Show all zones",showDrawn:"Show drawn zones",colType:"Type",colZone:"Zone",colFormed:"Formed",colDistance:"Distance",levelsTitle:"Key levels",showOnChart:"Show on chart",levelsSub:"Period opens, Monday range and the all-time high",colCode:"Code",colLevel:"Level",colPrice:"Price",fullArchive:"Full archive →",archiveTitle:"Earlier {asset} analyses",demo:"Sample data",current:"Current price",resistance:"Resistance",support:"Support",inside:"inside",analysis:"Analysis",chartAsOf:"Chart data as of",chartUploaded:"Chart uploaded",published:"Published",lastCandle:"Last closed candle",liveOff:"Live candles unavailable",ATH:"All-time high",OATH:"Old ATH",PWO:"Previous weekly open",WO:"Weekly open",DO:"Daily open",MO:"Monthly open",YO:"Yearly open",MH:"Monday high",MM:"Monday mid",ML:"Monday low",levelsLive:"DO, WO and MO are live; other levels as of {date}.",levelsAsOf:"Levels as of {date}.",methodCz:"Critical Zones",methodPa:"Price Action",shareTextPa:"{asset} {tf} price action range",rangeTitle:"Price range",rangeSub:"Confirmed range and its equilibrium · where the price sits",RH:"Range high",EQ:"Equilibrium",RL:"Range low",rangeWidth:"Range width",rangePosition:"Price at {pct} of the range",premium:"premium",discount:"discount",equilibrium:"equilibrium",aboveRange:"above the range",belowRange:"below the range",fvgSub:"Nearest open fair value gaps · only the unfilled part is drawn",colFilled:"Filled",fvgUp:"FVG ↑",fvgDown:"FVG ↓"},
+  tr:{title:"MarketLevelMap — Analiz",back:"← Piyasa tablosu",loadingPage:"Analiz yükleniyor…",unavailable:"Bu analiz şu anda görüntülenemiyor. Lütfen daha sonra tekrar deneyin.",notListed:"Bu varlık için şu anda yayında analiz yok.",expand:"Büyüt",download:"İndir",downloadTitle:"Grafiği PNG olarak indir",premiumOnly:"Premium üyelere özel",notAdvice:"Yatırım tavsiyesi değildir.",share:"Paylaş",shareImage:"Görseli paylaş…",copyLink:"Bağlantıyı kopyala",linkCopied:"Bağlantı kopyalandı",shareText:"{asset} {tf} destek ve direnç bölgeleri",close:"Kapat ×",chartLoading:"Grafik yükleniyor…",chartUnavailable:"Grafik şu an gösterilemiyor. Bölgeler ve seviyeler yandaki tablolarda.",notes:"Analiz notu",zonesTitle:"Destek ve Direnç Bölgeleri",zonesSub:"Fiyata göre sıralı · uzaklık bölgenin en yakın kenarına göre",showAll:"Tüm bölgeleri göster",showDrawn:"Çizilen bölgeleri göster",colType:"Tür",colZone:"Bölge",colFormed:"Oluşum",colDistance:"Uzaklık",levelsTitle:"Anahtar Seviyeler",showOnChart:"Grafikte göster",levelsSub:"Dönem açılışları, pazartesi aralığı ve tüm zamanların en yükseği",colCode:"Kod",colLevel:"Seviye",colPrice:"Fiyat",fullArchive:"Tüm arşiv →",archiveTitle:"Önceki {asset} analizleri",demo:"Örnek veriler",current:"Güncel fiyat",resistance:"Direnç",support:"Destek",inside:"içinde",analysis:"Analiz",chartAsOf:"Grafik verisi:",chartUploaded:"Grafik yüklendi:",published:"Yayınlandı",lastCandle:"Son kapanan mum",liveOff:"Canlı mumlar kullanılamıyor",ATH:"Tüm zamanların en yükseği",OATH:"Old ATH",PWO:"Önceki haftalık açılış",WO:"Haftalık açılış",DO:"Günlük açılış",MO:"Aylık açılış",YO:"Yıllık açılış",MH:"Pazartesi yüksek",MM:"Pazartesi orta",ML:"Pazartesi düşük",levelsLive:"DO, WO ve MO canlıdır; diğer seviyeler {date} itibarıyla.",levelsAsOf:"Seviyeler {date} itibarıyla.",methodCz:"Kritik Bölgeler",methodPa:"Price Action",shareTextPa:"{asset} {tf} price action aralığı",rangeTitle:"Fiyat Aralığı",rangeSub:"Onaylı aralık ve dengesi · fiyatın aralıktaki yeri",RH:"Aralık tepesi",EQ:"Denge",RL:"Aralık dibi",rangeWidth:"Aralık genişliği",rangePosition:"Fiyat aralığın {pct} seviyesinde",premium:"premium",discount:"discount",equilibrium:"denge",aboveRange:"aralığın üstünde",belowRange:"aralığın altında",fvgSub:"Fiyata en yakın açık FVG'ler · yalnız dolmamış kısım çizilir",colFilled:"Doluluk",fvgUp:"FVG ↑",fvgDown:"FVG ↓"}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 var q=new URLSearchParams(location.search),asset=(q.get("asset")||"BTCUSDT").toUpperCase();
@@ -208,14 +227,18 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
    The chart itself is interactive (assets/live-chart.js): closed candles from R2 with the report's
    zones on top and the live price as a line; the published PNG is the fallback.
    Earlier analyses come from /api/archive. On preview hosts DemoData fills what the engine does not
-   publish yet, with a "Sample data" badge. Only Critical Zones is shown for now; Price Action entries
-   are kept out of the tabs until that method is presented again. */
+   publish yet, with a "Sample data" badge. A switch chooses the discipline (README "Price Action view"):
+   Critical Zones (CZ and CZ Short entries) or Price Action (PA entries with a confirmed range). */
 (function(){
   var page=document.querySelector("main"),status=document.getElementById("page-status"),tabs=document.getElementById("tf-tabs");
   var chart=document.getElementById("chart"),img=document.getElementById("chart-img"),expand=document.getElementById("expand"),download=document.getElementById("download"),share=document.getElementById("share"),shareWrap=document.getElementById("share-wrap"),chartName=document.getElementById("chart-name"),chartTime=document.getElementById("chart-time");
   var noteBox=document.getElementById("note"),noteText=document.getElementById("note-text"),noteBy=document.getElementById("note-by");
   var zonesBlock=document.getElementById("zones-block"),zoneRows=document.getElementById("zone-rows");
   var levelsBlock=document.getElementById("levels-block"),levelRows=document.getElementById("level-rows");
+  var analysisBox=document.getElementById("analysis"),methodSwitch=document.getElementById("method-switch");
+  var rangeBlock=document.getElementById("range-block"),rangeRows=document.getElementById("range-rows"),rangeSummary=document.getElementById("range-summary");
+  var fvgBlock=document.getElementById("fvg-block"),fvgRows=document.getElementById("fvg-rows");
+  var method=(q.get("method")||"").toLowerCase()==="pa"?"pa":"cz",czEntries=[],paEntries=[],paReady=null,paReports={};
   var publication=null,entry=null,report=null,reportDemo=false,commentText=null,live=null,digits=null,showAll=false,pending=0,feedSource=null;
   // Interactive chart (assets/live-chart.js): closed candles from R2 + report zones + live price line.
   // The published PNG is only loaded if the interactive chart cannot be built.
@@ -251,8 +274,60 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   // A "ladder": rows sorted by price, highest first, with the current price inserted where it falls.
   function nowRow(cols,p){var tr=document.createElement("tr");tr.className="now";tr.innerHTML='<td colspan="'+cols+'"></td>';tr.firstChild.textContent=words().current;var b=document.createElement("b");b.textContent=MarketUI.price(p,digits);tr.firstChild.appendChild(b);return tr}
   function distanceCell(td,ratio){td.textContent=isFinite(ratio)?MarketUI.pct(ratio):"—";td.className="r num "+MarketUI.signClass(ratio)}
+  // Price Action: the confirmed range (RH = resistance, EQ = equilibrium, RL = support zone of the report).
+  function paRange(rep){
+    var zones=rep&&Array.isArray(rep.zones)?rep.zones:[],one=function(type){var list=zones.filter(function(z){return z&&z.type===type&&Number(z.low)>0&&Number(z.high)>0});return list.length===1?list[0]:null};
+    var rh=one("resistance"),eq=one("equilibrium"),rl=one("support");
+    return rh&&eq&&rl?{RH:rh,EQ:eq,RL:rl}:null;
+  }
+  function bounds(z){return{low:Math.min(Number(z.low),Number(z.high)),high:Math.max(Number(z.low),Number(z.high))}}
+  function zoneRatio(p,low,high){return !p?NaN:p<low?low/p-1:p>high?high/p-1:0}
+  // Where the price sits: 0 % at the range low, 100 % at the range high; read against the EQ band.
+  function rangeReading(range,p){
+    var top=bounds(range.RH).high,bottom=bounds(range.RL).low,eq=bounds(range.EQ),width=top-bottom;
+    if(!(width>0)||!p)return{width:width,pct:NaN,where:""};
+    var where=p>top?"aboveRange":p<bottom?"belowRange":p>eq.high?"premium":p<eq.low?"discount":"equilibrium";
+    return{width:width,pct:(p-bottom)/width,where:where};
+  }
+  function percentText(value){return MarketUI.lang()==="tr"?"%"+value:value+"%"}
+  function renderRange(){
+    var range=method==="pa"?paRange(report):null;rangeBlock.hidden=!range;if(!range)return;
+    var p=priceNow(),w=words(),reading=rangeReading(range,p);
+    rangeSummary.textContent="";
+    var add=function(label,value,cls){var span=document.createElement("span");span.textContent=label+" ";var b=document.createElement("b");b.textContent=value;span.appendChild(b);if(cls)span.className=cls;rangeSummary.appendChild(span)};
+    add(w.rangeWidth,MarketUI.price(reading.width,digits)+(p?" ("+percentText((reading.width/p*100).toFixed(1).replace(".",MarketUI.lang()==="tr"?",":"."))+")":""));
+    if(isFinite(reading.pct)){var where=document.createElement("span");where.className="where";where.textContent=w.rangePosition.replace("{pct}",percentText(Math.round(reading.pct*100)))+" · "+w[reading.where];rangeSummary.appendChild(where)}
+    var rows=document.createDocumentFragment(),placed=!p;
+    [["RH","resistance"],["EQ","equilibrium"],["RL","support"]].forEach(function(item){
+      var z=bounds(range[item[0]]);
+      if(!placed&&z.high<p){rows.appendChild(nowRow(3,p));placed=true}
+      var tr=document.createElement("tr");tr.innerHTML='<td><span class="badge"></span></td><td class="num"></td><td></td>';
+      var c=tr.children;c[0].firstChild.className="badge "+item[1];c[0].firstChild.textContent=item[0]+" · "+w[item[0]];
+      c[1].textContent=MarketUI.price(z.low,digits)+" – "+MarketUI.price(z.high,digits);
+      var ratio=zoneRatio(p,z.low,z.high);distanceCell(c[2],ratio);if(ratio===0&&p)c[2].textContent=w.inside;
+      rows.appendChild(tr);
+    });
+    if(!placed)rows.appendChild(nowRow(3,p));
+    rangeRows.textContent="";rangeRows.appendChild(rows);
+  }
+  function renderFvg(){
+    var list=method==="pa"&&report&&Array.isArray(report.fvg)?report.fvg.filter(function(f){return Number(f.low)>0&&Number(f.high)>Number(f.low)}):[];
+    fvgBlock.hidden=!list.length;if(!list.length)return;
+    var p=priceNow(),w=words(),rows=document.createDocumentFragment(),placed=!p;
+    list.slice().sort(function(a,b){return Number(b.high)-Number(a.high)}).forEach(function(f){
+      if(!placed&&Number(f.high)<p){rows.appendChild(nowRow(4,p));placed=true}
+      var tr=document.createElement("tr");tr.innerHTML='<td><span class="badge fvg"></span></td><td class="num"></td><td class="r num"></td><td></td>';
+      var c=tr.children;c[0].firstChild.textContent=String(f.direction).toLowerCase()==="bullish"?w.fvgUp:w.fvgDown;
+      c[1].textContent=MarketUI.price(Number(f.low),digits)+" – "+MarketUI.price(Number(f.high),digits);
+      c[2].textContent=percentText(Math.round(Number(f.filledPercent)||0));
+      var ratio=zoneRatio(p,Number(f.low),Number(f.high));distanceCell(c[3],ratio);if(ratio===0&&p)c[3].textContent=w.inside;
+      rows.appendChild(tr);
+    });
+    if(!placed)rows.appendChild(nowRow(4,p));
+    fvgRows.textContent="";fvgRows.appendChild(rows);
+  }
   function renderZones(){
-    var zones=(report&&Array.isArray(report.zones)?report.zones:[]).filter(function(z){return z&&Number(z.low)>0&&Number(z.high)>0});
+    var zones=(method==="cz"&&report&&Array.isArray(report.zones)?report.zones:[]).filter(function(z){return z&&Number(z.low)>0&&Number(z.high)>0});
     zonesBlock.hidden=!zones.length;badge(zonesBlock,reportDemo);if(!zones.length)return;
     var p=priceNow(),w=words(),list=zones.filter(function(z){return showAll||z.drawn!==false}).sort(function(a,b){return Number(b.high)-Number(a.high)}),placed=!p;
     zoneRows.textContent="";
@@ -318,14 +393,14 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     }else if(publication){chartTime.textContent=w[chartKey]+" "+MarketUI.dateTime(chartWhen||publication.activatedAt)}
   }
   // The chart's price axis follows the site's decimals rule (MarketUI.digitsFor), not the report's priceDecimals.
-  function applyReportToChart(){if(liveChart)liveChart.setZones(report&&Array.isArray(report.zones)?report.zones:[])}
-  function renderAll(){header();renderNote();renderZones();renderLevels();renderChartTime();syncDownload()}
+  function applyReportToChart(){if(!liveChart)return;liveChart.setZones(report&&Array.isArray(report.zones)?report.zones:[]);liveChart.setFvg(method==="pa"&&report&&Array.isArray(report.fvg)?report.fvg:[])}
+  function renderAll(){header();renderNote();renderZones();renderRange();renderFvg();renderLevels();renderChartTime();syncDownload()}
   new MutationObserver(function(){if(liveChart)liveChart.setLocale();renderAll()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
 
   function select(chosen,button){
     entry=chosen;var request=++pending,tf=MarketUI.timeframeOf(chosen).toUpperCase(),w=words();
     tabs.querySelectorAll(".tab").forEach(function(t){var on=t===button;t.setAttribute("aria-selected",String(on));t.tabIndex=on?0:-1});
-    try{var next=new URL(location.href);next.searchParams.set("tf",MarketUI.timeframeOf(chosen));next.hash="";history.replaceState(null,"",next.toString())}catch(e){}
+    try{var next=new URL(location.href);next.searchParams.set("tf",MarketUI.timeframeOf(chosen));if(method==="pa")next.searchParams.set("method","pa");else next.searchParams.delete("method");next.hash="";history.replaceState(null,"",next.toString())}catch(e){}
     if(liveChart){liveChart.destroy();liveChart=null}
     chart.dataset.state="loading";expand.disabled=true;download.disabled=true;img.removeAttribute("src");img.alt=asset+" "+tf+" chart";chartName.textContent=asset+" · "+tf;
     chartWhen=chosen.chartTime&&chosen.chartTime.at;chartKey=!chartWhen?"published":chosen.chartTime.source==="upload"?"chartUploaded":"chartAsOf";
@@ -338,7 +413,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
         chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();
       }).catch(function(){if(request===pending)showPng(chosen)});
     }else showPng(chosen);
-    if(chosen.report)fetch(chosen.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(request===pending&&rep){report=rep;applyReportToChart();renderAll()}}).catch(function(){});
+    if(chosen.report)loadReport(chosen).then(function(rep){if(request===pending&&rep){report=rep;applyReportToChart();renderAll()}}).catch(function(){});
     else if(window.DemoData&&DemoData.enabled){report=DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow());reportDemo=true;applyReportToChart();renderAll()}
     if(!chosen.report&&chosen.analysisComment)fetch(chosen.analysisComment.url,{cache:"no-store"}).then(function(r){return r.ok?r.text():""}).then(function(text){if(request===pending&&text){commentText=text;renderAll()}}).catch(function(){});
   }
@@ -406,8 +481,8 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   // title (functions/_middleware.js, README "Link previews").
   var shareMenu=document.getElementById("share-menu"),shareFile=null;
   // lang=tr gives the Turkish link preview (functions/_middleware.js), matching the Turkish share text.
-  function shareUrl(){return location.origin+"/bulletin?asset="+encodeURIComponent(asset)+"&tf="+encodeURIComponent(MarketUI.timeframeOf(entry))+(MarketUI.lang()==="tr"?"&lang=tr":"")}
-  function shareText(){return words().shareText.replace("{asset}",asset).replace("{tf}",MarketUI.timeframeOf(entry).toUpperCase())+" · MarketLevelMap"}
+  function shareUrl(){return location.origin+"/bulletin?asset="+encodeURIComponent(asset)+(method==="pa"?"&method=pa":"")+"&tf="+encodeURIComponent(MarketUI.timeframeOf(entry))+(MarketUI.lang()==="tr"?"&lang=tr":"")}
+  function shareText(){return words()[method==="pa"?"shareTextPa":"shareText"].replace("{asset}",asset).replace("{tf}",MarketUI.timeframeOf(entry).toUpperCase())+" · MarketLevelMap"}
   function closeShare(focusButton){if(shareMenu.hidden)return;shareMenu.hidden=true;share.setAttribute("aria-expanded","false");if(focusButton)share.focus()}
   function openShare(){
     var url=shareUrl(),text=shareText(),imageItem=shareMenu.querySelector('[data-share="image"]');
@@ -474,16 +549,45 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     if(!body){fail("unavailable");return}
     publication=body;
     var rows=(body.entries||[]).filter(function(e){return (e.image||e.report)&&MarketUI.assetOf(e)===asset});
-    var cz=rows.filter(function(e){return MarketUI.methodOf(e)==="cz"}),shown=(cz.length?cz:rows).sort(MarketUI.byTimeframe);
-    if(!shown.length){fail("notListed");return}
-    var wanted=(q.get("tf")||"").toLowerCase(),first=null;
-    shown.forEach(function(e){
+    czEntries=rows.filter(function(e){return MarketUI.methodOf(e)==="cz"}).sort(MarketUI.byTimeframe);
+    paEntries=rows.filter(function(e){return MarketUI.methodOf(e)==="pa"&&e.report}).sort(MarketUI.byTimeframe);
+    if(!czEntries.length&&!paEntries.length){fail("notListed");return}
+    // PA timeframes are listed only with a confirmed range, so their reports are read first.
+    var paLoaded=Promise.all(paEntries.map(function(e){return loadReport(e).catch(function(){return null})})).then(function(reps){
+      paReady=paEntries.filter(function(e,i){return paRange(reps[i])});syncSwitch();return paReady;
+    });
+    if(method==="pa"||!czEntries.length)paLoaded.then(function(ready){showMethod(ready.length||!czEntries.length?"pa":"cz")});
+    else showMethod("cz");
+    archive();
+  }).catch(function(){fail("unavailable")});
+  function loadReport(e){
+    var key=e.publicationId||e.report.url;
+    if(!paReports[key])paReports[key]=fetch(e.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null});
+    return paReports[key];
+  }
+  function syncSwitch(){
+    methodSwitch.querySelectorAll("button").forEach(function(b){
+      var m=b.dataset.method;b.setAttribute("aria-pressed",String(m===method));
+      b.disabled=m==="cz"?!czEntries.length:!(paReady&&paReady.length);
+    });
+    analysisBox.dataset.method=method;
+  }
+  function showMethod(next){
+    var list=next==="pa"?(paReady||[]):czEntries;
+    if(!list.length){if(next==="cz"&&!czEntries.length)fail("notListed");return}
+    method=next;syncSwitch();tabs.textContent="";
+    var wanted=(q.get("tf")||(entry?MarketUI.timeframeOf(entry):"")).toLowerCase(),first=null;
+    list.forEach(function(e){
       var b=document.createElement("button");b.type="button";b.className="tab";b.setAttribute("role","tab");b.textContent=MarketUI.timeframeOf(e).toUpperCase();
       b.addEventListener("click",function(){select(e,b)});tabs.appendChild(b);
       if(!first||MarketUI.timeframeOf(e).toLowerCase()===wanted)first=first&&MarketUI.timeframeOf(first.e).toLowerCase()===wanted?first:{e:e,b:b};
     });
-    page.dataset.state="live";select(first.e,first.b);archive();
-  }).catch(function(){fail("unavailable")});
+    page.dataset.state="live";select(first.e,first.b);
+  }
+  methodSwitch.addEventListener("click",function(event){
+    var b=event.target.closest("button[data-method]");if(!b||b.disabled||b.dataset.method===method)return;
+    q.delete("tf");showMethod(b.dataset.method);
+  });
 
   MarketFeed.start([asset],{
     onSource:function(s){feedSource=s;header()},
