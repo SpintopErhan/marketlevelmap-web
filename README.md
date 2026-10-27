@@ -102,6 +102,12 @@ view, not as more support/resistance zones.
   | CHoCH | `/en/library/change-of-character-choch/` | `/tr/kutuphane/karakter-degisimi-choch/` |
   | Sweep | `/en/library/sweep/` | `/tr/kutuphane/sweep/` |
   | AVWAP | `/en/library/anchored-vwap-avwap/` | `/tr/kutuphane/avwap-sabitlenmis-vwap/` |
+- **No confirmed range** (2026-10-27; report `rangeStatus: "NO_CONFIRMED_RANGE"`, publication contract
+  "PA raporunda aralık yok"). The tab stays; an older PA report with empty zones and no `rangeStatus` stays hidden. A notice card above the chart says why there is no range, generated
+  from `noRange.failedRules` and `analysisClose` against `noRange.lastValid` (e.g. "Price closed below the range low
+  on 27 Oct 06:59 UTC; the 24 Oct range is no longer valid. No Price Action analysis on this timeframe until a new
+  range forms."). The chart shows the candles and the last valid range faded and dashed, labelled "Last valid range ·
+  24 Oct"; the range, FVG and Structure tables are hidden. Without `lastValid` only the card is shown.
 - **Link previews.** `method=pa` links get "BTCUSDT 1D price action range · MarketLevelMap" and a Price Action
   description (Turkish with `lang=tr`).
 
