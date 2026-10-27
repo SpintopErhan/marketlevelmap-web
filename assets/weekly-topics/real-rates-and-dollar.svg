@@ -1,0 +1,19 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="392" y="24" width="144" height="256" opacity="0.12"/>
+  <line class="s-accent" x1="392" y1="24" x2="392" y2="280" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <polyline class="s-line" points="30,112 70,92 110,62 150,76 190,104 230,120 270,96 310,70 350,86 392,82 430,70 470,58 510,48 534,42" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline class="s-down" points="30,192 70,212 110,242 150,228 190,202 230,186 270,212 310,240 350,226 392,234 430,216 470,202 510,188 534,180" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  
+  
+  <g class="t-label" text-anchor="middle">
+    
+    
+  </g>
+  <g class="t-accent" text-anchor="middle">
+    
+    
+  </g>
+  <line class="s-guide" x1="24" y1="292" x2="530" y2="292" stroke-width="1"/>
+  <polyline class="s-guide" points="522,287 530,292 522,297" fill="none" stroke-width="1"/>
+  
+</svg>

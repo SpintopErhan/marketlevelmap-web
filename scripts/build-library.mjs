@@ -632,16 +632,19 @@ const eventLinks = sorted(concepts.filter((p) => p.event_keywords)).map((p) => (
 }));
 files.set(join(ROOT, "assets/library-events.json"), `${JSON.stringify({ generated: "scripts/build-library.mjs", links: eventLinks }, null, 1)}\n`);
 
-// The weekly topic card (index.html) reads this: each week's page with its name, first summary sentence and URL.
+// The weekly topic card (index.html) reads this: each week's page with its name, first summary sentence and URL,
+// and a small drawing (the page's SVG without its text, like the library cards) in assets/weekly-topics/<id>.svg.
 const weeklyTopics = weekly.rotation.map((row) => {
   const p = byId.get(row.id);
-  return { id: p.id, ...Object.fromEntries(LANGS.map((lang) => [lang, {
+  const thumb = p.svg.replace(/<text\b[^>]*>[\s\S]*?<\/text>/g, "").replace(/\{\{\w+\}\}/g, "").replace(/^<svg/, `<svg class="pattern-svg" aria-hidden="true" focusable="false"`);
+  files.set(join(ROOT, `assets/weekly-topics/${p.id}.svg`), thumb.endsWith("\n") ? thumb : `${thumb}\n`);
+  return { id: p.id, thumb: `/assets/weekly-topics/${p.id}.svg`, ...Object.fromEntries(LANGS.map((lang) => [lang, {
     name: p[lang].name, summary: firstSentence(p[lang].summary), url: urls.pattern(p, lang), track: weekly.tracks[row.track][lang] }])) };
 });
 files.set(join(ROOT, "assets/weekly-topics.json"), `${JSON.stringify({ generated: "scripts/build-library.mjs", anchorWeekStartUtc: weekly.anchorWeekStartUtc, topics: weeklyTopics }, null, 1)}\n`);
 
 // Every library page lives under these folders, so a renamed or removed page is cleaned up too.
-const OWNED = LANGS.map((lang) => join(ROOT, BASE[lang]));
+const OWNED = [...LANGS.map((lang) => join(ROOT, BASE[lang])), join(ROOT, "assets/weekly-topics")];
 const existing = [];
 const walk = (dir) => { if (!existsSync(dir)) return; for (const e of readdirSync(dir, { withFileTypes: true })) { const p = join(dir, e.name); if (e.isDirectory()) walk(p); else existing.push(p); } };
 OWNED.forEach(walk);

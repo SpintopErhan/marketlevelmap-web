@@ -1,0 +1,18 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 250">
+  <line class="s-guide" x1="40" y1="56" x2="300" y2="56" stroke-width="1" stroke-dasharray="4 4"/>
+  <line class="s-guide" x1="40" y1="180" x2="300" y2="180" stroke-width="1" stroke-dasharray="4 4"/>
+  <line class="s-down" x1="123" y1="38" x2="123" y2="196" stroke-width="2"/>
+  <rect class="f-down" x="98" y="56" width="50" height="124" rx="2"/>
+  <line class="s-up" x1="213" y1="82" x2="213" y2="156" stroke-width="2"/>
+  <rect class="f-up" x="196" y="96" width="34" height="44" rx="2"/>
+  <g class="t-label" text-anchor="middle">
+    
+    
+  </g>
+  <path class="s-accent" d="M240 96 h14 M240 140 h14 M247 96 V140" stroke-width="1.5" fill="none"/>
+  <g class="t-accent">
+    
+    
+    
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  
+  <line class="s-guide" x1="188" y1="60" x2="188" y2="300" stroke-width="1.2"/>
+  <g class="t-label" text-anchor="end">
+    
+    
+    
+    
+    
+    
+  </g>
+  <rect class="f-accent" x="188" y="70" width="300" height="20" rx="2"/>
+  <g class="f-point" opacity="0.55">
+    <rect x="188" y="110" width="71" height="20" rx="2"/>
+    <rect x="188" y="150" width="62" height="20" rx="2"/>
+    <rect x="188" y="190" width="47" height="20" rx="2"/>
+    <rect x="188" y="230" width="22" height="20" rx="2"/>
+    <rect x="188" y="270" width="19" height="20" rx="2"/>
+  </g>
+  
+  <g class="t-label t-mono">
+    
+    
+    
+    
+    
+  </g>
+</svg>

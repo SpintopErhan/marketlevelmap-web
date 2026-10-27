@@ -1,0 +1,23 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <line class="s-accent" x1="120" y1="134" x2="520" y2="130" stroke-width="1.5" stroke-dasharray="6 5"/>
+  
+  <polyline class="s-line" points="20,50 60,88 85,74 125,198 168,134 210,180 248,256 292,170 318,132 362,172 392,196 430,150 452,131 470,114 486,122 520,52" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point">
+    <circle cx="125" cy="198" r="4"/>
+    <circle cx="248" cy="256" r="4"/>
+    <circle cx="392" cy="196" r="4"/>
+  </g>
+  <g class="f-accent">
+    <circle cx="168" cy="134" r="3.5"/>
+    <circle cx="318" cy="132" r="3.5"/>
+  </g>
+  <g class="t-label" text-anchor="middle">
+    
+    
+    
+  </g>
+  <circle class="s-up" cx="452" cy="131" r="9" fill="none" stroke-width="1.5"/>
+  
+  <path class="s-guide" d="M248 246 V138 M243 240 l5 6 l5 -6 M243 144 l5 -6 l5 6" stroke-width="1.2" fill="none"/>
+  
+</svg>

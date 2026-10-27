@@ -1,0 +1,17 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="24" y="200" width="512" height="26" opacity="0.14"/>
+  <line class="s-accent" x1="24" y1="200" x2="536" y2="200" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="24" y1="226" x2="536" y2="226" stroke-width="1.2" stroke-dasharray="6 5"/>
+  
+  <polyline class="s-line" points="24,70 60,110 76,100 120,212 150,150 166,160 196,118 220,132 260,216 296,150 312,160 340,126 364,140 400,208 436,150 452,160 490,112 536,92" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-accent"><circle cx="120" cy="212" r="4"/><circle cx="260" cy="216" r="4"/><circle cx="400" cy="208" r="4"/></g>
+  <g class="t-label" text-anchor="middle">
+    
+    
+    
+  </g>
+  <g class="t-label">
+    
+    
+  </g>
+</svg>

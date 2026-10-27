@@ -1,0 +1,28 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 250">
+  <g stroke-width="1.5">
+    <line class="s-down" x1="50" y1="34" x2="50" y2="74"/>
+    <line class="s-down" x1="86" y1="56" x2="86" y2="98"/>
+    <line class="s-down" x1="122" y1="80" x2="122" y2="122"/>
+    <line class="s-down" x1="158" y1="104" x2="158" y2="142"/>
+  </g>
+  <rect class="f-down" x="42" y="40" width="16" height="24" rx="2"/>
+  <rect class="f-down" x="78" y="62" width="16" height="26" rx="2"/>
+  <rect class="f-down" x="114" y="86" width="16" height="26" rx="2"/>
+  <rect class="f-down" x="150" y="110" width="16" height="24" rx="2"/>
+  <line class="s-guide" x1="196" y1="112" x2="256" y2="112" stroke-width="1" stroke-dasharray="4 4"/>
+  <line class="s-guide" x1="196" y1="134" x2="256" y2="134" stroke-width="1" stroke-dasharray="4 4"/>
+  <line class="s-up" x1="228" y1="108" x2="228" y2="196" stroke-width="2"/>
+  <rect class="f-up" x="208" y="112" width="40" height="22" rx="2"/>
+  <g class="t-label" text-anchor="middle">
+    
+    
+  </g>
+  <path class="s-guide" d="M256 112 h12 M256 134 h12 M262 112 V134" stroke-width="1.2" fill="none"/>
+  
+  <path class="s-accent" d="M256 138 h12 M256 196 h12 M262 138 V196" stroke-width="1.5" fill="none"/>
+  <g class="t-accent">
+    
+    
+    
+  </g>
+</svg>

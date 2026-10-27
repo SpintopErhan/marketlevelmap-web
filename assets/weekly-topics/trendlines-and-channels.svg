@@ -1,0 +1,23 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="318" y="163" width="222" height="16" opacity="0.14"/>
+  <line class="s-accent" x1="318" y1="163" x2="540" y2="163" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="318" y1="179" x2="540" y2="179" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-guide" x1="30" y1="262" x2="540" y2="112" stroke-width="1.5"/>
+  <line class="s-guide" x1="30" y1="182" x2="540" y2="32" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <polyline class="s-line" points="30,236 60,253 130,153 200,212 270,111 340,171 410,72 470,160 504,128 540,150" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point"><circle cx="60" cy="253" r="3.5"/><circle cx="200" cy="212" r="3.5"/><circle cx="130" cy="153" r="3.5"/><circle cx="270" cy="111" r="3.5"/><circle cx="410" cy="72" r="3.5"/></g>
+  <circle class="f-accent" cx="340" cy="171" r="4.5"/>
+  <circle class="s-down" cx="454" cy="137" r="8" fill="none" stroke-width="1.5"/>
+  <g class="t-mono t-label" text-anchor="middle">
+    
+    
+    
+  </g>
+  
+  
+  
+  
+  
+  
+  
+</svg>
