@@ -1,0 +1,76 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <polyline class="s-line" points="32,137.6 39.4,131.8 46.8,122.8 54.2,126.6 61.6,120.7 69,111.9 76.4,115.7 83.8,109.6 91.2,100.9 98.6,104.7 106,98.5 113.4,89.9 120.8,93.8 128.2,87.5 135.6,78.9 143,82.8 150.4,76.4 157.8,68 165.2,71.9 172.6,65.3 180,57 187.4,60.9 194.8,54.2 202.2,46 209.6,50 217,43.2 224.4,35.1 231.8,39 239.2,36.6 246.6,34 254,36.3 261.4,41.5 268.8,43.3 276.2,44 283.6,44.7 291,55.7 298.4,60 305.8,58.3 313.2,67.2 320.6,75.3 328,73.3 335.4,78.7 342.8,89.3 350.2,89.2 357.6,90.8 365,102 372.4,105.3 379.8,104.1 387.2,113.7 394.6,120.9 402,118.7 409.4,125.1 416.8,117.3 424.2,119.5 431.6,114.1 439,108.9 446.4,111.1 453.8,103.2 461.2,101.4 468.6,101.5" fill="none" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  
+  <line class="s-guide" x1="32" y1="160" x2="470" y2="160" stroke-width="1" opacity="0.35"/>
+  <line class="s-line" x1="32" y1="182" x2="50" y2="182" stroke-width="2"/>
+  <line class="s-accent" x1="180" y1="182" x2="198" y2="182" stroke-width="2"/>
+  <rect class="f-up" x="310" y="176" width="5" height="10" opacity="0.6"/><rect class="f-down" x="318" y="181" width="5" height="10" opacity="0.6"/>
+  <g opacity="0.6">
+    <rect class="f-down" x="29.7" y="256" width="4.6" height="0.9"/>
+    <rect class="f-down" x="37.1" y="256" width="4.6" height="0.6"/>
+    <rect class="f-up" x="44.5" y="254.6" width="4.6" height="1.4"/>
+    <rect class="f-up" x="51.9" y="254.2" width="4.6" height="1.8"/>
+    <rect class="f-up" x="59.3" y="253.2" width="4.6" height="2.8"/>
+    <rect class="f-up" x="66.7" y="251.3" width="4.6" height="4.7"/>
+    <rect class="f-up" x="74.1" y="251" width="4.6" height="5"/>
+    <rect class="f-up" x="81.5" y="250.2" width="4.6" height="5.8"/>
+    <rect class="f-up" x="88.9" y="248.7" width="4.6" height="7.3"/>
+    <rect class="f-up" x="96.3" y="248.8" width="4.6" height="7.2"/>
+    <rect class="f-up" x="103.7" y="248.4" width="4.6" height="7.6"/>
+    <rect class="f-up" x="111.1" y="247.3" width="4.6" height="8.7"/>
+    <rect class="f-up" x="118.5" y="247.8" width="4.6" height="8.2"/>
+    <rect class="f-up" x="125.9" y="247.7" width="4.6" height="8.3"/>
+    <rect class="f-up" x="133.3" y="246.9" width="4.6" height="9.1"/>
+    <rect class="f-up" x="140.7" y="247.7" width="4.6" height="8.3"/>
+    <rect class="f-up" x="148.1" y="247.9" width="4.6" height="8.1"/>
+    <rect class="f-up" x="155.5" y="247.3" width="4.6" height="8.7"/>
+    <rect class="f-up" x="162.9" y="248.2" width="4.6" height="7.8"/>
+    <rect class="f-up" x="170.3" y="248.5" width="4.6" height="7.5"/>
+    <rect class="f-up" x="177.7" y="248" width="4.6" height="8"/>
+    <rect class="f-up" x="185.1" y="249.1" width="4.6" height="6.9"/>
+    <rect class="f-up" x="192.5" y="249.4" width="4.6" height="6.6"/>
+    <rect class="f-up" x="199.9" y="248.9" width="4.6" height="7.1"/>
+    <rect class="f-up" x="207.3" y="250" width="4.6" height="6"/>
+    <rect class="f-up" x="214.7" y="250.3" width="4.6" height="5.7"/>
+    <rect class="f-up" x="222.1" y="249.9" width="4.6" height="6.1"/>
+    <rect class="f-up" x="229.5" y="251" width="4.6" height="5"/>
+    <rect class="f-up" x="236.9" y="251.9" width="4.6" height="4.1"/>
+    <rect class="f-up" x="244.3" y="252.8" width="4.6" height="3.2"/>
+    <rect class="f-up" x="251.7" y="254.2" width="4.6" height="1.8"/>
+    <rect class="f-down" x="259.1" y="256" width="4.6" height="0.6"/>
+    <rect class="f-down" x="266.5" y="256" width="4.6" height="2.6"/>
+    <rect class="f-down" x="273.9" y="256" width="4.6" height="4.3"/>
+    <rect class="f-down" x="281.3" y="256" width="4.6" height="5.6"/>
+    <rect class="f-down" x="288.7" y="256" width="4.6" height="8.3"/>
+    <rect class="f-down" x="296.1" y="256" width="4.6" height="10.6"/>
+    <rect class="f-down" x="303.5" y="256" width="4.6" height="11.6"/>
+    <rect class="f-down" x="310.9" y="256" width="4.6" height="13.3"/>
+    <rect class="f-down" x="318.3" y="256" width="4.6" height="15.2"/>
+    <rect class="f-down" x="325.7" y="256" width="4.6" height="15.6"/>
+    <rect class="f-down" x="333.1" y="256" width="4.6" height="16.1"/>
+    <rect class="f-down" x="340.5" y="256" width="4.6" height="17.4"/>
+    <rect class="f-down" x="347.9" y="256" width="4.6" height="17.4"/>
+    <rect class="f-down" x="355.3" y="256" width="4.6" height="16.9"/>
+    <rect class="f-down" x="362.7" y="256" width="4.6" height="17.5"/>
+    <rect class="f-down" x="370.1" y="256" width="4.6" height="17.5"/>
+    <rect class="f-down" x="377.5" y="256" width="4.6" height="16.4"/>
+    <rect class="f-down" x="384.9" y="256" width="4.6" height="16.3"/>
+    <rect class="f-down" x="392.3" y="256" width="4.6" height="16.4"/>
+    <rect class="f-down" x="399.7" y="256" width="4.6" height="15.2"/>
+    <rect class="f-down" x="407.1" y="256" width="4.6" height="14.5"/>
+    <rect class="f-down" x="414.5" y="256" width="4.6" height="11.8"/>
+    <rect class="f-down" x="421.9" y="256" width="4.6" height="9.7"/>
+    <rect class="f-down" x="429.3" y="256" width="4.6" height="6.8"/>
+    <rect class="f-down" x="436.7" y="256" width="4.6" height="3.5"/>
+    <rect class="f-down" x="444.1" y="256" width="4.6" height="1.4"/>
+    <rect class="f-up" x="451.5" y="254.4" width="4.6" height="1.6"/>
+    <rect class="f-up" x="458.9" y="252.1" width="4.6" height="3.9"/>
+    <rect class="f-up" x="466.3" y="250.7" width="4.6" height="5.3"/>
+  </g>
+  <line class="s-guide" x1="32" y1="256" x2="470" y2="256" stroke-width="1" stroke-dasharray="4 4"/>
+  
+  <polyline class="s-accent" points="32,254.1 39.4,254.2 46.8,253.9 54.2,253.4 61.6,252.7 69,251.5 76.4,250.3 83.8,248.8 91.2,247 98.6,245.2 106,243.3 113.4,241.1 120.8,239.1 128.2,237 135.6,234.7 143,232.7 150.4,230.6 157.8,228.4 165.2,226.5 172.6,224.6 180,222.6 187.4,220.9 194.8,219.2 202.2,217.5 209.6,216 217,214.5 224.4,213 231.8,211.7 239.2,210.7 246.6,209.9 254,209.5 261.4,209.6 268.8,210.2 276.2,211.3 283.6,212.7 291,214.8 298.4,217.4 305.8,220.3 313.2,223.6 320.6,227.4 328,231.3 335.4,235.4 342.8,239.7 350.2,244.1 357.6,248.3 365,252.7 372.4,257 379.8,261.1 387.2,265.2 394.6,269.3 402,273.1 409.4,276.7 416.8,279.7 424.2,282.1 431.6,283.8 439,284.7 446.4,285 453.8,284.6 461.2,283.7 468.6,282.3" fill="none" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline class="s-line" points="32,255 39.4,254.6 46.8,252.5 54.2,251.7 61.6,249.9 69,246.8 76.4,245.3 83.8,243 91.2,239.7 98.6,238 106,235.7 113.4,232.4 120.8,230.9 128.2,228.7 135.6,225.7 143,224.4 150.4,222.5 157.8,219.7 165.2,218.7 172.6,217.1 180,214.6 187.4,214 194.8,212.6 202.2,210.4 209.6,210 217,208.8 224.4,206.9 231.8,206.7 239.2,206.7 246.6,206.7 254,207.7 261.4,210.1 268.8,212.8 276.2,215.6 283.6,218.3 291,223.1 298.4,228 305.8,231.9 313.2,236.9 320.6,242.7 328,246.9 335.4,251.4 342.8,257.1 350.2,261.5 357.6,265.2 365,270.2 372.4,274.6 379.8,277.5 387.2,281.5 394.6,285.7 402,288.3 409.4,291.2 416.8,291.5 424.2,291.8 431.6,290.6 439,288.2 446.4,286.4 453.8,283.1 461.2,279.8 468.6,277" fill="none" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle class="f-point" cx="259.9" cy="209.6" r="3.2"/>
+  <circle class="f-point" cx="449.9" cy="284.8" r="3.2"/>
+</svg>

@@ -1,0 +1,43 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="20" y="110" width="520" height="26" opacity="0.14"/>
+  <line class="s-accent" x1="20" y1="110" x2="540" y2="110" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="20" y1="136" x2="540" y2="136" stroke-width="1.2" stroke-dasharray="6 5"/>
+  
+  <g class="s-guide" stroke-width="1" stroke-dasharray="3 5">
+    <line x1="190" y1="40" x2="190" y2="300"/>
+    <line x1="370" y1="40" x2="370" y2="300"/>
+  </g>
+  <line class="s-up" x1="70" y1="152" x2="70" y2="218" stroke-width="2"/>
+  <rect class="f-up" x="52" y="160" width="36" height="50" rx="2" opacity="0.5"/>
+  <line class="s-up" x1="235" y1="84" x2="235" y2="218" stroke-width="2"/>
+  <rect class="f-up" x="217" y="90" width="36" height="120" rx="2" opacity="0.5"/>
+  <line class="s-up" x1="430" y1="84" x2="430" y2="218" stroke-width="2"/>
+  <rect class="f-up" x="412" y="168" width="36" height="42" rx="2"/>
+  <circle class="f-accent" cx="88" cy="160" r="3.5"/>
+  <circle class="f-accent" cx="253" cy="90" r="3.5"/>
+  <circle class="f-accent" cx="448" cy="168" r="3.5"/>
+  <g class="t-label">
+    
+    
+    
+  </g>
+  <g class="t-accent">
+    
+    
+  </g>
+  <circle class="s-down" cx="430" cy="84" r="8" fill="none" stroke-width="1.5"/>
+  <g class="t-label">
+    
+    
+  </g>
+  <g class="t-label" text-anchor="middle">
+    
+    
+    
+  </g>
+  <g class="t-guide" text-anchor="middle">
+    
+    
+  </g>
+  
+</svg>

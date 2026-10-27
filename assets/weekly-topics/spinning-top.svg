@@ -1,0 +1,26 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 250">
+  <line class="s-guide" x1="50" y1="100" x2="226" y2="100" stroke-width="1" stroke-dasharray="4 4"/>
+  <line class="s-guide" x1="50" y1="136" x2="226" y2="136" stroke-width="1" stroke-dasharray="4 4"/>
+  <line class="s-up" x1="100" y1="46" x2="100" y2="190" stroke-width="2"/>
+  <rect class="f-up" x="82" y="100" width="36" height="36" rx="2"/>
+  <line class="s-down" x1="188" y1="40" x2="188" y2="196" stroke-width="2"/>
+  <rect class="f-down" x="170" y="100" width="36" height="36" rx="2"/>
+  <g class="t-label" text-anchor="middle">
+    
+  </g>
+  <path class="s-guide" d="M234 40 h12 M234 96 h12 M240 40 V96" stroke-width="1.2" fill="none"/>
+  <g class="t-guide">
+    
+    
+  </g>
+  <path class="s-accent" d="M234 100 h12 M234 136 h12 M240 100 V136" stroke-width="1.5" fill="none"/>
+  <g class="t-accent">
+    
+    
+  </g>
+  <path class="s-guide" d="M234 140 h12 M234 196 h12 M240 140 V196" stroke-width="1.2" fill="none"/>
+  <g class="t-guide">
+    
+    
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-point" x="236" y="24" width="178" height="256" opacity="0.07"/>
+  <g class="t-label" text-anchor="middle">
+    
+    
+  </g>
+  <line class="s-accent" x1="236" y1="152" x2="414" y2="152" stroke-width="1.2" stroke-dasharray="6 5"/>
+  
+  <polyline class="s-guide" points="30,203 70,183 110,193 150,163 190,173 236,155 266,142 296,122 326,130 356,106 384,96 414,104 420,134 444,136 474,128 504,139 534,131" fill="none" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline class="s-line" points="30,200 70,180 110,190 150,160 190,170 236,152" fill="none" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <polyline class="s-line" points="414,132 444,134 474,126 504,137 534,129" fill="none" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point"><circle cx="236" cy="152" r="3.5"/><circle cx="414" cy="132" r="3.5"/></g>
+  <circle class="f-accent" cx="414" cy="104" r="3.5"/>
+  
+  
+  <g class="t-label" text-anchor="middle">
+    
+    
+  </g>
+  <line class="s-guide" x1="24" y1="292" x2="530" y2="292" stroke-width="1"/>
+  <polyline class="s-guide" points="522,287 530,292 522,297" fill="none" stroke-width="1"/>
+  
+</svg>

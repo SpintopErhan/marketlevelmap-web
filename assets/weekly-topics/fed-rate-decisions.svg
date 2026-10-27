@@ -1,0 +1,38 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  
+  <line class="s-guide" x1="40" y1="70" x2="520" y2="70" stroke-width="1.2"/>
+  <g class="s-guide" stroke-width="1">
+    <line x1="40" y1="64" x2="40" y2="76"/><line x1="80" y1="66" x2="80" y2="74"/><line x1="120" y1="66" x2="120" y2="74"/><line x1="160" y1="66" x2="160" y2="74"/><line x1="200" y1="66" x2="200" y2="74"/><line x1="240" y1="66" x2="240" y2="74"/><line x1="280" y1="66" x2="280" y2="74"/><line x1="320" y1="66" x2="320" y2="74"/><line x1="360" y1="66" x2="360" y2="74"/><line x1="400" y1="66" x2="400" y2="74"/><line x1="440" y1="66" x2="440" y2="74"/><line x1="480" y1="66" x2="480" y2="74"/><line x1="520" y1="64" x2="520" y2="76"/>
+  </g>
+  <g class="t-label" text-anchor="middle">
+    
+  </g>
+  <g class="f-point"><circle cx="76" cy="70" r="4.5"/><circle cx="204" cy="70" r="4.5"/><circle cx="316" cy="70" r="4.5"/><circle cx="444" cy="70" r="4.5"/></g>
+  <g class="f-accent"><circle cx="140" cy="70" r="6"/><circle cx="260" cy="70" r="6"/><circle cx="380" cy="70" r="6"/><circle cx="500" cy="70" r="6"/></g>
+  <circle class="f-point" cx="46" cy="124" r="4.5"/>
+  
+  <circle class="f-accent" cx="226" cy="124" r="6"/>
+  
+  <line class="s-guide" x1="24" y1="152" x2="536" y2="152" stroke-width="1" stroke-dasharray="3 5"/>
+  
+  <line class="s-line" x1="70" y1="236" x2="330" y2="236" stroke-width="2"/>
+  <line class="s-line" x1="330" y1="236" x2="440" y2="236" stroke-width="2" stroke-dasharray="2 6"/>
+  <line class="s-line" x1="440" y1="236" x2="500" y2="236" stroke-width="2"/>
+  <circle class="f-accent" cx="110" cy="236" r="6"/>
+  <circle class="f-accent" cx="260" cy="236" r="6"/>
+  <circle class="f-point" cx="470" cy="236" r="5"/>
+  <g class="t-mono" text-anchor="middle">
+    
+    
+    
+  </g>
+  <g class="t-label" text-anchor="middle">
+    
+    
+    
+  </g>
+  <g class="t-mono t-label" text-anchor="middle">
+    
+    
+  </g>
+</svg>

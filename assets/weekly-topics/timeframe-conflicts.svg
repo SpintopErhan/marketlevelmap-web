@@ -1,0 +1,23 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <g class="t-label t-mono" text-anchor="middle">
+    
+    
+  </g>
+  <line class="s-guide" x1="280" y1="24" x2="280" y2="300" stroke-width="1" stroke-dasharray="3 5"/>
+  <line class="s-accent" x1="24" y1="196" x2="264" y2="196" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="296" y1="196" x2="536" y2="196" stroke-width="1.5" stroke-dasharray="6 5"/>
+  
+  <polyline class="s-up" points="30,252 58,206 84,232 122,148 148,196 196,76 236,118" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point"><circle cx="84" cy="232" r="3.5"/><circle cx="148" cy="196" r="3.5"/><circle cx="58" cy="206" r="3.5"/><circle cx="122" cy="148" r="3.5"/><circle cx="196" cy="76" r="3.5"/></g>
+  <rect class="s-guide" x="188" y="66" width="56" height="60" fill="none" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <path class="s-guide" d="M244 66 L300 52 M244 126 L300 168" stroke-width="1" stroke-dasharray="2 4" fill="none"/>
+  <polyline class="s-down" points="304,56 330,96 348,80 380,122 398,108 432,150 450,136 486,168 504,156 530,176" fill="none" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point"><circle cx="348" cy="80" r="3.5"/><circle cx="398" cy="108" r="3.5"/><circle cx="450" cy="136" r="3.5"/><circle cx="330" cy="96" r="3.5"/><circle cx="380" cy="122" r="3.5"/><circle cx="432" cy="150" r="3.5"/><circle cx="486" cy="168" r="3.5"/></g>
+  
+  <g class="t-label" text-anchor="middle">
+    
+    
+    
+    
+  </g>
+</svg>

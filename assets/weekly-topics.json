@@ -4,6 +4,7 @@
  "topics": [
   {
    "id": "candlestick-chart",
+   "thumb": "/assets/weekly-topics/candlestick-chart.svg",
    "tr": {
     "name": "Mum grafiği nasıl okunur?",
     "summary": "Mum grafiğinde her mum tek bir zaman dilimini, örneğin bir saati ya da bir günü gösterir.",
@@ -19,6 +20,7 @@
   },
   {
    "id": "support-and-resistance",
+   "thumb": "/assets/weekly-topics/support-and-resistance.svg",
    "tr": {
     "name": "Destek ve direnç nedir?",
     "summary": "Destek, düşen fiyatın daha önce durup yukarı döndüğü; direnç, yükselen fiyatın daha önce durup aşağı döndüğü fiyat alanıdır.",
@@ -34,6 +36,7 @@
   },
   {
    "id": "doji",
+   "thumb": "/assets/weekly-topics/doji.svg",
    "tr": {
     "name": "Doji",
     "summary": "Açılışı ile kapanışı neredeyse aynı seviyede olan, gövdesi çok küçük tek mum.",
@@ -49,6 +52,7 @@
   },
   {
    "id": "volume",
+   "thumb": "/assets/weekly-topics/volume.svg",
    "tr": {
     "name": "Hacim nedir?",
     "summary": "Hacim, bir mumun kapsadığı süre içinde işlem gören miktardır.",
@@ -64,6 +68,7 @@
   },
   {
    "id": "economic-calendar",
+   "thumb": "/assets/weekly-topics/economic-calendar.svg",
    "tr": {
     "name": "Ekonomik takvim nasıl okunur?",
     "summary": "Ekonomik takvim, açıklanacak verilerin ve kararların saatini, önemini ve önceki, beklenen ve gerçekleşen değerlerini tek bir tabloda gösterir.",
@@ -79,6 +84,7 @@
   },
   {
    "id": "double-top",
+   "thumb": "/assets/weekly-topics/double-top.svg",
    "tr": {
     "name": "İkili Tepe",
     "summary": "Bir yükselişin sonunda, fiyatın yaklaşık aynı seviyede iki tepe yapmasıyla oluşan dönüş formasyonu.",
@@ -94,6 +100,7 @@
   },
   {
    "id": "timeframes",
+   "thumb": "/assets/weekly-topics/timeframes.svg",
    "tr": {
     "name": "Zaman dilimleri: 15m, 1H, 4H, 1D, 1W",
     "summary": "Zaman dilimi, grafikteki tek bir mumun kapsadığı süredir: 15m on beş dakika, 1H bir saat, 4H dört saat, 1D bir gün, 1W bir hafta.",
@@ -109,6 +116,7 @@
   },
   {
    "id": "indicators-basics",
+   "thumb": "/assets/weekly-topics/indicators-basics.svg",
    "tr": {
     "name": "Göstergeler nedir, sınırları neler?",
     "summary": "Teknik gösterge, fiyat ve hacim verisinden bir formülle hesaplanan çizgi ya da değerdir.",
@@ -124,6 +132,7 @@
   },
   {
    "id": "spinning-top",
+   "thumb": "/assets/weekly-topics/spinning-top.svg",
    "tr": {
     "name": "Topaç",
     "summary": "Küçük ama belirgin bir gövdesi ve iki yanında benzer uzunlukta fitilleri olan tek mum.",
@@ -139,6 +148,7 @@
   },
   {
    "id": "priced-in",
+   "thumb": "/assets/weekly-topics/priced-in.svg",
    "tr": {
     "name": "Beklentinin önceden fiyatlanması",
     "summary": "Piyasalar olaylara yalnızca gerçekleştikleri anda değil, beklendikleri andan itibaren tepki verir.",
@@ -154,6 +164,7 @@
   },
   {
    "id": "candle-close",
+   "thumb": "/assets/weekly-topics/candle-close.svg",
    "tr": {
     "name": "Mum kapanışı neden önemlidir?",
     "summary": "Bir mum, zaman dilimi dolana kadar kesinleşmez.",
@@ -169,6 +180,7 @@
   },
   {
    "id": "double-bottom",
+   "thumb": "/assets/weekly-topics/double-bottom.svg",
    "tr": {
     "name": "İkili Dip",
     "summary": "Bir düşüşün sonunda, fiyatın yaklaşık aynı seviyede iki dip yapmasıyla oluşan dönüş formasyonu.",
@@ -184,6 +196,7 @@
   },
   {
    "id": "price-volume-relationship",
+   "thumb": "/assets/weekly-topics/price-volume-relationship.svg",
    "tr": {
     "name": "Fiyat ve hacim ilişkisi",
     "summary": "Fiyat ve hacim birlikte okunduğunda, bir hareketin ne kadar katılımla geldiği görülür.",
@@ -199,6 +212,7 @@
   },
   {
    "id": "hammer",
+   "thumb": "/assets/weekly-topics/hammer.svg",
    "tr": {
     "name": "Çekiç",
     "summary": "Bir düşüşün ardından oluşan, küçük gövdeli ve uzun alt fitilli tek mumluk dönüş formasyonu.",
@@ -214,6 +228,7 @@
   },
   {
    "id": "trend",
+   "thumb": "/assets/weekly-topics/trend.svg",
    "tr": {
     "name": "Trend nedir?",
     "summary": "Trend, fiyatın belirli bir süre boyunca ağırlıklı olarak aynı yönde ilerlemesidir.",
@@ -229,6 +244,7 @@
   },
   {
    "id": "volatility",
+   "thumb": "/assets/weekly-topics/volatility.svg",
    "tr": {
     "name": "Volatilite nedir? Daralan ve genişleyen aralıklar",
     "summary": "Volatilite, fiyat değişimlerinin büyüklüğüdür; yönünü değil, ne kadar oynadığını anlatır.",
@@ -244,6 +260,7 @@
   },
   {
    "id": "rectangle",
+   "thumb": "/assets/weekly-topics/rectangle.svg",
    "tr": {
     "name": "Dikdörtgen",
     "summary": "Fiyatın bir süre iki yatay seviye arasında gidip gelmesiyle oluşan formasyon.",
@@ -259,6 +276,7 @@
   },
   {
    "id": "crypto-events",
+   "thumb": "/assets/weekly-topics/crypto-events.svg",
    "tr": {
     "name": "Kriptoya özgü olaylar: token kilit açılışları, halving, ETF akımları",
     "summary": "Token kilit açılışları, Bitcoin halving'i, spot ETF akımları ve ağ güncellemeleri, kripto piyasasına özgü olaylardır.",
@@ -274,6 +292,7 @@
   },
   {
    "id": "swing-points",
+   "thumb": "/assets/weekly-topics/swing-points.svg",
    "tr": {
     "name": "Tepe ve dip noktaları (swing)",
     "summary": "Tepe (swing high), fiyatın yükselip yön değiştirdiği, iki yanındaki mumlardan daha yüksekte kalan noktadır.",
@@ -289,6 +308,7 @@
   },
   {
    "id": "hanging-man",
+   "thumb": "/assets/weekly-topics/hanging-man.svg",
    "tr": {
     "name": "Asılı Adam",
     "summary": "Bir yükselişin ardından oluşan, küçük gövdeli ve uzun alt fitilli tek mumluk dönüş formasyonu.",
@@ -304,6 +324,7 @@
   },
   {
    "id": "moving-averages",
+   "thumb": "/assets/weekly-topics/moving-averages.svg",
    "tr": {
     "name": "Hareketli ortalamalar (SMA, EMA)",
     "summary": "Hareketli ortalama, son belirli sayıda mumun kapanış fiyatlarının ortalamasıdır ve her yeni mumla yeniden hesaplanır.",
@@ -319,6 +340,7 @@
   },
   {
    "id": "flag",
+   "thumb": "/assets/weekly-topics/flag.svg",
    "tr": {
     "name": "Bayrak",
     "summary": "Sert ve hızlı bir hareketin (direk) ardından, fiyatın kısa süre bu harekete ters yönde eğimli dar bir kanalda dinlenmesiyle oluşan devam formasyonu.",
@@ -334,6 +356,7 @@
   },
   {
    "id": "fed-rate-decisions",
+   "thumb": "/assets/weekly-topics/fed-rate-decisions.svg",
    "tr": {
     "name": "Fed faiz kararları (FOMC)",
     "summary": "ABD Merkez Bankası Fed'in politika faizini, Federal Açık Piyasa Komitesi (FOMC) yılda sekiz planlı toplantıda belirler.",
@@ -349,6 +372,7 @@
   },
   {
    "id": "atr",
+   "thumb": "/assets/weekly-topics/atr.svg",
    "tr": {
     "name": "ATR (Ortalama Gerçek Aralık)",
     "summary": "ATR, mumların gerçek aralığının ortalamasıdır; fiyatın bir mumda tipik olarak ne kadar oynadığını fiyat birimiyle gösterir.",
@@ -364,6 +388,7 @@
   },
   {
    "id": "inverted-hammer",
+   "thumb": "/assets/weekly-topics/inverted-hammer.svg",
    "tr": {
     "name": "Ters Çekiç",
     "summary": "Bir düşüşün ardından oluşan, küçük gövdeli ve uzun üst fitilli tek mumluk dönüş formasyonu.",
@@ -379,6 +404,7 @@
   },
   {
    "id": "higher-highs-lower-lows",
+   "thumb": "/assets/weekly-topics/higher-highs-lower-lows.svg",
    "tr": {
     "name": "Yükselen ve alçalan tepe-dipler (HH, HL, LH, LL)",
     "summary": "Her yeni tepe ve dip bir öncekiyle karşılaştırılarak etiketlenir: yükselen tepe (HH), yükselen dip (HL), alçalan tepe (LH) ve alçalan dip (LL).",
@@ -394,6 +420,7 @@
   },
   {
    "id": "pennant",
+   "thumb": "/assets/weekly-topics/pennant.svg",
    "tr": {
     "name": "Flama",
     "summary": "Sert ve hızlı bir hareketin (direk) ardından oluşan, küçük ve birbirine yaklaşan iki çizgiden meydana gelen kısa süreli bir duraklama formasyonu.",
@@ -409,6 +436,7 @@
   },
   {
    "id": "level-test",
+   "thumb": "/assets/weekly-topics/level-test.svg",
    "tr": {
     "name": "Seviye testi",
     "summary": "Seviye testi, fiyatın bir destek ya da direnç bölgesine yeniden gelip orada tepki vermesidir.",
@@ -424,6 +452,7 @@
   },
   {
    "id": "breakout-volume",
+   "thumb": "/assets/weekly-topics/breakout-volume.svg",
    "tr": {
     "name": "Kırılım ve hacim",
     "summary": "Bir kırılımı değerlendirirken kırılım mumunun hacmi, son mumların ortalama hacmiyle karşılaştırılır.",
@@ -439,6 +468,7 @@
   },
   {
    "id": "inflation-cpi-pce",
+   "thumb": "/assets/weekly-topics/inflation-cpi-pce.svg",
    "tr": {
     "name": "Enflasyon verileri (CPI, PCE)",
     "summary": "ABD'de enflasyon her ay iki ana veriyle izlenir: BLS'nin yayımladığı tüketici fiyat endeksi (CPI) ve BEA'nın yayımladığı kişisel tüketim harcamaları fiyat endeksi (PCE).",
@@ -454,6 +484,7 @@
   },
   {
    "id": "shooting-star",
+   "thumb": "/assets/weekly-topics/shooting-star.svg",
    "tr": {
     "name": "Kayan Yıldız",
     "summary": "Bir yükselişin ardından oluşan, küçük gövdeli ve uzun üst fitilli tek mumluk dönüş formasyonu.",
@@ -469,6 +500,7 @@
   },
   {
    "id": "breakout-and-close",
+   "thumb": "/assets/weekly-topics/breakout-and-close.svg",
    "tr": {
     "name": "Kırılım ve kapanış",
     "summary": "Kırılım, bir mumun destek ya da direnç bölgesinin uzak kenarının ötesinde kapanmasıdır.",
@@ -484,6 +516,7 @@
   },
   {
    "id": "price-gaps",
+   "thumb": "/assets/weekly-topics/price-gaps.svg",
    "tr": {
     "name": "Fiyat boşlukları (gap)",
     "summary": "Fiyat boşluğu, bir mumun önceki mumun aralığıyla hiç örtüşmeden, onun yukarısında ya da aşağısında açılmasıdır; arada hiç işlem görmemiş bir fiyat alanı kalır.",
@@ -499,6 +532,7 @@
   },
   {
    "id": "ascending-triangle",
+   "thumb": "/assets/weekly-topics/ascending-triangle.svg",
    "tr": {
     "name": "Yükselen Üçgen",
     "summary": "Yatay bir direnç çizgisi ile giderek yükselen diplerin oluşturduğu üçgen formasyonu.",
@@ -514,6 +548,7 @@
   },
   {
    "id": "dollar-index",
+   "thumb": "/assets/weekly-topics/dollar-index.svg",
    "tr": {
     "name": "Dolar endeksi (DXY)",
     "summary": "Dolar endeksi (DXY), ABD dolarının altı büyük para birimine karşı değerini tek bir rakamla ölçer.",
@@ -529,6 +564,7 @@
   },
   {
    "id": "pin-bar",
+   "thumb": "/assets/weekly-topics/pin-bar.svg",
    "tr": {
     "name": "Pin Bar",
     "summary": "Tek bir uzun fitil ve küçük bir gövdeden oluşan dönüş mumu.",
@@ -544,6 +580,7 @@
   },
   {
    "id": "false-breakout",
+   "thumb": "/assets/weekly-topics/false-breakout.svg",
    "tr": {
     "name": "Sahte kırılım: fitil ile kapanış arasındaki fark",
     "summary": "Sahte kırılım, fiyatın bir destek ya da direnç bölgesinin ötesine geçip mum kapanmadan önce yeniden bölgenin gerisine dönmesidir.",
@@ -559,6 +596,7 @@
   },
   {
    "id": "fair-value-gap",
+   "thumb": "/assets/weekly-topics/fair-value-gap.svg",
    "tr": {
     "name": "FVG: üç mumluk fiyat boşluğu",
     "summary": "FVG, güçlü bir mumun iki yanındaki mumların fitilleri arasında kalan boşluktur.",
@@ -574,6 +612,7 @@
   },
   {
    "id": "descending-triangle",
+   "thumb": "/assets/weekly-topics/descending-triangle.svg",
    "tr": {
     "name": "Alçalan Üçgen",
     "summary": "Yatay bir destek çizgisi ile giderek alçalan tepelerin oluşturduğu üçgen formasyonu.",
@@ -589,6 +628,7 @@
   },
   {
    "id": "retest-and-role-reversal",
+   "thumb": "/assets/weekly-topics/retest-and-role-reversal.svg",
    "tr": {
     "name": "Geri test ve rol değişimi: kırılan bölgeye dönüş",
     "summary": "Geri test, bir bölge kırıldıktan sonra fiyatın yeniden o bölgeye dönmesidir.",
@@ -604,6 +644,7 @@
   },
   {
    "id": "us-jobs-data",
+   "thumb": "/assets/weekly-topics/us-jobs-data.svg",
    "tr": {
     "name": "İstihdam verileri (tarım dışı istihdam, işsizlik başvuruları)",
     "summary": "ABD istihdam verileri, iş gücü piyasasının ne kadar güçlü olduğunu gösterir.",
@@ -619,6 +660,7 @@
   },
   {
    "id": "bullish-engulfing",
+   "thumb": "/assets/weekly-topics/bullish-engulfing.svg",
    "tr": {
     "name": "Yutan Boğa",
     "summary": "Bir düşüşün ardından, büyük bir yeşil mumun önceki kırmızı mumun gövdesini tamamen içine almasıyla oluşan dönüş formasyonu.",
@@ -634,6 +676,7 @@
   },
   {
    "id": "rsi",
+   "thumb": "/assets/weekly-topics/rsi.svg",
    "tr": {
     "name": "RSI (Göreceli Güç Endeksi)",
     "summary": "RSI, son dönemdeki yükseliş kapanışlarının düşüş kapanışlarına göre ne kadar güçlü olduğunu 0 ile 100 arasında gösteren bir momentum göstergesidir.",
@@ -649,6 +692,7 @@
   },
   {
    "id": "range-and-consolidation",
+   "thumb": "/assets/weekly-topics/range-and-consolidation.svg",
    "tr": {
     "name": "Yatay piyasa ve konsolidasyon",
     "summary": "Yatay piyasa, fiyatın belirgin bir yöne ilerlemeden iki bölge arasında gidip gelmesidir.",
@@ -664,6 +708,7 @@
   },
   {
    "id": "symmetrical-triangle",
+   "thumb": "/assets/weekly-topics/symmetrical-triangle.svg",
    "tr": {
     "name": "Simetrik Üçgen",
     "summary": "Alçalan tepeler ile yükselen diplerin birbirine yaklaşarak oluşturduğu üçgen formasyonu.",
@@ -679,6 +724,7 @@
   },
   {
    "id": "vwap",
+   "thumb": "/assets/weekly-topics/vwap.svg",
    "tr": {
     "name": "VWAP (Hacim Ağırlıklı Ortalama Fiyat)",
     "summary": "VWAP, belirli bir başlangıç noktasından bu yana işlem gören fiyatların hacimle ağırlıklandırılmış ortalamasıdır.",
@@ -694,6 +740,7 @@
   },
   {
    "id": "break-of-structure",
+   "thumb": "/assets/weekly-topics/break-of-structure.svg",
    "tr": {
     "name": "BOS: yapı kırılımı",
     "summary": "BOS, fiyatın trend yönündeki son swing noktasını kapanışla geçmesidir.",
@@ -709,6 +756,7 @@
   },
   {
    "id": "bearish-engulfing",
+   "thumb": "/assets/weekly-topics/bearish-engulfing.svg",
    "tr": {
     "name": "Yutan Ayı",
     "summary": "Bir yükselişin ardından, büyük bir kırmızı mumun önceki yeşil mumun gövdesini tamamen içine almasıyla oluşan dönüş formasyonu.",
@@ -724,6 +772,7 @@
   },
   {
    "id": "gold-silver-on-crypto-exchanges",
+   "thumb": "/assets/weekly-topics/gold-silver-on-crypto-exchanges.svg",
    "tr": {
     "name": "Kripto borsalarında altın ve gümüş",
     "summary": "Kripto borsalarında altın ve gümüş iki yoldan işlem görebilir: fiziksel altınla desteklenen tokenlar ve altın ya da gümüş fiyatını izleyen sürekli vadeli (perpetual) sözleşmeler.",
@@ -739,6 +788,7 @@
   },
   {
    "id": "head-and-shoulders",
+   "thumb": "/assets/weekly-topics/head-and-shoulders.svg",
    "tr": {
     "name": "Omuz Baş Omuz (OBO)",
     "summary": "Bir yükselişin sonunda oluşan, üç tepeden meydana gelen dönüş formasyonu.",
@@ -754,6 +804,7 @@
   },
   {
    "id": "anchored-vwap",
+   "thumb": "/assets/weekly-topics/anchored-vwap.svg",
    "tr": {
     "name": "AVWAP: sabitlenmiş VWAP",
     "summary": "AVWAP, belirli bir noktadan, örneğin önemli bir tepe ya da dipten bu yana işlem gören fiyatın hacim ağırlıklı ortalamasıdır.",
@@ -769,6 +820,7 @@
   },
   {
    "id": "trend-change",
+   "thumb": "/assets/weekly-topics/trend-change.svg",
    "tr": {
     "name": "Trend ne zaman değişmiş sayılır?",
     "summary": "Yükselen bir trend, son önemli yükselen dibin altında kapanış geldiğinde bozulmuş sayılır.",
@@ -784,6 +836,7 @@
   },
   {
    "id": "bullish-harami",
+   "thumb": "/assets/weekly-topics/bullish-harami.svg",
    "tr": {
     "name": "Boğa Harami",
     "summary": "Bir düşüşün ardından, büyük bir kırmızı mumu gövdesi tamamen onun gövdesinin içinde kalan küçük bir yeşil mumun izlemesiyle oluşan dönüş formasyonu.",
@@ -799,6 +852,7 @@
   },
   {
    "id": "bond-yields",
+   "thumb": "/assets/weekly-topics/bond-yields.svg",
    "tr": {
     "name": "Tahvil faizleri ve getiri eğrisi",
     "summary": "ABD hazine tahvillerinin faizi (getirisi), piyasanın faiz, büyüme ve enflasyon beklentilerini tek bir rakamda toplar.",
@@ -814,6 +868,7 @@
   },
   {
    "id": "after-sharp-moves",
+   "thumb": "/assets/weekly-topics/after-sharp-moves.svg",
    "tr": {
     "name": "Sert hareketlerden sonra fiyat davranışı",
     "summary": "Kısa sürede gelen büyük bir hareketten sonra fiyat üç genel yoldan birini izleyebilir: aynı yönde devam edebilir, yatay bir seyre geçebilir ya da hareketin bir kısmını geri verebilir.",
@@ -829,6 +884,7 @@
   },
   {
    "id": "change-of-character",
+   "thumb": "/assets/weekly-topics/change-of-character.svg",
    "tr": {
     "name": "CHoCH: karakter değişimi",
     "summary": "CHoCH, yapının korunan seviyesinin kapanışla kırılmasıdır.",
@@ -844,6 +900,7 @@
   },
   {
    "id": "inverse-head-and-shoulders",
+   "thumb": "/assets/weekly-topics/inverse-head-and-shoulders.svg",
    "tr": {
     "name": "Ters Omuz Baş Omuz (TOBO)",
     "summary": "Bir düşüşün sonunda oluşan, üç dipten meydana gelen dönüş formasyonu.",
@@ -859,6 +916,7 @@
   },
   {
    "id": "pullback-vs-reversal",
+   "thumb": "/assets/weekly-topics/pullback-vs-reversal.svg",
    "tr": {
     "name": "Geri çekilme ile trend dönüşü arasındaki fark",
     "summary": "Geri çekilme, trendin tersine yönde gelen ama yapıyı bozmayan geçici bir harekettir.",
@@ -874,6 +932,7 @@
   },
   {
    "id": "bearish-harami",
+   "thumb": "/assets/weekly-topics/bearish-harami.svg",
    "tr": {
     "name": "Ayı Harami",
     "summary": "Bir yükselişin ardından, büyük bir yeşil mumu gövdesi tamamen onun gövdesinin içinde kalan küçük bir kırmızı mumun izlemesiyle oluşan dönüş formasyonu.",
@@ -889,6 +948,7 @@
   },
   {
    "id": "macd",
+   "thumb": "/assets/weekly-topics/macd.svg",
    "tr": {
     "name": "MACD",
     "summary": "MACD, 12 ve 26 periyotluk üstel hareketli ortalamalar arasındaki farktır.",
@@ -904,6 +964,7 @@
   },
   {
    "id": "equity-indices-risk-appetite",
+   "thumb": "/assets/weekly-topics/equity-indices-risk-appetite.svg",
    "tr": {
     "name": "Hisse endeksleri ve risk iştahı",
     "summary": "S&P 500 ve Nasdaq 100, ABD hisse piyasasının genel yönünü özetleyen endekslerdir ve piyasanın risk iştahını okumak için sık kullanılır.",
@@ -919,6 +980,7 @@
   },
   {
    "id": "triple-top",
+   "thumb": "/assets/weekly-topics/triple-top.svg",
    "tr": {
     "name": "Üçlü Tepe",
     "summary": "Bir yükselişin sonunda, fiyatın yaklaşık aynı seviyede üç tepe yapmasıyla oluşan dönüş formasyonu.",
@@ -934,6 +996,7 @@
   },
   {
    "id": "liquidity-sweep",
+   "thumb": "/assets/weekly-topics/liquidity-sweep.svg",
    "tr": {
     "name": "Sweep: aralık kenarının fitille aşılması",
     "summary": "Sweep, fiyatın bir aralığın tepesini ya da dibini fitille aşıp mumu yeniden aralığın içinde kapatmasıdır.",
@@ -949,6 +1012,7 @@
   },
   {
    "id": "bollinger-bands",
+   "thumb": "/assets/weekly-topics/bollinger-bands.svg",
    "tr": {
     "name": "Bollinger Bantları",
     "summary": "Bollinger Bantları, 20 periyotluk basit hareketli ortalamanın etrafına iki standart sapma uzaklıkta çizilen iki banttır.",
@@ -964,6 +1028,7 @@
   },
   {
    "id": "piercing-line",
+   "thumb": "/assets/weekly-topics/piercing-line.svg",
    "tr": {
     "name": "Delen Mum",
     "summary": "Bir düşüşün ardından, yeşil bir mumun önceki büyük kırmızı mumun gövdesinin ortasının üzerinde kapanmasıyla oluşan iki mumluk dönüş formasyonu.",
@@ -979,6 +1044,7 @@
   },
   {
    "id": "multi-timeframe-analysis",
+   "thumb": "/assets/weekly-topics/multi-timeframe-analysis.svg",
    "tr": {
     "name": "Çoklu zaman dilimi analizi",
     "summary": "Çoklu zaman dilimi analizi, aynı grafiğe birden fazla zaman diliminden bakmaktır.",
@@ -994,6 +1060,7 @@
   },
   {
    "id": "real-rates-and-dollar",
+   "thumb": "/assets/weekly-topics/real-rates-and-dollar.svg",
    "tr": {
     "name": "Reel faiz ve dolarla ilişki",
     "summary": "Altın faiz ya da temettü ödemez.",
@@ -1009,6 +1076,7 @@
   },
   {
    "id": "triple-bottom",
+   "thumb": "/assets/weekly-topics/triple-bottom.svg",
    "tr": {
     "name": "Üçlü Dip",
     "summary": "Bir düşüşün sonunda, fiyatın yaklaşık aynı seviyede üç dip yapmasıyla oluşan dönüş formasyonu.",
@@ -1024,6 +1092,7 @@
   },
   {
    "id": "volume-profile",
+   "thumb": "/assets/weekly-topics/volume-profile.svg",
    "tr": {
     "name": "Hacim profili (POC, VAH, VAL)",
     "summary": "Hacim profili, seçilen bir dönemde işlem gören hacmi zamana göre değil, fiyata göre dağıtır.",
@@ -1039,6 +1108,7 @@
   },
   {
    "id": "timeframe-conflicts",
+   "thumb": "/assets/weekly-topics/timeframe-conflicts.svg",
    "tr": {
     "name": "Zaman dilimleri arasında görünen çelişkiler",
     "summary": "Aynı anda 1H grafikte fiyat düşerken 1D grafikte yükselen yapı korunuyor olabilir.",
@@ -1054,6 +1124,7 @@
   },
   {
    "id": "dark-cloud-cover",
+   "thumb": "/assets/weekly-topics/dark-cloud-cover.svg",
    "tr": {
     "name": "Kara Bulut",
     "summary": "Bir yükselişin ardından, kırmızı bir mumun önceki büyük yeşil mumun gövdesinin ortasının altında kapanmasıyla oluşan iki mumluk dönüş formasyonu.",
@@ -1069,6 +1140,7 @@
   },
   {
    "id": "obv",
+   "thumb": "/assets/weekly-topics/obv.svg",
    "tr": {
     "name": "OBV (Denge İşlem Hacmi)",
     "summary": "OBV, hacmi kapanışın yönüne göre biriktiren bir göstergedir: kapanış yükseldiğinde mumun hacmi eklenir, düştüğünde çıkarılır.",
@@ -1084,6 +1156,7 @@
   },
   {
    "id": "rising-wedge",
+   "thumb": "/assets/weekly-topics/rising-wedge.svg",
    "tr": {
     "name": "Yükselen Takoz",
     "summary": "İki çizginin de yukarı eğimli olduğu ve sağa doğru birbirine yaklaştığı formasyon.",
@@ -1099,6 +1172,7 @@
   },
   {
    "id": "historical-highs-and-lows",
+   "thumb": "/assets/weekly-topics/historical-highs-and-lows.svg",
    "tr": {
     "name": "Tarihsel tepe ve dipler: geçmişin bıraktığı referanslar",
     "summary": "Tüm zamanların zirvesi (ATH), çok yıllık tepe ve dipler ile önceki haftanın ya da ayın tepe ve dibi, grafikte herkesin görebildiği referans alanlarıdır.",
@@ -1114,6 +1188,7 @@
   },
   {
    "id": "growth-data",
+   "thumb": "/assets/weekly-topics/growth-data.svg",
    "tr": {
     "name": "Büyüme verileri (GSYH, PMI)",
     "summary": "Büyüme verileri, ABD ekonomisinin ne hızla genişlediğini ya da yavaşladığını gösterir.",
@@ -1129,6 +1204,7 @@
   },
   {
    "id": "morning-star",
+   "thumb": "/assets/weekly-topics/morning-star.svg",
    "tr": {
     "name": "Sabah Yıldızı",
     "summary": "Bir düşüşün ardından üç mumla oluşan dönüş formasyonu.",
@@ -1144,6 +1220,7 @@
   },
   {
    "id": "adx",
+   "thumb": "/assets/weekly-topics/adx.svg",
    "tr": {
     "name": "ADX ve trend gücü",
     "summary": "ADX, bir trendin yönünü değil, gücünü ölçen bir göstergedir.",
@@ -1159,6 +1236,7 @@
   },
   {
    "id": "psychological-levels",
+   "thumb": "/assets/weekly-topics/psychological-levels.svg",
    "tr": {
     "name": "Psikolojik seviyeler: yuvarlak sayılar neden önemlidir?",
     "summary": "Psikolojik seviyeler, BTC için 100.000 ya da bazı varlıklar için 1,00 gibi yuvarlak sayılardır.",
@@ -1174,6 +1252,7 @@
   },
   {
    "id": "falling-wedge",
+   "thumb": "/assets/weekly-topics/falling-wedge.svg",
    "tr": {
     "name": "Alçalan Takoz",
     "summary": "İki çizginin de aşağı eğimli olduğu ve sağa doğru birbirine yaklaştığı formasyon.",
@@ -1189,6 +1268,7 @@
   },
   {
    "id": "gold-silver-ratio",
+   "thumb": "/assets/weekly-topics/gold-silver-ratio.svg",
    "tr": {
     "name": "Altın/gümüş oranı",
     "summary": "Altın/gümüş oranı, bir ons altının fiyatıyla kaç ons gümüş alınabileceğini gösterir.",
@@ -1204,6 +1284,7 @@
   },
   {
    "id": "divergence",
+   "thumb": "/assets/weekly-topics/divergence.svg",
    "tr": {
     "name": "Uyumsuzluk (divergence)",
     "summary": "Uyumsuzluk, fiyatın tepe ve dipleriyle bir osilatörün (RSI, MACD, OBV gibi) tepe ve diplerinin farklı yönleri göstermesidir.",
@@ -1219,6 +1300,7 @@
   },
   {
    "id": "trendlines-and-channels",
+   "thumb": "/assets/weekly-topics/trendlines-and-channels.svg",
    "tr": {
     "name": "Trend çizgileri ve kanallar",
     "summary": "Trend çizgisi, yükselen trendde diplerin, düşen trendde tepelerin birleştirilmesiyle çizilen eğik bir çizgidir.",
@@ -1234,6 +1316,7 @@
   },
   {
    "id": "evening-star",
+   "thumb": "/assets/weekly-topics/evening-star.svg",
    "tr": {
     "name": "Akşam Yıldızı",
     "summary": "Bir yükselişin ardından üç mumla oluşan dönüş formasyonu.",

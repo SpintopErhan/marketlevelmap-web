@@ -1,0 +1,22 @@
+<svg class="pattern-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-accent" x="24" y="50" width="512" height="30" opacity="0.14"/>
+  <line class="s-accent" x1="24" y1="50" x2="536" y2="50" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="24" y1="80" x2="536" y2="80" stroke-width="1.2" stroke-dasharray="6 5"/>
+  
+  <rect class="f-accent" x="24" y="226" width="512" height="30" opacity="0.14"/>
+  <line class="s-accent" x1="24" y1="226" x2="536" y2="226" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line class="s-accent" x1="24" y1="256" x2="536" y2="256" stroke-width="1.2" stroke-dasharray="6 5"/>
+  
+  <line class="s-guide" x1="24" y1="155" x2="536" y2="155" stroke-width="1" stroke-dasharray="3 5"/>
+  
+  <polyline class="s-line" points="30,168 55,150 75,140 98,185 120,212 142,238 162,224 186,182 210,150 234,166 260,122 284,96 306,130 330,162 354,140 378,108 398,72 418,58 438,72 458,60 478,74 498,58 518,68 534,62" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point"><circle cx="142" cy="238" r="3.5"/><circle cx="418" cy="58" r="3.5"/><circle cx="498" cy="58" r="3.5"/></g>
+  
+  <g class="t-label" text-anchor="end">
+    
+    
+  </g>
+  <line class="s-guide" x1="24" y1="292" x2="530" y2="292" stroke-width="1"/>
+  <polyline class="s-guide" points="522,287 530,292 522,297" fill="none" stroke-width="1"/>
+  
+</svg>

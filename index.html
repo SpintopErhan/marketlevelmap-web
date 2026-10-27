@@ -72,14 +72,23 @@ tbody tr:last-child td{border-bottom:0}
 .events-table .actual{font-weight:700;color:var(--fg)}
 @media(prefers-reduced-motion:reduce){.price,.price.tick-up,.price.tick-down{transition:none;background:none}}
 /* Topic of the week (library page), under this week's events. */
-.topic-card{margin-top:18px;padding:16px 18px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;background:var(--panel)}
-.topic-head{display:flex;justify-content:space-between;gap:10px;margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
-.topic-track{color:var(--muted);font-weight:600;letter-spacing:0;text-transform:none}
-.topic-title{display:block;font-size:18px;font-weight:700;color:var(--fg);text-decoration:none;line-height:1.35}
+.topic-card{display:flex;gap:14px;align-items:flex-start;margin-top:14px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;background:var(--panel);font-size:13px;line-height:1.5}
+.topic-card[hidden]{display:none}
+.topic-body{flex:1;min-width:0}
+/* The page's drawing without text (scripts/build-library.mjs), coloured like the library cards. */
+.topic-thumb{flex:0 0 96px;align-self:flex-start;margin-top:2px;padding:6px 4px;border-radius:8px;background:var(--panel-2);--lib-line:color-mix(in srgb,var(--fg) 72%,var(--muted));--lib-guide:color-mix(in srgb,var(--muted) 75%,transparent)}
+.topic-thumb:empty{display:none}
+.topic-thumb svg{display:block;width:100%;height:auto}
+.topic-thumb .s-line{stroke:var(--lib-line)}.topic-thumb .s-guide{stroke:var(--lib-guide)}.topic-thumb .s-up{stroke:var(--up)}.topic-thumb .s-down{stroke:var(--down)}.topic-thumb .s-accent{stroke:var(--cz)}
+.topic-thumb .f-up{fill:var(--up)}.topic-thumb .f-down{fill:var(--down)}.topic-thumb .f-accent{fill:var(--cz)}.topic-thumb .f-point{fill:var(--fg)}
+@media(max-width:420px){.topic-thumb{flex-basis:72px}}
+.topic-head{display:flex;justify-content:space-between;gap:10px;margin:0 0 6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.topic-track{color:var(--muted);font-size:11px;font-weight:500;letter-spacing:0;text-transform:none}
+.topic-title{display:block;font-size:14px;font-weight:700;color:var(--fg);text-decoration:none;line-height:1.4}
 .topic-title:hover,.topic-title:focus-visible{color:var(--accent)}
-.topic-summary{margin:6px 0 10px;color:var(--muted);line-height:1.55}
+.topic-summary{margin:4px 0 8px;color:var(--muted)}
 .topic-more{color:var(--accent);font-weight:600;text-decoration:none}
-.topic-next{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.topic-next{margin:10px 0 0;padding-top:8px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
 /* Wide desktops: market table left, events right (sticky). Narrower screens keep the single column. */
 @media(min-width:1600px){
   .shell{width:min(1720px,100%)}
@@ -113,9 +122,9 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <div class="section-head"><div><h2 id="events-title" data-i18n="eventsTitle">This week's events</h2><p><span id="week-range"></span> · <span data-i18n="utc">times in UTC</span> <span class="demo-badge" id="events-demo" data-i18n="demo" hidden>Sample data</span></p></div><a href="weekly-events.html" data-i18n="fullWeek">Full week →</a></div>
 <div class="table-wrap"><table class="events-table"><thead><tr><th data-i18n="colDayName">Day</th><th data-i18n="colTime">Time</th><th data-i18n="colEvent">Event</th></tr></thead>
 <tbody id="event-rows"><tr class="status-row"><td colspan="3" data-i18n="eventsLoading">Loading events…</td></tr></tbody></table></div>
-<aside class="topic-card" id="weekly-topic" aria-labelledby="topic-label" hidden><p class="topic-head"><span id="topic-label" data-i18n="topicLabel">Topic of the week</span><span class="topic-track" id="topic-track"></span></p>
+<aside class="topic-card" id="weekly-topic" aria-labelledby="topic-label" hidden><div class="topic-thumb" id="topic-thumb" aria-hidden="true"></div><div class="topic-body"><p class="topic-head"><span id="topic-label" data-i18n="topicLabel">Topic of the week</span><span class="topic-track" id="topic-track"></span></p>
 <a class="topic-title" id="topic-link" href="/en/library/"></a><p class="topic-summary" id="topic-summary"></p><a class="topic-more" id="topic-more" href="/en/library/" data-i18n="topicMore">Read the page →</a>
-<p class="topic-next"><span data-i18n="topicNext">Next week:</span> <span id="topic-next"></span></p></aside>
+<p class="topic-next"><span data-i18n="topicNext">Next week:</span> <span id="topic-next"></span></p></div></aside>
 </section>
 </main>
 <div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
@@ -249,6 +258,10 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     document.getElementById("topic-summary").textContent=t.summary;
     document.getElementById("topic-next").textContent=data.topics[(i+1)%n][lang].name;
     box.hidden=false;
+    // The drawing is the same in both languages; it is fetched once per week shown.
+    var thumb=document.getElementById("topic-thumb"),src=data.topics[i].thumb;
+    if(src&&thumb.dataset.src!==src){thumb.dataset.src=src;thumb.textContent="";
+      fetch(src).then(function(r){return r.ok?r.text():""}).then(function(svg){if(thumb.dataset.src===src&&/^<svg[\s>]/.test(svg))thumb.innerHTML=svg}).catch(function(){})}
   }
   fetch("/assets/weekly-topics.json").then(function(r){return r.ok?r.json():null})
     .then(function(d){data=d&&Array.isArray(d.topics)&&d.topics.length?d:null;render()}).catch(function(){});
