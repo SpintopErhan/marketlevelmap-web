@@ -46,7 +46,10 @@ cache previews per link, so a link shared before a change keeps its old card for
 ## Pages
 
 - `index.html` — market table (live price, 24h change and volume, daily/weekly/monthly/yearly opens, ATH)
-  and this week's events.
+  and this week's events. Under the events a **Topic of the week** card links one library page: name, first
+  summary sentence, track, "Next week: …". The list is `content/library/weekly-topics.json` (page ids in week
+  order from a Monday 00:00 UTC anchor; it repeats); `scripts/build-library.mjs` checks it and writes
+  `assets/weekly-topics.json`, and the page picks the week in the browser (before the anchor: the first topic).
 - `bulletin.html?asset=BTCUSDT&tf=4h` — analysis page: 1H/4H/1D chart, note, support/resistance zones,
   key levels and earlier analyses. A switch at the top chooses the discipline: Critical Zones (default) or
   Price Action (`&method=pa`, see "Price Action view").

@@ -252,6 +252,11 @@ node build-library.mjs      # tr/kutuphane/, en/library/ ve sitemap.xml'i yenide
 - Sayfaların başlık, menü ve alt bilgi parçaları diğer sayfalarla aynıdır; menüde "Kütüphane" bağlantısı vardır.
 - Kütüphane sayfaları `_routes.json` ile Pages Functions'ın dışında tutulur (meta etiketleri HTML'in içinde),
   böylece Functions kotası harcamazlar.
+- **Haftanın konusu** (ana sayfa kartı): `content/library/weekly-topics.json`. `rotation` sayfa `id`'lerini hafta
+  sırasıyla listeler; ilk hafta `anchorWeekStartUtc` (pazartesi 00:00 UTC), liste bitince başa döner. Sırayı
+  değiştirmek için satırların yeri değiştirilir. Her `id` bir kütüphane sayfası olmalı ve bir kez geçmeli, her
+  `track`'in `tracks` altında tr ve en adı olmalı; yoksa derleme durur. Listede olmayan sayfalar uyarı olarak yazılır.
+  Betik `assets/weekly-topics.json`'u (ad, özetin ilk cümlesi, adres, konu grubu) üretir.
 
 ---
 
