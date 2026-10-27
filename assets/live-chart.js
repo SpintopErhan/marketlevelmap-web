@@ -89,6 +89,8 @@ var LiveChart = (function () {
       var left = Math.max(0, Math.min(1, 1 - Number(zone.filledPercent || 0) / 100));
       return { fill: "rgba(170,176,188," + (0.05 + 0.11 * left).toFixed(3) + ")", stroke: "rgba(196,202,214," + (0.45 + 0.45 * left).toFixed(3) + ")", dash: [4, 3], width: 1.5 };
     }
+    // Price Action "no confirmed range" (README "Price Action view"): the last valid range, faded grey and dashed.
+    if (layer === "PA_LAST_VALID") return { fill: "rgba(170,176,188,0.06)", stroke: "rgba(170,176,188,0.6)", dash: [6, 4], width: 1.5 };
     if (layer === "HISTORICAL_BROKEN_CONTEXT") return { fill: "rgba(224,133,77,0.14)", stroke: "rgba(238,158,108,0.96)", dash: [7, 4], width: 1.5 };
     if (layer === "CANONICAL_EXTENDED") return { fill: "rgba(61,207,224,0.08)", stroke: "rgba(61,207,224,0.95)", dash: [10, 5], width: 1.5 };
     if (layer === "SINGLETON_SWING_CONTEXT") return { fill: "rgba(165,140,255,0.12)", stroke: "rgba(185,157,255,0.98)", dash: [2, 5], width: 1.5 };
@@ -282,7 +284,7 @@ var LiveChart = (function () {
     // Price Action AVWAP (README "Price Action view"): near-white long-dashed curve from the report's points.
     var avwap = chart.addSeries(LC.LineSeries, { color: "#f2f4f8", lineWidth: 2, lineStyle: LC.LineStyle.LargeDashed, priceLineVisible: false,
       lastValueVisible: true, title: "AVWAP", crosshairMarkerVisible: false, visible: false }), avwapPoints = [];
-    var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [];
+    var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [], lastValidZones = [];
     candles.attachPrimitive(zones);
     var sweepMarkers = LC.createSeriesMarkers ? LC.createSeriesMarkers(candles, []) : null;
     var liveLine = null, loadingOlder = false, destroyed = false;
@@ -479,7 +481,7 @@ var LiveChart = (function () {
       setZones: function (list, priceDecimals) {
         baseZones = (list || []).filter(function (z) { return z && z.drawn !== false && Number(z.low) > 0 && Number(z.high) > 0; });
         if (priceDecimals != null && priceDecimals !== decimals) { decimals = priceDecimals; applyPrecision(); }
-        zoneList = baseZones.concat(fvgZones, structureZones);
+        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones);
         zones.set(zoneList, times());
       },
       // Price Action report structure: BOS / CHoCH lines and sweep markers (README "Price Action view").
@@ -489,7 +491,7 @@ var LiveChart = (function () {
           return { line: true, layer: "PA_STRUCTURE", kind: e.type, low: Number(e.level), high: Number(e.level), formedAt: e.swingTime, endAt: e.breakTime,
             label: (e.type === "CHOCH" ? "CHoCH" : "BOS") + (e.direction === "bullish" ? " ↑" : " ↓") };
         });
-        zoneList = baseZones.concat(fvgZones, structureZones);
+        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones);
         zones.set(zoneList, times());
         var curve = structure && structure.state !== "undetermined" && structure.avwap && Array.isArray(structure.avwap.points) ? structure.avwap.points : [];
         avwapPoints = curve.map(function (p) { return { time: Math.floor(Date.parse(p.time || "") / 1000), value: Number(p.value) }; })
@@ -503,13 +505,24 @@ var LiveChart = (function () {
           return time === null ? null : { time: time, position: s.band === "RH" ? "aboveBar" : "belowBar", color: "#dfe3ea", shape: "circle", text: "Sweep" };
         }).filter(Boolean).sort(function (a, b) { return a.time - b.time; }));
       },
+      // Price Action "no confirmed range": the last valid range (report noRange.lastValid), labelled on its high band.
+      setLastValid: function (lastValid, label) {
+        lastValidZones = lastValid && Array.isArray(lastValid.zones) ? lastValid.zones.filter(function (z) {
+          return z && Number(z.low) > 0 && Number(z.high) >= Number(z.low);
+        }).map(function (z) {
+          return { layer: "PA_LAST_VALID", type: z.type, low: Number(z.low), high: Number(z.high), formedAt: lastValid.analyzedAt,
+            label: z.type === "resistance" ? label : null };
+        }) : [];
+        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones);
+        zones.set(zoneList, times());
+      },
       // Price Action report FVG boxes (remaining gap, from the candle that formed it to the right edge).
       setFvg: function (list) {
         fvgZones = (list || []).filter(function (f) { return f && Number(f.low) > 0 && Number(f.high) > Number(f.low); }).map(function (f) {
           return { type: "fvg", layer: "PA_FVG", low: Number(f.low), high: Number(f.high), formedAt: f.createdAt,
             filledPercent: Number(f.filledPercent || 0), label: String(f.direction).toLowerCase() === "bullish" ? "FVG \u2191" : "FVG \u2193" };
         });
-        zoneList = baseZones.concat(fvgZones, structureZones);
+        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones);
         zones.set(zoneList, times());
       },
       liveStatus: function () { return liveStatus; },
