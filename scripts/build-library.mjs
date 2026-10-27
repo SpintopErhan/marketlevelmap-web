@@ -277,6 +277,23 @@ for (const c of activeCategories) {
   if (!cover || cover.kind !== c.kind) warnings.push(`categories.yaml: ${c.kind}: cover "${c.cover}" is not a page of this category yet (its first page is used)`);
 }
 
+// Weekly topic (home page): content/library/weekly-topics.json lists page ids in week order from a Monday
+// 00:00 UTC anchor; the list repeats. Every id must be a library page, once; every track must be named.
+const weekly = JSON.parse(readFileSync(join(CONTENT, "weekly-topics.json"), "utf8"));
+{
+  const where = "weekly-topics.json", anchor = Date.parse(weekly.anchorWeekStartUtc || "");
+  if (!Number.isFinite(anchor) || new Date(anchor).getUTCDay() !== 1 || anchor % 86400000 !== 0) fail(where, "anchorWeekStartUtc must be a Monday 00:00 UTC");
+  if (!Array.isArray(weekly.rotation) || !weekly.rotation.length) fail(where, "rotation must list at least one page");
+  const seen = new Set();
+  for (const [i, row] of (weekly.rotation || []).entries()) {
+    if (!byId.has(row.id)) fail(where, `week ${i + 1}: "${row.id}" is not a library page`);
+    if (seen.has(row.id)) fail(where, `week ${i + 1}: "${row.id}" is listed twice`);
+    if (!LANGS.every((lang) => isText(weekly.tracks?.[row.track]?.[lang]))) fail(where, `week ${i + 1}: track "${row.track}" needs tr and en names`);
+    seen.add(row.id);
+  }
+  for (const p of items) if (!seen.has(p.id)) warnings.push(`${where}: "${p.id}" is not in the rotation`);
+}
+
 if (errors.length) {
   console.error(`Library build failed:\n  ${errors.join("\n  ")}`);
   process.exit(1);
@@ -614,6 +631,14 @@ const eventLinks = sorted(concepts.filter((p) => p.event_keywords)).map((p) => (
   tr: { name: p.tr.name, url: urls.pattern(p, "tr") }, en: { name: p.en.name, url: urls.pattern(p, "en") },
 }));
 files.set(join(ROOT, "assets/library-events.json"), `${JSON.stringify({ generated: "scripts/build-library.mjs", links: eventLinks }, null, 1)}\n`);
+
+// The weekly topic card (index.html) reads this: each week's page with its name, first summary sentence and URL.
+const weeklyTopics = weekly.rotation.map((row) => {
+  const p = byId.get(row.id);
+  return { id: p.id, ...Object.fromEntries(LANGS.map((lang) => [lang, {
+    name: p[lang].name, summary: firstSentence(p[lang].summary), url: urls.pattern(p, lang), track: weekly.tracks[row.track][lang] }])) };
+});
+files.set(join(ROOT, "assets/weekly-topics.json"), `${JSON.stringify({ generated: "scripts/build-library.mjs", anchorWeekStartUtc: weekly.anchorWeekStartUtc, topics: weeklyTopics }, null, 1)}\n`);
 
 // Every library page lives under these folders, so a renamed or removed page is cleaned up too.
 const OWNED = LANGS.map((lang) => join(ROOT, BASE[lang]));

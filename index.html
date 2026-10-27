@@ -71,6 +71,15 @@ tbody tr:last-child td{border-bottom:0}
 .events-table .is-past td{color:var(--muted);font-weight:400}
 .events-table .actual{font-weight:700;color:var(--fg)}
 @media(prefers-reduced-motion:reduce){.price,.price.tick-up,.price.tick-down{transition:none;background:none}}
+/* Topic of the week (library page), under this week's events. */
+.topic-card{margin-top:18px;padding:16px 18px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:14px;background:var(--panel)}
+.topic-head{display:flex;justify-content:space-between;gap:10px;margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.topic-track{color:var(--muted);font-weight:600;letter-spacing:0;text-transform:none}
+.topic-title{display:block;font-size:18px;font-weight:700;color:var(--fg);text-decoration:none;line-height:1.35}
+.topic-title:hover,.topic-title:focus-visible{color:var(--accent)}
+.topic-summary{margin:6px 0 10px;color:var(--muted);line-height:1.55}
+.topic-more{color:var(--accent);font-weight:600;text-decoration:none}
+.topic-next{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 /* Wide desktops: market table left, events right (sticky). Narrower screens keep the single column. */
 @media(min-width:1600px){
   .shell{width:min(1720px,100%)}
@@ -104,14 +113,17 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <div class="section-head"><div><h2 id="events-title" data-i18n="eventsTitle">This week's events</h2><p><span id="week-range"></span> · <span data-i18n="utc">times in UTC</span> <span class="demo-badge" id="events-demo" data-i18n="demo" hidden>Sample data</span></p></div><a href="weekly-events.html" data-i18n="fullWeek">Full week →</a></div>
 <div class="table-wrap"><table class="events-table"><thead><tr><th data-i18n="colDayName">Day</th><th data-i18n="colTime">Time</th><th data-i18n="colEvent">Event</th></tr></thead>
 <tbody id="event-rows"><tr class="status-row"><td colspan="3" data-i18n="eventsLoading">Loading events…</td></tr></tbody></table></div>
+<aside class="topic-card" id="weekly-topic" aria-labelledby="topic-label" hidden><p class="topic-head"><span id="topic-label" data-i18n="topicLabel">Topic of the week</span><span class="topic-track" id="topic-track"></span></p>
+<a class="topic-title" id="topic-link" href="/en/library/"></a><p class="topic-summary" id="topic-summary"></p><a class="topic-more" id="topic-more" href="/en/library/" data-i18n="topicMore">Read the page →</a>
+<p class="topic-next"><span data-i18n="topicNext">Next week:</span> <span id="topic-next"></span></p></aside>
 </section>
 </main>
 <div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 <script>
 /* Header: language and theme (same on every page). */
 var copy={
-  en:{title:"MarketLevelMap — Market table",search:"Search an asset",all:"All",fav:"Favorites",tableTitle:"Market table",demo:"Sample data",colAsset:"Asset",colPrice:"Price",col24h:"24h %",colVolume:"24h volume",colDay:"Daily open",colWeek:"Weekly open",colMonth:"Monthly open",colYear:"Yearly open",colAnalysis:"Analysis",loading:"Loading live market…",unavailable:"No active analysis is available right now. Please check back later.",noMatch:"No assets match this filter.",tableNote:"The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.",eventsTitle:"This week's events",utc:"times in UTC",fullWeek:"Full week →",colDayName:"Day",colTime:"Time",colEvent:"Event",colCountry:"Country",colActual:"Actual",eventsLoading:"Loading events…",eventsFailed:"Events could not be loaded.",eventsNone:"No more events are listed for this week.",allDay:"During the day",live:"Live price",lastAnalysis:"Last published",openAnalysis:"Open analysis",spark7d:"7 days",addFav:"Add to favorites",removeFav:"Remove from favorites"},
-  tr:{title:"MarketLevelMap — Piyasa tablosu",search:"Varlık ara",all:"Tümü",fav:"Favoriler",tableTitle:"Piyasa tablosu",demo:"Örnek veriler",colAsset:"Varlık",colPrice:"Fiyat",col24h:"24s %",colVolume:"24s hacim",colDay:"Günlük açılış",colWeek:"Haftalık açılış",colMonth:"Aylık açılış",colYear:"Yıllık açılış",colAnalysis:"Analiz",loading:"Canlı piyasa yükleniyor…",unavailable:"Şu anda yayında analiz yok. Lütfen daha sonra tekrar deneyin.",noMatch:"Bu filtreyle eşleşen varlık yok.",tableNote:"Açılış ve ATH sütunlarının altındaki yüzde, güncel fiyatın o seviyeye uzaklığıdır. Satıra tıklayınca varlığın analiz sayfası açılır.",eventsTitle:"Bu haftanın olayları",utc:"saatler UTC",fullWeek:"Tüm hafta →",colDayName:"Gün",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colActual:"Gerçekleşen",eventsLoading:"Olaylar yükleniyor…",eventsFailed:"Olaylar yüklenemedi.",eventsNone:"Bu hafta için kalan olay yok.",allDay:"Gün içinde",live:"Canlı fiyat",lastAnalysis:"Son yayın",openAnalysis:"Analizi aç",spark7d:"7 gün",addFav:"Favorilere ekle",removeFav:"Favorilerden çıkar"}
+  en:{title:"MarketLevelMap — Market table",search:"Search an asset",all:"All",fav:"Favorites",tableTitle:"Market table",demo:"Sample data",colAsset:"Asset",colPrice:"Price",col24h:"24h %",colVolume:"24h volume",colDay:"Daily open",colWeek:"Weekly open",colMonth:"Monthly open",colYear:"Yearly open",colAnalysis:"Analysis",loading:"Loading live market…",unavailable:"No active analysis is available right now. Please check back later.",noMatch:"No assets match this filter.",tableNote:"The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.",eventsTitle:"This week's events",utc:"times in UTC",fullWeek:"Full week →",colDayName:"Day",colTime:"Time",colEvent:"Event",colCountry:"Country",colActual:"Actual",eventsLoading:"Loading events…",eventsFailed:"Events could not be loaded.",eventsNone:"No more events are listed for this week.",allDay:"During the day",live:"Live price",lastAnalysis:"Last published",openAnalysis:"Open analysis",spark7d:"7 days",addFav:"Add to favorites",removeFav:"Remove from favorites",topicLabel:"Topic of the week",topicMore:"Read the page →",topicNext:"Next week:"},
+  tr:{title:"MarketLevelMap — Piyasa tablosu",search:"Varlık ara",all:"Tümü",fav:"Favoriler",tableTitle:"Piyasa tablosu",demo:"Örnek veriler",colAsset:"Varlık",colPrice:"Fiyat",col24h:"24s %",colVolume:"24s hacim",colDay:"Günlük açılış",colWeek:"Haftalık açılış",colMonth:"Aylık açılış",colYear:"Yıllık açılış",colAnalysis:"Analiz",loading:"Canlı piyasa yükleniyor…",unavailable:"Şu anda yayında analiz yok. Lütfen daha sonra tekrar deneyin.",noMatch:"Bu filtreyle eşleşen varlık yok.",tableNote:"Açılış ve ATH sütunlarının altındaki yüzde, güncel fiyatın o seviyeye uzaklığıdır. Satıra tıklayınca varlığın analiz sayfası açılır.",eventsTitle:"Bu haftanın olayları",utc:"saatler UTC",fullWeek:"Tüm hafta →",colDayName:"Gün",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colActual:"Gerçekleşen",eventsLoading:"Olaylar yükleniyor…",eventsFailed:"Olaylar yüklenemedi.",eventsNone:"Bu hafta için kalan olay yok.",allDay:"Gün içinde",live:"Canlı fiyat",lastAnalysis:"Son yayın",openAnalysis:"Analizi aç",spark7d:"7 gün",addFav:"Favorilere ekle",removeFav:"Favorilerden çıkar",topicLabel:"Haftanın konusu",topicMore:"Sayfayı oku →",topicNext:"Gelecek hafta:"}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 function applyLanguage(value){
@@ -222,6 +234,26 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
 })();
 </script>
 <script>
+/* Topic of the week: assets/weekly-topics.json from scripts/build-library.mjs (content/library/weekly-topics.json).
+   Weeks start Monday 00:00 UTC at the anchor; before it the first topic is shown, after the last the list repeats. */
+(function(){
+  var box=document.getElementById("weekly-topic"),data=null,DAY=86400000;
+  function render(){
+    if(!data){box.hidden=true;return}
+    var lang=document.documentElement.lang==="tr"?"tr":"en",n=data.topics.length,now=new Date();
+    var start=Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate())-((now.getUTCDay()+6)%7)*DAY;
+    var i=Math.max(0,Math.floor((start-Date.parse(data.anchorWeekStartUtc))/(7*DAY)))%n,t=data.topics[i][lang];
+    document.getElementById("topic-track").textContent=t.track;
+    var link=document.getElementById("topic-link");link.textContent=t.name;link.href=t.url;
+    document.getElementById("topic-more").href=t.url;
+    document.getElementById("topic-summary").textContent=t.summary;
+    document.getElementById("topic-next").textContent=data.topics[(i+1)%n][lang].name;
+    box.hidden=false;
+  }
+  fetch("/assets/weekly-topics.json").then(function(r){return r.ok?r.json():null})
+    .then(function(d){data=d&&Array.isArray(d.topics)&&d.topics.length?d:null;render()}).catch(function(){});
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+})();
 /* This week's events (Monday–Sunday, UTC) from /api/events — the R2 file site-events/events.json. */
 (function(){
   var body=document.getElementById("event-rows"),range=document.getElementById("week-range"),events=null,failed=false,DAY=86400000,MAX=7;

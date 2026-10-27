@@ -1,0 +1,1251 @@
+{
+ "generated": "scripts/build-library.mjs",
+ "anchorWeekStartUtc": "2026-11-02T00:00:00Z",
+ "topics": [
+  {
+   "id": "candlestick-chart",
+   "tr": {
+    "name": "Mum grafiği nasıl okunur?",
+    "summary": "Mum grafiğinde her mum tek bir zaman dilimini, örneğin bir saati ya da bir günü gösterir.",
+    "url": "/tr/kutuphane/mum-grafigi-nasil-okunur/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "How to read a candlestick chart",
+    "summary": "On a candlestick chart, each candle shows a single period, such as one hour or one day.",
+    "url": "/en/library/how-to-read-a-candlestick-chart/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "support-and-resistance",
+   "tr": {
+    "name": "Destek ve direnç nedir?",
+    "summary": "Destek, düşen fiyatın daha önce durup yukarı döndüğü; direnç, yükselen fiyatın daha önce durup aşağı döndüğü fiyat alanıdır.",
+    "url": "/tr/kutuphane/destek-ve-direnc-nedir/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "What are support and resistance?",
+    "summary": "Support is a price area where falling price has stopped and turned up before; resistance is an area where rising price has stopped and turned down before.",
+    "url": "/en/library/what-are-support-and-resistance/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "doji",
+   "tr": {
+    "name": "Doji",
+    "summary": "Açılışı ile kapanışı neredeyse aynı seviyede olan, gövdesi çok küçük tek mum.",
+    "url": "/tr/kutuphane/doji/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Doji",
+    "summary": "A single candle whose open and close are almost the same, leaving a very small body.",
+    "url": "/en/library/doji/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "volume",
+   "tr": {
+    "name": "Hacim nedir?",
+    "summary": "Hacim, bir mumun kapsadığı süre içinde işlem gören miktardır.",
+    "url": "/tr/kutuphane/hacim-nedir/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "What is volume?",
+    "summary": "Volume is the amount traded during the period a candle covers.",
+    "url": "/en/library/what-is-volume/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "economic-calendar",
+   "tr": {
+    "name": "Ekonomik takvim nasıl okunur?",
+    "summary": "Ekonomik takvim, açıklanacak verilerin ve kararların saatini, önemini ve önceki, beklenen ve gerçekleşen değerlerini tek bir tabloda gösterir.",
+    "url": "/tr/kutuphane/ekonomik-takvim/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "How to read an economic calendar",
+    "summary": "An economic calendar shows the time and importance of upcoming data releases and decisions, with their previous, expected and actual values, in a single table.",
+    "url": "/en/library/how-to-read-an-economic-calendar/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "double-top",
+   "tr": {
+    "name": "İkili Tepe",
+    "summary": "Bir yükselişin sonunda, fiyatın yaklaşık aynı seviyede iki tepe yapmasıyla oluşan dönüş formasyonu.",
+    "url": "/tr/kutuphane/ikili-tepe/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Double Top",
+    "summary": "A reversal pattern that forms at the end of an uptrend, when price makes two peaks at roughly the same level.",
+    "url": "/en/library/double-top/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "timeframes",
+   "tr": {
+    "name": "Zaman dilimleri: 15m, 1H, 4H, 1D, 1W",
+    "summary": "Zaman dilimi, grafikteki tek bir mumun kapsadığı süredir: 15m on beş dakika, 1H bir saat, 4H dört saat, 1D bir gün, 1W bir hafta.",
+    "url": "/tr/kutuphane/zaman-dilimleri/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Timeframes: 15m, 1H, 4H, 1D, 1W",
+    "summary": "A timeframe is the length of time a single candle covers on a chart: 15m is fifteen minutes, 1H one hour, 4H four hours, 1D one day and 1W one week.",
+    "url": "/en/library/timeframes/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "indicators-basics",
+   "tr": {
+    "name": "Göstergeler nedir, sınırları neler?",
+    "summary": "Teknik gösterge, fiyat ve hacim verisinden bir formülle hesaplanan çizgi ya da değerdir.",
+    "url": "/tr/kutuphane/gostergeler-nedir/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "What are indicators, and what are their limits?",
+    "summary": "A technical indicator is a line or value calculated from price and volume data with a formula.",
+    "url": "/en/library/what-are-indicators/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "spinning-top",
+   "tr": {
+    "name": "Topaç",
+    "summary": "Küçük ama belirgin bir gövdesi ve iki yanında benzer uzunlukta fitilleri olan tek mum.",
+    "url": "/tr/kutuphane/topac/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Spinning Top",
+    "summary": "A single candle with a small but visible body and wicks of similar length on both sides.",
+    "url": "/en/library/spinning-top/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "priced-in",
+   "tr": {
+    "name": "Beklentinin önceden fiyatlanması",
+    "summary": "Piyasalar olaylara yalnızca gerçekleştikleri anda değil, beklendikleri andan itibaren tepki verir.",
+    "url": "/tr/kutuphane/beklentinin-fiyatlanmasi/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "Priced in: why expectations matter",
+    "summary": "Markets react to events not only when they happen but from the moment they are expected.",
+    "url": "/en/library/priced-in/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "candle-close",
+   "tr": {
+    "name": "Mum kapanışı neden önemlidir?",
+    "summary": "Bir mum, zaman dilimi dolana kadar kesinleşmez.",
+    "url": "/tr/kutuphane/mum-kapanisi/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Why the candle close matters",
+    "summary": "A candle is not final until its timeframe is over.",
+    "url": "/en/library/why-the-candle-close-matters/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "double-bottom",
+   "tr": {
+    "name": "İkili Dip",
+    "summary": "Bir düşüşün sonunda, fiyatın yaklaşık aynı seviyede iki dip yapmasıyla oluşan dönüş formasyonu.",
+    "url": "/tr/kutuphane/ikili-dip/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Double Bottom",
+    "summary": "A reversal pattern that forms at the end of a downtrend, when price makes two troughs at roughly the same level.",
+    "url": "/en/library/double-bottom/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "price-volume-relationship",
+   "tr": {
+    "name": "Fiyat ve hacim ilişkisi",
+    "summary": "Fiyat ve hacim birlikte okunduğunda, bir hareketin ne kadar katılımla geldiği görülür.",
+    "url": "/tr/kutuphane/fiyat-ve-hacim/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Price and volume",
+    "summary": "Reading price and volume together shows how much participation came with a move.",
+    "url": "/en/library/price-and-volume/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "hammer",
+   "tr": {
+    "name": "Çekiç",
+    "summary": "Bir düşüşün ardından oluşan, küçük gövdeli ve uzun alt fitilli tek mumluk dönüş formasyonu.",
+    "url": "/tr/kutuphane/cekic/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Hammer",
+    "summary": "A single-candle reversal pattern that forms after a decline, with a small body and a long lower wick.",
+    "url": "/en/library/hammer/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "trend",
+   "tr": {
+    "name": "Trend nedir?",
+    "summary": "Trend, fiyatın belirli bir süre boyunca ağırlıklı olarak aynı yönde ilerlemesidir.",
+    "url": "/tr/kutuphane/trend-nedir/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "What is a trend?",
+    "summary": "A trend is price moving mostly in one direction over a period of time.",
+    "url": "/en/library/what-is-a-trend/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "volatility",
+   "tr": {
+    "name": "Volatilite nedir? Daralan ve genişleyen aralıklar",
+    "summary": "Volatilite, fiyat değişimlerinin büyüklüğüdür; yönünü değil, ne kadar oynadığını anlatır.",
+    "url": "/tr/kutuphane/volatilite-nedir/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "What is volatility? Contracting and expanding ranges",
+    "summary": "Volatility is the size of price changes; it describes how much price moves, not which way.",
+    "url": "/en/library/what-is-volatility/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "rectangle",
+   "tr": {
+    "name": "Dikdörtgen",
+    "summary": "Fiyatın bir süre iki yatay seviye arasında gidip gelmesiyle oluşan formasyon.",
+    "url": "/tr/kutuphane/dikdortgen/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Rectangle",
+    "summary": "A pattern formed when price moves back and forth between two flat levels for a while.",
+    "url": "/en/library/rectangle/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "crypto-events",
+   "tr": {
+    "name": "Kriptoya özgü olaylar: token kilit açılışları, halving, ETF akımları",
+    "summary": "Token kilit açılışları, Bitcoin halving'i, spot ETF akımları ve ağ güncellemeleri, kripto piyasasına özgü olaylardır.",
+    "url": "/tr/kutuphane/kriptoya-ozgu-olaylar/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "Crypto-specific events: token unlocks, halvings, ETF flows",
+    "summary": "Token unlocks, the Bitcoin halving, spot ETF flows and network upgrades are events specific to the crypto market.",
+    "url": "/en/library/crypto-specific-events/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "swing-points",
+   "tr": {
+    "name": "Tepe ve dip noktaları (swing)",
+    "summary": "Tepe (swing high), fiyatın yükselip yön değiştirdiği, iki yanındaki mumlardan daha yüksekte kalan noktadır.",
+    "url": "/tr/kutuphane/tepe-ve-dip-noktalari/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Swing highs and swing lows",
+    "summary": "A swing high is a point where price stops rising and turns down, standing above the candles on either side.",
+    "url": "/en/library/swing-highs-and-lows/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "hanging-man",
+   "tr": {
+    "name": "Asılı Adam",
+    "summary": "Bir yükselişin ardından oluşan, küçük gövdeli ve uzun alt fitilli tek mumluk dönüş formasyonu.",
+    "url": "/tr/kutuphane/asili-adam/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Hanging Man",
+    "summary": "A single-candle reversal pattern that forms after a rise, with a small body and a long lower wick.",
+    "url": "/en/library/hanging-man/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "moving-averages",
+   "tr": {
+    "name": "Hareketli ortalamalar (SMA, EMA)",
+    "summary": "Hareketli ortalama, son belirli sayıda mumun kapanış fiyatlarının ortalamasıdır ve her yeni mumla yeniden hesaplanır.",
+    "url": "/tr/kutuphane/hareketli-ortalamalar/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Moving averages (SMA, EMA)",
+    "summary": "A moving average is the average of the closing prices of the last given number of candles, recalculated with every new candle.",
+    "url": "/en/library/moving-averages/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "flag",
+   "tr": {
+    "name": "Bayrak",
+    "summary": "Sert ve hızlı bir hareketin (direk) ardından, fiyatın kısa süre bu harekete ters yönde eğimli dar bir kanalda dinlenmesiyle oluşan devam formasyonu.",
+    "url": "/tr/kutuphane/bayrak/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Flag",
+    "summary": "A continuation pattern that forms when a sharp, fast move (the pole) is followed by a short pause in a narrow channel sloping against that move.",
+    "url": "/en/library/flag/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "fed-rate-decisions",
+   "tr": {
+    "name": "Fed faiz kararları (FOMC)",
+    "summary": "ABD Merkez Bankası Fed'in politika faizini, Federal Açık Piyasa Komitesi (FOMC) yılda sekiz planlı toplantıda belirler.",
+    "url": "/tr/kutuphane/fed-faiz-kararlari/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "Fed rate decisions (FOMC)",
+    "summary": "The Federal Open Market Committee (FOMC) sets the US Federal Reserve's policy rate at eight scheduled meetings a year.",
+    "url": "/en/library/fed-rate-decisions/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "atr",
+   "tr": {
+    "name": "ATR (Ortalama Gerçek Aralık)",
+    "summary": "ATR, mumların gerçek aralığının ortalamasıdır; fiyatın bir mumda tipik olarak ne kadar oynadığını fiyat birimiyle gösterir.",
+    "url": "/tr/kutuphane/atr/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "ATR (Average True Range)",
+    "summary": "ATR is the average of the candles' true range; it shows how much price typically moves in one candle, in price units.",
+    "url": "/en/library/atr/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "inverted-hammer",
+   "tr": {
+    "name": "Ters Çekiç",
+    "summary": "Bir düşüşün ardından oluşan, küçük gövdeli ve uzun üst fitilli tek mumluk dönüş formasyonu.",
+    "url": "/tr/kutuphane/ters-cekic/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Inverted Hammer",
+    "summary": "A single-candle reversal pattern that forms after a decline, with a small body and a long upper wick.",
+    "url": "/en/library/inverted-hammer/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "higher-highs-lower-lows",
+   "tr": {
+    "name": "Yükselen ve alçalan tepe-dipler (HH, HL, LH, LL)",
+    "summary": "Her yeni tepe ve dip bir öncekiyle karşılaştırılarak etiketlenir: yükselen tepe (HH), yükselen dip (HL), alçalan tepe (LH) ve alçalan dip (LL).",
+    "url": "/tr/kutuphane/yukselen-ve-alcalan-tepe-dipler/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Higher highs, higher lows, lower highs, lower lows",
+    "summary": "Each new swing high and low is labelled by comparing it with the previous one: higher high (HH), higher low (HL), lower high (LH) and lower low (LL).",
+    "url": "/en/library/higher-highs-and-lower-lows/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "pennant",
+   "tr": {
+    "name": "Flama",
+    "summary": "Sert ve hızlı bir hareketin (direk) ardından oluşan, küçük ve birbirine yaklaşan iki çizgiden meydana gelen kısa süreli bir duraklama formasyonu.",
+    "url": "/tr/kutuphane/flama/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Pennant",
+    "summary": "A short pause that forms after a sharp, fast move (the pole) and is made of two small, converging lines.",
+    "url": "/en/library/pennant/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "level-test",
+   "tr": {
+    "name": "Seviye testi",
+    "summary": "Seviye testi, fiyatın bir destek ya da direnç bölgesine yeniden gelip orada tepki vermesidir.",
+    "url": "/tr/kutuphane/seviye-testi/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Testing a level",
+    "summary": "A level test is when price comes back to a support or resistance zone and reacts there.",
+    "url": "/en/library/testing-a-level/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "breakout-volume",
+   "tr": {
+    "name": "Kırılım ve hacim",
+    "summary": "Bir kırılımı değerlendirirken kırılım mumunun hacmi, son mumların ortalama hacmiyle karşılaştırılır.",
+    "url": "/tr/kutuphane/kirilim-ve-hacim/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Breakouts and volume",
+    "summary": "When judging a breakout, the breakout candle's volume is compared with the average volume of recent candles.",
+    "url": "/en/library/breakouts-and-volume/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "inflation-cpi-pce",
+   "tr": {
+    "name": "Enflasyon verileri (CPI, PCE)",
+    "summary": "ABD'de enflasyon her ay iki ana veriyle izlenir: BLS'nin yayımladığı tüketici fiyat endeksi (CPI) ve BEA'nın yayımladığı kişisel tüketim harcamaları fiyat endeksi (PCE).",
+    "url": "/tr/kutuphane/enflasyon-verileri/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "Inflation data (CPI, PCE)",
+    "summary": "In the US, inflation is followed every month through two main releases: the Consumer Price Index (CPI) from the BLS and the Personal Consumption Expenditures (PCE) price index from the BEA.",
+    "url": "/en/library/inflation-data/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "shooting-star",
+   "tr": {
+    "name": "Kayan Yıldız",
+    "summary": "Bir yükselişin ardından oluşan, küçük gövdeli ve uzun üst fitilli tek mumluk dönüş formasyonu.",
+    "url": "/tr/kutuphane/kayan-yildiz/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Shooting Star",
+    "summary": "A single-candle reversal pattern that forms after a rise, with a small body and a long upper wick.",
+    "url": "/en/library/shooting-star/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "breakout-and-close",
+   "tr": {
+    "name": "Kırılım ve kapanış",
+    "summary": "Kırılım, bir mumun destek ya da direnç bölgesinin uzak kenarının ötesinde kapanmasıdır.",
+    "url": "/tr/kutuphane/kirilim-ve-kapanis/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Breakouts and the close",
+    "summary": "A breakout is a candle closing beyond the far edge of a support or resistance zone.",
+    "url": "/en/library/breakouts-and-the-close/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "price-gaps",
+   "tr": {
+    "name": "Fiyat boşlukları (gap)",
+    "summary": "Fiyat boşluğu, bir mumun önceki mumun aralığıyla hiç örtüşmeden, onun yukarısında ya da aşağısında açılmasıdır; arada hiç işlem görmemiş bir fiyat alanı kalır.",
+    "url": "/tr/kutuphane/fiyat-bosluklari/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Price gaps",
+    "summary": "A price gap is when a candle opens above or below the previous candle's range without overlapping it, leaving an area of price where no trading took place.",
+    "url": "/en/library/price-gaps/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "ascending-triangle",
+   "tr": {
+    "name": "Yükselen Üçgen",
+    "summary": "Yatay bir direnç çizgisi ile giderek yükselen diplerin oluşturduğu üçgen formasyonu.",
+    "url": "/tr/kutuphane/yukselen-ucgen/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Ascending Triangle",
+    "summary": "A triangle pattern formed by a flat resistance line and a series of rising lows.",
+    "url": "/en/library/ascending-triangle/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "dollar-index",
+   "tr": {
+    "name": "Dolar endeksi (DXY)",
+    "summary": "Dolar endeksi (DXY), ABD dolarının altı büyük para birimine karşı değerini tek bir rakamla ölçer.",
+    "url": "/tr/kutuphane/dolar-endeksi/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "The dollar index (DXY)",
+    "summary": "The dollar index (DXY) measures the US dollar against six major currencies in a single number.",
+    "url": "/en/library/dollar-index/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "pin-bar",
+   "tr": {
+    "name": "Pin Bar",
+    "summary": "Tek bir uzun fitil ve küçük bir gövdeden oluşan dönüş mumu.",
+    "url": "/tr/kutuphane/pin-bar/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Pin Bar",
+    "summary": "A single-candle reversal pattern made of one long wick and a small body.",
+    "url": "/en/library/pin-bar/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "false-breakout",
+   "tr": {
+    "name": "Sahte kırılım: fitil ile kapanış arasındaki fark",
+    "summary": "Sahte kırılım, fiyatın bir destek ya da direnç bölgesinin ötesine geçip mum kapanmadan önce yeniden bölgenin gerisine dönmesidir.",
+    "url": "/tr/kutuphane/sahte-kirilim/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "False breakout: the wick versus the close",
+    "summary": "A false breakout is when price moves beyond a support or resistance zone and returns behind it before the candle closes.",
+    "url": "/en/library/false-breakout/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "fair-value-gap",
+   "tr": {
+    "name": "FVG: üç mumluk fiyat boşluğu",
+    "summary": "FVG, güçlü bir mumun iki yanındaki mumların fitilleri arasında kalan boşluktur.",
+    "url": "/tr/kutuphane/fvg-fair-value-gap/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "FVG: fair value gap",
+    "summary": "An FVG is the gap left between the wicks of the candles on either side of a strong candle.",
+    "url": "/en/library/fair-value-gap-fvg/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "descending-triangle",
+   "tr": {
+    "name": "Alçalan Üçgen",
+    "summary": "Yatay bir destek çizgisi ile giderek alçalan tepelerin oluşturduğu üçgen formasyonu.",
+    "url": "/tr/kutuphane/alcalan-ucgen/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Descending Triangle",
+    "summary": "A triangle pattern formed by a flat support line and a series of falling highs.",
+    "url": "/en/library/descending-triangle/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "retest-and-role-reversal",
+   "tr": {
+    "name": "Geri test ve rol değişimi: kırılan bölgeye dönüş",
+    "summary": "Geri test, bir bölge kırıldıktan sonra fiyatın yeniden o bölgeye dönmesidir.",
+    "url": "/tr/kutuphane/geri-test-ve-rol-degisimi/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Retests and role reversal: returning to a broken zone",
+    "summary": "A retest is price returning to a zone after breaking it.",
+    "url": "/en/library/retests-and-role-reversal/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "us-jobs-data",
+   "tr": {
+    "name": "İstihdam verileri (tarım dışı istihdam, işsizlik başvuruları)",
+    "summary": "ABD istihdam verileri, iş gücü piyasasının ne kadar güçlü olduğunu gösterir.",
+    "url": "/tr/kutuphane/istihdam-verileri/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "Jobs data (nonfarm payrolls, jobless claims)",
+    "summary": "US jobs data shows how strong the labour market is.",
+    "url": "/en/library/jobs-data/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "bullish-engulfing",
+   "tr": {
+    "name": "Yutan Boğa",
+    "summary": "Bir düşüşün ardından, büyük bir yeşil mumun önceki kırmızı mumun gövdesini tamamen içine almasıyla oluşan dönüş formasyonu.",
+    "url": "/tr/kutuphane/yutan-boga/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Bullish Engulfing",
+    "summary": "A reversal pattern that forms after a decline, when a large green candle completely engulfs the body of the previous red candle.",
+    "url": "/en/library/bullish-engulfing/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "rsi",
+   "tr": {
+    "name": "RSI (Göreceli Güç Endeksi)",
+    "summary": "RSI, son dönemdeki yükseliş kapanışlarının düşüş kapanışlarına göre ne kadar güçlü olduğunu 0 ile 100 arasında gösteren bir momentum göstergesidir.",
+    "url": "/tr/kutuphane/rsi/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "RSI (Relative Strength Index)",
+    "summary": "RSI is a momentum indicator that shows, on a scale of 0 to 100, how strong recent up closes have been compared with down closes.",
+    "url": "/en/library/rsi/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "range-and-consolidation",
+   "tr": {
+    "name": "Yatay piyasa ve konsolidasyon",
+    "summary": "Yatay piyasa, fiyatın belirgin bir yöne ilerlemeden iki bölge arasında gidip gelmesidir.",
+    "url": "/tr/kutuphane/yatay-piyasa-ve-konsolidasyon/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Ranges and consolidation",
+    "summary": "A range is price moving back and forth between two zones without a clear direction.",
+    "url": "/en/library/ranges-and-consolidation/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "symmetrical-triangle",
+   "tr": {
+    "name": "Simetrik Üçgen",
+    "summary": "Alçalan tepeler ile yükselen diplerin birbirine yaklaşarak oluşturduğu üçgen formasyonu.",
+    "url": "/tr/kutuphane/simetrik-ucgen/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Symmetrical Triangle",
+    "summary": "A triangle pattern formed by lower highs and higher lows converging on each other.",
+    "url": "/en/library/symmetrical-triangle/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "vwap",
+   "tr": {
+    "name": "VWAP (Hacim Ağırlıklı Ortalama Fiyat)",
+    "summary": "VWAP, belirli bir başlangıç noktasından bu yana işlem gören fiyatların hacimle ağırlıklandırılmış ortalamasıdır.",
+    "url": "/tr/kutuphane/vwap/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "VWAP (Volume-Weighted Average Price)",
+    "summary": "VWAP is the volume-weighted average of the prices traded since a chosen starting point.",
+    "url": "/en/library/vwap/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "break-of-structure",
+   "tr": {
+    "name": "BOS: yapı kırılımı",
+    "summary": "BOS, fiyatın trend yönündeki son swing noktasını kapanışla geçmesidir.",
+    "url": "/tr/kutuphane/yapi-kirilimi-bos/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "BOS: break of structure",
+    "summary": "A BOS is when price closes beyond the last swing point in the direction of the trend.",
+    "url": "/en/library/break-of-structure-bos/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "bearish-engulfing",
+   "tr": {
+    "name": "Yutan Ayı",
+    "summary": "Bir yükselişin ardından, büyük bir kırmızı mumun önceki yeşil mumun gövdesini tamamen içine almasıyla oluşan dönüş formasyonu.",
+    "url": "/tr/kutuphane/yutan-ayi/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Bearish Engulfing",
+    "summary": "A reversal pattern that forms after a rise, when a large red candle completely engulfs the body of the previous green candle.",
+    "url": "/en/library/bearish-engulfing/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "gold-silver-on-crypto-exchanges",
+   "tr": {
+    "name": "Kripto borsalarında altın ve gümüş",
+    "summary": "Kripto borsalarında altın ve gümüş iki yoldan işlem görebilir: fiziksel altınla desteklenen tokenlar ve altın ya da gümüş fiyatını izleyen sürekli vadeli (perpetual) sözleşmeler.",
+    "url": "/tr/kutuphane/kripto-borsalarinda-altin-ve-gumus/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "Gold and silver on crypto exchanges",
+    "summary": "On crypto exchanges gold and silver can trade in two ways: tokens backed by physical gold, and perpetual futures that track the gold or silver price.",
+    "url": "/en/library/gold-and-silver-on-crypto-exchanges/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "head-and-shoulders",
+   "tr": {
+    "name": "Omuz Baş Omuz (OBO)",
+    "summary": "Bir yükselişin sonunda oluşan, üç tepeden meydana gelen dönüş formasyonu.",
+    "url": "/tr/kutuphane/omuz-bas-omuz/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Head and Shoulders",
+    "summary": "A reversal pattern that forms at the end of an uptrend and is made of three peaks.",
+    "url": "/en/library/head-and-shoulders/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "anchored-vwap",
+   "tr": {
+    "name": "AVWAP: sabitlenmiş VWAP",
+    "summary": "AVWAP, belirli bir noktadan, örneğin önemli bir tepe ya da dipten bu yana işlem gören fiyatın hacim ağırlıklı ortalamasıdır.",
+    "url": "/tr/kutuphane/avwap-sabitlenmis-vwap/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "AVWAP: anchored VWAP",
+    "summary": "An AVWAP is the volume-weighted average of the prices traded since a chosen point, such as an important high or low.",
+    "url": "/en/library/anchored-vwap-avwap/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "trend-change",
+   "tr": {
+    "name": "Trend ne zaman değişmiş sayılır?",
+    "summary": "Yükselen bir trend, son önemli yükselen dibin altında kapanış geldiğinde bozulmuş sayılır.",
+    "url": "/tr/kutuphane/trend-ne-zaman-degisir/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "When does a trend count as changed?",
+    "summary": "An uptrend counts as broken when price closes below the last important higher low.",
+    "url": "/en/library/when-a-trend-changes/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "bullish-harami",
+   "tr": {
+    "name": "Boğa Harami",
+    "summary": "Bir düşüşün ardından, büyük bir kırmızı mumu gövdesi tamamen onun gövdesinin içinde kalan küçük bir yeşil mumun izlemesiyle oluşan dönüş formasyonu.",
+    "url": "/tr/kutuphane/boga-harami/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Bullish Harami",
+    "summary": "A reversal pattern that forms after a decline, when a large red candle is followed by a small green candle whose body sits entirely inside the red body.",
+    "url": "/en/library/bullish-harami/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "bond-yields",
+   "tr": {
+    "name": "Tahvil faizleri ve getiri eğrisi",
+    "summary": "ABD hazine tahvillerinin faizi (getirisi), piyasanın faiz, büyüme ve enflasyon beklentilerini tek bir rakamda toplar.",
+    "url": "/tr/kutuphane/tahvil-faizleri/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "Bond yields and the yield curve",
+    "summary": "The yield on US Treasuries sums up the market's rate, growth and inflation expectations in a single number.",
+    "url": "/en/library/bond-yields-and-the-yield-curve/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "after-sharp-moves",
+   "tr": {
+    "name": "Sert hareketlerden sonra fiyat davranışı",
+    "summary": "Kısa sürede gelen büyük bir hareketten sonra fiyat üç genel yoldan birini izleyebilir: aynı yönde devam edebilir, yatay bir seyre geçebilir ya da hareketin bir kısmını geri verebilir.",
+    "url": "/tr/kutuphane/sert-hareketlerden-sonra/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Price behaviour after sharp moves",
+    "summary": "After a large move in a short time, price can follow one of three broad paths: it can continue in the same direction, move sideways, or give back part of the move.",
+    "url": "/en/library/after-sharp-moves/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "change-of-character",
+   "tr": {
+    "name": "CHoCH: karakter değişimi",
+    "summary": "CHoCH, yapının korunan seviyesinin kapanışla kırılmasıdır.",
+    "url": "/tr/kutuphane/karakter-degisimi-choch/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "CHoCH: change of character",
+    "summary": "A CHoCH is when the structure's protected level is broken by a close.",
+    "url": "/en/library/change-of-character-choch/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "inverse-head-and-shoulders",
+   "tr": {
+    "name": "Ters Omuz Baş Omuz (TOBO)",
+    "summary": "Bir düşüşün sonunda oluşan, üç dipten meydana gelen dönüş formasyonu.",
+    "url": "/tr/kutuphane/ters-omuz-bas-omuz/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Inverse Head and Shoulders",
+    "summary": "A reversal pattern that forms at the end of a downtrend and is made of three troughs.",
+    "url": "/en/library/inverse-head-and-shoulders/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "pullback-vs-reversal",
+   "tr": {
+    "name": "Geri çekilme ile trend dönüşü arasındaki fark",
+    "summary": "Geri çekilme, trendin tersine yönde gelen ama yapıyı bozmayan geçici bir harekettir.",
+    "url": "/tr/kutuphane/geri-cekilme-ve-trend-donusu/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Pullback or reversal?",
+    "summary": "A pullback is a temporary move against the trend that leaves the structure intact.",
+    "url": "/en/library/pullback-or-reversal/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "bearish-harami",
+   "tr": {
+    "name": "Ayı Harami",
+    "summary": "Bir yükselişin ardından, büyük bir yeşil mumu gövdesi tamamen onun gövdesinin içinde kalan küçük bir kırmızı mumun izlemesiyle oluşan dönüş formasyonu.",
+    "url": "/tr/kutuphane/ayi-harami/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Bearish Harami",
+    "summary": "A reversal pattern that forms after a rise, when a large green candle is followed by a small red candle whose body sits entirely inside the green body.",
+    "url": "/en/library/bearish-harami/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "macd",
+   "tr": {
+    "name": "MACD",
+    "summary": "MACD, 12 ve 26 periyotluk üstel hareketli ortalamalar arasındaki farktır.",
+    "url": "/tr/kutuphane/macd/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "MACD",
+    "summary": "MACD is the difference between the 12- and 26-period exponential moving averages.",
+    "url": "/en/library/macd/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "equity-indices-risk-appetite",
+   "tr": {
+    "name": "Hisse endeksleri ve risk iştahı",
+    "summary": "S&P 500 ve Nasdaq 100, ABD hisse piyasasının genel yönünü özetleyen endekslerdir ve piyasanın risk iştahını okumak için sık kullanılır.",
+    "url": "/tr/kutuphane/hisse-endeksleri-ve-risk-istahi/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "Stock indices and risk appetite",
+    "summary": "The S&P 500 and Nasdaq 100 are indices that sum up the overall direction of the US stock market, and they are widely used to read the market's risk appetite.",
+    "url": "/en/library/stock-indices-and-risk-appetite/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "triple-top",
+   "tr": {
+    "name": "Üçlü Tepe",
+    "summary": "Bir yükselişin sonunda, fiyatın yaklaşık aynı seviyede üç tepe yapmasıyla oluşan dönüş formasyonu.",
+    "url": "/tr/kutuphane/uclu-tepe/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Triple Top",
+    "summary": "A reversal pattern that forms at the end of an uptrend, when price makes three peaks at roughly the same level.",
+    "url": "/en/library/triple-top/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "liquidity-sweep",
+   "tr": {
+    "name": "Sweep: aralık kenarının fitille aşılması",
+    "summary": "Sweep, fiyatın bir aralığın tepesini ya da dibini fitille aşıp mumu yeniden aralığın içinde kapatmasıdır.",
+    "url": "/tr/kutuphane/sweep/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Sweep: a wick past the range edge",
+    "summary": "A sweep is when price wicks beyond the top or bottom of a range and closes the candle back inside the range.",
+    "url": "/en/library/sweep/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "bollinger-bands",
+   "tr": {
+    "name": "Bollinger Bantları",
+    "summary": "Bollinger Bantları, 20 periyotluk basit hareketli ortalamanın etrafına iki standart sapma uzaklıkta çizilen iki banttır.",
+    "url": "/tr/kutuphane/bollinger-bantlari/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Bollinger Bands",
+    "summary": "Bollinger Bands are two bands drawn two standard deviations either side of a 20-period simple moving average.",
+    "url": "/en/library/bollinger-bands/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "piercing-line",
+   "tr": {
+    "name": "Delen Mum",
+    "summary": "Bir düşüşün ardından, yeşil bir mumun önceki büyük kırmızı mumun gövdesinin ortasının üzerinde kapanmasıyla oluşan iki mumluk dönüş formasyonu.",
+    "url": "/tr/kutuphane/delen-mum/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Piercing Line",
+    "summary": "A two-candle reversal pattern that forms after a decline, when a green candle closes above the middle of the previous large red candle's body.",
+    "url": "/en/library/piercing-line/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "multi-timeframe-analysis",
+   "tr": {
+    "name": "Çoklu zaman dilimi analizi",
+    "summary": "Çoklu zaman dilimi analizi, aynı grafiğe birden fazla zaman diliminden bakmaktır.",
+    "url": "/tr/kutuphane/coklu-zaman-dilimi-analizi/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Multi-timeframe analysis",
+    "summary": "Multi-timeframe analysis means looking at the same chart on more than one timeframe.",
+    "url": "/en/library/multi-timeframe-analysis/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "real-rates-and-dollar",
+   "tr": {
+    "name": "Reel faiz ve dolarla ilişki",
+    "summary": "Altın faiz ya da temettü ödemez.",
+    "url": "/tr/kutuphane/reel-faiz-ve-dolar/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "Real rates and the dollar",
+    "summary": "Gold pays no interest or dividend.",
+    "url": "/en/library/real-rates-and-the-dollar/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "triple-bottom",
+   "tr": {
+    "name": "Üçlü Dip",
+    "summary": "Bir düşüşün sonunda, fiyatın yaklaşık aynı seviyede üç dip yapmasıyla oluşan dönüş formasyonu.",
+    "url": "/tr/kutuphane/uclu-dip/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Triple Bottom",
+    "summary": "A reversal pattern that forms at the end of a downtrend, when price makes three troughs at roughly the same level.",
+    "url": "/en/library/triple-bottom/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "volume-profile",
+   "tr": {
+    "name": "Hacim profili (POC, VAH, VAL)",
+    "summary": "Hacim profili, seçilen bir dönemde işlem gören hacmi zamana göre değil, fiyata göre dağıtır.",
+    "url": "/tr/kutuphane/hacim-profili/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Volume profile (POC, VAH, VAL)",
+    "summary": "A volume profile spreads the volume traded over a chosen period by price instead of by time.",
+    "url": "/en/library/volume-profile/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "timeframe-conflicts",
+   "tr": {
+    "name": "Zaman dilimleri arasında görünen çelişkiler",
+    "summary": "Aynı anda 1H grafikte fiyat düşerken 1D grafikte yükselen yapı korunuyor olabilir.",
+    "url": "/tr/kutuphane/zaman-dilimi-celiskileri/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "When timeframes seem to disagree",
+    "summary": "Price can be falling on the 1H chart while the rising structure holds on the 1D chart.",
+    "url": "/en/library/when-timeframes-disagree/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "dark-cloud-cover",
+   "tr": {
+    "name": "Kara Bulut",
+    "summary": "Bir yükselişin ardından, kırmızı bir mumun önceki büyük yeşil mumun gövdesinin ortasının altında kapanmasıyla oluşan iki mumluk dönüş formasyonu.",
+    "url": "/tr/kutuphane/kara-bulut/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Dark Cloud Cover",
+    "summary": "A two-candle reversal pattern that forms after a rise, when a red candle closes below the middle of the previous large green candle's body.",
+    "url": "/en/library/dark-cloud-cover/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "obv",
+   "tr": {
+    "name": "OBV (Denge İşlem Hacmi)",
+    "summary": "OBV, hacmi kapanışın yönüne göre biriktiren bir göstergedir: kapanış yükseldiğinde mumun hacmi eklenir, düştüğünde çıkarılır.",
+    "url": "/tr/kutuphane/obv/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "OBV (On-Balance Volume)",
+    "summary": "OBV is an indicator that accumulates volume by the direction of the close: a candle's volume is added when the close rises and subtracted when it falls.",
+    "url": "/en/library/obv/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "rising-wedge",
+   "tr": {
+    "name": "Yükselen Takoz",
+    "summary": "İki çizginin de yukarı eğimli olduğu ve sağa doğru birbirine yaklaştığı formasyon.",
+    "url": "/tr/kutuphane/yukselen-takoz/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Rising Wedge",
+    "summary": "A pattern in which both lines slope upwards and converge to the right.",
+    "url": "/en/library/rising-wedge/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "historical-highs-and-lows",
+   "tr": {
+    "name": "Tarihsel tepe ve dipler: geçmişin bıraktığı referanslar",
+    "summary": "Tüm zamanların zirvesi (ATH), çok yıllık tepe ve dipler ile önceki haftanın ya da ayın tepe ve dibi, grafikte herkesin görebildiği referans alanlarıdır.",
+    "url": "/tr/kutuphane/tarihsel-tepe-ve-dipler/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Historical highs and lows: references left by the past",
+    "summary": "The all-time high (ATH), multi-year highs and lows, and the previous week's or month's high and low are reference areas anyone can see on a chart.",
+    "url": "/en/library/historical-highs-and-lows/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "growth-data",
+   "tr": {
+    "name": "Büyüme verileri (GSYH, PMI)",
+    "summary": "Büyüme verileri, ABD ekonomisinin ne hızla genişlediğini ya da yavaşladığını gösterir.",
+    "url": "/tr/kutuphane/buyume-verileri/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "Growth data (GDP, PMI)",
+    "summary": "Growth data shows how fast the US economy is expanding or slowing.",
+    "url": "/en/library/growth-data/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "morning-star",
+   "tr": {
+    "name": "Sabah Yıldızı",
+    "summary": "Bir düşüşün ardından üç mumla oluşan dönüş formasyonu.",
+    "url": "/tr/kutuphane/sabah-yildizi/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Morning Star",
+    "summary": "A three-candle reversal pattern that forms after a decline.",
+    "url": "/en/library/morning-star/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "adx",
+   "tr": {
+    "name": "ADX ve trend gücü",
+    "summary": "ADX, bir trendin yönünü değil, gücünü ölçen bir göstergedir.",
+    "url": "/tr/kutuphane/adx/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "ADX and trend strength",
+    "summary": "ADX is an indicator that measures the strength of a trend, not its direction.",
+    "url": "/en/library/adx/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "psychological-levels",
+   "tr": {
+    "name": "Psikolojik seviyeler: yuvarlak sayılar neden önemlidir?",
+    "summary": "Psikolojik seviyeler, BTC için 100.000 ya da bazı varlıklar için 1,00 gibi yuvarlak sayılardır.",
+    "url": "/tr/kutuphane/psikolojik-seviyeler/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Psychological levels: why round numbers matter",
+    "summary": "Psychological levels are round numbers such as 100,000 for BTC or 1.00 for some assets.",
+    "url": "/en/library/psychological-levels/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "falling-wedge",
+   "tr": {
+    "name": "Alçalan Takoz",
+    "summary": "İki çizginin de aşağı eğimli olduğu ve sağa doğru birbirine yaklaştığı formasyon.",
+    "url": "/tr/kutuphane/alcalan-takoz/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Falling Wedge",
+    "summary": "A pattern in which both lines slope downwards and converge to the right.",
+    "url": "/en/library/falling-wedge/",
+    "track": "Patterns"
+   }
+  },
+  {
+   "id": "gold-silver-ratio",
+   "tr": {
+    "name": "Altın/gümüş oranı",
+    "summary": "Altın/gümüş oranı, bir ons altının fiyatıyla kaç ons gümüş alınabileceğini gösterir.",
+    "url": "/tr/kutuphane/altin-gumus-orani/",
+    "track": "Piyasalar ve makro"
+   },
+   "en": {
+    "name": "The gold/silver ratio",
+    "summary": "The gold/silver ratio shows how many ounces of silver one ounce of gold can buy.",
+    "url": "/en/library/gold-silver-ratio/",
+    "track": "Markets and macro"
+   }
+  },
+  {
+   "id": "divergence",
+   "tr": {
+    "name": "Uyumsuzluk (divergence)",
+    "summary": "Uyumsuzluk, fiyatın tepe ve dipleriyle bir osilatörün (RSI, MACD, OBV gibi) tepe ve diplerinin farklı yönleri göstermesidir.",
+    "url": "/tr/kutuphane/uyumsuzluk/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Divergence",
+    "summary": "Divergence is when the highs and lows of price and of an oscillator (such as RSI, MACD or OBV) point in different directions.",
+    "url": "/en/library/divergence/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
+   "id": "trendlines-and-channels",
+   "tr": {
+    "name": "Trend çizgileri ve kanallar",
+    "summary": "Trend çizgisi, yükselen trendde diplerin, düşen trendde tepelerin birleştirilmesiyle çizilen eğik bir çizgidir.",
+    "url": "/tr/kutuphane/trend-cizgileri-ve-kanallar/",
+    "track": "Temeller"
+   },
+   "en": {
+    "name": "Trendlines and channels",
+    "summary": "A trendline is a sloping line drawn by joining the lows in an uptrend or the highs in a downtrend.",
+    "url": "/en/library/trendlines-and-channels/",
+    "track": "Basics"
+   }
+  },
+  {
+   "id": "evening-star",
+   "tr": {
+    "name": "Akşam Yıldızı",
+    "summary": "Bir yükselişin ardından üç mumla oluşan dönüş formasyonu.",
+    "url": "/tr/kutuphane/aksam-yildizi/",
+    "track": "Formasyonlar"
+   },
+   "en": {
+    "name": "Evening Star",
+    "summary": "A three-candle reversal pattern that forms after a rise.",
+    "url": "/en/library/evening-star/",
+    "track": "Patterns"
+   }
+  }
+ ]
+}

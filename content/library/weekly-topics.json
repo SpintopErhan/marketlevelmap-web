@@ -1,0 +1,356 @@
+{
+ "_comment": "Haftanın konusu (ana sayfa). Sıra = hafta sırası; ilk hafta anchorWeekStartUtc (pazartesi 00:00 UTC). Sona gelince başa döner. Kimlikler kütüphane sayfalarının id'si. scripts/build-library.mjs doğrular ve assets/weekly-topics.json üretir.",
+ "anchorWeekStartUtc": "2026-11-02T00:00:00Z",
+ "tracks": {
+  "core": {
+   "tr": "Temeller",
+   "en": "Basics"
+  },
+  "patterns": {
+   "tr": "Formasyonlar",
+   "en": "Patterns"
+  },
+  "quality": {
+   "tr": "Hacim ve göstergeler",
+   "en": "Volume and indicators"
+  },
+  "markets": {
+   "tr": "Piyasalar ve makro",
+   "en": "Markets and macro"
+  }
+ },
+ "rotation": [
+  {
+   "id": "candlestick-chart",
+   "track": "core"
+  },
+  {
+   "id": "support-and-resistance",
+   "track": "core"
+  },
+  {
+   "id": "doji",
+   "track": "patterns"
+  },
+  {
+   "id": "volume",
+   "track": "quality"
+  },
+  {
+   "id": "economic-calendar",
+   "track": "markets"
+  },
+  {
+   "id": "double-top",
+   "track": "patterns"
+  },
+  {
+   "id": "timeframes",
+   "track": "core"
+  },
+  {
+   "id": "indicators-basics",
+   "track": "quality"
+  },
+  {
+   "id": "spinning-top",
+   "track": "patterns"
+  },
+  {
+   "id": "priced-in",
+   "track": "markets"
+  },
+  {
+   "id": "candle-close",
+   "track": "core"
+  },
+  {
+   "id": "double-bottom",
+   "track": "patterns"
+  },
+  {
+   "id": "price-volume-relationship",
+   "track": "quality"
+  },
+  {
+   "id": "hammer",
+   "track": "patterns"
+  },
+  {
+   "id": "trend",
+   "track": "core"
+  },
+  {
+   "id": "volatility",
+   "track": "quality"
+  },
+  {
+   "id": "rectangle",
+   "track": "patterns"
+  },
+  {
+   "id": "crypto-events",
+   "track": "markets"
+  },
+  {
+   "id": "swing-points",
+   "track": "core"
+  },
+  {
+   "id": "hanging-man",
+   "track": "patterns"
+  },
+  {
+   "id": "moving-averages",
+   "track": "quality"
+  },
+  {
+   "id": "flag",
+   "track": "patterns"
+  },
+  {
+   "id": "fed-rate-decisions",
+   "track": "markets"
+  },
+  {
+   "id": "atr",
+   "track": "quality"
+  },
+  {
+   "id": "inverted-hammer",
+   "track": "patterns"
+  },
+  {
+   "id": "higher-highs-lower-lows",
+   "track": "core"
+  },
+  {
+   "id": "pennant",
+   "track": "patterns"
+  },
+  {
+   "id": "level-test",
+   "track": "core"
+  },
+  {
+   "id": "breakout-volume",
+   "track": "quality"
+  },
+  {
+   "id": "inflation-cpi-pce",
+   "track": "markets"
+  },
+  {
+   "id": "shooting-star",
+   "track": "patterns"
+  },
+  {
+   "id": "breakout-and-close",
+   "track": "core"
+  },
+  {
+   "id": "price-gaps",
+   "track": "quality"
+  },
+  {
+   "id": "ascending-triangle",
+   "track": "patterns"
+  },
+  {
+   "id": "dollar-index",
+   "track": "markets"
+  },
+  {
+   "id": "pin-bar",
+   "track": "patterns"
+  },
+  {
+   "id": "false-breakout",
+   "track": "core"
+  },
+  {
+   "id": "fair-value-gap",
+   "track": "quality"
+  },
+  {
+   "id": "descending-triangle",
+   "track": "patterns"
+  },
+  {
+   "id": "retest-and-role-reversal",
+   "track": "core"
+  },
+  {
+   "id": "us-jobs-data",
+   "track": "markets"
+  },
+  {
+   "id": "bullish-engulfing",
+   "track": "patterns"
+  },
+  {
+   "id": "rsi",
+   "track": "quality"
+  },
+  {
+   "id": "range-and-consolidation",
+   "track": "core"
+  },
+  {
+   "id": "symmetrical-triangle",
+   "track": "patterns"
+  },
+  {
+   "id": "vwap",
+   "track": "quality"
+  },
+  {
+   "id": "break-of-structure",
+   "track": "core"
+  },
+  {
+   "id": "bearish-engulfing",
+   "track": "patterns"
+  },
+  {
+   "id": "gold-silver-on-crypto-exchanges",
+   "track": "markets"
+  },
+  {
+   "id": "head-and-shoulders",
+   "track": "patterns"
+  },
+  {
+   "id": "anchored-vwap",
+   "track": "quality"
+  },
+  {
+   "id": "trend-change",
+   "track": "core"
+  },
+  {
+   "id": "bullish-harami",
+   "track": "patterns"
+  },
+  {
+   "id": "bond-yields",
+   "track": "markets"
+  },
+  {
+   "id": "after-sharp-moves",
+   "track": "quality"
+  },
+  {
+   "id": "change-of-character",
+   "track": "core"
+  },
+  {
+   "id": "inverse-head-and-shoulders",
+   "track": "patterns"
+  },
+  {
+   "id": "pullback-vs-reversal",
+   "track": "core"
+  },
+  {
+   "id": "bearish-harami",
+   "track": "patterns"
+  },
+  {
+   "id": "macd",
+   "track": "quality"
+  },
+  {
+   "id": "equity-indices-risk-appetite",
+   "track": "markets"
+  },
+  {
+   "id": "triple-top",
+   "track": "patterns"
+  },
+  {
+   "id": "liquidity-sweep",
+   "track": "core"
+  },
+  {
+   "id": "bollinger-bands",
+   "track": "quality"
+  },
+  {
+   "id": "piercing-line",
+   "track": "patterns"
+  },
+  {
+   "id": "multi-timeframe-analysis",
+   "track": "core"
+  },
+  {
+   "id": "real-rates-and-dollar",
+   "track": "markets"
+  },
+  {
+   "id": "triple-bottom",
+   "track": "patterns"
+  },
+  {
+   "id": "volume-profile",
+   "track": "quality"
+  },
+  {
+   "id": "timeframe-conflicts",
+   "track": "core"
+  },
+  {
+   "id": "dark-cloud-cover",
+   "track": "patterns"
+  },
+  {
+   "id": "obv",
+   "track": "quality"
+  },
+  {
+   "id": "rising-wedge",
+   "track": "patterns"
+  },
+  {
+   "id": "historical-highs-and-lows",
+   "track": "core"
+  },
+  {
+   "id": "growth-data",
+   "track": "markets"
+  },
+  {
+   "id": "morning-star",
+   "track": "patterns"
+  },
+  {
+   "id": "adx",
+   "track": "quality"
+  },
+  {
+   "id": "psychological-levels",
+   "track": "core"
+  },
+  {
+   "id": "falling-wedge",
+   "track": "patterns"
+  },
+  {
+   "id": "gold-silver-ratio",
+   "track": "markets"
+  },
+  {
+   "id": "divergence",
+   "track": "quality"
+  },
+  {
+   "id": "trendlines-and-channels",
+   "track": "core"
+  },
+  {
+   "id": "evening-star",
+   "track": "patterns"
+  }
+ ]
+}
