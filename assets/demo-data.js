@@ -40,7 +40,9 @@ var DemoData=(function(){
   }
 
   function archive(symbol){
-    var items=[3,4,5].map(function(n,i){var d=new Date(Date.now()-n*DAY);d.setUTCHours(10,20+i,0,0);return{publishedAt:d.toISOString(),timeframes:i===1?["1h","4h"]:["1h","4h","1d"],url:null}});
+    // README "Archive JSON" list rows (no report: sample rows do not open).
+    var items=[3,4,5].map(function(n,i){var d=new Date(Date.now()-n*DAY);d.setUTCHours(i?7:11,59,59,0);
+      return{graphicKey:(i===1?"PA:":"CZ:")+symbol+":"+(i===2?"1d":"4h"),publicationId:"demo-"+n,analyzedAt:d.toISOString(),liveFrom:d.toISOString(),liveUntil:new Date(d.getTime()+DAY).toISOString()}});
     return{symbol:symbol,items:items};
   }
 

@@ -6,15 +6,70 @@ main{padding:70px 0;min-height:calc(100vh - 165px)}
 .eyebrow:before{content:"";display:inline-block;width:28px;height:1px;background:currentColor;margin:0 10px 4px 0}
 h1{font-size:clamp(34px,5vw,54px);font-weight:500;letter-spacing:-1.8px;margin:13px 0}
 p{max-width:520px;color:var(--muted);font-size:15px;line-height:1.75}
-.notice{margin-top:42px;padding:24px;border:1px dashed var(--line);border-radius:14px;background:var(--panel);max-width:740px}
-.notice strong{display:block;font-size:16px;margin-bottom:7px}
-.notice span{color:var(--muted);font-size:13px;line-height:1.6}
+.arch-controls{display:flex;align-items:center;gap:10px;margin:30px 0 8px}
+.arch-controls label{color:var(--muted);font-size:13px;font-weight:600}
+.arch-controls select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);font:inherit;font-size:14px}
+.arch-status{margin:18px 0 0;font-size:14px}
+.arch-day{max-width:740px;margin-top:26px}
+.arch-day h2{margin:0 0 4px;font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.arch-day ul{margin:0;padding:0;list-style:none}
+.arch-day a{display:flex;justify-content:space-between;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line);color:var(--fg);font-size:14px;font-weight:600;text-decoration:none}
+.arch-day a:hover{color:var(--accent)}
+.arch-day small{color:var(--muted);font-weight:500;text-align:right}
 @media(max-width:520px){main{padding:44px 0}}
 </style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
-</header><main><div class="eyebrow">Bulletins</div><h1>Archive</h1><p>Earlier bulletin publications will be listed here by date, with their Critical Zones and Price Action charts.</p><div class="notice"><strong>Coming with the content integration</strong><span>Only the active publication is served today. Past publications will appear here once archived packages are exposed to the site.</span></div></main><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div><script>var copy={en:{eyebrow:"Bulletins",title:"Archive",body:"Earlier bulletin publications will be listed here by date, with their Critical Zones and Price Action charts.",notice:"Coming with the content integration",detail:"Only the active publication is served today. Past publications will appear here once archived packages are exposed to the site."},tr:{eyebrow:"Bültenler",title:"Arşiv",body:"Önceki bülten yayınları, Critical Zones ve Price Action grafikleriyle birlikte burada tarihe göre listelenecek.",notice:"İçerik entegrasyonuyla birlikte",detail:"Şu anda yalnızca aktif yayın sunuluyor. Geçmiş yayınlar, arşivlenen paketler siteye açıldığında burada görünecek."}};function applyLanguage(value){var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;document.querySelector(".eyebrow").textContent=t.eyebrow;document.querySelector("h1").textContent=t.title;document.querySelector("main > p").textContent=t.body;document.querySelector(".notice strong").textContent=t.notice;document.querySelector(".notice span").textContent=t.detail;document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+</header><main><div class="eyebrow" data-i18n="eyebrow">Analyses</div><h1 data-i18n="title">Archive</h1><p data-i18n="body">Earlier analyses, newest first. Each opens on today's chart exactly as it was published, so you can see what price did next.</p><div class="arch-controls"><label for="pair" data-i18n="pairLabel">Market</label><select id="pair"></select></div><p class="arch-status" id="arch-status"></p><div id="arch-list"></div></main><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div><script src="assets/market-ui.js?v=f1ecddae"></script><script>var copy={en:{eyebrow:"Analyses",title:"Archive",body:"Earlier analyses, newest first. Each opens on today's chart exactly as it was published, so you can see what price did next.",pairLabel:"Market",loading:"Loading the archive…",empty:"There are no earlier analyses for this market yet.",failed:"The archive could not be loaded. Please try again later.",methodCz:"Critical Zones",methodPa:"Price Action",noRange:"No confirmed range",live:"on the site {from} – {until}"},tr:{eyebrow:"Analizler",title:"Arşiv",body:"Önceki analizler, en yenisi üstte. Her biri yayınlandığı haliyle bugünkü grafiğin üzerinde açılır; fiyatın sonra ne yaptığını görebilirsiniz.",pairLabel:"Piyasa",loading:"Arşiv yükleniyor…",empty:"Bu piyasa için henüz önceki analiz yok.",failed:"Arşiv yüklenemedi. Lütfen daha sonra tekrar deneyin.",methodCz:"Kritik Bölgeler",methodPa:"Price Action",noRange:"Onaylı aralık yok",live:"sitede {from} – {until}"}};function words(){return copy[document.documentElement.lang]||copy.en}function applyLanguage(value){var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;document.querySelectorAll("[data-i18n]").forEach(function(el){if(t[el.dataset.i18n])el.textContent=t[el.dataset.i18n]});if(window.renderArchive)renderArchive();document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
   document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});try{localStorage.setItem("mlm-lang",value)}catch(e){}}var savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){};var lang=document.getElementById("lang");lang.value=savedLang==="tr"?"tr":"en";applyLanguage(lang.value);lang.addEventListener("change",function(){applyLanguage(this.value)});var toggle=document.getElementById("theme-toggle");
 function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
 function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
-toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();</script></body></html>
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();</script>
+<script>
+/* Archive (README "Archive JSON"): the chosen pair's earlier analyses from /api/archive, grouped by analysis day.
+   Each row opens the analysis page in archive view (&at=<publicationId>). */
+(function(){
+  var q=new URLSearchParams(location.search),pair=(q.get("asset")||"BTCUSDT").toUpperCase(),select=document.getElementById("pair");
+  var status=document.getElementById("arch-status"),list=document.getElementById("arch-list"),items=null,failed=false;
+  if(!/^[A-Z0-9]{2,20}$/.test(pair))pair="BTCUSDT";
+  function option(p){var o=document.createElement("option");o.value=p;o.textContent=MarketUI.baseOf?MarketUI.baseOf(p)+" · "+MarketUI.nameOf(p):p;return o}
+  function pairs(list){
+    var seen={};list.forEach(function(p){seen[p]=true});seen[pair]=true;
+    select.textContent="";Object.keys(seen).sort().forEach(function(p){select.appendChild(option(p))});select.value=pair;
+  }
+  window.renderArchive=function(){
+    var w=words();list.textContent="";
+    if(failed){status.textContent=w.failed;return}
+    if(!items){status.textContent=w.loading;return}
+    status.textContent=items.length?"":w.empty;
+    var days={},order=[];
+    items.forEach(function(item){var day=MarketUI.date(item.analyzedAt);if(!days[day]){days[day]=[];order.push(day)}days[day].push(item)});
+    order.forEach(function(day){
+      var section=document.createElement("section"),h=document.createElement("h2"),ul=document.createElement("ul");section.className="arch-day";h.textContent=day;
+      days[day].forEach(function(item){
+        var m=MarketUI.methodOf(item),li=document.createElement("li"),a=document.createElement("a");
+        a.href="bulletin?asset="+encodeURIComponent(pair)+(m==="pa"?"&method=pa":"")+"&tf="+encodeURIComponent(MarketUI.timeframeOf(item))+"&at="+encodeURIComponent(item.publicationId);
+        a.innerHTML="<span></span><small></small>";
+        a.firstChild.textContent=(m==="pa"?w.methodPa:w.methodCz)+" · "+MarketUI.timeframeOf(item).toUpperCase()+(item.rangeStatus==="NO_CONFIRMED_RANGE"?" · "+w.noRange:"");
+        a.lastChild.textContent=MarketUI.dateTime(item.analyzedAt)+(item.liveFrom?" · "+w.live.replace("{from}",MarketUI.date(item.liveFrom)).replace("{until}",MarketUI.date(item.liveUntil)):"");
+        li.appendChild(a);ul.appendChild(li);
+      });
+      section.appendChild(h);section.appendChild(ul);list.appendChild(section);
+    });
+  };
+  function load(){
+    items=null;failed=false;renderArchive();
+    fetch("/api/archive?symbol="+encodeURIComponent(pair),{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(d){
+      if(!d||!Array.isArray(d.items)){failed=true}else items=d.items;renderArchive();
+    }).catch(function(){failed=true;renderArchive()});
+  }
+  select.addEventListener("change",function(){
+    pair=select.value;try{var next=new URL(location.href);next.searchParams.set("asset",pair);history.replaceState(null,"",next.toString())}catch(e){}load();
+  });
+  pairs([]);
+  fetch("/api/publication",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){
+    pairs((body&&body.entries||[]).map(function(e){return MarketUI.assetOf(e)}).filter(Boolean));
+  }).catch(function(){});
+  load();
+})();
+</script></body></html>

@@ -313,13 +313,15 @@ activation replaces a chart's entry. Each item is the replaced pointer entry plu
                "report": { "objectKey": "publication-packages/…", "mediaType": "application/json", "sizeBytes": 1, "sha256": "…" } } ] }
 ```
 
-- `/api/archive?symbol=<marketPair>` returns the items (newest `liveUntil` first) without object keys; an item
-  whose `publicationId` is in the active pointer is left out.
-- `/api/archive/report/<publicationId>?symbol=<marketPair>` and `/api/archive/image/<publicationId>?symbol=…` serve
+- `/api/archive?symbol=<marketPair>` returns the items, newest analysis first, without object keys. An item whose
+  `publicationId` is in the active pointer is left out, and the same release published more than once (same
+  `graphicKey` and `sourceReleaseId`) is one row: its newest publication, `liveFrom` of the first, `liveUntil` of the last.
+  Archived objects never change, so they are served with a one-day cache.
+- `/api/archive/report/<publicationId>?symbol=<marketPair>` and `/api/archive/image/…` and `/api/archive/comment/…` serve
   only an object listed in that pair's archive file (404 otherwise); `publication-packages/` is never listed.
 - Old analysis view: `bulletin.html?asset=<marketPair>&method=<cz|pa>&tf=<tf>&at=<publicationId>` draws the archived
   report on today's candles with an "Archive · <analysis date> · Back to the current analysis" strip; nothing is
-  recomputed. Not in the sitemap; its canonical URL is the current analysis page.
+  recomputed; only that chart is shown, and sharing it shares the archive link. Not in the sitemap.
 - "Earlier analyses" on the analysis page shows the pair's latest items and links to `archive.html`, which lists
   every item by date, method and timeframe.
 
