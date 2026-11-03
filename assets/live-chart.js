@@ -145,6 +145,61 @@ var LiveChart = (function () {
     ctx.restore();
   }
 
+  // Price Action structure points (README "Price Action view"): bold main HH / HL / LH / LL labels, faint internal
+  // ones (switchable) and a thin dotted next-BOS line, all from the report's structure.points.
+  var POINT_COLORS = { main: { HH: "#55d99c", HL: "#55d99c", LH: "#ef6e76", LL: "#ef6e76" }, internal: { HH: "#3f8a69", HL: "#3f8a69", LH: "#9a5258", LL: "#9a5258" } };
+  function snapTime(iso, times) {
+    var seconds = Math.floor(Date.parse(iso || "") / 1000);
+    for (var i = 0; i < times.length; i++) if (times[i] >= seconds) return times[i] === seconds ? times[i] : null;
+    return null;
+  }
+  function PointsPrimitive(getTimes) { this.points = null; this.showInternal = true; this.getTimes = getTimes; this.chart = null; this.series = null; this.requestUpdate = null; }
+  PointsPrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
+  PointsPrimitive.prototype.detached = function () { this.chart = this.series = this.requestUpdate = null; };
+  PointsPrimitive.prototype.update = function () { if (this.requestUpdate) this.requestUpdate(); };
+  PointsPrimitive.prototype.updateAllViews = function () {};
+  PointsPrimitive.prototype.paneViews = function () {
+    var self = this;
+    return [{
+      zOrder: function () { return "top"; },
+      renderer: function () {
+        return {
+          draw: function (target) {
+            if (!self.chart || !self.series || !self.points) return;
+            var timeScale = self.chart.timeScale(), times = self.getTimes();
+            target.useMediaCoordinateSpace(function (scope) {
+              var ctx = scope.context, width = scope.mediaSize.width;
+              var labels = (self.points.main || []).map(function (p) { return { p: p, layer: "main" }; });
+              if (self.showInternal) labels = labels.concat((self.points.internal || []).map(function (p) { return { p: p, layer: "internal" }; }));
+              ctx.textAlign = "center";
+              labels.forEach(function (item) {
+                var p = item.p, time = p.label ? snapTime(p.time, times) : null;
+                if (time === null) return;
+                var x = timeScale.timeToCoordinate(time), y = self.series.priceToCoordinate(Number(p.price));
+                if (x === null || y === null) return;
+                ctx.font = (item.layer === "main" ? "bold 11px " : "8px ") + "sans-serif";
+                ctx.fillStyle = POINT_COLORS[item.layer][p.label] || "#8a93a8";
+                ctx.textBaseline = p.kind === "high" ? "bottom" : "top";
+                ctx.fillText(p.label, x, y + (p.kind === "high" ? -6 : 6));
+              });
+              var next = self.points.nextBos;
+              if (!next || !(Number(next.price) > 0)) return;
+              var seconds = Math.floor(Date.parse(next.time || "") / 1000), start = null;
+              for (var i = 0; i < times.length; i++) if (times[i] >= seconds) { start = times[i]; break; }
+              var x0 = start === null ? null : timeScale.timeToCoordinate(start), y = self.series.priceToCoordinate(Number(next.price));
+              if (y === null) return;
+              var end = timeScale.logicalToCoordinate(times.length - 1 + ZONE_TAIL_BARS), right = end === null ? width : Math.min(width, end);
+              ctx.strokeStyle = "#a99cf0"; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
+              ctx.beginPath(); ctx.moveTo(Math.max(0, x0 === null ? 0 : x0), y); ctx.lineTo(right, y); ctx.stroke(); ctx.setLineDash([]);
+              ctx.font = "10px sans-serif"; ctx.fillStyle = "#a99cf0"; ctx.textAlign = "right"; ctx.textBaseline = "bottom";
+              ctx.fillText(self.nextLabel || "Next BOS", right - 4, y - 2);
+            });
+          }
+        };
+      }
+    }];
+  };
+
   function ZonesPrimitive() { this.zones = []; this.times = []; this.chart = null; this.series = null; this.requestUpdate = null; }
   ZonesPrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
   ZonesPrimitive.prototype.detached = function () { this.chart = this.series = this.requestUpdate = null; };
@@ -286,6 +341,8 @@ var LiveChart = (function () {
       lastValueVisible: true, title: "AVWAP", crosshairMarkerVisible: false, visible: false }), avwapPoints = [];
     var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [], lastValidZones = [];
     candles.attachPrimitive(zones);
+    var structurePoints = new PointsPrimitive(function () { return times(); });
+    candles.attachPrimitive(structurePoints);
     var sweepMarkers = LC.createSeriesMarkers ? LC.createSeriesMarkers(candles, []) : null;
     var liveLine = null, loadingOlder = false, destroyed = false;
     var forming = null, liveStatus = "pending", socket = null, retryTimer = null, socketFailures = 0;
@@ -497,6 +554,8 @@ var LiveChart = (function () {
         avwapPoints = curve.map(function (p) { return { time: Math.floor(Date.parse(p.time || "") / 1000), value: Number(p.value) }; })
           .filter(function (p) { return isFinite(p.time) && p.value > 0; });
         drawAvwap();
+        structurePoints.points = structure && structure.state !== "undetermined" && structure.points ? structure.points : null;
+        structurePoints.update();
         if (!sweepMarkers) return;
         var candleTimes = times();
         sweepMarkers.setMarkers(sweeps.map(function (s) {
@@ -504,6 +563,12 @@ var LiveChart = (function () {
           for (var i = 0; i < candleTimes.length; i++) if (candleTimes[i] >= seconds) { time = candleTimes[i]; break; }
           return time === null ? null : { time: time, position: s.band === "RH" ? "aboveBar" : "belowBar", color: "#dfe3ea", shape: "circle", text: "Sweep" };
         }).filter(Boolean).sort(function (a, b) { return a.time - b.time; }));
+      },
+      // Structure points: internal labels on / off, and the next-BOS line's caption in the page language.
+      setInternalStructure: function (visible, nextLabel) {
+        structurePoints.showInternal = visible !== false;
+        if (nextLabel) structurePoints.nextLabel = nextLabel;
+        structurePoints.update();
       },
       // Price Action "no confirmed range": the last valid range (report noRange.lastValid), labelled on its high band.
       setLastValid: function (lastValid, label) {
