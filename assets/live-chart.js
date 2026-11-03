@@ -519,7 +519,9 @@ var LiveChart = (function () {
         var code = String(level.code), price = Number(level.price);
         if (!(price > 0)) return;
         keep[code] = true;
-        if (!levelLines[code]) levelLines[code] = candles.createPriceLine({ price: price, color: LEVEL_COLOR, lineWidth: 1, lineStyle: LC.LineStyle.LargeDashed, axisLabelVisible: true, title: code });
+        // Volume profile levels bring their own colour (teal) and a solid POC; key levels stay dashed orange.
+        var style = level.color ? (level.solid ? LC.LineStyle.Solid : LC.LineStyle.Dashed) : LC.LineStyle.LargeDashed;
+        if (!levelLines[code]) levelLines[code] = candles.createPriceLine({ price: price, color: level.color || LEVEL_COLOR, lineWidth: 1, lineStyle: style, axisLabelVisible: true, title: code });
         else if (levelLines[code].options().price !== price) levelLines[code].applyOptions({ price: price });
       });
       Object.keys(levelLines).forEach(function (code) { if (!keep[code]) { candles.removePriceLine(levelLines[code]); delete levelLines[code]; } });
