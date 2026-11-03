@@ -455,7 +455,12 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     VP_GROUPS.forEach(function(group){
       var parts=VP_PARTS.map(function(part){return group[0]+part}).filter(function(code){return map[code]>0});
       if(!parts.length)return;
-      var head=document.createElement("tr");head.className="vp-group";head.innerHTML='<td colspan="4"></td>';head.firstChild.textContent=w[group[1]];rows.appendChild(head);
+      // The period heading has its own eye: VAH / POC / VAL of that period on or off together.
+      var head=document.createElement("tr");head.className="vp-group";head.innerHTML='<td><input type="checkbox" class="eye"></td><td colspan="3"></td>';head.children[1].textContent=w[group[1]];
+      var groupEye=head.firstChild.firstChild,groupOn=parts.filter(function(code){return vpLevels.indexOf(code)>-1}).length;
+      groupEye.checked=groupOn===parts.length;groupEye.indeterminate=groupOn>0&&groupOn<parts.length;groupEye.title=w.vpAll;groupEye.setAttribute("aria-label",w.vpAll+" — "+w[group[1]]);
+      groupEye.addEventListener("change",function(){setVpLevels(vpLevels.filter(function(x){return parts.indexOf(x)<0}).concat(groupEye.checked?parts:[]))});
+      rows.appendChild(head);
       parts.forEach(function(code){
         var tr=document.createElement("tr");tr.innerHTML='<td><input type="checkbox" class="eye"><span class="badge code vp"></span></td><td></td><td class="r num"></td><td></td>';
         var c=tr.children,eye=c[0].firstChild;eye.checked=vpLevels.indexOf(code)>-1;eye.title=w.showOnChart;eye.setAttribute("aria-label",w.showOnChart+" — "+code);
