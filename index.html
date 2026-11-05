@@ -7,7 +7,7 @@
 <meta name="description" content="MarketLevelMap — Structure-Based Market Analysis.">
 <title>MarketLevelMap — Market table</title>
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
-<link rel="stylesheet" href="assets/site.css?v=c0e6921b"><style>
+<link rel="stylesheet" href="assets/site.css?v=e8d497ff"><style>
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.5}
 /* V2: one more surface tone between page and card, used instead of extra borders. */
@@ -100,7 +100,7 @@ main{padding:0 0 72px}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px}
 th{padding:14px;color:var(--muted);font-size:12px;font-weight:500;text-align:right;white-space:nowrap;vertical-align:bottom}
 td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
-.market-table{min-width:1080px}
+.market-table{min-width:1160px}
 .market-table th:first-child,.market-table td:first-child{padding-left:20px}
 .market-table th:last-child,.market-table td:last-child{padding-right:20px}
 .market-table .asset{position:sticky;left:0;z-index:1;text-align:left;background:var(--panel)}
@@ -109,6 +109,12 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .market-table tbody tr:hover td{background:var(--raise)}
 .asset-cell{display:flex;align-items:center;gap:10px}
 .asset-cell strong{display:block;font-size:14px;font-weight:600}
+.asset-icon{flex:none;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;color:#0b1a17;font-size:11px;font-weight:700}
+.chg{display:inline-block;min-width:68px;padding:3px 8px;border-radius:6px;font-size:13px;text-align:right}
+.chg.up{background:color-mix(in srgb,var(--up) 14%,transparent)}.chg.down{background:color-mix(in srgb,var(--down) 14%,transparent)}
+.m-chips{display:inline-flex;gap:4px;margin-right:8px;vertical-align:middle}
+.m-chip{padding:3px 7px;border-radius:6px;background:var(--chip);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:11px;font-weight:600}
+.m-chip.cz{color:var(--cz)}.m-chip.pa{color:var(--accent)}
 .asset-cell small{display:block;color:var(--muted);font-size:12px}
 .star{width:26px;height:26px;padding:0;border:0;border-radius:6px;background:none;color:var(--muted);font-size:15px;line-height:1;cursor:pointer;transition:color .15s ease,transform .15s ease}
 .star:hover{color:var(--fg);transform:scale(1.15)}
@@ -120,8 +126,8 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 @keyframes mlmTickUp{from{background:color-mix(in srgb,var(--up) 32%,transparent);color:var(--up)}to{background:transparent}}
 @keyframes mlmTickDown{from{background:color-mix(in srgb,var(--down) 32%,transparent);color:var(--down)}to{background:transparent}}
 .lvl b{display:block;font-weight:500}.lvl small{display:block;margin-top:2px;font-size:12px}
-.analysis-col{width:64px;text-align:center}
-.analysis-link{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:10px;color:var(--cz);background:var(--raise);transition:background .2s ease}
+.analysis-col{width:64px;text-align:center;white-space:nowrap}
+.analysis-link{vertical-align:middle;display:inline-grid;place-items:center;width:38px;height:38px;border-radius:10px;color:var(--cz);background:var(--raise);transition:background .2s ease}
 .analysis-link:hover{background:var(--chip)}
 .analysis-link svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
 .analysis-link .spark{display:none}
@@ -134,7 +140,7 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .spark.first .spark-dot{opacity:0;animation:mlmShow .3s ease-out 1.1s forwards}
 @keyframes mlmDraw{to{stroke-dashoffset:0}}
 @media(min-width:701px){
-  .analysis-col{width:132px}
+  .analysis-col{width:200px}
   .analysis-link.has-spark{width:auto;height:auto;padding:3px 6px;background:none}
   .analysis-link.has-spark:hover{background:var(--raise)}
   .analysis-link.has-spark .icon{display:none}
@@ -150,7 +156,10 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .events-card .table-wrap{border-radius:0;background:none}
 .events-table th{padding:8px 10px 10px 0;text-align:left}
 .events-table td{padding:12px 10px 12px 0;text-align:left}
+.events-table td:nth-child(1){font-weight:600}
+.events-table td:nth-child(2){color:var(--muted);font-size:13px}
 .events-table td:nth-child(3){width:100%;white-space:normal;font-weight:600}
+.ev-country{display:inline-block;margin-right:10px;padding:2px 7px;border-radius:6px;background:var(--chip);color:var(--muted);font-size:11px;font-weight:600;vertical-align:1px}
 .events-table .is-past td{color:var(--muted);font-weight:400}
 .events-table .actual{font-weight:700;color:var(--fg)}
 .events-table tbody tr td{transition:background .2s ease}
@@ -158,7 +167,8 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .topic-card{flex:2 1 340px;min-width:0;display:flex;flex-direction:column;padding:22px 24px;font-size:14px;line-height:1.5;transition:transform .25s ease,box-shadow .25s ease}
 .topic-card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -24px rgba(0,0,0,.55)}
 .topic-card[hidden]{display:none}
-.topic-body{flex:1;min-width:0;display:flex;flex-direction:column}
+.topic-body{display:contents}
+.topic-head{order:0}.topic-thumb{order:1}.topic-title,.topic-summary,.topic-more,.topic-next{order:2}
 .topic-thumb{margin:0 0 14px;padding:14px 16px;border-radius:12px;background:var(--raise);--lib-line:color-mix(in srgb,var(--fg) 72%,var(--muted));--lib-guide:color-mix(in srgb,var(--muted) 75%,transparent)}
 .topic-thumb:empty{display:none}
 .topic-thumb svg{display:block;width:100%;max-height:150px;height:auto}
@@ -346,7 +356,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     if(r.last&&price!==r.last){var cls=price>r.last?"tick-up":"tick-down";r.price.classList.remove("tick-up","tick-down");void r.price.offsetWidth;r.price.classList.add(cls);setTimeout(function(){r.price.classList.remove(cls)},900)}
     r.last=price;r.price.textContent=MarketUI.price(price,r.digits);
     if(r.closes&&Date.now()-r.sparkAt>5000)drawSpark(sym);
-    r.change.textContent=MarketUI.pct(change);r.change.className="num "+MarketUI.signClass(change);paintTicker(sym,r.price.textContent,change);
+    r.change.textContent=MarketUI.pct(change);r.change.className="chg "+MarketUI.signClass(change);paintTicker(sym,r.price.textContent,change);
     if(sym===heroSym){document.getElementById("hero-price").textContent=r.price.textContent;if(!heroFull||Date.now()-heroAt>5000)drawHero()}
     r.volume.textContent=Number(d.q)>0?MarketUI.compact(d.q)+" $":"—";
     // Opens: live feed first (always current), the published report's value as fallback.
@@ -383,11 +393,16 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   search.addEventListener("input",applyFilter);
   document.querySelectorAll("[data-filter]").forEach(function(b){b.addEventListener("click",function(){filter=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(function(x){x.classList.toggle("active",x===b)});applyFilter()})});
 
-  function build(sym,href){
+  function build(sym,href,methods){
     var tr=document.createElement("tr");tr.dataset.symbol=sym;
-    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><div><strong></strong><small></small></div></div></td><td class="num price">—</td><td class="num">—</td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="analysis-col"><a class="analysis-link"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><span class="spark"></span></a></td>';
-    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1],change:c[2],volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[9].firstChild,spark:c[9].querySelector(".spark"),data:null,levels:null,digits:null,last:null,closes:null,sparkChange:null,sparkAt:0};
+    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><span class="asset-icon" aria-hidden="true"></span><div><strong></strong><small></small></div></div></td><td class="num price">—</td><td class="num"><span class="chg">—</span></td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="analysis-col"><a class="analysis-link"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><span class="spark"></span></a></td>';
+    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1],change:c[2].firstChild,volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[9].firstChild,spark:c[9].querySelector(".spark"),data:null,levels:null,digits:null,last:null,closes:null,sparkChange:null,sparkAt:0};
     c[0].querySelector("strong").textContent=sym;c[0].querySelector("small").textContent=MarketUI.nameOf(sym);r.link.href=href;
+    // V2: a coloured initials badge per asset and the analysis methods it has (CZ / PA).
+    var icon=c[0].querySelector(".asset-icon"),hue=0;for(var i=0;i<sym.length;i++)hue=(hue*31+sym.charCodeAt(i))%360;
+    icon.textContent=sym.slice(0,2);icon.style.background="hsl("+hue+" 62% 64%)";
+    var chips=document.createElement("span");chips.className="m-chips";(methods||[]).forEach(function(m){var b=document.createElement("span");b.className="m-chip "+m;b.textContent=m.toUpperCase();chips.appendChild(b)});
+    c[9].insertBefore(chips,r.link);
     function paintStar(){var on=favorites.indexOf(sym)>-1;r.star.classList.toggle("active",on);r.star.textContent=on?"★":"☆";r.star.setAttribute("aria-pressed",String(on))}
     r.star.addEventListener("click",function(e){e.stopPropagation();var i=favorites.indexOf(sym);if(i>-1)favorites.splice(i,1);else favorites.push(sym);saveFavorites();paintStar();labels();applyFilter()});
     tr.addEventListener("click",function(e){if(e.target.closest("a,button"))return;location.href=href});
@@ -403,7 +418,8 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     document.getElementById("hero-assets").textContent=order.length;document.getElementById("hero-tfs").textContent=Object.keys(tfs).length;document.getElementById("hero-methods").textContent=Object.keys(methods).length;
     order.forEach(function(sym){
       var entries=byAsset[sym].sort(MarketUI.byTimeframe),main=entries.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||entries[0];
-      body.appendChild(build(sym,"bulletin.html?asset="+encodeURIComponent(sym)+"&method="+MarketUI.methodOf(main)));
+      var methods=["cz","pa"].filter(function(m){return entries.some(function(e){return MarketUI.methodOf(e)===m})});
+      body.appendChild(build(sym,"bulletin.html?asset="+encodeURIComponent(sym)+"&method="+MarketUI.methodOf(main),methods));
       if(main.report)fetch(main.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
       else if(window.DemoData&&DemoData.enabled)rows[sym].demo=true;
     });
@@ -458,6 +474,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
       tr.innerHTML='<td></td><td class="num"></td><td></td>';
       var c=tr.children;c[0].textContent=fmtDay(t);c[1].textContent=e.datePrecision==="DAY"?w.allDay:new Date(t).toISOString().slice(11,16);
       c[2].textContent=(e.title&&(e.title[lang]||e.title.en))||"";
+      if(e.country){var flag=document.createElement("span");flag.className="ev-country";flag.textContent=e.country;c[2].insertBefore(flag,c[2].firstChild)}
       if(window.EventLinks)EventLinks.decorate(c[2],e,lang);
       body.appendChild(tr);
     });
