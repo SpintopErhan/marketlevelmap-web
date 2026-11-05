@@ -153,7 +153,7 @@ var LiveChart = (function () {
     for (var i = 0; i < times.length; i++) if (times[i] >= seconds) return times[i] === seconds ? times[i] : null;
     return null;
   }
-  function PointsPrimitive(getTimes) { this.points = null; this.showInternal = true; this.getTimes = getTimes; this.chart = null; this.series = null; this.requestUpdate = null; }
+  function PointsPrimitive(getTimes) { this.points = null; this.reveal = 1; this.showInternal = true; this.getTimes = getTimes; this.chart = null; this.series = null; this.requestUpdate = null; }
   PointsPrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
   PointsPrimitive.prototype.detached = function () { this.chart = this.series = this.requestUpdate = null; };
   PointsPrimitive.prototype.update = function () { if (this.requestUpdate) this.requestUpdate(); };
@@ -167,8 +167,10 @@ var LiveChart = (function () {
           draw: function (target) {
             if (!self.chart || !self.series || !self.points) return;
             var timeScale = self.chart.timeScale(), times = self.getTimes();
+            if (self.reveal <= 0) return;
             target.useMediaCoordinateSpace(function (scope) {
               var ctx = scope.context, width = scope.mediaSize.width;
+              ctx.globalAlpha = self.reveal;
               var labels = (self.points.main || []).map(function (p) { return { p: p, layer: "main" }; });
               if (self.showInternal) labels = labels.concat((self.points.internal || []).map(function (p) { return { p: p, layer: "internal" }; }));
               ctx.textAlign = "center";
@@ -200,7 +202,7 @@ var LiveChart = (function () {
     }];
   };
 
-  function ZonesPrimitive() { this.zones = []; this.times = []; this.chart = null; this.series = null; this.requestUpdate = null; }
+  function ZonesPrimitive() { this.zones = []; this.reveal = 1; this.times = []; this.chart = null; this.series = null; this.requestUpdate = null; }
   ZonesPrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
   ZonesPrimitive.prototype.detached = function () { this.chart = this.series = this.requestUpdate = null; };
   ZonesPrimitive.prototype.set = function (zones, times) { this.zones = zones || []; this.times = times || []; if (this.requestUpdate) this.requestUpdate(); };
@@ -217,18 +219,21 @@ var LiveChart = (function () {
             target.useMediaCoordinateSpace(function (scope) {
               // Zones stop a few bars after the last closed candle instead of running to the price axis.
               var paneWidth = scope.mediaSize.width, end = timeScale.logicalToCoordinate(self.times.length - 1 + ZONE_TAIL_BARS);
-              var ctx = scope.context, right = end === null ? paneWidth : Math.min(paneWidth, end);
-              if (right <= 0) return;
+              var ctx = scope.context, fullRight = end === null ? paneWidth : Math.min(paneWidth, end), reveal = self.reveal;
+              if (fullRight <= 0 || reveal <= 0) return;
               self.zones.forEach(function (zone) {
-                var start = zoneStart(zone, self.times);
+                var start = zoneStart(zone, self.times), right = fullRight;
                 if (!start) return;
-                if (zone.line) { drawStructureLine(ctx, timeScale, self.series, zone, start, self.times); return; }
+                if (zone.line) { ctx.save(); ctx.globalAlpha = reveal; drawStructureLine(ctx, timeScale, self.series, zone, start, self.times); ctx.restore(); return; }
                 var x0 = timeScale.timeToCoordinate(start.time);
                 var yHigh = self.series.priceToCoordinate(Number(zone.high)), yLow = self.series.priceToCoordinate(Number(zone.low));
                 if (x0 === null || yHigh === null || yLow === null || x0 > right) return;
                 var top = Math.min(yHigh, yLow), height = Math.max(1, Math.abs(yLow - yHigh)), left = Math.max(x0, -2);
                 var style = palette(zone);
+                // While the chart opens (reveal < 1) the zone grows from its left edge and fades in.
+                if (reveal < 1) right = left + (right - left) * reveal;
                 ctx.save();
+                ctx.globalAlpha = reveal;
                 ctx.fillStyle = style.fill; ctx.fillRect(left, top, right - left, height);
                 ctx.strokeStyle = style.stroke; ctx.lineWidth = style.width; ctx.setLineDash(style.dash);
                 ctx.beginPath();
@@ -241,7 +246,7 @@ var LiveChart = (function () {
                 }
                 // A readable label (FVG boxes): dark pill inside the box, above it when the box is thin.
                 if (zone.label && right - Math.max(left, 0) > 48) {
-                  ctx.globalAlpha = 1; ctx.setLineDash([]);
+                  ctx.globalAlpha = reveal; ctx.setLineDash([]);
                   ctx.font = "600 12px " + WATERMARK_FONT; ctx.textBaseline = "middle";
                   var pillW = ctx.measureText(zone.label).width + 12, pillH = 18, pillX = Math.max(left, 0) + 6;
                   var pillY = height >= pillH + 6 ? top + 4 : top - pillH - 3;
@@ -499,6 +504,39 @@ var LiveChart = (function () {
       chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, count - bars), to: count - 1 + 12 });
     }
     initialView();
+    // Opening animation (first view and every timeframe switch, which builds a new chart): the candles are
+    // uncovered from left to right (CSS on .lc-reveal), then the zones grow and the structure labels fade in.
+    // Data, scrolling, zooming and level lines are not affected; any touch finishes it at once.
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduceMotion && window.requestAnimationFrame) {
+      container.classList.add("lc-reveal");
+      setTimeout(function () { container.classList.remove("lc-reveal"); }, 900);
+      zones.reveal = structurePoints.reveal = 0;
+      var revealStart = null, revealStep = function (now) {
+        if (destroyed) return;
+        if (revealStart === null) revealStart = now;
+        var k = touched ? 1 : Math.min(1, Math.max(0, (now - revealStart - 450) / 700)), eased = 1 - Math.pow(1 - k, 3);
+        zones.reveal = structurePoints.reveal = eased;
+        if (zones.requestUpdate) zones.requestUpdate();
+        structurePoints.update();
+        if (k < 1) requestAnimationFrame(revealStep);
+      };
+      requestAnimationFrame(revealStep);
+    }
+    // Live price pulse: a small beating dot on the last candle at the current price.
+    var pulse = document.createElement("span"), pulseTimer;
+    pulse.className = "lc-pulse"; pulse.hidden = true; pulse.setAttribute("aria-hidden", "true"); container.appendChild(pulse);
+    function placePulse() {
+      if (destroyed) return;
+      var rows = allRows(), last = forming || rows[rows.length - 1];
+      if (!last) { pulse.hidden = true; return; }
+      var price = liveLine && liveStatus !== "live" ? liveLine.options().price : last[4];
+      var x = chart.timeScale().logicalToCoordinate(rows.length - 1 + (forming ? 1 : 0)), y = candles.priceToCoordinate(price);
+      if (x === null || y === null || x < 0 || x > chart.timeScale().width() || y < 0) { pulse.hidden = true; return; }
+      pulse.hidden = false; pulse.style.transform = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px)";
+    }
+    chart.timeScale().subscribeVisibleLogicalRangeChange(placePulse);
+    pulseTimer = setInterval(placePulse, 500);
     var sized = 0, waitForSize = function () {
       if (touched || destroyed || sized++ > 20) return;
       if (chart.timeScale().width() > 0) { initialView(); return; }
@@ -602,7 +640,7 @@ var LiveChart = (function () {
       },
       setLocale: function () { if (!destroyed) chart.applyOptions({ localization: localization() }); },
       destroy: function () {
-        destroyed = true; closeStream(); document.removeEventListener("visibilitychange", onVisibility);
+        destroyed = true; clearInterval(pulseTimer); closeStream(); document.removeEventListener("visibilitychange", onVisibility);
         if (paneObserver) paneObserver.disconnect();
         chart.remove(); container.textContent = "";
       }
