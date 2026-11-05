@@ -50,16 +50,25 @@ main{padding:0 0 72px}
 .live-dot{position:relative;flex:none;width:8px;height:8px;border-radius:50%;background:var(--up)}
 .live-dot:after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--up);animation:mlmPulse 1.8s ease-out infinite}
 @keyframes mlmPulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(3);opacity:0}}
-.hero-art{display:block;width:100%;height:auto}
-.hero-art .h-cnd{opacity:0;transform-box:fill-box;transform-origin:center;animation:mlmCandle .45s ease-out forwards}
-@keyframes mlmCandle{from{opacity:0;transform:scaleY(.2)}to{opacity:1;transform:scaleY(1)}}
-.hero-art .h-band{opacity:0;animation:mlmBand .8s ease-out forwards}
-@keyframes mlmBand{to{opacity:.2}}
-.hero-art .h-price{stroke-dasharray:4 4;animation:mlmShow .6s ease-out 1.9s both,mlmDash 1.2s linear 1.9s infinite}
-@keyframes mlmDash{to{stroke-dashoffset:-16}}
-.hero-art .h-dot{transform-box:fill-box;transform-origin:center;animation:mlmShow .4s ease-out 2s both,mlmBeat 1.8s ease-in-out 2.4s infinite}
-@keyframes mlmBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.6)}}
-@keyframes mlmShow{from{opacity:0}to{opacity:1}}
+.hero-chart-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;margin:0;font-size:13px}
+.hero-chart-head b{font-size:14px}
+.hero-chart-note{margin-left:auto;color:var(--muted);font-size:11px}
+.hero-art{height:130px;margin-top:8px}
+.hero-art svg{display:block;width:100%;height:100%;overflow:visible}
+.hero-art .h-area{opacity:.12;stroke:none}
+.hero-art .h-line{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.hero-art .up{stroke:var(--up);fill:var(--up)}.hero-art .down{stroke:var(--down);fill:var(--down)}
+.hero-art .h-line.up,.hero-art .h-line.down{fill:none}
+.hero-art .h-open{stroke:var(--cz);stroke-width:1;stroke-dasharray:4 4}
+.hero-art .h-open-label{fill:var(--cz);font-size:10px;font-weight:600}
+.hero-art .h-dot{stroke:none}
+.hero-art .h-ring{stroke:none;transform-box:fill-box;transform-origin:center;animation:mlmRing 1.8s ease-out infinite}
+@keyframes mlmRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(3.2);opacity:0}}
+/* The first drawing: the line draws itself, then the fill, the weekly open and the live dot appear. */
+.hero-art.first .h-line{stroke-dasharray:1000;stroke-dashoffset:1000;animation:mlmDrawLong 1.6s ease-out forwards}
+.hero-art.first .h-area,.hero-art.first .h-open,.hero-art.first .h-open-label,.hero-art.first .h-dot{animation:mlmShowArea .6s ease-out 1.3s both}
+@keyframes mlmDrawLong{to{stroke-dashoffset:0}}
+@keyframes mlmShowArea{from{opacity:0}}
 .hero-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0}
 .hero-stats div{padding:10px 12px;border-radius:10px;background:var(--raise)}
 .hero-stats dt{color:var(--muted);font-size:12px}
@@ -186,8 +195,8 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 }
 @media(prefers-reduced-motion:reduce){
   *,*:after{animation:none!important;transition:none!important}
-  .rise,.hero-art .h-cnd,.hero-art .h-price,.hero-art .h-dot,.spark.first .spark-dot{opacity:1}
-  .hero-art .h-band{opacity:.2}.spark.first .spark-line{stroke-dashoffset:0}
+  .rise,.spark.first .spark-dot{opacity:1}
+  .spark.first .spark-line,.hero-art.first .h-line{stroke-dashoffset:0}
 }
 @media(max-width:700px){
   .hero{padding:28px 0 24px}.hero h1{font-size:30px}.hero-text{font-size:15px}
@@ -209,19 +218,16 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <section class="hero" aria-labelledby="hero-title">
 <div class="hero-copy">
 <p class="kicker rise" data-i18n="heroKicker">Structure-based market analysis</p>
-<h1 id="hero-title" class="rise rise-2" data-i18n="heroTitle">Support, resistance and Price Action maps for the markets</h1>
+<h1 id="hero-title" class="rise rise-2" data-i18n="heroTitle">Support, resistance and Price Action maps for financial markets</h1>
 <p class="hero-text rise rise-3" data-i18n="heroText">Critical zones, price ranges and structure events for every asset, from 1H to 1W, with the live price.</p>
 <div class="hero-actions rise rise-4"><a class="btn btn-primary" href="#table-title" data-i18n="heroCta">See the analyses</a><a class="btn btn-ghost" href="/en/guide/" data-href-tr="/tr/rehber/" data-i18n="heroGuide">How to read them</a></div>
 </div>
 <div class="hero-card card">
 <p class="hero-live"><span class="live-dot" aria-hidden="true"></span><span id="feed-label"></span><span class="demo-badge" id="table-demo" data-i18n="demo" hidden>Sample data</span></p>
-<svg class="hero-art" viewBox="0 0 300 130" aria-hidden="true" focusable="false">
-<rect class="h-band" x="0" y="14" width="300" height="16" fill="var(--down)" style="animation-delay:1.3s"></rect>
-<rect class="h-band" x="0" y="100" width="300" height="16" fill="var(--up)" style="animation-delay:1.15s"></rect>
-<g class="h-candles"><g class="h-cnd" style="animation-delay:0.250s"><line x1="12" x2="12" y1="90" y2="107" stroke="var(--up)" stroke-width="1.2"></line><rect x="8.5" y="96" width="7" height="6" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.295s"><line x1="26" x2="26" y1="82" y2="104" stroke="var(--up)" stroke-width="1.2"></line><rect x="22.5" y="90" width="7" height="6" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.340s"><line x1="40" x2="40" y1="80" y2="103" stroke="var(--down)" stroke-width="1.2"></line><rect x="36.5" y="90" width="7" height="8" fill="var(--down)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.385s"><line x1="54" x2="54" y1="82" y2="106" stroke="var(--up)" stroke-width="1.2"></line><rect x="50.5" y="88" width="7" height="10" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.430s"><line x1="68" x2="68" y1="72" y2="93" stroke="var(--up)" stroke-width="1.2"></line><rect x="64.5" y="80" width="7" height="8" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.475s"><line x1="82" x2="82" y1="70" y2="92" stroke="var(--down)" stroke-width="1.2"></line><rect x="78.5" y="80" width="7" height="4" fill="var(--down)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.520s"><line x1="96" x2="96" y1="68" y2="89" stroke="var(--up)" stroke-width="1.2"></line><rect x="92.5" y="74" width="7" height="10" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.565s"><line x1="110" x2="110" y1="58" y2="82" stroke="var(--up)" stroke-width="1.2"></line><rect x="106.5" y="66" width="7" height="8" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.610s"><line x1="124" x2="124" y1="56" y2="75" stroke="var(--down)" stroke-width="1.2"></line><rect x="120.5" y="66" width="7" height="4" fill="var(--down)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.655s"><line x1="138" x2="138" y1="54" y2="78" stroke="var(--up)" stroke-width="1.2"></line><rect x="134.5" y="60" width="7" height="10" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.700s"><line x1="152" x2="152" y1="52" y2="69" stroke="var(--down)" stroke-width="1.2"></line><rect x="148.5" y="60" width="7" height="4" fill="var(--down)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.745s"><line x1="166" x2="166" y1="44" y2="72" stroke="var(--up)" stroke-width="1.2"></line><rect x="162.5" y="54" width="7" height="10" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.790s"><line x1="180" x2="180" y1="40" y2="59" stroke="var(--up)" stroke-width="1.2"></line><rect x="176.5" y="46" width="7" height="8" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.835s"><line x1="194" x2="194" y1="38" y2="60" stroke="var(--down)" stroke-width="1.2"></line><rect x="190.5" y="46" width="7" height="6" fill="var(--down)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.880s"><line x1="208" x2="208" y1="34" y2="57" stroke="var(--up)" stroke-width="1.2"></line><rect x="204.5" y="44" width="7" height="8" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.925s"><line x1="222" x2="222" y1="30" y2="52" stroke="var(--up)" stroke-width="1.2"></line><rect x="218.5" y="36" width="7" height="8" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:0.970s"><line x1="236" x2="236" y1="28" y2="45" stroke="var(--down)" stroke-width="1.2"></line><rect x="232.5" y="36" width="7" height="4" fill="var(--down)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:1.015s"><line x1="250" x2="250" y1="20" y2="48" stroke="var(--up)" stroke-width="1.2"></line><rect x="246.5" y="30" width="7" height="10" fill="var(--up)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:1.060s"><line x1="264" x2="264" y1="24" y2="53" stroke="var(--down)" stroke-width="1.2"></line><rect x="260.5" y="30" width="7" height="18" fill="var(--down)" rx="1"></rect></g><g class="h-cnd" style="animation-delay:1.105s"><line x1="278" x2="278" y1="34" y2="56" stroke="var(--up)" stroke-width="1.2"></line><rect x="274.5" y="42" width="7" height="6" fill="var(--up)" rx="1"></rect></g></g>
-<line class="h-price" x1="0" x2="300" y1="42" y2="42" stroke="var(--accent)" stroke-width="1"></line>
-<circle class="h-dot" cx="287" cy="42" r="3.5" fill="var(--accent)"></circle>
-</svg>
+<div class="hero-chart">
+<p class="hero-chart-head"><b id="hero-sym">—</b><span class="num" id="hero-price"></span><span class="num" id="hero-change"></span><span class="hero-chart-note" data-i18n="hero7d">7 days · dashed: weekly open</span></p>
+<div class="hero-art" id="hero-art" aria-hidden="true"></div>
+</div>
 <dl class="hero-stats"><div><dt data-i18n="heroAssets">assets</dt><dd class="num" id="hero-assets">—</dd></div><div><dt data-i18n="heroTfs">timeframes</dt><dd class="num" id="hero-tfs">—</dd></div><div><dt data-i18n="heroMethods">methods</dt><dd class="num" id="hero-methods">—</dd></div></dl>
 <p class="hero-time"><span id="analysis-time"></span></p>
 </div>
@@ -247,7 +253,7 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 </main>
 <div class="site-footer"><div class="shell">
 <div class="footer-cols">
-<div class="footer-brand"><strong>MarketLevelMap</strong><p data-tr="Piyasalar için yapı tabanlı analiz: kritik bölgeler, fiyat aralıkları ve yapı olayları.">Structure-based market analysis: critical zones, price ranges and structure events.</p></div>
+<div class="footer-brand"><strong>MarketLevelMap</strong><p data-tr="Finansal piyasalar için yapı tabanlı analiz: kritik bölgeler, fiyat aralıkları ve yapı olayları.">Structure-based analysis for financial markets: critical zones, price ranges and structure events.</p></div>
 <nav class="footer-col" aria-labelledby="foot-site"><h2 id="foot-site" data-tr="Site">Site</h2><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="archive.html" data-tr="Arşiv">Archive</a></nav>
 <nav class="footer-col" aria-labelledby="foot-learn"><h2 id="foot-learn" data-tr="Öğren">Learn</h2><a href="/en/library/" data-href-tr="/tr/kutuphane/" data-tr="Kütüphane">Library</a><a href="/en/guide/" data-href-tr="/tr/rehber/" data-tr="Okuma rehberi">Reading guide</a></nav>
 <nav class="footer-col" aria-labelledby="foot-about"><h2 id="foot-about" data-tr="Kurumsal">About</h2><a href="/en/about/" data-href-tr="/tr/hakkinda/" data-tr="Hakkında">About</a><button class="disclaimer-link footer-link" type="button" data-disclaimer>Information and Risk Notice</button></nav>
@@ -257,8 +263,8 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <script>
 /* Header: language and theme (same on every page). */
 var copy={
-  en:{title:"MarketLevelMap — Market table",search:"Search an asset",all:"All",fav:"Favorites",tickerLabel:"Live prices",heroKicker:"Structure-based market analysis",heroTitle:"Support, resistance and Price Action maps for the markets",heroText:"Critical zones, price ranges and structure events for every asset, from 1H to 1W, with the live price.",heroCta:"See the analyses",heroGuide:"How to read them",heroAssets:"assets",heroTfs:"timeframes",heroMethods:"methods",tableTitle:"Market table",demo:"Sample data",colAsset:"Asset",colPrice:"Price",col24h:"24h %",colVolume:"24h volume",colDay:"Daily open",colWeek:"Weekly open",colMonth:"Monthly open",colYear:"Yearly open",colAnalysis:"Analysis",loading:"Loading live market…",unavailable:"No active analysis is available right now. Please check back later.",noMatch:"No assets match this filter.",tableNote:"The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.",eventsTitle:"This week's events",utc:"times in UTC",fullWeek:"Full week →",colDayName:"Day",colTime:"Time",colEvent:"Event",colCountry:"Country",colActual:"Actual",eventsLoading:"Loading events…",eventsFailed:"Events could not be loaded.",eventsNone:"No more events are listed for this week.",allDay:"During the day",live:"Live price",lastAnalysis:"Last published",openAnalysis:"Open analysis",spark7d:"7 days",addFav:"Add to favorites",removeFav:"Remove from favorites",topicLabel:"Topic of the week",topicMore:"Read the page →",topicNext:"Next week:"},
-  tr:{title:"MarketLevelMap — Piyasa tablosu",search:"Varlık ara",all:"Tümü",fav:"Favoriler",tickerLabel:"Canlı fiyatlar",heroKicker:"Yapı tabanlı piyasa analizi",heroTitle:"Piyasalar için destek, direnç ve Price Action haritası",heroText:"Her varlık için kritik bölgeler, fiyat aralığı ve yapı olayları; 1H'den 1W'ye kadar, canlı fiyatla birlikte.",heroCta:"Analizleri gör",heroGuide:"Nasıl okunur?",heroAssets:"varlık",heroTfs:"zaman dilimi",heroMethods:"yöntem",tableTitle:"Piyasa tablosu",demo:"Örnek veriler",colAsset:"Varlık",colPrice:"Fiyat",col24h:"24s %",colVolume:"24s hacim",colDay:"Günlük açılış",colWeek:"Haftalık açılış",colMonth:"Aylık açılış",colYear:"Yıllık açılış",colAnalysis:"Analiz",loading:"Canlı piyasa yükleniyor…",unavailable:"Şu anda yayında analiz yok. Lütfen daha sonra tekrar deneyin.",noMatch:"Bu filtreyle eşleşen varlık yok.",tableNote:"Açılış ve ATH sütunlarının altındaki yüzde, güncel fiyatın o seviyeye uzaklığıdır. Satıra tıklayınca varlığın analiz sayfası açılır.",eventsTitle:"Bu haftanın olayları",utc:"saatler UTC",fullWeek:"Tüm hafta →",colDayName:"Gün",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colActual:"Gerçekleşen",eventsLoading:"Olaylar yükleniyor…",eventsFailed:"Olaylar yüklenemedi.",eventsNone:"Bu hafta için kalan olay yok.",allDay:"Gün içinde",live:"Canlı fiyat",lastAnalysis:"Son yayın",openAnalysis:"Analizi aç",spark7d:"7 gün",addFav:"Favorilere ekle",removeFav:"Favorilerden çıkar",topicLabel:"Haftanın konusu",topicMore:"Sayfayı oku →",topicNext:"Gelecek hafta:"}
+  en:{title:"MarketLevelMap — Market table",search:"Search an asset",all:"All",fav:"Favorites",tickerLabel:"Live prices",heroKicker:"Structure-based market analysis",heroTitle:"Support, resistance and Price Action maps for financial markets",heroText:"Critical zones, price ranges and structure events for every asset, from 1H to 1W, with the live price.",heroCta:"See the analyses",heroGuide:"How to read them",hero7d:"7 days · dashed: weekly open",heroAssets:"assets",heroTfs:"timeframes",heroMethods:"methods",tableTitle:"Market table",demo:"Sample data",colAsset:"Asset",colPrice:"Price",col24h:"24h %",colVolume:"24h volume",colDay:"Daily open",colWeek:"Weekly open",colMonth:"Monthly open",colYear:"Yearly open",colAnalysis:"Analysis",loading:"Loading live market…",unavailable:"No active analysis is available right now. Please check back later.",noMatch:"No assets match this filter.",tableNote:"The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.",eventsTitle:"This week's events",utc:"times in UTC",fullWeek:"Full week →",colDayName:"Day",colTime:"Time",colEvent:"Event",colCountry:"Country",colActual:"Actual",eventsLoading:"Loading events…",eventsFailed:"Events could not be loaded.",eventsNone:"No more events are listed for this week.",allDay:"During the day",live:"Live price",lastAnalysis:"Last published",openAnalysis:"Open analysis",spark7d:"7 days",addFav:"Add to favorites",removeFav:"Remove from favorites",topicLabel:"Topic of the week",topicMore:"Read the page →",topicNext:"Next week:"},
+  tr:{title:"MarketLevelMap — Piyasa tablosu",search:"Varlık ara",all:"Tümü",fav:"Favoriler",tickerLabel:"Canlı fiyatlar",heroKicker:"Yapı tabanlı piyasa analizi",heroTitle:"Finansal piyasalar için destek, direnç ve Price Action haritası",heroText:"Her varlık için kritik bölgeler, fiyat aralığı ve yapı olayları; 1H'den 1W'ye kadar, canlı fiyatla birlikte.",heroCta:"Analizleri gör",heroGuide:"Nasıl okunur?",hero7d:"7 gün · kesikli: haftalık açılış",heroAssets:"varlık",heroTfs:"zaman dilimi",heroMethods:"yöntem",tableTitle:"Piyasa tablosu",demo:"Örnek veriler",colAsset:"Varlık",colPrice:"Fiyat",col24h:"24s %",colVolume:"24s hacim",colDay:"Günlük açılış",colWeek:"Haftalık açılış",colMonth:"Aylık açılış",colYear:"Yıllık açılış",colAnalysis:"Analiz",loading:"Canlı piyasa yükleniyor…",unavailable:"Şu anda yayında analiz yok. Lütfen daha sonra tekrar deneyin.",noMatch:"Bu filtreyle eşleşen varlık yok.",tableNote:"Açılış ve ATH sütunlarının altındaki yüzde, güncel fiyatın o seviyeye uzaklığıdır. Satıra tıklayınca varlığın analiz sayfası açılır.",eventsTitle:"Bu haftanın olayları",utc:"saatler UTC",fullWeek:"Tüm hafta →",colDayName:"Gün",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colActual:"Gerçekleşen",eventsLoading:"Olaylar yükleniyor…",eventsFailed:"Olaylar yüklenemedi.",eventsNone:"Bu hafta için kalan olay yok.",allDay:"Gün içinde",live:"Canlı fiyat",lastAnalysis:"Son yayın",openAnalysis:"Analizi aç",spark7d:"7 gün",addFav:"Favorilere ekle",removeFav:"Favorilerden çıkar",topicLabel:"Haftanın konusu",topicMore:"Sayfayı oku →",topicNext:"Gelecek hafta:"}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 function applyLanguage(value){
@@ -308,6 +314,31 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     ticker.setAttribute("aria-label",words().tickerLabel);ticker.hidden=!order.length;
   }
   function paintTicker(sym,price,change){(tickerItems[sym]||[]).forEach(function(a){a.children[1].textContent=price;a.children[2].textContent=MarketUI.pct(change);a.children[2].className="num "+MarketUI.signClass(change)})}
+  // Hero chart (V2): the first asset's last 7 days, its live price and its weekly open. Real data only:
+  // the same 2h closes as the table's sparklines (Sparkline.load), loaded on every screen size.
+  var heroSym=null,heroCloses=null,heroAt=0,heroShown=false,heroFull=false,heroBox=document.getElementById("hero-art");
+  function startHero(){
+    heroSym=order[0];document.getElementById("hero-sym").textContent=heroSym;
+    if(window.Sparkline)Sparkline.load(heroSym).then(function(closes){heroCloses=closes;drawHero()}).catch(function(){heroBox.parentNode.hidden=true});
+  }
+  function drawHero(){
+    var r=rows[heroSym];if(!heroCloses||!r)return;
+    var d=r.data||{},lv=r.levels||{},live=Number(d.c)>0?Number(d.c):null,open=Number(d.week)>0?Number(d.week):lv.WO;
+    var values=heroCloses.slice();if(live)values[values.length-1]=live;
+    var all=values.concat(open>0?[open]:[]),min=Math.min.apply(null,all),max=Math.max.apply(null,all),span=max-min||max*0.001||1;
+    var W=300,H=130,PAD=8,y=function(v){return PAD+(H-2*PAD)*(1-(v-min)/span)},x=function(i){return(W-34)*i/(values.length-1)};
+    var pts=values.map(function(v,i){return x(i).toFixed(1)+","+y(v).toFixed(1)}).join(" ");
+    var last=values[values.length-1],tone=last>=values[0]?"up":"down",lx=x(values.length-1),ly=y(last);
+    var svg='<svg viewBox="0 0 '+W+' '+H+'">'+
+      '<polygon class="h-area '+tone+'" points="0,'+H+' '+pts+' '+lx.toFixed(1)+','+H+'"></polygon>'+
+      (open>0?'<line class="h-open" x1="0" x2="'+(W-34)+'" y1="'+y(open).toFixed(1)+'" y2="'+y(open).toFixed(1)+'"></line><text class="h-open-label" x="'+(W-30)+'" y="'+(y(open)+3.5).toFixed(1)+'">WO</text>':'')+
+      '<polyline class="h-line '+tone+'" pathLength="1000" points="'+pts+'"></polyline>'+
+      '<circle class="h-dot h-ring '+tone+'" cx="'+lx.toFixed(1)+'" cy="'+ly.toFixed(1)+'" r="3.5"></circle><circle class="h-dot '+tone+'" cx="'+lx.toFixed(1)+'" cy="'+ly.toFixed(1)+'" r="3.5"></circle></svg>';
+    if(!heroShown){heroShown=true;heroBox.classList.add("first");setTimeout(function(){heroBox.classList.remove("first")},2200)}
+    heroBox.innerHTML=svg;heroAt=Date.now();heroFull=!!(live&&open>0);
+    var change=last/values[0]-1,ch=document.getElementById("hero-change");
+    document.getElementById("hero-price").textContent=MarketUI.price(last,r.digits);ch.textContent=MarketUI.pct(change);ch.className="num "+MarketUI.signClass(change);
+  }
   function paint(sym){
     var r=rows[sym],d=r.data,lv=r.levels||{};if(!d)return;
     if(r.digits==null&&Number(d.c)>0)r.digits=MarketUI.digitsFor(d.c);
@@ -316,6 +347,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     r.last=price;r.price.textContent=MarketUI.price(price,r.digits);
     if(r.closes&&Date.now()-r.sparkAt>5000)drawSpark(sym);
     r.change.textContent=MarketUI.pct(change);r.change.className="num "+MarketUI.signClass(change);paintTicker(sym,r.price.textContent,change);
+    if(sym===heroSym){document.getElementById("hero-price").textContent=r.price.textContent;if(!heroFull||Date.now()-heroAt>5000)drawHero()}
     r.volume.textContent=Number(d.q)>0?MarketUI.compact(d.q)+" $":"—";
     // Opens: live feed first (always current), the published report's value as fallback.
     // YO and ATH come from the report; ATH is the engine's OATH (highest Binance candle).
@@ -375,7 +407,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
       if(main.report)fetch(main.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
       else if(window.DemoData&&DemoData.enabled)rows[sym].demo=true;
     });
-    labels();applyFilter();buildTicker();
+    labels();applyFilter();buildTicker();startHero();
     feed=MarketFeed.start(order,{
       onSource:function(s){source=s;labels()},
       onData:function(sym,d){var r=rows[sym];if(!r)return;r.data=d;if(r.demo&&!r.levels&&Number(d.c)>0)useLevels(sym,DemoData.levels(sym,d.c),true);paint(sym)}
