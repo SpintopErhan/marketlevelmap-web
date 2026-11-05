@@ -193,7 +193,6 @@ body{line-height:1.5}
 th{padding:12px 14px;border-bottom:1px solid var(--line);font-size:12px;font-weight:500;letter-spacing:0;text-transform:none}
 td{padding:11px 14px}
 table{font-size:14px}
-tbody tr td{transition:background .2s ease}
 .ladder tbody tr:not(.now):not(.vp-group):hover td{background:var(--raise)}
 .badge{border-radius:6px}
 #vp-rows tr.vp-group td{font-size:12px;font-weight:600;text-transform:none;letter-spacing:0}
@@ -345,6 +344,11 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   var noteBox=document.getElementById("note"),noteText=document.getElementById("note-text"),noteBy=document.getElementById("note-by");
   var zonesBlock=document.getElementById("zones-block"),zoneRows=document.getElementById("zone-rows");
   var levelsBlock=document.getElementById("levels-block"),levelRows=document.getElementById("level-rows");
+  // The level tables are rebuilt on every price tick. While a pointer is pressed in one of them its rows
+  // are left alone, so a click on an eye is not lost to a row swapped in between press and release.
+  var pressedIn=null;
+  [levelRows,document.getElementById("vp-rows")].forEach(function(t){t.addEventListener("pointerdown",function(){pressedIn=t})});
+  ["pointerup","pointercancel"].forEach(function(n){document.addEventListener(n,function(){setTimeout(function(){pressedIn=null},0)},true)});
   var analysisBox=document.getElementById("analysis"),methodSwitch=document.getElementById("method-switch");
   var rangeBlock=document.getElementById("range-block"),rangeRows=document.getElementById("range-rows"),rangeSummary=document.getElementById("range-summary");
   var fvgBlock=document.getElementById("fvg-block"),fvgRows=document.getElementById("fvg-rows");
@@ -601,7 +605,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     var block=document.getElementById("vp-block"),body=document.getElementById("vp-rows"),map={};
     (vpFile&&!at?vpFile.volumeProfile||[]:report&&Array.isArray(report.levels)?report.levels:[]).forEach(function(l){var code=String(l&&l.code||"").toUpperCase();if(/^P[DWM](VAH|POC|VAL)$/.test(code)&&Number(l.price)>0)map[code]=Number(l.price)});
     vpMap=map;applyLevelsToChart();
-    var codes=Object.keys(map);block.hidden=!codes.length;badge(block,reportDemo);if(!codes.length)return;
+    var codes=Object.keys(map);block.hidden=!codes.length;badge(block,reportDemo);if(!codes.length||pressedIn===body)return;
     var w=words(),p=priceNow(),rows=document.createDocumentFragment(),all=document.getElementById("vp-eye-all");
     VP_GROUPS.forEach(function(group){
       var parts=VP_PARTS.map(function(part){return group[0]+part}).filter(function(code){return map[code]>0});
@@ -636,7 +640,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     var codes=Object.keys(map);levelsBlock.hidden=!codes.length;badge(levelsBlock,reportDemo);
     var note=document.getElementById("levels-note"),asOf=report&&report.levelsAsOf;
     note.hidden=!(codes.length&&asOf);if(asOf)note.textContent=words()[liveCount?"levelsLive":"levelsAsOf"].replace("{date}",MarketUI.dateTime(asOf));
-    if(!codes.length)return;
+    if(!codes.length||pressedIn===levelRows)return;
     // Rows are rebuilt on every price tick. They are built off-page and swapped in at once (an
     // emptied table would shrink the page and move the scroll position), and keyboard focus returns
     // to the same level's eye without scrolling the page to it.
