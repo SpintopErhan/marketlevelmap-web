@@ -113,7 +113,7 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .star{width:26px;height:26px;padding:0;border:0;border-radius:6px;background:none;color:var(--muted);font-size:15px;line-height:1;cursor:pointer;transition:color .15s ease,transform .15s ease}
 .star:hover{color:var(--fg);transform:scale(1.15)}
 .star.active{color:var(--cz)}
-.price{font-size:15px;font-weight:600}
+.price{display:inline-block;padding:2px 6px;margin-right:-6px;border-radius:6px;font-size:15px;font-weight:600}
 /* Live tick: a short green or red flash on the price cell. */
 .price.tick-up{animation:mlmTickUp .9s ease-out}
 .price.tick-down{animation:mlmTickDown .9s ease-out}
@@ -388,8 +388,8 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
 
   function build(sym,href){
     var tr=document.createElement("tr");tr.dataset.symbol=sym;
-    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><span class="asset-icon" aria-hidden="true"></span><strong></strong></div></td><td class="num price">—</td><td class="num"><span class="chg">—</span></td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="analysis-col"><a class="analysis-link"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><span class="spark"></span></a></td>';
-    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1],change:c[2].firstChild,volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[9].firstChild,spark:c[9].querySelector(".spark"),data:null,levels:null,digits:null,last:null,closes:null,sparkChange:null,sparkAt:0};
+    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><span class="asset-icon" aria-hidden="true"></span><strong></strong></div></td><td class="num"><span class="price">—</span></td><td class="num"><span class="chg">—</span></td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="analysis-col"><a class="analysis-link"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><span class="spark"></span></a></td>';
+    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1].firstChild,change:c[2].firstChild,volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[9].firstChild,spark:c[9].querySelector(".spark"),data:null,levels:null,digits:null,last:null,closes:null,sparkChange:null,sparkAt:0};
     c[0].querySelector("strong").textContent=MarketUI.nameOf(sym)||sym;r.link.href=href;
     // V2: a coloured badge with the asset's ticker (BTC, XRP, DOGE…) and its name instead of the pair.
     var icon=c[0].querySelector(".asset-icon"),base=sym.replace(/(USDT|USDC|FDUSD|BUSD|USD|TRY|EUR)$/,"")||sym,hue=0;for(var i=0;i<base.length;i++)hue=(hue*31+base.charCodeAt(i))%360;
