@@ -446,8 +446,15 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       if(above)items.push([w.glanceAboveZone,MarketUI.pct(above/p-1),"up"]);
       if(below)items.push([w.glanceBelowZone,MarketUI.pct(below/p-1),"down"]);
     }
-    box.textContent="";box.hidden=!items.length;
-    items.slice(0,4).forEach(function(it){var d=document.createElement("div"),s=document.createElement("span"),b=document.createElement("b");s.textContent=it[0];b.textContent=it[1];if(it[2])b.className=it[2]+(it[0]===w.glanceAboveZone||it[0]===w.glanceBelowZone?" num":"");d.appendChild(s);d.appendChild(b);box.appendChild(d)});
+    items=items.slice(0,4);box.hidden=!items.length;
+    // Live prices re-render the page often: the boxes are rebuilt (and animate in) only when their set
+    // changes; otherwise only their values are updated in place.
+    var shape=items.map(function(it){return it[0]}).join("|");
+    if(box.dataset.shape!==shape){
+      box.dataset.shape=shape;box.textContent="";
+      items.forEach(function(){var d=document.createElement("div");d.appendChild(document.createElement("span"));d.appendChild(document.createElement("b"));box.appendChild(d)});
+    }
+    items.forEach(function(it,i){var d=box.children[i],numeric=it[0]===w.glanceAboveZone||it[0]===w.glanceBelowZone;d.firstChild.textContent=it[0];d.lastChild.textContent=it[1];d.lastChild.className=(it[2]||"")+(numeric?" num":"")});
   }
   function renderRange(){
     var range=method==="pa"?paRange(report):null;rangeBlock.hidden=!range;if(!range)return;
