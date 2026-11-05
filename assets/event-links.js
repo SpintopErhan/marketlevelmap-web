@@ -4,11 +4,13 @@
    word (case-insensitive, so Turkish suffixes still match: "kilit açıl" → "kilit açılımı") and whose country is listed gets a small book icon after its title, linking to the page. */
 var EventLinks=(function(){
   var links=null,loading=null;
-  var words={en:"In the library: ",tr:"Kütüphanede: "};
+  var words={en:"In the library: ",tr:"Kütüphanede: "},labels={en:"Library",tr:"Kütüphane"};
   var style=document.createElement("style");
-  style.textContent=".event-lib{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-left:6px;vertical-align:-4px;border-radius:5px;color:var(--muted)}"+
-    ".event-lib:hover,.event-lib:focus-visible{color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}"+
-    ".event-lib svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}";
+  // A small rounded badge after the event title: book icon and "Library" (icon only on phones).
+  style.textContent=".event-lib{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:2px 9px 2px 7px;vertical-align:1px;border-radius:999px;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);font-size:11px;font-weight:600;line-height:1.6;white-space:nowrap;text-decoration:none;transition:background .15s ease}"+
+    ".event-lib:hover,.event-lib:focus-visible{background:color-mix(in srgb,var(--accent) 22%,transparent)}"+
+    ".event-lib svg{width:13px;height:13px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}"+
+    "@media(max-width:600px){.event-lib{padding:3px 6px}.event-lib span{display:none}}";
   document.head.appendChild(style);
 
   function norm(s){return String(s||"").toLocaleLowerCase("tr")}
@@ -38,7 +40,8 @@ var EventLinks=(function(){
     var l=find(event,lang);if(!l)return;
     var page=l[lang]||l.en,a=document.createElement("a");
     a.className="event-lib";a.href=page.url;a.title=(words[lang]||words.en)+page.name;a.setAttribute("aria-label",a.title);
-    a.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v15H6.5A2.5 2.5 0 0 0 4 20.5 2.5 2.5 0 0 0 6.5 23H19"></path><path d="M8 7h7"></path></svg>';
+    a.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v15H6.5A2.5 2.5 0 0 0 4 20.5 2.5 2.5 0 0 0 6.5 23H19"></path><path d="M8 7h7"></path></svg><span aria-hidden="true"></span>';
+    a.lastChild.textContent=labels[lang]||labels.en;
     cell.appendChild(a);
   }
   return{load:load,decorate:decorate};
