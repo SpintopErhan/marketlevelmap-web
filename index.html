@@ -7,7 +7,7 @@
 <meta name="description" content="MarketLevelMap — Structure-Based Market Analysis.">
 <title>MarketLevelMap — Market table</title>
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
-<link rel="stylesheet" href="assets/site.css?v=e8d497ff"><style>
+<link rel="stylesheet" href="assets/site.css?v=cc9f3ba7"><style>
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.5}
 /* V2: one more surface tone between page and card, used instead of extra borders. */
@@ -106,7 +106,7 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .asset-cell{display:flex;align-items:center;gap:10px}
 .asset-cell strong{display:block;font-size:14px;font-weight:600}
 .asset-icon{flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;color:#0b1a17;font-size:10px;font-weight:700;letter-spacing:-.2px}
-.asset-icon.long{font-size:8.5px}
+.asset-icon.long{width:auto;min-width:36px;padding:0 7px;border-radius:18px}
 .chg{display:inline-block;min-width:68px;padding:3px 8px;border-radius:6px;font-size:13px;text-align:right}
 .chg.up{background:color-mix(in srgb,var(--up) 14%,transparent)}.chg.down{background:color-mix(in srgb,var(--down) 14%,transparent)}
 .asset-cell small{display:block;color:var(--muted);font-size:12px}
@@ -117,8 +117,8 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 /* Live tick: a short green or red flash on the price cell. */
 .price.tick-up{animation:mlmTickUp .9s ease-out}
 .price.tick-down{animation:mlmTickDown .9s ease-out}
-@keyframes mlmTickUp{from{background:color-mix(in srgb,var(--up) 32%,transparent);color:var(--up)}to{background:transparent}}
-@keyframes mlmTickDown{from{background:color-mix(in srgb,var(--down) 32%,transparent);color:var(--down)}to{background:transparent}}
+@keyframes mlmTickUp{from{background:color-mix(in srgb,var(--up) 18%,transparent);color:var(--up)}to{background:transparent}}
+@keyframes mlmTickDown{from{background:color-mix(in srgb,var(--down) 18%,transparent);color:var(--down)}to{background:transparent}}
 .lvl b{display:block;font-weight:500}.lvl small{display:block;margin-top:2px;font-size:12px}
 .analysis-col{width:64px;text-align:center;white-space:nowrap}
 .analysis-link{vertical-align:middle;display:inline-grid;place-items:center;width:38px;height:38px;border-radius:10px;color:var(--cz);background:var(--raise);transition:background .2s ease}
@@ -215,7 +215,7 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <body>
 <div class="ticker" id="ticker" aria-label="Live prices" hidden><div class="ticker-track" id="ticker-track"></div></div>
 <div class="shell"><header>
-<a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-white.svg" alt="MarketLevelMap"></a>
+<a href="index.html" aria-label="MarketLevelMap home"><img class="logo logo-header logo-light" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"><img class="logo logo-header logo-dark" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
 <main class="shell">
