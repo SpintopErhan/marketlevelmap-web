@@ -146,12 +146,22 @@ th.r,td.r{text-align:right}
 /* ---- V2 look (same elements and behaviour; only appearance). Overrides the rules above. ---- */
 body{line-height:1.5}
 .back{font-size:13px}
-.asset-head{align-items:center;margin:22px 0 18px}
-.asset-title{display:flex;align-items:center;gap:14px}
+.asset-head{display:flex;align-items:center;gap:8px 22px;margin:2px 0 16px}
+.asset-title{display:flex;align-items:center;gap:14px;flex:none}
 .asset-icon{flex:none;min-width:44px;height:44px;padding:0 8px;display:grid;place-items:center;border-radius:22px;color:#0b1a17;font-size:12px;font-weight:700;letter-spacing:-.2px}
 .asset-head h1{font-size:clamp(28px,3vw,34px);letter-spacing:-.5px}
-.head-price .big{font-size:34px;font-weight:650}
+.head-price{text-align:left}
+.head-price .big{font-size:30px;font-weight:650}
 .head-price .chg{margin-left:8px;font-size:15px;font-weight:600}
+.price-band{display:flex;align-items:center;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;border-left:1px solid var(--line)}
+.price-band[hidden]{display:none}
+.price-band::-webkit-scrollbar{display:none}
+.band-item{display:inline-flex;align-items:baseline;gap:8px;flex:none;padding:4px 16px;border-right:1px solid var(--line);color:inherit;text-decoration:none;white-space:nowrap}
+.band-item b{color:var(--muted);font-size:12px;font-weight:600}
+.band-item .num{font-size:13px;font-weight:600}
+.band-item .chg{font-size:12px}
+.band-item:hover b{color:var(--fg)}
+.band-item[aria-current="page"] b{color:var(--fg)}
 /* Chart column: method on the left, timeframes on the chart's right edge.
    Glance cards live in the side column and always start at its left edge, so they do not push the timeframes. */
 .selectors{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 14px}
@@ -228,6 +238,7 @@ table{font-size:14px}
   .glance div,.side-col>.block,.live-chart.lc-reveal>div:first-child,.lc-pulse:after,.head-price .big{animation:none!important}
   .ghost-btn,.tab,.method-switch button{transition:none}
 }
+@media(max-width:800px){.asset-head{flex-wrap:wrap}.price-band{flex-basis:100%;border-left:0;border-top:1px solid var(--line);padding-top:6px}}
 @media(max-width:900px){.selectors-chart{flex-basis:100%}.glance div{flex:1 1 40%}}
 /* ---- V2.1: side sections as self-contained cards like the design (appearance only; all columns, texts and eyes stay). ---- */
 .side-col>.block{padding:18px 20px;border-radius:16px;background:var(--panel)}
@@ -282,9 +293,7 @@ table{font-size:14px}
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
 <main class="shell" data-state="loading"><div class="content">
-<a class="back" href="index.html" data-i18n="back">← Market table</a>
-<div class="asset-head"><div class="asset-title"><span class="asset-icon" id="asset-icon" aria-hidden="true"></span><h1 id="title"></h1></div>
-<div class="head-price head-meta"><div><span class="num big" id="live-price">—</span><span class="num chg" id="live-change"></span></div></div></div>
+<div class="asset-head"><div class="asset-title"><span class="asset-icon" id="asset-icon" aria-hidden="true"></span><h1 id="title"></h1><div class="head-price head-meta"><span class="num big" id="live-price">—</span><span class="num chg" id="live-change"></span></div></div><div class="price-band" id="price-band" hidden></div></div>
 <div class="page-status" id="page-status" data-i18n="loadingPage">Loading analysis…</div>
 <div id="analysis" data-method="cz">
 <div class="selectors"><div class="selectors-chart"><div class="method-switch" id="method-switch" role="group" aria-label="Analysis discipline"><button type="button" data-method="cz" aria-pressed="true" data-i18n="methodCz">Critical Zones</button><button type="button" data-method="pa" aria-pressed="false" disabled data-i18n="methodPa">Price Action</button></div>
@@ -929,10 +938,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     method=MarketUI.methodOf(archived)==="pa"?"pa":"cz";start([archived]);
   });
   else fetch("/api/publication",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){
-    if(!body){fail("unavailable");return}
-    publication=body;
-    start((body.entries||[]).filter(function(e){return (e.image||e.report)&&MarketUI.assetOf(e)===asset}));
-  }).catch(function(){fail("unavailable")});
+    if(!body){fail("unavailable");bootFeed();return}
+    publication=body;bootFeed(body);start((body.entries||[]).filter(function(e){return (e.image||e.report)&&MarketUI.assetOf(e)===asset}));
+  }).catch(function(){fail("unavailable");bootFeed()});
   function loadReport(e){
     var key=e.publicationId||e.report.url;
     if(!paReports[key])paReports[key]=fetch(e.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null});
@@ -962,9 +970,26 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     q.delete("tf");showMethod(b.dataset.method);
   });
 
-  MarketFeed.start([asset],{
-    onData:function(sym,d){if(sym!==asset)return;live=d;if(digits==null&&Number(d.c)>0)digits=MarketUI.digitsFor(d.c);if(reportDemo&&report&&!report._anchored){report=DemoData.report(asset,MarketUI.timeframeOf(entry),d.c);report._anchored=true;applyReportToChart()}if(liveChart)liveChart.setLivePrice(d.c);renderAll()}
-  });
+  var band=document.getElementById("price-band"),bandRows={},feedBooted=false;
+  function paintBand(sym,d){
+    var row=bandRows[sym];if(!row)return;var p=Number(d.c);if(!(p>0))return;
+    if(row.digits==null)row.digits=MarketUI.digitsFor(p);
+    var change=Number(d.o)>0?p/Number(d.o)-1:NaN;
+    row.price.textContent=MarketUI.price(p,row.digits);row.chg.textContent=isFinite(change)?MarketUI.pct(change):"";row.chg.className="num chg "+MarketUI.signClass(change);
+  }
+  function bootFeed(body){
+    if(feedBooted)return;feedBooted=true;
+    var seen={};((body&&body.entries)||[]).forEach(function(e){var a=MarketUI.assetOf(e);if(/^[A-Z0-9]{2,20}$/.test(a)&&(e.image||e.report))seen[a]=1});
+    var list=Object.keys(seen).sort(MarketUI.byPopularity),rest=list.filter(function(s){return s!==asset});if(list.indexOf(asset)>-1)rest.push(asset);
+    band.textContent="";
+    rest.forEach(function(sym){var a=document.createElement("a");a.className="band-item";a.href="bulletin?asset="+encodeURIComponent(sym);if(sym===asset)a.setAttribute("aria-current","page");a.innerHTML='<b></b><span class="num"></span><span class="num chg"></span>';a.firstChild.textContent=sym;band.appendChild(a);bandRows[sym]={price:a.children[1],chg:a.children[2],digits:null}});
+    band.hidden=!rest.length;
+    var watch=rest.indexOf(asset)<0?rest.concat([asset]):rest;
+    MarketFeed.start(watch,{
+      onData:function(sym,d){paintBand(sym,d);if(sym!==asset)return;live=d;if(digits==null&&Number(d.c)>0)digits=MarketUI.digitsFor(d.c);if(reportDemo&&report&&!report._anchored){report=DemoData.report(asset,MarketUI.timeframeOf(entry),d.c);report._anchored=true;applyReportToChart()}if(liveChart)liveChart.setLivePrice(d.c);renderAll()}
+    });
+  }
+  if(at)fetch("/api/publication",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(bootFeed).catch(function(){bootFeed()});
 })();
 </script>
 </body></html>
