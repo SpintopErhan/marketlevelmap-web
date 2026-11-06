@@ -17,20 +17,13 @@ main{padding:0 0 72px}
 .demo-badge{white-space:nowrap;padding:1px 8px;border:1px dashed var(--muted);border-radius:6px;color:var(--muted);font-size:11px}
 .demo-badge[hidden]{display:none}
 .card{background:var(--panel);border-radius:16px}
-
-/* Price ticker: two copies of the list slide left forever; hovering pauses it. */
-.ticker{height:36px;overflow:hidden;display:flex;align-items:center;border-bottom:1px solid var(--line);background:var(--panel);font-size:12px}
-.ticker[hidden]{display:none}
-.ticker-track{display:flex;width:max-content;animation:mlmMarquee 60s linear infinite}
-.ticker:hover .ticker-track{animation-play-state:paused}
-.ticker-item{display:inline-flex;align-items:center;gap:8px;padding:0 22px;white-space:nowrap;border-right:1px solid var(--line);color:inherit;text-decoration:none}
-.ticker-item b{font-weight:600}
-.ticker-item:hover b{color:var(--accent)}
-@keyframes mlmMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(min-width:1280px){
+  .shell{width:100%;max-width:none;padding-left:24px;padding-right:24px}
+}
 
 /* Hero */
-.hero{display:flex;flex-wrap:wrap;gap:32px;align-items:stretch;padding:44px 0 36px}
-.hero-copy{flex:999 1 520px;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.hero{padding:36px 0 28px}
+.hero-copy{max-width:760px}
 .kicker{margin:0 0 12px;font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent)}
 .hero h1{margin:0;max-width:720px;font-size:40px;line-height:1.12;font-weight:700;letter-spacing:-.9px}
 .hero-text{margin:14px 0 0;max-width:620px;color:var(--muted);font-size:16px}
@@ -41,31 +34,6 @@ main{padding:0 0 72px}
 .btn-primary:hover{box-shadow:0 8px 22px -10px var(--accent)}
 .btn-ghost{border:1px solid var(--line);color:var(--fg)}
 .btn-ghost:hover{border-color:var(--accent)}
-.hero-card{flex:1 1 340px;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
-.hero-live{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:0;color:var(--muted);font-size:13px}
-.live-dot{position:relative;flex:none;width:8px;height:8px;border-radius:50%;background:var(--up)}
-.live-dot:after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--up);animation:mlmPulse 1.8s ease-out infinite}
-@keyframes mlmPulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(3);opacity:0}}
-.hero-chart-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;margin:0;font-size:13px}
-.hero-chart-head b{font-size:14px}
-.hero-chart-note{margin-left:auto;color:var(--muted);font-size:11px}
-.hero-art{height:130px;margin-top:8px}
-.hero-art svg{display:block;width:100%;height:100%;overflow:visible}
-.hero-art .h-area{opacity:.12;stroke:none}
-.hero-art .h-line{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
-.hero-art .up{stroke:var(--up);fill:var(--up)}.hero-art .down{stroke:var(--down);fill:var(--down)}
-.hero-art .h-line.up,.hero-art .h-line.down{fill:none}
-.hero-art .h-open{stroke:var(--cz);stroke-width:1;stroke-dasharray:4 4}
-.hero-art .h-open-label{fill:var(--cz);font-size:10px;font-weight:600}
-.hero-art .h-dot{stroke:none}
-.hero-art .h-ring{stroke:none;transform-box:fill-box;transform-origin:center;animation:mlmRing 1.8s ease-out infinite}
-@keyframes mlmRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(3.2);opacity:0}}
-/* The first drawing: the line draws itself, then the fill, the weekly open and the live dot appear. */
-.hero-art.first .h-line{stroke-dasharray:1000;stroke-dashoffset:1000;animation:mlmDrawLong 1.6s ease-out forwards}
-.hero-art.first .h-area,.hero-art.first .h-open,.hero-art.first .h-open-label,.hero-art.first .h-dot{animation:mlmShowArea .6s ease-out 1.3s both}
-@keyframes mlmDrawLong{to{stroke-dashoffset:0}}
-@keyframes mlmShowArea{from{opacity:0}}
-.hero-time{margin:0;padding-top:12px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
 .rise{opacity:0;animation:mlmRise .7s cubic-bezier(.2,.7,.2,1) forwards}
 .rise-2{animation-delay:.08s}.rise-3{animation-delay:.16s}.rise-4{animation-delay:.24s}
 @keyframes mlmRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -140,9 +108,10 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .status-row:hover td{background:none!important}
 .table-note{margin:10px 4px 0;color:var(--muted);font-size:12px}
 
-/* Events and topic of the week side by side */
-.home-grid{display:flex;flex-wrap:wrap;gap:24px;margin-top:40px;align-items:stretch}
-.events-card{flex:3 1 560px;min-width:0;padding:22px 24px}
+/* Market table on the left. This week's events beside it, topic of the week under the events. */
+.home-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(380px,34%);column-gap:28px;align-items:start}
+.home-side{display:flex;flex-direction:column;gap:24px;min-width:0}
+.events-card{min-width:0;padding:22px 24px}
 .events-card .table-wrap{border-radius:0;background:none}
 .events-table th{padding:8px 10px 10px 0;text-align:left}
 .events-table td{padding:12px 10px 12px 0;text-align:left}
@@ -158,7 +127,7 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .events-table .actual{font-weight:700;color:var(--fg)}
 .events-table tbody tr td{transition:background .2s ease}
 .events-table tbody tr:not(.status-row):hover td{background:var(--raise)}
-.topic-card{flex:2 1 340px;min-width:0;display:flex;flex-direction:column;padding:22px 24px;font-size:14px;line-height:1.5;transition:transform .25s ease,box-shadow .25s ease}
+.topic-card{min-width:0;display:flex;flex-direction:column;padding:22px 24px;font-size:14px;line-height:1.5;transition:transform .25s ease,box-shadow .25s ease}
 .topic-card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -24px rgba(0,0,0,.55)}
 .topic-card[hidden]{display:none}
 .topic-body{display:contents}
@@ -200,8 +169,9 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 @media(prefers-reduced-motion:reduce){
   *,*:after{animation:none!important;transition:none!important}
   .rise,.spark.first .spark-dot{opacity:1}
-  .spark.first .spark-line,.hero-art.first .h-line{stroke-dashoffset:0}
+  .spark.first .spark-line{stroke-dashoffset:0}
 }
+@media(max-width:1100px){.home-split{grid-template-columns:1fr}}
 @media(max-width:700px){
   .hero{padding:28px 0 24px}.hero h1{font-size:30px}.hero-text{font-size:15px}
   .filters{width:100%}.search{flex:1 1 100%}.search input{width:100%}
@@ -220,7 +190,6 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 </script>
 <script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=4e4d2911"></script><script src="assets/event-links.js?v=39e55a33"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
 <body>
-<div class="ticker" id="ticker" aria-label="Live prices" hidden><div class="ticker-track" id="ticker-track"></div></div>
 <div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -231,26 +200,19 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <p class="kicker rise" data-i18n="heroKicker">Structure-based market analysis</p>
 <h1 id="hero-title" class="rise rise-2" data-i18n="heroTitle">Support, resistance and Price Action maps for financial markets</h1>
 <p class="hero-text rise rise-3" data-i18n="heroText">Critical zones, price ranges and structure events for every asset, from 1H to 1W, with the live price.</p>
-<div class="hero-actions rise rise-4"><a class="btn btn-primary" href="#table-title" data-i18n="heroCta">See the analyses</a><a class="btn btn-ghost" href="/en/guide/" data-href-tr="/tr/rehber/" data-i18n="heroGuide">How to read them</a></div>
-</div>
-<div class="hero-card card">
-<p class="hero-live"><span class="live-dot" aria-hidden="true"></span><span id="feed-label"></span><span class="demo-badge" id="table-demo" data-i18n="demo" hidden>Sample data</span></p>
-<div class="hero-chart">
-<p class="hero-chart-head"><b id="hero-sym">—</b><span class="num" id="hero-price"></span><span class="num" id="hero-change"></span><span class="hero-chart-note" data-i18n="hero7d">7 days · dashed: weekly open</span></p>
-<div class="hero-art" id="hero-art" aria-hidden="true"></div>
-</div>
-<p class="hero-time"><span id="analysis-time"></span></p>
+<div class="hero-actions rise rise-4"><a class="btn btn-primary" href="/en/guide/" data-href-tr="/tr/rehber/" data-i18n="heroGuide">How to read them</a></div>
 </div>
 </section>
+<div class="home-split">
 <section class="reveal" aria-labelledby="table-title">
 <div class="page-head"><div><h2 id="table-title" data-i18n="tableTitle">Market table</h2>
 <p data-i18n="tableNote">The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.</p></div>
-<div class="filters"><div class="search"><input id="search" type="search" autocomplete="off"></div><div class="segmented" role="group" aria-label="Filter"><button class="filter-btn active" type="button" data-filter="all" data-i18n="all">All</button><button class="filter-btn" type="button" data-filter="favorites" data-i18n="fav">Favorites</button></div></div></div>
+<div class="filters"><span class="demo-badge" id="table-demo" data-i18n="demo" hidden>Sample data</span><div class="search"><input id="search" type="search" autocomplete="off"></div><div class="segmented" role="group" aria-label="Filter"><button class="filter-btn active" type="button" data-filter="all" data-i18n="all">All</button><button class="filter-btn" type="button" data-filter="favorites" data-i18n="fav">Favorites</button></div></div></div>
 <div class="table-wrap"><table class="market-table"><thead><tr>
 <th class="asset" data-i18n="colAsset">Asset</th><th data-i18n="colPrice">Price</th><th data-i18n="col24h">24h %</th><th data-i18n="colVolume">24h volume</th><th data-i18n="colDay">Daily open</th><th data-i18n="colWeek">Weekly open</th><th data-i18n="colMonth">Monthly open</th><th data-i18n="colYear">Yearly open</th><th>ATH</th><th class="analysis-col" data-i18n="colAnalysis">Analysis</th>
 </tr></thead><tbody id="market-rows"><tr class="status-row"><td colspan="10" data-i18n="loading">Loading live market…</td></tr></tbody></table></div>
 </section>
-<div class="home-grid reveal">
+<aside class="home-side">
 <section class="events-card card" aria-labelledby="events-title">
 <div class="section-head"><div><h2 id="events-title" data-i18n="eventsTitle">This week's events</h2><p><span id="week-range"></span> · <span data-i18n="utc">times in UTC</span> <span class="demo-badge" id="events-demo" data-i18n="demo" hidden>Sample data</span></p></div><a href="weekly-events.html" data-i18n="fullWeek">Full week →</a></div>
 <div class="table-wrap"><table class="events-table"><thead><tr><th data-i18n="colDayName">Day</th><th data-i18n="colTime">Time</th><th data-i18n="colCountry">Country</th><th data-i18n="colEvent">Event</th><th><span class="sr-only" data-i18n="colLib">Library</span></th></tr></thead>
@@ -259,6 +221,7 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <aside class="topic-card card" id="weekly-topic" aria-labelledby="topic-label" hidden><div class="topic-thumb" id="topic-thumb" aria-hidden="true"></div><div class="topic-body"><p class="topic-head"><span id="topic-label" data-i18n="topicLabel">Topic of the week</span><span class="topic-track" id="topic-track"></span></p>
 <a class="topic-title" id="topic-link" href="/en/library/"></a><p class="topic-summary" id="topic-summary"></p><a class="topic-more" id="topic-more" href="/en/library/" data-i18n="topicMore">Read the page →</a>
 <p class="topic-next"><span data-i18n="topicNext">Next week:</span> <span id="topic-next"></span></p></div></aside>
+</aside>
 </div>
 </main>
 <div class="site-footer"><div class="shell">
@@ -297,12 +260,12 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
    (monthly falls back to the live monthly candle until the report exists). On preview hosts DemoData fills
    the engine's figures and the table shows a "Sample data" badge. */
 (function(){
-  var body=document.getElementById("market-rows"),search=document.getElementById("search"),feedLabel=document.getElementById("feed-label"),timeLabel=document.getElementById("analysis-time");
-  var rows={},order=[],filter="all",activatedAt=null,source=null,feed=null,SOURCE_NAMES={binance:"Binance spot",coinbase:"Coinbase spot"};
+  var body=document.getElementById("market-rows"),search=document.getElementById("search");
+  var rows={},order=[],filter="all",feed=null;
   var favorites=[];try{favorites=JSON.parse(localStorage.getItem("mlm-favorites")||"[]");if(!Array.isArray(favorites))favorites=[]}catch(e){favorites=[]}
   function saveFavorites(){try{localStorage.setItem("mlm-favorites",JSON.stringify(favorites))}catch(e){}}
   function status(key){body.innerHTML='<tr class="status-row"><td colspan="10"></td></tr>';body.firstChild.firstChild.dataset.i18n=key;body.firstChild.firstChild.textContent=words()[key]}
-  function labels(){var w=words();if(ticker)ticker.setAttribute("aria-label",w.tickerLabel);feedLabel.textContent=w.live+(source?" · "+SOURCE_NAMES[source]:"");timeLabel.textContent=activatedAt?w.lastAnalysis+" "+MarketUI.dateTime(activatedAt):"";
+  function labels(){var w=words();
     order.forEach(function(sym){var r=rows[sym];r.star.setAttribute("aria-label",favorites.indexOf(sym)>-1?w.removeFav:w.addFav);r.link.setAttribute("aria-label",w.openAnalysis+" — "+sym+(r.sparkChange!=null?" · "+w.spark7d+" "+MarketUI.pct(r.sparkChange):""));r.link.title=w.openAnalysis;paint(sym)})}
   new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
 
@@ -312,43 +275,6 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     var r=p>0?p/lv-1:NaN;
     td.innerHTML='<b></b><small></small>';td.firstChild.textContent=MarketUI.price(lv,digits);td.lastChild.textContent=p>0?MarketUI.pct(r):"";td.lastChild.className=MarketUI.signClass(r);
   }
-  // Price ticker above the header (V2): built once the assets are known, refreshed by paint().
-  var ticker=document.getElementById("ticker"),tickerTrack=document.getElementById("ticker-track"),tickerItems={};
-  function buildTicker(){
-    tickerTrack.textContent="";tickerItems={};
-    [0,1].forEach(function(copy){order.forEach(function(sym){
-      var a=document.createElement("a");a.className="ticker-item";a.href=rows[sym].link.href;a.innerHTML='<b></b><span class="num"></span><span class="num"></span>';a.firstChild.textContent=sym;
-      if(copy){a.setAttribute("aria-hidden","true");a.tabIndex=-1}
-      (tickerItems[sym]||(tickerItems[sym]=[])).push(a);tickerTrack.appendChild(a);
-    })});
-    ticker.setAttribute("aria-label",words().tickerLabel);ticker.hidden=!order.length;
-  }
-  function paintTicker(sym,price,change){(tickerItems[sym]||[]).forEach(function(a){a.children[1].textContent=price;a.children[2].textContent=MarketUI.pct(change);a.children[2].className="num "+MarketUI.signClass(change)})}
-  // Hero chart (V2): the first asset's last 7 days, its live price and its weekly open. Real data only:
-  // the same 2h closes as the table's sparklines (Sparkline.load), loaded on every screen size.
-  var heroSym=null,heroCloses=null,heroAt=0,heroShown=false,heroFull=false,heroBox=document.getElementById("hero-art");
-  function startHero(){
-    heroSym=order[0];document.getElementById("hero-sym").textContent=MarketUI.nameOf(heroSym)||heroSym;
-    if(window.Sparkline)Sparkline.load(heroSym).then(function(closes){heroCloses=closes;drawHero()}).catch(function(){heroBox.parentNode.hidden=true});
-  }
-  function drawHero(){
-    var r=rows[heroSym];if(!heroCloses||!r)return;
-    var d=r.data||{},lv=r.levels||{},live=Number(d.c)>0?Number(d.c):null,open=Number(d.week)>0?Number(d.week):lv.WO;
-    var values=heroCloses.slice();if(live)values[values.length-1]=live;
-    var all=values.concat(open>0?[open]:[]),min=Math.min.apply(null,all),max=Math.max.apply(null,all),span=max-min||max*0.001||1;
-    var W=300,H=130,PAD=8,y=function(v){return PAD+(H-2*PAD)*(1-(v-min)/span)},x=function(i){return(W-34)*i/(values.length-1)};
-    var pts=values.map(function(v,i){return x(i).toFixed(1)+","+y(v).toFixed(1)}).join(" ");
-    var last=values[values.length-1],tone=last>=values[0]?"up":"down",lx=x(values.length-1),ly=y(last);
-    var svg='<svg viewBox="0 0 '+W+' '+H+'">'+
-      '<polygon class="h-area '+tone+'" points="0,'+H+' '+pts+' '+lx.toFixed(1)+','+H+'"></polygon>'+
-      (open>0?'<line class="h-open" x1="0" x2="'+(W-34)+'" y1="'+y(open).toFixed(1)+'" y2="'+y(open).toFixed(1)+'"></line><text class="h-open-label" x="'+(W-30)+'" y="'+(y(open)+3.5).toFixed(1)+'">WO</text>':'')+
-      '<polyline class="h-line '+tone+'" pathLength="1000" points="'+pts+'"></polyline>'+
-      '<circle class="h-dot h-ring '+tone+'" cx="'+lx.toFixed(1)+'" cy="'+ly.toFixed(1)+'" r="3.5"></circle><circle class="h-dot '+tone+'" cx="'+lx.toFixed(1)+'" cy="'+ly.toFixed(1)+'" r="3.5"></circle></svg>';
-    if(!heroShown){heroShown=true;heroBox.classList.add("first");setTimeout(function(){heroBox.classList.remove("first")},2200)}
-    heroBox.innerHTML=svg;heroAt=Date.now();heroFull=!!(live&&open>0);
-    var change=last/values[0]-1,ch=document.getElementById("hero-change");
-    document.getElementById("hero-price").textContent=MarketUI.price(last,r.digits);ch.textContent=MarketUI.pct(change);ch.className="num "+MarketUI.signClass(change);
-  }
   function paint(sym){
     var r=rows[sym],d=r.data,lv=r.levels||{};if(!d)return;
     if(r.digits==null&&Number(d.c)>0)r.digits=MarketUI.digitsFor(d.c);
@@ -356,8 +282,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     if(r.last&&price!==r.last){var cls=price>r.last?"tick-up":"tick-down";r.price.classList.remove("tick-up","tick-down");void r.price.offsetWidth;r.price.classList.add(cls);setTimeout(function(){r.price.classList.remove(cls)},900)}
     r.last=price;r.price.textContent=MarketUI.price(price,r.digits);
     if(r.closes&&Date.now()-r.sparkAt>5000)drawSpark(sym);
-    r.change.textContent=MarketUI.pct(change);r.change.className="chg "+MarketUI.signClass(change);paintTicker(sym,r.price.textContent,change);
-    if(sym===heroSym){document.getElementById("hero-price").textContent=r.price.textContent;if(!heroFull||Date.now()-heroAt>5000)drawHero()}
+    r.change.textContent=MarketUI.pct(change);r.change.className="chg "+MarketUI.signClass(change);
     r.volume.textContent=Number(d.q)>0?MarketUI.compact(d.q)+" $":"—";
     // Opens: live feed first (always current), the published report's value as fallback.
     // YO and ATH come from the report; ATH is the engine's OATH (highest Binance candle).
@@ -411,16 +336,15 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   fetch("/api/publication",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(publication){
     var byAsset={};((publication&&publication.entries)||[]).forEach(function(e){var a=MarketUI.assetOf(e);if(/^[A-Z0-9]{2,20}$/.test(a)&&(e.image||e.report))(byAsset[a]||(byAsset[a]=[])).push(e)});
     order=Object.keys(byAsset).sort(MarketUI.byPopularity);if(!order.length){status("unavailable");return}
-    activatedAt=publication.activatedAt||null;body.innerHTML="";
+    body.innerHTML="";
     order.forEach(function(sym){
       var entries=byAsset[sym].sort(MarketUI.byTimeframe),main=entries.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||entries[0];
       body.appendChild(build(sym,"bulletin.html?asset="+encodeURIComponent(sym)+"&method="+MarketUI.methodOf(main)));
       if(main.report)fetch(main.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
       else if(window.DemoData&&DemoData.enabled)rows[sym].demo=true;
     });
-    labels();applyFilter();buildTicker();startHero();
+    labels();applyFilter();
     feed=MarketFeed.start(order,{
-      onSource:function(s){source=s;labels()},
       onData:function(sym,d){var r=rows[sym];if(!r)return;r.data=d;if(r.demo&&!r.levels&&Number(d.c)>0)useLevels(sym,DemoData.levels(sym,d.c),true);paint(sym)}
     });
   }).catch(function(){status("unavailable")});
