@@ -223,6 +223,34 @@ table{font-size:14px}
   .ghost-btn,.tab,.method-switch button{transition:none}
 }
 @media(max-width:600px){.selectors{align-items:stretch}.glance div{flex:1 1 40%}}
+/* ---- V2.1: side sections as self-contained cards like the design (appearance only; all columns, texts and eyes stay). ---- */
+.side-col>.block{padding:18px 20px;border-radius:16px;background:var(--panel)}
+.side-col>.block .block-head{margin-bottom:8px}
+.side-col>.block .block-head h2{font-size:15px}
+.side-col>.block .block-head p,#structure-sub,#structure-note,.side-col .levels-note{font-size:12px;line-height:1.5;color:var(--muted)}
+.side-col .table-wrap{border-radius:0;background:none;overflow-x:visible}
+.side-col .ladder th{padding:6px 8px 8px 0;font-size:11px;color:var(--muted);border-bottom:1px solid var(--line)}
+.side-col .ladder td{padding:9px 8px 9px 0;font-size:13px}
+.side-col .ladder td:first-child,.side-col .ladder th:first-child{padding-left:0}
+.side-col .ladder tr.now td{padding-left:8px}
+/* Codes and events: coloured text instead of framed badges. */
+.side-col .badge.code,.side-col .badge.bos,.side-col .badge.choch,.side-col .badge.sweep,.side-col .badge.avwap{padding:0;border:0;background:none;font-size:12px}
+.side-col .badge.sweep,.side-col .badge.avwap{color:var(--fg)}
+/* Level names and distances quieter than the values. */
+#level-rows td:nth-child(2),#vp-rows tr:not(.vp-group) td:nth-child(2){color:var(--muted);font-size:12px;white-space:normal}
+#level-rows td:last-child,#vp-rows td:last-child,#structure-rows td:last-child{color:var(--muted)!important;font-size:12px}
+#structure-rows td:nth-child(3){color:var(--muted);font-size:12px}
+/* Volume profile: bold period rows, indented levels. */
+#vp-rows tr.vp-group td{padding-top:12px;color:var(--fg);font-size:13px;font-weight:600}
+#vp-rows tr:not(.vp-group) td:first-child{padding-left:22px}
+/* Structure by timeframe: fits the column without sideways scrolling. */
+.side-col #tf-summary-rows td,.side-col .tf-summary-title+.table-wrap th{white-space:normal}
+.tf-summary-title{font-size:13px;color:var(--fg)}
+/* Earlier analyses: a grid of small cards. */
+.archive-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.archive-list li a,.archive-list li span.row{flex-direction:column;justify-content:flex-start;gap:2px;height:100%;padding:12px 14px;border:0;border-radius:12px;background:var(--panel);font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+.archive-list li a:hover{background:var(--raise)}
+.archive-list small{font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:12px}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=4e4d2911"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=9c73344a"></script><script src="assets/features.js?v=5b5669df"></script></head>
