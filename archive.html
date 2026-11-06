@@ -17,6 +17,22 @@ p{max-width:520px;color:var(--muted);font-size:15px;line-height:1.75}
 .arch-day a:hover{color:var(--accent)}
 .arch-day small{color:var(--muted);font-weight:500;text-align:right}
 @media(max-width:520px){main{padding:44px 0}}
+
+/* ---- V2 look (appearance only). ---- */
+main{padding:44px 0 72px}
+.eyebrow{font-size:12px;letter-spacing:1.2px;font-weight:600}
+.eyebrow:before{display:none}
+h1{font-size:clamp(30px,4vw,40px);font-weight:700;letter-spacing:-.9px;margin:10px 0}
+p{font-size:16px;line-height:1.6}
+.arch-controls{margin:24px 0 8px}
+.arch-controls select{min-height:40px;padding:0 12px;border-radius:10px;font-size:13px;cursor:pointer}
+.arch-controls select:hover{border-color:var(--accent)}
+.arch-day{max-width:none;margin-top:28px}
+.arch-day h2{margin:0 0 10px;font-size:14px;color:var(--fg);font-weight:600;letter-spacing:0;text-transform:none}
+.arch-day ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.arch-day a{flex-direction:column;justify-content:flex-start;gap:4px;height:100%;padding:14px 16px;border:0;border-radius:12px;background:var(--panel);font-size:14px}
+.arch-day a:hover{color:var(--fg);background:var(--raise)}
+.arch-day small{font-size:12px;line-height:1.5;text-align:left}
 </style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
