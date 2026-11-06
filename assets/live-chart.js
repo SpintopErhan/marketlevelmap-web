@@ -279,7 +279,7 @@ var LiveChart = (function () {
         // Price-axis decimals: an explicit value, else the site's size rule applied to the last close.
         var lastClose = rows[rows.length - 1][4];
         var decimals = options.decimals != null ? options.decimals : options.decimalsFor ? options.decimalsFor(lastClose) : null;
-        return build(LC, container, { pair: pair, tf: tf, rows: rows, tail: [], remaining: remaining, decimals: decimals, onChange: options.onChange });
+        return build(LC, container, { pair: pair, tf: tf, rows: rows, tail: [], remaining: remaining, decimals: decimals, reveal: options.reveal !== false, onChange: options.onChange });
       });
     });
   }
@@ -508,7 +508,7 @@ var LiveChart = (function () {
     // uncovered from left to right (CSS on .lc-reveal), then the zones grow and the structure labels fade in.
     // Data, scrolling, zooming and level lines are not affected; any touch finishes it at once.
     var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduceMotion && window.requestAnimationFrame) {
+    if (state.reveal !== false && !reduceMotion && window.requestAnimationFrame) {
       container.classList.add("lc-reveal");
       setTimeout(function () { container.classList.remove("lc-reveal"); }, 900);
       zones.reveal = structurePoints.reveal = 0;

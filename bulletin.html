@@ -290,7 +290,7 @@ table{font-size:14px}
 #archive-block>.archive-list{grid-column:1/-1;grid-row:2}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
-<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=4e4d2911"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=9c73344a"></script><script src="assets/features.js?v=5b5669df"></script></head>
+<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=4e4d2911"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=1efd3202"></script><script src="assets/features.js?v=5b5669df"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -769,25 +769,37 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   function renderAll(){header();renderGlance();renderArchiveStrip();renderNote();renderZones();renderRange();renderNoRange();renderFvg();renderStructure();renderLevels();renderVolumeProfile();renderChartTime();syncDownload()}
   new MutationObserver(function(){if(liveChart)liveChart.setLocale();renderAll()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
 
-  function select(chosen,button){
-    entry=chosen;var request=++pending,tf=MarketUI.timeframeOf(chosen).toUpperCase(),w=words();
+  function select(chosen, button) {
+    entry=chosen;var request=++pending,tf=MarketUI.timeframeOf(chosen).toUpperCase();
     tabs.querySelectorAll(".tab").forEach(function(t){var on=t===button;t.setAttribute("aria-selected",String(on));t.tabIndex=on?0:-1});
     try{var next=new URL(location.href);next.searchParams.set("tf",MarketUI.timeframeOf(chosen));if(method==="pa")next.searchParams.set("method","pa");else next.searchParams.delete("method");next.hash="";history.replaceState(null,"",next.toString())}catch(e){}
-    if(liveChart){liveChart.destroy();liveChart=null}
-    chart.dataset.state="loading";expand.disabled=true;download.disabled=true;img.removeAttribute("src");img.alt=asset+" "+tf+" chart";chartName.textContent=asset+" · "+tf;
+    chartName.textContent=asset+" · "+tf;img.alt=asset+" "+tf+" chart";
     chartWhen=chosen.chartTime&&chosen.chartTime.at;chartKey=!chartWhen?"published":chosen.chartTime.source==="upload"?"chartUploaded":"chartAsOf";
-    report=null;reportDemo=false;commentText=null;renderAll();
-    if(window.LiveChart){
-      chart.dataset.mode="live";liveBox.hidden=false;
-      LiveChart.show(liveBox,{pair:asset,timeframe:MarketUI.timeframeOf(chosen),decimalsFor:MarketUI.digitsFor,onChange:function(){if(request===pending)renderChartTime()}}).then(function(ctl){
-        if(request!==pending){ctl.destroy();return}
-        liveChart=ctl;applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
-        chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();
-      }).catch(function(){if(request===pending)showPng(chosen)});
-    }else showPng(chosen);
-    if(chosen.report)loadReport(chosen).then(function(rep){if(request===pending&&rep){report=rep;applyReportToChart();renderAll()}}).catch(function(){});
-    else if(window.DemoData&&DemoData.enabled){report=DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow());reportDemo=true;applyReportToChart();renderAll()}
+    // Keep the boxes on screen and only replace their text once the next report is in.
+    // The chart stays up too: the next timeframe is drawn out of sight, then swapped in.
+    var paint=function(rep,demo){
+      if(request!==pending)return;
+      var shown=liveChart;liveChart=null;
+      report=rep;reportDemo=!!demo;commentText=null;renderAll();
+      liveChart=shown;if(shown)renderChartTime();
+    };
+    if(chosen.report)loadReport(chosen).then(function(rep){if(rep)paint(rep,false)}).catch(function(){});
+    else if(window.DemoData&&DemoData.enabled)paint(DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow()),true);
+    else{report=null;reportDemo=false;commentText=null;renderAll()}
     if(!chosen.report&&chosen.analysisComment)fetch(chosen.analysisComment.url,{cache:"no-store"}).then(function(r){return r.ok?r.text():""}).then(function(text){if(request===pending&&text){commentText=text;renderAll()}}).catch(function(){});
+    if(!window.LiveChart){showPng(chosen);return}
+    var slot=document.createElement("div");slot.className="live-chart";
+    var first=!liveChart;
+    if(!first){slot.style.position="absolute";slot.style.inset="0";slot.style.visibility="hidden"}
+    chart.appendChild(slot);chart.dataset.mode="live";if(first)chart.dataset.state="loading";
+    LiveChart.show(slot,{pair:asset,timeframe:MarketUI.timeframeOf(chosen),decimalsFor:MarketUI.digitsFor,reveal:first,onChange:function(){if(request===pending)renderChartTime()}}).then(function(ctl){
+      if(request!==pending){ctl.destroy();slot.remove();return}
+      if(liveChart)liveChart.destroy();
+      if(liveBox&&liveBox!==slot)liveBox.remove();
+      slot.id="live-chart";slot.hidden=false;slot.style.position="";slot.style.inset="";slot.style.visibility="";
+      liveBox=slot;liveChart=ctl;applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
+      chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();
+    }).catch(function(){if(request!==pending)return;slot.remove();if(!liveChart)showPng(chosen)});
   }
   // Fallback when the interactive chart cannot load: the published PNG (older publications);
   // newer publications carry no image, so the chart area shows a short note instead.
@@ -928,6 +940,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   function start(rows){
     czEntries=rows.filter(function(e){return MarketUI.methodOf(e)==="cz"}).sort(MarketUI.byTimeframe);
     paEntries=rows.filter(function(e){return MarketUI.methodOf(e)==="pa"&&e.report}).sort(MarketUI.byTimeframe);
+    czEntries.forEach(function(e){if(e.report)loadReport(e)});
     if(!czEntries.length&&!paEntries.length){fail("notListed");return}
     // PA timeframes are listed with a confirmed range or with a "no confirmed range" notice (README "Price Action
     // view"), so their reports are read first; an empty report without the notice stays hidden.
