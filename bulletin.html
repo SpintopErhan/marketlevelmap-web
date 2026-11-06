@@ -152,9 +152,10 @@ body{line-height:1.5}
 .asset-head h1{font-size:clamp(28px,3vw,34px);letter-spacing:-.5px}
 .head-price .big{font-size:34px;font-weight:650}
 .head-price .chg{margin-left:8px;font-size:15px;font-weight:600}
-/* Method, timeframe and the glance facts share one full-width row. */
+/* Chart column: method on the left, timeframes on the chart's right edge.
+   Glance cards live in the side column and always start at its left edge, so they do not push the timeframes. */
 .selectors{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 14px}
-.selectors-right{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:10px;margin-left:auto}
+.selectors-chart{display:flex;flex:1 1 320px;align-items:center;justify-content:space-between;gap:12px;min-width:0}
 .method-switch,.tabs{display:inline-flex;gap:0;margin:0;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:visible}
 .method-switch button{min-height:34px;padding:0 16px;border-radius:8px;font-size:13px;transition:background .2s ease,color .2s ease}
 .method-switch button+button{border-left:0}
@@ -216,14 +217,16 @@ table{font-size:14px}
 .side-col>.block:not([hidden]){animation:v2Rise .5s ease-out both}
 .side-col>.block:nth-child(2){animation-delay:.06s}.side-col>.block:nth-child(3){animation-delay:.12s}.side-col>.block:nth-child(4){animation-delay:.18s}.side-col>.block:nth-child(5){animation-delay:.24s}
 @media(min-width:1280px){
-  #analysis>.selectors{grid-column:1 / -1;justify-self:stretch}
+  #analysis>.selectors{grid-column:1 / -1;justify-self:stretch;display:grid;grid-template-columns:minmax(0,1fr) 460px;column-gap:28px;align-items:center}
+  .selectors-chart{flex:none;width:auto;min-width:0}
+  .glance{justify-content:flex-start}
   #analysis>.archive-strip,#analysis>.no-range{grid-column:1;justify-self:stretch}
 }
 @media(prefers-reduced-motion:reduce){
   .glance div,.side-col>.block,.live-chart.lc-reveal>div:first-child,.lc-pulse:after,.head-price .big{animation:none!important}
   .ghost-btn,.tab,.method-switch button{transition:none}
 }
-@media(max-width:900px){.selectors-right{margin-left:0;width:100%;justify-content:flex-start}.glance div{flex:1 1 40%}}
+@media(max-width:900px){.selectors-chart{flex-basis:100%}.glance div{flex:1 1 40%}}
 /* ---- V2.1: side sections as self-contained cards like the design (appearance only; all columns, texts and eyes stay). ---- */
 .side-col>.block{padding:18px 20px;border-radius:16px;background:var(--panel)}
 .side-col>.block .block-head{margin-bottom:8px}
@@ -275,8 +278,8 @@ table{font-size:14px}
 <div class="head-price head-meta"><div><span class="num big" id="live-price">—</span><span class="num chg" id="live-change"></span></div></div></div>
 <div class="page-status" id="page-status" data-i18n="loadingPage">Loading analysis…</div>
 <div id="analysis" data-method="cz">
-<div class="selectors"><div class="method-switch" id="method-switch" role="group" aria-label="Analysis discipline"><button type="button" data-method="cz" aria-pressed="true" data-i18n="methodCz">Critical Zones</button><button type="button" data-method="pa" aria-pressed="false" disabled data-i18n="methodPa">Price Action</button></div>
-<div class="selectors-right"><div class="tabs" role="tablist" id="tf-tabs"></div><div class="glance" id="glance" hidden></div></div></div>
+<div class="selectors"><div class="selectors-chart"><div class="method-switch" id="method-switch" role="group" aria-label="Analysis discipline"><button type="button" data-method="cz" aria-pressed="true" data-i18n="methodCz">Critical Zones</button><button type="button" data-method="pa" aria-pressed="false" disabled data-i18n="methodPa">Price Action</button></div>
+<div class="tabs" role="tablist" id="tf-tabs"></div></div><div class="glance" id="glance" hidden></div></div>
 <section class="archive-strip" id="archive-strip" hidden><span class="tag" data-i18n="archiveTag">Archive</span><span id="archive-strip-text"></span><a id="archive-strip-back" href="bulletin.html"></a></section>
 <section class="no-range" id="no-range" hidden><h2 data-i18n="noRangeTitle">No confirmed range</h2><p id="no-range-text"></p></section>
 <section class="panel chart-panel"><div class="chart-head"><div class="chart-title"><strong id="chart-name"></strong><a class="howto-link" href="/en/guide/" data-href-tr="/tr/rehber/" data-i18n="howTo">How to read</a></div><div class="chart-actions"><div class="share-wrap" id="share-wrap" hidden><button class="ghost-btn" id="share" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="share-menu" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg><span data-i18n="share">Share</span></button><div class="share-menu" id="share-menu" role="menu" hidden><button type="button" role="menuitem" data-share="image" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4"/><circle cx="15.5" cy="8.5" r="1.5"/></svg><span data-i18n="shareImage">Share image…</span></button><a role="menuitem" data-share="x" target="_blank" rel="noopener noreferrer"><svg class="brand" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg><span>X (Twitter)</span></a><a role="menuitem" data-share="telegram" target="_blank" rel="noopener noreferrer"><svg class="brand" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.47l-.38 5.33c.54 0 .78-.23 1.06-.51l2.55-2.43 5.28 3.86c.97.53 1.66.25 1.92-.89l3.48-16.3c.31-1.44-.52-2-1.47-1.65L1.3 10.85c-1.4.55-1.38 1.33-.24 1.68l5.21 1.63L18.37 6.6c.57-.38 1.09-.17.66.21z"/></svg><span>Telegram</span></a><button type="button" role="menuitem" data-share="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span data-i18n="copyLink">Copy link</span></button></div></div><button class="ghost-btn" id="download" type="button" hidden disabled><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6z"/></svg><span data-i18n="download">Download</span></button><button class="ghost-btn" id="expand" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg><span data-i18n="expand">Expand</span></button></div></div>
