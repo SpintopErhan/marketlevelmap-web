@@ -12,13 +12,15 @@
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.5}
 body>.shell,body>main,body>.site-footer{position:relative;z-index:1}
 .page-bg{position:fixed;z-index:0;left:0;right:0;top:76px;bottom:0;overflow:hidden;pointer-events:none}
-.page-bg-art{position:absolute;top:-40px;right:-40px;width:min(860px,72vw);height:auto;opacity:.2;animation:bgDrift 56s ease-in-out infinite alternate;mask-image:radial-gradient(ellipse at 72% 18%,#000 0%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 72% 18%,#000 0%,transparent 70%)}
+.page-bg-in{position:absolute;top:-20px;right:-20px;width:min(560px,50vw);animation:bgIn 1.15s cubic-bezier(.2,.7,.2,1) both}
+.page-bg-art{display:block;width:100%;height:auto;opacity:.2;animation:bgDrift 32s ease-in-out infinite alternate;mask-image:radial-gradient(ellipse at 72% 18%,#000 0%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 72% 18%,#000 0%,transparent 70%)}
 :root[data-theme="light"] .page-bg-art{opacity:.1}
 @media(prefers-color-scheme:light){:root:not([data-theme]) .page-bg-art{opacity:.1}}
 .page-bg-art .bg-guide{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:5 9}
 .page-bg-art .bg-up{stroke:var(--up);fill:var(--up)}
 .page-bg-art .bg-down{stroke:var(--down);fill:var(--down)}
-@keyframes bgDrift{from{translate:0 0}to{translate:-32px 20px}}
+@keyframes bgIn{from{opacity:0;translate:40px 24px}to{opacity:1;translate:0 0}}
+@keyframes bgDrift{from{translate:0 0}to{translate:-78px 44px}}
 button,select,input{font:inherit}button{color:inherit}
 main{padding:0 0 72px}
 .num{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
@@ -80,7 +82,7 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .asset-cell{display:flex;align-items:center;gap:10px;perspective:280px}
 .asset-cell strong{display:block;font-size:14px;font-weight:600}
 .asset-icon{flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;color:#0b1a17;font-size:10px;font-weight:700;letter-spacing:-.2px;transform-style:preserve-3d}
-.market-table tbody tr:not(.status-row):hover .asset-icon{animation:iconFlip .55s ease}
+.asset-icon.spin{animation:iconFlip 1.25s cubic-bezier(.33,.02,.2,1) forwards}
 .asset-icon.long{width:auto;min-width:36px;padding:0 7px;border-radius:18px}
 .chg{display:inline-block;min-width:68px;padding:3px 8px;border-radius:6px;font-size:13px;text-align:right}
 .chg.up{background:color-mix(in srgb,var(--up) 14%,transparent)}.chg.down{background:color-mix(in srgb,var(--down) 14%,transparent)}
@@ -207,11 +209,11 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 </script>
 <script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=4e4d2911"></script><script src="assets/event-links.js?v=39e55a33"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
 <body>
-<div class="page-bg" aria-hidden="true"><svg class="page-bg-art" viewBox="0 0 720 460" fill="none">
+<div class="page-bg" aria-hidden="true"><div class="page-bg-in"><svg class="page-bg-art" viewBox="0 0 720 460" fill="none">
 <line class="bg-guide" x1="20" y1="78" x2="700" y2="78"/><line class="bg-guide" x1="20" y1="168" x2="700" y2="168"/><line class="bg-guide" x1="20" y1="262" x2="700" y2="262"/><line class="bg-guide" x1="20" y1="348" x2="700" y2="348"/>
 <g class="bg-up" stroke-width="2"><line x1="90" y1="48" x2="90" y2="210"/><rect x="74" y="96" width="32" height="78" rx="2"/><line x1="250" y1="70" x2="250" y2="250"/><rect x="234" y="118" width="32" height="86" rx="2"/><line x1="430" y1="36" x2="430" y2="196"/><rect x="414" y="78" width="32" height="70" rx="2"/><line x1="590" y1="90" x2="590" y2="280"/><rect x="574" y="140" width="32" height="92" rx="2"/></g>
 <g class="bg-down" stroke-width="2"><line x1="170" y1="60" x2="170" y2="240"/><rect x="154" y="108" width="32" height="84" rx="2"/><line x1="340" y1="100" x2="340" y2="300"/><rect x="324" y="150" width="32" height="96" rx="2"/><line x1="510" y1="80" x2="510" y2="250"/><rect x="494" y="122" width="32" height="74" rx="2"/></g>
-</svg></div>
+</svg></div></div>
 <div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -276,6 +278,20 @@ var toggle=document.getElementById("theme-toggle");
 function isDark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches}
 function syncTheme(){var dark=isDark();toggle.setAttribute("aria-pressed",String(dark));toggle.setAttribute("aria-label",dark?"Switch to light theme":"Switch to dark theme")}
 toggle.addEventListener("click",function(){document.documentElement.dataset.theme=isDark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+var marketRows=document.getElementById("market-rows");
+if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
+  marketRows.addEventListener("mouseover",function(e){
+    var tr=e.target.closest("tr");
+    if(!tr||tr.classList.contains("status-row")||!marketRows.contains(tr))return;
+    if(e.relatedTarget&&tr.contains(e.relatedTarget))return;
+    var icon=tr.querySelector(".asset-icon");
+    if(!icon||icon.classList.contains("spin"))return;
+    icon.classList.add("spin");
+  });
+  marketRows.addEventListener("animationend",function(e){
+    if(e.animationName==="iconFlip")e.target.classList.remove("spin");
+  });
+}
 </script>
 <script>
 /* Market table. Live price, 24h change/volume and the daily/weekly opens come from MarketFeed (Binance, or
