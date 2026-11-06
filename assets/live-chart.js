@@ -52,8 +52,13 @@ var LiveChart = (function () {
     return indexPromise;
   }
 
+  var fileCache = {};
   function loadPeriods(pair, tf, names) {
-    return Promise.all(names.map(function (name) { return getJson(DATA + pair + "/" + tf + "/" + name + ".json"); }));
+    return Promise.all(names.map(function (name) {
+      var url = DATA + pair + "/" + tf + "/" + name + ".json";
+      if (!fileCache[url]) fileCache[url] = getJson(url).catch(function (err) { delete fileCache[url]; throw err; });
+      return fileCache[url];
+    }));
   }
 
   // Merge candle rows from several files: unique by open time, ascending.
@@ -349,7 +354,7 @@ var LiveChart = (function () {
     var structurePoints = new PointsPrimitive(function () { return times(); });
     candles.attachPrimitive(structurePoints);
     var sweepMarkers = LC.createSeriesMarkers ? LC.createSeriesMarkers(candles, []) : null;
-    var liveLine = null, loadingOlder = false, destroyed = false;
+    var liveLine = null, loadingOlder = false, destroyed = false, generation = 0;
     var forming = null, liveStatus = "pending", socket = null, retryTimer = null, socketFailures = 0;
     function allRows() { return state.rows.concat(state.tail); }
     function times() { return allRows().map(function (r) { return r[0]; }); }
@@ -417,13 +422,14 @@ var LiveChart = (function () {
 
     // Missing closed candles + the forming one, straight after the last known candle.
     function fillTail() {
-      var step = STEP[state.tf] * 1000, requests = 0;
+      var step = STEP[state.tf] * 1000, requests = 0, epoch = generation;
       function next(startMs) {
+        if (destroyed || epoch !== generation) return;
         requests++;
         var url = BINANCE_REST + "?symbol=" + state.pair + "&interval=" + state.tf + "&startTime=" + startMs + "&limit=" + KLINE_LIMIT;
         return fetch(url, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
           .then(function (klines) {
-            if (destroyed || !Array.isArray(klines)) return;
+            if (destroyed || epoch !== generation || !Array.isArray(klines)) return;
             var now = Date.now();
             klines.forEach(function (k) {
               var row = klineRow(k[0], k[1], k[2], k[3], k[4], k[5]);
@@ -434,7 +440,10 @@ var LiveChart = (function () {
           });
       }
       var rows = allRows();
-      return next((rows[rows.length - 1][0] + STEP[state.tf]) * 1000).then(function () { drawForming(); notify(); });
+      return next((rows[rows.length - 1][0] + STEP[state.tf]) * 1000).then(function () {
+        if (destroyed || epoch !== generation) return;
+        drawForming(); notify();
+      });
     }
 
     function openStream() {
@@ -544,8 +553,11 @@ var LiveChart = (function () {
     };
     requestAnimationFrame(waitForSize);
     chart.timeScale().subscribeVisibleLogicalRangeChange(loadOlder);
-    fillTail().then(function () { initialView(); setLiveStatus("live"); openStream(); })
-      .catch(function () { setLiveStatus("unavailable"); });
+    var opened = generation;
+    fillTail().then(function () {
+      if (destroyed || opened !== generation) return;
+      initialView(); setLiveStatus("live"); openStream();
+    }).catch(function () { if (!destroyed && opened === generation) setLiveStatus("unavailable"); });
 
     // Key levels the page asks for (analysis page "Key levels" eye toggles): one dashed price line
     // each, labelled with its code on the price axis. Price lines do not change the price scale.
@@ -639,6 +651,45 @@ var LiveChart = (function () {
         else liveLine.applyOptions({ price: p });
       },
       setLocale: function () { if (!destroyed) chart.applyOptions({ localization: localization() }); },
+      // Change timeframe without tearing the chart down. 1H in particular is a lot of candles;
+      // rebuilding the widget blanked the panel and redrew it.
+      reload: function (nextTf) {
+        nextTf = String(nextTf || "").toLowerCase();
+        if (destroyed || !STEP[nextTf]) return Promise.reject(new Error("unsupported timeframe " + nextTf));
+        if (nextTf === state.tf) return Promise.resolve();
+        var epoch = ++generation;
+        closeStream();
+        forming = null;
+        setLiveStatus("pending");
+        return loadIndex().then(function (index) {
+          if (destroyed || epoch !== generation) return;
+          var entry = index.pairs && index.pairs[state.pair] && index.pairs[state.pair][nextTf];
+          if (!entry) throw new Error("no candles for " + state.pair + " " + nextTf);
+          var archives = (entry.archives || []).slice();
+          var initial = MONTHLY[nextTf] ? archives.slice(-PAGE) : archives.slice();
+          var remaining = MONTHLY[nextTf] ? archives.slice(0, Math.max(0, archives.length - PAGE)) : [];
+          return loadPeriods(state.pair, nextTf, initial.concat(["latest"])).then(function (files) {
+            if (destroyed || epoch !== generation) return;
+            var rows = mergeRows([], files);
+            if (!rows.length) throw new Error("no closed candles for " + state.pair + " " + nextTf);
+            state.tf = nextTf;
+            state.rows = rows;
+            state.tail = [];
+            state.remaining = remaining;
+            baseZones = []; fvgZones = []; structureZones = []; lastValidZones = []; zoneList = []; avwapPoints = [];
+            chart.applyOptions({ timeScale: { timeVisible: nextTf === "1h" || nextTf === "4h", secondsVisible: false, rightOffset: 12 } });
+            touched = false;
+            setData();
+            initialView();
+            fillTail().then(function () {
+              if (destroyed || epoch !== generation) return;
+              initialView();
+              setLiveStatus("live");
+              openStream();
+            }).catch(function () { if (!destroyed && epoch === generation) setLiveStatus("unavailable"); });
+          });
+        });
+      },
       destroy: function () {
         destroyed = true; clearInterval(pulseTimer); closeStream(); document.removeEventListener("visibilitychange", onVisibility);
         if (paneObserver) paneObserver.disconnect();

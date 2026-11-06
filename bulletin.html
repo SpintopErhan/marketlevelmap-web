@@ -290,7 +290,7 @@ table{font-size:14px}
 #archive-block>.archive-list{grid-column:1/-1;grid-row:2}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
-<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=4e4d2911"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=1efd3202"></script><script src="assets/features.js?v=5b5669df"></script></head>
+<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=4e4d2911"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=3951eb2c"></script><script src="assets/features.js?v=5b5669df"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -777,26 +777,37 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     chartWhen=chosen.chartTime&&chosen.chartTime.at;chartKey=!chartWhen?"published":chosen.chartTime.source==="upload"?"chartUploaded":"chartAsOf";
     // Keep the boxes on screen and only replace their text once the next report is in.
     // The chart stays up too: the next timeframe is drawn out of sight, then swapped in.
+    var chartReady=false;
     var paint=function(rep,demo){
       if(request!==pending)return;
       var shown=liveChart;liveChart=null;
       report=rep;reportDemo=!!demo;commentText=null;renderAll();
-      liveChart=shown;if(shown)renderChartTime();
+      liveChart=shown;
+      if(shown&&chartReady){applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow())}
+      if(shown)renderChartTime();
     };
     if(chosen.report)loadReport(chosen).then(function(rep){if(rep)paint(rep,false)}).catch(function(){});
     else if(window.DemoData&&DemoData.enabled)paint(DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow()),true);
     else{report=null;reportDemo=false;commentText=null;renderAll()}
     if(!chosen.report&&chosen.analysisComment)fetch(chosen.analysisComment.url,{cache:"no-store"}).then(function(r){return r.ok?r.text():""}).then(function(text){if(request===pending&&text){commentText=text;renderAll()}}).catch(function(){});
     if(!window.LiveChart){showPng(chosen);return}
+    // A chart is already on screen: swap its candles in place. Building a second one (1H is large)
+    // blanked the panel and played the opening animation again.
+    if(liveChart&&liveChart.reload){
+      liveChart.reload(MarketUI.timeframeOf(chosen)).then(function(){
+        if(request!==pending||!liveChart)return;
+        chartReady=true;
+        applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
+        chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();
+      }).catch(function(){if(request===pending&&!liveChart)showPng(chosen)});
+      return;
+    }
     var slot=document.createElement("div");slot.className="live-chart";
-    var first=!liveChart;
-    if(!first){slot.style.position="absolute";slot.style.inset="0";slot.style.visibility="hidden"}
-    chart.appendChild(slot);chart.dataset.mode="live";if(first)chart.dataset.state="loading";
-    LiveChart.show(slot,{pair:asset,timeframe:MarketUI.timeframeOf(chosen),decimalsFor:MarketUI.digitsFor,reveal:first,onChange:function(){if(request===pending)renderChartTime()}}).then(function(ctl){
+    chart.appendChild(slot);chart.dataset.mode="live";chart.dataset.state="loading";
+    LiveChart.show(slot,{pair:asset,timeframe:MarketUI.timeframeOf(chosen),decimalsFor:MarketUI.digitsFor,onChange:function(){if(request===pending)renderChartTime()}}).then(function(ctl){
       if(request!==pending){ctl.destroy();slot.remove();return}
-      if(liveChart)liveChart.destroy();
       if(liveBox&&liveBox!==slot)liveBox.remove();
-      slot.id="live-chart";slot.hidden=false;slot.style.position="";slot.style.inset="";slot.style.visibility="";
+      slot.id="live-chart";slot.hidden=false;
       liveBox=slot;liveChart=ctl;applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
       chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();
     }).catch(function(){if(request!==pending)return;slot.remove();if(!liveChart)showPng(chosen)});
