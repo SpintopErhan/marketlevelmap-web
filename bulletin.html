@@ -271,7 +271,7 @@ table{font-size:14px}
 <main class="shell" data-state="loading"><div class="content">
 <a class="back" href="index.html" data-i18n="back">← Market table</a>
 <div class="asset-head"><div class="asset-title"><span class="asset-icon" id="asset-icon" aria-hidden="true"></span><div><h1 id="title"></h1><p class="sub"><span id="pair-name"></span><span class="head-meta"> · <span id="feed-name"></span></span></p></div></div>
-<div class="head-price head-meta"><div><span class="num big" id="live-price">—</span><span class="num chg" id="live-change"></span></div><small id="analysis-at"></small></div></div>
+<div class="head-price head-meta"><div><span class="num big" id="live-price">—</span><span class="num chg" id="live-change"></span></div></div></div>
 <div class="page-status" id="page-status" data-i18n="loadingPage">Loading analysis…</div>
 <div id="analysis" data-method="cz">
 <div class="selectors"><div class="method-switch" id="method-switch" role="group" aria-label="Analysis discipline"><button type="button" data-method="cz" aria-pressed="true" data-i18n="methodCz">Critical Zones</button><button type="button" data-method="pa" aria-pressed="false" disabled data-i18n="methodPa">Price Action</button></div>
@@ -429,9 +429,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     try{localStorage.setItem(LEVELS_KEY,JSON.stringify(chartLevels))}catch(e){}
     applyLevelsToChart();
   }
-  document.getElementById("title").textContent=asset;
+  document.getElementById("title").textContent=MarketUI.nameOf(asset);
   (function(){var base=asset.replace(/(USDT|USDC|FDUSD|BUSD|USD|TRY|EUR)$/,"")||asset,hue=0,icon=document.getElementById("asset-icon");for(var i=0;i<base.length;i++)hue=(hue*31+base.charCodeAt(i))%360;icon.textContent=base;icon.style.background="hsl("+hue+" 62% 64%)"})();
-  document.getElementById("pair-name").textContent=MarketUI.nameOf(asset)+(/USDT$/.test(asset)?" / Tether":"");
+  document.getElementById("pair-name").textContent=asset;
   document.getElementById("archive-title").textContent=words().archiveTitle.replace("{asset}",asset);
 
   function fail(key){page.dataset.state="unavailable";status.dataset.i18n=key;status.textContent=words()[key]}
@@ -446,7 +446,6 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     if(p&&lastHeadPrice&&p!==lastHeadPrice){var cls=p>lastHeadPrice?"tick-up":"tick-down";lp.classList.remove("tick-up","tick-down");void lp.offsetWidth;lp.classList.add(cls)}
     if(p)lastHeadPrice=p;lp.textContent=p?MarketUI.price(p,digits):"—";
     var c=document.getElementById("live-change"),r=p&&Number(live.o)>0?p/Number(live.o)-1:NaN;c.textContent=isFinite(r)?MarketUI.pct(r):"";c.className="num chg "+MarketUI.signClass(r);
-    var at=(report&&report.analyzedAt)||(publication&&publication.activatedAt);document.getElementById("analysis-at").textContent=at?w.analysis+" "+MarketUI.dateTime(at):"";
     chart.dataset.loading=w.chartLoading;chart.dataset.unavailable=w.chartUnavailable;
   }
 
