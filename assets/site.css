@@ -5,6 +5,9 @@
 @media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--raise:#eef3f0;--chip:#e6eeea;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent);--cz:#93520f;--pa:#087a6c;--toggle-x:0;--up:#0e7049;--down:#ad2f36}}
 
 .shell{width:min(1240px,100%);margin:auto;padding:0 40px}
+@media(min-width:1280px){
+  .shell{width:100%;max-width:none;padding-left:24px;padding-right:24px}
+}
 
 /* Header */
 header{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line)}

@@ -3,8 +3,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.55}
 button,select,input{font:inherit}button{color:inherit}
-/* Library pages use more of a wide screen: topics on the left, content in the middle. */
-.shell{width:min(1560px,100%)}
+/* Page width and header come from site.css, same as the analysis page. */
 .lib-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:0 44px;align-items:start}
 .lib-main{min-width:0}
 .lib-nav{margin-top:22px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:13px}
