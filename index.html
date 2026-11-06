@@ -110,7 +110,8 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 
 /* Market table on the left. This week's events beside it, topic of the week under the events. */
 .home-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(380px,34%);column-gap:28px;align-items:start}
-.home-side{display:flex;flex-direction:column;gap:24px;min-width:0}
+.home-split>.page-head,.home-split>.table-wrap{grid-column:1}
+.home-side{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:24px;min-width:0}
 .events-card{min-width:0;padding:22px 24px}
 .events-card .table-wrap{border-radius:0;background:none}
 .events-table th{padding:8px 10px 10px 0;text-align:left}
@@ -171,7 +172,7 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
   .rise,.spark.first .spark-dot{opacity:1}
   .spark.first .spark-line{stroke-dashoffset:0}
 }
-@media(max-width:1100px){.home-split{grid-template-columns:1fr}.hero h1,.hero-text{white-space:normal}}
+@media(max-width:1100px){.home-split{grid-template-columns:1fr}.home-side{grid-column:1;grid-row:auto}.hero h1,.hero-text{white-space:normal}}
 @media(max-width:700px){
   .hero{padding:28px 0 24px}.hero h1{font-size:26px;white-space:normal}.hero-text{font-size:15px;white-space:normal}
   .filters{width:100%}.search{flex:1 1 100%}.search input{width:100%}
@@ -203,15 +204,13 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <div class="hero-actions rise rise-4"><a class="btn btn-primary" href="/en/guide/" data-href-tr="/tr/rehber/" data-i18n="heroGuide">How to read them</a></div>
 </div>
 </section>
-<div class="home-split">
-<section class="reveal" aria-labelledby="table-title">
+<section class="reveal home-split" aria-labelledby="table-title">
 <div class="page-head"><div><h2 id="table-title" data-i18n="tableTitle">Market table</h2>
 <p data-i18n="tableNote">The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.</p></div>
 <div class="filters"><span class="demo-badge" id="table-demo" data-i18n="demo" hidden>Sample data</span><div class="search"><input id="search" type="search" autocomplete="off"></div><div class="segmented" role="group" aria-label="Filter"><button class="filter-btn active" type="button" data-filter="all" data-i18n="all">All</button><button class="filter-btn" type="button" data-filter="favorites" data-i18n="fav">Favorites</button></div></div></div>
 <div class="table-wrap"><table class="market-table"><thead><tr>
 <th class="asset" data-i18n="colAsset">Asset</th><th data-i18n="colPrice">Price</th><th data-i18n="col24h">24h %</th><th data-i18n="colVolume">24h volume</th><th data-i18n="colDay">Daily open</th><th data-i18n="colWeek">Weekly open</th><th data-i18n="colMonth">Monthly open</th><th data-i18n="colYear">Yearly open</th><th>ATH</th><th class="analysis-col" data-i18n="colAnalysis">Analysis</th>
 </tr></thead><tbody id="market-rows"><tr class="status-row"><td colspan="10" data-i18n="loading">Loading live market…</td></tr></tbody></table></div>
-</section>
 <aside class="home-side">
 <section class="events-card card" aria-labelledby="events-title">
 <div class="section-head"><div><h2 id="events-title" data-i18n="eventsTitle">This week's events</h2><p><span id="week-range"></span> · <span data-i18n="utc">times in UTC</span> <span class="demo-badge" id="events-demo" data-i18n="demo" hidden>Sample data</span></p></div><a href="weekly-events.html" data-i18n="fullWeek">Full week →</a></div>
@@ -222,7 +221,7 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <a class="topic-title" id="topic-link" href="/en/library/"></a><p class="topic-summary" id="topic-summary"></p><a class="topic-more" id="topic-more" href="/en/library/" data-i18n="topicMore">Read the page →</a>
 <p class="topic-next"><span data-i18n="topicNext">Next week:</span> <span id="topic-next"></span></p></div></aside>
 </aside>
-</div>
+</section>
 </main>
 <div class="site-footer"><div class="shell">
 <div class="footer-cols">
