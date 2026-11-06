@@ -146,21 +146,21 @@ th.r,td.r{text-align:right}
 /* ---- V2 look (same elements and behaviour; only appearance). Overrides the rules above. ---- */
 body{line-height:1.5}
 .back{font-size:13px}
-.asset-head{display:flex;align-items:center;gap:8px 22px;margin:2px 0 16px}
+.asset-head{display:flex;align-items:center;gap:8px 0;margin:2px 0 16px}
 .asset-title{display:flex;align-items:center;gap:14px;flex:none}
 .asset-icon{flex:none;min-width:44px;height:44px;padding:0 8px;display:grid;place-items:center;border-radius:22px;color:#0b1a17;font-size:12px;font-weight:700;letter-spacing:-.2px}
 .asset-head h1{font-size:clamp(28px,3vw,34px);letter-spacing:-.5px;line-height:1}
 .head-price{display:flex;align-items:baseline;text-align:left;transform:translateY(3px)}
 .head-price .big{font-size:30px;font-weight:650;line-height:1}
 .head-price .chg{margin-left:8px;font-size:15px;font-weight:600;line-height:1}
-.price-band{display:flex;align-items:center;align-self:center;flex:1;min-width:0;height:44px;margin-left:auto;overflow:hidden;border-left:1px solid var(--line);-webkit-mask-image:linear-gradient(90deg,transparent,#000 18px);mask-image:linear-gradient(90deg,transparent,#000 18px)}
+.price-band{display:flex;align-items:center;align-self:center;flex:1;min-width:0;height:44px;margin-left:40px;overflow:hidden;transform:translateY(8px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 22px);mask-image:linear-gradient(90deg,transparent,#000 22px)}
 .price-band[hidden]{display:none}
 .band-track{display:flex;align-items:center;width:max-content;height:100%;animation:bandMarquee 45s linear infinite}
 .price-band:hover .band-track{animation-play-state:paused}
 @keyframes bandMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.band-item{display:inline-flex;align-items:center;gap:8px;flex:none;height:100%;padding:0 16px;border-right:1px solid var(--line);color:inherit;text-decoration:none;white-space:nowrap}
-.band-item b{color:var(--muted);font-size:12px;font-weight:600}
-.band-item .num{font-size:13px;font-weight:600}
+.band-item{display:inline-flex;align-items:center;gap:8px;flex:none;height:100%;padding:0 16px;border-right:1px solid var(--line);color:inherit;text-decoration:none;white-space:nowrap;line-height:1}
+.band-item b{color:var(--muted);font-size:12px;font-weight:600;line-height:1}
+.band-item .num{font-size:13px;font-weight:600;line-height:1}
 .band-item .chg{font-size:12px}
 .band-item:hover b{color:var(--fg)}
 .band-item[aria-current="page"] b{color:var(--fg)}
@@ -240,7 +240,7 @@ table{font-size:14px}
   .glance div,.side-col>.block,.live-chart.lc-reveal>div:first-child,.lc-pulse:after,.head-price .big,.band-track{animation:none!important}
   .ghost-btn,.tab,.method-switch button{transition:none}
 }
-@media(max-width:800px){.asset-head{flex-wrap:wrap}.price-band{flex-basis:100%;border-left:0;border-top:1px solid var(--line);padding-top:6px}}
+@media(max-width:800px){.asset-head{flex-wrap:wrap}.price-band{flex-basis:100%;margin-left:0;transform:none;border-top:1px solid var(--line);padding-top:6px}}
 @media(max-width:900px){.selectors-chart{flex-basis:100%}.glance div{flex:1 1 40%}}
 /* ---- V2.1: side sections as self-contained cards like the design (appearance only; all columns, texts and eyes stay). ---- */
 .side-col>.block{padding:18px 20px;border-radius:16px;background:var(--panel)}
