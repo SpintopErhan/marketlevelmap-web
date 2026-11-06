@@ -4,6 +4,7 @@
 :root[data-theme="light"]{color-scheme:light;--raise:#eef3f0;--chip:#e6eeea;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent);--cz:#93520f;--pa:#087a6c;--toggle-x:0;--up:#0e7049;--down:#ad2f36}
 @media(prefers-color-scheme:light){:root:not([data-theme]){color-scheme:light;--raise:#eef3f0;--chip:#e6eeea;--bg:#f4f6f4;--fg:#182d36;--muted:#405a66;--line:#cad7d3;--accent:#087a6c;--panel:#fff;--panel-2:#eaf0ed;--shadow:0 14px 34px rgba(24,45,54,.07);--toggle-active:#182d36;--sun-icon:#fff;--moon-icon:var(--accent);--cz:#93520f;--pa:#087a6c;--toggle-x:0;--up:#0e7049;--down:#ad2f36}}
 
+html{scrollbar-gutter:stable}
 .shell{width:min(1240px,100%);margin:auto;padding:0 40px}
 @media(min-width:1280px){
   .shell{width:100%;max-width:none;padding-left:24px;padding-right:24px}
@@ -12,7 +13,7 @@
 /* Header */
 header{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line)}
 .logo{display:block;width:auto}
-.logo-header{height:40px}
+.logo-header{height:40px;width:239px}
 .logo-light{display:none}
 :root[data-theme="light"] .logo-light{display:block}
 :root[data-theme="light"] .logo-dark{display:none}
@@ -42,7 +43,7 @@ footer p{margin:0;line-height:1.75}
 
 @media(max-width:800px){.shell{padding:0 24px}header{height:70px}}
 /* Phones: page links get their own row under the logo */
-@media(max-width:520px){.shell{padding:0 18px}header{display:grid;grid-template-columns:1fr auto;align-items:center;height:auto;padding-top:16px;row-gap:12px}.logo-header{height:28px}.nav{display:contents}.controls{grid-column:2;grid-row:1;gap:5px;margin-left:0}.nav-links{grid-column:1/-1;grid-row:2;gap:20px;overflow-x:auto}.nav .nav-links a{padding:2px 0 10px;border-bottom:2px solid transparent;font-size:12px;white-space:nowrap}.nav .nav-links a[aria-current="page"]{border-bottom-color:var(--accent)}footer{display:block;padding:22px 0 34px}footer p+p{margin-top:14px}}
+@media(max-width:520px){.shell{padding:0 18px}header{display:grid;grid-template-columns:1fr auto;align-items:center;height:auto;padding-top:16px;row-gap:12px}.logo-header{height:28px;width:186px}.nav{display:contents}.controls{grid-column:2;grid-row:1;gap:5px;margin-left:0}.nav-links{grid-column:1/-1;grid-row:2;gap:20px;overflow-x:auto}.nav .nav-links a{padding:2px 0 10px;border-bottom:2px solid transparent;font-size:12px;white-space:nowrap}.nav .nav-links a[aria-current="page"]{border-bottom-color:var(--accent)}footer{display:block;padding:22px 0 34px}footer p+p{margin-top:14px}}
 /* Thin scrollbars in the site palette. Side columns and table scrollers keep the thumb hidden
    until hovered; the page scrollbar stays visible but thin. */
 *{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--muted) 40%,transparent) transparent}

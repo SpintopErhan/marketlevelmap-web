@@ -7,7 +7,7 @@
 <meta name="description" content="MarketLevelMap — Structure-Based Market Analysis.">
 <title>MarketLevelMap — Market table</title>
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
-<link rel="stylesheet" href="assets/site.css?v=ce5af010"><style>
+<link rel="stylesheet" href="assets/site.css?v=c0028433"><style>
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.5}
 button,select,input{font:inherit}button{color:inherit}
@@ -199,6 +199,9 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
+<script>/* Keep the header in the saved language before the first paint. */
+(function(){var lang;try{lang=localStorage.getItem("mlm-lang")}catch(e){}if(lang!=="tr")return;document.documentElement.lang="tr";document.querySelectorAll("header [data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=el.dataset.tr});document.querySelectorAll("header [data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",el.dataset.hrefTr)});var sel=document.getElementById("lang");if(sel)sel.value="tr"})();
+</script>
 <main class="shell">
 <section class="hero" aria-labelledby="hero-title">
 <div class="hero-copy">
