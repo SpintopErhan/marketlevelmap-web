@@ -128,24 +128,28 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .events-table .actual{font-weight:700;color:var(--fg)}
 .events-table tbody tr td{transition:background .2s ease}
 .events-table tbody tr:not(.status-row):hover td{background:var(--raise)}
-.topic-card{min-width:0;display:flex;flex-direction:column;padding:22px 24px;font-size:14px;line-height:1.5;transition:transform .25s ease,box-shadow .25s ease}
+.topic-card{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) 128px;column-gap:18px;align-items:center;padding:22px 24px;font-size:14px;line-height:1.5;transition:transform .25s ease,box-shadow .25s ease}
 .topic-card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -24px rgba(0,0,0,.55)}
 .topic-card[hidden]{display:none}
 .topic-body{display:contents}
-.topic-head{order:0}.topic-thumb{order:1}.topic-title,.topic-summary,.topic-more,.topic-next{order:2}
-.topic-thumb{margin:0 0 14px;padding:14px 16px;border-radius:12px;background:var(--raise);--lib-line:color-mix(in srgb,var(--fg) 72%,var(--muted));--lib-guide:color-mix(in srgb,var(--muted) 75%,transparent)}
+.topic-head{grid-column:1 / -1;grid-row:1}
+.topic-title{grid-column:1;grid-row:2}
+.topic-summary{grid-column:1;grid-row:3}
+.topic-more{grid-column:1;grid-row:4}
+.topic-thumb{grid-column:2;grid-row:2 / 5;margin:0;align-self:center;padding:10px;border-radius:12px;background:var(--raise);--lib-line:color-mix(in srgb,var(--fg) 72%,var(--muted));--lib-guide:color-mix(in srgb,var(--muted) 75%,transparent)}
 .topic-thumb:empty{display:none}
-.topic-thumb svg{display:block;width:100%;max-height:150px;height:auto}
+.topic-card:has(.topic-thumb:empty){grid-template-columns:minmax(0,1fr)}
+.topic-thumb svg{display:block;width:100%;max-height:108px;height:auto}
 .topic-thumb .s-line{stroke:var(--lib-line)}.topic-thumb .s-guide{stroke:var(--lib-guide)}.topic-thumb .s-up{stroke:var(--up)}.topic-thumb .s-down{stroke:var(--down)}.topic-thumb .s-accent{stroke:var(--cz)}
 .topic-thumb .f-up{fill:var(--up)}.topic-thumb .f-down{fill:var(--down)}.topic-thumb .f-accent{fill:var(--cz)}.topic-thumb .f-point{fill:var(--fg)}
 .topic-head{display:flex;justify-content:space-between;gap:10px;margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent)}
 .topic-track{color:var(--muted);font-size:12px;font-weight:500;letter-spacing:0;text-transform:none}
 .topic-title{display:block;font-size:18px;font-weight:700;color:var(--fg);text-decoration:none;line-height:1.35}
 .topic-title:hover,.topic-title:focus-visible{color:var(--accent)}
-.topic-summary{margin:6px 0 14px;color:var(--muted)}
-.topic-more{margin-top:auto;color:var(--accent);font-weight:600;text-decoration:none}
+.topic-summary{margin:6px 0 12px;color:var(--muted)}
+.topic-more{margin-top:0;color:var(--accent);font-weight:600;text-decoration:none}
 .topic-more:hover{text-decoration:underline}
-.topic-next{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.topic-next{grid-column:1 / -1;grid-row:5;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
 
 /* Footer: site map, social links and the risk notice */
 .site-footer{margin-top:24px;border-top:1px solid var(--line);background:var(--panel)}
