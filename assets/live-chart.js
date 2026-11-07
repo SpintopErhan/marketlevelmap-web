@@ -268,6 +268,42 @@ var LiveChart = (function () {
     }];
   };
 
+  // ---- Indicators ---------------------------------------------------------------------------
+  // Same formulas as the local program, from the closes:
+  //   RSI 14       Wilder: gains and losses smoothed with an RMA (alpha = 1/14) from the first change;
+  //   MACD 12/26/9 EMA12 - EMA26 (alpha = 2/(n+1), started at the first close), signal = EMA9 of MACD,
+  //                histogram = MACD - signal;
+  //   Bollinger    20-candle simple average +/- 2 population standard deviations (ddof = 0).
+  // Starting values only matter at the very beginning of the history; the chart leaves out the first
+  // IND_WARMUP points of RSI and MACD, since the site loads the recent history, not all of it.
+  function indicators(closes) {
+    var n = closes.length, out = { rsi: new Array(n), macd: new Array(n), signal: new Array(n), hist: new Array(n), bbUpper: new Array(n), bbMid: new Array(n), bbLower: new Array(n) };
+    var avgGain = null, avgLoss = null, ema12 = null, ema26 = null, sig = null;
+    for (var i = 0; i < n; i++) {
+      var c = closes[i];
+      if (i > 0) {
+        var d = c - closes[i - 1], gain = d > 0 ? d : 0, loss = d < 0 ? -d : 0;
+        if (avgGain === null) { avgGain = gain; avgLoss = loss; } else { avgGain += (gain - avgGain) / 14; avgLoss += (loss - avgLoss) / 14; }
+        out.rsi[i] = avgLoss === 0 ? (avgGain === 0 ? 50 : 100) : 100 - 100 / (1 + avgGain / avgLoss);
+      }
+      ema12 = ema12 === null ? c : ema12 + (c - ema12) * 2 / 13;
+      ema26 = ema26 === null ? c : ema26 + (c - ema26) * 2 / 27;
+      out.macd[i] = ema12 - ema26;
+      sig = sig === null ? out.macd[i] : sig + (out.macd[i] - sig) * 2 / 10;
+      out.signal[i] = sig; out.hist[i] = out.macd[i] - sig;
+      if (i >= 19) {
+        var sum = 0, sq = 0, k;
+        for (k = i - 19; k <= i; k++) sum += closes[k];
+        var mean = sum / 20;
+        for (k = i - 19; k <= i; k++) sq += (closes[k] - mean) * (closes[k] - mean);
+        var sd = Math.sqrt(sq / 20);
+        out.bbMid[i] = mean; out.bbUpper[i] = mean + 2 * sd; out.bbLower[i] = mean - 2 * sd;
+      }
+    }
+    return out;
+  }
+  var IND_WARMUP = 100;
+
   // ---- Chart -------------------------------------------------------------------------------
   function show(container, options) {
     var pair = String(options.pair || "").toUpperCase(), tf = String(options.timeframe || "").toLowerCase();
@@ -335,12 +371,28 @@ var LiveChart = (function () {
         { text: "marketlevelmap.com", color: "rgba(199, 207, 222, 0.10)", fontSize: Math.round(big * 0.4), fontFamily: WATERMARK_FONT, fontStyle: "" }
       ] });
     }
+    var IND_PANE = 130, indPaneCount = 0, indPrefs = { bb: false, rsi: false, macd: false }, indSeries = {};
     function sizePanes() {
       var panes = chart.panes(), height = container.clientHeight;
-      if (panes.length > 1 && height > 0) panes[1].setHeight(Math.max(48, Math.round(height * 0.16)));
+      // Stretch factors are relative, so each pane gets its height in pixels and the price pane the rest.
+      if (panes.length > 1 && height > 0) {
+        var ind = (panes.length - 2) * IND_PANE, vol = Math.max(48, Math.round((height - ind) * 0.16));
+        panes[0].setStretchFactor(Math.max(1, height - ind - vol));
+        panes[1].setStretchFactor(vol);
+        for (var p = 2; p < panes.length; p++) panes[p].setStretchFactor(IND_PANE);
+      }
       sizeWatermark();
     }
     sizePanes();
+    // The stylesheet sets the chart's height; indicator panes are added below it, so it is measured again
+    // without the inline height whenever the panes or the window change.
+    function fitHeight() {
+      container.style.height = "";
+      if (indPaneCount > 0) container.style.height = (container.clientHeight + indPaneCount * IND_PANE) + "px";
+      sizePanes();
+    }
+    function onWindowResize() { if (indPaneCount > 0) fitHeight(); }
+    window.addEventListener("resize", onWindowResize);
     var paneObserver = window.ResizeObserver ? new ResizeObserver(sizePanes) : null;
     if (paneObserver) paneObserver.observe(container);
     var emaColors = ["#ff6975", "#6fb5ff", "#e7d98c"], emas = emaColors.map(function (color) {
@@ -378,6 +430,59 @@ var LiveChart = (function () {
       avwap.applyOptions({ visible: data.length > 0 });
     }
 
+    // RSI / MACD panes and Bollinger bands (shown on request: setIndicators). Recomputed from the closes,
+    // with the forming candle, whenever candles change.
+    function indicatorRows() { var rows = allRows(); return forming ? rows.concat([forming]) : rows; }
+    function drawIndicators() {
+      if (!indSeries.bbUpper && !indSeries.rsi && !indSeries.macd) return;
+      var rows = indicatorRows(), v = indicators(rows.map(function (r) { return r[4]; })), warm = Math.min(IND_WARMUP, Math.max(0, rows.length - 1));
+      var points = function (values, from) {
+        var list = [];
+        for (var i = from; i < rows.length; i++) if (values[i] != null && isFinite(values[i])) list.push({ time: rows[i][0], value: values[i] });
+        return list;
+      };
+      if (indSeries.bbUpper) { indSeries.bbUpper.setData(points(v.bbUpper, 19)); indSeries.bbMid.setData(points(v.bbMid, 19)); indSeries.bbLower.setData(points(v.bbLower, 19)); }
+      if (indSeries.rsi) indSeries.rsi.setData(points(v.rsi, warm));
+      if (indSeries.macd) {
+        indSeries.macd.setData(points(v.macd, warm)); indSeries.signal.setData(points(v.signal, warm));
+        var hist = [];
+        for (var i = warm; i < rows.length; i++) {
+          var h = v.hist[i], prev = v.hist[i - 1];
+          hist.push({ time: rows[i][0], value: h, color: h >= 0 ? (h >= prev ? "rgba(59,207,145,0.75)" : "rgba(59,207,145,0.35)") : (h <= prev ? "rgba(239,107,115,0.75)" : "rgba(239,107,115,0.35)") });
+        }
+        indSeries.hist.setData(hist);
+      }
+    }
+    function layoutIndicators() {
+      Object.keys(indSeries).forEach(function (key) { chart.removeSeries(indSeries[key]); });
+      indSeries = {};
+      while (chart.panes().length > 2) chart.removePane(chart.panes().length - 1);
+      var priceFormat = decimals == null ? undefined : { type: "price", precision: decimals, minMove: Math.pow(10, -decimals) };
+      var line = function (color, extra) { return Object.assign({ color: color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }, extra || {}); };
+      if (indPrefs.bb) {
+        indSeries.bbUpper = chart.addSeries(LC.LineSeries, line("rgba(122,167,232,0.85)", priceFormat ? { priceFormat: priceFormat } : null), 0);
+        indSeries.bbMid = chart.addSeries(LC.LineSeries, line("rgba(122,167,232,0.6)", Object.assign({ lineStyle: LC.LineStyle.Dashed }, priceFormat ? { priceFormat: priceFormat } : {})), 0);
+        indSeries.bbLower = chart.addSeries(LC.LineSeries, line("rgba(122,167,232,0.85)", priceFormat ? { priceFormat: priceFormat } : null), 0);
+      }
+      var pane = 2;
+      if (indPrefs.rsi) {
+        indSeries.rsi = chart.addSeries(LC.LineSeries, line("#b892ff", { lineWidth: 1.5, lastValueVisible: true, title: "RSI 14", priceFormat: { type: "price", precision: 1, minMove: 0.1 },
+          autoscaleInfoProvider: function () { return { priceRange: { minValue: 0, maxValue: 100 } }; } }), pane++);
+        [70, 30].forEach(function (level) { indSeries.rsi.createPriceLine({ price: level, color: "rgba(154,170,181,0.55)", lineWidth: 1, lineStyle: LC.LineStyle.Dashed, axisLabelVisible: true, title: "" }); });
+      }
+      if (indPrefs.macd) {
+        var macdFormat = { type: "price", precision: Math.max(2, decimals == null ? 2 : decimals), minMove: Math.pow(10, -Math.max(2, decimals == null ? 2 : decimals)) };
+        indSeries.hist = chart.addSeries(LC.HistogramSeries, { priceLineVisible: false, lastValueVisible: false, priceFormat: macdFormat }, pane);
+        indSeries.macd = chart.addSeries(LC.LineSeries, line("#6fb5ff", { lineWidth: 1.5, lastValueVisible: true, title: "MACD 12/26/9", priceFormat: macdFormat }), pane);
+        indSeries.signal = chart.addSeries(LC.LineSeries, line("#ff9f43", { priceFormat: macdFormat }), pane);
+        pane++;
+      }
+      // The chart grows by one pane height for each indicator pane, so the candles keep their room.
+      indPaneCount = pane - 2;
+      fitHeight();
+      drawIndicators();
+    }
+
     function setData() {
       var rows = allRows();
       candles.setData(rows.map(function (r) { return { time: r[0], open: r[1], high: r[2], low: r[3], close: r[4] }; }));
@@ -388,6 +493,7 @@ var LiveChart = (function () {
       zones.set(zoneList, rows.map(function (r) { return r[0]; }));
       drawAvwap();
       drawForming();
+      drawIndicators();
     }
 
     // The forming candle: faded colours, no EMA, replaced on every update until it closes.
@@ -396,6 +502,7 @@ var LiveChart = (function () {
       var up = forming[4] >= forming[1], tone = up ? "rgba(85,217,156,0.38)" : "rgba(239,110,118,0.38)";
       candles.update({ time: forming[0], open: forming[1], high: forming[2], low: forming[3], close: forming[4], color: tone, wickColor: tone, borderColor: tone });
       volume.update({ time: forming[0], value: forming[5], color: up ? "rgba(59,158,112,0.25)" : "rgba(169,83,91,0.25)" });
+      drawIndicators();
     }
 
     // A closed candle from Binance after the last known one: extend EMAs and draw it normally.
@@ -579,6 +686,12 @@ var LiveChart = (function () {
 
     return {
       setLevels: setLevels,
+      // Bollinger (price pane), RSI and MACD (panes under the volume): { bb, rsi, macd } booleans.
+      setIndicators: function (prefs) {
+        var next = { bb: !!(prefs && prefs.bb), rsi: !!(prefs && prefs.rsi), macd: !!(prefs && prefs.macd) };
+        if (destroyed || (next.bb === indPrefs.bb && next.rsi === indPrefs.rsi && next.macd === indPrefs.macd)) return;
+        indPrefs = next; layoutIndicators();
+      },
       // The chart as drawn now (zones, levels, watermark; no crosshair), at device resolution.
       screenshot: function () { return chart.takeScreenshot(true, false); },
       lastClosedAt: function () { var rows = allRows(), last = rows[rows.length - 1]; return new Date((last[0] + STEP[state.tf]) * 1000).toISOString(); },
@@ -693,10 +806,11 @@ var LiveChart = (function () {
       destroy: function () {
         destroyed = true; clearInterval(pulseTimer); closeStream(); document.removeEventListener("visibilitychange", onVisibility);
         if (paneObserver) paneObserver.disconnect();
-        chart.remove(); container.textContent = "";
+        window.removeEventListener("resize", onWindowResize);
+        chart.remove(); container.textContent = ""; container.style.height = "";
       }
     };
   }
 
-  return { show: show, _test: { mergeRows: mergeRows, zoneStart: zoneStart, palette: palette, klineRow: klineRow, withEma: withEma } };
+  return { show: show, indicators: indicators, _test: { mergeRows: mergeRows, zoneStart: zoneStart, palette: palette, klineRow: klineRow, withEma: withEma } };
 })();
