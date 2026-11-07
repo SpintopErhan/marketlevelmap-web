@@ -37,16 +37,16 @@ tr:
     - type: steps
       id: marking
       title: Nasıl işaretlenir?
-      intro: Aşağıdaki adımlar boğa OB içindir; ayı OB için aynısı ters yönde geçerlidir.
+      intro: Her adımda önce boğa OB, sonra ayı OB yazılmıştır.
       items:
         - title: Sert hareketi bul
-          text: Birkaç mum boyunca tek yönde, belirgin şekilde büyük gövdelerle ilerleyen bir yükseliş aranır.
+          text: Birkaç mum boyunca tek yönde, belirgin şekilde büyük gövdelerle ilerleyen bir hareket aranır. **Boğa OB** için bu bir yükseliş, **ayı OB** için bir düşüştür.
         - title: Yapı kırıldı mı bak
-          text: Hareket önceki swing tepesinin **üzerinde bir kapanışla** sonuçlanmalıdır (BOS ya da CHoCH). Yapıyı kırmayan bir sıçrama OB üretmez.
-        - title: Son düşüş mumunu seç
-          text: Hareketin başladığı yerdeki **son düşüş mumu** işaretlenir. Bir sonraki mum bu mumun dibinin altına inmişse, son mum o değildir; daha sonraki düşüş mumuna bakılır.
+          text: Hareket bir kapanışla yapıyı kırmalıdır (BOS ya da CHoCH). **Boğa OB'de** kapanış önceki swing tepesinin **üzerinde**, **ayı OB'de** önceki swing dibinin **altında** gelir. Yapıyı kırmayan bir sıçrama ya da düşüş OB üretmez.
+        - title: Son ters mumu seç
+          text: Hareketin başladığı yerdeki son ters mum işaretlenir. **Boğa OB'de** bu son düşüş mumudur; bir sonraki mum onun dibinin altına inmişse son mum o değildir. **Ayı OB'de** son yükseliş mumudur; bir sonraki mum onun tepesinin üzerine çıkmışsa son mum o değildir.
         - title: Bölgeyi çiz
-          text: Mumun dibinden tepesine kadar olan aralık, sağa doğru uzatılır. Fiyat bu bölgeye dönene kadar bölge "dokunulmamış" sayılır.
+          text: Mumun tepesi ile dibi arasındaki aralık sağa doğru uzatılır. Fiyat bu bölgeye dönene kadar bölge "dokunulmamış" sayılır.
     - type: bullets
       id: criteria
       title: Bir OB'yi güçlendiren özellikler
@@ -60,17 +60,17 @@ tr:
     - type: scenarios
       id: return
       title: Fiyat bölgeye dönünce
-      intro: Fiyat bir boğa OB'ye geri döndüğünde genellikle üç tablodan biri oluşur.
+      intro: Fiyat bir OB'ye geri döndüğünde genellikle üç tablodan biri oluşur. Her kartta önce boğa OB, sonra ayı OB yazılmıştır.
       items:
         - title: Tepki
           tone: up
-          text: Fiyat bölgeye girer, kapanışlar bölgenin **içinde ya da üzerinde** kalır ve fiyat yeniden yükselir. Bölge talep alanı gibi çalışmıştır.
+          text: Fiyat bölgeye girer ve kapanışlar bölgenin içinde kalır. **Boğa OB'den** fiyat yeniden yükselir (talep), **ayı OB'den** yeniden düşer (arz).
         - title: Zayıf tepki
           tone: neutral
-          text: Fiyat bölgede oyalanır, yükselişler kısa kalır. Her yeni dokunuş bölgenin gücünü biraz daha azaltabilir.
+          text: Fiyat bölgede oyalanır; boğa OB'den çıkan yükselişler ya da ayı OB'den çıkan düşüşler kısa kalır. Her yeni dokunuş bölgenin gücünü biraz daha azaltabilir.
         - title: Geçersiz
           tone: down
-          text: Bir mum bölgenin **dibinin altında kapanır.** OB geçersizdir. Kırılan bölge sonradan ters yönde çalışabilir; buna **breaker block** denir.
+          text: Bir mum bölgenin öbür ucunun ötesinde kapanır; **boğa OB'de** dibin altında, **ayı OB'de** tepenin üzerinde. OB geçersizdir. Kırılan bölge sonradan ters yönde çalışabilir; buna **breaker block** denir.
     - type: limits
       shows:
         - Sert bir hareketin hangi mumdan başladığını
@@ -105,16 +105,23 @@ tr:
     - Bölgenin öbür ucunun ötesinde gelen kapanış OB'yi geçersiz kılar.
     - OB'nin geri test edileceği ya da tutacağı garanti değildir.
   svg_labels:
-    swing_high: Önceki tepe
+    title: Boğa OB
+    swing: Önceki tepe
     bos: BOS
     ob: Boğa OB
-    last_down_1: Son düşüş mumu
-    last_down_2: (OB)
+    last_1: Son düşüş mumu
+    last_2: (OB)
     impulse: Sert yükseliş
+    b_title: Ayı OB
+    b_swing: Önceki dip
+    b_ob: Ayı OB
+    b_last_1: Son yükseliş
+    b_last_2: mumu (OB)
+    b_impulse: Sert düşüş
     return_1: Fiyat bölgeye
     return_2: geri döner
-  svg_alt: "Order block çizimi: düşen birkaç mumun sonuncusu kesikli bir kutuyla işaretlenmiş; ardından gelen sert yükseliş önceki tepenin üzerinde kapanarak BOS oluşturuyor; fiyat daha sonra geri çekilip kutunun üst kısmına giriyor ve yeniden yükseliyor"
-  svg_caption: Kesikli kutu, sert yükselişten önceki son düşüş mumunun tepe ile dibi arasını gösterir. Turuncu nokta, önceki tepenin üzerindeki kapanışı (BOS) işaretler.
+  svg_alt: "İki order block çizimi. Solda boğa OB: düşen mumların sonuncusu kesikli bir kutuyla işaretlenmiş, ardından gelen sert yükseliş önceki tepenin üzerinde kapanıyor (BOS), fiyat geri çekilip kutuya giriyor ve yeniden yükseliyor. Sağda ayı OB: aynı tablonun tersi; yükselen mumların sonuncusu kutuda, sert düşüş önceki dibin altında kapanıyor, fiyat kutuya geri dönüp yeniden düşüyor"
+  svg_caption: Solda boğa OB, sağda ayı OB. Kesikli kutu, sert hareketten önceki son ters mumun tepe ile dibi arasını gösterir. Turuncu nokta, önceki tepenin üzerindeki ya da önceki dibin altındaki kapanışı (BOS) işaretler.
 
 en:
   slug: order-block-ob
@@ -150,16 +157,16 @@ en:
     - type: steps
       id: marking
       title: How is it marked?
-      intro: The steps below are for a bullish OB; the same holds the other way round for a bearish OB.
+      intro: Each step gives the bullish OB first, then the bearish OB.
       items:
         - title: Find the sharp move
-          text: Look for a rise that moves in one direction for several candles, with clearly large bodies.
+          text: Look for a move in one direction over several candles, with clearly large bodies. For a **bullish OB** it is a rise, for a **bearish OB** a drop.
         - title: Check that structure broke
-          text: The move must end with **a close above** the previous swing high (BOS or CHoCH). A jump that does not break structure does not produce an OB.
-        - title: Pick the last down candle
-          text: Mark the **last down candle** where the move started. If the next candle went below this candle's low, it is not the last one; look at the later down candle.
+          text: The move must break structure with a close (BOS or CHoCH). For a **bullish OB** the close comes **above** the previous swing high, for a **bearish OB** **below** the previous swing low. A jump or drop that does not break structure does not produce an OB.
+        - title: Pick the last opposite candle
+          text: Mark the last opposite candle where the move started. For a **bullish OB** it is the last down candle; if the next candle went below its low, it is not the last one. For a **bearish OB** it is the last up candle; if the next candle went above its high, it is not the last one.
         - title: Draw the zone
-          text: The range from the candle's low to its high is extended to the right. Until price comes back to it, the zone counts as "untested".
+          text: The range between the candle's high and low is extended to the right. Until price comes back to it, the zone counts as "untested".
     - type: bullets
       id: criteria
       title: What makes an OB stronger
@@ -173,17 +180,17 @@ en:
     - type: scenarios
       id: return
       title: When price comes back
-      intro: When price returns to a bullish OB, one of three pictures usually follows.
+      intro: When price returns to an OB, one of three pictures usually follows. Each card gives the bullish OB first, then the bearish OB.
       items:
         - title: Reaction
           tone: up
-          text: Price enters the zone, closes stay **inside or above** it and price rises again. The zone has worked as a demand area.
+          text: Price enters the zone and closes stay inside it. From a **bullish OB** price rises again (demand), from a **bearish OB** it falls again (supply).
         - title: Weak reaction
           tone: neutral
-          text: Price lingers in the zone and rallies stay short. Each new touch can weaken the zone a little more.
+          text: Price lingers in the zone; rallies from a bullish OB or drops from a bearish OB stay short. Each new touch can weaken the zone a little more.
         - title: Invalidated
           tone: down
-          text: A candle **closes below the zone's low.** The OB is invalidated. The broken zone can later work in the opposite direction; this is called a **breaker block**.
+          text: A candle closes beyond the far end of the zone; **below the low for a bullish OB**, **above the high for a bearish OB**. The OB is invalidated. The broken zone can later work in the opposite direction; this is called a **breaker block**.
     - type: limits
       shows:
         - Which candle a sharp move started from
@@ -218,13 +225,20 @@ en:
     - A close beyond the far end of the zone invalidates the OB.
     - There is no guarantee that an OB will be retested or hold.
   svg_labels:
-    swing_high: Previous high
+    title: Bullish OB
+    swing: Previous high
     bos: BOS
     ob: Bullish OB
-    last_down_1: Last down candle
-    last_down_2: (OB)
+    last_1: Last down
+    last_2: candle (OB)
     impulse: Sharp rise
-    return_1: Price comes back
-    return_2: to the zone
-  svg_alt: "Order block illustration: the last of several falling candles is marked with a dashed box; the sharp rise that follows closes above the previous high, forming a BOS; price later pulls back into the top of the box and rises again"
-  svg_caption: The dashed box marks the range between the high and low of the last down candle before the sharp rise. The orange dot marks the close above the previous high (BOS).
+    b_title: Bearish OB
+    b_swing: Previous low
+    b_ob: Bearish OB
+    b_last_1: Last up
+    b_last_2: candle (OB)
+    b_impulse: Sharp drop
+    return_1: Price comes
+    return_2: back to the zone
+  svg_alt: "Two order block illustrations. Left, a bullish OB: the last of several falling candles is marked with a dashed box, the sharp rise that follows closes above the previous high (BOS), price pulls back into the box and rises again. Right, a bearish OB: the same picture reversed; the last of several rising candles is in the box, the sharp drop closes below the previous low, price comes back to the box and falls again"
+  svg_caption: Bullish OB on the left, bearish OB on the right. The dashed box marks the range between the high and low of the last opposite candle before the sharp move. The orange dot marks the close above the previous high or below the previous low (BOS).
