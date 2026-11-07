@@ -688,6 +688,9 @@ var LiveChart = (function () {
       setLevels: setLevels,
       // Bollinger (price pane), RSI and MACD (panes under the volume): { bb, rsi, macd } booleans.
       setIndicators: function (prefs) {
+        // EMA 20/50/200 stay on unless turned off explicitly.
+        var showEma = !(prefs && prefs.ema === false);
+        emas.forEach(function (s) { s.applyOptions({ visible: showEma }); });
         var next = { bb: !!(prefs && prefs.bb), rsi: !!(prefs && prefs.rsi), macd: !!(prefs && prefs.macd) };
         if (destroyed || (next.bb === indPrefs.bb && next.rsi === indPrefs.rsi && next.macd === indPrefs.macd)) return;
         indPrefs = next; layoutIndicators();
