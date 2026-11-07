@@ -3,12 +3,12 @@ kind: structure
 order: 45
 related: [break-of-structure, trend-change, pullback-vs-reversal, swing-points]
 example: null
-updated: 2026-10-26
+updated: 2026-11-07
 
 tr:
   slug: karakter-degisimi-choch
   name: "CHoCH: karakter değişimi"
-  alt_name: Change of character (CHoCH)
+  alt_name: Change of character (CHoCH) · Market structure break (MSB)
   summary: >-
     CHoCH, yapının korunan seviyesinin kapanışla kırılmasıdır. Yükselişte korunan dibin altında,
     düşüşte korunan tepenin üzerinde gelen kapanış, yapının yön değiştirdiğini gösterir. Aradaki
@@ -63,6 +63,16 @@ tr:
           marker: neutral
         - text: CHoCH'tan sonra yön değişir. Bundan sonraki BOS'lar yeni yönde aranır.
           marker: neutral
+    - type: text
+      id: msb
+      title: "Diğer adı: MSB"
+      paragraphs:
+        - >-
+          Bazı kaynaklar aynı kırılıma **market structure break (MSB)**, yani piyasa yapısı kırılımı der.
+          Ölçüt aynıdır: yükselişte korunan dibin **altında**, düşüşte korunan tepenin **üzerinde** kapanış.
+        - >-
+          Kırılım fitille değil **kapanışla** sayılır. Fitil seviyeyi aşmış ama kapanış geri dönmüşse hareket
+          bir yapı kırılımı değil, bir **SFP** ya da **sweep** olabilir.
     - type: limits
       shows:
         - Yapının korunan seviyesinin kapanışla kaybedildiğini
@@ -163,6 +173,16 @@ en:
           marker: neutral
         - text: After a CHoCH the direction changes. Later BOS events are looked for in the new direction.
           marker: neutral
+    - type: text
+      id: msb
+      title: "Another name: MSB"
+      paragraphs:
+        - >-
+          Some sources call the same break a **market structure break (MSB)**. The test is the same: a close
+          **below** the protected low in an uptrend, **above** the protected high in a downtrend.
+        - >-
+          The break counts with a **close**, not a wick. If a wick moved past the level but the close came
+          back, the move may be an **SFP** or a **sweep** rather than a break of structure.
     - type: limits
       shows:
         - That the structure's protected level was lost on a close
