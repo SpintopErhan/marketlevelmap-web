@@ -1,0 +1,230 @@
+id: order-block
+kind: levels
+order: 55
+related: [break-of-structure, support-and-resistance, retest-and-role-reversal, fair-value-gap]
+example: null
+updated: 2026-11-07
+
+tr:
+  slug: order-block-ob
+  name: "Order block (OB): sert hareketten önceki son ters mum"
+  alt_name: Order block (OB)
+  summary: >-
+    Order block, yapıyı kıran sert bir hareketten hemen önceki son ters yönlü mumdur. Yükselişten
+    önceki son düşüş mumu boğa OB, düşüşten önceki son yükseliş mumu ayı OB olarak işaretlenir. Bu
+    mumun tepe ile dip arasındaki bölgesi, fiyat sonradan geri döndüğünde izlenen bir alan olur.
+  sections:
+    - type: text
+      id: definition
+      title: Order block nedir?
+      paragraphs:
+        - >-
+          Fiyat bazen bir bölgeden çok hızlı ve tek yönde uzaklaşır. Bu sert hareketin **hemen
+          öncesindeki son ters yönlü mum**, hareketin başladığı yer olarak işaretlenir. Bu muma
+          **order block (OB)** denir. OB bölgesi, mumun **tepesi ile dibi** arasıdır; fitiller dahildir.
+        - >-
+          Destek ve dirençten farkı şudur: destek-direnç fiyatın birçok kez tepki verdiği bir alandır.
+          OB ise tek bir mumdan çıkar ve çoğu zaman **henüz yeniden test edilmemiş**, taze bir bölgedir.
+      note: OB terimi "Smart Money Concepts" yaklaşımından gelir. Bu sayfa onu ölçülebilir bir mum ve yapı kuralı olarak ele alır.
+    - type: bullets
+      id: types
+      title: Yönler
+      items:
+        - text: "**Boğa OB:** yapıyı yukarı kıran sert yükselişten önceki **son düşüş mumu**. Bölge, o mumun dibi ile tepesi arasıdır."
+          marker: up
+        - text: "**Ayı OB:** yapıyı aşağı kıran sert düşüşten önceki **son yükseliş mumu**. Bölge, o mumun tepesi ile dibi arasıdır."
+          marker: down
+    - type: steps
+      id: marking
+      title: Nasıl işaretlenir?
+      intro: Aşağıdaki adımlar boğa OB içindir; ayı OB için aynısı ters yönde geçerlidir.
+      items:
+        - title: Sert hareketi bul
+          text: Birkaç mum boyunca tek yönde, belirgin şekilde büyük gövdelerle ilerleyen bir yükseliş aranır.
+        - title: Yapı kırıldı mı bak
+          text: Hareket önceki swing tepesinin **üzerinde bir kapanışla** sonuçlanmalıdır (BOS ya da CHoCH). Yapıyı kırmayan bir sıçrama OB üretmez.
+        - title: Son düşüş mumunu seç
+          text: Hareketin başladığı yerdeki **son düşüş mumu** işaretlenir. Bir sonraki mum bu mumun dibinin altına inmişse, son mum o değildir; daha sonraki düşüş mumuna bakılır.
+        - title: Bölgeyi çiz
+          text: Mumun dibinden tepesine kadar olan aralık, sağa doğru uzatılır. Fiyat bu bölgeye dönene kadar bölge "dokunulmamış" sayılır.
+    - type: bullets
+      id: criteria
+      title: Bir OB'yi güçlendiren özellikler
+      items:
+        - Bölgeden uzaklaşan hareket, OB mumunun boyunun **en az iki katı** kadardır.
+        - Hareket arkasında bir **FVG** bırakmıştır; fiyat bölgeden tek yönde ve hızla ayrılmıştır.
+        - OB, büyük zaman diliminde önemli bir **destek ya da direnç** bölgesine yakındır.
+        - Fiyat bölgede **kısa süre** kalmıştır; uzun süre yatay gidilen bir alan tek bir OB değil, daha geniş bir arz-talep bölgesidir.
+        - Bölge **henüz test edilmemiştir.** Her yeni test bölgenin etkisini azaltabilir.
+      note: Bu özellikler bölgeyi daha anlamlı kılar; fiyatın orada döneceğini garanti etmez.
+    - type: scenarios
+      id: return
+      title: Fiyat bölgeye dönünce
+      intro: Fiyat bir boğa OB'ye geri döndüğünde genellikle üç tablodan biri oluşur.
+      items:
+        - title: Tepki
+          tone: up
+          text: Fiyat bölgeye girer, kapanışlar bölgenin **içinde ya da üzerinde** kalır ve fiyat yeniden yükselir. Bölge talep alanı gibi çalışmıştır.
+        - title: Zayıf tepki
+          tone: neutral
+          text: Fiyat bölgede oyalanır, yükselişler kısa kalır. Her yeni dokunuş bölgenin gücünü biraz daha azaltabilir.
+        - title: Geçersiz
+          tone: down
+          text: Bir mum bölgenin **dibinin altında kapanır.** OB geçersizdir. Kırılan bölge sonradan ters yönde çalışabilir; buna **breaker block** denir.
+    - type: limits
+      shows:
+        - Sert bir hareketin hangi mumdan başladığını
+        - Fiyatın geri dönüşte izlenebilecek taze bir bölgeyi
+        - Bölgenin geçerliliğinin net bir kapanış kuralıyla ölçülebildiğini
+      not_proves:
+        - Bölgede bekleyen büyük emirler ya da "akıllı para" olduğunu
+        - Fiyatın bölgeye mutlaka geri döneceğini
+        - Bölgeye dönen fiyatın oradan mutlaka yön değiştireceğini
+    - type: zones
+      intro: MarketLevelMap'in grafiklerinde OB şu an ayrıca çizilmez; ama bileşenleri sayfada görünür.
+      points:
+        - Price Action görünümündeki **BOS** ve **CHoCH** etiketleri, bir OB'nin aranacağı yapı kırılımlarını gösterir.
+        - Aynı görünümdeki **FVG** kutuları, sert hareketin arkasında bıraktığı boşluğu gösterir. OB çoğu zaman bu boşluğun hemen başlangıcındadır.
+        - Critical Zones grafiklerindeki destek ve direnç bölgeleri, büyük zaman diliminde önemli alanları gösterir. Bir OB'nin bu bölgelerden birine yakın olması onu daha anlamlı kılar.
+    - type: box
+      title: Zaman dilimi
+      text: >-
+        Küçük zaman dilimlerinde OB'ler çok sık oluşur ve çoğu kısa ömürlüdür. Büyük zaman dilimindeki
+        bir OB daha geniş bir alanı kapsar; aynı bölgenin içinde küçük zaman diliminde daha dar bir OB
+        bulunabilir. Bu yüzden bir OB, hangi zaman diliminde işaretlendiğiyle birlikte okunur.
+  confusions:
+    - id: support-and-resistance
+      text: Destek-direnç fiyatın birçok kez tepki verdiği bir alandır; OB tek bir mumdan çıkar ve çoğu zaman henüz test edilmemiş bir bölgedir.
+    - id: fair-value-gap
+      text: FVG, sert hareketin bıraktığı fitil boşluğudur; OB ise o hareketten hemen önceki son ters mumdur. İkisi çoğu zaman yan yanadır.
+    - id: breaker-block
+      text: Breaker, kapanışla geçilip geçersiz olmuş bir OB'nin sonradan ters yönde çalışmasıdır.
+  key_points:
+    - OB, yapıyı kıran sert hareketten önceki son ters yönlü mumdur.
+    - Bölge, mumun tepesi ile dibi arasıdır.
+    - Bölgenin öbür ucunun ötesinde gelen kapanış OB'yi geçersiz kılar.
+    - OB'nin geri test edileceği ya da tutacağı garanti değildir.
+  svg_labels:
+    swing_high: Önceki tepe
+    bos: BOS
+    ob: Boğa OB
+    last_down_1: Son düşüş mumu
+    last_down_2: (OB)
+    impulse: Sert yükseliş
+    return_1: Fiyat bölgeye
+    return_2: geri döner
+  svg_alt: "Order block çizimi: düşen birkaç mumun sonuncusu kesikli bir kutuyla işaretlenmiş; ardından gelen sert yükseliş önceki tepenin üzerinde kapanarak BOS oluşturuyor; fiyat daha sonra geri çekilip kutunun üst kısmına giriyor ve yeniden yükseliyor"
+  svg_caption: Kesikli kutu, sert yükselişten önceki son düşüş mumunun tepe ile dibi arasını gösterir. Turuncu nokta, önceki tepenin üzerindeki kapanışı (BOS) işaretler.
+
+en:
+  slug: order-block-ob
+  name: "Order block (OB): the last opposite candle before a sharp move"
+  summary: >-
+    An order block is the last candle in the opposite direction right before a sharp move that breaks
+    structure. The last down candle before a rise is marked as a bullish OB, the last up candle before a
+    drop as a bearish OB. The range between that candle's high and low becomes an area to watch when
+    price later comes back.
+  sections:
+    - type: text
+      id: definition
+      title: What is an order block?
+      paragraphs:
+        - >-
+          Sometimes price leaves an area very quickly and in one direction. **The last candle in the
+          opposite direction right before that sharp move** is marked as the place where the move
+          started. That candle is called an **order block (OB)**. The OB zone runs from the candle's
+          **high to its low**, wicks included.
+        - >-
+          The difference from support and resistance is this: support and resistance is an area where
+          price has reacted many times. An OB comes from a single candle and is often a fresh zone that
+          **has not been tested again yet**.
+      note: The term OB comes from the "Smart Money Concepts" approach. This page treats it as a measurable candle and structure rule.
+    - type: bullets
+      id: types
+      title: Directions
+      items:
+        - text: "**Bullish OB:** the **last down candle** before a sharp rise that breaks structure upward. The zone runs from that candle's low to its high."
+          marker: up
+        - text: "**Bearish OB:** the **last up candle** before a sharp drop that breaks structure downward. The zone runs from that candle's high to its low."
+          marker: down
+    - type: steps
+      id: marking
+      title: How is it marked?
+      intro: The steps below are for a bullish OB; the same holds the other way round for a bearish OB.
+      items:
+        - title: Find the sharp move
+          text: Look for a rise that moves in one direction for several candles, with clearly large bodies.
+        - title: Check that structure broke
+          text: The move must end with **a close above** the previous swing high (BOS or CHoCH). A jump that does not break structure does not produce an OB.
+        - title: Pick the last down candle
+          text: Mark the **last down candle** where the move started. If the next candle went below this candle's low, it is not the last one; look at the later down candle.
+        - title: Draw the zone
+          text: The range from the candle's low to its high is extended to the right. Until price comes back to it, the zone counts as "untested".
+    - type: bullets
+      id: criteria
+      title: What makes an OB stronger
+      items:
+        - The move away from the zone is **at least twice** the height of the OB candle.
+        - The move left an **FVG** behind; price left the zone in one direction, and quickly.
+        - The OB is close to an important **support or resistance** area on a larger timeframe.
+        - Price spent **little time** in the zone; an area where price moved sideways for a long time is not a single OB but a wider supply or demand zone.
+        - The zone **has not been tested yet.** Each new test can weaken its effect.
+      note: These features make the zone more meaningful; they do not guarantee that price will turn there.
+    - type: scenarios
+      id: return
+      title: When price comes back
+      intro: When price returns to a bullish OB, one of three pictures usually follows.
+      items:
+        - title: Reaction
+          tone: up
+          text: Price enters the zone, closes stay **inside or above** it and price rises again. The zone has worked as a demand area.
+        - title: Weak reaction
+          tone: neutral
+          text: Price lingers in the zone and rallies stay short. Each new touch can weaken the zone a little more.
+        - title: Invalidated
+          tone: down
+          text: A candle **closes below the zone's low.** The OB is invalidated. The broken zone can later work in the opposite direction; this is called a **breaker block**.
+    - type: limits
+      shows:
+        - Which candle a sharp move started from
+        - A fresh zone that can be watched when price comes back
+        - That the zone's validity can be measured with a clear closing rule
+      not_proves:
+        - That large orders or "smart money" are waiting in the zone
+        - That price must come back to the zone
+        - That price coming back to the zone must turn there
+    - type: zones
+      intro: MarketLevelMap's charts do not draw OBs separately yet, but their building blocks are on the page.
+      points:
+        - The **BOS** and **CHoCH** labels in the Price Action view show the structure breaks where an OB would be looked for.
+        - The **FVG** boxes in the same view show the gap a sharp move left behind. An OB is often right at the start of that gap.
+        - The support and resistance zones on the Critical Zones charts show important areas on larger timeframes. An OB close to one of these zones is more meaningful.
+    - type: box
+      title: Timeframes
+      text: >-
+        On small timeframes OBs form very often and most are short-lived. An OB on a larger timeframe
+        covers a wider area; a narrower OB on a smaller timeframe can sit inside the same zone. That is
+        why an OB is read together with the timeframe it was marked on.
+  confusions:
+    - id: support-and-resistance
+      text: Support and resistance is an area where price has reacted many times; an OB comes from a single candle and is often a zone that has not been tested yet.
+    - id: fair-value-gap
+      text: An FVG is the wick gap a sharp move leaves; an OB is the last opposite candle right before that move. The two often sit side by side.
+    - id: breaker-block
+      text: A breaker is an OB that was closed through and invalidated, and later works in the opposite direction.
+  key_points:
+    - An OB is the last opposite candle before a sharp move that breaks structure.
+    - The zone runs from the candle's high to its low.
+    - A close beyond the far end of the zone invalidates the OB.
+    - There is no guarantee that an OB will be retested or hold.
+  svg_labels:
+    swing_high: Previous high
+    bos: BOS
+    ob: Bullish OB
+    last_down_1: Last down candle
+    last_down_2: (OB)
+    impulse: Sharp rise
+    return_1: Price comes back
+    return_2: to the zone
+  svg_alt: "Order block illustration: the last of several falling candles is marked with a dashed box; the sharp rise that follows closes above the previous high, forming a BOS; price later pulls back into the top of the box and rises again"
+  svg_caption: The dashed box marks the range between the high and low of the last down candle before the sharp rise. The orange dot marks the close above the previous high (BOS).
