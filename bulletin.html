@@ -288,6 +288,8 @@ table{font-size:14px}
 #archive-block>.block-head{grid-column:1;grid-row:1}
 #archive-block>.archive-more{grid-column:2;grid-row:1;margin:0 0 12px}
 #archive-block>.archive-list{grid-column:1/-1;grid-row:2}
+/* After the first appearance (see "settled" in the script) cards no longer replay their entrance. */
+#analysis.settled .side-col>.block,#analysis.settled .glance div{animation:none}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=4e4d2911"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=3951eb2c"></script><script src="assets/features.js?v=5b5669df"></script></head>
@@ -994,6 +996,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       if(!first||MarketUI.timeframeOf(e).toLowerCase()===wanted)first=first&&MarketUI.timeframeOf(first.e).toLowerCase()===wanted?first:{e:e,b:b};
     });
     page.dataset.state="live";select(first.e,first.b);
+    // The side cards and the glance boxes fade in once, when the page opens. Afterwards a card that a
+    // timeframe hides and shows again (e.g. a 1H report without zones) just appears, without replaying it.
+    setTimeout(function(){document.getElementById("analysis").classList.add("settled")},1500);
   }
   methodSwitch.addEventListener("click",function(event){
     var b=event.target.closest("button[data-method]");if(!b||b.disabled||b.dataset.method===method)return;
