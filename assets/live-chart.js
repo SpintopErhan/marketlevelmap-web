@@ -460,9 +460,11 @@ var LiveChart = (function () {
       var priceFormat = decimals == null ? undefined : { type: "price", precision: decimals, minMove: Math.pow(10, -decimals) };
       var line = function (color, extra) { return Object.assign({ color: color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }, extra || {}); };
       if (indPrefs.bb) {
-        indSeries.bbUpper = chart.addSeries(LC.LineSeries, line("rgba(122,167,232,0.85)", priceFormat ? { priceFormat: priceFormat } : null), 0);
-        indSeries.bbMid = chart.addSeries(LC.LineSeries, line("rgba(122,167,232,0.6)", Object.assign({ lineStyle: LC.LineStyle.Dashed }, priceFormat ? { priceFormat: priceFormat } : {})), 0);
-        indSeries.bbLower = chart.addSeries(LC.LineSeries, line("rgba(122,167,232,0.85)", priceFormat ? { priceFormat: priceFormat } : null), 0);
+        // Upper gold, middle pink, lower purple (2 px), so the three bands read apart from the EMAs.
+        var bb = function (color) { return line(color, Object.assign({ lineWidth: 2 }, priceFormat ? { priceFormat: priceFormat } : {})); };
+        indSeries.bbUpper = chart.addSeries(LC.LineSeries, bb("#f0b90b"), 0);
+        indSeries.bbMid = chart.addSeries(LC.LineSeries, bb("#e8549a"), 0);
+        indSeries.bbLower = chart.addSeries(LC.LineSeries, bb("#9575e0"), 0);
       }
       var pane = 2;
       if (indPrefs.rsi) {
@@ -688,6 +690,9 @@ var LiveChart = (function () {
       setLevels: setLevels,
       // Bollinger (price pane), RSI and MACD (panes under the volume): { bb, rsi, macd } booleans.
       setIndicators: function (prefs) {
+        // EMA 20/50/200 stay on unless turned off explicitly.
+        var showEma = !(prefs && prefs.ema === false);
+        emas.forEach(function (s) { s.applyOptions({ visible: showEma }); });
         var next = { bb: !!(prefs && prefs.bb), rsi: !!(prefs && prefs.rsi), macd: !!(prefs && prefs.macd) };
         if (destroyed || (next.bb === indPrefs.bb && next.rsi === indPrefs.rsi && next.macd === indPrefs.macd)) return;
         indPrefs = next; layoutIndicators();
