@@ -146,7 +146,7 @@ en: { … }                        # aynı yapı, alt_name yok
 |---|---|---|
 | `s-line` | ana fiyat çizgisi (stroke) | metin rengine yakın nötr |
 | `s-guide` / `t-guide` | yardımcı çizgi, ölçü oku / yazısı | `--muted` |
-| `s-up` `f-up` | yükseliş çizgi / dolgu | `--up` |
+| `s-up` `f-up` `t-up` | yükseliş çizgi / dolgu / yazı | `--up` |
 | `s-down` `f-down` `t-down` | düşüş çizgi / dolgu / yazı | `--down` |
 | `s-accent` `f-accent` `t-accent` | vurgu (boyun çizgisi, kapsama oku) | `--cz` (turuncu) |
 | `f-point` | tepe noktaları | `--fg` |

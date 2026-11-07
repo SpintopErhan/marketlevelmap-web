@@ -1,0 +1,183 @@
+id: bearish-quasimodo
+kind: chart
+direction: bearish
+pattern_type: reversal
+candles: multi
+order: 22
+related: [bullish-quasimodo, head-and-shoulders, change-of-character, liquidity-sweep]
+example: null
+updated: 2026-11-07
+
+tr:
+  slug: ayi-quasimodo-qm
+  name: Ayı Quasimodo (QM)
+  alt_name: Bearish Quasimodo / Over and Under
+  summary: >-
+    Bir yükselişin sonunda oluşan, omuz baş omuza benzeyen bir dönüş formasyonu. Fiyat yeni bir tepe
+    yaptıktan sonra önceki dibin altında kapanarak yapıyı kırar, ardından sol omzun tepe seviyesine
+    geri döner. Bu seviyeye QM seviyesi denir; fiyatın orada daha düşük bir tepe bırakması
+    yükselişin sona erdiğine işaret edebilir.
+  formation:
+    style: steps
+    items:
+      - title: Önceki yükseliş.
+        text: Formasyon bir dönüş işaretidir. Öncesinde yükselen tepe ve diplerle ilerleyen bir yükseliş olmalıdır.
+      - title: Sol omuz (H).
+        text: Fiyat bir tepe yapar ve bir dibe (L) geri çekilir. Sol omzun tepesi ileride **QM seviyesi** olacaktır.
+      - title: Baş (HH).
+        text: Fiyat sol omzu aşarak daha yüksek bir tepe yapar. Bu tepe çoğu zaman sol omzun üzerindeki stopları ve bekleyen emirleri toplayan bir uzanıştır.
+      - title: Yapı kırılımı (LL).
+        text: Fiyat baştan sert düşer ve L dibinin **altında kapanış** yapar. Yükselişin korunan dibi kırılmıştır (MSB / CHoCH); bu dip, yeni ve daha düşük dip (LL) olur.
+      - title: Sağ omuz.
+        text: Fiyat yeniden yükselir ve **QM seviyesine**, yani sol omzun tepesine yaklaşır. Orada başın altında kalan, daha düşük bir tepe bırakır.
+      - title: Tamamlanma.
+        text: Fiyat sağ omuzdan döner ve düşüş sürer. Sağ omuz oluşmadan önce formasyon yalnızca oluşum halindedir.
+  meaning:
+    - >-
+      Baş, yükselişin son yeni tepesidir. Ardından gelen kapanışlı yapı kırılımı, alıcıların savunduğu
+      dibin kaybedildiğini gösterir. Fiyat sağ omuzda QM seviyesine döndüğünde, sol omuzda satış
+      yapanların seviyesi yeniden test edilir; fiyatın orada başın altında kalması yeni yönün düşüş
+      olduğuna işaret edebilir.
+    - >-
+      Omuz baş omuzdan farkı sıralamadadır: OBO'da sağ omuz önce oluşur, boyun çizgisi sonra kırılır.
+      QM'de ise yapı **önce** kırılır, sağ omuz bu kırılımdan **sonra** gelen geri dönüştür.
+  strengthens:
+    - Başın bir direnç bölgesinde ya da belirgin bir sweep ile oluşması
+    - Yapı kırılımının (LL) güçlü ve büyük gövdeli mumlarla gelmesi
+    - QM seviyesinin bir arz bölgesi ya da order block ile örtüşmesi
+    - Sağ omzun QM seviyesine ilk dönüş olması
+    - Büyük zaman diliminde de yükselişin güç kaybetmesi
+  weakens:
+    - L dibinin altında kapanış olmaması; yalnızca fitille aşılması
+    - Sağ omzun QM seviyesini belirgin şekilde aşıp başa yaklaşması
+    - Öncesinde belirgin bir yükseliş olmaması
+    - Büyük zaman diliminde güçlü bir yükseliş trendinin sürmesi
+  zones:
+    intro: "QM'de iki kritik yer vardır ve ikisi de bölgelerle birlikte okunduğunda daha anlamlı hale gelir:"
+    points:
+      - "**QM seviyesi** (sol omzun tepesi) bir direnç ya da arz bölgesiyle örtüşüyorsa, sağ omuzdaki dönüş daha anlamlı olur."
+      - "**Baş** bir direnç bölgesinin hemen üzerinde fitille oluşup geri dönüyorsa, bu hareket bir sweep gibi okunabilir."
+    paragraphs:
+      - >-
+        MarketLevelMap'in Price Action görünümünde yapı kırılımları **CHoCH** ve **BOS** etiketleriyle,
+        fitille aşılıp geri dönülen aralık kenarları **Sweep** etiketiyle gösterilir. QM'nin baş ve
+        yapı kırılımı adımları bu etiketlerle izlenebilir.
+  completion: Yapı kırılımından sonra QM seviyesinde daha düşük bir tepe (sağ omuz) ve ardından düşüş.
+  invalidation:
+    before: >-
+      Yapı kırılımından sonra fiyat QM seviyesinde durmayıp yükselmeye devam eder ve **başın üzerinde
+      kapanış** yaparsa formasyon oluşmamış kabul edilir.
+    after: >-
+      Sağ omuzdan düşüş başlamış olsa bile fiyat yeniden yükselip başın üzerinde kapanış yaparsa
+      düşüş senaryosu geçersiz sayılır.
+  confusions:
+    - id: bullish-quasimodo
+      text: "Aynalanmış hali: düşüşün sonunda yeni bir dip, yukarı yapı kırılımı ve QM seviyesine dönüş."
+    - id: head-and-shoulders
+      text: OBO'da sağ omuz önce oluşur, boyun sonra kırılır; QM'de yapı önce kırılır, sağ omuz sonra gelir.
+    - id: change-of-character
+      text: QM'deki yapı kırılımı bir CHoCH'tur; QM, bu kırılımdan sonra fiyatın sol omuz seviyesine dönüşünü de kapsar.
+  facts:
+    - [Tür, Dönüş]
+    - [Yön, Düşüş]
+    - [Süre, Çok mumlu]
+    - [Bağlam, Yükseliş sonrası]
+    - [Anahtar seviye, Sol omzun tepesi (QM)]
+    - [Geçersiz, Baş üzerinde kapanış]
+  svg_labels:
+    qm_level: QM seviyesi
+    msb: MSB
+    left_shoulder: Sol omuz (H)
+    first_low: L
+    head: Baş (HH)
+    new_low: LL
+    right_shoulder: Sağ omuz
+  svg_alt: "Ayı Quasimodo çizimi: fiyat sol omuz tepesini, ardından bir dibi ve daha yüksek bir baş tepesini oluşturuyor; baştan düşüş ilk dibin altına iniyor; fiyat sonra sol omzun tepesindeki QM seviyesine kadar yükselip orada dönüyor ve düşüyor"
+  svg_caption: Turuncu kesikli çizgi QM seviyesidir (sol omzun tepesi). Kırmızı halka, fiyatın ilk dibin (L) altına indiği yapı kırılımını gösterir.
+
+en:
+  slug: bearish-quasimodo
+  name: Bearish Quasimodo (QM)
+  summary: >-
+    A reversal pattern that forms at the end of an uptrend and resembles a head and shoulders. After
+    making a new high, price breaks structure with a close below the previous low, then comes back to
+    the level of the left shoulder's high. That level is called the QM level; price leaving a lower
+    high there can signal that the uptrend has ended.
+  formation:
+    style: steps
+    items:
+      - title: Prior uptrend.
+        text: The pattern is a reversal signal. It needs an uptrend of higher highs and higher lows before it.
+      - title: Left shoulder (H).
+        text: Price makes a high and pulls back to a low (L). The left shoulder's high will later be the **QM level**.
+      - title: Head (HH).
+        text: Price moves past the left shoulder to a higher high. This high is often a reach that collects the stops and resting orders above the left shoulder.
+      - title: Break of structure (LL).
+        text: Price drops sharply from the head and **closes below** the L low. The uptrend's protected low has broken (MSB / CHoCH); this becomes the new, lower low (LL).
+      - title: Right shoulder.
+        text: Price rises again and approaches the **QM level**, the left shoulder's high. There it leaves a lower high that stays below the head.
+      - title: Completion.
+        text: Price turns from the right shoulder and the drop continues. Until the right shoulder forms, the pattern is only forming.
+  meaning:
+    - >-
+      The head is the uptrend's last new high. The break of structure with a close that follows shows
+      that the low buyers were defending has been lost. When price returns to the QM level at the right
+      shoulder, the level where sellers acted at the left shoulder is tested again; price staying below
+      the head there can signal that the new direction is down.
+    - >-
+      The difference from a head and shoulders is the order: in a head and shoulders the right shoulder
+      forms first and the neckline breaks after. In a QM structure breaks **first**, and the right
+      shoulder is the return that comes **after** the break.
+  strengthens:
+    - The head forming at a resistance zone or with a clear sweep
+    - The break of structure (LL) coming with strong, large-bodied candles
+    - The QM level lining up with a supply zone or an order block
+    - The right shoulder being the first return to the QM level
+    - The uptrend also losing strength on a larger timeframe
+  weakens:
+    - No close below the L low; only a wick through it
+    - The right shoulder clearly moving past the QM level towards the head
+    - No clear uptrend before it
+    - A strong uptrend continuing on a larger timeframe
+  zones:
+    intro: "A QM has two critical places, and both mean more when read together with zones:"
+    points:
+      - "If the **QM level** (the left shoulder's high) lines up with a resistance or supply zone, the turn at the right shoulder means more."
+      - "If the **head** forms with a wick just above a resistance zone and turns back, the move can be read as a sweep."
+    paragraphs:
+      - >-
+        In MarketLevelMap's Price Action view, breaks of structure are shown with **CHoCH** and **BOS**
+        labels, and range edges that were passed with a wick and returned to are shown with a **Sweep**
+        label. The head and the break of structure steps of a QM can be followed with these labels.
+  completion: After the break of structure, a lower high (the right shoulder) at the QM level, then a drop.
+  invalidation:
+    before: >-
+      If, after the break of structure, price does not stop at the QM level, keeps rising and **closes
+      above the head**, the pattern is considered not to have formed.
+    after: >-
+      Even if the drop from the right shoulder has started, a rise back with a close above the head
+      invalidates the bearish scenario.
+  confusions:
+    - id: bullish-quasimodo
+      text: "The mirrored version: a new low at the end of a downtrend, an upward break of structure and a return to the QM level."
+    - id: head-and-shoulders
+      text: In a head and shoulders the right shoulder forms first and the neckline breaks after; in a QM structure breaks first and the right shoulder comes after.
+    - id: change-of-character
+      text: The break of structure in a QM is a CHoCH; a QM also covers price returning to the left shoulder's level after that break.
+  facts:
+    - [Type, Reversal]
+    - [Direction, Bearish]
+    - [Duration, Multi-candle]
+    - [Context, After an uptrend]
+    - [Key level, Left shoulder high (QM)]
+    - [Invalidation, Close above the head]
+  svg_labels:
+    qm_level: QM level
+    msb: MSB
+    left_shoulder: Left shoulder (H)
+    first_low: L
+    head: Head (HH)
+    new_low: LL
+    right_shoulder: Right shoulder
+  svg_alt: "Bearish Quasimodo illustration: price forms a left shoulder high, then a low and a higher head; the drop from the head goes below the first low; price then rises to the QM level at the left shoulder's high, turns there and falls"
+  svg_caption: The dashed orange line is the QM level (the left shoulder's high). The red ring marks the break of structure where price went below the first low (L).

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <line class="s-accent" x1="90" y1="150" x2="540" y2="150" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text class="t-accent" x="540" y="142" text-anchor="end">{{qm_level}}</text>
+  <line class="s-guide" x1="140" y1="200" x2="300" y2="200" stroke-width="1" stroke-dasharray="2 4"/>
+  <polyline class="s-line" points="20,280 90,150 140,200 230,70 300,240 380,152 520,290" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="f-point">
+    <circle cx="90" cy="150" r="4"/>
+    <circle cx="230" cy="70" r="4"/>
+    <circle cx="380" cy="152" r="4"/>
+  </g>
+  <circle class="f-accent" cx="140" cy="200" r="3.5"/>
+  <circle class="s-down" cx="283" cy="200" r="9" fill="none" stroke-width="1.5"/>
+  <text class="t-down" x="270" y="228" text-anchor="end">{{msb}}</text>
+  <g class="t-label" text-anchor="middle">
+    <text x="90" y="138">{{left_shoulder}}</text>
+    <text x="140" y="222">{{first_low}}</text>
+    <text x="230" y="58">{{head}}</text>
+    <text x="300" y="262">{{new_low}}</text>
+    <text x="380" y="140">{{right_shoulder}}</text>
+  </g>
+</svg>
