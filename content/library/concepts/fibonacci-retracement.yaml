@@ -1,0 +1,251 @@
+id: fibonacci-retracement
+kind: levels
+order: 58
+related: [pullback-vs-reversal, swing-points, range-and-consolidation, order-block]
+example: null
+updated: 2026-11-07
+
+tr:
+  slug: fibonacci-duzeltme-seviyeleri
+  name: "Fibonacci düzeltme seviyeleri: bir hareketin oranları"
+  alt_name: Fibonacci retracement
+  summary: >-
+    Fibonacci düzeltme aracı, bir swing dibi ile tepesi arasındaki hareketi oranlara böler. Seviyeler,
+    fiyatın o hareketin ne kadarını geri aldığını gösterir; 0,618 seviyesi, hareketin %61,8'inin geri
+    alındığı yerdir. Aynı araç hareketin ötesindeki uzantıları da gösterir.
+  sections:
+    - type: text
+      id: definition
+      title: Fibonacci düzeltme nedir?
+      paragraphs:
+        - >-
+          Bir trend ilerlerken arada geri çekilmeler yapar. Fibonacci düzeltme aracı, son hareketin
+          başlangıcı ile bitişi arasına çekilir ve bu aralığı oranlara böler. Her seviye, fiyatın
+          hareketin **ne kadarını geri aldığını** gösterir: 0,5 yarısını, 0,618 yüzde 61,8'ini.
+        - >-
+          Oranlar adını Fibonacci sayı dizisinden alır. 0,618 dizideki ardışık sayıların oranına (altın
+          oran), 0,382 ve 0,786 da bu orandan türeyen değerlere karşılık gelir. 0,5 bir Fibonacci oranı
+          değildir ama hareketin tam ortası olduğu için araçta yer alır.
+    - type: steps
+      id: drawing
+      title: Nasıl çekilir?
+      intro: Her adımda önce boğa (yükseliş), sonra ayı (düşüş) hareketi yazılmıştır.
+      items:
+        - title: Hareketi seç
+          text: Belirgin bir swing dibi ile tepesi arasındaki, tercihen yapıyı kıran (BOS ya da CHoCH) bir hareket seçilir. Seviyeler bu iki noktaya göre hesaplanır.
+        - title: Uçlara sabitle
+          text: "**Boğa hareketinde** araç dipten tepeye çekilir: **1** swing dibinde, **0** swing tepesinde. **Ayı hareketinde** tepeden dibe çekilir: **1** swing tepesinde, **0** swing dibinde."
+        - title: Seviyeleri oku
+          text: Aradaki seviyeler kendiliğinden yerleşir. **Boğada** geri çekilme seviyeleri tepenin altında, **ayıda** dibin üzerinde kalır; uzantılar ise hareketin devam yönünde, 0'ın ötesindedir.
+      note: Bazı araçlar aynı seviyeleri ters numaralandırır (başlangıç 0, bitiş 1) ve uzantıları 1,27, 1,618 gibi gösterir. Çizgiler aynıdır, yalnızca etiketler farklıdır.
+    - type: bullets
+      id: levels
+      title: Sık kullanılan seviyeler
+      items:
+        - "**0,236 ve 0,382:** sığ geri çekilme. Güçlü trendlerde fiyat çoğu zaman bu seviyelere kadar gelip yoluna devam eder."
+        - "**0,5:** hareketin tam ortası. Bir aralıktaki **EQ** (denge) çizgisiyle aynı mantıktır; boğa hareketinde üst yarı pahalı (premium), alt yarı ucuz (discount) bölge olarak anılır, ayıda tersi."
+        - text: "**0,618, 0,702 ve 0,786:** derin geri çekilme bandı. Bazı kaynaklar bu banda **OTE** (optimal trade entry) der. Hareketin büyük kısmı geri alınmıştır ama başlangıcı korunmaktadır."
+          marker: accent
+        - "**1:** hareketin başlangıcı. Bu seviyenin ötesinde gelen bir kapanış, hareketin tamamen geri alındığını gösterir; boğada swing dibinin, ayıda swing tepesinin kırılması demektir."
+    - type: bullets
+      id: extensions
+      title: Uzantılar
+      intro: Uzantılar, hareketin 0 noktasının ötesine, yani devam yönüne düşer.
+      items:
+        - "**−0,27:** hareketin %27'si kadar ötesi. 0 ile 0,28 arasındaki mesafeye eşittir."
+        - "**−0,618:** hareketin %61,8'i kadar ötesi. 0 ile 0,618 arasındaki mesafeye eşittir."
+        - "**−1:** hareketin bir katı kadar ötesi; başlangıçtan ölçüldüğünde hareketin iki katı. Ölçülü hareket (measured move) olarak da anılır."
+      note: Uzantılar bir hedef değil, hareketin büyüklüğü hakkında bir ölçek referansıdır. Fiyat bu mesafelere ulaşmadan dönebilir ya da çok daha ileri gidebilir.
+    - type: scenarios
+      id: depth
+      title: Geri çekilme nerede durur?
+      intro: Fiyat seviyelere geri çekildiğinde genellikle üç tablodan biri oluşur. Her kartta boğa ve ayı hareketi birlikte anlatılmıştır.
+      items:
+        - title: Sığ geri çekilme
+          tone: up
+          text: Fiyat 0,382'ye ulaşmadan döner ve 0'ın ötesine geçer; boğada yeni tepe, ayıda yeni dip. Trendin güçlü olduğuna işaret edebilir.
+        - title: Derin geri çekilme
+          tone: neutral
+          text: Fiyat 0,618–0,786 bandına kadar gelir ama 1'in ötesinde kapanmaz. Hareketin başlangıcı korunmuştur; yapı bozulmamıştır.
+        - title: Hareket geri alınır
+          tone: down
+          text: Bir mum 1'in ötesinde kapanır; boğada swing dibinin altında, ayıda swing tepesinin üzerinde. Seviyeler anlamını yitirir; yapı değişmiş olabilir (bkz. CHoCH).
+    - type: text
+      id: confluence
+      title: Seviyeleri başka işaretlerle birlikte okumak
+      paragraphs:
+        - >-
+          Bir Fibonacci seviyesi tek başına sadece bir orandır. Seviye bir **order block**, bir **arz ya
+          da talep bölgesi**, bir **FVG** ya da önceki bir **destek-direnç** bölgesiyle örtüştüğünde daha
+          anlamlı okunur. Farklı yöntemlerin aynı fiyatı göstermesine **çakışma** (confluence) denir.
+    - type: limits
+      shows:
+        - Bir geri çekilmenin hareketin ne kadarını geri aldığını
+        - Hareketin başlangıcının korunup korunmadığını
+        - Çok sayıda kişinin izlediği referans seviyeleri
+      not_proves:
+        - Fibonacci oranlarının fiyat hareketinde doğal bir yasa olduğunu
+        - Fiyatın belirli bir seviyede döneceğini
+        - Hangi dip ve tepenin seçilmesi gerektiğini; farklı seçimler farklı seviyeler verir
+    - type: zones
+      intro: MarketLevelMap'in grafiklerinde Fibonacci seviyeleri çizilmez; ama aynı mantık sayfada görünür.
+      points:
+        - Price Action görünümündeki **EQ** çizgisi, aralığın 0,5 seviyesidir. Panelde yazan "fiyat aralığın %… seviyesinde" ifadesi de fiyatın aralıktaki oranını gösterir.
+        - Aynı paneldeki **premium** ve **discount** ifadeleri, fiyatın aralığın üst ya da alt yarısında olduğunu anlatır.
+    - type: box
+      title: Seçim öznel bir adımdır
+      text: >-
+        Aynı grafikte farklı kişiler farklı dip ve tepeleri seçebilir; seviyeler de buna göre değişir.
+        Büyük zaman dilimindeki belirgin swing'lere çekilen seviyeler daha çok kişi tarafından görülür.
+        Bir seviye, hangi hareket ve zaman dilimi üzerine çekildiğiyle birlikte okunur.
+  confusions:
+    - id: pullback-vs-reversal
+      text: Fibonacci seviyeleri geri çekilmenin derinliğini ölçer; geri çekilmenin dönüşe dönüp dönmediğini ise yapı (korunan dip ya da tepe) belirler.
+    - id: range-and-consolidation
+      text: Aralığın EQ çizgisi, aralığın tepesi ile dibi arasına çekilmiş bir 0,5 seviyesidir.
+    - id: psychological-levels
+      text: Psikolojik seviyeler yuvarlak fiyatlardır; Fibonacci seviyeleri seçilen bir hareketin oranlarıdır.
+  key_points:
+    - Seviyeler, fiyatın son hareketin ne kadarını geri aldığını gösterir.
+    - Boğada dipten tepeye, ayıda tepeden dibe çekilir; 1 başlangıç, 0 bitiştir.
+    - 0,618–0,786 derin geri çekilme bandıdır; 1'in ötesinde kapanış hareketi geri alır.
+    - Oranlar bir yasa değildir; başka işaretlerle birlikte okunduklarında anlam kazanır.
+  svg_labels:
+    title: Boğa (dipten tepeye)
+    start: Swing dibi (1)
+    end: Swing tepesi (0)
+    b_title: Ayı (tepeden dibe)
+    b_start: Swing tepesi (1)
+    b_end: Swing dibi (0)
+    band: Derin bant
+    l1: "1"
+    l0786: "0,786"
+    l0618: "0,618"
+    l05: "0,5"
+    l0: "0"
+    lm027: "−0,27"
+    lm0618: "−0,618"
+  svg_alt: "İki Fibonacci çizimi. Solda boğa: fiyat bir swing dibinden (1) tepeye (0) yükseliyor, 0,618–0,786 arasındaki turuncu banda kadar geri çekiliyor ve ardından tepenin üzerine, −0,27 uzantısının ötesine çıkıyor. Sağda ayı: aynı tablonun tersi"
+  svg_caption: Solda boğa, sağda ayı hareketi. 1 hareketin başladığı swing noktası, 0 bittiği noktadır. Turuncu bant 0,618–0,786 derin geri çekilme bandı; 0'ın ötesindeki çizgiler uzantılardır.
+
+en:
+  slug: fibonacci-retracement-levels
+  name: "Fibonacci retracement levels: the ratios of a move"
+  summary: >-
+    The Fibonacci retracement tool splits the move between a swing low and a swing high into ratios. The
+    levels show how much of that move price has given back; the 0.618 level is where 61.8% of the move
+    has been given back. The same tool also shows extensions beyond the move.
+  sections:
+    - type: text
+      id: definition
+      title: What is a Fibonacci retracement?
+      paragraphs:
+        - >-
+          A trend makes pullbacks along the way. The Fibonacci retracement tool is drawn between the start
+          and the end of the last move and splits that range into ratios. Each level shows **how much of
+          the move price has given back**: 0.5 half of it, 0.618 61.8% of it.
+        - >-
+          The ratios are named after the Fibonacci sequence. 0.618 corresponds to the ratio of successive
+          numbers in the sequence (the golden ratio), and 0.382 and 0.786 to values derived from it. 0.5 is
+          not a Fibonacci ratio, but it is on the tool because it is the exact middle of the move.
+    - type: steps
+      id: drawing
+      title: How is it drawn?
+      intro: Each step gives the bullish (rising) move first, then the bearish (falling) move.
+      items:
+        - title: Choose the move
+          text: Pick a move between a clear swing low and swing high, preferably one that broke structure (BOS or CHoCH). The levels are calculated from these two points.
+        - title: Anchor the ends
+          text: "For a **bullish move** the tool is drawn from the low to the high: **1** at the swing low, **0** at the swing high. For a **bearish move** it is drawn from the high to the low: **1** at the swing high, **0** at the swing low."
+        - title: Read the levels
+          text: The levels in between fall into place on their own. The retracement levels sit **below the high for a bullish move** and **above the low for a bearish move**; the extensions lie beyond 0, in the direction the move would continue.
+      note: Some tools number the same levels the other way round (start 0, end 1) and show the extensions as 1.27, 1.618 and so on. The lines are the same; only the labels differ.
+    - type: bullets
+      id: levels
+      title: Commonly used levels
+      items:
+        - "**0.236 and 0.382:** a shallow pullback. In strong trends price often comes this far and moves on."
+        - "**0.5:** the exact middle of the move. The same idea as a range's **EQ** (equilibrium) line; in a bullish move the upper half is called the premium area and the lower half the discount area, the other way round in a bearish move."
+        - text: "**0.618, 0.702 and 0.786:** the deep pullback band. Some sources call this band **OTE** (optimal trade entry). Most of the move has been given back, but its start still holds."
+          marker: accent
+        - "**1:** the start of the move. A close beyond this level shows that the move has been fully given back; a break of the swing low in a bullish move, of the swing high in a bearish one."
+    - type: bullets
+      id: extensions
+      title: Extensions
+      intro: Extensions fall beyond the move's 0 point, in the direction it would continue.
+      items:
+        - "**−0.27:** 27% of the move beyond it. Equal to the distance between 0 and 0.28."
+        - "**−0.618:** 61.8% of the move beyond it. Equal to the distance between 0 and 0.618."
+        - "**−1:** one full move beyond it; twice the move when measured from the start. Also called a measured move."
+      note: Extensions are not targets but a scale reference for the size of the move. Price can turn before reaching these distances or go much further.
+    - type: scenarios
+      id: depth
+      title: Where does the pullback stop?
+      intro: When price pulls back into the levels, one of three pictures usually follows. Each card covers the bullish and bearish move together.
+      items:
+        - title: Shallow pullback
+          tone: up
+          text: Price turns before reaching 0.382 and moves beyond 0; a new high in a bullish move, a new low in a bearish one. This can point to a strong trend.
+        - title: Deep pullback
+          tone: neutral
+          text: Price comes as far as the 0.618–0.786 band but does not close beyond 1. The start of the move holds; structure is intact.
+        - title: Move given back
+          tone: down
+          text: A candle closes beyond 1; below the swing low in a bullish move, above the swing high in a bearish one. The levels lose their meaning; structure may have changed (see CHoCH).
+    - type: text
+      id: confluence
+      title: Reading the levels together with other marks
+      paragraphs:
+        - >-
+          On its own a Fibonacci level is only a ratio. It means more when it lines up with an **order
+          block**, a **supply or demand zone**, an **FVG** or an earlier **support or resistance** zone.
+          Different methods pointing to the same price is called **confluence**.
+    - type: limits
+      shows:
+        - How much of the move a pullback has given back
+        - Whether the start of the move still holds
+        - Reference levels that many people watch
+      not_proves:
+        - That Fibonacci ratios are a natural law of price movement
+        - That price will turn at a particular level
+        - Which low and high should be chosen; different choices give different levels
+    - type: zones
+      intro: MarketLevelMap's charts do not draw Fibonacci levels, but the same idea shows on the page.
+      points:
+        - The **EQ** line in the Price Action view is the range's 0.5 level. The panel's "price at …% of the range" also shows where price sits in the range as a ratio.
+        - The **premium** and **discount** words in the same panel say whether price is in the upper or lower half of the range.
+    - type: box
+      title: The choice is subjective
+      text: >-
+        On the same chart different people can choose different lows and highs, and the levels change with
+        them. Levels drawn on clear swings of a larger timeframe are seen by more people. A level is read
+        together with the move and timeframe it was drawn on.
+  confusions:
+    - id: pullback-vs-reversal
+      text: Fibonacci levels measure how deep a pullback is; whether the pullback turns into a reversal is decided by structure (the protected low or high).
+    - id: range-and-consolidation
+      text: A range's EQ line is a 0.5 level drawn between the range's high and low.
+    - id: psychological-levels
+      text: Psychological levels are round prices; Fibonacci levels are ratios of a chosen move.
+  key_points:
+    - The levels show how much of the last move price has given back.
+    - Drawn from low to high for a bullish move, from high to low for a bearish one; 1 is the start, 0 the end.
+    - 0.618–0.786 is the deep pullback band; a close beyond 1 gives the move back.
+    - The ratios are not a law; they gain meaning when read together with other marks.
+  svg_labels:
+    title: Bullish (low to high)
+    start: Swing low (1)
+    end: Swing high (0)
+    b_title: Bearish (high to low)
+    b_start: Swing high (1)
+    b_end: Swing low (0)
+    band: Deep band
+    l1: "1"
+    l0786: "0.786"
+    l0618: "0.618"
+    l05: "0.5"
+    l0: "0"
+    lm027: "−0.27"
+    lm0618: "−0.618"
+  svg_alt: "Two Fibonacci drawings. Left, bullish: price rises from a swing low (1) to a high (0), pulls back into the orange band between 0.618 and 0.786, then rises above the high, past the −0.27 extension. Right, bearish: the same picture reversed"
+  svg_caption: Bullish move on the left, bearish on the right. 1 is the swing point where the move started, 0 where it ended. The orange band is the 0.618–0.786 deep pullback band; the lines beyond 0 are extensions.
