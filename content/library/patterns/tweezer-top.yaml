@@ -1,0 +1,175 @@
+id: tweezer-top
+kind: candle
+direction: bearish
+pattern_type: reversal
+candles: 2
+order: 92
+related:
+- tweezer-bottom
+- bearish-engulfing
+- double-top
+example: null
+updated: '2026-11-07'
+tr:
+  slug: cimbiz-tepe
+  name: Cımbız Tepe
+  alt_name: Tweezer Top
+  summary: >-
+    Bir yükselişin ardından, iki ardışık mumun neredeyse aynı tepeye ulaşıp ikincisinin aşağı dönmesiyle oluşan
+    dönüş formasyonu. Fiyatın aynı seviyeyi iki kez aşamadığını ve satıcıların orada beklediğini gösterebilir.
+  formation:
+    style: bullets
+    items:
+    - text: Öncesinde belirgin bir yükseliş vardır.
+      marker: neutral
+    - text: '**1. mum** genellikle yeşildir ve yükselişi sürdürür.'
+      marker: up
+    - text: '**2. mum** kırmızıdır: kapanışı açılışının altındadır.'
+      marker: down
+    - text: İki mumun **tepeleri** (fitiller dahil) neredeyse aynıdır; aradaki fark mumların boyuna göre çok küçüktür,
+        örneğin boylarının yüzde birkaçı kadar.
+      marker: accent
+    note: İkinci mum ilk mumun tepesini test eder ama ötesine geçemez. Kural tepelerle ilgilidir; gövdelerin büyüklüğü
+      ikinci plandadır.
+  meaning:
+  - >-
+    İlk mum alıcıların fiyatı yeni bir tepeye taşıdığını gösterir. İkinci mum aynı tepeye kadar çıkar ama orada
+    geri çevrilir ve aşağı kapanır. Aynı seviyenin iki kez aşılamaması, o fiyatta satış baskısı olduğuna işaret
+    edebilir.
+  - >-
+    Formasyon iki mumdan oluşan küçük bir ikili tepe gibidir. Tek başına yükselişin bittiğini kanıtlamaz; ikinci
+    mumun ne kadar aşağıda kapandığı ve formasyonun nerede oluştuğu birlikte okunur.
+  strengthens:
+  - Bir direnç bölgesinde oluşması
+  - 2. mumun 1. mumun gövdesinin ortasının altında kapanması
+  - Öncesindeki yükselişin belirgin olması
+  - 2. mumun hacminin yüksek olması
+  - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+  - Yatay, yönsüz bir piyasada oluşması
+  - 2. mumun küçük gövdeli olup tepenin hemen altında kapanması
+  - Mumların çok küçük olması
+  - Hemen altında güçlü bir destek bölgesi bulunması
+  - Çok küçük zaman dilimlerinde oluşması
+  zones:
+    paragraphs:
+    - >-
+      Cımbız tepenin en çok dikkat çektiği yer bir **direnç bölgesidir**. İki mumun da aynı bölgede geri çevrilmesi,
+      bölgenin satıcılar tarafından savunulduğunu gösterebilir. Ortak tepe bölgenin içinde ya da hemen üzerindeyse
+      ve kapanışlar bölgenin altında kalıyorsa bu daha anlamlı okunur.
+    - >-
+      Formasyonun altındaki **ilk destek bölgesi** düşüş için kalan alanı gösterir. Destek çok yakınsa formasyon
+      daha zayıf kabul edilir.
+  invalidation:
+  - Fiyat **ortak tepenin** (iki mumun en yüksek noktası) üzerinde kapanış yaparsa düşüş senaryosu geçersiz kabul
+    edilir.
+  - Yalnızca fitille tepenin üzerine çıkıp altında kapanan bir mum formasyonu tek başına geçersiz kılmaz.
+  confusions:
+  - id: tweezer-bottom
+    text: 'Tersi: düşüşten sonra iki mum aynı dibe iner ve ikincisi yukarı döner.'
+  - id: bearish-engulfing
+    text: Yutan ayıda kırmızı gövde yeşil gövdeyi kapsar; cımbızda belirleyici olan gövdeler değil, aynı tepedir.
+  - id: double-top
+    text: İkili tepe aynı fikrin çok mumlu ve daha büyük ölçekli halidir; arada belirgin bir dip vardır.
+  facts:
+  - - Tür
+    - Dönüş
+  - - Yön
+    - Düşüş
+  - - Mum
+    - '2'
+  - - Bağlam
+    - Yükseliş sonrası
+  - - Geçersiz
+    - Ortak tepenin üzerinde kapanış
+  svg_labels:
+    candle_1: 1. mum
+    candle_2: 2. mum
+    level: Aynı tepe
+    note_1: 2. mum aynı tepeden
+    note_2: aşağı döner
+  svg_alt: 'Cımbız tepe çizimi: bir yeşil mum ve ardından gelen kırmızı mum aynı tepe seviyesine ulaşıyor; kırmızı
+    mum aşağıda kapanıyor'
+  svg_caption: Turuncu kesikli çizgi iki mumun ortak tepesini gösterir.
+en:
+  slug: tweezer-top
+  name: Tweezer Top
+  summary: >-
+    A reversal pattern that forms after a rise when two consecutive candles reach almost the same high and the second
+    one turns down. It can show that price failed to get past the same level twice and that sellers are waiting
+    there.
+  formation:
+    style: bullets
+    items:
+    - text: There is a clear rise before it.
+      marker: neutral
+    - text: '**Candle 1** is usually green and continues the rise.'
+      marker: up
+    - text: '**Candle 2** is red: it closes below its open.'
+      marker: down
+    - text: The two candles' **highs** (wicks included) are almost the same; the difference is very small compared
+        with the candles' size, for example a few percent of their range.
+      marker: accent
+    note: The second candle tests the first candle's high but cannot get past it. The rule is about the highs; the
+      size of the bodies is secondary.
+  meaning:
+  - >-
+    The first candle shows buyers taking price to a new high. The second candle rises to the same high but is turned
+    back there and closes lower. Failing to get past the same level twice can point to selling pressure at that
+    price.
+  - >-
+    The pattern is like a small double top made of two candles. On its own it does not prove the rise is over; how
+    far down the second candle closes and where the pattern forms are read together.
+  strengthens:
+  - Forming at a resistance zone
+  - Candle 2 closing below the middle of candle 1's body
+  - A clear rise before it
+  - High volume on candle 2
+  - Forming on a higher timeframe (4H, 1D)
+  weakens:
+  - Forming in a sideways, directionless market
+  - Candle 2 having a small body and closing just below the high
+  - Very small candles
+  - A strong support zone right below
+  - Forming on very small timeframes
+  zones:
+    paragraphs:
+    - >-
+      A tweezer top stands out most at a **resistance zone**. Both candles being turned back in the same zone can
+      show that sellers are defending it. It reads as more meaningful when the common high is inside or just above
+      the zone and the closes stay below it.
+    - >-
+      The **first support zone** below the pattern shows how much room is left for a drop. If support is very close,
+      the pattern is considered weaker.
+  invalidation:
+  - If price closes above the **common high** (the highest point of the two candles), the bearish scenario is considered
+    invalid.
+  - A candle that only wicks above the high and closes below it does not invalidate the pattern on its own.
+  confusions:
+  - id: tweezer-bottom
+    text: 'The opposite: after a drop, two candles reach the same low and the second turns up.'
+  - id: bearish-engulfing
+    text: In a bearish engulfing the red body covers the green body; in a tweezer what matters is the same high,
+      not the bodies.
+  - id: double-top
+    text: A double top is the same idea on a larger scale, made of many candles with a clear low in between.
+  facts:
+  - - Type
+    - Reversal
+  - - Direction
+    - Bearish
+  - - Candles
+    - '2'
+  - - Context
+    - After a rise
+  - - Invalidation
+    - Close above the common high
+  svg_labels:
+    candle_1: Candle 1
+    candle_2: Candle 2
+    level: Same high
+    note_1: Candle 2 turns down
+    note_2: from the same high
+  svg_alt: 'Tweezer top illustration: a green candle and the red candle after it reach the same high; the red candle
+    closes lower'
+  svg_caption: The dashed orange line marks the two candles' common high.

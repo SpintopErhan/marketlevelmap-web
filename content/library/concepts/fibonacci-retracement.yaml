@@ -76,8 +76,9 @@ tr:
       paragraphs:
         - >-
           Bir Fibonacci seviyesi tek başına sadece bir orandır. Seviye bir **order block**, bir **arz ya
-          da talep bölgesi**, bir **FVG** ya da önceki bir **destek-direnç** bölgesiyle örtüştüğünde daha
-          anlamlı okunur. Farklı yöntemlerin aynı fiyatı göstermesine **çakışma** (confluence) denir.
+          da talep bölgesi**, bir **FVG**, önceki bir **destek-direnç** bölgesi ya da bir **trend çizgisiyle**
+          örtüştüğünde daha anlamlı okunur. Farklı yöntemlerin aynı fiyatı göstermesine **çakışma** (confluence)
+          denir; ne kadar çok işaret aynı yerde buluşursa seviye o kadar dikkat çeker.
     - type: limits
       shows:
         - Bir geri çekilmenin hareketin ne kadarını geri aldığını
@@ -198,8 +199,9 @@ en:
       paragraphs:
         - >-
           On its own a Fibonacci level is only a ratio. It means more when it lines up with an **order
-          block**, a **supply or demand zone**, an **FVG** or an earlier **support or resistance** zone.
-          Different methods pointing to the same price is called **confluence**.
+          block**, a **supply or demand zone**, an **FVG**, an earlier **support or resistance** zone or a
+          **trendline**. Different methods pointing to the same price is called **confluence**; the more marks
+          meet in the same place, the more the level stands out.
     - type: limits
       shows:
         - How much of the move a pullback has given back

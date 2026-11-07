@@ -1,0 +1,176 @@
+id: bearish-railroad-tracks
+kind: candle
+direction: bearish
+pattern_type: reversal
+candles: 2
+order: 98
+related:
+- bullish-railroad-tracks
+- bearish-engulfing
+- dark-cloud-cover
+example: null
+updated: '2026-11-07'
+tr:
+  slug: ayi-ray-formasyonu
+  name: Ayı Ray Formasyonu
+  alt_name: Bearish Railroad Tracks
+  summary: >-
+    Bir yükselişin sonunda, uzun bir yeşil mumun hemen ardından neredeyse aynı büyüklükte uzun bir kırmızı mum gelmesiyle
+    oluşan dönüş formasyonu. İki mum grafikte yan yana duran iki ray gibi görünür. İkinci mum ilk mumun hareketini
+    neredeyse tamamen geri alır.
+  formation:
+    style: bullets
+    items:
+    - text: Öncesinde belirgin bir yükseliş vardır.
+      marker: neutral
+    - text: '**1. mum** uzun gövdeli ve yeşildir; son mumlara göre belirgin şekilde büyüktür.'
+      marker: up
+    - text: '**2. mum** uzun gövdeli ve kırmızıdır.'
+      marker: down
+    - text: İki gövdenin **boyu yaklaşık eşittir** ve 2. mum, 1. mumun açılışına yakın kapanır.
+      marker: accent
+    note: Kriptoda 2. mum çoğu zaman 1. mumun kapanışından açılır. Belirleyici olan iki gövdenin büyüklüğünün benzer
+      olması ve ikinci mumun ilk mumun hareketini geri almasıdır.
+  meaning:
+  - >-
+    İlk mum yükseliş yönündeki baskının sürdüğünü gösterir. İkinci mum aynı büyüklükte ters yönde ilerleyerek bu
+    hareketi neredeyse tamamen geri alır. Bu, kısa sürede kontrolün el değiştirdiğine işaret edebilir.
+  - >-
+    Formasyon bir yutan formasyona benzer ama ikinci gövde ilkini aşmak yerine ona yaklaşık eşittir. Tek başına
+    bir dönüşü kanıtlamaz; nerede oluştuğu ve sonraki mumlarla birlikte okunur.
+  strengthens:
+  - Bir direnç bölgesinde oluşması
+  - İki mumun son mumlara göre belirgin şekilde büyük olması
+  - 2. mumun 1. mumun açılışına çok yakın ya da ötesinde kapanması
+  - 2. mumun hacminin yüksek olması
+  - Üst zaman diliminde (4H, 1D) oluşması
+  weakens:
+  - Yatay, yönsüz bir piyasada oluşması
+  - Gövdelerin son mumlara göre büyük olmaması
+  - 2. mumun 1. mumun açılışından belirgin şekilde uzakta kapanması
+  - Hemen altında güçlü bir destek bölgesi bulunması
+  - Çok küçük zaman dilimlerinde oluşması
+  zones:
+    paragraphs:
+    - >-
+      Ray formasyonunun en çok dikkat çektiği yer bir **direnç bölgesidir**. İlk mumun bölgeye sert bir girişi,
+      ikinci mumun da aynı sertlikte geri dönüşü, bölgede satıcıların ağırlık kazandığını gösterebilir.
+    - >-
+      Formasyonun altındaki **ilk destek bölgesi** düşüş için kalan alanı gösterir. Bölge çok yakınsa formasyon
+      daha zayıf kabul edilir.
+  invalidation:
+  - Fiyat formasyonun **en yüksek noktasının** (iki mumun fitilleri dahil) üzerinde kapanış yaparsa düşüş senaryosu
+    geçersiz kabul edilir.
+  - Yalnızca fitille o noktanın üzerine çıkıp altında kapanan bir mum formasyonu tek başına geçersiz kılmaz.
+  confusions:
+  - id: bullish-railroad-tracks
+    text: 'Tersi: düşüşten sonra uzun bir kırmızı mumu aynı büyüklükte bir yeşil mum izler.'
+  - id: bearish-engulfing
+    text: Yutan formasyonda ikinci gövde ilkini tamamen kapsar ve genellikle daha büyüktür; rayda iki gövde yaklaşık
+      eşittir.
+  - id: dark-cloud-cover
+    text: Kara bulutta ikinci mum ilk gövdenin ortasını geçer ama açılışına yaklaşmaz; rayda ikinci mum ilk mumun
+      hareketini neredeyse tamamen geri alır.
+  facts:
+  - - Tür
+    - Dönüş
+  - - Yön
+    - Düşüş
+  - - Mum
+    - '2'
+  - - Bağlam
+    - Yükseliş sonrası
+  - - Geçersiz
+    - En yükseğin üzerinde kapanış
+  svg_labels:
+    candle_1: 1. mum
+    candle_2: 2. mum
+    note_1: İki gövde
+    note_2: yaklaşık
+    note_3: aynı boyda
+  svg_alt: 'Ayı ray formasyonu çizimi: uzun bir yeşil mumun yanında neredeyse aynı boyda uzun bir kırmızı mum'
+  svg_caption: Kesikli çizgiler ilk mumun gövdesinin iki ucunu gösterir; ikinci gövde aynı aralığı neredeyse tamamen
+    kaplar.
+en:
+  slug: bearish-railroad-tracks
+  name: Bearish Railroad Tracks
+  summary: >-
+    A reversal pattern that forms at the end of a rise when a long green candle is followed right away by a long
+    red candle of almost the same size. The two candles look like two rails side by side on the chart. The second
+    candle gives back almost all of the first candle's move.
+  formation:
+    style: bullets
+    items:
+    - text: There is a clear rise before it.
+      marker: neutral
+    - text: '**Candle 1** has a long body and is green; it is clearly larger than the recent candles.'
+      marker: up
+    - text: '**Candle 2** has a long body and is red.'
+      marker: down
+    - text: The two bodies are **about the same length** and candle 2 closes near candle 1's open.
+      marker: accent
+    note: In crypto candle 2 often opens at candle 1's close. What matters is that the two bodies are similar in
+      size and that the second candle gives back the first candle's move.
+  meaning:
+  - >-
+    The first candle shows that the pressure of the rise is continuing. The second candle moves the other way by
+    about the same amount and gives back almost all of that move. This can point to control changing hands within
+    a short time.
+  - >-
+    The pattern resembles an engulfing pattern, but instead of exceeding the first body the second is about equal
+    to it. On its own it does not prove a reversal; it is read together with where it forms and with the candles
+    that follow.
+  strengthens:
+  - Forming at a resistance zone
+  - Both candles being clearly larger than the recent candles
+  - Candle 2 closing very near or beyond candle 1's open
+  - High volume on candle 2
+  - Forming on a higher timeframe (4H, 1D)
+  weakens:
+  - Forming in a sideways, directionless market
+  - Bodies that are not large compared with recent candles
+  - Candle 2 closing clearly away from candle 1's open
+  - A strong support zone right below
+  - Forming on very small timeframes
+  zones:
+    paragraphs:
+    - >-
+      Railroad tracks stand out most at a **resistance zone**. A sharp move into the zone with the first candle
+      and an equally sharp return with the second can show sellers gaining weight there.
+    - >-
+      The **first support zone** below the pattern shows how much room is left for a drop. If that zone is very
+      close, the pattern is considered weaker.
+  invalidation:
+  - If price closes above the pattern's **highest point** (both candles' wicks included), the bearish scenario is
+    considered invalid.
+  - A candle that only wicks above that point and closes below it does not invalidate the pattern on its own.
+  confusions:
+  - id: bullish-railroad-tracks
+    text: 'The opposite: after a drop, a long red candle is followed by a green candle of the same size.'
+  - id: bearish-engulfing
+    text: In an engulfing pattern the second body fully covers the first and is usually larger; in railroad tracks
+      the two bodies are about equal.
+  - id: dark-cloud-cover
+    text: In a dark cloud cover the second candle passes the middle of the first body but does not come near its
+      open; in railroad tracks it gives back almost all of the first candle's move.
+  facts:
+  - - Type
+    - Reversal
+  - - Direction
+    - Bearish
+  - - Candles
+    - '2'
+  - - Context
+    - After a rise
+  - - Invalidation
+    - Close above the high
+  svg_labels:
+    candle_1: Candle 1
+    candle_2: Candle 2
+    note_1: Two bodies
+    note_2: of about
+    note_3: the same size
+  svg_alt: 'Bearish railroad tracks illustration: a long green candle next to a long red candle of almost the same
+    size'
+  svg_caption: The dashed lines mark both ends of the first candle's body; the second body covers almost the same
+    range.
