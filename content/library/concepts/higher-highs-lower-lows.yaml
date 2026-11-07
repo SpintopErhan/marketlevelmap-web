@@ -3,7 +3,7 @@ kind: structure
 order: 30
 related: [trend, swing-points, break-of-structure, trend-change]
 example: null
-updated: 2026-10-23
+updated: 2026-11-07
 
 tr:
   slug: yukselen-ve-alcalan-tepe-dipler
@@ -65,6 +65,23 @@ tr:
           text: Son iki tepe ve son iki dip birlikte, yapının şu anki halini anlatır. Çok eski etiketler bugünkü yapıyı değiştirmez.
         - title: Sıranın bozulduğu yeri not et.
           text: Yükselen yapıda ilk LH ya da ilk LL, düşen yapıda ilk HH ya da ilk HL, yapının değişmeye başladığı yerdir.
+    - type: scenarios
+      id: compression
+      title: Sıkışma ve zayıflama işaretleri
+      intro: Trend sürerken dizinin nasıl değiştiği, yapı kırılmadan önce ipucu verebilir. İlk iki kart yükselişi, son iki kart düşüşü anlatır.
+      items:
+        - title: Yükselişte sıkışma
+          tone: neutral
+          text: Dipler yükselmeye devam eder (HL) ama yeni tepe (HH) gelmez; tepeler aynı seviyede kalır. Fiyat daralan bir alana sıkışır.
+        - title: Yükselişte zayıflama
+          tone: down
+          text: Yeni yükselen dip gelmez ve tepeler alçalmaya başlar (LH). Korunan dibin altında bir kapanış gelirse yapı kırılır (CHoCH).
+        - title: Düşüşte sıkışma
+          tone: neutral
+          text: Tepeler alçalmaya devam eder (LH) ama yeni dip (LL) gelmez; dipler aynı seviyede kalır. Fiyat daralan bir alana sıkışır.
+        - title: Düşüşte zayıflama
+          tone: up
+          text: Yeni alçalan tepe gelmez ve dipler yükselmeye başlar (HL). Korunan tepenin üzerinde bir kapanış gelirse yapı kırılır (CHoCH).
     - type: limits
       shows:
         - Yapının bu zaman diliminde şimdiye kadar yükselen mi, alçalan mı, yatay mı olduğunu
@@ -164,6 +181,23 @@ en:
           text: The last two highs and the last two lows together describe the current structure. Much older labels do not change today's structure.
         - title: Note where the sequence breaks.
           text: In a rising structure the first LH or first LL, and in a falling structure the first HH or first HL, is where the structure starts to change.
+    - type: scenarios
+      id: compression
+      title: Signs of compression and weakness
+      intro: How the sequence changes while a trend is still running can give a hint before structure breaks. The first two cards are about an uptrend, the last two about a downtrend.
+      items:
+        - title: Compression in an uptrend
+          tone: neutral
+          text: Lows keep rising (HL) but no new high (HH) comes; the highs stay at the same level. Price squeezes into a narrowing area.
+        - title: Weakness in an uptrend
+          tone: down
+          text: No new higher low comes and the highs start to fall (LH). If a close comes below the protected low, structure breaks (CHoCH).
+        - title: Compression in a downtrend
+          tone: neutral
+          text: Highs keep falling (LH) but no new low (LL) comes; the lows stay at the same level. Price squeezes into a narrowing area.
+        - title: Weakness in a downtrend
+          tone: up
+          text: No new lower high comes and the lows start to rise (HL). If a close comes above the protected high, structure breaks (CHoCH).
     - type: limits
       shows:
         - Whether the structure on this timeframe has been rising, falling or sideways so far

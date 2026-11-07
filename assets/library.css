@@ -47,7 +47,7 @@ button,select,input{font:inherit}button{color:inherit}
 .pattern-svg .s-line{stroke:var(--lib-line)}.pattern-svg .s-guide{stroke:var(--lib-guide)}
 .pattern-svg .s-up{stroke:var(--up)}.pattern-svg .s-down{stroke:var(--down)}.pattern-svg .s-accent{stroke:var(--cz)}
 .pattern-svg .f-up{fill:var(--up)}.pattern-svg .f-down{fill:var(--down)}.pattern-svg .f-accent{fill:var(--cz)}.pattern-svg .f-point{fill:var(--fg)}
-.pattern-svg .t-label{fill:var(--muted)}.pattern-svg .t-accent{fill:var(--cz)}.pattern-svg .t-down{fill:var(--down)}.pattern-svg .t-guide{fill:var(--muted)}
+.pattern-svg .t-label{fill:var(--muted)}.pattern-svg .t-accent{fill:var(--cz)}.pattern-svg .t-down{fill:var(--down)}.pattern-svg .t-up{fill:var(--up)}.t-up{fill:var(--up)}.pattern-svg .t-guide{fill:var(--muted)}
 .pattern-svg .t-mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 
 /* Breadcrumb and tags */

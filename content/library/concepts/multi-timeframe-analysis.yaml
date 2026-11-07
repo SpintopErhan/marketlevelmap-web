@@ -3,7 +3,7 @@ kind: basics
 order: 40
 related: [timeframes, timeframe-conflicts, trend, support-and-resistance]
 example: null
-updated: 2026-10-23
+updated: 2026-11-07
 
 tr:
   slug: coklu-zaman-dilimi-analizi
@@ -64,6 +64,19 @@ tr:
         - title: Büyük resim yatay
           tone: neutral
           text: 1D'de fiyat bir aralıkta gidip geliyorsa, küçük zaman dilimlerindeki trendler çoğu zaman bu aralığın sınırları içinde kalır.
+    - type: bullets
+      id: matrix
+      title: Zaman dilimi üçlüleri
+      intro: >-
+        Sık kullanılan bir yöntem üç zaman dilimine üç ayrı iş verir: **yapı** (ana yön), **yön** (ara yapı
+        ve bölgeler) ve **detay** (fiyatın bölgede nasıl davrandığı). Her satırda zaman dilimleri bir
+        basamak aşağı iner.
+      items:
+        - "**1M → 1W → 1D:** aylık yapı, haftalık yön, günlük detay"
+        - "**1W → 1D → 4H:** haftalık yapı, günlük yön, 4 saatlik detay"
+        - "**1D → 4H → 1H:** günlük yapı, 4 saatlik yön, saatlik detay"
+        - "**4H → 1H → 15m:** 4 saatlik yapı, saatlik yön, 15 dakikalık detay"
+      note: En az iki zaman dilimi aynı yönü gösterdiğinde okuma daha tutarlıdır. MarketLevelMap'in 1W, 1D, 4H ve 1H grafikleri ikinci ve üçüncü satırı kapsar.
     - type: limits
       shows:
         - Bir hareketin büyük yapının neresinde gerçekleştiğini
@@ -162,6 +175,19 @@ en:
         - title: The big picture is sideways
           tone: neutral
           text: If price moves back and forth in a range on 1D, trends on the lower timeframes often stay within the bounds of that range.
+    - type: bullets
+      id: matrix
+      title: Timeframe triples
+      intro: >-
+        A common method gives three timeframes three separate jobs: **structure** (the main direction),
+        **bias** (the intermediate structure and zones) and **detail** (how price behaves at a zone). Each row
+        steps the timeframes down by one.
+      items:
+        - "**1M → 1W → 1D:** monthly structure, weekly bias, daily detail"
+        - "**1W → 1D → 4H:** weekly structure, daily bias, 4-hour detail"
+        - "**1D → 4H → 1H:** daily structure, 4-hour bias, hourly detail"
+        - "**4H → 1H → 15m:** 4-hour structure, hourly bias, 15-minute detail"
+      note: The reading is more consistent when at least two timeframes point the same way. MarketLevelMap's 1W, 1D, 4H and 1H charts cover the second and third rows.
     - type: limits
       shows:
         - Where in the larger structure a move is taking place

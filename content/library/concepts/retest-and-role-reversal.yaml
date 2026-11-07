@@ -3,7 +3,7 @@ kind: levels
 order: 50
 related: [support-and-resistance, breakout-and-close, false-breakout, level-test]
 example: null
-updated: 2026-10-23
+updated: 2026-11-07
 
 tr:
   slug: geri-test-ve-rol-degisimi
@@ -52,6 +52,17 @@ tr:
         - title: Geri test olmadan devam
           tone: neutral
           text: Fiyat bölgeye hiç dönmeden kırılım yönünde ilerler. Bu, kırılımın zayıf olduğu anlamına gelmez.
+    - type: text
+      id: range-edge
+      title: Kırılan aralık kenarına dönüş
+      paragraphs:
+        - >-
+          Aynı fikir yatay piyasalarda da görülür. Fiyat bir aralıktan çıktıktan sonra, aralığın kırılan
+          kenarı ileride önemli bir seviye olarak kalabilir. Fiyat **yukarı** çıktıysa eski aralık tepesi
+          (RH) sonradan **destek** gibi, **aşağı** indiyse eski aralık dibi (RL) **direnç** gibi çalışabilir.
+        - >-
+          Kenar sağa doğru uzatılarak izlenir. Kırılımla geri dönüş arasında ne kadar çok zaman ve mesafe
+          varsa, dönüş o kadar dikkat çeker; seviye büyük zaman diliminde de önemliyse anlamı artar.
     - type: limits
       shows:
         - Kırılan bölgenin fiyat için hâlâ bir referans alanı olduğunu
@@ -143,6 +154,18 @@ en:
         - title: No retest
           tone: neutral
           text: Price keeps moving in the breakout direction without returning to the zone. This does not mean the breakout was weak.
+    - type: text
+      id: range-edge
+      title: Returning to a broken range edge
+      paragraphs:
+        - >-
+          The same idea shows up in sideways markets. After price leaves a range, the broken edge of the
+          range can stay an important level. If price moved **up**, the old range high (RH) can later work
+          as **support**; if it moved **down**, the old range low (RL) can later work as **resistance**.
+        - >-
+          The edge is extended to the right and watched. The more time and distance between the break and
+          the return, the more the return stands out; if the level also matters on a larger timeframe, it
+          means more.
     - type: limits
       shows:
         - That the broken zone is still a reference area for price

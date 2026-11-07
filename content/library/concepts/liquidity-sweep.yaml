@@ -3,7 +3,7 @@ kind: levels
 order: 45
 related: [false-breakout, range-and-consolidation, level-test, break-of-structure]
 example: null
-updated: 2026-10-26
+updated: 2026-11-07
 
 tr:
   slug: sweep
@@ -52,6 +52,31 @@ tr:
         - title: Kenara dokunma
           tone: neutral
           text: Fitil kenara ulaşır ama onu belirgin şekilde aşmaz. Bu bir sweep değil, bandın testidir.
+    - type: bullets
+      id: sfp
+      title: "SFP: swing noktasında aynı davranış"
+      intro: >-
+        Swing failure pattern (SFP), aynı davranışın aralık kenarı yerine belirgin bir swing tepesi ya da
+        dibinde görülmesidir. Fiyat seviyeyi fitille aşar ama aşmayı kapanışla tutamaz.
+      items:
+        - text: "**Boğa SFP:** fitil belirgin bir swing dibinin altına iner, mum dibin **üzerinde** kapanır."
+          marker: up
+        - text: "**Ayı SFP:** fitil belirgin bir swing tepesinin üzerine çıkar, mum tepenin **altında** kapanır."
+          marker: down
+      note: Sweep bu sayfada aralık kenarına (RH / RL) göre tanımlanır; SFP herhangi bir önemli swing noktasına göre. Seviye ne kadar belirginse davranış o kadar dikkat çeker.
+    - type: steps
+      id: three-tap
+      title: Üç dokunuş (three tap)
+      intro: Aralık kenarında sık anlatılan bir dizidir. Her adımda önce aralığın dibi, sonra tepesi yazılmıştır.
+      items:
+        - title: Birinci dokunuş
+          text: Fiyat aralığın kenarını oluşturur; dipte **RL**, tepede **RH**.
+        - title: "İkinci dokunuş: sweep"
+          text: Fiyat kenarı fitille aşar ve aralığın içinde kapanır; dipte RL'nin altına, tepede RH'nin üzerine. Kenarın ötesindeki stoplar alınmıştır.
+        - title: "Üçüncü dokunuş: geri test"
+          text: Fiyat yeniden kenara ya da sweep fitilinin yakınına döner ama sweep fitilinin ötesinde **kapanmaz**.
+        - title: Okuma
+          text: Üçüncü dokunuştan sonra fiyatın EQ'ya ve aralığın öbür kenarına doğru ilerleyip ilerlemediği izlenir; dipteki dizide RH'ye, tepedeki dizide RL'ye. Sweep fitilinin ötesinde gelen bir kapanış diziyi geçersiz kılar.
     - type: limits
       shows:
         - Kenarın ötesindeki fiyatların o mumda kabul görmediğini
@@ -142,6 +167,31 @@ en:
         - title: Edge touch
           tone: neutral
           text: The wick reaches the edge but does not clearly clear it. This is not a sweep but a test of the band.
+    - type: bullets
+      id: sfp
+      title: "SFP: the same behaviour at a swing point"
+      intro: >-
+        A swing failure pattern (SFP) is the same behaviour seen at a clear swing high or low instead of a
+        range edge. Price moves past the level with a wick but cannot hold it with a close.
+      items:
+        - text: "**Bullish SFP:** the wick goes below a clear swing low and the candle closes **above** the low."
+          marker: up
+        - text: "**Bearish SFP:** the wick goes above a clear swing high and the candle closes **below** the high."
+          marker: down
+      note: On this page a sweep is defined against the range edge (RH / RL); an SFP against any important swing point. The clearer the level, the more the behaviour stands out.
+    - type: steps
+      id: three-tap
+      title: Three tap
+      intro: A sequence often described at a range edge. Each step gives the bottom of the range first, then the top.
+      items:
+        - title: First tap
+          text: Price forms the edge of the range; **RL** at the bottom, **RH** at the top.
+        - title: "Second tap: sweep"
+          text: Price passes the edge with a wick and closes inside the range; below RL at the bottom, above RH at the top. The stops beyond the edge have been taken.
+        - title: "Third tap: retest"
+          text: Price comes back to the edge or near the sweep wick but does **not close** beyond the sweep wick.
+        - title: Reading
+          text: After the third tap, watch whether price moves to EQ and the other edge of the range; to RH for the bottom sequence, to RL for the top one. A close beyond the sweep wick invalidates the sequence.
     - type: limits
       shows:
         - That prices beyond the edge were not accepted in that candle

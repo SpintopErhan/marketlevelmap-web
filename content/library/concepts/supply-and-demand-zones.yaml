@@ -1,0 +1,282 @@
+id: supply-and-demand-zones
+kind: levels
+order: 54
+related: [order-block, breaker-block, support-and-resistance, fair-value-gap]
+example: null
+updated: 2026-11-07
+
+tr:
+  slug: arz-ve-talep-bolgeleri
+  name: "Arz ve talep bölgeleri: sert çıkıştan önceki taban"
+  alt_name: Supply and demand zones
+  summary: >-
+    Arz ve talep bölgesi, fiyatın kısa bir süre duraksadıktan sonra sert biçimde uzaklaştığı alandır.
+    Fiyat yukarı ayrıldıysa bölge talep, aşağı ayrıldıysa arz bölgesi olarak işaretlenir. Bu bölgeler
+    çoğu zaman henüz yeniden test edilmemiş, taze alanlardır.
+  sections:
+    - type: text
+      id: definition
+      title: Arz ve talep bölgesi nedir?
+      paragraphs:
+        - >-
+          Fiyat bazen birkaç mum boyunca dar bir alanda duraksar ve ardından o alandan **sert ve tek
+          yönde** ayrılır. Duraksamanın olduğu bu dar alana **taban** (base) denir. Fiyat tabandan yukarı
+          ayrıldıysa taban **talep bölgesi**, aşağı ayrıldıysa **arz bölgesi** olarak işaretlenir.
+        - >-
+          Destek ve dirençten farkı şudur: destek-direnç, fiyatın geçmişte **birçok kez** tepki verdiği
+          bir alandır. Arz ve talep bölgesi ise tek bir sert çıkıştan doğar ve çoğu zaman **henüz yeniden
+          test edilmemiş**, taze bir bölgedir.
+    - type: bullets
+      id: types
+      title: Yönler
+      items:
+        - text: "**Talep bölgesi:** fiyatın sert bir **yükselişle** ayrıldığı taban. Fiyat sonradan bu bölgeye yukarıdan döndüğünde bölge destek gibi çalışabilir."
+          marker: up
+        - text: "**Arz bölgesi:** fiyatın sert bir **düşüşle** ayrıldığı taban. Fiyat sonradan bu bölgeye aşağıdan döndüğünde bölge direnç gibi çalışabilir."
+          marker: down
+    - type: bullets
+      id: forms
+      title: Tabandan önce ve sonra
+      intro: Bir bölge, tabandan önceki ve sonraki harekete göre dört biçimde görülür.
+      items:
+        - text: "**Düşüş · taban · yükseliş (DBR):** düşüş durur, fiyat tabandan sert yükselir. Dönüş tipi **talep** bölgesidir."
+          marker: up
+        - text: "**Yükseliş · taban · yükseliş (RBR):** yükseliş kısa bir duraksamadan sonra sürer. Devam tipi **talep** bölgesidir."
+          marker: up
+        - text: "**Yükseliş · taban · düşüş (RBD):** yükseliş durur, fiyat tabandan sert düşer. Dönüş tipi **arz** bölgesidir."
+          marker: down
+        - text: "**Düşüş · taban · düşüş (DBD):** düşüş kısa bir duraksamadan sonra sürer. Devam tipi **arz** bölgesidir."
+          marker: down
+      note: "Kısaltmalar İngilizce adlardan gelir: drop (düşüş), rally (yükseliş), base (taban)."
+    - type: steps
+      id: marking
+      title: Nasıl işaretlenir?
+      intro: Her adımda önce talep, sonra arz bölgesi yazılmıştır.
+      items:
+        - title: Sert çıkışı bul
+          text: Büyük gövdeli mumlarla tek yönde ilerleyen bir hareket aranır; **talep** için yükseliş, **arz** için düşüş.
+        - title: Tabanı bul
+          text: Çıkışın hemen öncesinde fiyatın duraksadığı **birkaç küçük gövdeli mum** taban olarak işaretlenir. Taban mumlarının gövdeleri, çıkış mumlarına göre belirgin şekilde küçüktür.
+        - title: Kenarları çiz
+          text: "**Talep bölgesinde** alt kenar tabanın en düşük fitili, üst kenar tabanın en yüksek noktasıdır. **Arz bölgesinde** üst kenar tabanın en yüksek fitili, alt kenar tabanın en düşük noktasıdır. Fiyatın döndüğünde ilk değeceği kenara **yakın kenar**, öbürüne **uzak kenar** denir."
+        - title: Bölgeyi sağa uzat
+          text: Bölge, fiyat geri dönene kadar sağa doğru uzatılır. Bu süre boyunca bölge "taze" sayılır.
+    - type: text
+      id: order-block
+      title: Order block ile ilişkisi
+      paragraphs:
+        - >-
+          Order block, arz ve talep bölgesinin **tek mumluk** halidir: tabanın sert çıkıştan hemen önceki
+          son ters mumu. Taban tek bir mum değil de birkaç mumdan oluşuyorsa bölgeye **arz ya da talep
+          kümesi** (cluster) da denir.
+        - >-
+          Bir büyük zaman dilimindeki taban, küçük zaman dilimine bakıldığında çoğu zaman içinde daha
+          dar bir order block barındırır. Geniş bölge bağlamı, dar bölge ayrıntıyı verir.
+    - type: bullets
+      id: criteria
+      title: Bir bölgeyi güçlendiren özellikler
+      items:
+        - Çıkış **sert ve hızlıdır**; büyük gövdeli mumlar ve çoğu zaman arkasında bir **FVG** vardır.
+        - Fiyat tabanda **kısa süre** kalmıştır; az sayıda mum, uzun süren bir yatay piyasa değildir.
+        - Çıkış **yapıyı kırmıştır** (BOS ya da CHoCH).
+        - Bölge **henüz test edilmemiştir.** Her yeni test bölgenin etkisini azaltabilir.
+        - Bölge, büyük zaman diliminde önemli bir **destek ya da direnç** bölgesine yakındır.
+      note: Bu özellikler bölgeyi daha anlamlı kılar; fiyatın orada döneceğini garanti etmez.
+    - type: scenarios
+      id: return
+      title: Fiyat bölgeye dönünce
+      intro: Fiyat bir bölgeye geri döndüğünde genellikle üç tablodan biri oluşur. Her kartta önce talep, sonra arz bölgesi yazılmıştır.
+      items:
+        - title: Tepki
+          tone: up
+          text: Fiyat yakın kenardan bölgeye girer, kapanışlar bölgenin içinde kalır ve fiyat yeniden ayrılır; **talep bölgesinden** yükselir, **arz bölgesinden** düşer.
+        - title: Zayıf tepki
+          tone: neutral
+          text: Fiyat bölgede oyalanır, çıkan hareket kısa kalır. Bölgenin "tazeliği" artık geride kalmıştır.
+        - title: Bölge geçersiz
+          tone: down
+          text: Bir mum uzak kenarın ötesinde kapanır; **talep bölgesinde** altında, **arz bölgesinde** üzerinde. Bölge geçersizdir ve sonradan ters yönde çalışabilir (bkz. breaker block).
+    - type: limits
+      shows:
+        - Fiyatın hangi alandan sert biçimde ayrıldığını
+        - Geri dönüşte izlenebilecek taze bir bölgeyi
+        - Bölgenin geçerliliğinin net bir kapanış kuralıyla ölçülebildiğini
+      not_proves:
+        - Bölgede karşılanmamış alım ya da satım emirleri beklediğini
+        - Fiyatın bölgeye mutlaka geri döneceğini
+        - Bölgeye dönen fiyatın oradan mutlaka yön değiştireceğini
+    - type: zones
+      intro: MarketLevelMap'in grafiklerinde arz ve talep bölgeleri ayrıca çizilmez; ama yakın işaretler sayfada görünür.
+      points:
+        - Critical Zones grafiklerindeki destek ve direnç bölgeleri, fiyatın geçmişte tekrar tekrar tepki verdiği alanlardır. Taze bir arz ya da talep bölgesinin bu bölgelerden birine yakın olması onu daha anlamlı kılar.
+        - Price Action görünümündeki **FVG** kutuları, sert bir çıkışın arkasında bıraktığı boşluğu gösterir. Bir talep ya da arz bölgesi çoğu zaman bu boşluğun hemen başlangıcındadır.
+    - type: box
+      title: Zaman dilimi
+      text: >-
+        Küçük zaman dilimlerinde tabanlar ve çıkışlar çok sık oluşur ve çoğu bölge kısa ömürlüdür. Büyük
+        zaman dilimindeki bir bölge daha geniştir ve daha uzun süre izlenir. Bir bölge, hangi zaman
+        diliminde işaretlendiğiyle birlikte okunur.
+  confusions:
+    - id: support-and-resistance
+      text: Destek-direnç fiyatın birçok kez tepki verdiği bir alandır; arz ve talep bölgesi tek bir sert çıkıştan doğar ve çoğu zaman henüz test edilmemiştir.
+    - id: order-block
+      text: Order block bölgenin tek mumluk halidir; arz ve talep bölgesi birkaç mumdan oluşan bir tabanı da kapsar.
+    - id: range-and-consolidation
+      text: Taban birkaç mumluk kısa bir duraksamadır; yatay piyasa ise fiyatın uzun süre iki bölge arasında gidip geldiği bir evredir.
+  key_points:
+    - Bölge, fiyatın sert biçimde ayrıldığı kısa bir tabandır.
+    - Yukarı ayrılış talep, aşağı ayrılış arz bölgesi verir.
+    - Taze bölge ve sert çıkış, bölgeyi daha anlamlı kılar.
+    - Uzak kenarın ötesinde gelen kapanış bölgeyi geçersiz kılar.
+  svg_labels:
+    title: Talep bölgesi (DBR)
+    before: Düşüş
+    leave: Sert yükseliş
+    zone: Talep
+    b_title: Arz bölgesi (RBD)
+    b_before: Yükseliş
+    b_leave: Sert düşüş
+    b_zone: Arz
+    base_1: Taban
+    base_2: (3 mum)
+    ret_1: Fiyat bölgeye
+    ret_2: geri döner
+  svg_alt: "İki bölge çizimi. Solda talep bölgesi: bir düşüşün ardından üç küçük mumluk bir taban, tabandan sert bir yükseliş ve fiyatın sonradan tabanın kutusuna geri dönüp yeniden yükselmesi. Sağda arz bölgesi: aynı tablonun tersi"
+  svg_caption: Solda talep bölgesi (düşüş, taban, yükseliş), sağda arz bölgesi (yükseliş, taban, düşüş). Kesikli kutu, sert çıkıştan önceki tabanın en yüksek ve en düşük noktaları arasını gösterir.
+
+en:
+  slug: supply-and-demand-zones
+  name: "Supply and demand zones: the base before a sharp move"
+  summary: >-
+    A supply or demand zone is the area price left sharply after pausing there briefly. If price left
+    upward, the zone is marked as demand; if it left downward, as supply. These zones are often fresh
+    areas that have not been tested again yet.
+  sections:
+    - type: text
+      id: definition
+      title: What is a supply or demand zone?
+      paragraphs:
+        - >-
+          Price sometimes pauses in a narrow area for a few candles and then leaves it **sharply and in
+          one direction**. The narrow area of the pause is called the **base**. If price left the base
+          upward, the base is marked as a **demand zone**; if it left downward, as a **supply zone**.
+        - >-
+          The difference from support and resistance is this: support and resistance is an area where
+          price has reacted **many times** in the past. A supply or demand zone comes from a single sharp
+          departure and is often a fresh zone that **has not been tested again yet**.
+    - type: bullets
+      id: types
+      title: Directions
+      items:
+        - text: "**Demand zone:** a base price left with a sharp **rise**. When price later comes back to it from above, the zone can work as support."
+          marker: up
+        - text: "**Supply zone:** a base price left with a sharp **drop**. When price later comes back to it from below, the zone can work as resistance."
+          marker: down
+    - type: bullets
+      id: forms
+      title: Before and after the base
+      intro: Depending on the move before and after the base, a zone shows up in four forms.
+      items:
+        - text: "**Drop · base · rally (DBR):** the drop stops and price rallies sharply from the base. A reversal **demand** zone."
+          marker: up
+        - text: "**Rally · base · rally (RBR):** the rise continues after a short pause. A continuation **demand** zone."
+          marker: up
+        - text: "**Rally · base · drop (RBD):** the rise stops and price drops sharply from the base. A reversal **supply** zone."
+          marker: down
+        - text: "**Drop · base · drop (DBD):** the drop continues after a short pause. A continuation **supply** zone."
+          marker: down
+    - type: steps
+      id: marking
+      title: How is it marked?
+      intro: Each step gives the demand zone first, then the supply zone.
+      items:
+        - title: Find the sharp departure
+          text: Look for a move in one direction with large-bodied candles; a rise for **demand**, a drop for **supply**.
+        - title: Find the base
+          text: The **few small-bodied candles** where price paused right before the departure are marked as the base. Their bodies are clearly smaller than those of the departure candles.
+        - title: Draw the edges
+          text: "In a **demand zone** the lower edge is the base's lowest wick and the upper edge its highest point. In a **supply zone** the upper edge is the base's highest wick and the lower edge its lowest point. The edge price will touch first when it comes back is the **proximal edge**, the other one the **distal edge**."
+        - title: Extend the zone to the right
+          text: The zone is extended to the right until price comes back. During that time the zone counts as "fresh".
+    - type: text
+      id: order-block
+      title: How it relates to the order block
+      paragraphs:
+        - >-
+          An order block is the **single-candle** form of a supply or demand zone: the last opposite
+          candle of the base, right before the sharp departure. When the base is made of several candles
+          rather than one, the zone is also called a **supply or demand cluster**.
+        - >-
+          A base on a larger timeframe often holds a narrower order block when looked at on a smaller
+          timeframe. The wide zone gives the context, the narrow one the detail.
+    - type: bullets
+      id: criteria
+      title: What makes a zone stronger
+      items:
+        - The departure is **sharp and fast**; large-bodied candles, often with an **FVG** behind them.
+        - Price spent **little time** in the base; a few candles, not a long sideways market.
+        - The departure **broke structure** (BOS or CHoCH).
+        - The zone **has not been tested yet.** Each new test can weaken its effect.
+        - The zone is close to an important **support or resistance** area on a larger timeframe.
+      note: These features make the zone more meaningful; they do not guarantee that price will turn there.
+    - type: scenarios
+      id: return
+      title: When price comes back
+      intro: When price returns to a zone, one of three pictures usually follows. Each card gives the demand zone first, then the supply zone.
+      items:
+        - title: Reaction
+          tone: up
+          text: Price enters the zone through the proximal edge, closes stay inside it and price leaves again; it **rises from a demand zone** and **falls from a supply zone**.
+        - title: Weak reaction
+          tone: neutral
+          text: Price lingers in the zone and the move away stays short. The zone is no longer "fresh".
+        - title: Zone invalidated
+          tone: down
+          text: A candle closes beyond the distal edge; **below it for a demand zone**, **above it for a supply zone**. The zone is invalidated and can later work in the opposite direction (see breaker block).
+    - type: limits
+      shows:
+        - Which area price left sharply
+        - A fresh zone that can be watched when price comes back
+        - That the zone's validity can be measured with a clear closing rule
+      not_proves:
+        - That unfilled buy or sell orders are waiting in the zone
+        - That price must come back to the zone
+        - That price coming back to the zone must turn there
+    - type: zones
+      intro: MarketLevelMap's charts do not draw supply and demand zones separately, but related marks are on the page.
+      points:
+        - The support and resistance zones on the Critical Zones charts are areas where price has reacted again and again. A fresh supply or demand zone close to one of them is more meaningful.
+        - The **FVG** boxes in the Price Action view show the gap a sharp departure left behind. A demand or supply zone is often right at the start of that gap.
+    - type: box
+      title: Timeframes
+      text: >-
+        On small timeframes bases and departures form very often and most zones are short-lived. A zone
+        on a larger timeframe is wider and is watched for longer. A zone is read together with the
+        timeframe it was marked on.
+  confusions:
+    - id: support-and-resistance
+      text: Support and resistance is an area where price has reacted many times; a supply or demand zone comes from a single sharp departure and is often untested.
+    - id: order-block
+      text: An order block is the single-candle form of the zone; a supply or demand zone also covers a base of several candles.
+    - id: range-and-consolidation
+      text: A base is a short pause of a few candles; a range is a phase in which price moves back and forth between two zones for a long time.
+  key_points:
+    - A zone is a short base that price left sharply.
+    - Leaving upward gives a demand zone, leaving downward a supply zone.
+    - A fresh zone and a sharp departure make the zone more meaningful.
+    - A close beyond the distal edge invalidates the zone.
+  svg_labels:
+    title: Demand zone (DBR)
+    before: Drop
+    leave: Sharp rise
+    zone: Demand
+    b_title: Supply zone (RBD)
+    b_before: Rally
+    b_leave: Sharp drop
+    b_zone: Supply
+    base_1: Base
+    base_2: (3 candles)
+    ret_1: Price comes
+    ret_2: back to the zone
+  svg_alt: "Two zone illustrations. Left, a demand zone: after a drop, a base of three small candles, a sharp rise from the base, and price later coming back into the base's box and rising again. Right, a supply zone: the same picture reversed"
+  svg_caption: Demand zone on the left (drop, base, rally), supply zone on the right (rally, base, drop). The dashed box marks the range between the highest and lowest points of the base before the sharp departure.

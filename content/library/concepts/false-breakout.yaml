@@ -3,7 +3,7 @@ kind: levels
 order: 40
 related: [trend, liquidity-sweep, shooting-star, pin-bar]
 example: null
-updated: 2026-10-23
+updated: 2026-11-07
 
 tr:
   slug: sahte-kirilim
@@ -51,6 +51,16 @@ tr:
         - title: Belirsiz durum
           tone: neutral
           text: Kapanış **bölgenin içinde** gelir. Ne kırılım ne de geri çevrilme henüz netleşmiştir.
+    - type: text
+      id: sfp
+      title: SFP ile ilişkisi
+      paragraphs:
+        - >-
+          Swing failure pattern (SFP), sahte kırılımın belirgin bir swing tepesi ya da dibinde görülen
+          halidir: fitil seviyeyi aşar, kapanış geri döner. **Boğa SFP'de** fitil swing dibinin altına iner,
+          kapanış dibin üzerinde gelir; **ayı SFP'de** fitil swing tepesinin üzerine çıkar, kapanış tepenin
+          altında gelir. Aynı davranış bir aralığın kenarında görüldüğünde bu sitede **sweep** olarak
+          adlandırılır.
     - type: limits
       shows:
         - Bölgenin ötesindeki fiyatların o mumda kabul görmediğini
@@ -141,6 +151,16 @@ en:
         - title: Undecided
           tone: neutral
           text: The close comes **inside the zone**. Neither a breakout nor a rejection is clear yet.
+    - type: text
+      id: sfp
+      title: How it relates to the SFP
+      paragraphs:
+        - >-
+          A swing failure pattern (SFP) is a false breakout seen at a clear swing high or low: the wick moves
+          past the level and the close comes back. In a **bullish SFP** the wick goes below the swing low and
+          the close comes above it; in a **bearish SFP** the wick goes above the swing high and the close
+          comes below it. When the same behaviour happens at the edge of a range, this site calls it a
+          **sweep**.
     - type: limits
       shows:
         - That prices beyond the zone were not accepted in that candle
