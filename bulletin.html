@@ -778,9 +778,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   var IND_KEY="mlm-indicators-v1",indWrap=document.getElementById("ind-wrap"),indBtn=document.getElementById("ind-btn"),indMenu=document.getElementById("ind-menu");
   var indPrefs=(function(){var wide=!window.matchMedia||matchMedia("(min-width:701px)").matches,def={bb:false,rsi:wide,macd:wide};try{var v=JSON.parse(localStorage.getItem(IND_KEY)||"null");if(v&&typeof v==="object")return{bb:!!v.bb,rsi:!!v.rsi,macd:!!v.macd}}catch(e){}return def})();
   function applyIndicators(){
-    var on=method==="pa"&&!!liveChart&&!!liveChart.setIndicators;indWrap.hidden=!on;if(!on&&indMenu)closeIndMenu();
+    var on=!!liveChart&&!!liveChart.setIndicators;indWrap.hidden=!on;if(!on&&indMenu)closeIndMenu();
     indMenu.querySelectorAll("input[data-ind]").forEach(function(box){box.checked=!!indPrefs[box.dataset.ind]});
-    if(liveChart&&liveChart.setIndicators)liveChart.setIndicators(method==="pa"?indPrefs:{});
+    if(liveChart&&liveChart.setIndicators)liveChart.setIndicators(indPrefs);
   }
   function closeIndMenu(){indMenu.hidden=true;indBtn.setAttribute("aria-expanded","false")}
   indBtn.addEventListener("click",function(e){e.stopPropagation();var open=indMenu.hidden;indMenu.hidden=!open;indBtn.setAttribute("aria-expanded",String(open))});
