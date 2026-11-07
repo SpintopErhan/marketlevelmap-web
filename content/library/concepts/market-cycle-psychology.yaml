@@ -1,0 +1,249 @@
+id: market-cycle-psychology
+kind: structure
+order: 80
+related: [trend, range-and-consolidation, trend-change, higher-highs-lower-lows]
+example: null
+updated: 2026-11-07
+
+tr:
+  slug: piyasa-dongusu-ve-duygular
+  name: "Piyasa döngüsü ve duygular"
+  alt_name: Market cycle psychology
+  summary: >-
+    Büyük fiyat hareketleri çoğu zaman benzer evrelerden geçer: birikim, yükseliş, dağıtım ve düşüş.
+    Her evreye katılımcıların baskın duygusu eşlik eder; inançsızlıktan coşkuya, oradan panik ve
+    depresyona. Bu şema, fiyatın büyük resimde hangi evrede olabileceğini düşünmek için bir çerçevedir.
+  sections:
+    - type: text
+      id: definition
+      title: Piyasa döngüsü nedir?
+      paragraphs:
+        - >-
+          Fiyat, alıcı ve satıcıların kararlarının sonucudur; kararların arkasında da beklenti, korku ve
+          açgözlülük gibi duygular vardır. Bu yüzden büyük yükselişler ve düşüşler çoğu zaman benzer bir
+          sırayla ilerler ve her evrede benzer duygular baskın olur.
+        - >-
+          Sık kullanılan şema, bir yükselişin ve onu izleyen düşüşün duygularını sıralar. Şema her zaman
+          aynı biçimde gerçekleşmez; ama kalabalığın davranışını okumak için kullanışlı bir dildir.
+    - type: steps
+      id: phases
+      title: Dört evre
+      intro: Evreler piyasa yapısıyla birlikte okunur.
+      items:
+        - title: Birikim
+          text: Düşüşten sonra fiyat bir süre yatay gider. Yeni dip gelmez ya da gelen dipler sweep olarak kalır. İlgi azdır, haberler olumsuzdur.
+        - title: Yükseliş
+          text: Fiyat aralığın üzerine çıkar ve yükselen tepe ve dipler (HH / HL) art arda gelir. Katılım ve hacim giderek artar.
+        - title: Dağıtım
+          text: Yükselişin sonunda fiyat yine yatay gider. Yeni tepeler kısa kalır ya da sweep olarak kalır. İlgi ve iyimserlik en yüksek düzeydedir.
+        - title: Düşüş
+          text: Fiyat aralığın altına iner ve alçalan tepe ve dipler (LH / LL) art arda gelir. Satışlar hızlanır, sonunda yeniden birikim evresine varılır.
+    - type: bullets
+      id: emotions-up
+      title: Yükselişte duygular
+      items:
+        - text: "**İnançsızlık:** dipten gelen ilk yükselişe güvenilmez; \"önceki toparlanmalar gibi bu da sönecek\" diye düşünülür."
+          marker: up
+        - text: "**Umut ve iyimserlik:** toparlanmanın mümkün olduğu düşünülmeye başlar."
+          marker: up
+        - text: "**İnanç ve heyecan:** yükseliş kabul görür; katılım artar, kaldıraç kullanımı yayılır."
+          marker: up
+        - text: "**Coşku:** herkes kazandığını düşünür; risk en çok bu evrede görmezden gelinir."
+          marker: accent
+    - type: bullets
+      id: emotions-down
+      title: Düşüşte duygular
+      items:
+        - text: "**Kayıtsızlık:** ilk düşüş geçici bir mola olarak görülür."
+          marker: down
+        - text: "**Kaygı ve inkâr:** düşüş beklenenden uzun sürer, ama yön değişimi kabul edilmez."
+          marker: down
+        - text: "**Panik ve teslimiyet:** satışlar hızlanır; pozisyonlar ne pahasına olursa olsun kapatılır."
+          marker: down
+        - text: "**Öfke ve depresyon:** fiyat dipte yatay gider, ilgi kaybolur. Döngü yeniden inançsızlıkla başlar."
+          marker: neutral
+    - type: text
+      id: reading
+      title: Şema nasıl okunur?
+      paragraphs:
+        - >-
+          Sık yapılan bir gözlem şudur: coşkunun en yüksek olduğu yer çoğu zaman tepeye, karamsarlığın en
+          derin olduğu yer de dibe yakındır. Duygu, fiyatın gittiği yönü değil, kalabalığın ne kadar tek
+          tarafa yığıldığını gösterir.
+        - >-
+          Aynı sıralama farklı ölçeklerde de görülebilir: aylık grafikteki büyük bir döngü de, saatlik
+          grafikteki küçük bir dalga da benzer evrelerden geçebilir. Ama küçük ölçekte duygular çok daha
+          kısa sürer ve şema daha gevşek işler.
+    - type: limits
+      shows:
+        - Büyük bir hareketin hangi evrelerden geçebileceğine dair bir çerçeve
+        - Fiyat hareketine eşlik eden kalabalık davranışını
+        - Yatay evrelerin (birikim, dağıtım) trendler arasındaki yerini
+      not_proves:
+        - O an hangi evrede olunduğunu; evreler çoğu zaman ancak geriye dönüp bakınca nettir
+        - Evrelerin ne kadar süreceğini ya da ne kadar büyük olacağını
+        - Her döngünün bu sırayı eksiksiz izleyeceğini
+    - type: zones
+      intro: MarketLevelMap'te döngünün evreleri yapı işaretleriyle izlenebilir.
+      points:
+        - Price Action görünümündeki **güncel yön** (yükseliş, düşüş, belirsiz) ve BOS etiketleri, yükseliş ve düşüş evrelerindeki art arda kırılımları gösterir.
+        - Birikim ve dağıtım evreleri grafikte çoğu zaman **yatay piyasa** olarak görünür. Aynı görünümdeki aralık (RH, EQ, RL) ve **sweep** etiketleri bu evreleri izlemenin bir yoludur.
+    - type: box
+      title: Kripto piyasasında
+      text: >-
+        Kripto 7/24 işlem gördüğü ve kaldıraç yaygın olduğu için evreler hızlı ve sert yaşanabilir;
+        özellikle panik ve teslimiyet evreleri ani tasfiyelerle birkaç saate sıkışabilir.
+  confusions:
+    - id: range-and-consolidation
+      text: Birikim ve dağıtım birer yatay piyasadır; farkları döngüdeki yerleridir, birikim düşüşten sonra, dağıtım yükselişten sonra gelir.
+    - id: trend
+      text: Trend fiyatın yönünü anlatır; döngü, trendlerin ve aralarındaki yatay evrelerin büyük ölçekteki sırasını anlatır.
+  key_points:
+    - Büyük hareketler çoğu zaman birikim, yükseliş, dağıtım ve düşüş evrelerinden geçer.
+    - Her evreye baskın bir duygu eşlik eder; coşku tepeye, karamsarlık dibe yakındır.
+    - Evreler çoğu zaman ancak geriye dönüp bakınca nettir.
+    - Şema bir zamanlama aracı değil, kalabalığı okumak için bir çerçevedir.
+  svg_labels:
+    disbelief: İnançsızlık
+    hope: Umut
+    optimism: İyimserlik
+    belief: İnanç
+    thrill: Heyecan
+    euphoria: Coşku
+    complacency: Kayıtsızlık
+    anxiety: Kaygı
+    denial: İnkâr
+    panic: Panik
+    capitulation: Teslimiyet
+    anger: Öfke
+    depression: Depresyon
+    disbelief2: İnançsızlık
+    ph_accumulation: Birikim
+    ph_markup: Yükseliş
+    ph_distribution: Dağıtım
+    ph_markdown: Düşüş
+    ph_accumulation2: Birikim
+  svg_alt: "Piyasa döngüsü çizimi: fiyat inançsızlık ve umuttan iyimserlik, inanç ve heyecana yükselip coşkuda tepe yapıyor; ardından kayıtsızlık, kaygı, inkâr ve panikle düşüp teslimiyet ve depresyonda dibe iniyor, sonra yeniden inançsızlıkla toparlanıyor. Altta birikim, yükseliş, dağıtım ve düşüş evreleri işaretli"
+  svg_caption: Çizgi bir döngüyü, etiketler her noktada baskın duyguyu, alttaki parantezler evreleri gösterir. Gerçek döngüler bu kadar düzenli değildir.
+
+en:
+  slug: market-cycle-psychology
+  name: "The market cycle and its emotions"
+  summary: >-
+    Large price moves often go through similar phases: accumulation, markup, distribution and markdown.
+    Each phase comes with a dominant emotion among participants; from disbelief to euphoria, and from
+    there to panic and depression. This scheme is a framework for thinking about which phase price may be
+    in on the big picture.
+  sections:
+    - type: text
+      id: definition
+      title: What is the market cycle?
+      paragraphs:
+        - >-
+          Price is the result of buyers' and sellers' decisions, and behind decisions are emotions such
+          as expectation, fear and greed. That is why large rises and falls often move in a similar order,
+          with similar emotions dominating each phase.
+        - >-
+          The common scheme lists the emotions of a rise and the fall that follows it. It does not always
+          play out the same way, but it is a useful language for reading the crowd's behaviour.
+    - type: steps
+      id: phases
+      title: Four phases
+      intro: The phases are read together with market structure.
+      items:
+        - title: Accumulation
+          text: After a decline price moves sideways for a while. No new low comes, or new lows stay as sweeps. Interest is low and the news is negative.
+        - title: Markup
+          text: Price moves above the range and higher highs and higher lows (HH / HL) follow one another. Participation and volume grow.
+        - title: Distribution
+          text: At the end of the rise price moves sideways again. New highs stay short or stay as sweeps. Interest and optimism are at their highest.
+        - title: Markdown
+          text: Price moves below the range and lower highs and lower lows (LH / LL) follow one another. Selling speeds up, and in the end a new accumulation phase is reached.
+    - type: bullets
+      id: emotions-up
+      title: Emotions on the way up
+      items:
+        - text: "**Disbelief:** the first rise from the bottom is not trusted; \"this will fade like the previous recoveries\"."
+          marker: up
+        - text: "**Hope and optimism:** a recovery starts to seem possible."
+          marker: up
+        - text: "**Belief and thrill:** the rise is accepted; participation grows and the use of leverage spreads."
+          marker: up
+        - text: "**Euphoria:** everyone thinks they are winning; risk is ignored most in this phase."
+          marker: accent
+    - type: bullets
+      id: emotions-down
+      title: Emotions on the way down
+      items:
+        - text: "**Complacency:** the first drop is seen as a temporary pause."
+          marker: down
+        - text: "**Anxiety and denial:** the drop lasts longer than expected, but the change of direction is not accepted."
+          marker: down
+        - text: "**Panic and capitulation:** selling speeds up; positions are closed at any price."
+          marker: down
+        - text: "**Anger and depression:** price moves sideways at the bottom and interest fades. The cycle starts again with disbelief."
+          marker: neutral
+    - type: text
+      id: reading
+      title: How is the scheme read?
+      paragraphs:
+        - >-
+          A common observation: the place of highest euphoria is often close to the top, and the place of
+          deepest pessimism close to the bottom. Emotion does not show where price is going, but how far
+          the crowd is crowded onto one side.
+        - >-
+          The same order can show up at different scales: a large cycle on the monthly chart and a small
+          wave on the hourly chart can go through similar phases. On a small scale, though, emotions last
+          much shorter and the scheme works more loosely.
+    - type: limits
+      shows:
+        - A framework for the phases a large move can go through
+        - The crowd behaviour that comes with price movement
+        - Where the sideways phases (accumulation, distribution) sit between trends
+      not_proves:
+        - Which phase the market is in right now; phases are often clear only in hindsight
+        - How long the phases will last or how large they will be
+        - That every cycle will follow this order in full
+    - type: zones
+      intro: On MarketLevelMap the cycle's phases can be followed with structure marks.
+      points:
+        - The **current direction** (up, down, undetermined) and the BOS labels in the Price Action view show the consecutive breaks of the markup and markdown phases.
+        - Accumulation and distribution often show up on the chart as a **sideways market**. The range (RH, EQ, RL) and the **sweep** labels in the same view are one way to follow these phases.
+    - type: box
+      title: In crypto
+      text: >-
+        Because crypto trades 24/7 and leverage is common, the phases can play out fast and hard; the
+        panic and capitulation phases in particular can be squeezed into a few hours by sudden
+        liquidations.
+  confusions:
+    - id: range-and-consolidation
+      text: Accumulation and distribution are both sideways markets; they differ in their place in the cycle, accumulation after a decline, distribution after a rise.
+    - id: trend
+      text: A trend describes price's direction; the cycle describes the large-scale order of trends and the sideways phases between them.
+  key_points:
+    - Large moves often go through accumulation, markup, distribution and markdown.
+    - Each phase comes with a dominant emotion; euphoria is close to the top, pessimism close to the bottom.
+    - The phases are often clear only in hindsight.
+    - The scheme is not a timing tool but a framework for reading the crowd.
+  svg_labels:
+    disbelief: Disbelief
+    hope: Hope
+    optimism: Optimism
+    belief: Belief
+    thrill: Thrill
+    euphoria: Euphoria
+    complacency: Complacency
+    anxiety: Anxiety
+    denial: Denial
+    panic: Panic
+    capitulation: Capitulation
+    anger: Anger
+    depression: Depression
+    disbelief2: Disbelief
+    ph_accumulation: Accumulation
+    ph_markup: Markup
+    ph_distribution: Distribution
+    ph_markdown: Markdown
+    ph_accumulation2: Accumulation
+  svg_alt: "Market cycle drawing: price rises from disbelief and hope through optimism, belief and thrill to a peak at euphoria; then falls through complacency, anxiety, denial and panic to a bottom at capitulation and depression, and recovers again with disbelief. The accumulation, markup, distribution and markdown phases are marked below"
+  svg_caption: The line shows one cycle, the labels the dominant emotion at each point, the brackets below the phases. Real cycles are not this regular.

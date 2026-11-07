@@ -1,9 +1,9 @@
 id: trend-change
 kind: structure
 order: 40
-related: [higher-highs-lower-lows, change-of-character, pullback-vs-reversal, false-breakout]
+related: [higher-highs-lower-lows, change-of-character, pullback-vs-reversal, liquidity-sweep, order-block]
 example: null
-updated: 2026-10-23
+updated: 2026-11-07
 
 tr:
   slug: trend-ne-zaman-degisir
@@ -64,6 +64,20 @@ tr:
           marker: accent
         - text: Kapanış dibin hemen altında gelip sonraki mumlarda fiyat yeniden yukarı dönerse, hareket bir sahte kırılım olabilir. Sonraki mumlar da önemlidir.
           marker: neutral
+    - type: steps
+      id: sequence
+      title: Sık görülen bir dönüş dizisi
+      intro: Dönüşler çoğu zaman aynı sırayla izlenir. Her adımda önce düşüşten yükselişe, sonra yükselişten düşüşe dönüş yazılmıştır.
+      items:
+        - title: Bölgeye varış ve sweep
+          text: Fiyat önemli bir bölgeye gelir ve son dip ya da tepeyi fitille aşar; **düşüşün sonunda** diplerin altındaki, **yükselişin sonunda** tepelerin üzerindeki stoplar alınır (bkz. sweep).
+        - title: Yapı kırılımı
+          text: Fiyat bu bölgeden sert döner ve **düşüşün sonunda** son alçalan tepenin üzerinde, **yükselişin sonunda** son yükselen dibin altında kapanır (CHoCH / MSB).
+        - title: Geri dönüş
+          text: Fiyat geri çekilir ve kırılımı başlatan bölgeye, çoğu zaman bir **order block** ya da arz-talep bölgesine döner. Bu dönüş, kırılan dip ya da tepenin ötesinde kapanış yapmaz.
+        - title: Yeni yönde devam
+          text: Fiyat yeni yönde ilerler ve yeni tepe ya da dipler kırılmaya başlar (BOS). Yeni trend bu art arda kırılımlarla teyit edilir.
+      note: Bu dizi bir kural değil, sık görülen bir sıralamadır. Adımlardan biri eksik kalabilir ya da dizi yarıda bozulabilir.
     - type: limits
       shows:
         - Yükselen ya da düşen yapının hangi noktada geçerliliğini yitirdiğini
@@ -170,6 +184,20 @@ en:
           marker: accent
         - text: If the close comes just below the low and price turns back up in the next candles, the move may be a false breakout. The next candles matter too.
           marker: neutral
+    - type: steps
+      id: sequence
+      title: A common reversal sequence
+      intro: Reversals are often followed in the same order. Each step gives the turn from a downtrend to an uptrend first, then from an uptrend to a downtrend.
+      items:
+        - title: Reaching a zone and a sweep
+          text: Price reaches an important zone and passes the last low or high with a wick; **at the end of a downtrend** the stops below the lows are taken, **at the end of an uptrend** those above the highs (see sweep).
+        - title: Break of structure
+          text: Price turns sharply from that zone and closes **above the last lower high at the end of a downtrend**, **below the last higher low at the end of an uptrend** (CHoCH / MSB).
+        - title: The return
+          text: Price pulls back to the zone that started the break, often an **order block** or a supply or demand zone. This return does not close beyond the low or high that was broken.
+        - title: Continuation in the new direction
+          text: Price moves in the new direction and new highs or lows start to break (BOS). The new trend is confirmed by these consecutive breaks.
+      note: This sequence is not a rule but a common order. One of the steps can be missing, or the sequence can break down halfway.
     - type: limits
       shows:
         - At which point a rising or falling structure stops holding
