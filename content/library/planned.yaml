@@ -1,4 +1,4 @@
 # Names of patterns that are referenced (related / confusions) but not written yet, as
 #   <id>: { tr: <Turkish name>, en: <English name> }
 # Their cards are shown as plain text; once the pattern file exists they become links automatically.
-breaker-block: { tr: Breaker block, en: Breaker block }
+{}

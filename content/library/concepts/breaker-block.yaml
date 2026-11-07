@@ -1,0 +1,239 @@
+id: breaker-block
+kind: levels
+order: 56
+related: [order-block, retest-and-role-reversal, change-of-character, break-of-structure]
+example: null
+updated: 2026-11-07
+
+tr:
+  slug: breaker-block
+  name: "Breaker block: kapanışla geçilen OB'nin rol değiştirmesi"
+  alt_name: Breaker block
+  summary: >-
+    Breaker block, fiyatın kapanışla içinden geçtiği ve böylece geçersiz olan bir order block'tur.
+    Geçilen bölge, fiyat sonradan geri döndüğünde ters yönde çalışabilir. Geçilen ayı OB boğa breaker,
+    geçilen boğa OB ayı breaker olur.
+  sections:
+    - type: text
+      id: definition
+      title: Breaker block nedir?
+      paragraphs:
+        - >-
+          Bir **order block (OB)** her zaman tutmaz. Fiyat bölgeye döner ve bu kez bölgenin öbür ucunun
+          ötesinde **kapanış** yapar. OB geçersiz olmuştur. Geçilen bu bölgeye **breaker block** denir.
+        - >-
+          Breaker'ın okunuşu rol değişimine dayanır: önceden arz bölgesi olan alan, fiyat üzerine
+          çıktıktan sonra **talep** alanı gibi; önceden talep bölgesi olan alan, fiyat altına indikten
+          sonra **arz** alanı gibi çalışabilir.
+      note: Breaker terimi de "Smart Money Concepts" yaklaşımından gelir. Bu sayfa onu ölçülebilir bir kapanış ve yapı kuralı olarak ele alır.
+    - type: bullets
+      id: types
+      title: Yönler
+      items:
+        - text: "**Boğa breaker:** fiyatın **tepesinin üzerinde kapanış** yaparak geçtiği bir **ayı OB**. Fiyat sonradan yukarıdan bu bölgeye döndüğünde bölge destek gibi çalışabilir."
+          marker: up
+        - text: "**Ayı breaker:** fiyatın **dibinin altında kapanış** yaparak geçtiği bir **boğa OB**. Fiyat sonradan aşağıdan bu bölgeye döndüğünde bölge direnç gibi çalışabilir."
+          marker: down
+    - type: steps
+      id: forming
+      title: Nasıl oluşur?
+      intro: Her adımda önce boğa breaker, sonra ayı breaker yazılmıştır.
+      items:
+        - title: Bir OB oluşur
+          text: Yapıyı kıran sert bir hareket bir OB bırakır. **Boğa breaker** için bu, yapıyı aşağı kıran düşüşten önceki son yükseliş mumu, yani bir **ayı OB'dir**. **Ayı breaker** için yapıyı yukarı kıran yükselişten önceki son düşüş mumu, yani bir **boğa OB'dir**.
+        - title: Fiyat OB'yi kapanışla geçer
+          text: Fiyat bölgeye döner ve **boğa breaker'da** bölgenin tepesinin üzerinde, **ayı breaker'da** dibinin altında kapanır. Fitilin bölgeyi aşması yetmez; belirleyici olan kapanıştır.
+        - title: Yapı yeni yönde kırılır
+          text: Geçişten sonra **boğa breaker'da** önceki tepenin üzerinde, **ayı breaker'da** önceki dibin altında bir kapanış gelirse (BOS ya da CHoCH), yön değişimi yapıyla da doğrulanmış olur. Bu adım zorunlu değildir ama breaker'ı güçlendiren en önemli özelliktir.
+        - title: Bölge ters yönde izlenir
+          text: Bölge sağa doğru uzatılır. Fiyat bu bölgeye **boğa breaker'da** yukarıdan, **ayı breaker'da** aşağıdan döndüğünde nasıl davrandığına bakılır.
+    - type: bullets
+      id: criteria
+      title: Bir breaker'ı güçlendiren özellikler
+      items:
+        - Geçilen bölge, kurallara uyan **geçerli bir OB** idi.
+        - Fiyat bölgeyi **direnç görmeden**, bir iki güçlü mumla geçti; bölgede oyalanmadı.
+        - Geçişin ardından yapı **yeni yönde kırıldı** (BOS ya da CHoCH).
+        - Bölgeye yapılan **ilk dönüş**. Her yeni test bölgenin etkisini azaltabilir.
+        - Bölge, büyük zaman diliminde önemli bir **destek ya da direnç** bölgesine yakın.
+      note: Sık yapılan bir açıklama şudur; OB'den işleme girenler bölge geçilince zarardadır ve fiyat girişlerine döndüğünde pozisyonlarını kapatabilir. Bu bir açıklamadır, kanıt değildir.
+    - type: scenarios
+      id: return
+      title: Fiyat breaker'a dönünce
+      intro: Fiyat bir breaker'a geri döndüğünde genellikle üç tablodan biri oluşur. Her kartta önce boğa breaker, sonra ayı breaker yazılmıştır.
+      items:
+        - title: Rol değişimi tutar
+          tone: up
+          text: Fiyat bölgeye girer, kapanışlar bölgenin içinde kalır ve fiyat yeni yönde ilerler; **boğa breaker'dan** yükselir, **ayı breaker'dan** düşer.
+        - title: Zayıf tepki
+          tone: neutral
+          text: Fiyat bölgede oyalanır, yeni yöndeki hareket kısa kalır. Bölge ne eski ne yeni rolünü net biçimde gösterir.
+        - title: Breaker geçersiz
+          tone: down
+          text: Bir mum bölgenin öbür ucunun ötesinde kapanır; **boğa breaker'da** dibin altında, **ayı breaker'da** tepenin üzerinde. Rol değişimi tutmamıştır ve bölge anlamını büyük ölçüde yitirir.
+    - type: limits
+      shows:
+        - Bir OB'nin kapanışla geçildiğini ve geçersiz olduğunu
+        - Geçilen bölgenin geri dönüşte izlenebilecek ters yönlü bir alan olduğunu
+        - Rol değişiminin yapı kırılımıyla desteklenip desteklenmediğini
+      not_proves:
+        - Fiyatın bölgeye mutlaka geri döneceğini
+        - Bölgenin yeni rolünde mutlaka tutacağını
+        - Bölgede zararda bekleyen belirli bir grup alıcı ya da satıcı olduğunu
+    - type: zones
+      intro: MarketLevelMap'in grafiklerinde breaker ayrıca çizilmez; ama okunuşu sayfadaki işaretlerle izlenebilir.
+      points:
+        - Price Action görünümündeki **CHoCH** etiketi, yapının yön değiştirdiği yeri gösterir. Bir breaker çoğu zaman böyle bir yön değişiminin yakınında oluşur.
+        - Critical Zones grafiklerinde fiyatın üzerine çıktığı bir direnç bölgesi destek bölgesi olarak, altına indiği bir destek bölgesi direnç bölgesi olarak görünebilir. Bu, breaker'daki rol değişiminin daha geniş bölgelerdeki karşılığıdır.
+    - type: box
+      title: Zaman dilimi
+      text: >-
+        Küçük zaman dilimlerinde OB'ler sık geçildiği için breaker'lar da sık oluşur ve çoğu kısa
+        ömürlüdür. Büyük zaman dilimindeki bir breaker daha geniş bir alanı kapsar ve daha uzun süre
+        izlenebilir. Bir breaker, hangi zaman diliminde işaretlendiğiyle birlikte okunur.
+  confusions:
+    - id: order-block
+      text: OB, sert hareketten önceki son ters mumdur ve kendi yönünde çalışması beklenir; breaker, kapanışla geçilmiş bir OB'nin ters yönde çalışmasıdır.
+    - id: retest-and-role-reversal
+      text: Rol değişimi her destek ve direnç bölgesinde görülebilir; breaker bu fikrin tek bir OB mumundan çıkan bölgeye uygulanmış halidir.
+    - id: false-breakout
+      text: Sahte kırılımda fiyat bölgenin ötesine geçer ama kapanış yine eski tarafta gelir; breaker'da kapanış bölgenin öbür tarafında gelir ve fiyat orada kalır.
+  key_points:
+    - Breaker, kapanışla geçilip geçersiz olmuş bir OB'dir.
+    - Geçilen ayı OB boğa breaker, geçilen boğa OB ayı breaker olur.
+    - Geçişten sonra yapının yeni yönde kırılması breaker'ı güçlendirir.
+    - Bölgenin yeni rolünde tutacağı garanti değildir.
+  svg_labels:
+    title: Boğa breaker
+    prev: Önceki dip
+    bos: BOS
+    ob: Ayı OB
+    brk_1: Kapanış OB'nin
+    brk_2: üzerinde
+    breaker: Breaker
+    b_title: Ayı breaker
+    b_prev: Önceki tepe
+    b_ob: Boğa OB
+    b_brk_1: Kapanış OB'nin
+    b_brk_2: altında
+    b_breaker: Breaker
+    ret_1: Fiyat bölgeye
+    ret_2: geri döner
+  svg_alt: "İki breaker block çizimi. Solda boğa breaker: bir ayı OB'den başlayan düşüş önceki dibin altında kapanıyor (BOS); fiyat sonra yükselip OB'nin tepesinin üzerinde kapanıyor, yeni bir tepe yapıyor, geri çekilip bölgeye giriyor ve yeniden yükseliyor. Sağda ayı breaker: aynı tablonun tersi"
+  svg_caption: Solda boğa breaker, sağda ayı breaker. Kırmızı ya da yeşil kesikli kutu önce OB'yi gösterir; turuncu noktadaki kapanışla OB geçilir ve bölge ters renkte breaker olarak devam eder.
+
+en:
+  slug: breaker-block
+  name: "Breaker block: an OB that was closed through and switched roles"
+  summary: >-
+    A breaker block is an order block that price closed through, which invalidated it. When price
+    later comes back, the broken zone can work in the opposite direction. A broken bearish OB becomes a
+    bullish breaker, a broken bullish OB a bearish breaker.
+  sections:
+    - type: text
+      id: definition
+      title: What is a breaker block?
+      paragraphs:
+        - >-
+          An **order block (OB)** does not always hold. Price comes back to the zone and this time
+          **closes** beyond its far end. The OB is invalidated. This broken zone is called a **breaker
+          block**.
+        - >-
+          A breaker is read through role reversal: an area that was supply can work as **demand** once
+          price is above it; an area that was demand can work as **supply** once price is below it.
+      note: The term breaker also comes from the "Smart Money Concepts" approach. This page treats it as a measurable closing and structure rule.
+    - type: bullets
+      id: types
+      title: Directions
+      items:
+        - text: "**Bullish breaker:** a **bearish OB** that price passed with a **close above its high**. When price later comes back to it from above, the zone can work as support."
+          marker: up
+        - text: "**Bearish breaker:** a **bullish OB** that price passed with a **close below its low**. When price later comes back to it from below, the zone can work as resistance."
+          marker: down
+    - type: steps
+      id: forming
+      title: How does it form?
+      intro: Each step gives the bullish breaker first, then the bearish breaker.
+      items:
+        - title: An OB forms
+          text: A sharp move that breaks structure leaves an OB. For a **bullish breaker** this is the last up candle before a drop that broke structure down, a **bearish OB**. For a **bearish breaker** it is the last down candle before a rise that broke structure up, a **bullish OB**.
+        - title: Price closes through the OB
+          text: Price comes back to the zone and closes **above its high for a bullish breaker**, **below its low for a bearish breaker**. A wick past the zone is not enough; the close decides.
+        - title: Structure breaks in the new direction
+          text: If, after the break, a close comes **above the previous high for a bullish breaker** or **below the previous low for a bearish breaker** (BOS or CHoCH), the change of direction is confirmed by structure too. This step is not required, but it is the most important feature that strengthens a breaker.
+        - title: The zone is watched the other way
+          text: The zone is extended to the right. When price comes back to it, **from above for a bullish breaker** and **from below for a bearish breaker**, its behaviour there is watched.
+    - type: bullets
+      id: criteria
+      title: What makes a breaker stronger
+      items:
+        - The broken zone was a **valid OB** that met the rules.
+        - Price passed the zone **without resistance**, with one or two strong candles; it did not linger there.
+        - After the break, structure **broke in the new direction** (BOS or CHoCH).
+        - It is the **first return** to the zone. Each new test can weaken its effect.
+        - The zone is close to an important **support or resistance** area on a larger timeframe.
+      note: "A common explanation: those who traded from the OB are at a loss once the zone breaks, and may close their positions when price returns to their entry. This is an explanation, not proof."
+    - type: scenarios
+      id: return
+      title: When price comes back to the breaker
+      intro: When price returns to a breaker, one of three pictures usually follows. Each card gives the bullish breaker first, then the bearish breaker.
+      items:
+        - title: Role reversal holds
+          tone: up
+          text: Price enters the zone, closes stay inside it and price moves in the new direction; it **rises from a bullish breaker** and **falls from a bearish breaker**.
+        - title: Weak reaction
+          tone: neutral
+          text: Price lingers in the zone and the move in the new direction stays short. The zone shows neither its old nor its new role clearly.
+        - title: Breaker invalidated
+          tone: down
+          text: A candle closes beyond the far end of the zone; **below the low for a bullish breaker**, **above the high for a bearish breaker**. The role reversal did not hold and the zone loses most of its meaning.
+    - type: limits
+      shows:
+        - That an OB was closed through and invalidated
+        - That the broken zone is an opposite-direction area to watch when price comes back
+        - Whether the role reversal is backed by a break of structure
+      not_proves:
+        - That price must come back to the zone
+        - That the zone must hold in its new role
+        - That a particular group of buyers or sellers is waiting at a loss in the zone
+    - type: zones
+      intro: MarketLevelMap's charts do not draw breakers separately, but how they are read can be followed with the marks on the page.
+      points:
+        - The **CHoCH** label in the Price Action view shows where structure changed direction. A breaker often forms near such a change of direction.
+        - On the Critical Zones charts a resistance zone that price moved above can show up as a support zone, and a support zone that price moved below as a resistance zone. This is the wider-zone counterpart of a breaker's role reversal.
+    - type: box
+      title: Timeframes
+      text: >-
+        On small timeframes OBs are broken often, so breakers form often too and most are short-lived.
+        A breaker on a larger timeframe covers a wider area and can be watched for longer. A breaker is
+        read together with the timeframe it was marked on.
+  confusions:
+    - id: order-block
+      text: An OB is the last opposite candle before a sharp move and is expected to work in its own direction; a breaker is an OB that was closed through and works in the opposite direction.
+    - id: retest-and-role-reversal
+      text: Role reversal can happen at any support or resistance zone; a breaker applies that idea to the zone that comes from a single OB candle.
+    - id: false-breakout
+      text: In a false breakout price moves past the zone but the close comes back on the old side; with a breaker the close comes on the other side of the zone and price stays there.
+  key_points:
+    - A breaker is an OB that was closed through and invalidated.
+    - A broken bearish OB becomes a bullish breaker, a broken bullish OB a bearish breaker.
+    - A break of structure in the new direction after the break strengthens a breaker.
+    - There is no guarantee that the zone will hold in its new role.
+  svg_labels:
+    title: Bullish breaker
+    prev: Previous low
+    bos: BOS
+    ob: Bearish OB
+    brk_1: Close above
+    brk_2: the OB
+    breaker: Breaker
+    b_title: Bearish breaker
+    b_prev: Previous high
+    b_ob: Bullish OB
+    b_brk_1: Close below
+    b_brk_2: the OB
+    b_breaker: Breaker
+    ret_1: Price comes
+    ret_2: back to the zone
+  svg_alt: "Two breaker block illustrations. Left, a bullish breaker: a drop that starts at a bearish OB closes below the previous low (BOS); price then rises and closes above the OB's high, makes a new high, pulls back into the zone and rises again. Right, a bearish breaker: the same picture reversed"
+  svg_caption: Bullish breaker on the left, bearish breaker on the right. The red or green dashed box first marks the OB; with the close at the orange dot the OB is broken and the zone continues in the opposite colour as a breaker.
