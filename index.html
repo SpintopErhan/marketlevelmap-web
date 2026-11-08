@@ -379,8 +379,11 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
     order.forEach(function(sym){
       var entries=byAsset[sym].sort(MarketUI.byTimeframe),main=entries.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||entries[0];
       body.appendChild(build(sym,"bulletin.html?asset="+encodeURIComponent(sym)+"&method="+MarketUI.methodOf(main)));
-      if(main.report)fetch(main.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
-      else if(window.DemoData&&DemoData.enabled)rows[sym].demo=true;
+      // YO and ATH are the same on every timeframe: read them from a report this visitor may open (1D for guests;
+      // members-only timeframes come back without levels, README "Accounts").
+      var open=entries.filter(function(e){return e.report&&!e.locked}),levelsFrom=open.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||open[0]||main;
+      if(levelsFrom.report)fetch(levelsFrom.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
+      if(!levelsFrom.report&&window.DemoData&&DemoData.enabled)rows[sym].demo=true;
     });
     labels();applyFilter();
     feed=MarketFeed.start(order,{
