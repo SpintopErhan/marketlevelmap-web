@@ -10,6 +10,8 @@
 //   POST profile    { xHandle, telegramHandle }     → saves the usernames
 //   POST delete                                     → deletes the account (the X username stays locked 30 days)
 //   POST logout
+//   GET  admin/users?status=pending&q=…            → admin only: accounts with counts per status
+//   POST admin/action { id, action, note }          → admin only: approve | reject | suspend | reinstate
 //
 // Bindings and variables (Cloudflare Pages settings): USERS_DB (D1), GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
 // SESSION_SECRET, ADMIN_EMAILS (comma separated). Secrets are never sent to the browser.
@@ -122,7 +124,7 @@ function publicUser(row, env) {
     email: row.email, name: row.name || "", picture: row.picture || "",
     xHandle: row.x_handle || "", telegramHandle: row.telegram_handle || "",
     code: row.code, status: STATUSES.includes(row.status) ? row.status : "registered",
-    rejectNote: row.status === "rejected" ? row.reject_note || "" : "",
+    rejectNote: row.status === "rejected" || row.status === "suspended" ? row.reject_note || "" : "",
     xLocked: row.status === "approved" || row.status === "suspended",
     createdAt: row.created_at, consentVersion: row.consent_version,
     isAdmin: adminEmails(env).includes(String(row.email).toLowerCase()),
@@ -282,6 +284,60 @@ async function remove(request, env) {
   return json({ ok: true }, 200, { "Set-Cookie": [clear(COOKIE.session), clear(COOKIE.hint, "/", false)] });
 }
 
+// ---------- admin (ADMIN_EMAILS only) ----------
+async function adminUser(request, env) {
+  const row = await sessionUser(request, env);
+  return row && adminEmails(env).includes(String(row.email).toLowerCase()) ? row : null;
+}
+function adminRow(row) {
+  return {
+    id: row.id, email: row.email, name: row.name || "", picture: row.picture || "",
+    xHandle: row.x_handle || "", telegramHandle: row.telegram_handle || "", code: row.code,
+    status: row.status, note: row.reject_note || "", createdAt: row.created_at, updatedAt: row.updated_at, approvedAt: row.approved_at || "",
+  };
+}
+async function adminUsers(request, env) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  const url = new URL(request.url), d = await db(env);
+  const status = url.searchParams.get("status") || "pending";
+  const q = String(url.searchParams.get("q") || "").trim().toLowerCase().slice(0, 80);
+  const where = [], args = [];
+  if (STATUSES.includes(status)) { where.push("status = ?"); args.push(status); }
+  if (q) {
+    // A code from a DM may come without dashes or in lower case.
+    const bare = q.replace(/[^a-z0-9]/g, "");
+    where.push("(lower(email) LIKE ? OR x_handle_lc LIKE ? OR lower(name) LIKE ? OR lower(replace(code, '-', '')) LIKE ? OR lower(telegram_handle) LIKE ?)");
+    args.push(`%${q}%`, `%${q.replace(/^@?/, "@")}%`, `%${q}%`, `%${bare}%`, `%${q}%`);
+  }
+  const sql = `SELECT * FROM users${where.length ? " WHERE " + where.join(" AND ") : ""} ORDER BY updated_at DESC LIMIT 200`;
+  const rows = (await d.prepare(sql).bind(...args).all()).results || [];
+  const counts = Object.fromEntries(STATUSES.map((st) => [st, 0]));
+  ((await d.prepare("SELECT status, COUNT(*) AS n FROM users GROUP BY status").all()).results || []).forEach((r) => { counts[r.status] = r.n; });
+  return json({ users: rows.map(adminRow), counts });
+}
+// Which status each action leads to, and from which statuses it is allowed.
+const ACTIONS = {
+  approve: { to: "approved", from: ["pending", "rejected", "registered"] },
+  reject: { to: "rejected", from: ["pending", "registered", "approved"] },
+  suspend: { to: "suspended", from: ["approved", "pending"] },
+  reinstate: { to: "approved", from: ["suspended"] },
+};
+async function adminAction(request, env, body) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  const action = ACTIONS[body.action];
+  if (!action) return json({ error: "action" }, 400);
+  const d = await db(env);
+  const row = await d.prepare("SELECT * FROM users WHERE id = ?").bind(Number(body.id) || 0).first();
+  if (!row) return json({ error: "not_found" }, 404);
+  if (!action.from.includes(row.status)) return json({ error: "status", status: row.status }, 409);
+  if (body.action === "approve" && !row.x_handle) return json({ error: "no_x" }, 409);
+  const at = iso(now());
+  const note = body.action === "reject" || body.action === "suspend" ? String(body.note || "").trim().slice(0, 300) || null : null;
+  await d.prepare("UPDATE users SET status = ?, reject_note = ?, approved_at = CASE WHEN ? = 'approved' THEN COALESCE(approved_at, ?) ELSE approved_at END, updated_at = ? WHERE id = ?")
+    .bind(action.to, note, action.to, at, at, row.id).run();
+  return json({ user: adminRow(await d.prepare("SELECT * FROM users WHERE id = ?").bind(row.id).first()) });
+}
+
 export async function onRequest(context) {
   const { request, env, params } = context;
   const route = (Array.isArray(params.path) ? params.path : [params.path || ""]).join("/");
@@ -290,6 +346,7 @@ export async function onRequest(context) {
       if (route === "google/start") return await googleStart(request, env);
       if (route === "google/callback") return await googleCallback(request, env);
       if (route === "me") return await me(request, env);
+      if (route === "admin/users") return await adminUsers(request, env);
       return json({ error: "not_found" }, 404);
     }
     if (request.method !== "POST") return json({ error: "method" }, 405);
@@ -302,6 +359,7 @@ export async function onRequest(context) {
     if (route === "register") return await register(request, env, body);
     if (route === "profile") return await profile(request, env, body);
     if (route === "delete") return await remove(request, env);
+    if (route === "admin/action") return await adminAction(request, env, body);
     return json({ error: "not_found" }, 404);
   } catch (error) {
     console.error("auth", route, error && error.message);

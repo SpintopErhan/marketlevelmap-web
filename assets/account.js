@@ -3,9 +3,9 @@
    session exists, so guests cost no extra requests. window.MLMAccount.ready resolves with the user or null. */
 (function () {
   var WORDS = {
-    en: { signIn: "Sign in", profile: "Profile", signOut: "Sign out", menu: "Account menu",
+    en: { signIn: "Sign in", profile: "Profile", admin: "Admin panel", signOut: "Sign out", menu: "Account menu",
       status: { registered: "Registered", pending: "Waiting for verification", approved: "Approved", rejected: "Rejected", suspended: "Suspended" } },
-    tr: { signIn: "Giriş yap", profile: "Profil", signOut: "Çıkış yap", menu: "Hesap menüsü",
+    tr: { signIn: "Giriş yap", profile: "Profil", admin: "Admin paneli", signOut: "Çıkış yap", menu: "Hesap menüsü",
       status: { registered: "Kayıtlı", pending: "Doğrulama bekliyor", approved: "Onaylı", rejected: "Reddedildi", suspended: "Askıda" } }
   };
   var hinted = /(?:^|;\s*)mlm_li=1/.test(document.cookie);
@@ -45,7 +45,7 @@
 
   function render() {
     if (!box) return;
-    var key = lang() + "|" + (user ? user.email + user.status + user.picture : hinted ? "hint" : "guest");
+    var key = lang() + "|" + (user ? user.email + user.status + user.picture + user.isAdmin : hinted ? "hint" : "guest");
     if (key === drawn) return; // the analysis page sets <html lang> often; redraw only on a real change
     drawn = key;
     var t = w();
@@ -71,6 +71,7 @@
       who.appendChild(n); who.appendChild(e); who.appendChild(st); menu.appendChild(who);
     }
     var prof = document.createElement("a"); prof.href = "/account"; prof.textContent = t.profile; menu.appendChild(prof);
+    if (user && user.isAdmin) { var adm = document.createElement("a"); adm.href = "/admin"; adm.textContent = t.admin; menu.appendChild(adm); }
     var out = document.createElement("button"); out.type = "button"; out.textContent = t.signOut;
     out.addEventListener("click", function () {
       fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" }).finally(function () { location.reload(); });

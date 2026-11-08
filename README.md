@@ -352,8 +352,8 @@ never on marketlevelmap.com by default, and every section it fills shows a "Samp
 
 ## Accounts
 
-Sign-in with Google, the profile and membership verification (step 1 of the membership plan; the admin panel,
-the guest / member split on the analysis page and Telegram come later).
+Sign-in with Google, the profile and membership verification (steps 1 and 2 of the membership plan; the guest /
+member split on the analysis page and Telegram come later).
 
 - **Server:** `functions/api/auth/[[path]].js`: `google/start`, `google/callback`, `me`, `register`, `profile`,
   `delete`, `logout` under `/api/auth/`. Responses are `Cache-Control: no-store` and the service worker never
@@ -373,7 +373,12 @@ the guest / member split on the analysis page and Telegram come later).
   `registered` → `pending` → `approved` / `rejected` / `suspended`. A rejected user re-applies by saving the X
   username again with the same code.
 - **Deletion:** removes the account; the X username stays reserved for 30 days (`x_locks`).
-- **Header:** `assets/account.js` (on every page, library pages included) shows "Sign in" or the profile menu.
+- **Header:** `assets/account.js` (on every page, library pages included) shows "Sign in" or the profile menu;
+  admins also get an "Admin panel" link.
+- **Admin panel** (`/admin`, step 2): only for e-mails in `ADMIN_EMAILS`, checked on the server
+  (`admin/users`, `admin/action`). Tabs per status with counts; search by code (dashes optional), e-mail, name
+  or X / Telegram username. Actions: approve (needs an X username), reject (with a note shown to the user),
+  suspend (with a note), reinstate. Approval sends no message: the user is told by X DM by hand.
 
 ## Shared assets and browser caches
 
