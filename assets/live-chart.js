@@ -95,6 +95,8 @@ var LiveChart = (function () {
       return { fill: "rgba(170,176,188," + (0.05 + 0.11 * left).toFixed(3) + ")", stroke: "rgba(196,202,214," + (0.45 + 0.45 * left).toFixed(3) + ")", dash: [4, 3], width: 1.5 };
     }
     // Price Action "no confirmed range" (README "Price Action view"): the last valid range, faded grey and dashed.
+    // Price Action Fibonacci (opt-in): the 0.618-0.786 deep pullback band of the current leg, soft gold.
+    if (layer === "PA_FIB") return { fill: "rgba(240,185,11,0.10)", stroke: "rgba(240,185,11,0.55)", dash: [4, 3], width: 1 };
     if (layer === "PA_LAST_VALID") return { fill: "rgba(170,176,188,0.06)", stroke: "rgba(170,176,188,0.6)", dash: [6, 4], width: 1.5 };
     if (layer === "HISTORICAL_BROKEN_CONTEXT") return { fill: "rgba(224,133,77,0.14)", stroke: "rgba(238,158,108,0.96)", dash: [7, 4], width: 1.5 };
     if (layer === "CANONICAL_EXTENDED") return { fill: "rgba(61,207,224,0.08)", stroke: "rgba(61,207,224,0.95)", dash: [10, 5], width: 1.5 };
@@ -148,6 +150,18 @@ var LiveChart = (function () {
     ctx.beginPath(); ctx.rect(left, y - h / 2, w, h); ctx.fill(); ctx.stroke();
     ctx.fillStyle = color; ctx.fillText(zone.label, left + 5, y + 0.5);
     ctx.restore();
+  }
+
+  // Price Action Fibonacci level line: thin, from the protected swing to the zones' right edge, with its ratio
+  // at the right end (0 and 1 solid, 0.5 dashed).
+  function drawFibLine(ctx, timeScale, series, zone, start, right) {
+    var x0 = timeScale.timeToCoordinate(start.time), y = series.priceToCoordinate(Number(zone.low));
+    if (x0 === null || y === null || x0 >= right) return;
+    y = Math.round(y) + 0.5; x0 = Math.max(x0, -2);
+    ctx.strokeStyle = "rgba(240,185,11,0.75)"; ctx.lineWidth = 1; ctx.setLineDash(zone.dashed ? [4, 4] : []);
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(right, y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font = "600 11px " + WATERMARK_FONT; ctx.textBaseline = "bottom"; ctx.textAlign = "right";
+    ctx.fillStyle = "rgba(240,185,11,0.95)"; ctx.fillText(zone.label, right - 4, y - 2); ctx.textAlign = "left";
   }
 
   // Price Action structure points (README "Price Action view"): bold main HH / HL / LH / LL labels, faint internal
@@ -230,6 +244,7 @@ var LiveChart = (function () {
                 var start = zoneStart(zone, self.times), right = fullRight;
                 if (!start) return;
                 if (zone.line) { ctx.save(); ctx.globalAlpha = reveal; drawStructureLine(ctx, timeScale, self.series, zone, start, self.times); ctx.restore(); return; }
+                if (zone.fibLine) { ctx.save(); ctx.globalAlpha = reveal; drawFibLine(ctx, timeScale, self.series, zone, start, right); ctx.restore(); return; }
                 var x0 = timeScale.timeToCoordinate(start.time);
                 var yHigh = self.series.priceToCoordinate(Number(zone.high)), yLow = self.series.priceToCoordinate(Number(zone.low));
                 if (x0 === null || yHigh === null || yLow === null || x0 > right) return;
@@ -401,7 +416,7 @@ var LiveChart = (function () {
     // Price Action AVWAP (README "Price Action view"): near-white long-dashed curve from the report's points.
     var avwap = chart.addSeries(LC.LineSeries, { color: "#f2f4f8", lineWidth: 2, lineStyle: LC.LineStyle.LargeDashed, priceLineVisible: false,
       lastValueVisible: true, title: "AVWAP", crosshairMarkerVisible: false, visible: false }), avwapPoints = [];
-    var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [], lastValidZones = [];
+    var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [], lastValidZones = [], fibZones = [];
     candles.attachPrimitive(zones);
     var structurePoints = new PointsPrimitive(function () { return times(); });
     candles.attachPrimitive(structurePoints);
@@ -708,7 +723,7 @@ var LiveChart = (function () {
       setZones: function (list, priceDecimals) {
         baseZones = (list || []).filter(function (z) { return z && z.drawn !== false && Number(z.low) > 0 && Number(z.high) > 0; });
         if (priceDecimals != null && priceDecimals !== decimals) { decimals = priceDecimals; applyPrecision(); }
-        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones);
+        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones, fibZones);
         zones.set(zoneList, times());
       },
       // Price Action report structure: BOS / CHoCH lines and sweep markers (README "Price Action view").
@@ -718,7 +733,7 @@ var LiveChart = (function () {
           return { line: true, layer: "PA_STRUCTURE", kind: e.type, low: Number(e.level), high: Number(e.level), formedAt: e.swingTime, endAt: e.breakTime,
             label: (e.type === "CHOCH" ? "CHoCH" : "BOS") + (e.direction === "bullish" ? " ↑" : " ↓") };
         });
-        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones);
+        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones, fibZones);
         zones.set(zoneList, times());
         var curve = structure && structure.state !== "undetermined" && structure.avwap && Array.isArray(structure.avwap.points) ? structure.avwap.points : [];
         avwapPoints = curve.map(function (p) { return { time: Math.floor(Date.parse(p.time || "") / 1000), value: Number(p.value) }; })
@@ -748,7 +763,7 @@ var LiveChart = (function () {
           return { layer: "PA_LAST_VALID", type: z.type, low: Number(z.low), high: Number(z.high), formedAt: lastValid.analyzedAt,
             label: z.type === "resistance" ? label : null };
         }) : [];
-        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones);
+        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones, fibZones);
         zones.set(zoneList, times());
       },
       // Price Action report FVG boxes (remaining gap, from the candle that formed it to the right edge).
@@ -757,7 +772,23 @@ var LiveChart = (function () {
           return { type: "fvg", layer: "PA_FVG", low: Number(f.low), high: Number(f.high), formedAt: f.createdAt,
             filledPercent: Number(f.filledPercent || 0), label: String(f.direction).toLowerCase() === "bullish" ? "FVG \u2191" : "FVG \u2193" };
         });
-        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones);
+        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones, fibZones);
+        zones.set(zoneList, times());
+      },
+      // Price Action Fibonacci of the current leg (opt-in, off unless the page passes one): fib = { start, end,
+      // startTime, labels: [band, half, zero, one] } with start = 1 (protected swing) and end = 0 (leg extreme).
+      setFib: function (fib) {
+        var a = fib && Number(fib.start), b = fib && Number(fib.end);
+        fibZones = a > 0 && b > 0 && a !== b ? (function () {
+          var at = function (r) { return b + (a - b) * r; }, L = fib.labels || [];
+          return [
+            { layer: "PA_FIB", type: "fib", low: Math.min(at(0.618), at(0.786)), high: Math.max(at(0.618), at(0.786)), formedAt: fib.startTime, label: L[0] || "0.618–0.786" },
+            { fibLine: true, layer: "PA_FIB", low: at(0.5), high: at(0.5), formedAt: fib.startTime, label: L[1] || "0.5", dashed: true },
+            { fibLine: true, layer: "PA_FIB", low: b, high: b, formedAt: fib.startTime, label: L[2] || "0" },
+            { fibLine: true, layer: "PA_FIB", low: a, high: a, formedAt: fib.startTime, label: L[3] || "1" }
+          ];
+        })() : [];
+        zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones, fibZones);
         zones.set(zoneList, times());
       },
       liveStatus: function () { return liveStatus; },

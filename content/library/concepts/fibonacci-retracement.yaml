@@ -89,8 +89,11 @@ tr:
         - Fiyatın belirli bir seviyede döneceğini
         - Hangi dip ve tepenin seçilmesi gerektiğini; farklı seçimler farklı seviyeler verir
     - type: zones
-      intro: MarketLevelMap'in grafiklerinde Fibonacci seviyeleri çizilmez; ama aynı mantık sayfada görünür.
+      intro: MarketLevelMap'in Price Action görünümünde Fibonacci şu kurallarla gösterilir.
       points:
+        - Seviyeler yapının **son bacağına** çekilir; 1 korunan dip ya da tepede, 0 son bacağın ucundadır. Yapı belirsizse gösterilmez.
+        - Yapı tablosundaki **Fibonacci** satırı, fiyatın bacağın ne kadarını geri aldığını yazar (örneğin "%62 · derin bant") ve 0,618–0,786 bandının fiyat aralığını gösterir.
+        - Satırdaki göz simgesi bandı ve 0, 0,5 ve 1 çizgilerini grafikte açıp kapatır; varsayılan olarak kapalıdır.
         - Price Action görünümündeki **EQ** çizgisi, aralığın 0,5 seviyesidir. Panelde yazan "fiyat aralığın %… seviyesinde" ifadesi de fiyatın aralıktaki oranını gösterir.
         - Aynı paneldeki **premium** ve **discount** ifadeleri, fiyatın aralığın üst ya da alt yarısında olduğunu anlatır.
     - type: box
@@ -212,8 +215,11 @@ en:
         - That price will turn at a particular level
         - Which low and high should be chosen; different choices give different levels
     - type: zones
-      intro: MarketLevelMap's charts do not draw Fibonacci levels, but the same idea shows on the page.
+      intro: In MarketLevelMap's Price Action view Fibonacci is shown by these rules.
       points:
+        - The levels are drawn on the structure's **current leg**; 1 at the protected low or high, 0 at the leg extreme. Nothing is shown when the structure is undetermined.
+        - The **Fibonacci** row in the Structure table says how much of the leg price has given back (for example "62% · deep band") and shows the price range of the 0.618–0.786 band.
+        - The eye in that row turns the band and the 0, 0.5 and 1 lines on and off on the chart; it is off by default.
         - The **EQ** line in the Price Action view is the range's 0.5 level. The panel's "price at …% of the range" also shows where price sits in the range as a ratio.
         - The **premium** and **discount** words in the same panel say whether price is in the upper or lower half of the range.
     - type: box
