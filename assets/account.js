@@ -24,6 +24,8 @@
   function css() {
     var s = document.createElement("style");
     s.textContent =
+      // The header's shell must stack above the page content (the home page gives both z-index:1) so the menu is not covered.
+      "body>.shell:has(>header){position:relative;z-index:30}" +
       ".acct{position:relative;display:flex;align-items:center}" +
       ".acct-in{display:inline-flex;align-items:center;height:30px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--fg);font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap}" +
       ".acct-in:hover{border-color:var(--accent);color:var(--accent)}" +
