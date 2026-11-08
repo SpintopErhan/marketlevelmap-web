@@ -302,12 +302,12 @@ export async function viewerAccess(request, env) {
 export const OPEN_TIMEFRAME = "1d";
 export function timeframeOfKey(graphicKey) { return String(graphicKey || "").split(":")[2]?.toLowerCase() || ""; }
 export function isOpenEntry(item) { return timeframeOfKey(item && item.graphicKey) === OPEN_TIMEFRAME; }
-// What a guest receives instead of a members-only report: the key levels only (open on every timeframe) and
-// locked: true. Zones, range, FVG, structure, note and the no-range card are left out on the server.
+// What a guest receives instead of a members-only report: only what names the chart, and locked: true.
+// Zones, range, FVG, structure, key levels, note and the no-range card are left out on the server.
 export function guestReport(report) {
   const r = report && typeof report === "object" ? report : {};
   const out = { locked: true };
-  ["symbol", "timeframe", "method", "analyzedAt", "levels", "levelsAsOf", "schemaVersion"].forEach((k) => { if (r[k] !== undefined) out[k] = r[k]; });
+  ["symbol", "timeframe", "method", "analyzedAt", "schemaVersion"].forEach((k) => { if (r[k] !== undefined) out[k] = r[k]; });
   return out;
 }
 

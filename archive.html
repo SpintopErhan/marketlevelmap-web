@@ -13,8 +13,9 @@ p{max-width:520px;color:var(--muted);font-size:15px;line-height:1.75}
 .arch-day{max-width:740px;margin-top:26px}
 .arch-day h2{margin:0 0 4px;font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
 .arch-day ul{margin:0;padding:0;list-style:none}
-.arch-day a{display:flex;justify-content:space-between;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line);color:var(--fg);font-size:14px;font-weight:600;text-decoration:none}
+.arch-day a,.arch-day .shut{display:flex;justify-content:space-between;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line);color:var(--fg);font-size:14px;font-weight:600;text-decoration:none}
 .arch-day a:hover{color:var(--accent)}
+.arch-day .shut{cursor:default;opacity:.65}
 .arch-day small{color:var(--muted);font-weight:500;text-align:right}
 @media(max-width:520px){main{padding:44px 0}}
 
@@ -30,7 +31,7 @@ p{font-size:16px;line-height:1.6}
 .arch-day{max-width:none;margin-top:28px}
 .arch-day h2{margin:0 0 10px;font-size:14px;color:var(--fg);font-weight:600;letter-spacing:0;text-transform:none}
 .arch-day ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
-.arch-day a{flex-direction:column;justify-content:flex-start;gap:4px;height:100%;padding:14px 16px;border:0;border-radius:12px;background:var(--panel);font-size:14px}
+.arch-day a,.arch-day .shut{flex-direction:column;justify-content:flex-start;gap:4px;height:100%;padding:14px 16px;border:0;border-radius:12px;background:var(--panel);font-size:14px}
 .arch-day a:hover{color:var(--fg);background:var(--raise)}
 .arch-day small{font-size:12px;line-height:1.5;text-align:left}
 </style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c417fd53" defer></script></head><body><div class="shell"><header>
@@ -79,8 +80,8 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     order.forEach(function(day){
       var section=document.createElement("section"),h=document.createElement("h2"),ul=document.createElement("ul");section.className="arch-day";h.textContent=day;
       days[day].forEach(function(item){
-        var m=MarketUI.methodOf(item),li=document.createElement("li"),a=document.createElement("a");
-        a.href="bulletin?asset="+encodeURIComponent(pair)+(m==="pa"?"&method=pa":"")+"&tf="+encodeURIComponent(MarketUI.timeframeOf(item))+"&at="+encodeURIComponent(item.publicationId);
+        var shut=item.restricted&&!member(),m=MarketUI.methodOf(item),li=document.createElement("li"),a=document.createElement(shut?"span":"a");
+        if(shut)a.className="shut";else a.href="bulletin?asset="+encodeURIComponent(pair)+(m==="pa"?"&method=pa":"")+"&tf="+encodeURIComponent(MarketUI.timeframeOf(item))+"&at="+encodeURIComponent(item.publicationId);
         a.innerHTML="<span></span><small></small>";
         a.firstChild.textContent=(m==="pa"?w.methodPa:w.methodCz)+" · "+MarketUI.timeframeOf(item).toUpperCase()+(item.rangeStatus==="NO_CONFIRMED_RANGE"?" · "+w.noRange:"")+(item.restricted&&!member()?" · 🔒 "+w.membersOnly:"");
         // Analysis close, when it went live and when a newer publication replaced it — each with its time.

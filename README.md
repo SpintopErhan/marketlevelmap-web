@@ -377,13 +377,15 @@ Sign-in with Google, the profile, membership verification, the admin panel and t
   admins also get an "Admin panel" link.
 - **Members only** (step 3): only `approved` accounts are members. On `/api/publication/report/…` and
   `/api/archive/report/…` every timeframe but **1D** is cut on the server for everyone else: the response keeps
-  the key levels only (`locked: true`, see `guestReport`); comments and images of those timeframes answer 403.
+  only what names the chart (`locked: true`, see `guestReport`); comments and images of those timeframes answer 403.
   Members get the full object with `Cache-Control: private, no-store`; 1D stays public and cacheable. The index
   carries `viewer { member, status }` and per entry `restricted` / `locked`; archive items carry `restricted`. A
-  database error keeps the data locked. The analysis page then shows candles, indicators and key levels, a
-  blurred band over the price pane and a side card with the call to action (sign in / complete membership /
-  account), locks download and hides share, and marks other timeframes "Members only" in "Structure by
-  timeframe" and in the archive lists. `assets/account.js` fires `mlm-account` once the user is known.
+  database error keeps the data locked. On a locked timeframe the analysis page shows the candles only (no
+  indicators, key levels, volume profile or Fibonacci), a blurred band over the price pane and a side card with
+  the call to action (sign in / complete membership / account), locks download and hides share, and marks other
+  timeframes "Members only" in "Structure by timeframe" and in the archive lists, where they are not links.
+  Visitors who are not members land on Critical Zones 1D when the link names no timeframe; the timeframe
+  alignment box is for members. `assets/account.js` fires `mlm-account` once the user is known.
 - **Admin panel** (`/admin`, step 2): only for e-mails in `ADMIN_EMAILS`, checked on the server
   (`admin/users`, `admin/action`). Tabs per status with counts; search by code (dashes optional), e-mail, name
   or X / Telegram username. Actions: approve (needs an X username), reject (with a note shown to the user),
