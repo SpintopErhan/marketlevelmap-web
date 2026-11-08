@@ -140,8 +140,15 @@ async function sessionCookies(env, user) {
 }
 
 // ---------- routes ----------
+// Which Cloudflare settings this deployment cannot see (names only, never values), for the setup check.
+function missingSettings(env) {
+  return ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "SESSION_SECRET", "USERS_DB"].filter((name) => !env[name])
+    .concat(env.SESSION_SECRET && String(env.SESSION_SECRET).length < 32 ? ["SESSION_SECRET (too short)"] : []);
+}
+
 async function googleStart(request, env) {
-  if (!env.GOOGLE_CLIENT_ID) return json({ error: "not_configured" }, 503);
+  const missing = missingSettings(env);
+  if (missing.length) return json({ error: "not_configured", missing }, 503);
   const url = new URL(request.url);
   const state = b64url(crypto.getRandomValues(new Uint8Array(18)));
   const nonce = b64url(crypto.getRandomValues(new Uint8Array(18)));
