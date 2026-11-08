@@ -1,3 +1,5 @@
+import { viewerAccess, isOpenEntry, guestReport } from "../auth/[[path]].js";
+
 // Earlier analyses of one market pair (README "Archive JSON"; engine contract LOCAL_PUBLICATION_PACKAGE_CONTRACT_V1
 // "Arşiv: önceki analizler — V1"). The local engine writes `site-publication/archive/<marketPair>.json` when a newer
 // publication replaces a chart. Only objects listed there are served; `publication-packages/` is never listed.
@@ -64,6 +66,8 @@ function publicItems(items, activeIds, symbol) {
   return [...groups.values()].map(({ item, from, until }) => ({
     graphicKey: item.graphicKey,
     publicationId: item.publicationId,
+    // Listed for everyone; opening a non-1D analysis needs an approved membership (README "Accounts").
+    restricted: !isOpenEntry(item),
     sourceReleaseId: item.sourceReleaseId || null,
     analyzedAt: validTime(item.analyzedAt) || from,
     liveFrom: from,
@@ -99,9 +103,20 @@ export async function onRequestGet(context) {
     }
     const object = await bucket.get(value.objectKey);
     if (!object) return json({ error: "Archived resource is unavailable." }, 404);
+    let cache = `public, max-age=${OBJECT_SECONDS}`;
+    if (!isOpenEntry(item)) {
+      const access = await viewerAccess(context.request, context.env);
+      if (!access.member) {
+        if (path[0] !== "report") return json({ error: "members_only", locked: true }, 403);
+        let report = null;
+        try { report = await object.json(); } catch (_) { report = null; }
+        return json(guestReport(report));
+      }
+      cache = "private, no-store";
+    }
     const headers = new Headers();
     headers.set("Content-Type", object.httpMetadata?.contentType || value.mediaType || "application/octet-stream");
-    headers.set("Cache-Control", `public, max-age=${OBJECT_SECONDS}`);
+    headers.set("Cache-Control", cache);
     if (object.etag) headers.set("ETag", object.etag);
     return new Response(object.body, { headers });
   } catch (_) {

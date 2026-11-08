@@ -96,13 +96,18 @@
     new MutationObserver(function () { render(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
   }
 
+  // Pages that depend on the user (the analysis page's members-only view) listen for this event.
+  function done() {
+    resolveReady(user);
+    try { document.dispatchEvent(new CustomEvent("mlm-account", { detail: user })); } catch (_) {}
+  }
   function load() {
-    if (!hinted) { resolveReady(null); return; }
+    if (!hinted) { done(); return; }
     fetch("/api/auth/me", { credentials: "same-origin", cache: "no-store" })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (data) { user = data && data.user ? data.user : null; })
       .catch(function () { user = null; })
-      .then(function () { if (!user) hinted = false; render(); resolveReady(user); });
+      .then(function () { if (!user) hinted = false; render(); done(); });
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { mount(); load(); });

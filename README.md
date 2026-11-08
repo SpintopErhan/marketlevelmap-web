@@ -352,8 +352,8 @@ never on marketlevelmap.com by default, and every section it fills shows a "Samp
 
 ## Accounts
 
-Sign-in with Google, the profile and membership verification (steps 1 and 2 of the membership plan; the guest /
-member split on the analysis page and Telegram come later).
+Sign-in with Google, the profile, membership verification, the admin panel and the guest / member split
+(steps 1–3 of the membership plan; Telegram comes later).
 
 - **Server:** `functions/api/auth/[[path]].js`: `google/start`, `google/callback`, `me`, `register`, `profile`,
   `delete`, `logout` under `/api/auth/`. Responses are `Cache-Control: no-store` and the service worker never
@@ -375,6 +375,15 @@ member split on the analysis page and Telegram come later).
 - **Deletion:** removes the account; the X username stays reserved for 30 days (`x_locks`).
 - **Header:** `assets/account.js` (on every page, library pages included) shows "Sign in" or the profile menu;
   admins also get an "Admin panel" link.
+- **Members only** (step 3): only `approved` accounts are members. On `/api/publication/report/…` and
+  `/api/archive/report/…` every timeframe but **1D** is cut on the server for everyone else: the response keeps
+  the key levels only (`locked: true`, see `guestReport`); comments and images of those timeframes answer 403.
+  Members get the full object with `Cache-Control: private, no-store`; 1D stays public and cacheable. The index
+  carries `viewer { member, status }` and per entry `restricted` / `locked`; archive items carry `restricted`. A
+  database error keeps the data locked. The analysis page then shows candles, indicators and key levels, a
+  blurred band over the price pane and a side card with the call to action (sign in / complete membership /
+  account), locks download and hides share, and marks other timeframes "Members only" in "Structure by
+  timeframe" and in the archive lists. `assets/account.js` fires `mlm-account` once the user is known.
 - **Admin panel** (`/admin`, step 2): only for e-mails in `ADMIN_EMAILS`, checked on the server
   (`admin/users`, `admin/action`). Tabs per status with counts; search by code (dashes optional), e-mail, name
   or X / Telegram username. Actions: approve (needs an X username), reject (with a note shown to the user),

@@ -1,3 +1,5 @@
+import { viewerAccess, isOpenEntry, guestReport } from "../auth/[[path]].js";
+
 const ACTIVE_POINTER_KEY = "site-publication/active.json";
 
 function json(value, status = 200) {
@@ -10,10 +12,13 @@ function json(value, status = 200) {
   });
 }
 
-function publicEntry(entry) {
+function publicEntry(entry, member) {
   const id = encodeURIComponent(entry.publicationId);
   return {
     graphicKey: entry.graphicKey,
+    // Members only (README "Accounts"): every timeframe but 1D needs an approved membership.
+    restricted: !isOpenEntry(entry),
+    locked: !isOpenEntry(entry) && !member,
     publicationId: entry.publicationId,
     sourceReleaseId: entry.sourceReleaseId,
     packageId: entry.packageId,
@@ -102,12 +107,14 @@ export async function onRequestGet(context) {
 
   const path = context.params.path || [];
   if (!path.length) {
+    const access = pointer.entries.some((entry) => !isOpenEntry(entry)) ? await viewerAccess(context.request, context.env) : { member: false, status: "guest" };
     return json({
+      viewer: { member: access.member, status: access.status },
       schemaVersion: pointer.schemaVersion,
       sitePublicationId: pointer.sitePublicationId,
       activatedAt: pointer.activatedAt,
       entries: await Promise.all(pointer.entries.map(async (entry) => ({
-        ...publicEntry(entry),
+        ...publicEntry(entry, access.member),
         chartTime: await chartTime(bucket, entry),
       }))),
     });
@@ -120,5 +127,17 @@ export async function onRequestGet(context) {
   if (!resource?.objectKey) return json({ error: "Publication resource is not active." }, 404);
   const object = await bucket.get(resource.objectKey);
   if (!object) return json({ error: "Publication resource is unavailable." }, 404);
-  return new Response(object.body, { headers: mediaHeaders(object, resource.mediaType) });
+  if (isOpenEntry(entry)) return new Response(object.body, { headers: mediaHeaders(object, resource.mediaType) });
+  // Members-only timeframe: members get the object, never cached where another visitor could reuse it;
+  // everyone else gets the key levels only (report) or nothing (image, comment).
+  const access = await viewerAccess(context.request, context.env);
+  if (access.member) {
+    const headers = mediaHeaders(object, resource.mediaType);
+    headers.set("Cache-Control", "private, no-store");
+    return new Response(object.body, { headers });
+  }
+  if (path[0] !== "report") return json({ error: "members_only", locked: true }, 403);
+  let report = null;
+  try { report = await object.json(); } catch (_) { report = null; }
+  return json(guestReport(report));
 }

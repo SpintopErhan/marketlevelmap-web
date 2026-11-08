@@ -284,6 +284,33 @@ async function remove(request, env) {
   return json({ ok: true }, 200, { "Set-Cookie": [clear(COOKIE.session), clear(COOKIE.hint, "/", false)] });
 }
 
+// ---------- membership, for other routes (README "Accounts": guest / member split) ----------
+// Who is asking: { member, status }. Only "approved" accounts are members. Without a session cookie nothing is
+// read from the database, so guests cost no D1 reads.
+export async function viewerAccess(request, env) {
+  if (!readCookie(request, COOKIE.session)) return { member: false, status: "guest" };
+  try {
+    const row = await sessionUser(request, env);
+    if (!row) return { member: false, status: "guest" };
+    return { member: row.status === "approved", status: row.status };
+  } catch (_) {
+    return { member: false, status: "guest" }; // a database problem must never open members-only data
+  }
+}
+
+// The timeframe open to guests; every other timeframe needs an approved membership.
+export const OPEN_TIMEFRAME = "1d";
+export function timeframeOfKey(graphicKey) { return String(graphicKey || "").split(":")[2]?.toLowerCase() || ""; }
+export function isOpenEntry(item) { return timeframeOfKey(item && item.graphicKey) === OPEN_TIMEFRAME; }
+// What a guest receives instead of a members-only report: the key levels only (open on every timeframe) and
+// locked: true. Zones, range, FVG, structure, note and the no-range card are left out on the server.
+export function guestReport(report) {
+  const r = report && typeof report === "object" ? report : {};
+  const out = { locked: true };
+  ["symbol", "timeframe", "method", "analyzedAt", "levels", "levelsAsOf", "schemaVersion"].forEach((k) => { if (r[k] !== undefined) out[k] = r[k]; });
+  return out;
+}
+
 // ---------- admin (ADMIN_EMAILS only) ----------
 async function adminUser(request, env) {
   const row = await sessionUser(request, env);
