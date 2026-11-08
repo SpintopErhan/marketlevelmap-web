@@ -361,7 +361,7 @@ function page({ lang, path, alternates, title, description, body, jsonLd }) {
     `<link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">`,
     `<link rel="stylesheet" href="${asset("assets/site.css")}"><link rel="stylesheet" href="${asset("assets/library.css")}">`,
     `<script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>`,
-    `<script src="${asset("assets/disclaimer.js")}" defer></script><script src="${asset("assets/library.js")}" defer></script><script src="${asset("assets/pwa.js")}" defer></script>`,
+    `<script src="${asset("assets/disclaimer.js")}" defer></script><script src="${asset("assets/account.js")}" defer></script><script src="${asset("assets/library.js")}" defer></script><script src="${asset("assets/pwa.js")}" defer></script>`,
     jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>` : "",
   ].join("\n");
   const header = `<div class="shell"><header>

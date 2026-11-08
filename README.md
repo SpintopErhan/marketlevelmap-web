@@ -350,6 +350,31 @@ answers `{ events: [], error }` and the pages say the events could not be loaded
 It is used only on preview hosts (`*.pages.dev`, `localhost`) or with `?demo=1` (`?demo=0` turns it off),
 never on marketlevelmap.com by default, and every section it fills shows a "Sample data" badge.
 
+## Accounts
+
+Sign-in with Google, the profile and membership verification (step 1 of the membership plan; the admin panel,
+the guest / member split on the analysis page and Telegram come later).
+
+- **Server:** `functions/api/auth/[[path]].js`: `google/start`, `google/callback`, `me`, `register`, `profile`,
+  `delete`, `logout` under `/api/auth/`. Responses are `Cache-Control: no-store` and the service worker never
+  caches `/api/auth/*`.
+- **Cloudflare settings:** D1 binding `USERS_DB` (database `marketlevelmap-users`); variables `GOOGLE_CLIENT_ID`,
+  `GOOGLE_CLIENT_SECRET` (secret), `SESSION_SECRET` (secret, 64 random hex characters), `ADMIN_EMAILS` (comma
+  separated). The tables (`users`, `x_locks`) are created by the code on first use.
+- **Google client:** the redirect URI is `<origin>/api/auth/google/callback`, so every origin used (the site and
+  the branch preview) must be listed under the client's origins and redirect URIs.
+- **Cookies:** `mlm_session` (HttpOnly, HMAC-signed with `SESSION_SECRET`, 30 days) and `mlm_li` (readable hint
+  only, so pages ask `/api/auth/me` only when a session exists); `mlm_oauth` and `mlm_signup` are short-lived
+  and limited to `/api/auth`.
+- **Sign-up:** a new Google user is stored only after accepting the privacy notice on `/account`
+  (consent version `2026-11-08` is saved with the account).
+- **Profile:** e-mail, name and picture from Google; X username (fixed once approved; saving it sends the account
+  for verification); Telegram username (typed by hand); a permanent verification code `MLM-XXXX-XXXX`; status
+  `registered` → `pending` → `approved` / `rejected` / `suspended`. A rejected user re-applies by saving the X
+  username again with the same code.
+- **Deletion:** removes the account; the X username stays reserved for 30 days (`x_locks`).
+- **Header:** `assets/account.js` (on every page, library pages included) shows "Sign in" or the profile menu.
+
 ## Shared assets and browser caches
 
 Pages link the files in `assets/` (`site.css`, `disclaimer.js`, `market-cache.js`, `market-feed.js`,
