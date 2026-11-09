@@ -72,7 +72,7 @@ every asset has last week's candle. Every analysed asset except PAXG:
 - **Levels and structure** — last week's close against the monthly open, yearly open and ATH: `keyLevels` of
   `levels.json` (a level whose period began after the week closed is left out); until an asset's file has
   them, its 1D Critical Zones report (`MO`, `YO`, `ATH` else `OATH`).
-- **1D timeframe alignment** — `structure.state` of the 1W, 1D and 4H Price Action reports, with the analysis
+- **Structure direction** (1D timeframe alignment) — `structure.state` of the 1W, 1D and 4H Price Action reports, with the analysis
   page's rule (aligned / main trend with 4H against / conflict). Only these three states are public; the 4H
   and 1W reports stay members-only.
 
