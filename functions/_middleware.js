@@ -21,7 +21,7 @@ function pageKey(pathname) {
 }
 
 // Link previews always use the site image (logo); charts are no longer published as images.
-const OG_IMAGE = "/assets/og-image.png?v=dd26b484";
+const OG_IMAGE = "/assets/og-image.png?v=452c1796";
 
 // Texts for a shared analysis link. They match the share text on the page (bulletin.html "shareText");
 // `lang=tr` in the link (added when the page is in Turkish) gives the Turkish preview.

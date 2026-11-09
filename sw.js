@@ -7,7 +7,7 @@
    - /assets/* (versioned CSS/JS, icons, logos, generated library data) and the manifest: stale-while-revalidate.
    - Other origins (Binance, Coinbase, data.marketlevelmap.com candles) and websockets: not touched.
    Bump VERSION when this file's rules change; old caches are deleted on activate. */
-const VERSION = "mlm-v2";
+const VERSION = "mlm-v3";
 const CACHES = { pages: `${VERSION}-pages`, data: `${VERSION}-data`, assets: `${VERSION}-assets` };
 const LIMITS = { pages: 60, data: 80, assets: 120 };
 const OFFLINE = "/offline"; // Pages serves /offline.html at /offline
