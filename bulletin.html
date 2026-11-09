@@ -987,6 +987,81 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     if(g.measureText(times).width*size/11+g.measureText(w.notAdvice).width+3*pad<=out.width){g.textAlign="right";g.fillText(w.notAdvice,out.width-pad,y)}
     return out;
   }
+  // Chart + tables in one PNG (admin social media desk, README "Social media planner"): the chart image on the left and,
+  // on the right, what the page shows for this view, read from the page itself so the values always match:
+  // Price Action → "at a glance" boxes, price range, FVG, structure; Critical Zones → support and resistance zones.
+  // Titles, column heads and values only; the explanations under the titles are left out.
+  function tableData(id){
+    var block=document.getElementById(id);if(!block||block.hidden||getComputedStyle(block).display==="none")return null;
+    var title=(block.querySelector(".block-head h2")||{}).textContent||"",table=block.querySelector("table");if(!table)return null;
+    var head=[].map.call(table.querySelectorAll("thead th"),function(th){return th.textContent.trim()});
+    var rows=[];[].forEach.call(table.querySelectorAll("tbody tr"),function(tr){
+      if(tr.classList.contains("fib-note")||tr.offsetParent===null)return;
+      if(tr.classList.contains("now")){var b=tr.querySelector("b");rows.push({now:true,text:tr.textContent.replace(b?b.textContent:"","").trim(),value:b?b.textContent.trim():""});return}
+      rows.push({cells:[].map.call(tr.children,function(td){var badge=td.querySelector(".badge");
+        return{text:td.textContent.replace(/\s+/g," ").trim(),cls:badge?"b-"+(badge.className.replace("badge","").trim().split(" ")[0]||""):td.classList.contains("up")?"up":td.classList.contains("down")?"down":"",right:td.classList.contains("r")}})});
+    });
+    var extra=block.querySelector(".range-summary");
+    return{title:title.trim(),head:head,rows:rows,summary:extra?[].map.call(extra.children,function(c){return c.textContent.replace(/\s+/g," ").trim()}).join(" · "):""};
+  }
+  function glanceData(){var g=document.getElementById("glance");if(!g||g.hidden)return null;
+    var items=[].map.call(g.children,function(d){var s=d.querySelector("span"),b=d.querySelector("b");return s&&b?{label:s.textContent.trim(),value:b.textContent.replace(/\s+/g," ").trim(),cls:b.classList.contains("up")?"up":b.classList.contains("down")?"down":""}:null}).filter(Boolean);
+    return items.length?items:null}
+  function fullImage(){
+    var chartCanvas=chartImage(),k=chartCanvas.width/((liveBox.clientWidth||chartCanvas.width)),font=" Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
+    var C={bg:"#101820",line:"#26303c",panel:"#151e27",fg:"#e6ebf2",muted:"#9aa6b8",up:"#3ccf91",down:"#ef6b73",cz:"#e8a765",pa:"#4fd6c3",bos:"#a99cf0",choch:"#e27bd0"};
+    var badge={"b-resistance":C.down,"b-support":C.up,"b-equilibrium":C.muted,"b-fvg":C.pa,"b-bos":C.bos,"b-choch":C.choch,"b-sweep":C.cz,"b-avwap":C.fg};
+    var parts=method==="pa"?["range-block","fvg-block","structure-block"].map(tableData).filter(Boolean):[tableData("zones-block")].filter(Boolean);
+    var glance=method==="pa"?glanceData():null;
+    var pw=Math.round(chartCanvas.width*0.62),pad=Math.round(18*k),rowH=Math.round(26*k),y0=Math.round(54*k);
+    // Measure first, so the canvas is as tall as the longer of the two sides.
+    var m=document.createElement("canvas").getContext("2d");
+    function h(){var y=y0+pad;if(glance)y+=Math.ceil(glance.length/2)*Math.round(52*k)+pad;parts.forEach(function(p){y+=Math.round(30*k)+(p.summary?Math.round(20*k):0)+rowH*(p.rows.length+1)+pad});return y+pad}
+    var W=chartCanvas.width+pw,H=Math.max(chartCanvas.height,h());
+    var out=document.createElement("canvas");out.width=W;out.height=H;var g=out.getContext("2d");
+    g.fillStyle=C.bg;g.fillRect(0,0,W,H);g.drawImage(chartCanvas,0,0);
+    g.fillStyle=C.line;g.fillRect(chartCanvas.width,0,Math.max(1,Math.round(k)),H);
+    var x0=chartCanvas.width+pad,w=pw-2*pad,y=y0+pad;g.textBaseline="middle";
+    function text(t,x,yy,size,weight,color,align){g.font=(weight||500)+" "+Math.round(size*k)+"px"+font;g.fillStyle=color;g.textAlign=align||"left";g.fillText(t,x,yy)}
+    function fitText(t,size,weight,maxW){g.font=(weight||500)+" "+Math.round(size*k)+"px"+font;if(g.measureText(t).width<=maxW)return t;while(t.length>1&&g.measureText(t+"…").width>maxW)t=t.slice(0,-1);return t+"…"}
+    if(glance){var bw=(w-Math.round(8*k))/2,bh=Math.round(44*k);
+      glance.forEach(function(it,i){var bx=x0+(i%2)*(bw+Math.round(8*k)),by=y+Math.floor(i/2)*Math.round(52*k);
+        g.fillStyle=C.panel;g.fillRect(bx,by,bw,bh);g.strokeStyle=C.line;g.lineWidth=Math.max(1,k);g.strokeRect(bx,by,bw,bh);
+        text(fitText(it.label,10.5,500,bw-Math.round(16*k)),bx+Math.round(8*k),by+Math.round(13*k),10.5,500,C.muted);
+        text(fitText(it.value,13,700,bw-Math.round(16*k)),bx+Math.round(8*k),by+Math.round(31*k),13,700,it.cls==="up"?C.up:it.cls==="down"?C.down:C.fg)});
+      y+=Math.ceil(glance.length/2)*Math.round(52*k)+pad}
+    parts.forEach(function(p){
+      text(p.title,x0,y+Math.round(12*k),14,700,C.fg);y+=Math.round(30*k);
+      if(p.summary){text(fitText(p.summary,11,500,w),x0,y+Math.round(4*k),11,500,C.muted);y+=Math.round(20*k)}
+      // Column widths from the widest text in each column; the font shrinks a little if the table is too wide.
+      var n=Math.max(p.head.length,1),gap=Math.round(14*k),fs=11.5,widths;
+      for(;fs>=9;fs-=0.5){g.font="600 "+Math.round(fs*k)+"px"+font;widths=[];for(var ci=0;ci<n;ci++){var mx=g.measureText(p.head[ci]||"").width;p.rows.forEach(function(r){if(r.cells&&r.cells[ci])mx=Math.max(mx,g.measureText(r.cells[ci].text).width)});widths.push(mx)}
+        if(widths.reduce(function(a,b){return a+b},0)+gap*(n-1)<=w)break}
+      var spare=Math.max(0,w-widths.reduce(function(a,b){return a+b},0)-gap*(n-1));widths[0]+=spare;
+      var ends=[];widths.reduce(function(acc,wd,i){ends[i]=acc+wd;return acc+wd+gap},x0);
+      var colX=function(i){return i===0?x0:ends[i]},rest=0,first=widths[0];
+      p.head.forEach(function(t,i){text(t,colX(i),y+rowH/2,Math.min(10.5,fs),600,C.muted,i===0?"left":"right")});
+      y+=rowH;g.fillStyle=C.line;g.fillRect(x0,y-1,w,Math.max(1,Math.round(k)));
+      p.rows.forEach(function(r){
+        if(r.now){g.fillStyle="rgba(232,167,101,.10)";g.fillRect(x0,y+2,w,rowH-4);text(r.text,x0+Math.round(6*k),y+rowH/2,11.5,600,C.cz);text(r.value,x0+w,y+rowH/2,11.5,700,C.cz,"right")}
+        else r.cells.forEach(function(c,i){if(i>=n)return;var col=badge[c.cls]||(c.cls==="up"?C.up:c.cls==="down"?C.down:C.fg);
+          text(fitText(c.text,fs,i===0?600:500,widths[i]+2),colX(i),y+rowH/2,fs,i===0?600:500,col,i===0?"left":"right")});
+        y+=rowH;g.fillStyle=C.line;g.fillRect(x0,y-1,w,Math.max(1,Math.round(k*0.6)));
+      });
+      y+=pad;
+    });
+    return out;
+  }
+  // For the admin desk (same origin): chart only, or chart + tables.
+  window.MLMExport={
+    ready:function(){return!!liveChart&&!(report&&report.locked)},
+    save:function(withTables){
+      if(!this.ready())return false;
+      (withTables?fullImage():chartImage()).toBlob(function(blob){if(!blob)return;var a=document.createElement("a"),url=URL.createObjectURL(blob);
+        a.href=url;a.download=withTables?chartFileName().replace(/\.png$/,"_tables.png"):chartFileName();document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},10000)},"image/png");
+      return true;
+    }
+  };
   download.addEventListener("click",function(){
     if(!window.Features||Features.state("chartDownload")!=="allowed"||!liveChart||(report&&report.locked))return;
     chartImage().toBlob(function(blob){

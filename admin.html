@@ -192,7 +192,7 @@ load();
     en:{area:{members:"Members",social:"Social media"},auto:"Automatic",manual:"Choose myself",modeHelp:{auto:"The plan is made for you: assets rotate every week.",manual:"You choose the assets; until you save, the plan is only a suggestion."},
       prev:"← Previous week",next:"Next week →",thisWeek:"This week",week:"Week {n}",flow:"Publishing flow",suggested:"Suggested plan. Change it if you like, then save it.",savePlan:"Save plan",planSaved:"Plan saved",
       days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],kinds:{weekly:"Weekly outlook",chart:"Chart",review:"Week review",library:"Library"},today:"Today",
-      status:{planned:"Planned",prepared:"Prepared",posted:"Posted"},copy:"Copy",copied:"Copied",copyTitle:"Copy title",png:"Save PNG",pngWait:"The chart is still loading.",
+      status:{planned:"Planned",prepared:"Prepared",posted:"Posted"},copy:"Copy",copied:"Copied",copyTitle:"Copy title",png:"Save PNG",pngTables:"PNG with tables",pngWait:"The chart is still loading.",
       asset:"Asset",method:"Method",tf:"Timeframe",cz:"Critical Zones",pa:"Price Action",noAnalysis:"No published analysis for this choice.",
       text:"Your post",textPh:"Write the post here…",xUrl:"Link to the X post",save:"Save",saved:"Saved",errUrl:"Use the link of the post on x.com.",errPlan:"Save the plan first.",
       reviewHelp:"This week's chart posts. Open one to see the chart as it is now:",noPosts:"No chart posts this week.",thread:"Tweet thread",threadHelp:"Built from the library page; edit before copying. Each box is one tweet.",
@@ -200,7 +200,7 @@ load();
     tr:{area:{members:"Üyeler",social:"Sosyal medya"},auto:"Otomatik",manual:"Tercihli",modeHelp:{auto:"Plan senin için yapılır: varlıklar her hafta sırayla döner.",manual:"Varlıkları sen seçersin; kaydedene kadar plan yalnızca bir öneridir."},
       prev:"← Önceki hafta",next:"Sonraki hafta →",thisWeek:"Bu hafta",week:"{n}. hafta",flow:"Yayın akışı",suggested:"Önerilen plan. İstediğin gibi değiştir, sonra kaydet.",savePlan:"Planı kaydet",planSaved:"Plan kaydedildi",
       days:["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"],kinds:{weekly:"Haftanın görünümü",chart:"Grafik",review:"Hafta değerlendirmesi",library:"Kütüphane"},today:"Bugün",
-      status:{planned:"Planlandı",prepared:"Hazırlandı",posted:"Paylaşıldı"},copy:"Kopyala",copied:"Kopyalandı",copyTitle:"Başlığı kopyala",png:"PNG kaydet",pngWait:"Grafik henüz yükleniyor.",
+      status:{planned:"Planlandı",prepared:"Hazırlandı",posted:"Paylaşıldı"},copy:"Kopyala",copied:"Kopyalandı",copyTitle:"Başlığı kopyala",png:"PNG kaydet",pngTables:"PNG + tablolar",pngWait:"Grafik henüz yükleniyor.",
       asset:"Varlık",method:"Yöntem",tf:"Zaman dilimi",cz:"Kritik Bölgeler",pa:"Price Action",noAnalysis:"Bu seçim için yayında analiz yok.",
       text:"Gönderin",textPh:"Gönderini buraya yaz…",xUrl:"X gönderisinin bağlantısı",save:"Kaydet",saved:"Kaydedildi",errUrl:"x.com'daki gönderinin bağlantısını kullan.",errPlan:"Önce planı kaydet.",
       reviewHelp:"Bu haftanın grafik gönderileri. Birini açıp grafiğin bugünkü haline bak:",noPosts:"Bu hafta grafik gönderisi yok.",thread:"Tweet dizisi",threadHelp:"Kütüphane sayfasından kuruldu; kopyalamadan önce düzenleyebilirsin. Her kutu bir tweet.",
@@ -243,6 +243,10 @@ load();
     b.addEventListener("click",function(){var btn=null;try{btn=f.contentDocument.querySelector(selector)}catch(e){}
       if(!btn||btn.disabled){msg.textContent=t.pngWait;msg.className="msg err";return}msg.textContent="";btn.click()});return b}
 
+  // Chart only, or chart + the view's tables (Price Action: at a glance, range, FVG, structure; Critical Zones: zones).
+  function exportButton(f,withTables,msg){var t=w(),b=el("button",withTables?"btn ghost":"btn",withTables?t.pngTables:t.png);b.type="button";
+    b.addEventListener("click",function(){var ex=null;try{ex=f.contentWindow.MLMExport}catch(e){}
+      if(!ex||!ex.save(withTables)){msg.textContent=t.pngWait;msg.className="msg err";return}msg.textContent=""});return b}
   // ---------- library post: image + thread ----------
   var DARK={"--fg":"#edf2f4","--muted":"#9aaab5","--up":"#3ccf91","--down":"#ef6b73","--cz":"#e8a765","--pa":"#4fd6c3","--accent":"#4fd6c3","--line":"#28343d","--bg":"#10161d","--panel":"#151e27"};
   var libCss=null,logoUri=null;
@@ -329,13 +333,13 @@ load();
       tools.appendChild(sel(t.asset,d.assets.map(function(a){return[a.symbol,a.symbol.replace(/USDT$/,"")]}),p.symbol,function(v){change("symbol",v)}));
       tools.appendChild(sel(t.method,[["cz",t.cz],["pa",t.pa]],p.method,function(v){change("method",v)}));
       tools.appendChild(sel(t.tf,[["1h","1H"],["4h","4H"],["1d","1D"],["1w","1W"]],p.timeframe,function(v){change("timeframe",v)}));
-      if(p.symbol&&has(p.symbol,p.method,p.timeframe)){var f=frame(chartSrc(p));tools.appendChild(pngButton(f,"#download",msg));tools.appendChild(msg);ws.appendChild(tools);ws.appendChild(f)}
+      if(p.symbol&&has(p.symbol,p.method,p.timeframe)){var f=frame(chartSrc(p));tools.appendChild(exportButton(f,false,msg));tools.appendChild(exportButton(f,true,msg));tools.appendChild(msg);ws.appendChild(tools);ws.appendChild(f)}
       else{ws.appendChild(tools);ws.appendChild(el("p","notice",t.noAnalysis))}
     }else if(p.kind==="weekly"){var fw=frame("weekly.html?embed=1");tools.appendChild(pngButton(fw,"#wk-download",msg));tools.appendChild(msg);ws.appendChild(tools);ws.appendChild(fw)}
     else if(p.kind==="review"){
       var list=d.posts.filter(function(x){return x.kind==="chart"&&x.symbol});ws.appendChild(el("p","small muted",list.length?t.reviewHelp:t.noPosts));
       var holder=el("div"),rt=el("div","desk-tools");list.forEach(function(x){var b=el("button","btn ghost",t.days[x.day].slice(0,3)+": "+title(x));b.type="button";
-        b.addEventListener("click",function(){holder.textContent="";var f=frame(chartSrc(x)),tl=el("div","desk-tools"),m=el("span","msg");tl.appendChild(pngButton(f,"#download",m));tl.appendChild(m);
+        b.addEventListener("click",function(){holder.textContent="";var f=frame(chartSrc(x)),tl=el("div","desk-tools"),m=el("span","msg");tl.appendChild(exportButton(f,false,m));tl.appendChild(exportButton(f,true,m));tl.appendChild(m);
           if(x.xUrl){var a=el("a","sp-link","X ↗");a.href=x.xUrl;a.target="_blank";a.rel="noopener";tl.appendChild(a)}holder.appendChild(tl);holder.appendChild(f)});rt.appendChild(b)});
       ws.appendChild(rt);ws.appendChild(holder);
     }else if(p.kind==="library"){
