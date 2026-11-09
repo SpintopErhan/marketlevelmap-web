@@ -58,22 +58,27 @@ dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-
 .empty{padding:30px 16px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);text-align:center;max-width:980px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:80;padding:10px 16px;border-radius:10px;background:var(--fg);color:var(--bg);font-size:13px;font-weight:600}
 .area{margin:0 0 18px}
-.sp-nav{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.sp-nav .btn{height:34px;padding:0 12px;font-size:13px}.sp-week{font-size:14px}
-.sp-save{display:flex;flex-wrap:wrap;gap:12px;align-items:center;max-width:980px;margin:0 0 14px;padding:12px 16px;border:1px dashed var(--cz);border-radius:12px;font-size:14px}
-.sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;max-width:1240px}
-.sp{display:flex;flex-direction:column;gap:10px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
-.sp.is-posted{border-color:color-mix(in srgb,var(--up) 55%,var(--line))}
-.sp-head{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}.sp-head b{font-size:14px}.sp-kind{color:var(--muted);font-size:12px;font-weight:600}
-.sp-status{margin-left:auto;height:30px;padding:0 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font-size:12px}
-.sp-target{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}.sp-title{font-size:14px;margin-right:auto}
-.sp-sel{display:grid;gap:2px;font-size:11px;color:var(--muted)}.sp-sel select{height:30px;padding:0 6px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font-size:13px}
-.sp-warn{color:var(--down);font-size:12px}
-.sp-facts{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:0;padding:10px 12px;border-radius:10px;background:var(--bg);font-size:13px}.sp-facts dt{color:var(--muted)}.sp-facts dd{margin:0;font-variant-numeric:tabular-nums}
-.sp-link{color:var(--accent);font-size:13px;font-weight:600;text-decoration:none}
-.sp-rlist{margin:0;padding-left:18px;font-size:13px}.sp-rlist li{margin:3px 0}.sp-rlist a{margin-left:8px;color:var(--accent);text-decoration:none}
-.sp-field{display:grid;gap:4px;font-size:12px;font-weight:600}.sp-field textarea,.sp-field input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:14px;font-weight:400;resize:vertical}
-.sp-count{justify-self:end;color:var(--muted);font-weight:500}.sp-count.over{color:var(--down)}
-.sp .btn{height:34px;padding:0 14px;font-size:13px}
+.sp-nav{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.sp-nav .btn{height:34px;padding:0 12px;font-size:13px}.sp-week{font-size:14px;margin:0 4px}
+.sp-save{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 14px;padding:12px 16px;border:1px dashed var(--cz);border-radius:12px;font-size:14px}
+.flow{margin:0 0 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+.flow h2{margin:0;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+.flow-row{display:grid;grid-template-columns:150px 150px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;padding:10px 16px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--fg);font-size:13px;text-align:left;cursor:pointer}
+.flow-row:last-child{border-bottom:0}.flow-row:hover{background:var(--raise)}.flow-row.is-sel{background:var(--raise);box-shadow:inset 3px 0 0 var(--accent)}
+.flow-row.is-today .f-day{color:var(--accent);font-weight:700}.f-kind{color:var(--muted)}.f-title{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.f-st{padding:2px 10px;border-radius:999px;background:var(--bg);font-size:12px;font-weight:600;color:var(--muted)}.f-st.st-prepared{color:var(--cz)}.f-st.st-posted{color:var(--up)}
+.desk{padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.desk-head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:0 0 12px}.desk-head h2{margin:0;font-size:15px;width:100%}.desk-title{font-size:17px}
+.desk-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:0 0 12px}
+.desk-frame{display:block;width:100%;height:900px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.sp-sel{display:grid;gap:2px;font-size:11px;color:var(--muted)}.sp-sel select,.sp-status{height:34px;padding:0 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font-size:13px}
+.sp-link{color:var(--accent);font-size:13px;font-weight:600;text-decoration:none;align-self:center}
+.desk-form{display:grid;gap:10px;max-width:760px;margin-top:16px}
+.sp-field{display:grid;gap:4px;font-size:12px;font-weight:600}.sp-field textarea,.sp-field input,.tweet textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:14px;font-weight:400;resize:vertical}
+.sp-count{justify-self:end;color:var(--muted);font-weight:500;font-size:12px}.sp-count.over{color:var(--down)}
+.desk .btn{height:34px;padding:0 14px;font-size:13px}
+.desk-lib h3{margin:16px 0 4px;font-size:14px}.lib-img{display:block;width:100%;max-width:960px;border:1px solid var(--line);border-radius:12px}
+.tweet{display:grid;gap:6px;max-width:760px;margin:10px 0 0}.tweet .row{justify-content:space-between}
+@media(max-width:760px){.flow-row{grid-template-columns:1fr auto}.f-kind{display:none}.f-title{grid-column:1/-1;grid-row:2}}
 @media(max-width:760px){.u{grid-template-columns:1fr}.u .acts{justify-content:flex-start}}
 </style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c417fd53" defer></script><script src="assets/market-ui.js?v=4e4d2911"></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
@@ -177,136 +182,211 @@ $("q").addEventListener("input",function(){var v=this.value.trim();clearTimeout(
 load();
 </script>
 <script>
-/* Social media planner (README "Social media planner"): the week's plan from /api/auth/admin/social, the facts
-   for each post, the admin's own draft text, status and the link to the X post. Nothing is posted from here. */
+/* Social media desk (README "Social media planner"): this week's publishing flow from /api/auth/admin/social, and a
+   workspace for the selected post. Chart posts open the analysis page itself (bulletin.html?embed=1) so every
+   tool of that page is here; "Save PNG" uses that page's own download (chart, chosen indicators and levels).
+   The library post builds an image and a tweet thread from the week's library page. Nothing is posted to X. */
 (function(){
-  var DAY=86400000,state={week:null,data:null,prices:{},dirty:false};
+  var DAY=86400000,state={week:null,data:null,sel:null,topics:null,lib:{}};
   var W={
-    en:{area:{members:"Members",social:"Social media"},auto:"Automatic",manual:"Choose myself",modeHelp:{auto:"The plan is made for you: assets rotate every week.",manual:"You choose the assets; the panel suggests a plan until you save one."},
-      prev:"← Previous week",next:"Next week →",week:"Week {n}",suggested:"Suggested plan. Change it if you like, then save it.",savePlan:"Save plan",planSaved:"Plan saved",
-      days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],kinds:{weekly:"Weekly outlook",chart:"Chart",review:"Week review"},
-      status:{planned:"Planned",prepared:"Prepared",posted:"Posted"},copyTitle:"Copy title",copied:"Copied",openChart:"Open the chart (Download is there)",openWeekly:"Open the weekly outlook (Download image)",
+    en:{area:{members:"Members",social:"Social media"},auto:"Automatic",manual:"Choose myself",modeHelp:{auto:"The plan is made for you: assets rotate every week.",manual:"You choose the assets; until you save, the plan is only a suggestion."},
+      prev:"← Previous week",next:"Next week →",thisWeek:"This week",week:"Week {n}",flow:"Publishing flow",suggested:"Suggested plan. Change it if you like, then save it.",savePlan:"Save plan",planSaved:"Plan saved",
+      days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],kinds:{weekly:"Weekly outlook",chart:"Chart",review:"Week review",library:"Library"},today:"Today",
+      status:{planned:"Planned",prepared:"Prepared",posted:"Posted"},copy:"Copy",copied:"Copied",copyTitle:"Copy title",png:"Save PNG",pngWait:"The chart is still loading.",
+      asset:"Asset",method:"Method",tf:"Timeframe",cz:"Critical Zones",pa:"Price Action",noAnalysis:"No published analysis for this choice.",
       text:"Your post",textPh:"Write the post here…",xUrl:"Link to the X post",save:"Save",saved:"Saved",errUrl:"Use the link of the post on x.com.",errPlan:"Save the plan first.",
-      price:"Price",analysis:"Analysis",support:"Nearest support",resistance:"Nearest resistance",inside:"Price is inside",structure:"Structure",lastEvent:"Last event",protected:"Protected level",
-      up:"Bullish",down:"Bearish",none:"No zone",noFacts:"The analysis could not be read.",reviewHelp:"This week's posts, to pick one or two for the review:",noPosts:"No chart posts this week.",
-      asset:"Asset",method:"Method",tf:"Timeframe",cz:"Critical Zones",pa:"Price Action",noAnalysis:"no published analysis"},
-    tr:{area:{members:"Üyeler",social:"Sosyal medya"},auto:"Otomatik",manual:"Tercihli",modeHelp:{auto:"Plan senin için yapılır: varlıklar her hafta sırayla döner.",manual:"Varlıkları sen seçersin; kaydedene kadar panel bir plan önerir."},
-      prev:"← Önceki hafta",next:"Sonraki hafta →",week:"{n}. hafta",suggested:"Önerilen plan. İstediğin gibi değiştir, sonra kaydet.",savePlan:"Planı kaydet",planSaved:"Plan kaydedildi",
-      days:["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"],kinds:{weekly:"Haftanın görünümü",chart:"Grafik",review:"Hafta değerlendirmesi"},
-      status:{planned:"Planlandı",prepared:"Hazırlandı",posted:"Paylaşıldı"},copyTitle:"Başlığı kopyala",copied:"Kopyalandı",openChart:"Grafiği aç (İndir orada)",openWeekly:"Haftanın görünümünü aç (Görseli indir)",
+      reviewHelp:"This week's chart posts. Open one to see the chart as it is now:",noPosts:"No chart posts this week.",thread:"Tweet thread",threadHelp:"Built from the library page; edit before copying. Each box is one tweet.",
+      libFail:"The library page could not be read.",openPage:"Open the library page",libImage:"Image"},
+    tr:{area:{members:"Üyeler",social:"Sosyal medya"},auto:"Otomatik",manual:"Tercihli",modeHelp:{auto:"Plan senin için yapılır: varlıklar her hafta sırayla döner.",manual:"Varlıkları sen seçersin; kaydedene kadar plan yalnızca bir öneridir."},
+      prev:"← Önceki hafta",next:"Sonraki hafta →",thisWeek:"Bu hafta",week:"{n}. hafta",flow:"Yayın akışı",suggested:"Önerilen plan. İstediğin gibi değiştir, sonra kaydet.",savePlan:"Planı kaydet",planSaved:"Plan kaydedildi",
+      days:["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"],kinds:{weekly:"Haftanın görünümü",chart:"Grafik",review:"Hafta değerlendirmesi",library:"Kütüphane"},today:"Bugün",
+      status:{planned:"Planlandı",prepared:"Hazırlandı",posted:"Paylaşıldı"},copy:"Kopyala",copied:"Kopyalandı",copyTitle:"Başlığı kopyala",png:"PNG kaydet",pngWait:"Grafik henüz yükleniyor.",
+      asset:"Varlık",method:"Yöntem",tf:"Zaman dilimi",cz:"Kritik Bölgeler",pa:"Price Action",noAnalysis:"Bu seçim için yayında analiz yok.",
       text:"Gönderin",textPh:"Gönderini buraya yaz…",xUrl:"X gönderisinin bağlantısı",save:"Kaydet",saved:"Kaydedildi",errUrl:"x.com'daki gönderinin bağlantısını kullan.",errPlan:"Önce planı kaydet.",
-      price:"Fiyat",analysis:"Analiz",support:"En yakın destek",resistance:"En yakın direnç",inside:"Fiyat bölgenin içinde",structure:"Yapı",lastEvent:"Son olay",protected:"Korunan seviye",
-      up:"Yükseliş",down:"Düşüş",none:"Bölge yok",noFacts:"Analiz okunamadı.",reviewHelp:"Bu haftanın gönderileri; değerlendirme için bir ya da ikisini seç:",noPosts:"Bu hafta grafik gönderisi yok.",
-      asset:"Varlık",method:"Yöntem",tf:"Zaman dilimi",cz:"Kritik Bölgeler",pa:"Price Action",noAnalysis:"yayında analiz yok"}
+      reviewHelp:"Bu haftanın grafik gönderileri. Birini açıp grafiğin bugünkü haline bak:",noPosts:"Bu hafta grafik gönderisi yok.",thread:"Tweet dizisi",threadHelp:"Kütüphane sayfasından kuruldu; kopyalamadan önce düzenleyebilirsin. Her kutu bir tweet.",
+      libFail:"Kütüphane sayfası okunamadı.",openPage:"Kütüphane sayfasını aç",libImage:"Görsel"}
   };
-  var METHOD_EN={cz:"Critical Zones",pa:"Price Action"};
+  var METHOD_EN={cz:"Critical Zones",pa:"Price Action"},ORDER=[0,1,2,7,3,4,5,6];
   function w(){return W[lang()]}
   function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
   function loc(){return lang()==="tr"?"tr-TR":"en-GB"}
-  function dayDate(week,i){return new Date(Date.parse(week+"T00:00:00Z")+i*DAY).toLocaleDateString(loc(),{day:"numeric",month:"short",timeZone:"UTC"})}
+  function dayOf(p){return p.kind==="library"?2:p.day}
+  function dateOf(week,day){return Date.parse(week+"T00:00:00Z")+day*DAY}
+  function dayDate(week,day){return new Date(dateOf(week,day)).toLocaleDateString(loc(),{day:"numeric",month:"short",timeZone:"UTC"})}
   function isoWeek(ms){var d=new Date(ms+3*DAY),y=d.getUTCFullYear(),jan4=Date.UTC(y,0,4),mon1=jan4-((new Date(jan4).getUTCDay()+6)%7)*DAY;return 1+Math.floor((ms-mon1)/(7*DAY))}
   function rangeEn(start){var end=start+6*DAY,m=function(t){return new Date(t).toLocaleDateString("en-US",{month:"short",timeZone:"UTC"})},d=function(t){return new Date(t).getUTCDate()};
     return m(start)===m(end)?m(start)+" "+d(start)+"–"+d(end):m(start)+" "+d(start)+" – "+m(end)+" "+d(end)}
-  function title(p,week){
+  function topicOf(week){var t=state.topics;if(!t||!t.topics||!t.topics.length)return null;var i=Math.max(0,Math.floor((Date.parse(week+"T00:00:00Z")-Date.parse(t.anchorWeekStartUtc))/(7*DAY)))%t.topics.length;return t.topics[i]}
+  function title(p){
+    var week=state.week;
     if(p.kind==="weekly"){var s=Date.parse(week+"T00:00:00Z")-7*DAY;return"Weekly outlook · "+rangeEn(s)+" · Week "+isoWeek(s)}
     if(p.kind==="review")return"Week review · "+rangeEn(Date.parse(week+"T00:00:00Z"));
+    if(p.kind==="library"){var tp=topicOf(week);return tp?tp.en.name:"Library"}
     return p.symbol?p.symbol+" · "+String(p.timeframe).toUpperCase()+" · "+METHOD_EN[p.method]:"—";
   }
-  function money(v,sym){var p=state.prices[sym];var d=window.MarketUI?MarketUI.digitsFor(p||v):2;return window.MarketUI?MarketUI.price(v,d):String(v)}
-  function pct(v){var n=Math.abs(v*100).toLocaleString(loc(),{minimumFractionDigits:1,maximumFractionDigits:1}),s=v>=0?"+":"−";return lang()==="tr"?s+"%"+n:s+n+"%"}
-  function facts(p){
-    var t=w(),box=el("dl","sp-facts"),f=p.facts,price=state.prices[p.symbol];
-    function row(k,v){box.appendChild(el("dt",null,k));box.appendChild(el("dd",null,v))}
-    if(!f){box.appendChild(el("dd","muted",t.noFacts));return box}
-    if(price)row(t.price,money(price,p.symbol));
-    if(f.analyzedAt)row(t.analysis,new Date(f.analyzedAt).toLocaleString(loc(),{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",timeZone:"UTC"})+" UTC");
-    if(price&&f.zones.length){
-      var inside=f.zones.filter(function(z){return z.low<=price&&price<=z.high})[0];
-      var below=f.zones.filter(function(z){return z.high<price}).sort(function(a,b){return b.high-a.high})[0];
-      var above=f.zones.filter(function(z){return z.low>price}).sort(function(a,b){return a.low-b.low})[0];
-      if(inside)row(t.inside,money(inside.low,p.symbol)+"–"+money(inside.high,p.symbol));
-      row(t.support,below?money(below.low,p.symbol)+"–"+money(below.high,p.symbol)+" ("+pct(below.high/price-1)+")":t.none);
-      row(t.resistance,above?money(above.low,p.symbol)+"–"+money(above.high,p.symbol)+" ("+pct(above.low/price-1)+")":t.none);
-    }
-    var st=f.structure;
-    if(st&&st.state&&st.state!=="undetermined")row(t.structure,st.state==="bullish"?"↑ "+t.up:st.state==="bearish"?"↓ "+t.down:st.state);
-    if(st&&st.last)row(t.lastEvent,st.last.type+" "+(st.last.direction==="bullish"?"↑":"↓")+(st.last.level?" "+money(st.last.level,p.symbol):"")+" · "+new Date(st.last.time).toLocaleDateString(loc(),{day:"numeric",month:"short",timeZone:"UTC"}));
-    if(st&&st.protectedLevel)row(t.protected,money(st.protectedLevel,p.symbol));
-    return box;
-  }
-  function chartHref(p){return"bulletin.html?asset="+encodeURIComponent(p.symbol)+"&tf="+encodeURIComponent(p.timeframe)+(p.method==="pa"?"&method=pa":"")}
   function copyText(text,btn){var t=w(),done=function(){var o=btn.textContent;btn.textContent=t.copied;setTimeout(function(){btn.textContent=o},1200)};
     if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done,function(){prompt("",text)});else prompt("",text)}
-  function target(p,editable){
-    var t=w(),wrap=el("div","sp-target");
-    if(p.kind!=="chart"||!editable){var h=el("b","sp-title",title(p,state.week));wrap.appendChild(h)}
-    else{
-      var assets=state.data.assets;
-      function sel(label,options,value,on){var l=el("label","sp-sel");l.appendChild(el("span",null,label));var s=el("select");options.forEach(function(o){var op=el("option",null,o[1]);op.value=o[0];if(o[0]===value)op.selected=true;s.appendChild(op)});s.addEventListener("change",function(){on(s.value)});l.appendChild(s);return l}
-      var has=function(sym,m,tf){var a=assets.filter(function(x){return x.symbol===sym})[0];return!!(a&&a[m].indexOf(tf)>-1)};
-      wrap.appendChild(sel(t.asset,assets.map(function(a){return[a.symbol,a.symbol.replace(/USDT$/,"")]}),p.symbol,function(v){p.symbol=v;changed()}));
-      wrap.appendChild(sel(t.method,[["cz",t.cz],["pa",t.pa]],p.method,function(v){p.method=v;changed()}));
-      wrap.appendChild(sel(t.tf,[["1h","1H"],["4h","4H"],["1d","1D"],["1w","1W"]],p.timeframe,function(v){p.timeframe=v;changed()}));
-      if(p.symbol&&!has(p.symbol,p.method,p.timeframe))wrap.appendChild(el("span","sp-warn",t.noAnalysis));
-    }
-    var c=el("button","copy",t.copyTitle);c.type="button";c.addEventListener("click",function(){copyText(title(p,state.week),c)});wrap.appendChild(c);
-    return wrap;
-  }
-  function changed(){state.dirty=true;render()}
-  function card(p,editable){
-    var t=w(),a=el("article","sp sp-"+p.kind+(p.status==="posted"?" is-posted":""));
-    var head=el("div","sp-head");head.appendChild(el("b",null,t.days[p.day]+" · "+dayDate(state.week,p.day)));head.appendChild(el("span","sp-kind",t.kinds[p.kind]+(p.kind==="chart"&&p.timeframe?" · "+p.timeframe.toUpperCase():"")));
-    var stSel=el("select","sp-status");["planned","prepared","posted"].forEach(function(s){var o=el("option",null,t.status[s]);o.value=s;if(s===(p._status||p.status))o.selected=true;stSel.appendChild(o)});stSel.addEventListener("change",function(){p._status=stSel.value});head.appendChild(stSel);a.appendChild(head);
-    a.appendChild(target(p,editable));
-    if(p.kind==="chart"&&p.symbol){a.appendChild(facts(p));var l=el("a","sp-link",t.openChart);l.href=chartHref(p);l.target="_blank";l.rel="noopener";a.appendChild(l)}
-    if(p.kind==="weekly"){var lw=el("a","sp-link",t.openWeekly);lw.href="weekly.html";lw.target="_blank";lw.rel="noopener";a.appendChild(lw)}
-    if(p.kind==="review"){
-      var list=state.data.posts.filter(function(x){return x.kind==="chart"&&x.symbol});a.appendChild(el("p","small muted",list.length?t.reviewHelp:t.noPosts));
-      var ul=el("ul","sp-rlist");list.forEach(function(x){var li=el("li");li.appendChild(el("span",null,t.days[x.day]+": "+title(x,state.week)+" · "+t.status[x.status]));
-        if(x.xUrl){var xa=el("a",null,"X ↗");xa.href=x.xUrl;xa.target="_blank";xa.rel="noopener";li.appendChild(xa)}
-        var ca=el("a",null,"↗");ca.href=chartHref(x);ca.target="_blank";ca.rel="noopener";ca.title=t.openChart;li.appendChild(ca);ul.appendChild(li)});a.appendChild(ul);
-    }
-    var ta=el("textarea","sp-text");ta.placeholder=t.textPh;ta.value=p._text!=null?p._text:(p.text||"");ta.rows=4;var count=el("small","sp-count");
-    function cnt(){count.textContent=ta.value.length+" / 280";count.className="sp-count"+(ta.value.length>280?" over":"")}cnt();ta.addEventListener("input",function(){p._text=ta.value;cnt()});
-    var lab=el("label","sp-field");lab.appendChild(el("span",null,t.text));lab.appendChild(ta);lab.appendChild(count);a.appendChild(lab);
-    var xi=el("input","sp-x");xi.type="url";xi.placeholder="https://x.com/marketlevelmap/status/…";xi.value=p._xUrl!=null?p._xUrl:(p.xUrl||"");xi.addEventListener("input",function(){p._xUrl=xi.value});var lx=el("label","sp-field");lx.appendChild(el("span",null,t.xUrl));lx.appendChild(xi);a.appendChild(lx);
-    var row=el("div","row"),btn=el("button","btn",t.save),msg=el("span","msg");btn.type="button";row.appendChild(btn);row.appendChild(msg);a.appendChild(row);
-    var locked=!state.data.saved;[ta,xi,stSel,btn].forEach(function(x){x.disabled=locked});if(locked)msg.textContent=t.errPlan;
-    btn.addEventListener("click",function(){
-      btn.disabled=true;msg.textContent="";msg.className="msg";
-      post("/api/auth/admin/social/post",{week:state.week,day:p.day,status:stSel.value,text:ta.value,xUrl:xi.value.trim()}).then(function(d){
-        if(d.ok){p.status=stSel.value;p.text=ta.value;p.xUrl=xi.value.trim();p._text=p._xUrl=p._status=null;msg.textContent=t.saved;msg.className="msg ok";a.classList.toggle("is-posted",p.status==="posted")}
-        else{msg.textContent=d.error==="x_url"?t.errUrl:d.error==="not_saved"?t.errPlan:words().errors.server;msg.className="msg err"}
-      }).catch(function(){msg.textContent=words().errors.server;msg.className="msg err"}).then(function(){btn.disabled=false});
-    });
-    return a;
-  }
   function post(url,body){return fetch(url,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).then(function(r){return r.json()})}
+  function savePlan(){var d=state.data;return post("/api/auth/admin/social/plan",{week:d.week,posts:d.posts.filter(function(p){return p.day<7}).map(function(p){return{day:p.day,symbol:p.symbol,method:p.method,timeframe:p.timeframe}})})}
+  function has(sym,m,tf){var a=state.data.assets.filter(function(x){return x.symbol===sym})[0];return!!(a&&a[m].indexOf(tf)>-1)}
+  function chartSrc(p){return"bulletin.html?asset="+encodeURIComponent(p.symbol)+"&tf="+encodeURIComponent(p.timeframe)+(p.method==="pa"?"&method=pa":"")+"&embed=1"}
+
+  // ---------- iframe (analysis page / weekly outlook) ----------
+  function frame(src){
+    var f=el("iframe","desk-frame");f.src=src;f.title="workspace";f.loading="eager";
+    // Height of the embedded page's content (its header and footer are hidden), so the panel scrolls, not the frame.
+    var fit=function(){try{var m=f.contentDocument&&f.contentDocument.querySelector("main");if(m){var r=m.getBoundingClientRect();f.style.height=Math.max(600,Math.ceil(r.bottom+(f.contentWindow.scrollY||0))+16)+"px"}}catch(e){}};
+    f.addEventListener("load",function(){fit();var n=0,iv=setInterval(function(){fit();if(++n>40||!f.isConnected)clearInterval(iv)},500)});
+    return f;
+  }
+  function pngButton(f,selector,msg){var t=w(),b=el("button","btn",t.png);b.type="button";
+    b.addEventListener("click",function(){var btn=null;try{btn=f.contentDocument.querySelector(selector)}catch(e){}
+      if(!btn||btn.disabled){msg.textContent=t.pngWait;msg.className="msg err";return}msg.textContent="";btn.click()});return b}
+
+  // ---------- library post: image + thread ----------
+  var DARK={"--fg":"#edf2f4","--muted":"#9aaab5","--up":"#3ccf91","--down":"#ef6b73","--cz":"#e8a765","--pa":"#4fd6c3","--accent":"#4fd6c3","--line":"#28343d","--bg":"#10161d","--panel":"#151e27"};
+  var libCss=null,logoUri=null;
+  function getText(u){return fetch(u).then(function(r){if(!r.ok)throw new Error(u);return r.text()})}
+  function loadLib(tp){
+    var url=tp.en.url;if(state.lib[url])return state.lib[url];
+    state.lib[url]=Promise.all([getText(url),libCss||(libCss=getText("/assets/library.css")),logoUri?Promise.resolve(logoUri):getText("/assets/MarketLevelMap-mark-reverse.svg").then(function(t){return logoUri="data:image/svg+xml;base64,"+btoa(unescape(encodeURIComponent(t)))})]).then(function(r){
+      var doc=new DOMParser().parseFromString(r[0],"text/html");
+      var name=(doc.querySelector(".pattern-head h1")||{}).textContent||tp.en.name,summary=((doc.querySelector(".pattern-head .summary")||{}).textContent||tp.en.summary||"").trim();
+      var points=[].map.call(doc.querySelectorAll(".key-points li"),function(li){return li.textContent.trim()}).filter(Boolean);
+      var svg=doc.querySelector("figure svg.pattern-svg");
+      return{name:name.trim(),summary:summary,points:points,url:"https://marketlevelmap.com"+url,svg:svg?inlineSvg(svg.outerHTML,r[1]):null,logo:logoUri};
+    });
+    state.lib[url].catch(function(){delete state.lib[url]});
+    return state.lib[url];
+  }
+  // The figure's colours come from library.css classes; resolve them once (dark look) into inline styles.
+  function inlineSvg(markup,css){
+    var host=el("div");host.style.cssText="position:absolute;left:-9999px;top:0;width:800px";Object.keys(DARK).forEach(function(k){host.style.setProperty(k,DARK[k])});
+    host.style.setProperty("--lib-line","color-mix(in srgb,#edf2f4 72%,#9aaab5)");host.style.setProperty("--lib-guide","color-mix(in srgb,#9aaab5 75%,transparent)");
+    var st=el("style");st.textContent=(css.match(/\.pattern-svg[^{}]*\{[^}]*\}/g)||[]).join("\n");host.appendChild(st);host.insertAdjacentHTML("beforeend",markup);document.body.appendChild(host);
+    var svg=host.querySelector("svg");
+    // Read every element's colours first, then drop the classes (the rules are ".pattern-svg .x" selectors).
+    var nodes=[svg].concat([].slice.call(svg.querySelectorAll("*"))),props=["fill","stroke","stroke-width","stroke-dasharray","opacity","fill-opacity","stroke-opacity","font-size","font-weight","font-family"];
+    var styles=nodes.map(function(n){var c=getComputedStyle(n);return props.map(function(k){return[k,c.getPropertyValue(k)]})});
+    nodes.forEach(function(n,i){styles[i].forEach(function(kv){if(kv[1]&&kv[1]!=="normal")n.style.setProperty(kv[0],kv[1])});n.removeAttribute("class")});
+    var out=svg.outerHTML;host.remove();return out;
+  }
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function libImage(lib){
+    var vb=(lib.svg.match(/viewBox="([^"]+)"/)||[])[1]||"0 0 600 320",p=vb.split(/\s+/).map(Number),aw=1300,ah=600,s=Math.min(aw/p[2],ah/p[3]),fw=p[2]*s,fh=p[3]*s;
+    var inner=lib.svg.replace(/<svg[^>]*>/,'<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+vb+'" x="'+(800-fw/2)+'" y="'+(150+(ah-fh)/2)+'" width="'+fw+'" height="'+fh+'">');
+    return'<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" font-family="Inter,Segoe UI,Arial,sans-serif"><rect width="1600" height="900" fill="#10161d"/>'+
+      '<text x="64" y="96" font-size="44" font-weight="700" fill="#edf2f4">'+esc(lib.name)+'</text><text x="64" y="128" font-size="19" fill="#9aaab5">MarketLevelMap Library</text>'+
+      '<rect x="64" y="150" width="1472" height="610" rx="16" fill="#151e27" stroke="#28343d"/>'+inner+
+      '<image href="'+lib.logo+'" x="64" y="806" height="44" width="300" preserveAspectRatio="xMinYMid meet"/><text x="1536" y="836" text-anchor="end" font-size="17" fill="#9aaab5">marketlevelmap.com · Charts, not signals</text></svg>';
+  }
+  function svgToPng(svg,name){return new Promise(function(resolve,reject){var img=new Image(),url=URL.createObjectURL(new Blob([svg],{type:"image/svg+xml"}));
+    img.onload=function(){var c=document.createElement("canvas");c.width=1600;c.height=900;c.getContext("2d").drawImage(img,0,0);URL.revokeObjectURL(url);
+      c.toBlob(function(b){if(!b)return reject();var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);resolve()},"image/png")};
+    img.onerror=function(){URL.revokeObjectURL(url);reject()};img.src=url})}
+  // X counts a link as 23 characters.
+  function xLen(s){return s.replace(/https?:\/\/\S+/g,"x".repeat(23)).length}
+  function fit(text,limit){if(xLen(text)<=limit)return[text];var parts=text.match(/[^.!?]+[.!?]+(\s|$)|[^.!?]+$/g)||[text],out=[],cur="";
+    parts.forEach(function(s){s=s.trim();if(!s)return;if(cur&&xLen(cur+" "+s)>limit){out.push(cur);cur=s}else cur=cur?cur+" "+s:s});if(cur)out.push(cur);return out}
+  function buildThread(lib){
+    var t=[],sc=fit(lib.summary,262-xLen(lib.name)-2);t.push(lib.name+"\n\n"+(sc[0]||""));if(sc.length>1)fit(sc.slice(1).join(" "),262).forEach(function(x){t.push(x)});
+    var cur="Key points:";lib.points.forEach(function(pt){var line="\n• "+pt;if(xLen(cur+line)>262){t.push(cur);cur="•"+line.slice(2)}else cur+=line});if(lib.points.length)t.push(cur);
+    t.push("Read the full page:\n"+lib.url);
+    return t.map(function(x,i){return x+"\n\n"+(i+1)+"/"+t.length});
+  }
+
+  // ---------- render ----------
   function render(){
-    var t=w(),box=$("social");if(!state.data){return}
-    var d=state.data,manual=d.mode==="manual",editable=manual;box.textContent="";
-    var bar=el("div","toolbar");var modes=el("div","tabs");[["auto",t.auto],["manual",t.manual]].forEach(function(m){var b=el("button",null,m[1]);b.type="button";b.setAttribute("aria-pressed",String(d.mode===m[0]));
-      b.addEventListener("click",function(){if(d.mode===m[0])return;post("/api/auth/admin/social/settings",{mode:m[0]}).then(function(){load(state.week)})});modes.appendChild(b)});bar.appendChild(modes);
-    var nav=el("div","sp-nav"),pv=el("button","btn ghost",t.prev),nx=el("button","btn ghost",t.next);pv.type=nx.type="button";
-    pv.addEventListener("click",function(){load(shift(-7))});nx.addEventListener("click",function(){load(shift(7))});
-    var start=Date.parse(d.week+"T00:00:00Z");nav.appendChild(pv);nav.appendChild(el("b","sp-week",dayDate(d.week,0)+" – "+dayDate(d.week,6)+" · "+t.week.replace("{n}",isoWeek(start))));nav.appendChild(nx);bar.appendChild(nav);box.appendChild(bar);
+    var t=w(),box=$("social");if(!state.data)return;var d=state.data;box.textContent="";
+    var bar=el("div","toolbar"),modes=el("div","tabs");
+    [["auto",t.auto],["manual",t.manual]].forEach(function(m){var b=el("button",null,m[1]);b.type="button";b.setAttribute("aria-pressed",String(d.mode===m[0]));
+      b.addEventListener("click",function(){if(d.mode!==m[0])post("/api/auth/admin/social/settings",{mode:m[0]}).then(function(){load(state.week)})});modes.appendChild(b)});
+    bar.appendChild(modes);
+    var nav=el("div","sp-nav"),pv=el("button","btn ghost",t.prev),tw=el("button","btn ghost",t.thisWeek),nx=el("button","btn ghost",t.next);[pv,tw,nx].forEach(function(b){b.type="button"});
+    pv.addEventListener("click",function(){load(shift(-7))});nx.addEventListener("click",function(){load(shift(7))});tw.addEventListener("click",function(){load(null)});
+    var start=Date.parse(d.week+"T00:00:00Z");nav.appendChild(pv);nav.appendChild(el("b","sp-week",dayDate(d.week,0)+" – "+dayDate(d.week,6)+" · "+t.week.replace("{n}",isoWeek(start))));nav.appendChild(nx);nav.appendChild(tw);bar.appendChild(nav);box.appendChild(bar);
     box.appendChild(el("p","small muted",t.modeHelp[d.mode]));
-    if(manual&&(!d.saved||state.dirty)){var sv=el("div","sp-save");if(!d.saved)sv.appendChild(el("span",null,t.suggested));var sb=el("button","btn",t.savePlan);sb.type="button";
-      sb.addEventListener("click",function(){sb.disabled=true;post("/api/auth/admin/social/plan",{week:d.week,posts:d.posts.map(function(p){return{day:p.day,symbol:p.symbol,method:p.method,timeframe:p.timeframe}})}).then(function(r){if(r.ok){toast(t.planSaved);state.dirty=false;load(d.week)}else{toast(words().errors.server);sb.disabled=false}})});
-      sv.appendChild(sb);box.appendChild(sv)}
-    var grid=el("div","sp-grid");d.posts.forEach(function(p){grid.appendChild(card(p,editable))});box.appendChild(grid);
+    if(d.mode==="manual"&&!d.saved){var sv=el("div","sp-save");sv.appendChild(el("span",null,t.suggested));var sb=el("button","btn",t.savePlan);sb.type="button";
+      sb.addEventListener("click",function(){sb.disabled=true;savePlan().then(function(r){if(r.ok){toast(t.planSaved);load(d.week)}else{toast(words().errors.server);sb.disabled=false}})});sv.appendChild(sb);box.appendChild(sv)}
+    // flow
+    var today=Math.floor((Date.now()-start)/DAY),flow=el("div","flow");flow.appendChild(el("h2",null,t.flow));
+    ORDER.map(function(day){return d.posts.filter(function(p){return p.day===day})[0]}).filter(Boolean).forEach(function(p){
+      var r=el("button","flow-row"+(dayOf(p)===today?" is-today":"")+(state.sel===p.day?" is-sel":""));r.type="button";
+      r.appendChild(el("span","f-day",t.days[dayOf(p)].slice(0,3)+" "+dayDate(d.week,dayOf(p))+(dayOf(p)===today&&p.kind!=="library"?" · "+t.today:"")));
+      r.appendChild(el("span","f-kind",t.kinds[p.kind]));r.appendChild(el("span","f-title",title(p)));r.appendChild(el("span","f-st st-"+p.status,t.status[p.status]));
+      r.addEventListener("click",function(){state.sel=p.day;render()});flow.appendChild(r)});
+    box.appendChild(flow);
+    var p=d.posts.filter(function(x){return x.day===state.sel})[0];if(p)box.appendChild(workspace(p));
+  }
+  function workspace(p){
+    var t=w(),d=state.data,ws=el("section","desk"),head=el("div","desk-head");
+    head.appendChild(el("h2",null,t.days[dayOf(p)]+" · "+dayDate(d.week,dayOf(p))+" · "+t.kinds[p.kind]));
+    var tt=el("b","desk-title",title(p));head.appendChild(tt);var ct=el("button","copy",t.copyTitle);ct.type="button";ct.addEventListener("click",function(){copyText(title(p),ct)});head.appendChild(ct);ws.appendChild(head);
+    var msg=el("span","msg"),tools=el("div","desk-tools");
+    if(p.kind==="chart"){
+      function sel(label,opts,val,on){var l=el("label","sp-sel");l.appendChild(el("span",null,label));var s=el("select");opts.forEach(function(o){var op=el("option",null,o[1]);op.value=o[0];op.selected=o[0]===val;s.appendChild(op)});s.addEventListener("change",function(){on(s.value)});l.appendChild(s);return l}
+      function change(k,v){p[k]=v;savePlan().then(function(r){if(r.ok){d.saved=true;render()}else toast(words().errors.server)})}
+      tools.appendChild(sel(t.asset,d.assets.map(function(a){return[a.symbol,a.symbol.replace(/USDT$/,"")]}),p.symbol,function(v){change("symbol",v)}));
+      tools.appendChild(sel(t.method,[["cz",t.cz],["pa",t.pa]],p.method,function(v){change("method",v)}));
+      tools.appendChild(sel(t.tf,[["1h","1H"],["4h","4H"],["1d","1D"],["1w","1W"]],p.timeframe,function(v){change("timeframe",v)}));
+      if(p.symbol&&has(p.symbol,p.method,p.timeframe)){var f=frame(chartSrc(p));tools.appendChild(pngButton(f,"#download",msg));tools.appendChild(msg);ws.appendChild(tools);ws.appendChild(f)}
+      else{ws.appendChild(tools);ws.appendChild(el("p","notice",t.noAnalysis))}
+    }else if(p.kind==="weekly"){var fw=frame("weekly.html?embed=1");tools.appendChild(pngButton(fw,"#wk-download",msg));tools.appendChild(msg);ws.appendChild(tools);ws.appendChild(fw)}
+    else if(p.kind==="review"){
+      var list=d.posts.filter(function(x){return x.kind==="chart"&&x.symbol});ws.appendChild(el("p","small muted",list.length?t.reviewHelp:t.noPosts));
+      var holder=el("div"),rt=el("div","desk-tools");list.forEach(function(x){var b=el("button","btn ghost",t.days[x.day].slice(0,3)+": "+title(x));b.type="button";
+        b.addEventListener("click",function(){holder.textContent="";var f=frame(chartSrc(x)),tl=el("div","desk-tools"),m=el("span","msg");tl.appendChild(pngButton(f,"#download",m));tl.appendChild(m);
+          if(x.xUrl){var a=el("a","sp-link","X ↗");a.href=x.xUrl;a.target="_blank";a.rel="noopener";tl.appendChild(a)}holder.appendChild(tl);holder.appendChild(f)});rt.appendChild(b)});
+      ws.appendChild(rt);ws.appendChild(holder);
+    }else if(p.kind==="library"){
+      var tp=topicOf(d.week),lb=el("div","desk-lib");ws.appendChild(lb);
+      if(!tp){lb.appendChild(el("p","notice",t.libFail))}
+      else loadLib(tp).then(function(lib){
+        var row=el("div","desk-tools"),open=el("a","sp-link",t.openPage);open.href=tp.en.url;open.target="_blank";open.rel="noopener";
+        if(lib.svg){var svg=libImage(lib),img=el("img","lib-img");img.alt="";img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+          var pb=el("button","btn",t.png);pb.type="button";pb.addEventListener("click",function(){svgToPng(svg,"marketlevelmap-library-"+tp.id+".png")});row.appendChild(pb);row.appendChild(open);lb.appendChild(row);lb.appendChild(img)}
+        else{row.appendChild(open);lb.appendChild(row)}
+        lb.appendChild(el("h3",null,t.thread));lb.appendChild(el("p","small muted",t.threadHelp));
+        var tweets=p._thread||(p.text?p.text.split("\n\n—\n\n"):buildThread(lib));p._thread=tweets;
+        tweets.forEach(function(tw,i){var c=el("div","tweet"),ta=el("textarea");ta.rows=Math.min(8,tw.split("\n").length+2);ta.value=tw;var n=el("small","sp-count");
+          function cnt(){var l=xLen(ta.value);n.textContent=l+" / 280";n.className="sp-count"+(l>280?" over":"")}cnt();
+          ta.addEventListener("input",function(){tweets[i]=ta.value;cnt()});var cb=el("button","copy",t.copy);cb.type="button";cb.addEventListener("click",function(){copyText(ta.value,cb)});
+          c.appendChild(ta);var r2=el("div","row");r2.appendChild(cb);r2.appendChild(n);c.appendChild(r2);lb.appendChild(c)});
+      }).catch(function(){lb.appendChild(el("p","notice",t.libFail))});
+    }
+    // status, text, X link
+    var form=el("div","desk-form");
+    var stSel=el("select","sp-status");["planned","prepared","posted"].forEach(function(s){var o=el("option",null,t.status[s]);o.value=s;o.selected=s===(p._status||p.status);stSel.appendChild(o)});stSel.addEventListener("change",function(){p._status=stSel.value});
+    var ta=null;if(p.kind!=="library"){ta=el("textarea","sp-text");ta.rows=5;ta.placeholder=t.textPh;ta.value=p._text!=null?p._text:(p.text||"");var cnt=el("small","sp-count");
+      var upd=function(){var l=xLen(ta.value);cnt.textContent=l+" / 280";cnt.className="sp-count"+(l>280?" over":"")};upd();ta.addEventListener("input",function(){p._text=ta.value;upd()});
+      var lt=el("label","sp-field");lt.appendChild(el("span",null,t.text));lt.appendChild(ta);lt.appendChild(cnt);form.appendChild(lt)}
+    var xi=el("input","sp-x");xi.type="url";xi.placeholder="https://x.com/marketlevelmap/status/…";xi.value=p._xUrl!=null?p._xUrl:(p.xUrl||"");xi.addEventListener("input",function(){p._xUrl=xi.value});
+    var lx=el("label","sp-field");lx.appendChild(el("span",null,t.xUrl));lx.appendChild(xi);form.appendChild(lx);
+    var row=el("div","row"),btn=el("button","btn",t.save),m2=el("span","msg");btn.type="button";row.appendChild(stSel);row.appendChild(btn);row.appendChild(m2);form.appendChild(row);
+    var locked=!d.saved&&p.day<7;[stSel,btn,xi].concat(ta?[ta]:[]).forEach(function(x){x.disabled=locked});if(locked)m2.textContent=t.errPlan;
+    btn.addEventListener("click",function(){
+      btn.disabled=true;m2.textContent="";m2.className="msg";
+      var text=p.kind==="library"?(p._thread||[]).join("\n\n—\n\n"):ta.value;
+      post("/api/auth/admin/social/post",{week:d.week,day:p.day,status:stSel.value,text:text,xUrl:xi.value.trim()}).then(function(r){
+        if(r.ok){p.status=stSel.value;p.text=text;p.xUrl=xi.value.trim();p._text=p._xUrl=p._status=null;m2.textContent=t.saved;m2.className="msg ok";
+          var fr=document.querySelector(".flow-row.is-sel .f-st");if(fr){fr.textContent=t.status[p.status];fr.className="f-st st-"+p.status}}
+        else{m2.textContent=r.error==="x_url"?t.errUrl:r.error==="not_saved"?t.errPlan:words().errors.server;m2.className="msg err"}
+      }).catch(function(){m2.textContent=words().errors.server;m2.className="msg err"}).then(function(){btn.disabled=false});
+    });
+    ws.appendChild(form);
+    return ws;
   }
   function shift(days){return new Date(Date.parse(state.week+"T00:00:00Z")+days*DAY).toISOString().slice(0,10)}
   function load(week){
-    var url="/api/auth/admin/social"+(week?"?week="+week:"");
-    fetch(url,{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.json().then(function(d){d._s=r.status;return d})}).then(function(d){
+    fetch("/api/auth/admin/social"+(week?"?week="+week:""),{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.json().then(function(d){d._s=r.status;return d})}).then(function(d){
       if(d._s===403){show("v-denied");return}
       if(!d.posts){$("error").textContent=words().errors.server;$("error").hidden=false;return}
-      state.data=d;state.week=d.week;state.dirty=false;render();
-      var syms=d.posts.filter(function(p){return p.symbol}).map(function(p){return p.symbol}).filter(function(s,i,a){return a.indexOf(s)===i});
-      if(syms.length)fetch("/api/prices?symbols="+syms.join(",")).then(function(r){return r.json()}).then(function(pr){(pr.prices||[]).forEach(function(x){if(Number(x.c)>0)state.prices[x.s]=Number(x.c)});render()}).catch(function(){});
+      var weekChanged=d.week!==state.week;state.data=d;state.week=d.week;
+      if(weekChanged||state.sel==null){var td=Math.floor((Date.now()-Date.parse(d.week+"T00:00:00Z"))/DAY);state.sel=td>=0&&td<7?td:0}
+      render();
     }).catch(function(){$("error").textContent=words().errors.server;$("error").hidden=false});
   }
+  fetch("/assets/weekly-topics.json").then(function(r){return r.ok?r.json():null}).then(function(t){state.topics=t;if(state.data)render()}).catch(function(){});
   // Members / Social media switch
   function area(name){$("area-members").hidden=name!=="members";$("social").hidden=name!=="social";var lead=document.querySelector(".page-head p");if(lead)lead.hidden=name!=="members";
     document.querySelectorAll("#area-tabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.area===name))});

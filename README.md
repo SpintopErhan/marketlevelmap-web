@@ -386,18 +386,24 @@ never on marketlevelmap.com by default, and every section it fills shows a "Samp
 
 ## Social media planner
 
-Admin panel → **Social media** (`admin.html`, `/api/auth/admin/social*`, admin only). One plan per week (Monday, UTC):
-Monday the weekly outlook, Tuesday/Thursday/Saturday a 1D chart, Wednesday/Friday a 4H chart, Sunday the
-week's review. Chart slots rotate through the analysed assets (PAXG left out) week by week, alternating
-Critical Zones and Price Action, and skip analyses that are not published.
+Admin panel → **Social media** (`admin.html`, `/api/auth/admin/social*`, admin only): this week's publishing flow
+and a workspace for the selected post. The week (Monday, UTC): Monday the weekly outlook, Tuesday/Thursday/
+Saturday a 1D chart, Wednesday/Friday a 4H chart, Sunday the week's review, plus the library's topic of the
+week as an extra Wednesday post (`day` 7). Chart slots rotate through the analysed assets (PAXG left out),
+alternating Critical Zones and Price Action, and skip analyses that are not published.
 
-- **Automatic** mode stores the suggested plan the first time a week is opened. **Choose myself** mode only
-  suggests it; the admin picks asset, method and timeframe per slot and saves the plan.
-- Each card gives the English title line (`BTCUSDT · 1D · Critical Zones`, copyable), the facts for writing
-  (price, analysis time, nearest drawn support/resistance and distance, structure, last BOS/CHoCH, protected
-  level) and a link to the chart or the weekly outlook, where the image is downloaded.
+- **Automatic** mode stores the suggested plan the first time a week is opened; **Choose myself** only
+  suggests it until saved. In both, changing a post's asset, method or timeframe in the workspace saves the plan.
+- **Chart posts** embed the analysis page itself (`bulletin.html?…&embed=1`, no site header or footer), so every
+  tool of that page is there; **Save PNG** presses that page's own Download (chart with the chosen indicators
+  and key levels). Admins (`ADMIN_EMAILS`) count as members, so every timeframe opens.
+- **Monday** embeds the weekly outlook (`weekly.html?embed=1`) and saves its image. **Sunday** lists the week's
+  chart posts; each opens as it is now.
+- **Library post**: the week's topic (`assets/weekly-topics.json`); its English page gives a 1600×900 image of
+  the page's figure and a tweet thread built from the page's own text (title and summary, key points, link),
+  each tweet ≤ 280 characters, editable and copyable.
 - The admin writes the post text; status (planned / prepared / posted) and the link to the X post are saved.
-  Nothing is generated as text and nothing is posted to X from the site.
+  Nothing is posted to X from the site.
 - Tables `social_posts (week, day, kind, symbol, method, timeframe, status, text, x_url, updated_at)` and
   `social_settings (key, value)` in `USERS_DB`, created on first use.
 

@@ -296,7 +296,9 @@ export async function viewerAccess(request, env) {
   try {
     const row = await sessionUser(request, env);
     if (!row) return { member: false, status: "guest" };
-    return { member: row.status === "approved", status: row.status };
+    // Admins (ADMIN_EMAILS) see every timeframe too: the social media desk opens any analysis.
+    const admin = adminEmails(env).includes(String(row.email).toLowerCase());
+    return { member: row.status === "approved" || admin, status: row.status, admin };
   } catch (_) {
     return { member: false, status: "guest" }; // a database problem must never open members-only data
   }
@@ -371,12 +373,14 @@ async function adminAction(request, env, body) {
 
 // ---------- social media planner (admin only; README "Social media planner") ----------
 // One plan per week (Monday, UTC): Mon weekly outlook · Tue/Thu/Sat a 1D chart · Wed/Fri a 4H chart · Sun the
-// week's review. Mode "auto" stores the suggested plan the first time a week is opened; mode "manual" only
+// week's review, plus the library's topic of the week as an extra Wednesday post. Mode "auto" stores the suggested plan the first time a week is opened; mode "manual" only
 // suggests it until the admin saves their own choice. The admin writes the post text; nothing is posted to X.
 const SOCIAL_DAYS = [
   { kind: "weekly" }, { kind: "chart", tf: "1d" }, { kind: "chart", tf: "4h" }, { kind: "chart", tf: "1d" },
   { kind: "chart", tf: "4h" }, { kind: "chart", tf: "1d" }, { kind: "review" },
+  { kind: "library", on: 2 }, // extra post on Wednesday: the library's topic of the week
 ];
+const PLAN_DAYS = 7; // days 0–6 form the plan; the library post (day 7) is always there
 const SOCIAL_STATUSES = ["planned", "prepared", "posted"];
 const SOCIAL_LEFT_OUT = new Set(["PAXGUSDT"]);
 const POPULAR = ["BTC", "ETH", "SOL", "XRP", "BNB", "AVAX", "DOGE", "ADA", "LINK", "DOT", "LTC", "TRX"];
@@ -427,7 +431,7 @@ export function suggestPlan(week, byAsset) {
   const assets = Object.keys(byAsset).sort(byPopularity), n = assets.length;
   const k = Math.round((Date.parse(week + "T00:00:00Z") - Date.parse("2026-01-05T00:00:00Z")) / (7 * 86400000));
   let slot = 0;
-  return SOCIAL_DAYS.map((d, day) => {
+  return SOCIAL_DAYS.slice(0, PLAN_DAYS).map((d, day) => {
     if (d.kind !== "chart" || !n) return { day, kind: d.kind, symbol: null, method: null, timeframe: null };
     const i = slot++;
     for (let step = 0; step < n; step++) {
@@ -437,23 +441,6 @@ export function suggestPlan(week, byAsset) {
     }
     return { day, kind: "chart", symbol: null, method: null, timeframe: d.tf };
   });
-}
-// What the admin needs to write the post, from the published report (zones, structure, analysis time).
-async function postFacts(env, entry) {
-  if (!entry) return null;
-  let r = null;
-  try { const o = await env.MARKETLEVELMAP_PUBLIC.get(entry.report.objectKey); r = o ? await o.json() : null; } catch (_) { r = null; }
-  if (!r) return null;
-  const zones = (Array.isArray(r.zones) ? r.zones : []).filter((z) => z && z.drawn !== false && Number(z.low) > 0 && Number(z.high) > 0)
-    .map((z) => ({ type: z.type, low: Number(z.low), high: Number(z.high) }));
-  const st = r.structure && typeof r.structure === "object" ? r.structure : null;
-  const events = st && Array.isArray(st.events) ? st.events.filter((e) => e && e.type && e.breakTime) : [];
-  const last = events.sort((a, b) => Date.parse(b.breakTime) - Date.parse(a.breakTime))[0] || null;
-  return {
-    analyzedAt: r.analyzedAt || null, zones,
-    structure: st ? { state: st.state || null, protectedLevel: st.protectedLevel && Number(st.protectedLevel.price) > 0 ? Number(st.protectedLevel.price) : null,
-      last: last ? { type: last.type, direction: last.direction, level: Number(last.level) || null, time: last.breakTime } : null } : null,
-  };
 }
 const socialRow = (r) => ({ day: r.day, kind: r.kind, symbol: r.symbol || null, method: r.method || null, timeframe: r.timeframe || null,
   status: SOCIAL_STATUSES.includes(r.status) ? r.status : "planned", text: r.text || "", xUrl: r.x_url || "" });
@@ -467,19 +454,22 @@ async function adminSocial(request, env) {
   if (!week) return json({ error: "week" }, 400);
   const d = await socialDb(env), mode = await socialMode(d), byAsset = await activeByAsset(env);
   let rows = ((await d.prepare("SELECT * FROM social_posts WHERE week = ? ORDER BY day").bind(week).all()).results || []).map(socialRow);
-  let saved = rows.length === SOCIAL_DAYS.length;
+  if (!rows.some((r) => r.day === 7)) {
+    await d.prepare("INSERT OR IGNORE INTO social_posts (week, day, kind, status, updated_at) VALUES (?, 7, 'library', 'planned', ?)").bind(week, iso(now())).run();
+    rows.push({ day: 7, kind: "library", symbol: null, method: null, timeframe: null, status: "planned", text: "", xUrl: "" });
+  }
+  let saved = rows.filter((r) => r.day < PLAN_DAYS).length === PLAN_DAYS;
   if (!saved) {
     const plan = suggestPlan(week, byAsset), at = iso(now());
     const have = Object.fromEntries(rows.map((r) => [r.day, r]));
-    rows = plan.map((p) => have[p.day] || { ...p, status: "planned", text: "", xUrl: "" });
+    rows = plan.map((p) => have[p.day] || { ...p, status: "planned", text: "", xUrl: "" }).concat(rows.filter((r) => r.day >= PLAN_DAYS));
     if (mode === "auto") {
       await d.batch(rows.filter((r) => !have[r.day]).map((r) => d.prepare("INSERT OR IGNORE INTO social_posts (week, day, kind, symbol, method, timeframe, status, updated_at) VALUES (?,?,?,?,?,?,?,?)")
         .bind(week, r.day, r.kind, r.symbol, r.method, r.timeframe, "planned", at)));
       saved = true;
     }
   }
-  const posts = await Promise.all(rows.map(async (r) => ({ ...r,
-    facts: r.kind === "chart" && r.symbol && byAsset[r.symbol] ? await postFacts(env, byAsset[r.symbol][r.method] && byAsset[r.symbol][r.method][r.timeframe]) : null })));
+  const posts = rows.sort((a, b) => a.day - b.day);
   const assets = Object.keys(byAsset).sort(byPopularity).map((s) => ({ symbol: s, cz: Object.keys(byAsset[s].cz), pa: Object.keys(byAsset[s].pa) }));
   return json({ week, mode, saved, posts, assets });
 }
@@ -490,7 +480,7 @@ async function adminSocialPlan(request, env, body) {
   const d = await socialDb(env), at = iso(now()), statements = [];
   for (const p of body.posts) {
     const day = Number(p && p.day);
-    if (!Number.isInteger(day) || day < 0 || day > 6) return json({ error: "day" }, 400);
+    if (!Number.isInteger(day) || day < 0 || day >= PLAN_DAYS) return json({ error: "day" }, 400);
     const kind = SOCIAL_DAYS[day].kind;
     let symbol = null, method = null, timeframe = null;
     if (kind === "chart") {
@@ -507,7 +497,7 @@ async function adminSocialPlan(request, env, body) {
 async function adminSocialPost(request, env, body) {
   if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
   const week = mondayOf(body.week), day = Number(body.day);
-  if (!week || body.week !== week || !Number.isInteger(day) || day < 0 || day > 6) return json({ error: "post" }, 400);
+  if (!week || body.week !== week || !Number.isInteger(day) || day < 0 || day >= SOCIAL_DAYS.length) return json({ error: "post" }, 400);
   const status = SOCIAL_STATUSES.includes(body.status) ? body.status : "planned";
   const text = String(body.text || "").slice(0, 2000);
   const xUrl = String(body.xUrl || "").trim();
