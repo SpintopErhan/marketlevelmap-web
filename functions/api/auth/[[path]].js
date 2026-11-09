@@ -12,6 +12,10 @@
 //   POST logout
 //   GET  admin/users?status=pending&q=…            → admin only: accounts with counts per status
 //   POST admin/action { id, action, note }          → admin only: approve | reject | suspend | reinstate
+//   GET  admin/social?week=YYYY-MM-DD               → admin only: the week's social media plan (README "Social media planner")
+//   POST admin/social/plan { week, posts }          → admin only: save the plan's assets
+//   POST admin/social/post { week, day, status, text, xUrl } → admin only: draft text, status, link to the X post
+//   POST admin/social/settings { mode }             → admin only: "auto" | "manual"
 //
 // Bindings and variables (Cloudflare Pages settings): USERS_DB (D1), GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
 // SESSION_SECRET, ADMIN_EMAILS (comma separated). Secrets are never sent to the browser.
@@ -365,6 +369,164 @@ async function adminAction(request, env, body) {
   return json({ user: adminRow(await d.prepare("SELECT * FROM users WHERE id = ?").bind(row.id).first()) });
 }
 
+// ---------- social media planner (admin only; README "Social media planner") ----------
+// One plan per week (Monday, UTC): Mon weekly outlook · Tue/Thu/Sat a 1D chart · Wed/Fri a 4H chart · Sun the
+// week's review. Mode "auto" stores the suggested plan the first time a week is opened; mode "manual" only
+// suggests it until the admin saves their own choice. The admin writes the post text; nothing is posted to X.
+const SOCIAL_DAYS = [
+  { kind: "weekly" }, { kind: "chart", tf: "1d" }, { kind: "chart", tf: "4h" }, { kind: "chart", tf: "1d" },
+  { kind: "chart", tf: "4h" }, { kind: "chart", tf: "1d" }, { kind: "review" },
+];
+const SOCIAL_STATUSES = ["planned", "prepared", "posted"];
+const SOCIAL_LEFT_OUT = new Set(["PAXGUSDT"]);
+const POPULAR = ["BTC", "ETH", "SOL", "XRP", "BNB", "AVAX", "DOGE", "ADA", "LINK", "DOT", "LTC", "TRX"];
+const byPopularity = (a, b) => {
+  const i = POPULAR.indexOf(a.replace(/USDT$/, "")), j = POPULAR.indexOf(b.replace(/USDT$/, ""));
+  return (i < 0 ? 99 : i) - (j < 0 ? 99 : j) || a.localeCompare(b);
+};
+let socialReady = false;
+async function socialDb(env) {
+  const d = await db(env);
+  if (!socialReady) {
+    await d.batch([
+      d.prepare(`CREATE TABLE IF NOT EXISTS social_posts (
+        week TEXT NOT NULL, day INTEGER NOT NULL, kind TEXT NOT NULL, symbol TEXT, method TEXT, timeframe TEXT,
+        status TEXT NOT NULL DEFAULT 'planned', text TEXT, x_url TEXT, updated_at TEXT NOT NULL,
+        PRIMARY KEY (week, day))`),
+      d.prepare(`CREATE TABLE IF NOT EXISTS social_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL)`),
+    ]);
+    socialReady = true;
+  }
+  return d;
+}
+// Monday (YYYY-MM-DD) of the week that holds `day` (YYYY-MM-DD or now).
+export function mondayOf(day) {
+  const t = day && /^\d{4}-\d{2}-\d{2}$/.test(day) ? Date.parse(day + "T00:00:00Z") : Date.now();
+  if (Number.isNaN(t)) return null;
+  const d = new Date(t), dayStart = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+  return new Date(dayStart - ((d.getUTCDay() + 6) % 7) * 86400000).toISOString().slice(0, 10);
+}
+// Active analyses by asset: { BTCUSDT: { cz: { "1d": entry, … }, pa: { … } } } (PAXG left out).
+async function activeByAsset(env) {
+  const bucket = env.MARKETLEVELMAP_PUBLIC;
+  let active = null;
+  try { const o = bucket && (await bucket.get("site-publication/active.json")); active = o ? await o.json() : null; } catch (_) { active = null; }
+  const out = {};
+  for (const e of (active && Array.isArray(active.entries) ? active.entries : [])) {
+    const [source, symbol, tf] = String(e && e.graphicKey || "").split(":");
+    const method = String(source || "").toLowerCase();
+    if (!/^[A-Z0-9]{2,20}$/.test(symbol || "") || SOCIAL_LEFT_OUT.has(symbol) || !["cz", "pa"].includes(method) || !e.report || !e.report.objectKey) continue;
+    ((out[symbol] ||= { cz: {}, pa: {} })[method])[String(tf).toLowerCase()] = e;
+  }
+  return out;
+}
+// The suggested plan: assets rotate week by week (five chart slots, each a different asset when there are five or
+// more), Critical Zones and Price Action alternate; a slot falls back to the other method, then the next asset,
+// when that analysis is not published.
+export function suggestPlan(week, byAsset) {
+  const assets = Object.keys(byAsset).sort(byPopularity), n = assets.length;
+  const k = Math.round((Date.parse(week + "T00:00:00Z") - Date.parse("2026-01-05T00:00:00Z")) / (7 * 86400000));
+  let slot = 0;
+  return SOCIAL_DAYS.map((d, day) => {
+    if (d.kind !== "chart" || !n) return { day, kind: d.kind, symbol: null, method: null, timeframe: null };
+    const i = slot++;
+    for (let step = 0; step < n; step++) {
+      const symbol = assets[(((k * 5 + i + step) % n) + n) % n];
+      const first = (((k + i) % 2) + 2) % 2 === 0 ? "cz" : "pa";
+      for (const method of [first, first === "cz" ? "pa" : "cz"]) if (byAsset[symbol][method][d.tf]) return { day, kind: "chart", symbol, method, timeframe: d.tf };
+    }
+    return { day, kind: "chart", symbol: null, method: null, timeframe: d.tf };
+  });
+}
+// What the admin needs to write the post, from the published report (zones, structure, analysis time).
+async function postFacts(env, entry) {
+  if (!entry) return null;
+  let r = null;
+  try { const o = await env.MARKETLEVELMAP_PUBLIC.get(entry.report.objectKey); r = o ? await o.json() : null; } catch (_) { r = null; }
+  if (!r) return null;
+  const zones = (Array.isArray(r.zones) ? r.zones : []).filter((z) => z && z.drawn !== false && Number(z.low) > 0 && Number(z.high) > 0)
+    .map((z) => ({ type: z.type, low: Number(z.low), high: Number(z.high) }));
+  const st = r.structure && typeof r.structure === "object" ? r.structure : null;
+  const events = st && Array.isArray(st.events) ? st.events.filter((e) => e && e.type && e.breakTime) : [];
+  const last = events.sort((a, b) => Date.parse(b.breakTime) - Date.parse(a.breakTime))[0] || null;
+  return {
+    analyzedAt: r.analyzedAt || null, zones,
+    structure: st ? { state: st.state || null, protectedLevel: st.protectedLevel && Number(st.protectedLevel.price) > 0 ? Number(st.protectedLevel.price) : null,
+      last: last ? { type: last.type, direction: last.direction, level: Number(last.level) || null, time: last.breakTime } : null } : null,
+  };
+}
+const socialRow = (r) => ({ day: r.day, kind: r.kind, symbol: r.symbol || null, method: r.method || null, timeframe: r.timeframe || null,
+  status: SOCIAL_STATUSES.includes(r.status) ? r.status : "planned", text: r.text || "", xUrl: r.x_url || "" });
+async function socialMode(d) {
+  const row = await d.prepare("SELECT value FROM social_settings WHERE key = 'mode'").first();
+  return row && row.value === "manual" ? "manual" : "auto";
+}
+async function adminSocial(request, env) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  const week = mondayOf(new URL(request.url).searchParams.get("week"));
+  if (!week) return json({ error: "week" }, 400);
+  const d = await socialDb(env), mode = await socialMode(d), byAsset = await activeByAsset(env);
+  let rows = ((await d.prepare("SELECT * FROM social_posts WHERE week = ? ORDER BY day").bind(week).all()).results || []).map(socialRow);
+  let saved = rows.length === SOCIAL_DAYS.length;
+  if (!saved) {
+    const plan = suggestPlan(week, byAsset), at = iso(now());
+    const have = Object.fromEntries(rows.map((r) => [r.day, r]));
+    rows = plan.map((p) => have[p.day] || { ...p, status: "planned", text: "", xUrl: "" });
+    if (mode === "auto") {
+      await d.batch(rows.filter((r) => !have[r.day]).map((r) => d.prepare("INSERT OR IGNORE INTO social_posts (week, day, kind, symbol, method, timeframe, status, updated_at) VALUES (?,?,?,?,?,?,?,?)")
+        .bind(week, r.day, r.kind, r.symbol, r.method, r.timeframe, "planned", at)));
+      saved = true;
+    }
+  }
+  const posts = await Promise.all(rows.map(async (r) => ({ ...r,
+    facts: r.kind === "chart" && r.symbol && byAsset[r.symbol] ? await postFacts(env, byAsset[r.symbol][r.method] && byAsset[r.symbol][r.method][r.timeframe]) : null })));
+  const assets = Object.keys(byAsset).sort(byPopularity).map((s) => ({ symbol: s, cz: Object.keys(byAsset[s].cz), pa: Object.keys(byAsset[s].pa) }));
+  return json({ week, mode, saved, posts, assets });
+}
+async function adminSocialPlan(request, env, body) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  const week = mondayOf(body.week);
+  if (!week || body.week !== week || !Array.isArray(body.posts)) return json({ error: "week" }, 400);
+  const d = await socialDb(env), at = iso(now()), statements = [];
+  for (const p of body.posts) {
+    const day = Number(p && p.day);
+    if (!Number.isInteger(day) || day < 0 || day > 6) return json({ error: "day" }, 400);
+    const kind = SOCIAL_DAYS[day].kind;
+    let symbol = null, method = null, timeframe = null;
+    if (kind === "chart") {
+      symbol = String(p.symbol || "").toUpperCase(); method = String(p.method || ""); timeframe = String(p.timeframe || "");
+      if (!/^[A-Z0-9]{2,20}$/.test(symbol) || !["cz", "pa"].includes(method) || !["1h", "4h", "1d", "1w"].includes(timeframe)) return json({ error: "post" }, 400);
+    }
+    statements.push(d.prepare(`INSERT INTO social_posts (week, day, kind, symbol, method, timeframe, status, updated_at) VALUES (?,?,?,?,?,?, 'planned', ?)
+      ON CONFLICT (week, day) DO UPDATE SET symbol = excluded.symbol, method = excluded.method, timeframe = excluded.timeframe, updated_at = excluded.updated_at`)
+      .bind(week, day, kind, symbol, method, timeframe, at));
+  }
+  if (statements.length) await d.batch(statements);
+  return json({ ok: true });
+}
+async function adminSocialPost(request, env, body) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  const week = mondayOf(body.week), day = Number(body.day);
+  if (!week || body.week !== week || !Number.isInteger(day) || day < 0 || day > 6) return json({ error: "post" }, 400);
+  const status = SOCIAL_STATUSES.includes(body.status) ? body.status : "planned";
+  const text = String(body.text || "").slice(0, 2000);
+  const xUrl = String(body.xUrl || "").trim();
+  if (xUrl && !/^https:\/\/(x|twitter)\.com\/[A-Za-z0-9_]{1,15}\/status\/\d+/.test(xUrl)) return json({ error: "x_url" }, 400);
+  const d = await socialDb(env);
+  const res = await d.prepare("UPDATE social_posts SET status = ?, text = ?, x_url = ?, updated_at = ? WHERE week = ? AND day = ?")
+    .bind(status, text, xUrl || null, iso(now()), week, day).run();
+  if (!res || !res.meta || !res.meta.changes) return json({ error: "not_saved" }, 409);
+  return json({ ok: true });
+}
+async function adminSocialSettings(request, env, body) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  const mode = body.mode === "manual" ? "manual" : body.mode === "auto" ? "auto" : null;
+  if (!mode) return json({ error: "mode" }, 400);
+  const d = await socialDb(env);
+  await d.prepare("INSERT INTO social_settings (key, value) VALUES ('mode', ?) ON CONFLICT (key) DO UPDATE SET value = excluded.value").bind(mode).run();
+  return json({ ok: true, mode });
+}
+
 export async function onRequest(context) {
   const { request, env, params } = context;
   const route = (Array.isArray(params.path) ? params.path : [params.path || ""]).join("/");
@@ -374,6 +536,7 @@ export async function onRequest(context) {
       if (route === "google/callback") return await googleCallback(request, env);
       if (route === "me") return await me(request, env);
       if (route === "admin/users") return await adminUsers(request, env);
+      if (route === "admin/social") return await adminSocial(request, env);
       return json({ error: "not_found" }, 404);
     }
     if (request.method !== "POST") return json({ error: "method" }, 405);
@@ -387,6 +550,9 @@ export async function onRequest(context) {
     if (route === "profile") return await profile(request, env, body);
     if (route === "delete") return await remove(request, env);
     if (route === "admin/action") return await adminAction(request, env, body);
+    if (route === "admin/social/plan") return await adminSocialPlan(request, env, body);
+    if (route === "admin/social/post") return await adminSocialPost(request, env, body);
+    if (route === "admin/social/settings") return await adminSocialSettings(request, env, body);
     return json({ error: "not_found" }, 404);
   } catch (error) {
     console.error("auth", route, error && error.message);

@@ -384,6 +384,23 @@ answers `{ events: [], error }` and the pages say the events could not be loaded
 It is used only on preview hosts (`*.pages.dev`, `localhost`) or with `?demo=1` (`?demo=0` turns it off),
 never on marketlevelmap.com by default, and every section it fills shows a "Sample data" badge.
 
+## Social media planner
+
+Admin panel → **Social media** (`admin.html`, `/api/auth/admin/social*`, admin only). One plan per week (Monday, UTC):
+Monday the weekly outlook, Tuesday/Thursday/Saturday a 1D chart, Wednesday/Friday a 4H chart, Sunday the
+week's review. Chart slots rotate through the analysed assets (PAXG left out) week by week, alternating
+Critical Zones and Price Action, and skip analyses that are not published.
+
+- **Automatic** mode stores the suggested plan the first time a week is opened. **Choose myself** mode only
+  suggests it; the admin picks asset, method and timeframe per slot and saves the plan.
+- Each card gives the English title line (`BTCUSDT · 1D · Critical Zones`, copyable), the facts for writing
+  (price, analysis time, nearest drawn support/resistance and distance, structure, last BOS/CHoCH, protected
+  level) and a link to the chart or the weekly outlook, where the image is downloaded.
+- The admin writes the post text; status (planned / prepared / posted) and the link to the X post are saved.
+  Nothing is generated as text and nothing is posted to X from the site.
+- Tables `social_posts (week, day, kind, symbol, method, timeframe, status, text, x_url, updated_at)` and
+  `social_settings (key, value)` in `USERS_DB`, created on first use.
+
 ## Accounts
 
 Sign-in with Google, the profile, membership verification, the admin panel and the guest / member split
