@@ -24,7 +24,7 @@ var LiveChart = (function () {
   var BINANCE_REST = "https://data-api.binance.vision/api/v3/klines";
   var BINANCE_WS = "wss://data-stream.binance.vision/ws/";
   var EMA_PERIODS = [20, 50, 200];
-  var LEVEL_COLOR = "#e8a765"; // key levels the visitor chose to show (the site's CZ colour)
+  var LEVEL_COLOR = "#d6dbe3"; // key levels the visitor chose to show: soft white, apart from the orange CZ zone outlines
   var WATERMARK_FONT = "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
   var TAIL_REQUESTS = 2, KLINE_LIMIT = 1000, WS_GIVE_UP = 3;
   var libPromise = null, indexPromise = null;
@@ -693,7 +693,7 @@ var LiveChart = (function () {
         var code = String(level.code), price = Number(level.price);
         if (!(price > 0)) return;
         keep[code] = true;
-        // Volume profile levels bring their own colour (teal) and a solid POC; key levels stay dashed orange.
+        // Volume profile levels bring their own colour (teal) and a solid POC; key levels stay dashed soft white.
         var style = level.color ? (level.solid ? LC.LineStyle.Solid : LC.LineStyle.Dashed) : LC.LineStyle.LargeDashed;
         if (!levelLines[code]) levelLines[code] = candles.createPriceLine({ price: price, color: level.color || LEVEL_COLOR, lineWidth: 1, lineStyle: style, axisLabelVisible: true, title: code });
         else if (levelLines[code].options().price !== price) levelLines[code].applyOptions({ price: price });
