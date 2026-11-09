@@ -1,7 +1,7 @@
 /* Formatting and publication helpers shared by the market table (index.html), the analysis page
    (bulletin.html) and the weekly events page. Numbers follow the page language (html[lang]). */
 var MarketUI=(function(){
-  var NAMES={BTC:"Bitcoin",ETH:"Ethereum",SOL:"Solana",XRP:"XRP",AVAX:"Avalanche",BNB:"BNB",DOGE:"Dogecoin",ADA:"Cardano",LINK:"Chainlink",DOT:"Polkadot",LTC:"Litecoin",TRX:"TRON"};
+  var NAMES={BTC:"Bitcoin",ETH:"Ethereum",SOL:"Solana",XRP:"XRP",AVAX:"Avalanche",BNB:"BNB",DOGE:"Dogecoin",PAXG:"PAX Gold",ADA:"Cardano",LINK:"Chainlink",DOT:"Polkadot",LTC:"Litecoin",TRX:"TRON"};
   var TF_ORDER=["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"];
   function lang(){return document.documentElement.lang==="tr"?"tr":"en"}
   function locale(){return lang()==="tr"?"tr-TR":"en-US"}
