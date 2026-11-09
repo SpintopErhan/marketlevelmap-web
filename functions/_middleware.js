@@ -2,7 +2,7 @@
 // Crawlers do not run the page scripts, so analysis titles and chart images are set here.
 const ACTIVE_POINTER_KEY = "site-publication/active.json";
 const SITE = "MarketLevelMap";
-const DEFAULT_DESCRIPTION = "Live market table and structure-based analysis of crypto markets: support and resistance zones and key levels.";
+const DEFAULT_DESCRIPTION = "A data-driven analysis map for financial markets: structural zones, key levels, price ranges and Price Action structure, with a live market table.";
 
 const PAGES = {
   "/": { title: "MarketLevelMap — Market table", description: DEFAULT_DESCRIPTION },
