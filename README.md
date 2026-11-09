@@ -69,7 +69,7 @@ every asset has last week's candle. Every analysed asset except PAXG:
 - **Last week** — open → close of the weekly candle that opened the Monday before (public candles,
   `data.marketlevelmap.com/candles/<SYMBOL>/1w/latest.json`, else the newest 1W archive). If that candle is not
   uploaded yet the asset shows "–"; an older week is never used in its place.
-- **Where they stand** — last week's close against the monthly open, yearly open and ATH: `keyLevels` of
+- **Levels and structure** — last week's close against the monthly open, yearly open and ATH: `keyLevels` of
   `levels.json` (a level whose period began after the week closed is left out); until an asset's file has
   them, its 1D Critical Zones report (`MO`, `YO`, `ATH` else `OATH`).
 - **1D timeframe alignment** — `structure.state` of the 1W, 1D and 4H Price Action reports, with the analysis
