@@ -27,22 +27,22 @@ const OG_IMAGE = "/assets/og-image.png?v=452c1796";
 // `lang=tr` in the link (added when the page is in Turkish) gives the Turkish preview.
 const ANALYSIS_TEXT = {
   en: {
-    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} support and resistance zones · ${SITE}`,
+    title: (asset, tf) => `${asset}${tf ? " · " + tf : ""} · Critical Zones · ${SITE}`,
     description: (asset, tf) => `Critical Zones analysis of ${asset}${tf ? " on the " + tf + " chart" : ""}: support and resistance zones and key levels.`,
   },
   tr: {
-    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} destek ve direnç bölgeleri · ${SITE}`,
-    description: (asset, tf) => `${asset}${tf ? " " + tf + " grafiğinin" : ""} Critical Zones analizi: destek ve direnç bölgeleri ve anahtar seviyeler.`,
+    title: (asset, tf) => `${asset}${tf ? " · " + tf : ""} · Kritik Bölgeler · ${SITE}`,
+    description: (asset, tf) => `${asset}${tf ? " " + tf + " grafiğinin" : ""} Kritik Bölgeler analizi: destek ve direnç bölgeleri ve anahtar seviyeler.`,
   },
 };
 // The same for a Price Action link (`method=pa`, README "Price Action view").
 const PA_TEXT = {
   en: {
-    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} price action range · ${SITE}`,
+    title: (asset, tf) => `${asset}${tf ? " · " + tf : ""} · Price Action · ${SITE}`,
     description: (asset, tf) => `Price Action analysis of ${asset}${tf ? " on the " + tf + " chart" : ""}: the confirmed range, its equilibrium, where the price sits and the nearest fair value gaps.`,
   },
   tr: {
-    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} price action aralığı · ${SITE}`,
+    title: (asset, tf) => `${asset}${tf ? " · " + tf : ""} · Price Action · ${SITE}`,
     description: (asset, tf) => `${asset}${tf ? " " + tf + " grafiğinin" : ""} Price Action analizi: onaylı aralık, dengesi, fiyatın aralıktaki yeri ve en yakın FVG'ler.`,
   },
 };

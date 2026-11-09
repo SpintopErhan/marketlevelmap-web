@@ -160,9 +160,9 @@ The chart header's Share button opens a menu:
 
 - **X (Twitter)** — `x.com/intent/post?text=…&url=…`; **Telegram** — `t.me/share/url?url=…&text=…`. Both share
   the analysis page link `https://marketlevelmap.com/bulletin?asset=<SYMBOL>&tf=<tf>` with a short text
-  ("BTCUSDT 4H support and resistance zones · MarketLevelMap", Turkish on the Turkish page).
+  ("BTCUSDT · 4H · Critical Zones · MarketLevelMap"; "Kritik Bölgeler" on the Turkish page).
 - **Copy link** — the same link to the clipboard ("Link copied").
-- **Share image…** — only where the browser can share files (`navigator.canShare({ files })`, i.e. most
+- **Share with image…** (first in the menu) — only where the browser can share files (`navigator.canShare({ files })`, i.e. most
   phones): the same PNG as Download plus the text and link go to the system share sheet. The PNG is built
   when the menu opens, so the share call stays inside the tap. Needs `chartDownload` to be allowed too.
 
