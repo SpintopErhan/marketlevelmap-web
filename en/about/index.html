@@ -27,15 +27,22 @@
 <script src="/assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c417fd53" defer></script><script src="/assets/library.js?v=e1c49407" defer></script><script src="/assets/pwa.js?v=b0dd56f5" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "AboutPage", "name": "About MarketLevelMap: data-driven market analysis", "description": "What is MarketLevelMap? Data-driven analysis that measures, by fixed rules, where price has reacted on the chart: the approach, what it offers, membership and analysis time.", "url": "https://marketlevelmap.com/en/about/", "inLanguage": "en", "publisher": {"@type": "Organization", "name": "MarketLevelMap", "url": "https://marketlevelmap.com/"}}</script>
 <style>
-.about{max-width:860px;margin:0 auto;padding:10px 0 80px}
-.about section{margin:56px 0}
+.about{max-width:1060px;margin:0 auto;padding:10px 0 80px;display:grid;grid-template-columns:minmax(0,760px) 260px;gap:40px;align-items:start;justify-content:center}
+.about-body{min-width:0;font-size:15px}
+.about-body section{margin:42px 0}
+.about-body .eyebrow{color:var(--accent);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;font-size:11px;margin:0 0 10px}
+.about h1{font-size:30px;font-weight:700;line-height:1.2;margin:0 0 14px;letter-spacing:-.6px}
+.about .lead{font-size:16px;line-height:1.65;color:var(--fg);margin:0 0 22px}
+.about h2{font-size:19px;font-weight:700;margin:0 0 14px;letter-spacing:-.3px}
+.about h3{margin:0 0 6px;font-size:14px;font-weight:700}
+.about p,.about li,.about dd{line-height:1.55;color:var(--fg)}
+.about .side{position:sticky;top:20px;margin-top:28px}
+.about .tf b{font-size:18px}
+.about .side-card a{color:var(--muted);text-decoration:none}.about .side-card a:hover{color:var(--accent)}
+.toc-inline{display:none}
+@media(max-width:900px){.about{grid-template-columns:minmax(0,1fr)}.about .side{display:none}.toc-inline{display:block}}
+@media(max-width:600px){.about h1{font-size:25px}}
 .about-hero{margin-top:28px!important}
-.about .eyebrow{color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:13px;margin:0 0 10px}
-.about h1{font-size:clamp(34px,6vw,56px);line-height:1.05;margin:0 0 18px;letter-spacing:-.02em}
-.about .lead{font-size:clamp(17px,2.2vw,20px);line-height:1.6;color:var(--fg);margin:0 0 26px;max-width:720px}
-.about h2{font-size:clamp(22px,3vw,28px);margin:0 0 14px;letter-spacing:-.01em}
-.about h3{margin:0 0 8px;font-size:18px}
-.about p,.about li,.about dd{line-height:1.7;color:color-mix(in srgb,var(--fg) 88%,var(--muted))}
 .about a{color:var(--accent)}
 .principles{list-style:none;padding:0;margin:26px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .principles li{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.55}
@@ -81,7 +88,7 @@
 <a href="/" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="/assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="/assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="/assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="/assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="/">Market</a><a href="/weekly-events">Weekly events</a><a href="/en/library/">Library</a><a href="/en/about/" aria-current="page">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang" data-href-tr="/tr/hakkinda/" data-href-en="/en/about/"><option value="en" selected>EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
-<main class="shell"><div class="about">
+<main class="shell"><div class="about"><div class="about-body">
 <section class="about-hero">
   <p class="eyebrow">About MarketLevelMap</p>
   <h1>A map of the chart.</h1>
@@ -105,7 +112,7 @@
   </ul>
 </section>
 
-<section>
+<section id="approach">
   <h2>The approach: data-driven analysis</h2>
   <p>Indicators turn price into a second, derived line. Data-driven analysis looks at the price data itself: <em>Where did
   price stop? Where did it turn? Which level did it break, and did it come back to test it?</em> The answers are already
@@ -133,7 +140,7 @@
   listed assets stay out of the analyses for a while.</p></div>
 </section>
 
-<section>
+<section id="what-it-offers">
   <h2>What it offers</h2>
   <p>Every asset is analysed in two views that look at the same chart with two different questions. They are separate methods; neither uses the other's result.</p>
   <div class="two">
@@ -157,7 +164,7 @@
   <p>How these look on the chart, and the order to read them in, is in the <a href="/en/guide/">Reading guide</a>.</p>
 </section>
 
-<section>
+<section id="membership">
   <h2>Membership</h2>
   <p><b>1D analyses are open to everyone, with all their tools.</b> 1H, 4H and 1W analyses, and the archived analyses of
   these timeframes, are for members.</p>
@@ -170,7 +177,7 @@
   <p class="cta"><a class="btn" href="/account">Go to your account →</a></p>
 </section>
 
-<section>
+<section id="analysis-time">
   <h2>Analysis time: why zones do not update live</h2>
   <p>The site shows two kinds of information. <b>Prices and candles are live</b>; they come straight from the market.
   <b>Zones, ranges and levels belong to the analysis time</b>; every analysis shows its date.</p>
@@ -200,7 +207,7 @@
   was at the analysis time.</p>
 </section>
 
-<section class="not">
+<section class="not" id="what-it-is-not">
   <h2>What it is not</h2>
   <div class="four">
     <div><h3>Not a signal</h3><p>It does not say buy or sell. It gives no entries, targets or stop-loss levels.</p></div>
@@ -214,6 +221,8 @@
   decision.</p>
   <p class="cta"><a class="btn" href="/en/guide/">How to read a chart: read the guide →</a> <a class="btn ghost" href="/">Go to the market table →</a> <a class="btn ghost" href="/en/library/">Explore the library →</a></p>
 </section>
+</div>
+<aside class="side"><nav class="side-card toc" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li><a href="#approach">The approach</a></li><li><a href="#what-it-offers">What it offers</a></li><li><a href="#membership">Membership</a></li><li><a href="#analysis-time">Analysis time</a></li><li><a href="#what-it-is-not">What it is not</a></li></ul></nav></aside>
 </div></main>
 <div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span>Content is for general information only and is not investment advice. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 </body></html>

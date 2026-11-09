@@ -27,15 +27,22 @@
 <script src="/assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c417fd53" defer></script><script src="/assets/library.js?v=e1c49407" defer></script><script src="/assets/pwa.js?v=b0dd56f5" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "AboutPage", "name": "MarketLevelMap Hakkında: veri tabanlı piyasa analizi", "description": "MarketLevelMap nedir? Piyasa grafiklerinde fiyatın tepki verdiği bölgeleri kurallarla ölçen veri tabanlı analiz: yaklaşım, sunulanlar, üyelik ve analiz zamanı.", "url": "https://marketlevelmap.com/tr/hakkinda/", "inLanguage": "tr", "publisher": {"@type": "Organization", "name": "MarketLevelMap", "url": "https://marketlevelmap.com/"}}</script>
 <style>
-.about{max-width:860px;margin:0 auto;padding:10px 0 80px}
-.about section{margin:56px 0}
+.about{max-width:1060px;margin:0 auto;padding:10px 0 80px;display:grid;grid-template-columns:minmax(0,760px) 260px;gap:40px;align-items:start;justify-content:center}
+.about-body{min-width:0;font-size:15px}
+.about-body section{margin:42px 0}
+.about-body .eyebrow{color:var(--accent);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;font-size:11px;margin:0 0 10px}
+.about h1{font-size:30px;font-weight:700;line-height:1.2;margin:0 0 14px;letter-spacing:-.6px}
+.about .lead{font-size:16px;line-height:1.65;color:var(--fg);margin:0 0 22px}
+.about h2{font-size:19px;font-weight:700;margin:0 0 14px;letter-spacing:-.3px}
+.about h3{margin:0 0 6px;font-size:14px;font-weight:700}
+.about p,.about li,.about dd{line-height:1.55;color:var(--fg)}
+.about .side{position:sticky;top:20px;margin-top:28px}
+.about .tf b{font-size:18px}
+.about .side-card a{color:var(--muted);text-decoration:none}.about .side-card a:hover{color:var(--accent)}
+.toc-inline{display:none}
+@media(max-width:900px){.about{grid-template-columns:minmax(0,1fr)}.about .side{display:none}.toc-inline{display:block}}
+@media(max-width:600px){.about h1{font-size:25px}}
 .about-hero{margin-top:28px!important}
-.about .eyebrow{color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:13px;margin:0 0 10px}
-.about h1{font-size:clamp(34px,6vw,56px);line-height:1.05;margin:0 0 18px;letter-spacing:-.02em}
-.about .lead{font-size:clamp(17px,2.2vw,20px);line-height:1.6;color:var(--fg);margin:0 0 26px;max-width:720px}
-.about h2{font-size:clamp(22px,3vw,28px);margin:0 0 14px;letter-spacing:-.01em}
-.about h3{margin:0 0 8px;font-size:18px}
-.about p,.about li,.about dd{line-height:1.7;color:color-mix(in srgb,var(--fg) 88%,var(--muted))}
 .about a{color:var(--accent)}
 .principles{list-style:none;padding:0;margin:26px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .principles li{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.55}
@@ -81,7 +88,7 @@
 <a href="/" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="/assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="/assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="/assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="/assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="/">Piyasa</a><a href="/weekly-events">Haftalık olaylar</a><a href="/tr/kutuphane/">Kütüphane</a><a href="/tr/hakkinda/" aria-current="page">Hakkında</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Dil</label><select id="lang" data-href-tr="/tr/hakkinda/" data-href-en="/en/about/"><option value="en">EN</option><option value="tr" selected>TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
-<main class="shell"><div class="about">
+<main class="shell"><div class="about"><div class="about-body">
 <section class="about-hero">
   <p class="eyebrow">MarketLevelMap Hakkında</p>
   <h1>Grafiğin haritası.</h1>
@@ -105,7 +112,7 @@
   </ul>
 </section>
 
-<section>
+<section id="yaklasim">
   <h2>Yaklaşım: veri tabanlı analiz</h2>
   <p>Göstergeler fiyattan türetilmiş ikinci bir çizgi üretir. Veri tabanlı analiz ise doğrudan fiyat verisinin kendisine bakar:
   <em>Fiyat nerede durdu? Nerede döndü? Hangi seviyeyi kırdı, sonra geri gelip test etti mi?</em> Bu soruların cevabı
@@ -129,7 +136,7 @@
   yeni listelenmiş varlıklar bir süre analiz dışında kalır.</p></div>
 </section>
 
-<section>
+<section id="ne-sunar">
   <h2>Ne sunar?</h2>
   <p>Her varlık, aynı grafiğe iki ayrı soruyla bakan iki görünümle analiz edilir. İkisi ayrı yöntemlerdir; biri diğerinin sonucunu kullanmaz.</p>
   <div class="two">
@@ -153,7 +160,7 @@
   <p>Grafikte bunların nasıl göründüğü ve hangi sırayla okunacağı <a href="/tr/rehber/">Okuma rehberi</a>nde anlatılır.</p>
 </section>
 
-<section>
+<section id="uyelik">
   <h2>Üyelik</h2>
   <p><b>1D analizleri bütün araçlarıyla herkese açıktır.</b> 1H, 4H ve 1W analizleri ile arşivdeki bu zaman
   dilimlerine ait analizler üyelere özeldir.</p>
@@ -166,7 +173,7 @@
   <p class="cta"><a class="btn" href="/account">Hesap sayfasına git →</a></p>
 </section>
 
-<section>
+<section id="analiz-zamani">
   <h2>Analiz zamanı: bölgeler neden canlı güncellenmez?</h2>
   <p>Sitede iki tür bilgi vardır. <b>Fiyatlar ve mumlar canlıdır</b>; piyasadan anlık gelir. <b>Bölgeler, aralık ve
   seviyeler ise analiz zamanına aittir</b>; her analizin üzerinde tarihi yazar.</p>
@@ -195,7 +202,7 @@
   mumlarla güncellenir ve tablolarının altında “… itibarıyla” notu taşır. Aralığın kendisi analiz anındaki hâliyle kalır.</p>
 </section>
 
-<section class="not">
+<section class="not" id="ne-degildir">
   <h2>Ne değildir?</h2>
   <div class="four">
     <div><h3>Sinyal değildir</h3><p>Al ya da sat demez. Giriş, hedef ya da zarar durdur seviyesi vermez.</p></div>
@@ -209,6 +216,8 @@
   gideceğinize siz karar verirsiniz.</p>
   <p class="cta"><a class="btn" href="/tr/rehber/">Grafik nasıl okunur? Rehberi oku →</a> <a class="btn ghost" href="/">Piyasa tablosuna git →</a> <a class="btn ghost" href="/tr/kutuphane/">Kütüphaneyi keşfet →</a></p>
 </section>
+</div>
+<aside class="side"><nav class="side-card toc" aria-label="Bu sayfada"><p class="eyebrow">Bu sayfada</p><ul><li><a href="#yaklasim">Yaklaşım</a></li><li><a href="#ne-sunar">Ne sunar?</a></li><li><a href="#uyelik">Üyelik</a></li><li><a href="#analiz-zamani">Analiz zamanı</a></li><li><a href="#ne-degildir">Ne değildir?</a></li></ul></nav></aside>
 </div></main>
 <div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span>İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Bilgilendirme ve Risk Bildirimi</button></p></footer></div>
 </body></html>
