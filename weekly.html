@@ -20,13 +20,13 @@ main{padding:0 0 70px}
 .wk-panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 18px}
 .wk-row{display:grid;grid-template-columns:64px repeat(3,minmax(0,1fr)) minmax(170px,1.15fr);gap:18px;align-items:center;min-height:64px;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
 .wk-row:last-child{border-bottom:0}a.wk-row:hover b{color:var(--accent)}
-.wk-hd{min-height:44px;color:var(--muted);font-size:13px;font-weight:600}
+.wk-hd{min-height:44px;color:var(--muted);font-size:13px;font-weight:600}.wk-hd span+span{text-align:center}
 .wk-row>b{font-size:15px}
-.wk-cell{display:grid;grid-template-columns:minmax(0,1fr) 58px;gap:8px;align-items:center}
+.wk-cell{display:grid;grid-template-columns:minmax(0,130px) 58px;gap:8px;align-items:center;justify-content:center}
 .wk-cell span{font-size:13px;font-variant-numeric:tabular-nums;text-align:right}
 .wk-track{position:relative;height:14px}.wk-zero{position:absolute;top:-6px;bottom:-6px;width:1px;background:var(--muted);opacity:.55}
 .wk-bar{position:absolute;top:0;height:14px;border-radius:3px}.wk-bar.pos{background:var(--up)}.wk-bar.neg{background:var(--down)}.wk-bar.ath{background:#7d8b96}
-.wk-al{display:grid;gap:2px}.wk-al .tfs{font-size:14px;font-weight:600;white-space:nowrap}.wk-al .tfs i{font-style:normal;margin-right:5px}.wk-al .u{color:var(--up)}.wk-al .d{color:var(--down)}.wk-al .n{color:var(--muted)}
+.wk-al{display:grid;gap:2px;justify-items:center;text-align:center}.wk-al .tfs{font-size:14px;font-weight:600;white-space:nowrap}.wk-al .tfs i{font-style:normal;margin-right:5px}.wk-al .u{color:var(--up)}.wk-al .d{color:var(--down)}.wk-al .n{color:var(--muted)}
 .wk-al small{color:var(--muted);font-size:12px}
 .wk-lbl{display:none;color:var(--muted);font-size:11px}.wk-cell .wk-lbl{text-align:left}
 .table-note{margin:14px 2px 0;color:var(--muted);font-size:12px;max-width:820px}
@@ -37,7 +37,7 @@ main{padding:0 0 70px}
   .wk-row{grid-template-columns:1fr 1fr;gap:8px 14px;padding:12px 0}
   .wk-row>b{grid-column:1/-1;font-size:16px}
   .wk-cell{grid-template-columns:1fr auto;row-gap:4px}.wk-lbl{display:block;grid-column:1/-1}
-  .wk-al{grid-column:1/-1}
+  .wk-al{grid-column:1/-1;justify-items:start;text-align:left}.wk-cell{justify-content:stretch;grid-template-columns:1fr auto}
 }
 </style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c417fd53" defer></script><script src="assets/market-ui.js?v=4e4d2911"></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
@@ -47,21 +47,21 @@ main{padding:0 0 70px}
 (function(){var lang;try{lang=localStorage.getItem("mlm-lang")}catch(e){}if(lang!=="tr")return;document.documentElement.lang="tr";document.querySelectorAll("header [data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=el.dataset.tr});document.querySelectorAll("header [data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",el.dataset.hrefTr)});var sel=document.getElementById("lang");if(sel)sel.value="tr"})();
 </script>
 <main class="shell">
-<div class="page-head"><div><h1 data-i18n="heading">Weekly outlook</h1><p class="meta"><span id="wk-range"></span><span>·</span><span data-i18n="asOf">prices as of Monday 00:00 UTC</span></p></div>
+<div class="page-head"><div><h1 data-i18n="heading">Weekly outlook</h1><p class="meta"><span id="wk-range"></span><span>·</span><span data-i18n="asOf">weekly close</span></p></div>
 <div class="wk-actions"><button class="filter-btn" type="button" id="wk-download" disabled data-i18n="download">Download image</button></div></div>
 <div id="wk-status" class="wk-status" data-i18n="loading">Loading the weekly outlook…</div>
 <div class="wk" id="wk" hidden>
-<section class="wk-heat-wrap" aria-labelledby="wk-h-last"><h2 id="wk-h-last"><span data-i18n="lastWeek">Last week</span> <span class="wk-sub" id="wk-last-range"></span></h2><div class="wk-heat" id="wk-heat"></div></section>
+<section class="wk-heat-wrap" aria-labelledby="wk-h-last"><h2 id="wk-h-last"><span data-i18n="lastWeek">Weekly change</span></h2><div class="wk-heat" id="wk-heat"></div></section>
 <section class="wk-stand-wrap" aria-labelledby="wk-h-stand"><h2 id="wk-h-stand" data-i18n="stand">Where they stand</h2>
 <div class="wk-panel"><div class="wk-row wk-hd"><span data-i18n="asset">Asset</span><span data-i18n="mo">Monthly open</span><span data-i18n="yo">Yearly open</span><span data-i18n="ath">All-time high</span><span data-i18n="align">1D timeframe alignment</span></div><div id="wk-rows"></div></div></section>
 </div>
-<p class="table-note" data-i18n="note">Last week is open to close of the weekly candle. Distances are measured from this week's open (last week's close). The alignment shows the structure of the latest 1W, 1D and 4H Price Action analyses.</p>
+<p class="table-note" data-i18n="note">Weekly change is open to close of the weekly candle. Distances are measured from the weekly close. The alignment shows the structure of the latest 1W, 1D and 4H Price Action analyses.</p>
 </main>
 <div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 <script>
 var copy={
-  en:{title:"Weekly outlook",heading:"Weekly outlook",asOf:"prices as of Monday 00:00 UTC",download:"Download image",loading:"Loading the weekly outlook…",failed:"The weekly outlook could not be loaded. Please try again later.",lastWeek:"Last week",stand:"Where they stand",asset:"Asset",mo:"Monthly open",yo:"Yearly open",ath:"All-time high",align:"1D timeframe alignment",aligned:"Aligned {dir}",main:"Main {dir} · 4H against",conflict:"Conflict",unknown:"Not determined",note:"Last week is open to close of the weekly candle. Distances are measured from this week's open (last week's close). The alignment shows the structure of the latest 1W, 1D and 4H Price Action analyses.",imgTitle:"Weekly outlook",imgSub:"How {n} assets closed last week and where they start this one · as of Monday 00:00 UTC",imgFoot:"marketlevelmap.com · Charts, not signals"},
-  tr:{title:"Haftanın görünümü",heading:"Haftanın görünümü",asOf:"fiyatlar Pazartesi 00:00 UTC itibarıyla",download:"Görseli indir",loading:"Haftanın görünümü yükleniyor…",failed:"Haftanın görünümü yüklenemedi. Lütfen daha sonra tekrar deneyin.",lastWeek:"Geçen hafta",stand:"Nerede duruyorlar",asset:"Varlık",mo:"Aylık açılış",yo:"Yıllık açılış",ath:"Tüm zamanların zirvesi",align:"1D zaman dilimi uyumu",aligned:"Uyumlu {dir}",main:"Ana yön {dir} · 4H ters",conflict:"Çelişkili",unknown:"Belirsiz",note:"Geçen hafta, haftalık mumun açılışından kapanışına değişimdir. Uzaklıklar bu haftanın açılışına (geçen haftanın kapanışına) göre ölçülür. Uyum, en güncel 1W, 1D ve 4H Price Action analizlerindeki yapının yönünü gösterir.",imgTitle:"Haftanın görünümü",imgSub:"{n} varlık geçen haftayı nasıl kapattı, bu haftaya nereden başlıyor · Pazartesi 00:00 UTC itibarıyla",imgFoot:"marketlevelmap.com · Sinyal değil, harita"}
+  en:{title:"Weekly outlook",heading:"Weekly outlook",asOf:"weekly close",download:"Download image",loading:"Loading the weekly outlook…",failed:"The weekly outlook could not be loaded. Please try again later.",lastWeek:"Weekly change",stand:"Where they stand",asset:"Asset",mo:"Monthly open",yo:"Yearly open",ath:"All-time high",align:"1D timeframe alignment",aligned:"Aligned {dir}",main:"Main {dir} · 4H against",conflict:"Conflict",unknown:"Not determined",note:"Weekly change is open to close of the weekly candle. Distances are measured from the weekly close. The alignment shows the structure of the latest 1W, 1D and 4H Price Action analyses.",imgTitle:"Weekly outlook",imgSub:"How {n} assets closed the week and where they stand at the weekly close",imgFoot:"marketlevelmap.com · Charts, not signals"},
+  tr:{title:"Haftanın görünümü",heading:"Haftanın görünümü",asOf:"haftalık kapanış",download:"Görseli indir",loading:"Haftanın görünümü yükleniyor…",failed:"Haftanın görünümü yüklenemedi. Lütfen daha sonra tekrar deneyin.",lastWeek:"Haftalık değişim",stand:"Nerede duruyorlar",asset:"Varlık",mo:"Aylık açılış",yo:"Yıllık açılış",ath:"Tüm zamanların zirvesi",align:"1D zaman dilimi uyumu",aligned:"Uyumlu {dir}",main:"Ana yön {dir} · 4H ters",conflict:"Çelişkili",unknown:"Belirsiz",note:"Haftalık değişim, haftalık mumun açılışından kapanışına değişimdir. Uzaklıklar haftalık kapanışa göre ölçülür. Uyum, en güncel 1W, 1D ve 4H Price Action analizlerindeki yapının yönünü gösterir.",imgTitle:"Haftanın görünümü",imgSub:"{n} varlık haftayı nasıl kapattı ve haftalık kapanışta nerede duruyor",imgFoot:"marketlevelmap.com · Sinyal değil, harita"}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 function applyLanguage(value){
@@ -110,7 +110,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     var w=words();
     if(!data){return}
     var list=assets(),sc=scales(list),start=Date.parse(data.weekStart);
-    el("wk-range").textContent=rangeText(start);el("wk-last-range").textContent="· "+rangeText(start-7*DAY);
+    el("wk-range").textContent=rangeText(start-7*DAY);
     el("wk-heat").innerHTML=list.map(function(a,i){var v=a.lastWeek&&a.lastWeek.change;
       return'<a class="wk-tile'+(i===0?" big":"")+'" href="'+href(a.symbol)+'" style="background:'+tileFill(v)+'"><b>'+esc(MarketUI.baseOf(a.symbol))+'</b><span>'+pctText(v)+"</span></a>"}).join("");
     function cell(v,lo,hi,label,cls){var g=v==null?null:barGeom(v,lo,hi);
@@ -127,10 +127,10 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   function buildSvg(logo){
     var w=words(),list=assets(),sc=scales(list),start=Date.parse(data.weekStart),C={bg:"#10161d",fg:"#edf2f4",muted:"#9aaab5",line:"#28343d",panel:"#151e27",up:"#3ccf91",down:"#ef6b73",ath:"#7d8b96"};
     var o=['<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="Inter,Segoe UI,Arial,sans-serif">','<rect width="1600" height="900" fill="'+C.bg+'"/>'];
-    o.push(svgText(64,94,w.imgTitle+" · "+rangeText(start),42,C.fg,700));
+    o.push(svgText(64,94,w.imgTitle+" · "+rangeText(start-7*DAY),42,C.fg,700));
     o.push(svgText(64,128,w.imgSub.replace("{n}",list.length),19,C.muted));
     // Heatmap: BTC across the top, the rest two per row.
-    var hx=64,hy=176,hw=380,hh=600,gap=6;o.push(svgText(hx,hy-14,w.lastWeek+" · "+rangeText(start-7*DAY),19,C.muted,600));
+    var hx=64,hy=176,hw=380,hh=600,gap=6;o.push(svgText(hx,hy-14,w.lastWeek,19,C.muted,600));
     var rows=Math.ceil((list.length-1)/2)+1,th=(hh-gap*(rows-1))/rows,tw=(hw-gap)/2;
     list.forEach(function(a,i){var v=a.lastWeek&&a.lastWeek.change,x,y,ww;
       if(i===0){x=hx;y=hy;ww=hw}else{var k=i-1;x=hx+(k%2)*(tw+gap);y=hy+(1+Math.floor(k/2))*(th+gap);ww=tw}
@@ -143,8 +143,10 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     var px=472,py=176,pw=1064,rh=Math.min(74,(600-48)/list.length),ph=48+rh*list.length+8;
     o.push(svgText(px,py-14,w.stand,19,C.muted,600));
     o.push('<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="14" fill="'+C.panel+'" stroke="'+C.line+'"/>');
-    var cols=[px+22,px+112,px+352,px+592,px+840],bw=150;
-    [w.asset,w.mo,w.yo,w.ath,w.align].forEach(function(t,i){o.push(svgText(cols[i],py+30,t,15,C.muted,600))});
+    // Four equal columns after the asset name; each header sits centred over its bar + value group.
+    var colW=(pw-22-112)/4,mid=function(i){return px+112+colW*i+colW/2},bw=140,grp=bw+8+66,cols=[px+22].concat([0,1,2].map(function(i){return mid(i)-grp/2}));
+    o.push(svgText(px+22,py+30,w.asset,15,C.muted,600));
+    [w.mo,w.yo,w.ath,w.align].forEach(function(t,i){o.push(svgText(mid(i),py+30,t,15,C.muted,600,"middle"))});
     o.push('<line x1="'+(px+22)+'" x2="'+(px+pw-22)+'" y1="'+(py+46)+'" y2="'+(py+46)+'" stroke="'+C.line+'"/>');
     list.forEach(function(a,i){var y=py+48+i*rh,cy=y+rh/2,al=alignment(a.alignment||{});
       if(i)o.push('<line x1="'+(px+22)+'" x2="'+(px+pw-22)+'" y1="'+y+'" y2="'+y+'" stroke="'+C.line+'"/>');
@@ -153,10 +155,10 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
         var x=cols[j+1],v=b[0],g=v==null?null:barGeom(v,b[1],b[2]),z=x+((0-b[1])/(b[2]-b[1]))*bw;
         o.push('<line x1="'+z+'" x2="'+z+'" y1="'+(cy-15)+'" y2="'+(cy+15)+'" stroke="'+C.muted+'" stroke-opacity=".55"/>');
         if(g)o.push('<rect x="'+(x+g.left*bw)+'" y="'+(cy-9)+'" width="'+(g.width*bw)+'" height="18" rx="4" fill="'+(b[3]?C.ath:v>=0?C.up:C.down)+'"/>');
-        o.push(svgText(x+bw+70,cy+6,pctText(v),16,C.fg,null,"end"));
+        o.push(svgText(x+grp,cy+6,pctText(v),16,C.fg,null,"end"));
       });
-      var tx=cols[4];o.push('<text x="'+tx+'" y="'+(cy-3)+'" font-size="17" font-weight="600" fill="'+C.fg+'">'+al.parts.map(function(p){return esc(p.tf)+' <tspan fill="'+(p.cls==="u"?C.up:p.cls==="d"?C.down:C.muted)+'">'+p.arrow+"</tspan>"}).join("  ")+"</text>");
-      o.push(svgText(tx,cy+19,al.label,14,C.muted));
+      var tx=mid(3);o.push('<text x="'+tx+'" y="'+(cy-3)+'" text-anchor="middle" font-size="17" font-weight="600" fill="'+C.fg+'">'+al.parts.map(function(p){return esc(p.tf)+' <tspan fill="'+(p.cls==="u"?C.up:p.cls==="d"?C.down:C.muted)+'">'+p.arrow+"</tspan>"}).join("  ")+"</text>");
+      o.push(svgText(tx,cy+19,al.label,14,C.muted,null,"middle"));
     });
     o.push('<image href="'+logo+'" x="64" y="818" height="44" width="300" preserveAspectRatio="xMinYMid meet"/>');
     o.push(svgText(1536,846,w.imgFoot,17,C.muted,null,"end"));
