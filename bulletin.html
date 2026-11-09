@@ -313,7 +313,7 @@ table{font-size:14px}
 .ind-menu label:hover{background:var(--panel-2)}
 .ind-menu input{width:16px;height:16px;margin:0;accent-color:var(--accent);cursor:pointer}
 </style>
-<script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}</style>
+<script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}html.embed .chart .live-chart{height:500px}</style>
 <script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c417fd53" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=4e4d2911"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=66cd5c62"></script><script src="assets/features.js?v=5b5669df"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
@@ -965,7 +965,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   }
   function chartFileName(){return "MarketLevelMap_"+asset+"_"+MarketUI.timeframeOf(entry).toUpperCase()+"_"+stamp(new Date())+"UTC.png"}
   function stamp(d){return d.toISOString().slice(0,16).replace(/[-:]/g,"").replace("T","-")}
-  function chartImage(){
+  function chartImage(opts){
     var shot=liveChart.screenshot(),k=shot.width/(liveBox.clientWidth||shot.width),w=words();
     var head=Math.round(54*k),foot=Math.round(34*k),pad=Math.round(14*k);
     var out=document.createElement("canvas");out.width=shot.width;out.height=shot.height+head+foot;
@@ -976,8 +976,8 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     g.textBaseline="middle";
     g.fillStyle="#e6ebf2";g.font="700 "+Math.round(17*k)+"px"+font;g.textAlign="left";g.fillText(chartName.textContent,pad,Math.round(20*k));
     g.fillStyle="#9aa6b8";g.font="500 "+Math.round(11*k)+"px"+font;g.fillText((method==="pa"?w.methodPa:w.methodCz)+" · "+MarketUI.nameOf(asset),pad,Math.round(39*k));
-    g.textAlign="right";g.fillStyle="#e8a765";g.font="700 "+Math.round(15*k)+"px"+font;g.fillText("MarketLevelMap",out.width-pad,Math.round(20*k));
-    g.fillStyle="#9aa6b8";g.font="500 "+Math.round(11*k)+"px"+font;g.fillText("marketlevelmap.com",out.width-pad,Math.round(39*k));
+    // The brand sits top right; with the tables beside the chart it moves to the far right of the whole image.
+    if(!(opts&&opts.noBrand))brandMark(g,out.width-pad,k,font);
     var y=head+shot.height+Math.round(foot/2);
     // Narrow charts (phones): the times shrink to fit and the advice note is left out if it would overlap.
     var times=chartTime.textContent,size=11;
@@ -991,6 +991,10 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   // on the right, what the page shows for this view, read from the page itself so the values always match:
   // Price Action → "at a glance" boxes, price range, FVG, structure; Critical Zones → support and resistance zones.
   // Titles, column heads and values only; the explanations under the titles are left out.
+  function brandMark(g,x,k,font){
+    g.textBaseline="middle";g.textAlign="right";g.fillStyle="#e8a765";g.font="700 "+Math.round(15*k)+"px"+font;g.fillText("MarketLevelMap",x,Math.round(20*k));
+    g.fillStyle="#9aa6b8";g.font="500 "+Math.round(11*k)+"px"+font;g.fillText("marketlevelmap.com",x,Math.round(39*k));
+  }
   function tableData(id){
     var block=document.getElementById(id);if(!block||block.hidden||getComputedStyle(block).display==="none")return null;
     var title=(block.querySelector(".block-head h2")||{}).textContent||"",table=block.querySelector("table");if(!table)return null;
@@ -1008,7 +1012,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     var items=[].map.call(g.children,function(d){var s=d.querySelector("span"),b=d.querySelector("b");return s&&b?{label:s.textContent.trim(),value:b.textContent.replace(/\s+/g," ").trim(),cls:b.classList.contains("up")?"up":b.classList.contains("down")?"down":""}:null}).filter(Boolean);
     return items.length?items:null}
   function fullImage(){
-    var chartCanvas=chartImage(),k=chartCanvas.width/((liveBox.clientWidth||chartCanvas.width)),font=" Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
+    var chartCanvas=chartImage({noBrand:true}),k=chartCanvas.width/((liveBox.clientWidth||chartCanvas.width)),font=" Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
     var C={bg:"#101820",line:"#26303c",panel:"#151e27",fg:"#e6ebf2",muted:"#9aa6b8",up:"#3ccf91",down:"#ef6b73",cz:"#e8a765",pa:"#4fd6c3",bos:"#a99cf0",choch:"#e27bd0"};
     var badge={"b-resistance":C.down,"b-support":C.up,"b-equilibrium":C.muted,"b-fvg":C.pa,"b-bos":C.bos,"b-choch":C.choch,"b-sweep":C.cz,"b-avwap":C.fg};
     var parts=method==="pa"?["range-block","fvg-block","structure-block"].map(tableData).filter(Boolean):[tableData("zones-block")].filter(Boolean);
@@ -1020,7 +1024,8 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     var W=chartCanvas.width+pw,H=Math.max(chartCanvas.height,h());
     var out=document.createElement("canvas");out.width=W;out.height=H;var g=out.getContext("2d");
     g.fillStyle=C.bg;g.fillRect(0,0,W,H);g.drawImage(chartCanvas,0,0);
-    g.fillStyle=C.line;g.fillRect(chartCanvas.width,0,Math.max(1,Math.round(k)),H);
+    g.fillStyle=C.line;g.fillRect(chartCanvas.width,y0,Math.max(1,Math.round(k)),H-y0);g.fillRect(chartCanvas.width,y0-Math.max(1,Math.round(k)),pw,Math.max(1,Math.round(k)));
+    brandMark(g,W-pad,k,font);
     var x0=chartCanvas.width+pad,w=pw-2*pad,y=y0+pad;g.textBaseline="middle";
     function text(t,x,yy,size,weight,color,align){g.font=(weight||500)+" "+Math.round(size*k)+"px"+font;g.fillStyle=color;g.textAlign=align||"left";g.fillText(t,x,yy)}
     function fitText(t,size,weight,maxW){g.font=(weight||500)+" "+Math.round(size*k)+"px"+font;if(g.measureText(t).width<=maxW)return t;while(t.length>1&&g.measureText(t+"…").width>maxW)t=t.slice(0,-1);return t+"…"}
