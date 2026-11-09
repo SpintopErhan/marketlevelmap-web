@@ -54,6 +54,11 @@ cache previews per link, so a link shared before a change keeps its old card for
   key levels and earlier analyses. A switch at the top chooses the discipline: Critical Zones (default) or
   Price Action (`&method=pa`, see "Price Action view").
 - `weekly-events.html` — this/next week's events. `archive.html` — placeholder until archives are published.
+- `tr/hakkinda/`, `en/about/` — About: what the site is and why (approach and engine steps, what it offers,
+  membership, analysis time, what it is not). `tr/rehber/`, `en/guide/` — Reading guide: what is on the chart
+  and how to read it (the two views, zones, key levels, timeframes, five-step checklist, examples, mistakes,
+  glossary). The guide does not link to About. Both pages use the library's type sizes and its sticky
+  "On this page" card (hidden on phones; the guide keeps a contents list at the top there). Edited by hand.
 
 ## Price Action view
 
