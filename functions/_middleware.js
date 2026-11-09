@@ -6,6 +6,7 @@ const DEFAULT_DESCRIPTION = "Live market table and structure-based analysis of c
 
 const PAGES = {
   "/": { title: "MarketLevelMap — Market table", description: DEFAULT_DESCRIPTION },
+  "/weekly": { title: "Weekly outlook · MarketLevelMap", description: "How the analysed assets closed last week and where they start this one: weekly change, monthly and yearly open, all-time high and timeframe alignment." },
   "/weekly-events": { title: "Weekly events · MarketLevelMap", description: "Market-moving events of the week: macro data releases and central-bank decisions." },
   "/archive": { title: "Archive · MarketLevelMap", description: "Earlier MarketLevelMap analyses by date." },
   "/bulletin": { title: "Analysis · MarketLevelMap", description: DEFAULT_DESCRIPTION },

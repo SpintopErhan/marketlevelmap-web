@@ -60,6 +60,24 @@ cache previews per link, so a link shared before a change keeps its old card for
   glossary). The guide does not link to About. Both pages use the library's type sizes and its sticky
   "On this page" card (hidden on phones; the guide keeps a contents list at the top there). Edited by hand.
 
+## Weekly outlook
+
+`weekly.html` (`/weekly`) and a card at the top right of the home page. Data: `GET /api/weekly`
+(`functions/api/weekly.js`), one snapshot per week (Monday 00:00 UTC), cached at the edge for an hour once
+every asset has last week's candle. Every analysed asset except PAXG:
+
+- **Last week** — open → close of the weekly candle that opened the Monday before (public candles,
+  `data.marketlevelmap.com/candles/<SYMBOL>/1w/latest.json`, else the newest 1W archive). If that candle is not
+  uploaded yet the asset shows "–"; an older week is never used in its place.
+- **Where they stand** — last week's close (= this week's open) against the monthly open, yearly open and ATH
+  (`MO`, `YO`, `OATH` of the 1D Critical Zones report).
+- **1D timeframe alignment** — `structure.state` of the 1W, 1D and 4H Price Action reports, with the analysis
+  page's rule (aligned / main trend with 4H against / conflict). Only these three states are public; the 4H
+  and 1W reports stay members-only.
+
+The page shows a heat map (BTC on top, then the usual market order) and one row per asset; "Download image"
+draws the same as a 1600×900 PNG (dark look, page language) for X.
+
 ## Price Action view
 
 Price Action (PA) is a separate discipline from Critical Zones (CZ), so the analysis page shows it as its own
