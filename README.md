@@ -402,8 +402,8 @@ alternating Critical Zones and Price Action, and skip analyses that are not publ
 - **Library post**: the week's topic (`assets/weekly-topics.json`); its English page gives a 1600×900 image of
   the page's figure and a tweet thread built from the page's own text (title and summary, key points, link),
   each tweet ≤ 280 characters, editable and copyable.
-- The admin writes the post text; status (planned / prepared / posted) and the link to the X post are saved.
-  Nothing is posted to X from the site.
+- The desk keeps the plan and each post's status (planned / prepared / posted, saved on change); post text and
+  X links are not stored. Nothing is posted to X from the site.
 - Tables `social_posts (week, day, kind, symbol, method, timeframe, status, text, x_url, updated_at)` and
   `social_settings (key, value)` in `USERS_DB`, created on first use.
 

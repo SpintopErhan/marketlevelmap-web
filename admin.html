@@ -194,7 +194,7 @@ load();
       days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],kinds:{weekly:"Weekly outlook",chart:"Chart",review:"Week review",library:"Library"},today:"Today",
       status:{planned:"Planned",prepared:"Prepared",posted:"Posted"},copy:"Copy",copied:"Copied",copyTitle:"Copy title",png:"Save PNG",pngTables:"PNG with tables",pngWait:"The chart is still loading.",
       asset:"Asset",method:"Method",tf:"Timeframe",cz:"Critical Zones",pa:"Price Action",noAnalysis:"No published analysis for this choice.",
-      text:"Your post",textPh:"Write the post here…",xUrl:"Link to the X post",save:"Save",saved:"Saved",errUrl:"Use the link of the post on x.com.",errPlan:"Save the plan first.",
+      text:"Your post",textPh:"Write the post here…",statusLabel:"Status",xUrl:"Link to the X post",save:"Save",saved:"Saved",errUrl:"Use the link of the post on x.com.",errPlan:"Save the plan first.",
       reviewHelp:"This week's chart posts. Open one to see the chart as it is now:",noPosts:"No chart posts this week.",thread:"Tweet thread",threadHelp:"Built from the library page; edit before copying. Each box is one tweet.",
       libFail:"The library page could not be read.",openPage:"Open the library page",libImage:"Image"},
     tr:{area:{members:"Üyeler",social:"Sosyal medya"},auto:"Otomatik",manual:"Tercihli",modeHelp:{auto:"Plan senin için yapılır: varlıklar her hafta sırayla döner.",manual:"Varlıkları sen seçersin; kaydedene kadar plan yalnızca bir öneridir."},
@@ -202,7 +202,7 @@ load();
       days:["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"],kinds:{weekly:"Haftanın görünümü",chart:"Grafik",review:"Hafta değerlendirmesi",library:"Kütüphane"},today:"Bugün",
       status:{planned:"Planlandı",prepared:"Hazırlandı",posted:"Paylaşıldı"},copy:"Kopyala",copied:"Kopyalandı",copyTitle:"Başlığı kopyala",png:"PNG kaydet",pngTables:"PNG + tablolar",pngWait:"Grafik henüz yükleniyor.",
       asset:"Varlık",method:"Yöntem",tf:"Zaman dilimi",cz:"Kritik Bölgeler",pa:"Price Action",noAnalysis:"Bu seçim için yayında analiz yok.",
-      text:"Gönderin",textPh:"Gönderini buraya yaz…",xUrl:"X gönderisinin bağlantısı",save:"Kaydet",saved:"Kaydedildi",errUrl:"x.com'daki gönderinin bağlantısını kullan.",errPlan:"Önce planı kaydet.",
+      text:"Gönderin",textPh:"Gönderini buraya yaz…",statusLabel:"Durum",xUrl:"X gönderisinin bağlantısı",save:"Kaydet",saved:"Kaydedildi",errUrl:"x.com'daki gönderinin bağlantısını kullan.",errPlan:"Önce planı kaydet.",
       reviewHelp:"Bu haftanın grafik gönderileri. Birini açıp grafiğin bugünkü haline bak:",noPosts:"Bu hafta grafik gönderisi yok.",thread:"Tweet dizisi",threadHelp:"Kütüphane sayfasından kuruldu; kopyalamadan önce düzenleyebilirsin. Her kutu bir tweet.",
       libFail:"Kütüphane sayfası okunamadı.",openPage:"Kütüphane sayfasını aç",libImage:"Görsel"}
   };
@@ -340,7 +340,7 @@ load();
       var list=d.posts.filter(function(x){return x.kind==="chart"&&x.symbol});ws.appendChild(el("p","small muted",list.length?t.reviewHelp:t.noPosts));
       var holder=el("div"),rt=el("div","desk-tools");list.forEach(function(x){var b=el("button","btn ghost",t.days[x.day].slice(0,3)+": "+title(x));b.type="button";
         b.addEventListener("click",function(){holder.textContent="";var f=frame(chartSrc(x)),tl=el("div","desk-tools"),m=el("span","msg");tl.appendChild(exportButton(f,false,m));tl.appendChild(exportButton(f,true,m));tl.appendChild(m);
-          if(x.xUrl){var a=el("a","sp-link","X ↗");a.href=x.xUrl;a.target="_blank";a.rel="noopener";tl.appendChild(a)}holder.appendChild(tl);holder.appendChild(f)});rt.appendChild(b)});
+          holder.appendChild(tl);holder.appendChild(f)});rt.appendChild(b)});
       ws.appendChild(rt);ws.appendChild(holder);
     }else if(p.kind==="library"){
       var tp=topicOf(d.week),lb=el("div","desk-lib");ws.appendChild(lb);
@@ -358,24 +358,18 @@ load();
           c.appendChild(ta);var r2=el("div","row");r2.appendChild(cb);r2.appendChild(n);c.appendChild(r2);lb.appendChild(c)});
       }).catch(function(){lb.appendChild(el("p","notice",t.libFail))});
     }
-    // status, text, X link
-    var form=el("div","desk-form");
-    var stSel=el("select","sp-status");["planned","prepared","posted"].forEach(function(s){var o=el("option",null,t.status[s]);o.value=s;o.selected=s===(p._status||p.status);stSel.appendChild(o)});stSel.addEventListener("change",function(){p._status=stSel.value});
-    var ta=null;if(p.kind!=="library"){ta=el("textarea","sp-text");ta.rows=5;ta.placeholder=t.textPh;ta.value=p._text!=null?p._text:(p.text||"");var cnt=el("small","sp-count");
-      var upd=function(){var l=xLen(ta.value);cnt.textContent=l+" / 280";cnt.className="sp-count"+(l>280?" over":"")};upd();ta.addEventListener("input",function(){p._text=ta.value;upd()});
-      var lt=el("label","sp-field");lt.appendChild(el("span",null,t.text));lt.appendChild(ta);lt.appendChild(cnt);form.appendChild(lt)}
-    var xi=el("input","sp-x");xi.type="url";xi.placeholder="https://x.com/marketlevelmap/status/…";xi.value=p._xUrl!=null?p._xUrl:(p.xUrl||"");xi.addEventListener("input",function(){p._xUrl=xi.value});
-    var lx=el("label","sp-field");lx.appendChild(el("span",null,t.xUrl));lx.appendChild(xi);form.appendChild(lx);
-    var row=el("div","row"),btn=el("button","btn",t.save),m2=el("span","msg");btn.type="button";row.appendChild(stSel);row.appendChild(btn);row.appendChild(m2);form.appendChild(row);
-    var locked=!d.saved&&p.day<7;[stSel,btn,xi].concat(ta?[ta]:[]).forEach(function(x){x.disabled=locked});if(locked)m2.textContent=t.errPlan;
-    btn.addEventListener("click",function(){
-      btn.disabled=true;m2.textContent="";m2.className="msg";
-      var text=p.kind==="library"?(p._thread||[]).join("\n\n—\n\n"):ta.value;
-      post("/api/auth/admin/social/post",{week:d.week,day:p.day,status:stSel.value,text:text,xUrl:xi.value.trim()}).then(function(r){
-        if(r.ok){p.status=stSel.value;p.text=text;p.xUrl=xi.value.trim();p._text=p._xUrl=p._status=null;m2.textContent=t.saved;m2.className="msg ok";
+    // Status only: the plan is what the desk keeps (no post text, no X link). It is saved as soon as it changes.
+    var form=el("div","desk-form"),row=el("div","row"),m2=el("span","msg");
+    var stSel=el("select","sp-status");["planned","prepared","posted"].forEach(function(s){var o=el("option",null,t.status[s]);o.value=s;o.selected=s===p.status;stSel.appendChild(o)});
+    var lab=el("label","sp-sel");lab.appendChild(el("span",null,t.statusLabel));lab.appendChild(stSel);row.appendChild(lab);row.appendChild(m2);form.appendChild(row);
+    var locked=!d.saved&&p.day<7;stSel.disabled=locked;if(locked)m2.textContent=t.errPlan;
+    stSel.addEventListener("change",function(){
+      stSel.disabled=true;m2.textContent="";m2.className="msg";
+      post("/api/auth/admin/social/post",{week:d.week,day:p.day,status:stSel.value,text:p.text||"",xUrl:p.xUrl||""}).then(function(r){
+        if(r.ok){p.status=stSel.value;m2.textContent=t.saved;m2.className="msg ok";
           var fr=document.querySelector(".flow-row.is-sel .f-st");if(fr){fr.textContent=t.status[p.status];fr.className="f-st st-"+p.status}}
-        else{m2.textContent=r.error==="x_url"?t.errUrl:r.error==="not_saved"?t.errPlan:words().errors.server;m2.className="msg err"}
-      }).catch(function(){m2.textContent=words().errors.server;m2.className="msg err"}).then(function(){btn.disabled=false});
+        else{stSel.value=p.status;m2.textContent=r.error==="not_saved"?t.errPlan:words().errors.server;m2.className="msg err"}
+      }).catch(function(){stSel.value=p.status;m2.textContent=words().errors.server;m2.className="msg err"}).then(function(){stSel.disabled=false});
     });
     ws.appendChild(form);
     return ws;
