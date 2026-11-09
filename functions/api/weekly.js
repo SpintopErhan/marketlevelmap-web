@@ -4,7 +4,10 @@
 //
 // - Last week: the last CLOSED 1W candle in the public candle data (data.marketlevelmap.com, written by the local
 //   program): open → close. Its close is this week's open, the "price" the distances below are measured from.
-// - Monthly open, yearly open, ATH: the 1D Critical Zones report's key levels (MO, YO, OATH).
+// - Monthly open, yearly open, ATH: `keyLevels` of candles/<SYMBOL>/levels.json, written by the local program with
+//   the candles (so never older than the candles). A level whose period started after the week closed (the
+//   first week of a new month or year) is left out rather than mixed up. Until an asset's file carries
+//   keyLevels, its 1D Critical Zones report's levels are used (MO, YO, ATH, else OATH).
 // - Alignment: `structure.state` of the 1W, 1D and 4H Price Action reports. Only the three states leave the
 //   server; the reports themselves stay members-only (README "Accounts").
 // One snapshot per week: cached at the edge for an hour, so a request is cheap and the numbers stay put.
@@ -47,6 +50,24 @@ export function lastClosedWeek(rows, start) {
 const pct = (price, level) => (price > 0 && level > 0 ? Math.round((price / level - 1) * 10000) / 100 : null);
 const parts = (entry) => String(entry && entry.graphicKey || "").split(":");
 
+async function getJson(url) {
+  try {
+    const r = await fetch(url, { headers: { Accept: "application/json" }, cf: { cacheTtl: 300 } });
+    return r.ok ? await r.json() : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+// keyLevels of levels.json → { MO: {price, periodStart}, … }
+export function keyLevelMap(file, symbol) {
+  const list = file && file.pair === symbol && file.keyLevels && Array.isArray(file.keyLevels.levels) ? file.keyLevels.levels : null;
+  if (!list) return null;
+  const map = {};
+  for (const l of list) if (l && l.code && Number(l.price) > 0) map[String(l.code).toUpperCase()] = { price: Number(l.price), periodStart: l.periodStart ? Date.parse(l.periodStart) / 1000 : null };
+  return map;
+}
+
 async function getCandles(url) {
   try {
     const r = await fetch(url, { headers: { Accept: "application/json" }, cf: { cacheTtl: 300 } });
@@ -87,14 +108,21 @@ export async function buildWeekly(env, nowMs) {
   const index = () => (indexPromise ||= fetch(CANDLES + "index.json", { cf: { cacheTtl: 300 } }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
   const assets = await Promise.all(Object.keys(bySymbol).map(async (symbol) => {
     const s = bySymbol[symbol];
-    const [rows, cz, ...pa] = await Promise.all([
+    const [rows, file, cz, ...pa] = await Promise.all([
       weeklyCandles(symbol, start, index),
+      getJson(`${CANDLES}${encodeURIComponent(symbol)}/levels.json`),
       s.cz1d ? readJson(bucket, s.cz1d.report.objectKey) : null,
       ...ALIGN_TFS.map((tf) => (s.pa[tf] ? readJson(bucket, s.pa[tf].report.objectKey) : null)),
     ]);
     const week = lastClosedWeek(rows, start);
-    const levels = {};
-    for (const l of (cz && Array.isArray(cz.levels) ? cz.levels : [])) if (l && l.code && Number(l.price) > 0) levels[String(l.code).toUpperCase()] = Number(l.price);
+    const levels = {}, key = keyLevelMap(file, symbol);
+    if (key) {
+      // Only levels whose period had begun when last week closed.
+      for (const code of ["MO", "YO", "ATH"]) if (key[code] && !(key[code].periodStart >= start)) levels[code] = key[code].price;
+    } else {
+      for (const l of (cz && Array.isArray(cz.levels) ? cz.levels : [])) if (l && l.code && Number(l.price) > 0) levels[String(l.code).toUpperCase()] = Number(l.price);
+      if (!levels.ATH && levels.OATH) levels.ATH = levels.OATH;
+    }
     const price = week ? week.close : null;
     const alignment = {};
     ALIGN_TFS.forEach((tf, i) => {
@@ -106,7 +134,8 @@ export async function buildWeekly(env, nowMs) {
       lastWeek: week ? { openTime: new Date(week.openTime * 1000).toISOString(), change: pct(week.close, week.open) } : null,
       vsMonthlyOpen: pct(price, levels.MO),
       vsYearlyOpen: pct(price, levels.YO),
-      vsAth: pct(price, levels.OATH || levels.ATH),
+      vsAth: pct(price, levels.ATH),
+      levelsFrom: key ? "candles" : "report",
       alignment,
     };
   }));

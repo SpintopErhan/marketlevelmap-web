@@ -69,8 +69,9 @@ every asset has last week's candle. Every analysed asset except PAXG:
 - **Last week** — open → close of the weekly candle that opened the Monday before (public candles,
   `data.marketlevelmap.com/candles/<SYMBOL>/1w/latest.json`, else the newest 1W archive). If that candle is not
   uploaded yet the asset shows "–"; an older week is never used in its place.
-- **Where they stand** — last week's close (= this week's open) against the monthly open, yearly open and ATH
-  (`MO`, `YO`, `OATH` of the 1D Critical Zones report).
+- **Where they stand** — last week's close against the monthly open, yearly open and ATH: `keyLevels` of
+  `levels.json` (a level whose period began after the week closed is left out); until an asset's file has
+  them, its 1D Critical Zones report (`MO`, `YO`, `ATH` else `OATH`).
 - **1D timeframe alignment** — `structure.state` of the 1W, 1D and 4H Price Action reports, with the analysis
   page's rule (aligned / main trend with 4H against / conflict). Only these three states are public; the 4H
   and 1W reports stay members-only.
@@ -154,11 +155,21 @@ The old scrolling price strip is kept in `assets/price-strip.js` / `assets/price
 ## Key levels on the analysis chart
 
 Each row of the analysis page's "Key levels" table starts with an eye toggle. A switched-on level is drawn
-on the interactive chart as a dashed orange (`#e8a765`) price line labelled with its code (`DO`, `WO`,
+on the interactive chart as a dashed soft-white (`#d6dbe3`) price line labelled with its code (`DO`, `WO`,
 `ATH`…) on the price axis (`LiveChart` `setLevels`). The choice is stored in this browser under
 `mlm-chart-levels-v1` (a list of codes) and applies to every asset and timeframe; nothing is shown by
 default. `DO`, `WO` and `MO` follow the live feed, so their lines move when a new period opens. Price lines
 do not stretch the price scale: a level outside the visible range (often `ATH`) is simply not drawn.
+
+**Where the values come from.** The local program writes `keyLevels` into `candles/<SYMBOL>/levels.json`
+with every candle upload (`DO`, `WO`, `PWO`, `MO`, `YO`, `MH`/`MM`/`ML`, `ATH` + `asOf`; `periodStart` per
+level, `time` for the ATH). `ATH` is the real all-time high of the candle history. `MH`/`MM`/`ML` are only
+written once Monday's candle has closed, so on Mondays the Monday range is not shown. On the current
+analysis these values replace the report's (which date from the analysis); the note under the table then
+gives the file's `asOf`. `DO`/`WO`/`MO` still prefer the live feed. Archived analyses, and assets whose
+file has no `keyLevels` yet, keep the report's levels (the report's `OATH`, the previous ATH, then stands
+in for ATH). The market table (YO, ATH, opens as fallback) and the weekly outlook (MO, YO, ATH) read the
+same file.
 
 ## Chart watermark
 

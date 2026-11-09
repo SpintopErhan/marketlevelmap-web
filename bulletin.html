@@ -465,6 +465,8 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   // The published PNG is only loaded if the interactive chart cannot be built.
   var liveBox=document.getElementById("live-chart"),liveChart=null,chartWhen=null,chartKey="published";
   var LEVEL_ORDER=["DO","MH","MM","ML","WO","PWO","MO","YO","OATH","ATH","PDH","PDL","PWH","PWL","PMH","PML"];
+  // Levels the local program writes to levels.json keyLevels (the report's OATH, the previous ATH, is not shown then).
+  var KEY_CODES=["DO","WO","PWO","MO","YO","MH","MM","ML","ATH"];
   // Key levels shown on the chart: the visitor's choice (eye in the Key levels table), kept in this browser
   // for every asset and timeframe. None by default.
   var LEVELS_KEY="mlm-chart-levels-v1",levelMap={},chartLevels=[];
@@ -736,7 +738,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   // refreshed with the chart candles; an archived analysis keeps the levels its own report carried.
   var vpFile=null;
   if(!at)fetch("https://data.marketlevelmap.com/candles/"+encodeURIComponent(asset)+"/levels.json").then(function(r){return r.ok?r.json():null}).then(function(d){
-    if(d&&d.pair===asset&&(Array.isArray(d.volumeProfile)||Array.isArray(d.periodExtremes))){vpFile=d;renderVolumeProfile();renderLevels()}
+    if(d&&d.pair===asset&&(Array.isArray(d.volumeProfile)||Array.isArray(d.periodExtremes)||d.keyLevels)){vpFile=d;renderVolumeProfile();renderLevels()}
   }).catch(function(){});
   function renderVolumeProfile(){
     var block=document.getElementById("vp-block"),body=document.getElementById("vp-rows"),map={};
@@ -770,14 +772,18 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   function renderLevels(){
     if(isLocked()){levelMap={};applyLevelsToChart();document.getElementById("levels-block").hidden=true;return}
     var map={};(report&&Array.isArray(report.levels)?report.levels:[]).forEach(function(l){var code=String(l&&l.code||"").toUpperCase();if(code==="OATH")code="ATH";if(LEVEL_ORDER.indexOf(code)>-1&&Number(l.price)>0)map[code]=Number(l.price)});
-    // Same levels as the local program's Market Reference Levels. DO/WO/MO prefer the live feed (always
-    // current); the rest are the report's values as of report.levelsAsOf.
+    // Same levels as the local program's Market Reference Levels. On the current analysis they come from
+    // keyLevels in levels.json (uploaded with the candles; the real ATH; no Monday range until Monday's
+    // candle has closed) and replace the report's, which date from the analysis. Archived analyses and files
+    // without keyLevels keep the report's values. DO/WO/MO then prefer the live feed (always current).
+    var keyFile=!at&&vpFile&&vpFile.keyLevels&&Array.isArray(vpFile.keyLevels.levels)?vpFile.keyLevels:null;
+    if(keyFile){KEY_CODES.forEach(function(code){delete map[code]});keyFile.levels.forEach(function(l){var code=String(l&&l.code||"").toUpperCase();if(KEY_CODES.indexOf(code)>-1&&Number(l.price)>0)map[code]=Number(l.price)})}
     var liveCount=0;[["DO","day"],["WO","week"],["MO","month"]].forEach(function(p){if(live&&Number(live[p[1]])>0){map[p[0]]=Number(live[p[1]]);liveCount++}});
     // Previous day / week / month high and low travel with the candles (levels.json), not the report.
     if(!at&&vpFile&&Array.isArray(vpFile.periodExtremes))vpFile.periodExtremes.forEach(function(l){if(LEVEL_ORDER.indexOf(l.code)>-1&&Number(l.price)>0)map[l.code]=Number(l.price)});
     levelMap=map;applyLevelsToChart();
     var codes=Object.keys(map);levelsBlock.hidden=!codes.length;badge(levelsBlock,reportDemo);
-    var note=document.getElementById("levels-note"),asOf=report&&report.levelsAsOf;
+    var note=document.getElementById("levels-note"),asOf=keyFile&&keyFile.asOf||report&&report.levelsAsOf;
     note.hidden=!(codes.length&&asOf);if(asOf)note.textContent=words()[liveCount?"levelsLive":"levelsAsOf"].replace("{date}",MarketUI.dateTime(asOf));
     if(!codes.length||pressedIn===levelRows)return;
     // Rows are rebuilt on every price tick. They are built off-page and swapped in at once (an

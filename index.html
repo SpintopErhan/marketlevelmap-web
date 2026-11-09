@@ -334,9 +334,11 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
     r.change.textContent=MarketUI.pct(change);r.change.className="chg "+MarketUI.signClass(change);
     r.volume.textContent=Number(d.q)>0?MarketUI.compact(d.q)+" $":"—";
     // Opens: live feed first (always current), the published report's value as fallback.
-    // YO and ATH come from the report; ATH is the engine's OATH (highest Binance candle).
-    levelCell(r.day,Number(d.day)>0?d.day:lv.DO,price,r.digits);levelCell(r.week,Number(d.week)>0?d.week:lv.WO,price,r.digits);
-    levelCell(r.month,Number(d.month)>0?d.month:lv.MO,price,r.digits);levelCell(r.year,lv.YO,price,r.digits);levelCell(r.ath,lv.ATH||lv.OATH,price,r.digits);
+    // YO and ATH come from keyLevels in candles/<SYMBOL>/levels.json (uploaded with the candles, the real ATH);
+    // until an asset's file has them, from the report (whose OATH stands in for ATH).
+    var key=r.key||{};
+    levelCell(r.day,Number(d.day)>0?d.day:key.DO||lv.DO,price,r.digits);levelCell(r.week,Number(d.week)>0?d.week:key.WO||lv.WO,price,r.digits);
+    levelCell(r.month,Number(d.month)>0?d.month:key.MO||lv.MO,price,r.digits);levelCell(r.year,r.key?key.YO:lv.YO,price,r.digits);levelCell(r.ath,r.key?key.ATH:lv.ATH||lv.OATH,price,r.digits);
   }
   // Sparkline (desktop only): 7 days of 2h closes per asset.
   var DESKTOP=window.matchMedia("(min-width:701px)");
@@ -392,6 +394,10 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
       // YO and ATH are the same on every timeframe: read them from a report this visitor may open (1D for guests;
       // members-only timeframes come back without levels, README "Accounts").
       var open=entries.filter(function(e){return e.report&&!e.locked}),levelsFrom=open.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||open[0]||main;
+      fetch("https://data.marketlevelmap.com/candles/"+encodeURIComponent(sym)+"/levels.json").then(function(r){return r.ok?r.json():null}).then(function(f){
+        if(!f||f.pair!==sym||!f.keyLevels||!Array.isArray(f.keyLevels.levels))return;var m={};
+        f.keyLevels.levels.forEach(function(l){if(l&&l.code&&Number(l.price)>0)m[String(l.code).toUpperCase()]=Number(l.price)});rows[sym].key=m;paint(sym);
+      }).catch(function(){});
       if(levelsFrom.report)fetch(levelsFrom.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
       if(!levelsFrom.report&&window.DemoData&&DemoData.enabled)rows[sym].demo=true;
     });
