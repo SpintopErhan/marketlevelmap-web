@@ -420,6 +420,52 @@ var LiveChart = (function () {
     candles.attachPrimitive(zones);
     var structurePoints = new PointsPrimitive(function () { return times(); });
     candles.attachPrimitive(structurePoints);
+    // Zone tooltip: hovering (or tapping) a band shows its name and price range. The narrowest band under the
+    // pointer wins, so a band inside another is still reachable. Lines (structure, Fibonacci levels) are skipped.
+    var zoneTip = document.createElement("div");
+    zoneTip.style.cssText = "position:absolute;z-index:6;display:none;pointer-events:none;padding:5px 9px;border:1px solid #3a4654;border-radius:7px;" +
+      "background:rgba(14,16,22,.94);color:#eef1f7;font:600 12px " + WATERMARK_FONT + ";white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.35)";
+    container.appendChild(zoneTip);
+    var ZONE_NAMES = {
+      en: { resistance: "Resistance", support: "Support", equilibrium: "Equilibrium", rh: "RH · Range high", eq: "EQ · Equilibrium", rl: "RL · Range low", fvg: "FVG", lastValid: "Last valid range" },
+      tr: { resistance: "Direnç", support: "Destek", equilibrium: "Denge", rh: "RH · Aralık tepesi", eq: "EQ · Denge", rl: "RL · Aralık dibi", fvg: "FVG", lastValid: "Son geçerli aralık" }
+    };
+    function zoneName(zone) {
+      var n = ZONE_NAMES[document.documentElement.lang === "tr" ? "tr" : "en"];
+      var rangeView = baseZones.some(function (z) { return z.type === "equilibrium"; }); // Price Action: the range's three bands
+      if (zone.layer === "PA_FVG") return zone.label || n.fvg;
+      if (zone.layer === "PA_FIB") return zone.label ? "Fibonacci " + zone.label : "Fibonacci";
+      if (zone.layer === "PA_LAST_VALID") return n.lastValid;
+      if (rangeView) return zone.type === "resistance" ? n.rh : zone.type === "support" ? n.rl : n.eq;
+      return n[zone.type] || zone.label || "";
+    }
+    function fmtPrice(v) { var d = decimals == null ? 2 : decimals; return Number(v).toLocaleString(pageLocale(), { minimumFractionDigits: d, maximumFractionDigits: d }); }
+    function showZoneTip(param) {
+      if (!param || !param.point || (param.paneIndex != null && param.paneIndex !== 0)) { zoneTip.style.display = "none"; return; }
+      // A tap can come without a time (touch); take it from the x position, and past the last candle use the last one.
+      var price = candles.coordinateToPrice(param.point.y), t = times(), hit = null;
+      var time = param.time != null ? param.time : chart.timeScale().coordinateToTime(param.point.x);
+      if (time == null && t.length) time = t[t.length - 1];
+      if (price == null) { zoneTip.style.display = "none"; return; }
+      zoneList.forEach(function (z) {
+        if (z.line || z.fibLine) return;
+        var lo = Math.min(Number(z.low), Number(z.high)), hi = Math.max(Number(z.low), Number(z.high));
+        if (!(price >= lo && price <= hi)) return;
+        var start = zoneStart(z, t);
+        if (!start || time == null || time < start.time) return;
+        if (!hit || hi - lo < hit.hi - hit.lo) hit = { z: z, lo: lo, hi: hi };
+      });
+      if (!hit) { zoneTip.style.display = "none"; return; }
+      zoneTip.textContent = zoneName(hit.z) + "  " + fmtPrice(hit.lo) + " – " + fmtPrice(hit.hi);
+      zoneTip.style.display = "block";
+      var w = zoneTip.offsetWidth, h = zoneTip.offsetHeight, maxX = container.clientWidth - w - 4;
+      var x = Math.max(4, Math.min(param.point.x + 14, maxX)), y = param.point.y - h - 10;
+      if (y < 4) y = param.point.y + 14;
+      zoneTip.style.left = x + "px"; zoneTip.style.top = y + "px";
+    }
+    chart.subscribeCrosshairMove(showZoneTip);
+    chart.subscribeClick(showZoneTip); // phones: a tap shows the band under the finger
+    container.addEventListener("mouseleave", function () { zoneTip.style.display = "none"; });
     var sweepMarkers = LC.createSeriesMarkers ? LC.createSeriesMarkers(candles, []) : null;
     var liveLine = null, loadingOlder = false, destroyed = false, generation = 0;
     var forming = null, liveStatus = "pending", socket = null, retryTimer = null, socketFailures = 0;
