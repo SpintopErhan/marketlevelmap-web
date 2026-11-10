@@ -3,9 +3,9 @@
    session exists, so guests cost no extra requests. window.MLMAccount.ready resolves with the user or null. */
 (function () {
   var WORDS = {
-    en: { signIn: "Sign in", profile: "Profile", admin: "Admin panel", signOut: "Sign out", menu: "Account menu",
+    en: { signIn: "Sign in", profile: "Profile", admin: "Admin panel", signOut: "Sign out", menu: "Account menu", pending: "{n} applications waiting",
       status: { registered: "Registered", pending: "Waiting for verification", approved: "Approved", rejected: "Rejected", suspended: "Suspended" } },
-    tr: { signIn: "Giriş yap", profile: "Profil", admin: "Admin paneli", signOut: "Çıkış yap", menu: "Hesap menüsü",
+    tr: { signIn: "Giriş yap", profile: "Profil", admin: "Admin paneli", signOut: "Çıkış yap", menu: "Hesap menüsü", pending: "{n} başvuru bekliyor",
       status: { registered: "Kayıtlı", pending: "Doğrulama bekliyor", approved: "Onaylı", rejected: "Reddedildi", suspended: "Askıda" } }
   };
   var hinted = /(?:^|;\s*)mlm_li=1/.test(document.cookie);
@@ -39,13 +39,16 @@
       ".acct-who i{display:inline-block;margin-top:6px;padding:1px 8px;border-radius:999px;background:var(--raise,var(--panel-2));font-size:11px;font-style:normal;font-weight:600}" +
       ".acct-who i.approved{color:var(--up)}.acct-who i.rejected,.acct-who i.suspended{color:var(--down)}" +
       ".acct-menu a,.acct-menu button{display:block;width:100%;padding:8px 10px;border:0;border-radius:8px;background:none;color:var(--fg);font-size:13px;text-align:left;text-decoration:none;cursor:pointer}" +
-      ".acct-menu a:hover,.acct-menu button:hover{background:var(--raise,var(--panel-2))}";
+      ".acct-menu a:hover,.acct-menu button:hover{background:var(--raise,var(--panel-2))}" +
+      // Admins: pending membership applications, on the account button and next to "Admin panel".
+      ".acct-badge{position:absolute;top:-5px;right:-6px;min-width:17px;height:17px;padding:0 4px;border:2px solid var(--bg);border-radius:999px;background:var(--down);color:#fff;font-size:10px;font-weight:700;line-height:13px;text-align:center;pointer-events:none}" +
+      ".acct-menu .acct-count{display:inline-block;margin-left:8px;min-width:18px;padding:0 6px;border-radius:999px;background:var(--down);color:#fff;font-size:11px;font-weight:700;line-height:18px;text-align:center}";
     document.head.appendChild(s);
   }
 
   function render() {
     if (!box) return;
-    var key = lang() + "|" + (user ? user.email + user.status + user.picture + user.isAdmin : hinted ? "hint" : "guest");
+    var key = lang() + "|" + (user ? user.email + user.status + user.picture + user.isAdmin + "|" + (user.pendingCount || 0) : hinted ? "hint" : "guest");
     if (key === drawn) return; // the analysis page sets <html lang> often; redraw only on a real change
     drawn = key;
     var t = w();
@@ -71,7 +74,10 @@
       who.appendChild(n); who.appendChild(e); who.appendChild(st); menu.appendChild(who);
     }
     var prof = document.createElement("a"); prof.href = "/account"; prof.textContent = t.profile; menu.appendChild(prof);
-    if (user && user.isAdmin) { var adm = document.createElement("a"); adm.href = "/admin"; adm.textContent = t.admin; menu.appendChild(adm); }
+    var pending = user && user.isAdmin ? Number(user.pendingCount) || 0 : 0;
+    if (user && user.isAdmin) { var adm = document.createElement("a"); adm.href = "/admin"; adm.textContent = t.admin;
+      if (pending) { var cnt = document.createElement("span"); cnt.className = "acct-count"; cnt.textContent = String(pending); adm.appendChild(cnt); }
+      menu.appendChild(adm); }
     var out = document.createElement("button"); out.type = "button"; out.textContent = t.signOut;
     out.addEventListener("click", function () {
       fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" }).finally(function () { location.reload(); });
@@ -79,6 +85,8 @@
     menu.appendChild(out);
     btn.addEventListener("click", function (ev) { ev.stopPropagation(); menu.hidden = !menu.hidden; btn.setAttribute("aria-expanded", String(!menu.hidden)); });
     box.appendChild(btn); box.appendChild(menu);
+    if (pending) { var badge = document.createElement("span"); badge.className = "acct-badge"; badge.textContent = pending > 9 ? "9+" : String(pending); badge.setAttribute("aria-hidden", "true"); box.appendChild(badge);
+      btn.setAttribute("aria-label", t.menu + " · " + t.pending.replace("{n}", pending)); }
   }
 
   function mount() {

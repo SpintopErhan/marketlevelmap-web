@@ -208,7 +208,14 @@ async function googleCallback(request, env) {
 
 async function me(request, env) {
   const row = await sessionUser(request, env);
-  if (row) return json({ user: publicUser(row, env) });
+  if (row) {
+    const user = publicUser(row, env);
+    // Admins: how many applications wait for a decision (the badge on the account button).
+    if (user.isAdmin) {
+      try { user.pendingCount = Number(((await (await db(env)).prepare("SELECT COUNT(*) AS n FROM users WHERE status = 'pending'").first()) || {}).n) || 0; } catch (_) { user.pendingCount = 0; }
+    }
+    return json({ user });
+  }
   const signup = await verify(env, readCookie(request, COOKIE.signup));
   const headers = readCookie(request, COOKIE.hint) ? { "Set-Cookie": [clear(COOKIE.hint, "/", false), clear(COOKIE.session)] } : {};
   return json({ user: null, signup: signup ? { email: signup.email, name: signup.name, picture: signup.picture } : null }, 200, headers);
