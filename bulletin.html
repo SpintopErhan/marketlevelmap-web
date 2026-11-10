@@ -934,7 +934,8 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       if(request!==pending){ctl.destroy();slot.remove();return}
       if(liveBox&&liveBox!==slot)liveBox.remove();
       slot.id="live-chart";slot.hidden=false;
-      liveBox=slot;liveChart=ctl;applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
+      // chartReady here too: when the report arrives after the first chart is built, paint() must draw its zones.
+      liveBox=slot;liveChart=ctl;chartReady=true;applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
       chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();
     }).catch(function(){if(request!==pending)return;slot.remove();if(!liveChart)showPng(chosen)});
   }
