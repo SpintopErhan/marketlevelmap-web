@@ -1,0 +1,400 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap"><script src="/assets/pwa.js?v=b0dd56f5" defer></script><meta name="color-scheme" content="dark light"><meta name="color-scheme" content="dark light"><meta name="robots" content="noindex"><meta name="color-scheme" content="dark light"><meta name="robots" content="noindex"><title>MarketLevelMap — Admin</title><link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png"><link rel="stylesheet" href="assets/site.css?v=c0028433"><style>*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.5}
+button,select,input{font:inherit}button{color:inherit}
+main{padding:0 0 70px}
+.page-head{margin:34px 0 18px}.page-head h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.5px}
+.page-head p{margin:6px 0 0;color:var(--muted);font-size:14px;max-width:640px}
+[hidden]{display:none!important}
+.card{max-width:720px;padding:22px 24px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.card+.card{margin-top:16px}
+.card h2{margin:0 0 10px;font-size:17px}
+.muted{color:var(--muted)}.small{font-size:13px}
+.notice{max-width:720px;margin:0 0 16px;padding:12px 16px;border:1px solid var(--down);border-radius:12px;color:var(--down);font-size:14px}
+.google-btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font-weight:600;text-decoration:none}
+.google-btn:hover{border-color:var(--accent)}
+.google-btn svg{width:18px;height:18px}
+.who{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.who img,.who .initial{width:48px;height:48px;border-radius:50%;object-fit:cover;background:var(--raise);display:flex;align-items:center;justify-content:center;font-weight:700}
+.who b{display:block;font-size:16px}.who span{color:var(--muted);font-size:13px}
+.privacy{max-height:340px;overflow:auto;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);font-size:13px}
+.privacy h3{margin:14px 0 4px;font-size:13px}.privacy h3:first-child{margin-top:0}.privacy p,.privacy ul{margin:0 0 6px}.privacy ul{padding-left:18px}
+.consent{display:flex;align-items:flex-start;gap:10px;margin:16px 0;font-size:14px;cursor:pointer}
+.consent input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px;border:0;border-radius:10px;background:var(--accent);color:var(--bg);font-weight:700;cursor:pointer;text-decoration:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{border:1px solid var(--line);background:none;color:var(--fg)}
+.btn.danger{border:1px solid var(--down);background:none;color:var(--down)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.status{display:inline-block;padding:2px 10px;border-radius:999px;background:var(--raise);font-size:13px;font-weight:700}
+.status.approved{color:var(--up)}.status.rejected,.status.suspended{color:var(--down)}.status.pending{color:var(--cz)}
+.code{display:inline-flex;align-items:center;gap:10px;margin:6px 0 4px;padding:10px 14px;border:1px dashed var(--accent);border-radius:10px;font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-size:20px;font-weight:700;letter-spacing:1px}
+.copy{height:30px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0;cursor:pointer}
+ol.steps{margin:10px 0 0;padding-left:20px;font-size:14px}ol.steps li{margin:4px 0}
+.field{display:block;margin:0 0 14px}.field span{display:block;margin-bottom:5px;font-size:13px;font-weight:600}
+.field input{width:100%;max-width:340px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)}
+.field input:disabled{opacity:.7}
+.field small{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+.msg{margin-left:6px;font-size:13px}.msg.ok{color:var(--up)}.msg.err{color:var(--down)}
+details.priv{margin-top:6px}details.priv summary{cursor:pointer;color:var(--accent);font-size:13px;font-weight:600}
+details.priv .privacy{margin-top:10px}
+dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-size:14px}dl.facts dt{color:var(--muted)}dl.facts dd{margin:0}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 14px}
+.toolbar input{flex:1 1 260px;max-width:420px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--fg)}
+.tabs{display:inline-flex;flex-wrap:wrap;gap:2px;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.tabs button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--raise);color:var(--fg)}
+.tabs button span{margin-left:6px;color:var(--muted);font-weight:500}
+.list{display:grid;gap:10px;max-width:980px}
+.u{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;gap:10px 18px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.u .who{margin:0}.u .who img,.u .who .initial{width:38px;height:38px;font-size:14px}
+.u dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:0;font-size:13px}.u dt{color:var(--muted)}.u dd{margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.u dd.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-weight:700}
+.u .acts{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+.u .acts button{height:32px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--fg);font-size:13px;font-weight:600;cursor:pointer}
+.u .acts button.ok{border-color:var(--up);color:var(--up)}.u .acts button.no{border-color:var(--down);color:var(--down)}
+.u .note{grid-column:1/-1;margin:0;color:var(--muted);font-size:12px}
+.u a{color:var(--accent)}
+.empty{padding:30px 16px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);text-align:center;max-width:980px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:80;padding:10px 16px;border-radius:10px;background:var(--fg);color:var(--bg);font-size:13px;font-weight:600}
+.area{margin:0 0 18px}
+.sp-nav{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.sp-nav .btn{height:34px;padding:0 12px;font-size:13px}.sp-week{font-size:14px;margin:0 4px}
+.sp-save{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 14px;padding:12px 16px;border:1px dashed var(--cz);border-radius:12px;font-size:14px}
+.flow{margin:0 0 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+.flow h2{margin:0;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+.flow-row{display:grid;grid-template-columns:150px 150px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;padding:10px 16px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--fg);font-size:13px;text-align:left;cursor:pointer}
+.flow-row:last-child{border-bottom:0}.flow-row:hover{background:var(--raise)}.flow-row.is-sel{background:var(--raise);box-shadow:inset 3px 0 0 var(--accent)}
+.flow-row.is-today .f-day{color:var(--accent);font-weight:700}.f-kind{color:var(--muted)}.f-title{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.f-st{padding:2px 10px;border-radius:999px;background:var(--bg);font-size:12px;font-weight:600;color:var(--muted)}.f-st.st-prepared{color:var(--cz)}.f-st.st-posted{color:var(--up)}
+.desk{padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.desk-head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:0 0 12px}.desk-head h2{margin:0;font-size:15px;width:100%}.desk-title{font-size:17px}
+.desk-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:0 0 12px}
+.desk-frame{display:block;width:100%;height:900px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.sp-sel{display:grid;gap:2px;font-size:11px;color:var(--muted)}.sp-sel select,.sp-status{height:34px;padding:0 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font-size:13px}
+.sp-link{color:var(--accent);font-size:13px;font-weight:600;text-decoration:none;align-self:center}
+.desk-form{display:grid;gap:10px;max-width:760px;margin-top:16px}
+.sp-field{display:grid;gap:4px;font-size:12px;font-weight:600}.sp-field textarea,.sp-field input,.tweet textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:14px;font-weight:400;resize:vertical}
+.sp-count{justify-self:end;color:var(--muted);font-weight:500;font-size:12px}.sp-count.over{color:var(--down)}
+.desk .btn{height:34px;padding:0 14px;font-size:13px}
+.desk-lib h3{margin:16px 0 4px;font-size:14px}.lib-img{display:block;width:100%;max-width:960px;border:1px solid var(--line);border-radius:12px}
+.tweet{display:grid;gap:6px;max-width:760px;margin:10px 0 0}.tweet .row{justify-content:space-between}
+@media(max-width:760px){.flow-row{grid-template-columns:1fr auto}.f-kind{display:none}.f-title{grid-column:1/-1;grid-row:2}}
+@media(max-width:760px){.u{grid-template-columns:1fr}.u .acts{justify-content:flex-start}}
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c417fd53" defer></script><script src="assets/market-ui.js?v=d341fb45"></script></head><body><div class="shell"><header>
+<a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<script>/* Keep the header in the saved language before the first paint. */
+(function(){var lang;try{lang=localStorage.getItem("mlm-lang")}catch(e){}if(lang!=="tr")return;document.documentElement.lang="tr";document.querySelectorAll("header [data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=el.dataset.tr});document.querySelectorAll("header [data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",el.dataset.hrefTr)});var sel=document.getElementById("lang");if(sel)sel.value="tr"})();
+</script>
+<main class="shell">
+<div class="page-head"><h1 data-i18n="heading">Admin panel</h1><p data-i18n="lead">Membership applications. Paste the code from an X DM into the search box to find the account.</p></div>
+<div class="notice" id="error" hidden></div>
+<section id="v-loading" class="card"><p class="muted" data-i18n="loading">Loading…</p></section>
+<section id="v-denied" class="card" hidden><p data-i18n="denied">This page is for administrators only.</p><p><a class="btn ghost" href="/account" data-i18n="toAccount">Go to your account</a></p></section>
+<section id="v-admin" hidden>
+<div class="tabs area" id="area-tabs"><button type="button" data-area="members" aria-pressed="true">Members</button><button type="button" data-area="social" aria-pressed="false">Social media</button></div>
+<div id="area-members">
+<div class="toolbar"><input id="q" type="search" autocomplete="off" spellcheck="false" data-i18n-ph="search" placeholder="Code, e-mail or X username"><div class="tabs" id="tabs"></div></div>
+<div class="list" id="list"></div>
+</div>
+<div id="social" hidden></div>
+</section>
+</main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+<script>
+var copy={
+en:{title:"Admin",heading:"Admin panel",lead:"Membership applications. Paste the code from an X DM into the search box to find the account.",loading:"Loading…",denied:"This page is for administrators only.",toAccount:"Go to your account",search:"Code, e-mail or X username",tabs:{pending:"Pending",approved:"Approved",rejected:"Rejected",suspended:"Suspended",registered:"Registered",all:"All"},status:{registered:"Registered",pending:"Waiting for verification",approved:"Approved",rejected:"Rejected",suspended:"Suspended"},x:"X",tg:"Telegram",code:"Code",created:"Signed up",approved:"Approved",note:"Note:",empty:"No accounts here.",approve:"Approve",reject:"Reject",suspend:"Suspend",reinstate:"Reinstate",notePrompt:{reject:"Reason for the rejection (shown to the user):",suspend:"Reason for the suspension (shown to the user):"},confirm:{approve:"Approve {who}?",reinstate:"Reinstate {who}?"},done:{approve:"Approved",reject:"Rejected",suspend:"Suspended",reinstate:"Reinstated"},errors:{no_x:"This account has no X username yet.",status:"The account's status has changed; the list was refreshed.",forbidden:"Your session is not an admin session.",server:"Something went wrong. Please try again."}},
+tr:{title:"Admin",heading:"Admin paneli",lead:"Üyelik başvuruları. X DM'inden gelen kodu arama kutusuna yapıştırarak hesabı bulun.",loading:"Yükleniyor…",denied:"Bu sayfa yalnızca yöneticiler içindir.",toAccount:"Hesabınıza gidin",search:"Kod, e-posta ya da X kullanıcı adı",tabs:{pending:"Bekleyen",approved:"Onaylı",rejected:"Reddedilen",suspended:"Askıda",registered:"Kayıtlı",all:"Tümü"},status:{registered:"Kayıtlı",pending:"Doğrulama bekliyor",approved:"Onaylı",rejected:"Reddedildi",suspended:"Askıda"},x:"X",tg:"Telegram",code:"Kod",created:"Kayıt",approved:"Onay",note:"Not:",empty:"Burada hesap yok.",approve:"Onayla",reject:"Reddet",suspend:"Askıya al",reinstate:"Geri aç",notePrompt:{reject:"Ret nedeni (kullanıcıya gösterilir):",suspend:"Askıya alma nedeni (kullanıcıya gösterilir):"},confirm:{approve:"{who} onaylansın mı?",reinstate:"{who} yeniden açılsın mı?"},done:{approve:"Onaylandı",reject:"Reddedildi",suspend:"Askıya alındı",reinstate:"Yeniden açıldı"},errors:{no_x:"Bu hesapta henüz X kullanıcı adı yok.",status:"Hesabın durumu değişmiş; liste yenilendi.",forbidden:"Oturumunuz yönetici oturumu değil.",server:"Bir sorun oluştu. Lütfen yeniden deneyin."}}
+};
+var ACTS={pending:["approve","reject"],registered:["reject"],rejected:["approve"],approved:["suspend","reject"],suspended:["reinstate"]};
+var TABS=["pending","approved","rejected","suspended","registered","all"];
+var view={status:"pending",q:"",counts:{}},timer=null;
+function lang(){return document.getElementById("lang").value==="tr"?"tr":"en"}
+function words(){return copy[lang()]}
+function $(id){return document.getElementById(id)}
+function show(v){["v-loading","v-denied","v-admin"].forEach(function(x){$(x).hidden=x!==v})}
+function toast(text){var t=document.createElement("div");t.className="toast";t.textContent=text;document.body.appendChild(t);setTimeout(function(){t.remove()},2200)}
+function fmt(iso){return iso?new Date(iso).toLocaleDateString(lang()==="tr"?"tr-TR":"en-GB",{day:"numeric",month:"short",year:"numeric"}):"—"}
+function renderTabs(){
+  var w=words(),box=$("tabs");box.textContent="";
+  TABS.forEach(function(t){var b=document.createElement("button");b.type="button";b.setAttribute("aria-pressed",String(view.status===t));b.textContent=w.tabs[t];
+    var n=t==="all"?Object.keys(view.counts).reduce(function(a,k){return a+(view.counts[k]||0)},0):view.counts[t]||0;var s=document.createElement("span");s.textContent=n;b.appendChild(s);
+    b.addEventListener("click",function(){view.status=t;load()});box.appendChild(b)});
+}
+function card(u){
+  var w=words(),el=document.createElement("article");el.className="u";
+  var who=document.createElement("div");who.className="who";var pic;
+  if(u.picture){pic=document.createElement("img");pic.src=u.picture;pic.alt="";pic.referrerPolicy="no-referrer"}else{pic=document.createElement("div");pic.className="initial";pic.textContent=(u.name||u.email).charAt(0).toUpperCase()}
+  var d=document.createElement("div"),b=document.createElement("b"),sp=document.createElement("span");b.textContent=u.name||u.email;sp.textContent=u.email;d.appendChild(b);d.appendChild(sp);
+  var st=document.createElement("span");st.className="status "+u.status;st.textContent=w.status[u.status]||u.status;st.style.marginTop="4px";d.appendChild(document.createElement("br"));d.appendChild(st);
+  who.appendChild(pic);who.appendChild(d);el.appendChild(who);
+  var dl=document.createElement("dl");
+  function row(k,v,cls,href){var dt=document.createElement("dt"),dd=document.createElement("dd");dt.textContent=k;if(cls)dd.className=cls;if(href&&v){var a=document.createElement("a");a.href=href;a.target="_blank";a.rel="noopener noreferrer";a.textContent=v;dd.appendChild(a)}else dd.textContent=v||"—";dl.appendChild(dt);dl.appendChild(dd)}
+  row(w.code,u.code,"mono");row(w.x,u.xHandle,"",u.xHandle?"https://x.com/"+u.xHandle.replace("@",""):"");row(w.tg,u.telegramHandle,"",u.telegramHandle?"https://t.me/"+u.telegramHandle.replace("@",""):"");
+  row(w.created,fmt(u.createdAt));if(u.approvedAt)row(w.approved,fmt(u.approvedAt));
+  el.appendChild(dl);
+  var acts=document.createElement("div");acts.className="acts";
+  (ACTS[u.status]||[]).forEach(function(a){var btn=document.createElement("button");btn.type="button";btn.textContent=w[a];btn.className=a==="approve"||a==="reinstate"?"ok":"no";btn.addEventListener("click",function(){act(u,a,btn)});acts.appendChild(btn)});
+  el.appendChild(acts);
+  if(u.note){var n=document.createElement("p");n.className="note";n.textContent=w.note+" "+u.note;el.appendChild(n)}
+  return el;
+}
+function render(users){
+  var list=$("list"),w=words();list.textContent="";renderTabs();
+  if(!users.length){var e=document.createElement("div");e.className="empty";e.textContent=w.empty;list.appendChild(e);return}
+  users.forEach(function(u){list.appendChild(card(u))});
+}
+var lastUsers=[];
+function load(){
+  var url="/api/auth/admin/users?status="+encodeURIComponent(view.status)+(view.q?"&q="+encodeURIComponent(view.q):"");
+  fetch(url,{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.json().then(function(d){d._s=r.status;return d})}).then(function(d){
+    if(d._s===403){show("v-denied");return}
+    if(!d.users){$("error").textContent=words().errors.server;$("error").hidden=false;return}
+    view.counts=d.counts||{};lastUsers=d.users;show("v-admin");render(d.users);
+  }).catch(function(){$("error").textContent=words().errors.server;$("error").hidden=false});
+}
+function act(u,a,btn){
+  var w=words(),who=u.xHandle||u.email,note="";
+  if(a==="reject"||a==="suspend"){note=prompt(w.notePrompt[a],u.note||"");if(note===null)return}
+  else if(!confirm(w.confirm[a].replace("{who}",who)))return;
+  btn.disabled=true;
+  fetch("/api/auth/admin/action",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:u.id,action:a,note:note})})
+    .then(function(r){return r.json()}).then(function(d){if(d.user)toast(w.done[a]+": "+who);else toast(w.errors[d.error]||w.errors.server);load()})
+    .catch(function(){toast(w.errors.server);btn.disabled=false});
+}
+function applyLanguage(value){
+  var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){if(typeof t[el.dataset.i18n]==="string")el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-i18n-ph]").forEach(function(el){el.placeholder=t[el.dataset.i18nPh]});
+  document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+  document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
+  if(!$("v-admin").hidden)render(lastUsers);
+  try{localStorage.setItem("mlm-lang",value)}catch(e){}
+}
+var langSel=$("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
+langSel.value=savedLang==="tr"?"tr":"en";applyLanguage(langSel.value);langSel.addEventListener("change",function(){applyLanguage(this.value)});
+var toggle=$("theme-toggle");
+function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+$("q").addEventListener("input",function(){var v=this.value.trim();clearTimeout(timer);timer=setTimeout(function(){view.q=v;if(v)view.status="all";load()},250)});
+load();
+</script>
+<script>
+/* Social media desk (README "Social media planner"): this week's publishing flow from /api/auth/admin/social, and a
+   workspace for the selected post. Chart posts open the analysis page itself (bulletin.html?embed=1) so every
+   tool of that page is here; "Save PNG" uses that page's own download (chart, chosen indicators and levels).
+   The library post builds an image and a tweet thread from the week's library page. Nothing is posted to X. */
+(function(){
+  var DAY=86400000,state={week:null,data:null,sel:null,topics:null,lib:{}};
+  var W={
+    en:{area:{members:"Members",social:"Social media"},auto:"Automatic",manual:"Choose myself",modeHelp:{auto:"The plan is made for you: assets rotate every week.",manual:"You choose the assets; until you save, the plan is only a suggestion."},
+      prev:"← Previous week",next:"Next week →",thisWeek:"This week",week:"Week {n}",flow:"Publishing flow",suggested:"Suggested plan. Change it if you like, then save it.",savePlan:"Save plan",planSaved:"Plan saved",
+      days:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],kinds:{weekly:"Weekly outlook",chart:"Chart",review:"Week review",library:"Library"},today:"Today",
+      status:{planned:"Planned",prepared:"Prepared",posted:"Posted"},copy:"Copy",copied:"Copied",copyTitle:"Copy title",png:"Save PNG",pngTables:"PNG with tables",pngWait:"The chart is still loading.",
+      asset:"Asset",method:"Method",tf:"Timeframe",cz:"Critical Zones",pa:"Price Action",noAnalysis:"No published analysis for this choice.",
+      text:"Your post",textPh:"Write the post here…",statusLabel:"Status",xUrl:"Link to the X post",save:"Save",saved:"Saved",errUrl:"Use the link of the post on x.com.",errPlan:"Save the plan first.",
+      reviewHelp:"This week's chart posts. Open one to see the chart as it is now:",noPosts:"No chart posts this week.",thread:"Tweet thread",threadHelp:"Built from the library page; edit before copying. Each box is one tweet.",
+      libFail:"The library page could not be read.",openPage:"Open the library page",libImage:"Image"},
+    tr:{area:{members:"Üyeler",social:"Sosyal medya"},auto:"Otomatik",manual:"Tercihli",modeHelp:{auto:"Plan senin için yapılır: varlıklar her hafta sırayla döner.",manual:"Varlıkları sen seçersin; kaydedene kadar plan yalnızca bir öneridir."},
+      prev:"← Önceki hafta",next:"Sonraki hafta →",thisWeek:"Bu hafta",week:"{n}. hafta",flow:"Yayın akışı",suggested:"Önerilen plan. İstediğin gibi değiştir, sonra kaydet.",savePlan:"Planı kaydet",planSaved:"Plan kaydedildi",
+      days:["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"],kinds:{weekly:"Haftanın görünümü",chart:"Grafik",review:"Hafta değerlendirmesi",library:"Kütüphane"},today:"Bugün",
+      status:{planned:"Planlandı",prepared:"Hazırlandı",posted:"Paylaşıldı"},copy:"Kopyala",copied:"Kopyalandı",copyTitle:"Başlığı kopyala",png:"PNG kaydet",pngTables:"PNG + tablolar",pngWait:"Grafik henüz yükleniyor.",
+      asset:"Varlık",method:"Yöntem",tf:"Zaman dilimi",cz:"Kritik Bölgeler",pa:"Price Action",noAnalysis:"Bu seçim için yayında analiz yok.",
+      text:"Gönderin",textPh:"Gönderini buraya yaz…",statusLabel:"Durum",xUrl:"X gönderisinin bağlantısı",save:"Kaydet",saved:"Kaydedildi",errUrl:"x.com'daki gönderinin bağlantısını kullan.",errPlan:"Önce planı kaydet.",
+      reviewHelp:"Bu haftanın grafik gönderileri. Birini açıp grafiğin bugünkü haline bak:",noPosts:"Bu hafta grafik gönderisi yok.",thread:"Tweet dizisi",threadHelp:"Kütüphane sayfasından kuruldu; kopyalamadan önce düzenleyebilirsin. Her kutu bir tweet.",
+      libFail:"Kütüphane sayfası okunamadı.",openPage:"Kütüphane sayfasını aç",libImage:"Görsel"}
+  };
+  var METHOD_EN={cz:"Critical Zones",pa:"Price Action"},ORDER=[0,1,2,7,3,4,5,6];
+  function w(){return W[lang()]}
+  function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+  function loc(){return lang()==="tr"?"tr-TR":"en-GB"}
+  function dayOf(p){return p.kind==="library"?2:p.day}
+  function dateOf(week,day){return Date.parse(week+"T00:00:00Z")+day*DAY}
+  function dayDate(week,day){return new Date(dateOf(week,day)).toLocaleDateString(loc(),{day:"numeric",month:"short",timeZone:"UTC"})}
+  function isoWeek(ms){var d=new Date(ms+3*DAY),y=d.getUTCFullYear(),jan4=Date.UTC(y,0,4),mon1=jan4-((new Date(jan4).getUTCDay()+6)%7)*DAY;return 1+Math.floor((ms-mon1)/(7*DAY))}
+  function rangeEn(start){var end=start+6*DAY,m=function(t){return new Date(t).toLocaleDateString("en-US",{month:"short",timeZone:"UTC"})},d=function(t){return new Date(t).getUTCDate()};
+    return m(start)===m(end)?m(start)+" "+d(start)+"–"+d(end):m(start)+" "+d(start)+" – "+m(end)+" "+d(end)}
+  function topicOf(week){var t=state.topics;if(!t||!t.topics||!t.topics.length)return null;var i=Math.max(0,Math.floor((Date.parse(week+"T00:00:00Z")-Date.parse(t.anchorWeekStartUtc))/(7*DAY)))%t.topics.length;return t.topics[i]}
+  function title(p){
+    var week=state.week;
+    if(p.kind==="weekly"){var s=Date.parse(week+"T00:00:00Z")-7*DAY;return"Weekly outlook · "+rangeEn(s)+" · Week "+isoWeek(s)}
+    if(p.kind==="review")return"Week review · "+rangeEn(Date.parse(week+"T00:00:00Z"));
+    if(p.kind==="library"){var tp=topicOf(week);return tp?tp.en.name:"Library"}
+    return p.symbol?p.symbol+" · "+String(p.timeframe).toUpperCase()+" · "+METHOD_EN[p.method]:"—";
+  }
+  function copyText(text,btn){var t=w(),done=function(){var o=btn.textContent;btn.textContent=t.copied;setTimeout(function(){btn.textContent=o},1200)};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done,function(){prompt("",text)});else prompt("",text)}
+  function post(url,body){return fetch(url,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).then(function(r){return r.json()})}
+  function savePlan(){var d=state.data;return post("/api/auth/admin/social/plan",{week:d.week,posts:d.posts.filter(function(p){return p.day<7}).map(function(p){return{day:p.day,symbol:p.symbol,method:p.method,timeframe:p.timeframe}})})}
+  function has(sym,m,tf){var a=state.data.assets.filter(function(x){return x.symbol===sym})[0];return!!(a&&a[m].indexOf(tf)>-1)}
+  function chartSrc(p){return"bulletin.html?asset="+encodeURIComponent(p.symbol)+"&tf="+encodeURIComponent(p.timeframe)+(p.method==="pa"?"&method=pa":"")+"&embed=1"}
+
+  // ---------- iframe (analysis page / weekly outlook) ----------
+  function frame(src){
+    var f=el("iframe","desk-frame");f.src=src;f.title="workspace";f.loading="eager";
+    // Height of the embedded page's content (its header and footer are hidden), so the panel scrolls, not the frame.
+    var fit=function(){try{var m=f.contentDocument&&f.contentDocument.querySelector("main");if(m){var r=m.getBoundingClientRect();f.style.height=Math.max(600,Math.ceil(r.bottom+(f.contentWindow.scrollY||0))+16)+"px"}}catch(e){}};
+    f.addEventListener("load",function(){fit();var n=0,iv=setInterval(function(){fit();if(++n>40||!f.isConnected)clearInterval(iv)},500)});
+    return f;
+  }
+  function pngButton(f,selector,msg){var t=w(),b=el("button","btn",t.png);b.type="button";
+    b.addEventListener("click",function(){var btn=null;try{btn=f.contentDocument.querySelector(selector)}catch(e){}
+      if(!btn||btn.disabled){msg.textContent=t.pngWait;msg.className="msg err";return}msg.textContent="";btn.click()});return b}
+
+  // Chart only, or chart + the view's tables (Price Action: at a glance, range, FVG, structure; Critical Zones: zones).
+  function exportButton(f,withTables,msg){var t=w(),b=el("button",withTables?"btn ghost":"btn",withTables?t.pngTables:t.png);b.type="button";
+    b.addEventListener("click",function(){var ex=null;try{ex=f.contentWindow.MLMExport}catch(e){}
+      if(!ex||!ex.save(withTables)){msg.textContent=t.pngWait;msg.className="msg err";return}msg.textContent=""});return b}
+  // ---------- library post: image + thread ----------
+  var DARK={"--fg":"#edf2f4","--muted":"#9aaab5","--up":"#3ccf91","--down":"#ef6b73","--cz":"#e8a765","--pa":"#4fd6c3","--accent":"#4fd6c3","--line":"#28343d","--bg":"#10161d","--panel":"#151e27"};
+  var libCss=null,logoUri=null;
+  function getText(u){return fetch(u).then(function(r){if(!r.ok)throw new Error(u);return r.text()})}
+  function loadLib(tp){
+    var url=tp.en.url;if(state.lib[url])return state.lib[url];
+    state.lib[url]=Promise.all([getText(url),libCss||(libCss=getText("/assets/library.css")),logoUri?Promise.resolve(logoUri):getText("/assets/MarketLevelMap-mark-reverse.svg").then(function(t){return logoUri="data:image/svg+xml;base64,"+btoa(unescape(encodeURIComponent(t)))})]).then(function(r){
+      var doc=new DOMParser().parseFromString(r[0],"text/html");
+      var name=(doc.querySelector(".pattern-head h1")||{}).textContent||tp.en.name,summary=((doc.querySelector(".pattern-head .summary")||{}).textContent||tp.en.summary||"").trim();
+      var points=[].map.call(doc.querySelectorAll(".key-points li"),function(li){return li.textContent.trim()}).filter(Boolean);
+      var svg=doc.querySelector("figure svg.pattern-svg");
+      return{name:name.trim(),summary:summary,points:points,url:"https://marketlevelmap.com"+url,svg:svg?inlineSvg(svg.outerHTML,r[1]):null,logo:logoUri};
+    });
+    state.lib[url].catch(function(){delete state.lib[url]});
+    return state.lib[url];
+  }
+  // The figure's colours come from library.css classes; resolve them once (dark look) into inline styles.
+  function inlineSvg(markup,css){
+    var host=el("div");host.style.cssText="position:absolute;left:-9999px;top:0;width:800px";Object.keys(DARK).forEach(function(k){host.style.setProperty(k,DARK[k])});
+    host.style.setProperty("--lib-line","color-mix(in srgb,#edf2f4 72%,#9aaab5)");host.style.setProperty("--lib-guide","color-mix(in srgb,#9aaab5 75%,transparent)");
+    var st=el("style");st.textContent=(css.match(/\.pattern-svg[^{}]*\{[^}]*\}/g)||[]).join("\n");host.appendChild(st);host.insertAdjacentHTML("beforeend",markup);document.body.appendChild(host);
+    var svg=host.querySelector("svg");
+    // Read every element's colours first, then drop the classes (the rules are ".pattern-svg .x" selectors).
+    var nodes=[svg].concat([].slice.call(svg.querySelectorAll("*"))),props=["fill","stroke","stroke-width","stroke-dasharray","opacity","fill-opacity","stroke-opacity","font-size","font-weight","font-family"];
+    var styles=nodes.map(function(n){var c=getComputedStyle(n);return props.map(function(k){return[k,c.getPropertyValue(k)]})});
+    nodes.forEach(function(n,i){styles[i].forEach(function(kv){if(kv[1]&&kv[1]!=="normal")n.style.setProperty(kv[0],kv[1])});n.removeAttribute("class")});
+    var out=svg.outerHTML;host.remove();return out;
+  }
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function libImage(lib){
+    var vb=(lib.svg.match(/viewBox="([^"]+)"/)||[])[1]||"0 0 600 320",p=vb.split(/\s+/).map(Number),aw=1300,ah=600,s=Math.min(aw/p[2],ah/p[3]),fw=p[2]*s,fh=p[3]*s;
+    var inner=lib.svg.replace(/<svg[^>]*>/,'<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+vb+'" x="'+(800-fw/2)+'" y="'+(150+(ah-fh)/2)+'" width="'+fw+'" height="'+fh+'">');
+    return'<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" font-family="Inter,Segoe UI,Arial,sans-serif"><rect width="1600" height="900" fill="#10161d"/>'+
+      '<text x="64" y="96" font-size="44" font-weight="700" fill="#edf2f4">'+esc(lib.name)+'</text><text x="64" y="128" font-size="19" fill="#9aaab5">MarketLevelMap Library</text>'+
+      '<rect x="64" y="150" width="1472" height="610" rx="16" fill="#151e27" stroke="#28343d"/>'+inner+
+      '<image href="'+lib.logo+'" x="64" y="806" height="44" width="300" preserveAspectRatio="xMinYMid meet"/><text x="1536" y="836" text-anchor="end" font-size="17" fill="#9aaab5">marketlevelmap.com · Charts, not signals</text></svg>';
+  }
+  function svgToPng(svg,name){return new Promise(function(resolve,reject){var img=new Image(),url=URL.createObjectURL(new Blob([svg],{type:"image/svg+xml"}));
+    img.onload=function(){var c=document.createElement("canvas");c.width=1600;c.height=900;c.getContext("2d").drawImage(img,0,0);URL.revokeObjectURL(url);
+      c.toBlob(function(b){if(!b)return reject();var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);resolve()},"image/png")};
+    img.onerror=function(){URL.revokeObjectURL(url);reject()};img.src=url})}
+  // X counts a link as 23 characters.
+  function xLen(s){return s.replace(/https?:\/\/\S+/g,"x".repeat(23)).length}
+  function fit(text,limit){if(xLen(text)<=limit)return[text];var parts=text.match(/[^.!?]+[.!?]+(\s|$)|[^.!?]+$/g)||[text],out=[],cur="";
+    parts.forEach(function(s){s=s.trim();if(!s)return;if(cur&&xLen(cur+" "+s)>limit){out.push(cur);cur=s}else cur=cur?cur+" "+s:s});if(cur)out.push(cur);return out}
+  function buildThread(lib){
+    var t=[],sc=fit(lib.summary,262-xLen(lib.name)-2);t.push(lib.name+"\n\n"+(sc[0]||""));if(sc.length>1)fit(sc.slice(1).join(" "),262).forEach(function(x){t.push(x)});
+    var cur="Key points:";lib.points.forEach(function(pt){var line="\n• "+pt;if(xLen(cur+line)>262){t.push(cur);cur="•"+line.slice(2)}else cur+=line});if(lib.points.length)t.push(cur);
+    t.push("Read the full page:\n"+lib.url);
+    return t.map(function(x,i){return x+"\n\n"+(i+1)+"/"+t.length});
+  }
+
+  // ---------- render ----------
+  function render(){
+    var t=w(),box=$("social");if(!state.data)return;var d=state.data;box.textContent="";
+    var bar=el("div","toolbar"),modes=el("div","tabs");
+    [["auto",t.auto],["manual",t.manual]].forEach(function(m){var b=el("button",null,m[1]);b.type="button";b.setAttribute("aria-pressed",String(d.mode===m[0]));
+      b.addEventListener("click",function(){if(d.mode!==m[0])post("/api/auth/admin/social/settings",{mode:m[0]}).then(function(){load(state.week)})});modes.appendChild(b)});
+    bar.appendChild(modes);
+    var nav=el("div","sp-nav"),pv=el("button","btn ghost",t.prev),tw=el("button","btn ghost",t.thisWeek),nx=el("button","btn ghost",t.next);[pv,tw,nx].forEach(function(b){b.type="button"});
+    pv.addEventListener("click",function(){load(shift(-7))});nx.addEventListener("click",function(){load(shift(7))});tw.addEventListener("click",function(){load(null)});
+    var start=Date.parse(d.week+"T00:00:00Z");nav.appendChild(pv);nav.appendChild(el("b","sp-week",dayDate(d.week,0)+" – "+dayDate(d.week,6)+" · "+t.week.replace("{n}",isoWeek(start))));nav.appendChild(nx);nav.appendChild(tw);bar.appendChild(nav);box.appendChild(bar);
+    box.appendChild(el("p","small muted",t.modeHelp[d.mode]));
+    if(d.mode==="manual"&&!d.saved){var sv=el("div","sp-save");sv.appendChild(el("span",null,t.suggested));var sb=el("button","btn",t.savePlan);sb.type="button";
+      sb.addEventListener("click",function(){sb.disabled=true;savePlan().then(function(r){if(r.ok){toast(t.planSaved);load(d.week)}else{toast(words().errors.server);sb.disabled=false}})});sv.appendChild(sb);box.appendChild(sv)}
+    // flow
+    var today=Math.floor((Date.now()-start)/DAY),flow=el("div","flow");flow.appendChild(el("h2",null,t.flow));
+    ORDER.map(function(day){return d.posts.filter(function(p){return p.day===day})[0]}).filter(Boolean).forEach(function(p){
+      var r=el("button","flow-row"+(dayOf(p)===today?" is-today":"")+(state.sel===p.day?" is-sel":""));r.type="button";
+      r.appendChild(el("span","f-day",t.days[dayOf(p)].slice(0,3)+" "+dayDate(d.week,dayOf(p))+(dayOf(p)===today&&p.kind!=="library"?" · "+t.today:"")));
+      r.appendChild(el("span","f-kind",t.kinds[p.kind]));r.appendChild(el("span","f-title",title(p)));r.appendChild(el("span","f-st st-"+p.status,t.status[p.status]));
+      r.addEventListener("click",function(){state.sel=p.day;render()});flow.appendChild(r)});
+    box.appendChild(flow);
+    var p=d.posts.filter(function(x){return x.day===state.sel})[0];if(p)box.appendChild(workspace(p));
+  }
+  function workspace(p){
+    var t=w(),d=state.data,ws=el("section","desk"),head=el("div","desk-head");
+    head.appendChild(el("h2",null,t.days[dayOf(p)]+" · "+dayDate(d.week,dayOf(p))+" · "+t.kinds[p.kind]));
+    var tt=el("b","desk-title",title(p));head.appendChild(tt);var ct=el("button","copy",t.copyTitle);ct.type="button";ct.addEventListener("click",function(){copyText(title(p),ct)});head.appendChild(ct);ws.appendChild(head);
+    var msg=el("span","msg"),tools=el("div","desk-tools");
+    if(p.kind==="chart"){
+      function sel(label,opts,val,on){var l=el("label","sp-sel");l.appendChild(el("span",null,label));var s=el("select");opts.forEach(function(o){var op=el("option",null,o[1]);op.value=o[0];op.selected=o[0]===val;s.appendChild(op)});s.addEventListener("change",function(){on(s.value)});l.appendChild(s);return l}
+      function change(k,v){p[k]=v;savePlan().then(function(r){if(r.ok){d.saved=true;render()}else toast(words().errors.server)})}
+      tools.appendChild(sel(t.asset,d.assets.map(function(a){return[a.symbol,a.symbol.replace(/USDT$/,"")]}),p.symbol,function(v){change("symbol",v)}));
+      tools.appendChild(sel(t.method,[["cz",t.cz],["pa",t.pa]],p.method,function(v){change("method",v)}));
+      tools.appendChild(sel(t.tf,[["1h","1H"],["4h","4H"],["1d","1D"],["1w","1W"]],p.timeframe,function(v){change("timeframe",v)}));
+      if(p.symbol&&has(p.symbol,p.method,p.timeframe)){var f=frame(chartSrc(p));tools.appendChild(exportButton(f,false,msg));tools.appendChild(exportButton(f,true,msg));tools.appendChild(msg);ws.appendChild(tools);ws.appendChild(f)}
+      else{ws.appendChild(tools);ws.appendChild(el("p","notice",t.noAnalysis))}
+    }else if(p.kind==="weekly"){var fw=frame("weekly.html?embed=1");tools.appendChild(pngButton(fw,"#wk-download",msg));tools.appendChild(msg);ws.appendChild(tools);ws.appendChild(fw)}
+    else if(p.kind==="review"){
+      var list=d.posts.filter(function(x){return x.kind==="chart"&&x.symbol});ws.appendChild(el("p","small muted",list.length?t.reviewHelp:t.noPosts));
+      var holder=el("div"),rt=el("div","desk-tools");list.forEach(function(x){var b=el("button","btn ghost",t.days[x.day].slice(0,3)+": "+title(x));b.type="button";
+        b.addEventListener("click",function(){holder.textContent="";var f=frame(chartSrc(x)),tl=el("div","desk-tools"),m=el("span","msg");tl.appendChild(exportButton(f,false,m));tl.appendChild(exportButton(f,true,m));tl.appendChild(m);
+          holder.appendChild(tl);holder.appendChild(f)});rt.appendChild(b)});
+      ws.appendChild(rt);ws.appendChild(holder);
+    }else if(p.kind==="library"){
+      var tp=topicOf(d.week),lb=el("div","desk-lib");ws.appendChild(lb);
+      if(!tp){lb.appendChild(el("p","notice",t.libFail))}
+      else loadLib(tp).then(function(lib){
+        var row=el("div","desk-tools"),open=el("a","sp-link",t.openPage);open.href=tp.en.url;open.target="_blank";open.rel="noopener";
+        if(lib.svg){var svg=libImage(lib),img=el("img","lib-img");img.alt="";img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+          var pb=el("button","btn",t.png);pb.type="button";pb.addEventListener("click",function(){svgToPng(svg,"marketlevelmap-library-"+tp.id+".png")});row.appendChild(pb);row.appendChild(open);lb.appendChild(row);lb.appendChild(img)}
+        else{row.appendChild(open);lb.appendChild(row)}
+        lb.appendChild(el("h3",null,t.thread));lb.appendChild(el("p","small muted",t.threadHelp));
+        var tweets=p._thread||(p.text?p.text.split("\n\n—\n\n"):buildThread(lib));p._thread=tweets;
+        tweets.forEach(function(tw,i){var c=el("div","tweet"),ta=el("textarea");ta.rows=Math.min(8,tw.split("\n").length+2);ta.value=tw;var n=el("small","sp-count");
+          function cnt(){var l=xLen(ta.value);n.textContent=l+" / 280";n.className="sp-count"+(l>280?" over":"")}cnt();
+          ta.addEventListener("input",function(){tweets[i]=ta.value;cnt()});var cb=el("button","copy",t.copy);cb.type="button";cb.addEventListener("click",function(){copyText(ta.value,cb)});
+          c.appendChild(ta);var r2=el("div","row");r2.appendChild(cb);r2.appendChild(n);c.appendChild(r2);lb.appendChild(c)});
+      }).catch(function(){lb.appendChild(el("p","notice",t.libFail))});
+    }
+    // Status only: the plan is what the desk keeps (no post text, no X link). It is saved as soon as it changes.
+    var form=el("div","desk-form"),row=el("div","row"),m2=el("span","msg");
+    var stSel=el("select","sp-status");["planned","prepared","posted"].forEach(function(s){var o=el("option",null,t.status[s]);o.value=s;o.selected=s===p.status;stSel.appendChild(o)});
+    var lab=el("label","sp-sel");lab.appendChild(el("span",null,t.statusLabel));lab.appendChild(stSel);row.appendChild(lab);row.appendChild(m2);form.appendChild(row);
+    var locked=!d.saved&&p.day<7;stSel.disabled=locked;if(locked)m2.textContent=t.errPlan;
+    stSel.addEventListener("change",function(){
+      stSel.disabled=true;m2.textContent="";m2.className="msg";
+      post("/api/auth/admin/social/post",{week:d.week,day:p.day,status:stSel.value,text:p.text||"",xUrl:p.xUrl||""}).then(function(r){
+        if(r.ok){p.status=stSel.value;m2.textContent=t.saved;m2.className="msg ok";
+          var fr=document.querySelector(".flow-row.is-sel .f-st");if(fr){fr.textContent=t.status[p.status];fr.className="f-st st-"+p.status}}
+        else{stSel.value=p.status;m2.textContent=r.error==="not_saved"?t.errPlan:words().errors.server;m2.className="msg err"}
+      }).catch(function(){stSel.value=p.status;m2.textContent=words().errors.server;m2.className="msg err"}).then(function(){stSel.disabled=false});
+    });
+    ws.appendChild(form);
+    return ws;
+  }
+  function shift(days){return new Date(Date.parse(state.week+"T00:00:00Z")+days*DAY).toISOString().slice(0,10)}
+  function load(week){
+    fetch("/api/auth/admin/social"+(week?"?week="+week:""),{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.json().then(function(d){d._s=r.status;return d})}).then(function(d){
+      if(d._s===403){show("v-denied");return}
+      if(!d.posts){$("error").textContent=words().errors.server;$("error").hidden=false;return}
+      var weekChanged=d.week!==state.week;state.data=d;state.week=d.week;
+      if(weekChanged||state.sel==null){var td=Math.floor((Date.now()-Date.parse(d.week+"T00:00:00Z"))/DAY);state.sel=td>=0&&td<7?td:0}
+      render();
+    }).catch(function(){$("error").textContent=words().errors.server;$("error").hidden=false});
+  }
+  fetch("/assets/weekly-topics.json").then(function(r){return r.ok?r.json():null}).then(function(t){state.topics=t;if(state.data)render()}).catch(function(){});
+  // Members / Social media switch
+  function area(name){$("area-members").hidden=name!=="members";$("social").hidden=name!=="social";var lead=document.querySelector(".page-head p");if(lead)lead.hidden=name!=="members";
+    document.querySelectorAll("#area-tabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.area===name))});
+    try{sessionStorage.setItem("mlm-admin-area",name)}catch(e){}
+    if(name==="social"&&!state.data)load(null)}
+  function labels(){var t=w();document.querySelectorAll("#area-tabs button").forEach(function(b){b.textContent=t.area[b.dataset.area]})}
+  document.querySelectorAll("#area-tabs button").forEach(function(b){b.addEventListener("click",function(){area(b.dataset.area)})});
+  labels();new MutationObserver(function(){labels();render()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  var saved;try{saved=sessionStorage.getItem("mlm-admin-area")}catch(e){}
+  if(saved==="social")area("social");
+})();
+</script>
+</body></html>

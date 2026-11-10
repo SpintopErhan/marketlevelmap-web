@@ -54,6 +54,30 @@ cache previews per link, so a link shared before a change keeps its old card for
   key levels and earlier analyses. A switch at the top chooses the discipline: Critical Zones (default) or
   Price Action (`&method=pa`, see "Price Action view").
 - `weekly-events.html` — this/next week's events. `archive.html` — placeholder until archives are published.
+- `tr/hakkinda/`, `en/about/` — About: what the site is and why (approach and engine steps, what it offers,
+  membership, analysis time, what it is not). `tr/rehber/`, `en/guide/` — Reading guide: what is on the chart
+  and how to read it (the two views, zones, key levels, timeframes, five-step checklist, examples, mistakes,
+  glossary). The guide does not link to About. Both pages use the library's type sizes and its sticky
+  "On this page" card (hidden on phones; the guide keeps a contents list at the top there). Edited by hand.
+
+## Weekly outlook
+
+`weekly.html` (`/weekly`) and a card at the top right of the home page. Data: `GET /api/weekly`
+(`functions/api/weekly.js`), one snapshot per week (Monday 00:00 UTC), cached at the edge for an hour once
+every asset has last week's candle. Every analysed asset except PAXG:
+
+- **Last week** — open → close of the weekly candle that opened the Monday before (public candles,
+  `data.marketlevelmap.com/candles/<SYMBOL>/1w/latest.json`, else the newest 1W archive). If that candle is not
+  uploaded yet the asset shows "–"; an older week is never used in its place.
+- **Levels and structure** — last week's close against the monthly open, yearly open and ATH: `keyLevels` of
+  `levels.json` (a level whose period began after the week closed is left out); until an asset's file has
+  them, its 1D Critical Zones report (`MO`, `YO`, `ATH` else `OATH`).
+- **Structure direction** (1D timeframe alignment) — `structure.state` of the 1W, 1D and 4H Price Action reports, with the analysis
+  page's rule (aligned / main trend with 4H against / conflict). Only these three states are public; the 4H
+  and 1W reports stay members-only.
+
+The page shows a heat map (BTC on top, then the usual market order) and one row per asset; "Download image"
+draws the same as a 1600×900 PNG (dark look, page language) for X.
 
 ## Price Action view
 
@@ -131,11 +155,21 @@ The old scrolling price strip is kept in `assets/price-strip.js` / `assets/price
 ## Key levels on the analysis chart
 
 Each row of the analysis page's "Key levels" table starts with an eye toggle. A switched-on level is drawn
-on the interactive chart as a dashed orange (`#e8a765`) price line labelled with its code (`DO`, `WO`,
+on the interactive chart as a dashed soft-white (`#d6dbe3`) price line labelled with its code (`DO`, `WO`,
 `ATH`…) on the price axis (`LiveChart` `setLevels`). The choice is stored in this browser under
 `mlm-chart-levels-v1` (a list of codes) and applies to every asset and timeframe; nothing is shown by
 default. `DO`, `WO` and `MO` follow the live feed, so their lines move when a new period opens. Price lines
 do not stretch the price scale: a level outside the visible range (often `ATH`) is simply not drawn.
+
+**Where the values come from.** The local program writes `keyLevels` into `candles/<SYMBOL>/levels.json`
+with every candle upload (`DO`, `WO`, `PWO`, `MO`, `YO`, `MH`/`MM`/`ML`, `ATH` + `asOf`; `periodStart` per
+level, `time` for the ATH). `ATH` is the real all-time high of the candle history. `MH`/`MM`/`ML` are only
+written once Monday's candle has closed, so on Mondays the Monday range is not shown. On the current
+analysis these values replace the report's (which date from the analysis); the note under the table then
+gives the file's `asOf`. `DO`/`WO`/`MO` still prefer the live feed. Archived analyses, and assets whose
+file has no `keyLevels` yet, keep the report's levels (the report's `OATH`, the previous ATH, then stands
+in for ATH). The market table (YO, ATH, opens as fallback) and the weekly outlook (MO, YO, ATH) read the
+same file.
 
 ## Chart watermark
 
@@ -160,9 +194,9 @@ The chart header's Share button opens a menu:
 
 - **X (Twitter)** — `x.com/intent/post?text=…&url=…`; **Telegram** — `t.me/share/url?url=…&text=…`. Both share
   the analysis page link `https://marketlevelmap.com/bulletin?asset=<SYMBOL>&tf=<tf>` with a short text
-  ("BTCUSDT 4H support and resistance zones · MarketLevelMap", Turkish on the Turkish page).
+  ("BTCUSDT · 4H · Critical Zones · MarketLevelMap"; "Kritik Bölgeler" on the Turkish page).
 - **Copy link** — the same link to the clipboard ("Link copied").
-- **Share image…** — only where the browser can share files (`navigator.canShare({ files })`, i.e. most
+- **Share with image…** (first in the menu) — only where the browser can share files (`navigator.canShare({ files })`, i.e. most
   phones): the same PNG as Download plus the text and link go to the system share sheet. The PNG is built
   when the menu opens, so the share call stays inside the tap. Needs `chartDownload` to be allowed too.
 
@@ -349,6 +383,70 @@ answers `{ events: [], error }` and the pages say the events could not be loaded
 `assets/demo-data.js` generates zones, key levels, notes, archive rows and events around the live price.
 It is used only on preview hosts (`*.pages.dev`, `localhost`) or with `?demo=1` (`?demo=0` turns it off),
 never on marketlevelmap.com by default, and every section it fills shows a "Sample data" badge.
+
+## Social media planner
+
+Admin panel → **Social media** (`admin.html`, `/api/auth/admin/social*`, admin only): this week's publishing flow
+and a workspace for the selected post. The week (Monday, UTC): Monday the weekly outlook, Tuesday/Thursday/
+Saturday a 1D chart, Wednesday/Friday a 4H chart, Sunday the week's review, plus the library's topic of the
+week as an extra Wednesday post (`day` 7). Chart slots rotate through the analysed assets (PAXG left out),
+alternating Critical Zones and Price Action, and skip analyses that are not published.
+
+- **Automatic** mode stores the suggested plan the first time a week is opened; **Choose myself** only
+  suggests it until saved. In both, changing a post's asset, method or timeframe in the workspace saves the plan.
+- **Chart posts** embed the analysis page itself (`bulletin.html?…&embed=1`, no site header or footer), so every
+  tool of that page is there; **Save PNG** presses that page's own Download (chart with the chosen indicators
+  and key levels). Admins (`ADMIN_EMAILS`) count as members, so every timeframe opens.
+- **Monday** embeds the weekly outlook (`weekly.html?embed=1`) and saves its image. **Sunday** lists the week's
+  chart posts; each opens as it is now.
+- **Library post**: the week's topic (`assets/weekly-topics.json`); its English page gives a 1600×900 image of
+  the page's figure and a tweet thread built from the page's own text (title and summary, key points, link),
+  each tweet ≤ 280 characters, editable and copyable.
+- The desk keeps the plan and each post's status (planned / prepared / posted, saved on change); post text and
+  X links are not stored. Nothing is posted to X from the site.
+- Tables `social_posts (week, day, kind, symbol, method, timeframe, status, text, x_url, updated_at)` and
+  `social_settings (key, value)` in `USERS_DB`, created on first use.
+
+## Accounts
+
+Sign-in with Google, the profile, membership verification, the admin panel and the guest / member split
+(steps 1–3 of the membership plan; Telegram comes later).
+
+- **Server:** `functions/api/auth/[[path]].js`: `google/start`, `google/callback`, `me`, `register`, `profile`,
+  `delete`, `logout` under `/api/auth/`. Responses are `Cache-Control: no-store` and the service worker never
+  caches `/api/auth/*`.
+- **Cloudflare settings:** D1 binding `USERS_DB` (database `marketlevelmap-users`); variables `GOOGLE_CLIENT_ID`,
+  `GOOGLE_CLIENT_SECRET` (secret), `SESSION_SECRET` (secret, 64 random hex characters), `ADMIN_EMAILS` (comma
+  separated). The tables (`users`, `x_locks`) are created by the code on first use.
+- **Google client:** the redirect URI is `<origin>/api/auth/google/callback`, so every origin used (the site and
+  the branch preview) must be listed under the client's origins and redirect URIs.
+- **Cookies:** `mlm_session` (HttpOnly, HMAC-signed with `SESSION_SECRET`, 30 days) and `mlm_li` (readable hint
+  only, so pages ask `/api/auth/me` only when a session exists); `mlm_oauth` and `mlm_signup` are short-lived
+  and limited to `/api/auth`.
+- **Sign-up:** a new Google user is stored only after accepting the privacy notice on `/account`
+  (consent version `2026-11-08` is saved with the account).
+- **Profile:** e-mail, name and picture from Google; X username (fixed once approved; saving it sends the account
+  for verification); Telegram username (typed by hand); a permanent verification code `MLM-XXXX-XXXX`; status
+  `registered` → `pending` → `approved` / `rejected` / `suspended`. A rejected user re-applies by saving the X
+  username again with the same code.
+- **Deletion:** removes the account; the X username stays reserved for 30 days (`x_locks`).
+- **Header:** `assets/account.js` (on every page, library pages included) shows "Sign in" or the profile menu;
+  admins also get an "Admin panel" link.
+- **Members only** (step 3): only `approved` accounts are members. On `/api/publication/report/…` and
+  `/api/archive/report/…` every timeframe but **1D** is cut on the server for everyone else: the response keeps
+  only what names the chart (`locked: true`, see `guestReport`); comments and images of those timeframes answer 403.
+  Members get the full object with `Cache-Control: private, no-store`; 1D stays public and cacheable. The index
+  carries `viewer { member, status }` and per entry `restricted` / `locked`; archive items carry `restricted`. A
+  database error keeps the data locked. On a locked timeframe the analysis page shows the candles only (no
+  indicators, key levels, volume profile or Fibonacci), a blurred band over the price pane and a side card with
+  the call to action (sign in / complete membership / account), locks download and hides share, and marks other
+  timeframes "Members only" in "Structure by timeframe" and in the archive lists, where they are not links.
+  Visitors who are not members land on Critical Zones 1D when the link names no timeframe; the timeframe
+  alignment box is for members. `assets/account.js` fires `mlm-account` once the user is known.
+- **Admin panel** (`/admin`, step 2): only for e-mails in `ADMIN_EMAILS`, checked on the server
+  (`admin/users`, `admin/action`). Tabs per status with counts; search by code (dashes optional), e-mail, name
+  or X / Telegram username. Actions: approve (needs an X username), reject (with a note shown to the user),
+  suspend (with a note), reinstate. Approval sends no message: the user is told by X DM by hand.
 
 ## Shared assets and browser caches
 

@@ -2,10 +2,11 @@
 // Crawlers do not run the page scripts, so analysis titles and chart images are set here.
 const ACTIVE_POINTER_KEY = "site-publication/active.json";
 const SITE = "MarketLevelMap";
-const DEFAULT_DESCRIPTION = "Live market table and structure-based analysis of crypto markets: support and resistance zones and key levels.";
+const DEFAULT_DESCRIPTION = "A data-driven analysis map for financial markets: structural zones, key levels, price ranges and Price Action structure, with a live market table.";
 
 const PAGES = {
   "/": { title: "MarketLevelMap — Market table", description: DEFAULT_DESCRIPTION },
+  "/weekly": { title: "Weekly outlook · MarketLevelMap", description: "How the analysed assets closed last week and where they start this one: weekly change, monthly and yearly open, all-time high and timeframe alignment." },
   "/weekly-events": { title: "Weekly events · MarketLevelMap", description: "Market-moving events of the week: macro data releases and central-bank decisions." },
   "/archive": { title: "Archive · MarketLevelMap", description: "Earlier MarketLevelMap analyses by date." },
   "/bulletin": { title: "Analysis · MarketLevelMap", description: DEFAULT_DESCRIPTION },
@@ -21,28 +22,28 @@ function pageKey(pathname) {
 }
 
 // Link previews always use the site image (logo); charts are no longer published as images.
-const OG_IMAGE = "/assets/og-image.png?v=dd26b484";
+const OG_IMAGE = "/assets/og-image.png?v=452c1796";
 
 // Texts for a shared analysis link. They match the share text on the page (bulletin.html "shareText");
 // `lang=tr` in the link (added when the page is in Turkish) gives the Turkish preview.
 const ANALYSIS_TEXT = {
   en: {
-    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} support and resistance zones · ${SITE}`,
+    title: (asset, tf) => `${asset}${tf ? " · " + tf : ""} · Critical Zones · ${SITE}`,
     description: (asset, tf) => `Critical Zones analysis of ${asset}${tf ? " on the " + tf + " chart" : ""}: support and resistance zones and key levels.`,
   },
   tr: {
-    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} destek ve direnç bölgeleri · ${SITE}`,
-    description: (asset, tf) => `${asset}${tf ? " " + tf + " grafiğinin" : ""} Critical Zones analizi: destek ve direnç bölgeleri ve anahtar seviyeler.`,
+    title: (asset, tf) => `${asset}${tf ? " · " + tf : ""} · Kritik Bölgeler · ${SITE}`,
+    description: (asset, tf) => `${asset}${tf ? " " + tf + " grafiğinin" : ""} Kritik Bölgeler analizi: destek ve direnç bölgeleri ve anahtar seviyeler.`,
   },
 };
 // The same for a Price Action link (`method=pa`, README "Price Action view").
 const PA_TEXT = {
   en: {
-    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} price action range · ${SITE}`,
+    title: (asset, tf) => `${asset}${tf ? " · " + tf : ""} · Price Action · ${SITE}`,
     description: (asset, tf) => `Price Action analysis of ${asset}${tf ? " on the " + tf + " chart" : ""}: the confirmed range, its equilibrium, where the price sits and the nearest fair value gaps.`,
   },
   tr: {
-    title: (asset, tf) => `${asset}${tf ? " " + tf : ""} price action aralığı · ${SITE}`,
+    title: (asset, tf) => `${asset}${tf ? " · " + tf : ""} · Price Action · ${SITE}`,
     description: (asset, tf) => `${asset}${tf ? " " + tf + " grafiğinin" : ""} Price Action analizi: onaylı aralık, dengesi, fiyatın aralıktaki yeri ve en yakın FVG'ler.`,
   },
 };

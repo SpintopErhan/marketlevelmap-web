@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap"><script src="/assets/pwa.js?v=b0dd56f5" defer></script>
 <meta name="color-scheme" content="dark light">
-<meta name="description" content="MarketLevelMap — Structure-Based Market Analysis.">
+<meta name="description" content="MarketLevelMap — A data-driven analysis map for financial markets: structural zones, key levels, price ranges and Price Action structure.">
 <title>MarketLevelMap — Market table</title>
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
 <link rel="stylesheet" href="assets/site.css?v=c0028433"><style>
@@ -39,6 +39,14 @@ main{padding:0 0 72px}
 .hero h1{margin:0;max-width:none;font-size:clamp(26px,2.4vw,40px);line-height:1.12;font-weight:700;letter-spacing:-.9px;white-space:nowrap}
 .hero-text{margin:14px 0 0;max-width:none;color:var(--muted);font-size:16px;white-space:nowrap}
 .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.hero.has-wk{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:32px;align-items:start}.hero.has-wk h1,.hero.has-wk .hero-text{white-space:normal}
+.wk-card{padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}.wk-card[hidden]{display:none}
+.wk-card .wk-eyebrow{margin:0;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}
+.wk-card .wk-range{margin:4px 0 12px;color:var(--muted);font-size:13px}
+.wk-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.wk-mini a{display:flex;flex-direction:column;justify-content:space-between;min-height:52px;padding:6px 8px;border-radius:7px;color:var(--fg);text-decoration:none;font-size:11px}
+.wk-mini a.big{grid-column:span 2}.wk-mini a b{font-size:12px}.wk-mini a span{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}.wk-mini a:hover{outline:2px solid var(--accent);outline-offset:-2px}
+.wk-card .wk-go{display:inline-block;margin-top:12px;color:var(--accent);font-size:14px;font-weight:600;text-decoration:none}
 .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 20px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;transition:transform .15s ease,box-shadow .2s ease,border-color .2s ease}
 .btn:hover{transform:translateY(-1px)}
 .btn-primary{background:var(--accent);color:var(--bg)}
@@ -191,6 +199,7 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
   .spark.first .spark-line{stroke-dashoffset:0}
 }
 @media(max-width:1100px){.home-split{grid-template-columns:1fr}.home-side{grid-column:1;grid-row:auto}.hero h1,.hero-text{white-space:normal}}
+@media(max-width:900px){.hero.has-wk{display:block}.wk-card{margin-top:22px}}
 @media(max-width:700px){
   .hero{padding:28px 0 24px}.hero h1{font-size:26px;white-space:normal}.hero-text{font-size:15px;white-space:normal}
   .filters{width:100%}.search{flex:1 1 100%}.search input{width:100%}
@@ -207,7 +216,7 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 <script>
 try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
 </script>
-<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/event-links.js?v=39e55a33"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
+<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c417fd53" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=df5554c6"></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/event-links.js?v=39e55a33"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
 <body>
 <div class="page-bg" aria-hidden="true"><div class="page-bg-in"><svg class="page-bg-art" viewBox="0 0 720 460" fill="none">
 <line class="bg-guide" x1="20" y1="78" x2="700" y2="78"/><line class="bg-guide" x1="20" y1="168" x2="700" y2="168"/><line class="bg-guide" x1="20" y1="262" x2="700" y2="262"/><line class="bg-guide" x1="20" y1="348" x2="700" y2="348"/>
@@ -224,11 +233,12 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <main class="shell">
 <section class="hero" aria-labelledby="hero-title">
 <div class="hero-copy">
-<p class="kicker rise" data-i18n="heroKicker">Structure-based market analysis</p>
-<h1 id="hero-title" class="rise rise-2" data-i18n="heroTitle">Support, resistance and Price Action maps for financial markets</h1>
-<p class="hero-text rise rise-3" data-i18n="heroText">Critical zones, price ranges and structure events for every asset, from 1H to 1W, with the live price.</p>
+<p class="kicker rise" data-i18n="heroKicker">Data-driven market analysis</p>
+<h1 id="hero-title" class="rise rise-2" data-i18n="heroTitle">A comprehensive map of financial markets</h1>
+<p class="hero-text rise rise-3" data-i18n="heroText">Structural zones, key levels, price ranges and Price Action structure for every asset.</p>
 <div class="hero-actions rise rise-4"><a class="btn btn-primary" href="/en/guide/" data-href-tr="/tr/rehber/" data-i18n="heroGuide">How to read them</a></div>
 </div>
+<aside class="wk-card rise rise-4" id="wk-card" hidden aria-labelledby="wk-card-title"><p class="wk-eyebrow" id="wk-card-title" data-i18n="wkTitle">Weekly outlook</p><p class="wk-range"><span data-i18n="wkLast">Last week</span> <span id="wk-card-range"></span></p><div class="wk-mini" id="wk-mini"></div><a class="wk-go" href="weekly.html" data-i18n="wkGo">See the weekly outlook →</a></aside>
 </section>
 <section class="home-split" aria-labelledby="table-title">
 <div class="page-head rise rise-5"><div><h2 id="table-title" data-i18n="tableTitle">Market table</h2>
@@ -251,18 +261,18 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 </main>
 <div class="site-footer"><div class="shell">
 <div class="footer-cols">
-<div class="footer-brand"><strong>MarketLevelMap</strong><p data-tr="Finansal piyasalar için yapı tabanlı analiz: kritik bölgeler, fiyat aralıkları ve yapı olayları.">Structure-based analysis for financial markets: critical zones, price ranges and structure events.</p></div>
+<div class="footer-brand"><strong>MarketLevelMap</strong><p data-tr="Finansal piyasalar için veri tabanlı analiz haritası: yapısal bölgeler, anahtar seviyeler, fiyat aralıkları ve Price Action yapısı.">A data-driven analysis map for financial markets: structural zones, key levels, price ranges and Price Action structure.</p></div>
 <nav class="footer-col" aria-labelledby="foot-site"><h2 id="foot-site" data-tr="Site">Site</h2><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="archive.html" data-tr="Arşiv">Archive</a></nav>
 <nav class="footer-col" aria-labelledby="foot-learn"><h2 id="foot-learn" data-tr="Öğren">Learn</h2><a href="/en/library/" data-href-tr="/tr/kutuphane/" data-tr="Kütüphane">Library</a><a href="/en/guide/" data-href-tr="/tr/rehber/" data-tr="Okuma rehberi">Reading guide</a></nav>
-<nav class="footer-col" aria-labelledby="foot-about"><h2 id="foot-about" data-tr="Kurumsal">About</h2><a href="/en/about/" data-href-tr="/tr/hakkinda/" data-tr="Hakkında">About</a><button class="disclaimer-link footer-link" type="button" data-disclaimer>Information and Risk Notice</button></nav>
+<nav class="footer-col" aria-labelledby="foot-about"><h2 id="foot-about" data-tr="Kurumsal">About</h2><a href="/en/about/" data-href-tr="/tr/hakkinda/" data-tr="Hakkında">About</a><a href="/en/privacy/" data-href-tr="/tr/gizlilik/" data-tr="Gizlilik">Privacy</a><button class="disclaimer-link footer-link" type="button" data-disclaimer>Information and Risk Notice</button></nav>
 </div>
 <footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span></p></footer>
 </div></div>
 <script>
 /* Header: language and theme (same on every page). */
 var copy={
-  en:{title:"MarketLevelMap — Market table",search:"Search an asset",all:"All",fav:"Favorites",tickerLabel:"Live prices",heroKicker:"Structure-based market analysis",heroTitle:"Support, resistance and Price Action maps for financial markets",heroText:"Critical zones, price ranges and structure events for every asset, from 1H to 1W, with the live price.",heroCta:"See the analyses",heroGuide:"How to read them",hero7d:"7 days · dashed: weekly open",tableTitle:"Market table",demo:"Sample data",colAsset:"Asset",colPrice:"Price",col24h:"24h %",colVolume:"24h volume",colDay:"Daily open",colWeek:"Weekly open",colMonth:"Monthly open",colYear:"Yearly open",colAnalysis:"Analysis",loading:"Loading live market…",unavailable:"No active analysis is available right now. Please check back later.",noMatch:"No assets match this filter.",tableNote:"The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.",eventsTitle:"This week's events",utc:"times in UTC",fullWeek:"Full week →",colDayName:"Day",colTime:"Time",colEvent:"Event",colCountry:"Country",colLib:"Library",colCountry:"Country",colActual:"Actual",eventsLoading:"Loading events…",eventsFailed:"Events could not be loaded.",eventsNone:"No more events are listed for this week.",allDay:"During the day",live:"Live price",lastAnalysis:"Last published",openAnalysis:"Open analysis",spark7d:"7 days",addFav:"Add to favorites",removeFav:"Remove from favorites",topicLabel:"Topic of the week",topicMore:"Read the page →",topicNext:"Next week:"},
-  tr:{title:"MarketLevelMap — Piyasa tablosu",search:"Varlık ara",all:"Tümü",fav:"Favoriler",tickerLabel:"Canlı fiyatlar",heroKicker:"Yapı tabanlı piyasa analizi",heroTitle:"Finansal piyasalar için destek, direnç ve Price Action haritası",heroText:"Her varlık için kritik bölgeler, fiyat aralığı ve yapı olayları; 1H'den 1W'ye kadar, canlı fiyatla birlikte.",heroCta:"Analizleri gör",heroGuide:"Nasıl okunur?",hero7d:"7 gün · kesikli: haftalık açılış",tableTitle:"Piyasa tablosu",demo:"Örnek veriler",colAsset:"Varlık",colPrice:"Fiyat",col24h:"24s %",colVolume:"24s hacim",colDay:"Günlük açılış",colWeek:"Haftalık açılış",colMonth:"Aylık açılış",colYear:"Yıllık açılış",colAnalysis:"Analiz",loading:"Canlı piyasa yükleniyor…",unavailable:"Şu anda yayında analiz yok. Lütfen daha sonra tekrar deneyin.",noMatch:"Bu filtreyle eşleşen varlık yok.",tableNote:"Açılış ve ATH sütunlarının altındaki yüzde, güncel fiyatın o seviyeye uzaklığıdır. Satıra tıklayınca varlığın analiz sayfası açılır.",eventsTitle:"Bu haftanın olayları",utc:"saatler UTC",fullWeek:"Tüm hafta →",colDayName:"Gün",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colLib:"Kütüphane",colCountry:"Ülke",colActual:"Gerçekleşen",eventsLoading:"Olaylar yükleniyor…",eventsFailed:"Olaylar yüklenemedi.",eventsNone:"Bu hafta için kalan olay yok.",allDay:"Gün içinde",live:"Canlı fiyat",lastAnalysis:"Son yayın",openAnalysis:"Analizi aç",spark7d:"7 gün",addFav:"Favorilere ekle",removeFav:"Favorilerden çıkar",topicLabel:"Haftanın konusu",topicMore:"Sayfayı oku →",topicNext:"Gelecek hafta:"}
+  en:{wkTitle:"Weekly outlook",wkLast:"Last week",wkGo:"See the weekly outlook →",title:"MarketLevelMap — Market table",search:"Search an asset",all:"All",fav:"Favorites",tickerLabel:"Live prices",heroKicker:"Data-driven market analysis",heroTitle:"A comprehensive map of financial markets",heroText:"Structural zones, key levels, price ranges and Price Action structure for every asset.",heroCta:"See the analyses",heroGuide:"How to read them",hero7d:"7 days · dashed: weekly open",tableTitle:"Market table",demo:"Sample data",colAsset:"Asset",colPrice:"Price",col24h:"24h %",colVolume:"24h volume",colDay:"Daily open",colWeek:"Weekly open",colMonth:"Monthly open",colYear:"Yearly open",colAnalysis:"Analysis",loading:"Loading live market…",unavailable:"No active analysis is available right now. Please check back later.",noMatch:"No assets match this filter.",tableNote:"The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.",eventsTitle:"This week's events",utc:"times in UTC",fullWeek:"Full week →",colDayName:"Day",colTime:"Time",colEvent:"Event",colCountry:"Country",colLib:"Library",colCountry:"Country",colActual:"Actual",eventsLoading:"Loading events…",eventsFailed:"Events could not be loaded.",eventsNone:"No more events are listed for this week.",allDay:"During the day",live:"Live price",lastAnalysis:"Last published",openAnalysis:"Open analysis",spark7d:"7 days",addFav:"Add to favorites",removeFav:"Remove from favorites",topicLabel:"Topic of the week",topicMore:"Read the page →",topicNext:"Next week:"},
+  tr:{wkTitle:"Haftanın görünümü",wkLast:"Geçen hafta",wkGo:"Haftanın görünümü →",title:"MarketLevelMap — Piyasa tablosu",search:"Varlık ara",all:"Tümü",fav:"Favoriler",tickerLabel:"Canlı fiyatlar",heroKicker:"Veri tabanlı piyasa analizi",heroTitle:"Finansal piyasalar için kapsamlı analiz haritası",heroText:"Her varlık için yapısal bölgeler, anahtar seviyeler, fiyat aralıkları ve Price Action yapısı.",heroCta:"Analizleri gör",heroGuide:"Nasıl okunur?",hero7d:"7 gün · kesikli: haftalık açılış",tableTitle:"Piyasa tablosu",demo:"Örnek veriler",colAsset:"Varlık",colPrice:"Fiyat",col24h:"24s %",colVolume:"24s hacim",colDay:"Günlük açılış",colWeek:"Haftalık açılış",colMonth:"Aylık açılış",colYear:"Yıllık açılış",colAnalysis:"Analiz",loading:"Canlı piyasa yükleniyor…",unavailable:"Şu anda yayında analiz yok. Lütfen daha sonra tekrar deneyin.",noMatch:"Bu filtreyle eşleşen varlık yok.",tableNote:"Açılış ve ATH sütunlarının altındaki yüzde, güncel fiyatın o seviyeye uzaklığıdır. Satıra tıklayınca varlığın analiz sayfası açılır.",eventsTitle:"Bu haftanın olayları",utc:"saatler UTC",fullWeek:"Tüm hafta →",colDayName:"Gün",colTime:"Saat",colEvent:"Olay",colCountry:"Ülke",colLib:"Kütüphane",colCountry:"Ülke",colActual:"Gerçekleşen",eventsLoading:"Olaylar yükleniyor…",eventsFailed:"Olaylar yüklenemedi.",eventsNone:"Bu hafta için kalan olay yok.",allDay:"Gün içinde",live:"Canlı fiyat",lastAnalysis:"Son yayın",openAnalysis:"Analizi aç",spark7d:"7 gün",addFav:"Favorilere ekle",removeFav:"Favorilerden çıkar",topicLabel:"Haftanın konusu",topicMore:"Sayfayı oku →",topicNext:"Gelecek hafta:"}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 function applyLanguage(value){
@@ -324,9 +334,11 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
     r.change.textContent=MarketUI.pct(change);r.change.className="chg "+MarketUI.signClass(change);
     r.volume.textContent=Number(d.q)>0?MarketUI.compact(d.q)+" $":"—";
     // Opens: live feed first (always current), the published report's value as fallback.
-    // YO and ATH come from the report; ATH is the engine's OATH (highest Binance candle).
-    levelCell(r.day,Number(d.day)>0?d.day:lv.DO,price,r.digits);levelCell(r.week,Number(d.week)>0?d.week:lv.WO,price,r.digits);
-    levelCell(r.month,Number(d.month)>0?d.month:lv.MO,price,r.digits);levelCell(r.year,lv.YO,price,r.digits);levelCell(r.ath,lv.ATH||lv.OATH,price,r.digits);
+    // YO and ATH come from keyLevels in candles/<SYMBOL>/levels.json (uploaded with the candles, the real ATH);
+    // until an asset's file has them, from the report (whose OATH stands in for ATH).
+    var key=r.key||{};
+    levelCell(r.day,Number(d.day)>0?d.day:key.DO||lv.DO,price,r.digits);levelCell(r.week,Number(d.week)>0?d.week:key.WO||lv.WO,price,r.digits);
+    levelCell(r.month,Number(d.month)>0?d.month:key.MO||lv.MO,price,r.digits);levelCell(r.year,r.key?key.YO:lv.YO,price,r.digits);levelCell(r.ath,r.key?key.ATH:lv.ATH||lv.OATH,price,r.digits);
   }
   // Sparkline (desktop only): 7 days of 2h closes per asset.
   var DESKTOP=window.matchMedia("(min-width:701px)");
@@ -379,8 +391,15 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
     order.forEach(function(sym){
       var entries=byAsset[sym].sort(MarketUI.byTimeframe),main=entries.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||entries[0];
       body.appendChild(build(sym,"bulletin.html?asset="+encodeURIComponent(sym)+"&method="+MarketUI.methodOf(main)));
-      if(main.report)fetch(main.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
-      else if(window.DemoData&&DemoData.enabled)rows[sym].demo=true;
+      // YO and ATH are the same on every timeframe: read them from a report this visitor may open (1D for guests;
+      // members-only timeframes come back without levels, README "Accounts").
+      var open=entries.filter(function(e){return e.report&&!e.locked}),levelsFrom=open.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||open[0]||main;
+      fetch("https://data.marketlevelmap.com/candles/"+encodeURIComponent(sym)+"/levels.json").then(function(r){return r.ok?r.json():null}).then(function(f){
+        if(!f||f.pair!==sym||!f.keyLevels||!Array.isArray(f.keyLevels.levels))return;var m={};
+        f.keyLevels.levels.forEach(function(l){if(l&&l.code&&Number(l.price)>0)m[String(l.code).toUpperCase()]=Number(l.price)});rows[sym].key=m;paint(sym);
+      }).catch(function(){});
+      if(levelsFrom.report)fetch(levelsFrom.report.url,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(rep){if(rep&&Array.isArray(rep.levels))useLevels(sym,rep.levels,false)}).catch(function(){});
+      if(!levelsFrom.report&&window.DemoData&&DemoData.enabled)rows[sym].demo=true;
     });
     labels();applyFilter();
     feed=MarketFeed.start(order,{
@@ -454,6 +473,26 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
   render();
   // Links from events to library pages arrive separately; draw again once they are known.
   if(window.EventLinks)EventLinks.load().then(render);
+})();
+</script>
+<script>
+/* Weekly outlook card (README "Weekly outlook"): last week's change per asset from /api/weekly, linking to weekly.html. */
+(function(){
+  var card=document.getElementById("wk-card"),data=null,DAY=86400000;
+  function txt(v){if(v==null)return"–";var n=Math.abs(v).toLocaleString(MarketUI.locale(),{minimumFractionDigits:1,maximumFractionDigits:1}),s=v>0?"+":v<0?"−":"";return MarketUI.lang()==="tr"?s+"%"+n:s+n+"%"}
+  function fill(v){if(v==null)return"var(--raise)";var a=(0.2+0.6*Math.min(Math.abs(v)/8,1)).toFixed(2);return v>=0?"rgba(60,207,145,"+a+")":"rgba(239,107,115,"+a+")"}
+  function render(){
+    if(!data)return;var start=Date.parse(data.weekStart)-7*DAY,end=start+6*DAY,loc=MarketUI.locale(),o={timeZone:"UTC"};
+    document.getElementById("wk-card-range").textContent="· "+new Date(start).toLocaleDateString(loc,Object.assign({day:"numeric",month:"short"},o))+" – "+new Date(end).toLocaleDateString(loc,Object.assign({day:"numeric",month:"short"},o));
+    var list=data.assets.slice().sort(function(a,b){return MarketUI.byPopularity(a.symbol,b.symbol)});
+    document.getElementById("wk-mini").innerHTML=list.map(function(a,i){var v=a.lastWeek&&a.lastWeek.change;
+      return'<a'+(i===0?' class="big"':"")+' href="bulletin.html?asset='+encodeURIComponent(a.symbol)+'&tf=1d" style="background:'+fill(v)+'"><b>'+MarketUI.escape(MarketUI.baseOf(a.symbol))+"</b><span>"+txt(v)+"</span></a>"}).join("");
+  }
+  fetch("/api/weekly").then(function(r){return r.ok?r.json():null}).then(function(d){
+    if(!d||!Array.isArray(d.assets)||!d.assets.some(function(a){return a.lastWeek}))return;
+    data=d;card.hidden=false;card.parentNode.classList.add("has-wk");render();
+  }).catch(function(){});
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
 })();
 </script>
 </body></html>

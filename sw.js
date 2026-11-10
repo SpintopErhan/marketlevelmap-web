@@ -3,10 +3,11 @@
    - /api/publication, /api/events, /api/archive (report JSON, analysis PNGs, events, archive): network-first;
      offline → the last copy, and the page is told so it can show an "offline" notice.
    - /api/prices: never cached (live prices come from the exchanges' streams; the page has its own short cache).
+   - /api/auth/*: never cached (sign-in, session and account data are personal).
    - /assets/* (versioned CSS/JS, icons, logos, generated library data) and the manifest: stale-while-revalidate.
    - Other origins (Binance, Coinbase, data.marketlevelmap.com candles) and websockets: not touched.
    Bump VERSION when this file's rules change; old caches are deleted on activate. */
-const VERSION = "mlm-v1";
+const VERSION = "mlm-v3";
 const CACHES = { pages: `${VERSION}-pages`, data: `${VERSION}-data`, assets: `${VERSION}-assets` };
 const LIMITS = { pages: 60, data: 80, assets: 120 };
 const OFFLINE = "/offline"; // Pages serves /offline.html at /offline
@@ -86,6 +87,7 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return; // exchanges, candle data, anything cross-origin: untouched
   const path = url.pathname;
   if (path.startsWith("/api/prices")) return; // live prices: never from a cache
+  if (path.startsWith("/api/auth/")) return; // sign-in and account data: personal, never cached
   if (path.startsWith("/api/")) return event.respondWith(networkFirst(event, CACHES.data));
   if (request.mode === "navigate") return event.respondWith(networkFirst(event, CACHES.pages, OFFLINE));
   if (path.startsWith("/assets/") || path === "/manifest.webmanifest") return event.respondWith(staleWhileRevalidate(event, CACHES.assets));

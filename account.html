@@ -1,0 +1,194 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap"><script src="/assets/pwa.js?v=b0dd56f5" defer></script><meta name="color-scheme" content="dark light"><meta name="color-scheme" content="dark light"><meta name="robots" content="noindex"><title>MarketLevelMap — Account</title><link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png"><link rel="stylesheet" href="assets/site.css?v=c0028433"><style>*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.5}
+button,select,input{font:inherit}button{color:inherit}
+main{padding:0 0 70px}
+.page-head{margin:34px 0 18px}.page-head h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.5px}
+.page-head p{margin:6px 0 0;color:var(--muted);font-size:14px;max-width:640px}
+[hidden]{display:none!important}
+.card{max-width:720px;padding:22px 24px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.card+.card{margin-top:16px}
+.card h2{margin:0 0 10px;font-size:17px}
+.muted{color:var(--muted)}.small{font-size:13px}
+.notice{max-width:720px;margin:0 0 16px;padding:12px 16px;border:1px solid var(--down);border-radius:12px;color:var(--down);font-size:14px}
+.google-btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font-weight:600;text-decoration:none}
+.google-btn:hover{border-color:var(--accent)}
+.google-btn svg{width:18px;height:18px}
+.who{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.who img,.who .initial{width:48px;height:48px;border-radius:50%;object-fit:cover;background:var(--raise);display:flex;align-items:center;justify-content:center;font-weight:700}
+.who b{display:block;font-size:16px}.who span{color:var(--muted);font-size:13px}
+.privacy{max-height:340px;overflow:auto;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);font-size:13px}
+.privacy h3{margin:14px 0 4px;font-size:13px}.privacy h3:first-child{margin-top:0}.privacy p,.privacy ul{margin:0 0 6px}.privacy ul{padding-left:18px}
+.consent{display:flex;align-items:flex-start;gap:10px;margin:16px 0;font-size:14px;cursor:pointer}
+.consent input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px;border:0;border-radius:10px;background:var(--accent);color:var(--bg);font-weight:700;cursor:pointer;text-decoration:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{border:1px solid var(--line);background:none;color:var(--fg)}
+.btn.danger{border:1px solid var(--down);background:none;color:var(--down)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.status{display:inline-block;padding:2px 10px;border-radius:999px;background:var(--raise);font-size:13px;font-weight:700}
+.status.approved{color:var(--up)}.status.rejected,.status.suspended{color:var(--down)}.status.pending{color:var(--cz)}
+.code{display:inline-flex;align-items:center;gap:10px;margin:6px 0 4px;padding:10px 14px;border:1px dashed var(--accent);border-radius:10px;font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-size:20px;font-weight:700;letter-spacing:1px}
+.copy{height:30px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0;cursor:pointer}
+ol.steps{margin:10px 0 0;padding-left:20px;font-size:14px}ol.steps li{margin:4px 0}
+.field{display:block;margin:0 0 14px}.field span{display:block;margin-bottom:5px;font-size:13px;font-weight:600}
+.field input{width:100%;max-width:340px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)}
+.field input:disabled{opacity:.7}
+.field small{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+.msg{margin-left:6px;font-size:13px}.msg.ok{color:var(--up)}.msg.err{color:var(--down)}
+details.priv{margin-top:6px}details.priv summary{cursor:pointer;color:var(--accent);font-size:13px;font-weight:600}
+details.priv .privacy{margin-top:10px}
+dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-size:14px}dl.facts dt{color:var(--muted)}dl.facts dd{margin:0}
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c417fd53" defer></script></head><body><div class="shell"><header>
+<a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<script>/* Keep the header in the saved language before the first paint. */
+(function(){var lang;try{lang=localStorage.getItem("mlm-lang")}catch(e){}if(lang!=="tr")return;document.documentElement.lang="tr";document.querySelectorAll("header [data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=el.dataset.tr});document.querySelectorAll("header [data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",el.dataset.hrefTr)});var sel=document.getElementById("lang");if(sel)sel.value="tr"})();
+</script>
+<main class="shell">
+<div class="page-head"><h1 data-i18n="heading">Account</h1><p id="lead" data-i18n="lead">Sign in to save your profile and apply for membership.</p></div>
+<div class="notice" id="error" hidden></div>
+
+<section id="v-loading" class="card"><p class="muted" data-i18n="loading">Loading…</p></section>
+
+<section id="v-out" class="card" hidden>
+<h2 data-i18n="outTitle">Sign in</h2>
+<p class="small muted" data-i18n="outText">Members can see every timeframe of the analyses. Sign in with your Google account; we only receive your name, e-mail address and profile picture.</p>
+<p><a class="google-btn" id="google-in" href="/api/auth/google/start?return=%2Faccount"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span data-i18n="google">Continue with Google</span></a></p>
+</section>
+
+<section id="v-signup" class="card" hidden>
+<h2 data-i18n="signupTitle">Create your account</h2>
+<div class="who" id="signup-who"></div>
+<p class="small muted" data-i18n="signupText">Please read the privacy notice below. Your account is created only after you accept it.</p>
+<div class="privacy" id="privacy-signup"></div>
+<label class="consent"><input type="checkbox" id="consent"><span data-i18n="consent">I have read and accept the privacy notice.</span></label>
+<div class="row"><button class="btn" type="button" id="create" disabled data-i18n="create">Create account</button><a class="btn ghost" href="/" data-i18n="cancel">Cancel</a><span class="msg" id="create-msg"></span></div>
+</section>
+
+<section id="v-profile" hidden>
+<div class="card">
+<div class="who" id="profile-who"></div>
+<dl class="facts"><dt data-i18n="statusLabel">Status</dt><dd><span class="status" id="status"></span></dd><dt data-i18n="memberSince">Member since</dt><dd id="since"></dd></dl>
+<p class="small" id="status-text"></p>
+<p class="small" id="reject-note" hidden></p>
+</div>
+<div class="card" id="verify-card">
+<h2 data-i18n="verifyTitle">Membership verification</h2>
+<p class="small muted" data-i18n="codeLabel">Your verification code</p>
+<div class="code"><span id="code"></span><button class="copy" type="button" id="copy" data-i18n="copy">Copy</button></div>
+<ol class="steps"><li data-i18n="step1">Enter your X username below and save.</li><li data-i18n="step2">Send this code as a DM to @marketlevelmap on X, from that X account.</li><li data-i18n="step3">After a manual check your account is approved. The code is permanent and belongs only to your account.</li></ol>
+</div>
+<div class="card">
+<h2 data-i18n="namesTitle">Usernames</h2>
+<label class="field"><span data-i18n="xLabel">X username</span><input id="x" autocomplete="off" spellcheck="false" placeholder="@username" maxlength="16"><small id="x-help" data-i18n="xHelp">Cannot be changed after approval.</small></label>
+<label class="field"><span data-i18n="tgLabel">Telegram username</span><input id="tg" autocomplete="off" spellcheck="false" placeholder="@username" maxlength="33"><small data-i18n="tgHelp">Optional. Entered by hand for now.</small></label>
+<div class="row"><button class="btn" type="button" id="save" data-i18n="save">Save</button><span class="msg" id="save-msg"></span></div>
+</div>
+<div class="card">
+<h2 data-i18n="manageTitle">Account</h2>
+<div class="row"><button class="btn ghost" type="button" id="signout" data-i18n="signOut">Sign out</button><button class="btn danger" type="button" id="delete" data-i18n="delete">Delete account</button></div>
+<p class="small muted" data-i18n="deleteHelp">Deleting removes your account and its data. Your X username then stays reserved for 30 days.</p>
+<details class="priv"><summary data-i18n="privacyLink">Privacy notice</summary><div class="privacy" id="privacy-profile"></div></details>
+</div>
+</section>
+</main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+<script>
+var PRIVACY={
+en:'<h3>Who we are</h3><p>MarketLevelMap (marketlevelmap.com) is responsible for the personal data described here. You can reach us at marketlevelmap@gmail.com or through the @marketlevelmap account on X.</p>'+
+'<h3>What we collect</h3><ul><li>From your Google account: your Google account ID, e-mail address, name and profile picture address. We do not receive your Google password.</li><li>What you enter: your X username and Telegram username.</li><li>What we create: your verification code, your membership status (and a note if an application is rejected), and the dates your account was created, updated and approved.</li></ul>'+
+'<h3>Why</h3><p>To create and run your account, to verify membership by matching your X account to your account once, and to prevent the same person from opening several accounts. Nothing is used for advertising or sold.</p>'+
+'<h3>Legal basis</h3><p>Your explicit consent, given with the box below, and the performance of the membership you request (KVKK article 5; GDPR article 6(1)(a) and (b)).</p>'+
+'<h3>Where it is kept</h3><p>On Cloudflare (Cloudflare, Inc.) infrastructure, whose servers may be outside Türkiye; your consent covers this transfer. Sign-in is provided by Google.</p>'+
+'<h3>Cookies</h3><p>A sign-in cookie keeps you signed in for up to 30 days, and a short-lived cookie protects the sign-in step. These cookies are necessary for the account to work; no tracking or advertising cookies are used.</p>'+
+'<h3>How long</h3><p>Until you delete your account. After deletion only your X username is kept for 30 days, to stop it from being registered again right away; then it is removed too.</p>'+
+'<h3>Your rights</h3><p>You can see and correct your data on this page and delete your account at any time from here. Under KVKK article 11 (and the GDPR) you can also ask what data is processed, request correction or deletion, and object; write to us by e-mail or on X for these requests.</p><p><a href="/en/privacy/" target="_blank" rel="noopener">Full privacy policy</a></p>',
+tr:'<h3>Biz kimiz</h3><p>Burada anlatılan kişisel verilerden MarketLevelMap (marketlevelmap.com) sorumludur. Bize marketlevelmap@gmail.com adresinden ya da X üzerindeki @marketlevelmap hesabından ulaşabilirsiniz.</p>'+
+'<h3>Hangi verileri alıyoruz</h3><ul><li>Google hesabınızdan: Google hesap kimliğiniz, e-posta adresiniz, adınız ve profil fotoğrafınızın adresi. Google parolanız bize gelmez.</li><li>Sizin girdikleriniz: X kullanıcı adınız ve Telegram kullanıcı adınız.</li><li>Bizim oluşturduklarımız: doğrulama kodunuz, üyelik durumunuz (başvuru reddedilirse bir not) ve hesabınızın oluşturulma, güncellenme ve onaylanma tarihleri.</li></ul>'+
+'<h3>Neden</h3><p>Hesabınızı oluşturmak ve yürütmek, X hesabınızı hesabınızla bir kez eşleştirerek üyeliği doğrulamak ve aynı kişinin birden fazla hesap açmasını önlemek için. Veriler reklam için kullanılmaz ve satılmaz.</p>'+
+'<h3>Hukuki dayanak</h3><p>Aşağıdaki kutuyla verdiğiniz açık rıza ve talep ettiğiniz üyeliğin yürütülmesi (KVKK madde 5; GDPR madde 6(1)(a) ve (b)).</p>'+
+'<h3>Nerede saklanır</h3><p>Sunucuları Türkiye dışında olabilen Cloudflare (Cloudflare, Inc.) altyapısında; açık rızanız bu aktarımı da kapsar. Giriş hizmetini Google sağlar.</p>'+
+'<h3>Çerezler</h3><p>Bir oturum çerezi girişinizi en fazla 30 gün açık tutar; kısa ömürlü bir çerez de giriş adımını korur. Bu çerezler hesabın çalışması için gereklidir; izleme ya da reklam çerezi kullanılmaz.</p>'+
+'<h3>Ne kadar süre</h3><p>Hesabınızı silene kadar. Silmeden sonra yalnızca X kullanıcı adınız, hemen yeniden kaydedilmesini önlemek için 30 gün tutulur; ardından o da silinir.</p>'+
+'<h3>Haklarınız</h3><p>Verilerinizi bu sayfada görebilir ve düzeltebilir, hesabınızı istediğiniz zaman buradan silebilirsiniz. KVKK madde 11 (ve GDPR) kapsamında hangi verilerin işlendiğini öğrenme, düzeltme ya da silinmesini isteme ve itiraz etme haklarınız da vardır; bu talepler için bize e-posta ya da X üzerinden yazabilirsiniz.</p><p><a href="/tr/gizlilik/" target="_blank" rel="noopener">Gizlilik politikasının tamamı</a></p>'
+};
+var copy={
+en:{title:"Account",heading:"Account",lead:"Sign in to save your profile and apply for membership.",loading:"Loading…",outTitle:"Sign in",outText:"Members can see every timeframe of the analyses. Sign in with your Google account; we only receive your name, e-mail address and profile picture.",google:"Continue with Google",signupTitle:"Create your account",signupText:"Please read the privacy notice below. Your account is created only after you accept it.",consent:"I have read and accept the privacy notice.",create:"Create account",cancel:"Cancel",statusLabel:"Status",memberSince:"Member since",verifyTitle:"Membership verification",codeLabel:"Your verification code",copy:"Copy",copied:"Copied",step1:"Enter your X username below and save.",step2:"Send this code as a DM to @marketlevelmap on X, from that X account.",step3:"After a manual check your account is approved. The code is permanent and belongs only to your account.",namesTitle:"Usernames",xLabel:"X username",xHelp:"Cannot be changed after approval.",xLockedHelp:"Approved accounts cannot change their X username.",tgLabel:"Telegram username",tgHelp:"Optional. Entered by hand for now.",save:"Save",saved:"Saved",manageTitle:"Account",signOut:"Sign out",delete:"Delete account",deleteHelp:"Deleting removes your account and its data. Your X username then stays reserved for 30 days.",deleteConfirm:"Delete your account? This cannot be undone. Your X username will stay reserved for 30 days.",privacyLink:"Privacy notice",
+status:{registered:"Registered",pending:"Waiting for verification",approved:"Approved",rejected:"Rejected",suspended:"Suspended"},
+statusText:{registered:"Enter your X username and send your code to apply for membership.",pending:"Your application is waiting for a manual check. Make sure you have sent your code to @marketlevelmap on X.",approved:"Your membership is approved: every timeframe is open to you.",rejected:"Your application was not approved. You can check your X username and send your code again.",suspended:"Your membership is suspended. Write to @marketlevelmap on X for details."},
+rejectNote:"Reason:",errors:{state:"The sign-in step expired. Please try again.",cancelled:"Sign-in was cancelled.",code:"Sign-in could not be completed. Please try again.",token:"Google could not confirm the sign-in. Please try again.",x_invalid:"The X username can contain only letters, numbers and _ (up to 15).",telegram_invalid:"The Telegram username can contain only letters, numbers and _ (5 to 32).",x_taken:"This X username is already linked to another account.",x_locked:"Approved accounts cannot change their X username.",no_signup:"The sign-up step expired. Please sign in again.",server:"Something went wrong. Please try again.",signed_out:"Your session has ended. Please sign in again."}},
+tr:{title:"Hesap",heading:"Hesap",lead:"Profilinizi kaydetmek ve üyelik başvurusu yapmak için giriş yapın.",loading:"Yükleniyor…",outTitle:"Giriş yap",outText:"Üyeler analizlerin tüm zaman dilimlerini görebilir. Google hesabınızla giriş yapın; bize yalnızca adınız, e-posta adresiniz ve profil fotoğrafınız gelir.",google:"Google ile devam et",signupTitle:"Hesabınızı oluşturun",signupText:"Lütfen aşağıdaki gizlilik metnini okuyun. Hesabınız ancak onu kabul ettikten sonra oluşturulur.",consent:"Gizlilik metnini okudum ve kabul ediyorum.",create:"Hesabı oluştur",cancel:"Vazgeç",statusLabel:"Durum",memberSince:"Kayıt tarihi",verifyTitle:"Üyelik doğrulaması",codeLabel:"Doğrulama kodunuz",copy:"Kopyala",copied:"Kopyalandı",step1:"Aşağıya X kullanıcı adınızı girin ve kaydedin.",step2:"Bu kodu o X hesabından, X'teki @marketlevelmap hesabına DM olarak gönderin.",step3:"Elle yapılan kontrolden sonra hesabınız onaylanır. Kod süresizdir ve yalnızca sizin hesabınıza aittir.",namesTitle:"Kullanıcı adları",xLabel:"X kullanıcı adı",xHelp:"Onaydan sonra değiştirilemez.",xLockedHelp:"Onaylı hesaplar X kullanıcı adını değiştiremez.",tgLabel:"Telegram kullanıcı adı",tgHelp:"İsteğe bağlı. Şimdilik elle girilir.",save:"Kaydet",saved:"Kaydedildi",manageTitle:"Hesap",signOut:"Çıkış yap",delete:"Hesabı sil",deleteHelp:"Silme işlemi hesabınızı ve verilerini kaldırır. X kullanıcı adınız sonrasında 30 gün ayrılmış kalır.",deleteConfirm:"Hesabınız silinsin mi? Bu işlem geri alınamaz. X kullanıcı adınız 30 gün ayrılmış kalır.",privacyLink:"Gizlilik metni",
+status:{registered:"Kayıtlı",pending:"Doğrulama bekliyor",approved:"Onaylı",rejected:"Reddedildi",suspended:"Askıda"},
+statusText:{registered:"Üyelik başvurusu için X kullanıcı adınızı girin ve kodunuzu gönderin.",pending:"Başvurunuz elle kontrol edilmeyi bekliyor. Kodunuzu X'te @marketlevelmap hesabına gönderdiğinizden emin olun.",approved:"Üyeliğiniz onaylandı: tüm zaman dilimleri size açık.",rejected:"Başvurunuz onaylanmadı. X kullanıcı adınızı kontrol edip kodunuzu yeniden gönderebilirsiniz.",suspended:"Üyeliğiniz askıya alındı. Ayrıntı için X'te @marketlevelmap hesabına yazın."},
+rejectNote:"Neden:",errors:{state:"Giriş adımının süresi doldu. Lütfen yeniden deneyin.",cancelled:"Giriş iptal edildi.",code:"Giriş tamamlanamadı. Lütfen yeniden deneyin.",token:"Google girişi doğrulayamadı. Lütfen yeniden deneyin.",x_invalid:"X kullanıcı adı yalnızca harf, rakam ve _ içerebilir (en fazla 15).",telegram_invalid:"Telegram kullanıcı adı yalnızca harf, rakam ve _ içerebilir (5–32).",x_taken:"Bu X kullanıcı adı başka bir hesaba bağlı.",x_locked:"Onaylı hesaplar X kullanıcı adını değiştiremez.",no_signup:"Kayıt adımının süresi doldu. Lütfen yeniden giriş yapın.",server:"Bir sorun oluştu. Lütfen yeniden deneyin.",signed_out:"Oturumunuz sona erdi. Lütfen yeniden giriş yapın."}}
+};
+var state={user:null,signup:null};
+function lang(){return document.getElementById("lang").value==="tr"?"tr":"en"}
+function words(){return copy[lang()]}
+function $(id){return document.getElementById(id)}
+function show(view){["v-loading","v-out","v-signup","v-profile"].forEach(function(v){$(v).hidden=v!==view})}
+function who(el,p){el.textContent="";var pic;if(p.picture){pic=document.createElement("img");pic.src=p.picture;pic.alt="";pic.referrerPolicy="no-referrer"}else{pic=document.createElement("div");pic.className="initial";pic.textContent=(p.name||p.email||"?").charAt(0).toUpperCase()}var d=document.createElement("div"),b=document.createElement("b"),s=document.createElement("span");b.textContent=p.name||p.email;s.textContent=p.email;d.appendChild(b);d.appendChild(s);el.appendChild(pic);el.appendChild(d)}
+function showError(code){var e=$("error"),w=words();if(!code){e.hidden=true;return}e.textContent=w.errors[code]||w.errors.server;e.hidden=false}
+function renderProfile(){
+  var u=state.user,w=words();if(!u)return;
+  who($("profile-who"),u);
+  var st=$("status");st.className="status "+u.status;st.textContent=w.status[u.status]||u.status;
+  $("since").textContent=u.createdAt?new Date(u.createdAt).toLocaleDateString(lang()==="tr"?"tr-TR":"en-GB",{day:"numeric",month:"long",year:"numeric"}):"";
+  $("status-text").textContent=w.statusText[u.status]||"";
+  var rn=$("reject-note");rn.hidden=!((u.status==="rejected"||u.status==="suspended")&&u.rejectNote);if(!rn.hidden)rn.textContent=w.rejectNote+" "+u.rejectNote;
+  $("code").textContent=u.code;
+  $("verify-card").hidden=u.status==="approved";
+  if(document.activeElement!==$("x"))$("x").value=u.xHandle;
+  if(document.activeElement!==$("tg"))$("tg").value=u.telegramHandle;
+  $("x").disabled=u.xLocked;$("x-help").textContent=u.xLocked?w.xLockedHelp:w.xHelp;
+}
+function applyLanguage(value){
+  var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){if(typeof t[el.dataset.i18n]==="string")el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+  document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
+  $("privacy-signup").innerHTML=PRIVACY[value];$("privacy-profile").innerHTML=PRIVACY[value];
+  renderProfile();
+  try{localStorage.setItem("mlm-lang",value)}catch(e){}
+}
+var langSel=$("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
+langSel.value=savedLang==="tr"?"tr":"en";applyLanguage(langSel.value);langSel.addEventListener("change",function(){applyLanguage(this.value)});
+var toggle=$("theme-toggle");
+function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+
+function post(path,body){return fetch(path,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})}).then(function(r){return r.json().catch(function(){return{error:"server"}}).then(function(d){d._status=r.status;return d})})}
+function load(){
+  fetch("/api/auth/me",{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+    state.user=d.user;state.signup=d.signup;
+    if(d.user){show("v-profile");renderProfile();$("lead").hidden=true}
+    else if(d.signup){who($("signup-who"),d.signup);show("v-signup")}
+    else{show("v-out");if(new URLSearchParams(location.search).get("signup"))showError("no_signup")}
+  }).catch(function(){show("v-out");showError("server")});
+}
+var params=new URLSearchParams(location.search);if(params.get("error"))showError(params.get("error"));
+$("consent").addEventListener("change",function(){$("create").disabled=!this.checked});
+$("create").addEventListener("click",function(){
+  var btn=this;btn.disabled=true;
+  post("/api/auth/register",{consent:$("consent").checked}).then(function(d){
+    if(d.user){var back=d.returnTo&&d.returnTo!=="/"&&d.returnTo.indexOf("/account")!==0?d.returnTo:"/account";location.replace(back)}
+    else{showError(d.error);btn.disabled=false}
+  });
+});
+$("save").addEventListener("click",function(){
+  var msg=$("save-msg"),w=words(),body={telegramHandle:$("tg").value};if(!state.user.xLocked)body.xHandle=$("x").value;
+  msg.className="msg";msg.textContent="";
+  post("/api/auth/profile",body).then(function(d){
+    if(d.user){state.user=d.user;renderProfile();msg.className="msg ok";msg.textContent=w.saved}
+    else{msg.className="msg err";msg.textContent=w.errors[d.error]||w.errors.server}
+  });
+});
+$("copy").addEventListener("click",function(){var b=this,w=words();try{navigator.clipboard.writeText(state.user.code).then(function(){b.textContent=w.copied;setTimeout(function(){b.textContent=w.copy},1500)})}catch(e){}});
+$("signout").addEventListener("click",function(){post("/api/auth/logout").then(function(){location.replace("/")})});
+$("delete").addEventListener("click",function(){if(!confirm(words().deleteConfirm))return;post("/api/auth/delete").then(function(d){if(d.ok)location.replace("/");else showError(d.error)})});
+$("google-in").setAttribute("href","/api/auth/google/start?return=%2Faccount");
+load();
+</script>
+</body></html>

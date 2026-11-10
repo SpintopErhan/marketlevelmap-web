@@ -1,0 +1,195 @@
+<!doctype html>
+<!-- Weekly outlook (README "Weekly outlook"). Data: /api/weekly. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap"><script src="/assets/pwa.js?v=b0dd56f5" defer></script><meta name="color-scheme" content="dark light"><title>MarketLevelMap — Weekly outlook</title><link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png"><link rel="stylesheet" href="assets/site.css?v=c0028433"><style>*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.45}
+button,select,input{font:inherit}button{color:inherit}
+main{padding:0 0 70px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:34px 0 18px}
+.page-head h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.5px}
+.meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:8px 0 0;color:var(--muted);font-size:13px}
+.filter-btn{min-height:36px;padding:7px 16px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:13px;font-weight:600;cursor:pointer}
+.filter-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}.filter-btn:disabled{opacity:.5;cursor:default}
+.wk-status{padding:40px 0;color:var(--muted);text-align:center}.wk-status[hidden]{display:none}
+.wk{display:grid;grid-template-columns:340px minmax(0,1fr);gap:24px;align-items:start}.wk[hidden]{display:none}
+.wk h2{margin:0 0 10px;font-size:15px;font-weight:600;color:var(--muted)}.wk-sub{font-weight:400}
+.wk-heat{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.wk-tile{display:flex;flex-direction:column;justify-content:space-between;min-height:104px;padding:10px 14px;border-radius:10px;color:var(--fg);text-decoration:none}
+.wk-tile.big{grid-column:span 2;min-height:118px}
+.wk-tile b{font-size:16px}.wk-tile span{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}.wk-tile.big span{font-size:30px}
+.wk-tile:hover{outline:2px solid var(--accent);outline-offset:-2px}
+.wk-panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 18px}
+.wk-row{display:grid;grid-template-columns:64px repeat(3,minmax(0,1fr)) minmax(170px,1.15fr);gap:18px;align-items:center;min-height:64px;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.wk-row:last-child{border-bottom:0}
+.wk-row>:nth-child(n+2){align-self:stretch;display:grid;align-content:center;border-left:1px solid var(--line);padding-left:14px}
+.wk-hd>span{display:grid;align-content:center}a.wk-row:hover b{color:var(--accent)}
+.wk-hd{min-height:44px;color:var(--muted);font-size:13px;font-weight:600}.wk-hd span+span{text-align:center}
+.wk-row>b{font-size:15px}
+.wk-cell{display:grid;grid-template-columns:minmax(0,130px) 58px;gap:8px;align-items:center;justify-content:center}
+.wk-cell span{font-size:13px;font-variant-numeric:tabular-nums;text-align:right}
+.wk-track{position:relative;height:14px}.wk-zero{position:absolute;top:-6px;bottom:-6px;width:1px;background:var(--muted);opacity:.55}
+.wk-bar{position:absolute;top:0;height:14px;border-radius:3px}.wk-bar.pos{background:var(--up)}.wk-bar.neg{background:var(--down)}.wk-bar.ath{background:#7d8b96}
+.wk-al{display:grid;gap:2px;justify-items:center;text-align:center}.wk-al .tfs{font-size:14px;font-weight:600;white-space:nowrap}.wk-al .tfs i{font-style:normal;margin-right:5px}.wk-al .u{color:var(--up)}.wk-al .d{color:var(--down)}.wk-al .n{color:var(--muted)}
+.wk-al small{color:var(--muted);font-size:12px}
+.wk-lbl{display:none;color:var(--muted);font-size:11px}.wk-cell .wk-lbl{text-align:left}
+.table-note{margin:14px 2px 0;color:var(--muted);font-size:12px;max-width:820px}
+@media(max-width:1000px){.wk{grid-template-columns:minmax(0,1fr)}.wk-heat{grid-template-columns:repeat(3,1fr)}.wk-tile.big{grid-column:span 3}}
+@media(max-width:640px){
+  .wk-heat{grid-template-columns:repeat(2,1fr)}.wk-tile.big{grid-column:span 2}.wk-tile{min-height:84px}
+  .wk-hd{display:none}
+  .wk-row{grid-template-columns:1fr 1fr;gap:8px 14px;padding:12px 0}
+  .wk-row>b{grid-column:1/-1;font-size:16px}.wk-row>:nth-child(n+2){border-left:0;padding-left:0}
+  .wk-cell{grid-template-columns:1fr auto;row-gap:4px}.wk-lbl{display:block;grid-column:1/-1}
+  .wk-al{grid-column:1/-1;justify-items:start;text-align:left}.wk-cell{justify-content:stretch;grid-template-columns:1fr auto}
+}
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}</style><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c417fd53" defer></script><script src="assets/market-ui.js?v=d341fb45"></script></head><body><div class="shell"><header>
+<a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg" alt="MarketLevelMap"></picture></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<script>/* Keep the header in the saved language before the first paint. */
+(function(){var lang;try{lang=localStorage.getItem("mlm-lang")}catch(e){}if(lang!=="tr")return;document.documentElement.lang="tr";document.querySelectorAll("header [data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=el.dataset.tr});document.querySelectorAll("header [data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",el.dataset.hrefTr)});var sel=document.getElementById("lang");if(sel)sel.value="tr"})();
+</script>
+<main class="shell">
+<div class="page-head"><div><h1 data-i18n="heading">Weekly outlook</h1><p class="meta"><span id="wk-range"></span><span>·</span><span id="wk-week"></span><span>·</span><span data-i18n="asOf">weekly close</span></p></div>
+<div class="wk-actions"><button class="filter-btn" type="button" id="wk-download" disabled data-i18n="download">Download image</button></div></div>
+<div id="wk-status" class="wk-status" data-i18n="loading">Loading the weekly outlook…</div>
+<div class="wk" id="wk" hidden>
+<section class="wk-heat-wrap" aria-labelledby="wk-h-last"><h2 id="wk-h-last"><span data-i18n="lastWeek">Weekly change</span></h2><div class="wk-heat" id="wk-heat"></div></section>
+<section class="wk-stand-wrap" aria-labelledby="wk-h-stand"><h2 id="wk-h-stand" data-i18n="stand">Levels and structure</h2>
+<div class="wk-panel"><div class="wk-row wk-hd"><span data-i18n="asset">Asset</span><span data-i18n="mo">Monthly open</span><span data-i18n="yo">Yearly open</span><span data-i18n="ath">All-time high</span><span data-i18n="align">Structure direction</span></div><div id="wk-rows"></div></div></section>
+</div>
+<p class="table-note" data-i18n="note">Weekly change is open to close of the weekly candle. Distances are measured from the weekly close. Structure direction is the trend of the latest 1W, 1D and 4H Price Action analyses.</p>
+</main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap</p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+<script>
+var copy={
+  en:{title:"Weekly outlook",heading:"Weekly outlook",asOf:"weekly close",download:"Download image",loading:"Loading the weekly outlook…",failed:"The weekly outlook could not be loaded. Please try again later.",lastWeek:"Weekly change",stand:"Levels and structure",asset:"Asset",mo:"Monthly open",yo:"Yearly open",ath:"All-time high",align:"Structure direction",week:"Week {n}",aligned:"Aligned {dir}",main:"Main {dir} · 4H against",conflict:"Conflict",unknown:"Not determined",note:"Weekly change is open to close of the weekly candle. Distances are measured from the weekly close. Structure direction is the trend of the latest 1W, 1D and 4H Price Action analyses.",imgTitle:"Weekly outlook",imgSub:"How {n} assets closed the week and where they stand at the weekly close",imgFoot:"marketlevelmap.com · Charts, not signals"},
+  tr:{title:"Haftanın görünümü",heading:"Haftanın görünümü",asOf:"haftalık kapanış",download:"Görseli indir",loading:"Haftanın görünümü yükleniyor…",failed:"Haftanın görünümü yüklenemedi. Lütfen daha sonra tekrar deneyin.",lastWeek:"Haftalık değişim",stand:"Seviyeler ve yapı",asset:"Varlık",mo:"Aylık açılış",yo:"Yıllık açılış",ath:"Tüm zamanların zirvesi",align:"Yapı yönü",week:"{n}. hafta",aligned:"Uyumlu {dir}",main:"Ana yön {dir} · 4H ters",conflict:"Çelişkili",unknown:"Belirsiz",note:"Haftalık değişim, haftalık mumun açılışından kapanışına değişimdir. Uzaklıklar haftalık kapanışa göre ölçülür. Yapı yönü, en güncel 1W, 1D ve 4H Price Action analizlerindeki trendin yönüdür.",imgTitle:"Haftanın görünümü",imgSub:"{n} varlık haftayı nasıl kapattı ve haftalık kapanışta nerede duruyor",imgFoot:"marketlevelmap.com · Sinyal değil, harita"}
+};
+function words(){return copy[document.getElementById("lang").value]||copy.en}
+function applyLanguage(value){
+  var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){if(t[el.dataset.i18n])el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+  document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
+  try{localStorage.setItem("mlm-lang",value)}catch(e){}
+}
+var lang=document.getElementById("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
+lang.value=savedLang==="tr"?"tr":"en";applyLanguage(lang.value);lang.addEventListener("change",function(){applyLanguage(this.value)});
+var toggle=document.getElementById("theme-toggle");
+function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+</script>
+<script>
+/* Weekly outlook (README "Weekly outlook"): /api/weekly gives one snapshot per week. The page draws it twice:
+   as responsive HTML, and as a 1600×900 SVG that "Download image" turns into a PNG for X. */
+(function(){
+  var data=null,DAY=86400000,el=function(id){return document.getElementById(id)};
+  var esc=MarketUI.escape;
+  function sign(v){return v>0?"+":v<0?"−":""}
+  function pctText(v){if(v==null)return"–";var n=Math.abs(v).toLocaleString(MarketUI.locale(),{minimumFractionDigits:1,maximumFractionDigits:1});return MarketUI.lang()==="tr"?sign(v)+"%"+n:sign(v)+n+"%"}
+  function tileFill(v){if(v==null)return"var(--raise)";var t=Math.min(Math.abs(v)/8,1),a=(0.2+0.6*t).toFixed(2);return v>=0?"rgba(60,207,145,"+a+")":"rgba(239,107,115,"+a+")"}
+  function dayText(ms,opts){return new Date(ms).toLocaleDateString(MarketUI.locale(),Object.assign({timeZone:"UTC"},opts))}
+  // "9–15 Kasım" / "Nov 9–15"; across two months "27 Eki – 2 Kas" / "Oct 27 – Nov 2".
+  function rangeText(start){var end=start+6*DAY,tr=MarketUI.lang()==="tr",d=function(ms){return new Date(ms).getUTCDate()},m=function(ms,f){return dayText(ms,{month:f})};
+    if(new Date(start).getUTCMonth()===new Date(end).getUTCMonth())return tr?d(start)+"–"+d(end)+" "+m(start,"long"):m(start,"short")+" "+d(start)+"–"+d(end);
+    return tr?d(start)+" "+m(start,"short")+" – "+d(end)+" "+m(end,"short"):m(start,"short")+" "+d(start)+" – "+m(end,"short")+" "+d(end)}
+  // Same rule as the analysis page's "at a glance" alignment (structure → bias → detail).
+  function alignment(a){
+    var w=words(),s=[a["1w"],a["1d"],a["4h"]],arrow=function(x){return x==="bullish"?"↑":x==="bearish"?"↓":"–"};
+    var cls=function(x){return x==="bullish"?"u":x==="bearish"?"d":"n"};
+    var label=!s.every(function(x){return x==="bullish"||x==="bearish"})?w.unknown:(s[0]===s[1]&&s[1]===s[2])?w.aligned.replace("{dir}",arrow(s[0])):s[0]===s[1]?w.main.replace("{dir}",arrow(s[0])):w.conflict;
+    return{parts:[["1W",s[0]],["1D",s[1]],["4H",s[2]]].map(function(p){return{tf:p[0],arrow:arrow(p[1]),cls:cls(p[1])}}),label:label};
+  }
+  // Scales shared by every row so the bars compare across assets (rounded up to a tidy step).
+  function scaleOf(list,key,step,min){var m=min;list.forEach(function(a){if(a[key]!=null)m=Math.max(m,Math.abs(a[key]))});return Math.ceil(m/step)*step}
+  function barGeom(v,lo,hi){var x0=(0-lo)/(hi-lo),x=Math.max(0,Math.min(1,(v-lo)/(hi-lo)));return{left:Math.min(x,x0),width:Math.max(Math.abs(x-x0),0.012),zero:x0}}
+  // ISO 8601 week number of the closed week (its Monday, ms UTC).
+  function isoWeek(ms){var d=new Date(ms+3*DAY),y=d.getUTCFullYear(),jan4=Date.UTC(y,0,4),mon1=jan4-((new Date(jan4).getUTCDay()+6)%7)*DAY;return 1+Math.floor((ms-mon1)/(7*DAY))}
+  function assets(){return data.assets.slice().sort(function(a,b){return MarketUI.byPopularity(a.symbol,b.symbol)})}
+  function scales(list){return{mo:scaleOf(list,"vsMonthlyOpen",5,5),yo:scaleOf(list,"vsYearlyOpen",10,10),ath:scaleOf(list,"vsAth",10,10)}}
+  function href(sym){return"bulletin.html?asset="+encodeURIComponent(sym)+"&tf=1d"}
+
+  function render(){
+    var w=words();
+    if(!data){return}
+    var list=assets(),sc=scales(list),start=Date.parse(data.weekStart);
+    el("wk-range").textContent=rangeText(start-7*DAY);el("wk-week").textContent=w.week.replace("{n}",isoWeek(start-7*DAY));
+    el("wk-heat").innerHTML=list.map(function(a,i){var v=a.lastWeek&&a.lastWeek.change;
+      return'<a class="wk-tile'+(i===0?" big":"")+'" href="'+href(a.symbol)+'" style="background:'+tileFill(v)+'"><b>'+esc(MarketUI.baseOf(a.symbol))+'</b><span>'+pctText(v)+"</span></a>"}).join("");
+    function cell(v,lo,hi,label,cls){var g=v==null?null:barGeom(v,lo,hi);
+      return'<div class="wk-cell"><span class="wk-lbl">'+label+'</span><div class="wk-track"><i class="wk-zero" style="left:'+((g?g.zero:(0-lo)/(hi-lo))*100)+'%"></i>'+(g?'<i class="wk-bar '+(cls||(v>=0?"pos":"neg"))+'" style="left:'+g.left*100+"%;width:"+g.width*100+'%"></i>':"")+"</div><span>"+pctText(v)+"</span></div>"}
+    el("wk-rows").innerHTML=list.map(function(a){var al=alignment(a.alignment||{});
+      return'<a class="wk-row" href="'+href(a.symbol)+'"><b>'+esc(MarketUI.baseOf(a.symbol))+"</b>"+cell(a.vsMonthlyOpen,-sc.mo,sc.mo,w.mo)+cell(a.vsYearlyOpen,-sc.yo,sc.yo,w.yo)+cell(a.vsAth,-sc.ath,0,w.ath,"ath")+
+        '<div class="wk-al"><span class="wk-lbl">'+w.align+'</span><span class="tfs">'+al.parts.map(function(p){return p.tf+' <i class="'+p.cls+'">'+p.arrow+"</i>"}).join(" ")+"</span><small>"+esc(al.label)+"</small></div></a>"}).join("");
+  }
+
+  // ---- 1600×900 image (always the dark look, like the site's share image) ----
+  var logoUri=null;
+  function loadLogo(){if(logoUri)return Promise.resolve(logoUri);return fetch("/assets/MarketLevelMap-mark-reverse.svg").then(function(r){return r.text()}).then(function(t){logoUri="data:image/svg+xml;base64,"+btoa(unescape(encodeURIComponent(t)));return logoUri})}
+  function svgText(x,y,text,size,fill,weight,anchor){return'<text x="'+x+'" y="'+y+'" font-size="'+size+'" fill="'+fill+'"'+(weight?' font-weight="'+weight+'"':"")+(anchor?' text-anchor="'+anchor+'"':"")+">"+esc(text)+"</text>"}
+  function buildSvg(logo){
+    var w=words(),list=assets(),sc=scales(list),start=Date.parse(data.weekStart),C={bg:"#10161d",fg:"#edf2f4",muted:"#9aaab5",line:"#28343d",panel:"#151e27",up:"#3ccf91",down:"#ef6b73",ath:"#7d8b96"};
+    var o=['<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="Inter,Segoe UI,Arial,sans-serif">','<rect width="1600" height="900" fill="'+C.bg+'"/>'];
+    o.push(svgText(64,94,w.imgTitle+" · "+rangeText(start-7*DAY),42,C.fg,700));
+    o.push('<rect x="1406" y="58" width="130" height="44" rx="22" fill="none" stroke="'+C.line+'" stroke-width="2"/>');o.push(svgText(1471,87,w.week.replace("{n}",isoWeek(start-7*DAY)),19,C.fg,600,"middle"));
+    o.push(svgText(64,128,w.imgSub.replace("{n}",list.length),19,C.muted));
+    // Heatmap: BTC across the top, the rest two per row.
+    var hx=64,hy=176,hw=380,hh=600,gap=6;o.push(svgText(hx,hy-14,w.lastWeek,19,C.muted,600));
+    var rows=Math.ceil((list.length-1)/2)+1,th=(hh-gap*(rows-1))/rows,tw=(hw-gap)/2;
+    list.forEach(function(a,i){var v=a.lastWeek&&a.lastWeek.change,x,y,ww;
+      if(i===0){x=hx;y=hy;ww=hw}else{var k=i-1;x=hx+(k%2)*(tw+gap);y=hy+(1+Math.floor(k/2))*(th+gap);ww=tw}
+      var t=v==null?0:Math.min(Math.abs(v)/8,1),fill=v==null?C.panel:v>=0?C.up:C.down,op=v==null?1:(0.2+0.6*t);
+      o.push('<rect x="'+x+'" y="'+y+'" width="'+ww+'" height="'+th+'" rx="10" fill="'+fill+'" fill-opacity="'+op.toFixed(2)+'"/>');
+      o.push(svgText(x+16,y+30,MarketUI.baseOf(a.symbol),21,C.fg,700));
+      o.push(svgText(x+16,y+th-16,pctText(v),i===0?34:28,C.fg,700));
+    });
+    // Where they stand
+    var px=472,py=176,pw=1064,rh=Math.min(74,(600-48)/list.length),ph=48+rh*list.length+8;
+    o.push(svgText(px,py-14,w.stand,19,C.muted,600));
+    o.push('<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="14" fill="'+C.panel+'" stroke="'+C.line+'"/>');
+    // Four equal columns after the asset name; each header sits centred over its bar + value group.
+    var colW=(pw-22-112)/4,mid=function(i){return px+112+colW*i+colW/2},bw=128,grp=bw+8+64,cols=[px+22].concat([0,1,2].map(function(i){return mid(i)-grp/2}));
+    o.push(svgText(px+22,py+30,w.asset,15,C.muted,600));
+    [w.mo,w.yo,w.ath,w.align].forEach(function(t,i){o.push(svgText(mid(i),py+30,t,15,C.muted,600,"middle"))});
+    o.push('<line x1="'+(px+22)+'" x2="'+(px+pw-22)+'" y1="'+(py+46)+'" y2="'+(py+46)+'" stroke="'+C.line+'"/>');
+    // Column dividers: between the asset name and each measure, top to bottom of the panel.
+    [0,1,2,3].forEach(function(i){var x=px+112+colW*i-6;o.push('<line x1="'+x+'" x2="'+x+'" y1="'+(py+14)+'" y2="'+(py+ph-14)+'" stroke="'+C.line+'" stroke-width="1.5"/>')});
+    list.forEach(function(a,i){var y=py+48+i*rh,cy=y+rh/2,al=alignment(a.alignment||{});
+      if(i)o.push('<line x1="'+(px+22)+'" x2="'+(px+pw-22)+'" y1="'+y+'" y2="'+y+'" stroke="'+C.line+'"/>');
+      o.push(svgText(cols[0],cy+7,MarketUI.baseOf(a.symbol),19,C.fg,700));
+      [[a.vsMonthlyOpen,-sc.mo,sc.mo],[a.vsYearlyOpen,-sc.yo,sc.yo],[a.vsAth,-sc.ath,0,true]].forEach(function(b,j){
+        var x=cols[j+1],v=b[0],g=v==null?null:barGeom(v,b[1],b[2]),z=x+((0-b[1])/(b[2]-b[1]))*bw;
+        o.push('<line x1="'+z+'" x2="'+z+'" y1="'+(cy-15)+'" y2="'+(cy+15)+'" stroke="'+C.muted+'" stroke-opacity=".55"/>');
+        if(g)o.push('<rect x="'+(x+g.left*bw)+'" y="'+(cy-9)+'" width="'+(g.width*bw)+'" height="18" rx="4" fill="'+(b[3]?C.ath:v>=0?C.up:C.down)+'"/>');
+        o.push(svgText(x+grp,cy+6,pctText(v),16,C.fg,null,"end"));
+      });
+      var tx=mid(3);o.push('<text x="'+tx+'" y="'+(cy-3)+'" text-anchor="middle" font-size="17" font-weight="600" fill="'+C.fg+'">'+al.parts.map(function(p){return esc(p.tf)+' <tspan fill="'+(p.cls==="u"?C.up:p.cls==="d"?C.down:C.muted)+'">'+p.arrow+"</tspan>"}).join("  ")+"</text>");
+      o.push(svgText(tx,cy+19,al.label,14,C.muted,null,"middle"));
+    });
+    o.push('<image href="'+logo+'" x="64" y="818" height="44" width="300" preserveAspectRatio="xMinYMid meet"/>');
+    o.push(svgText(1536,846,w.imgFoot,17,C.muted,null,"end"));
+    o.push("</svg>");return o.join("");
+  }
+  function download(){
+    if(!data)return;var btn=el("wk-download");btn.disabled=true;
+    loadLogo().then(function(logo){return new Promise(function(resolve,reject){
+      var img=new Image(),url=URL.createObjectURL(new Blob([buildSvg(logo)],{type:"image/svg+xml"}));
+      img.onload=function(){var c=document.createElement("canvas");c.width=1600;c.height=900;c.getContext("2d").drawImage(img,0,0);URL.revokeObjectURL(url);c.toBlob(function(b){b?resolve(b):reject(new Error("png"))},"image/png")};
+      img.onerror=function(){URL.revokeObjectURL(url);reject(new Error("svg"))};img.src=url;
+    })}).then(function(blob){
+      var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="marketlevelmap-weekly-"+data.weekStart.slice(0,10)+".png";document.body.appendChild(a);a.click();
+      setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
+    }).catch(function(){}).then(function(){btn.disabled=false});
+  }
+  window.MLMWeekly={svg:function(){return loadLogo().then(buildSvg)}};
+  el("wk-download").addEventListener("click",download);
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  fetch("/api/weekly").then(function(r){return r.ok?r.json():null}).then(function(d){
+    if(!d||!Array.isArray(d.assets)||!d.assets.length)throw new Error("empty");
+    data=d;el("wk-status").hidden=true;el("wk").hidden=false;el("wk-download").disabled=false;render();
+  }).catch(function(){el("wk-status").textContent=words().failed;el("wk-status").dataset.i18n="failed"});
+})();
+</script>
+
+</body></html>
