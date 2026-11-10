@@ -427,8 +427,8 @@ var LiveChart = (function () {
       "background:rgba(14,16,22,.94);color:#eef1f7;font:600 12px " + WATERMARK_FONT + ";white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.35)";
     container.appendChild(zoneTip);
     var ZONE_NAMES = {
-      en: { resistance: "Resistance", support: "Support", equilibrium: "Equilibrium", rh: "RH · Range high", eq: "EQ · Equilibrium", rl: "RL · Range low", fvg: "FVG", lastValid: "Last valid range" },
-      tr: { resistance: "Direnç", support: "Destek", equilibrium: "Denge", rh: "RH · Aralık tepesi", eq: "EQ · Denge", rl: "RL · Aralık dibi", fvg: "FVG", lastValid: "Son geçerli aralık" }
+      en: { rh: "RH", eq: "EQ", rl: "RL", fvg: "FVG", lastValid: "Last valid range" },
+      tr: { rh: "RH", eq: "EQ", rl: "RL", fvg: "FVG", lastValid: "Son geçerli aralık" }
     };
     function zoneName(zone) {
       var n = ZONE_NAMES[document.documentElement.lang === "tr" ? "tr" : "en"];
@@ -437,7 +437,7 @@ var LiveChart = (function () {
       if (zone.layer === "PA_FIB") return zone.label ? "Fibonacci " + zone.label : "Fibonacci";
       if (zone.layer === "PA_LAST_VALID") return n.lastValid;
       if (rangeView) return zone.type === "resistance" ? n.rh : zone.type === "support" ? n.rl : n.eq;
-      return n[zone.type] || zone.label || "";
+      return ""; // Critical Zones: the range alone (the colour already says support or resistance)
     }
     function fmtPrice(v) { var d = decimals == null ? 2 : decimals; return Number(v).toLocaleString(pageLocale(), { minimumFractionDigits: d, maximumFractionDigits: d }); }
     function showZoneTip(param) {
@@ -456,7 +456,8 @@ var LiveChart = (function () {
         if (!hit || hi - lo < hit.hi - hit.lo) hit = { z: z, lo: lo, hi: hi };
       });
       if (!hit) { zoneTip.style.display = "none"; return; }
-      zoneTip.textContent = zoneName(hit.z) + "  " + fmtPrice(hit.lo) + " – " + fmtPrice(hit.hi);
+      var name = zoneName(hit.z);
+      zoneTip.textContent = (name ? name + "  " : "") + fmtPrice(hit.lo) + " – " + fmtPrice(hit.hi);
       zoneTip.style.display = "block";
       var w = zoneTip.offsetWidth, h = zoneTip.offsetHeight, maxX = container.clientWidth - w - 4;
       var x = Math.max(4, Math.min(param.point.x + 14, maxX)), y = param.point.y - h - 10;
@@ -465,7 +466,10 @@ var LiveChart = (function () {
     }
     chart.subscribeCrosshairMove(showZoneTip);
     chart.subscribeClick(showZoneTip); // phones: a tap shows the band under the finger
-    container.addEventListener("mouseleave", function () { zoneTip.style.display = "none"; });
+    function hideZoneTip() { zoneTip.style.display = "none"; }
+    container.addEventListener("mouseleave", hideZoneTip);
+    // A tapped tooltip must not outlive what it described: scrolling, zooming or new zones / candles clear it.
+    chart.timeScale().subscribeVisibleLogicalRangeChange(function () { if (zoneTip.style.display !== "none") hideZoneTip(); });
     var sweepMarkers = LC.createSeriesMarkers ? LC.createSeriesMarkers(candles, []) : null;
     var liveLine = null, loadingOlder = false, destroyed = false, generation = 0;
     var forming = null, liveStatus = "pending", socket = null, retryTimer = null, socketFailures = 0;
@@ -767,6 +771,7 @@ var LiveChart = (function () {
         return { open: new Date(last[0] * 1000).toISOString(), close: new Date((last[0] + STEP[state.tf]) * 1000).toISOString(), timeframe: state.tf };
       },
       setZones: function (list, priceDecimals) {
+        hideZoneTip();
         baseZones = (list || []).filter(function (z) { return z && z.drawn !== false && Number(z.low) > 0 && Number(z.high) > 0; });
         if (priceDecimals != null && priceDecimals !== decimals) { decimals = priceDecimals; applyPrecision(); }
         zoneList = baseZones.concat(fvgZones, structureZones, lastValidZones, fibZones);
@@ -849,6 +854,7 @@ var LiveChart = (function () {
       // Change timeframe without tearing the chart down. 1H in particular is a lot of candles;
       // rebuilding the widget blanked the panel and redrew it.
       reload: function (nextTf) {
+        hideZoneTip();
         nextTf = String(nextTf || "").toLowerCase();
         if (destroyed || !STEP[nextTf]) return Promise.reject(new Error("unsupported timeframe " + nextTf));
         if (nextTf === state.tf) return Promise.resolve();
