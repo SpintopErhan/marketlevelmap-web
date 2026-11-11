@@ -188,6 +188,11 @@ analysis and last-candle times, "Not investment advice."; on narrow charts the t
 left out). File name: `MarketLevelMap_<SYMBOL>_<TF>_<YYYYMMDD-HHMM>UTC.png` (download time, UTC). Older
 PNG-only publications offer no download.
 
+The downloaded image also carries this view's tables beside the chart, the same as the admin desk's "PNG with
+tables" (`fullImage()`): Price Action → at a glance, price range, FVG, structure; Critical Zones → support and
+resistance zones. Titles, column heads and values only. The tables get at least ~440 CSS px, so a phone-sized
+chart still yields readable columns. The share sheet's image ("Share with image…") stays the chart alone.
+
 ## Chart sharing
 
 The chart header's Share button opens a menu:
