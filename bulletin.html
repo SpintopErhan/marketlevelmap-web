@@ -1025,7 +1025,8 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     var badge={"b-resistance":C.down,"b-support":C.up,"b-equilibrium":C.muted,"b-fvg":C.pa,"b-bos":C.bos,"b-choch":C.choch,"b-sweep":C.cz,"b-avwap":C.fg};
     var parts=method==="pa"?["range-block","fvg-block","structure-block"].map(tableData).filter(Boolean):[tableData("zones-block")].filter(Boolean);
     var glance=method==="pa"?glanceData():null;
-    var pw=Math.round(chartCanvas.width*0.62),pad=Math.round(18*k),rowH=Math.round(26*k),y0=Math.round(54*k);
+    // At least ~440 CSS px for the tables, so a phone-sized chart still gets readable columns.
+    var pw=Math.max(Math.round(chartCanvas.width*0.62),Math.round(440*(chartCanvas.width/((liveBox.clientWidth||chartCanvas.width))))),pad=Math.round(18*k),rowH=Math.round(26*k),y0=Math.round(54*k);
     // Measure first, so the canvas is as tall as the longer of the two sides.
     var m=document.createElement("canvas").getContext("2d");
     function h(){var y=y0+pad;if(glance)y+=Math.ceil(glance.length/2)*Math.round(52*k)+pad;parts.forEach(function(p){y+=Math.round(30*k)+(p.summary?Math.round(20*k):0)+rowH*(p.rows.length+1)+pad});return y+pad}
@@ -1050,7 +1051,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       var n=Math.max(p.head.length,1),gap=Math.round(14*k),fs=11.5,widths;
       for(;fs>=9;fs-=0.5){g.font="600 "+Math.round(fs*k)+"px"+font;widths=[];for(var ci=0;ci<n;ci++){var mx=g.measureText(p.head[ci]||"").width;p.rows.forEach(function(r){if(r.cells&&r.cells[ci])mx=Math.max(mx,g.measureText(r.cells[ci].text).width)});widths.push(mx)}
         if(widths.reduce(function(a,b){return a+b},0)+gap*(n-1)<=w)break}
-      var spare=Math.max(0,w-widths.reduce(function(a,b){return a+b},0)-gap*(n-1));widths[0]+=spare;
+      var total=widths.reduce(function(a,b){return a+b},0)+gap*(n-1),spare=w-total;
+      // Still too wide at the smallest size: the first column (labels) gives way and is shortened with "…".
+      widths[0]=Math.max(Math.round(40*k),widths[0]+spare);
       var ends=[];widths.reduce(function(acc,wd,i){ends[i]=acc+wd;return acc+wd+gap},x0);
       var colX=function(i){return i===0?x0:ends[i]},rest=0,first=widths[0];
       p.head.forEach(function(t,i){text(t,colX(i),y+rowH/2,Math.min(10.5,fs),600,C.muted,i===0?"left":"right")});
@@ -1077,7 +1080,8 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   };
   download.addEventListener("click",function(){
     if(!window.Features||Features.state("chartDownload")!=="allowed"||!liveChart||(report&&report.locked))return;
-    chartImage().toBlob(function(blob){
+    // Same image as the admin desk's "PNG with tables": the chart and, beside it, this view's tables.
+    fullImage().toBlob(function(blob){
       if(!blob)return;
       var a=document.createElement("a"),url=URL.createObjectURL(blob);
       a.href=url;a.download=chartFileName();
