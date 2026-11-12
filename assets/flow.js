@@ -21,6 +21,14 @@
       gateMember: "Live flow is for members. It opens once your membership is approved.", profile: "Your profile",
       notCrypto: "Live flow is available for crypto assets only.", waiting: "Waiting for data…",
       status: { live: "live", connecting: "connecting", unavailable: "not listed" },
+      zf: "Flow in the zone", zfSince: "{type} {range} · {min} min since entry", zfLast: "Last zone: {type} {range} · left {min} min ago",
+      zfNone: "The price is not inside a zone. The count starts when it enters one.", zfNoZones: "No zones loaded.",
+      zfBuy: "Buys in the zone", zfSell: "Sells in the zone", zfCvd: "CVD in the zone", zfRestBid: "Resting bids in the zone", zfRestAsk: "Resting asks in the zone",
+      zfBook: "where the books reach", zfWait: "Reading after 30 s in the zone", zfBal: "Buying and selling are balanced",
+      zfUpUp: "Buying is lifting the price", zfUpFlat: "Buying is being absorbed: the price is not rising", zfDnDn: "Selling is pushing the price down", zfDnFlat: "Selling is being absorbed: the price is not falling",
+      zfMove: "price {p}, CVD {c}", zfNote: "The count resets when the price leaves the zone and starts again in the next one.",
+      vp: "Session volume profile", vpSub: "since the page opened", vpPoc: "Busiest level (POC) {p}", vpZone: "stripe: levels inside an analysis zone",
+      prem: "Coinbase premium", premTitle: "Coinbase USD mid against Binance USDT mid (OKX when Binance is not reachable)",
       note: "Live data from Binance, OKX and Coinbase spot, read directly by your browser. Nothing is recorded; the flow stops when you leave the page. In the combined book, Coinbase (USD) prices are aligned to USDT. For information only, not a signal."
     },
     tr: {
@@ -38,6 +46,14 @@
       gateMember: "Canlı akış üyelere özeldir. Üyeliğiniz onaylandığında açılır.", profile: "Profiliniz",
       notCrypto: "Canlı akış yalnızca kripto varlıklar için kullanılabilir.", waiting: "Veri bekleniyor…",
       status: { live: "canlı", connecting: "bağlanıyor", unavailable: "listelenmiyor" },
+      zf: "Bölgede akış", zfSince: "{type} {range} · girişten beri {min} dk", zfLast: "Son bölge: {type} {range} · {min} dk önce çıktı",
+      zfNone: "Fiyat şu an bir bölgenin içinde değil. Bir bölgeye girdiğinde sayaç başlar.", zfNoZones: "Bölge yüklenmedi.",
+      zfBuy: "Bölge içi alış", zfSell: "Bölge içi satış", zfCvd: "Bölge içi CVD", zfRestBid: "Bölgedeki bekleyen alış", zfRestAsk: "Bölgedeki bekleyen satış",
+      zfBook: "defterin ulaştığı kısım", zfWait: "Okuma bölgede 30 sn sonra başlar", zfBal: "Alış ve satış dengede",
+      zfUpUp: "Alışlar fiyatı yukarı taşıyor", zfUpFlat: "Alışlar karşılanıyor: fiyat yükselmiyor", zfDnDn: "Satışlar fiyatı aşağı itiyor", zfDnFlat: "Satışlar karşılanıyor: fiyat düşmüyor",
+      zfMove: "fiyat {p}, CVD {c}", zfNote: "Fiyat bölgeden çıkınca sayaç sıfırlanır; sonraki bölgede yeniden başlar.",
+      vp: "Oturum hacim profili", vpSub: "sayfa açıldığından beri", vpPoc: "En yoğun seviye (POC) {p}", vpZone: "şerit: analiz bölgesinin içindeki seviyeler",
+      prem: "Coinbase primi", premTitle: "Coinbase USD orta fiyatı ile Binance USDT orta fiyatı arasındaki fark (Binance'e ulaşılamazsa OKX)",
       note: "Canlı veri: Binance, OKX ve Coinbase spot; doğrudan tarayıcınız okur. Hiçbir veri kaydedilmez; sayfadan çıkınca akış durur. Birleşik defterde Coinbase (USD) fiyatları USDT'ye hizalanır. Bilgi amaçlıdır, sinyal değildir."
     }
   };
@@ -194,7 +210,7 @@
   };
 
   // ─── Session data ────────────────────────────────────────────────────────
-  var venues = {}, trades = [], secs = [], mode = "all", base = "", started = 0;
+  var venues = {}, trades = [], secs = [], mode = "all", base = "", started = 0, profile = {}, zs = null;
   function trade(v, p, q, buy) {
     if (!(p > 0 && q > 0)) return;
     var now = Date.now();
@@ -204,7 +220,12 @@
     if (!rec || rec.t !== s) { rec = { t: s, v: {} }; secs.push(rec); if (secs.length > KEEP_SECS) secs.shift(); }
     var r = rec.v[v.id] || (rec.v[v.id] = { bv: 0, sv: 0, p: 0 });
     if (buy) r.bv += q; else r.sv += q;
-    r.p = p; dirty = true;
+    r.p = p;
+    // Volume profile: per venue, at a fine price step fixed by the venue's first trade (0.1 bp, rounded 1-2-5).
+    var vp = profile[v.id] || (profile[v.id] = { fine: niceStep(p * 0.00001), m: new Map() }), key = Math.round(p / vp.fine) * vp.fine;
+    vp.m.set(key, (vp.m.get(key) || 0) + q);
+    if (zs && zs.active) { var zv = zs.v[v.id] || (zs.v[v.id] = { bv: 0, sv: 0 }); if (buy) zv.bv += q; else zv.sv += q; }
+    dirty = true;
   }
   function selected() { return (mode === "all" ? ORDER : [mode]).filter(function (id) { return venues[id] && venues[id].status !== "unavailable"; }); }
   function bookVenues() { return selected().filter(function (id) { return venues[id].ready && venues[id].best(); }).map(function (id) { return venues[id]; }); }
@@ -420,6 +441,79 @@
     if (below) add(t.nearestSup, below, "", below.high / p - 1);
   }
 
+  // Coinbase premium: Coinbase USD mid over Binance USDT mid (OKX when Binance is not reachable), whatever venue is shown.
+  function renderPremium() {
+    var el = $("fl-prem"), cb = venues.coinbase, ref = venues.binance && venues.binance.ready && venues.binance.best() ? venues.binance : venues.okx;
+    var a = cb && cb.ready && cb.best(), b = ref && ref.ready && ref.best();
+    el.hidden = !(a && b); if (el.hidden) return;
+    var r = a.mid / b.mid - 1, d = a.mid - b.mid, v = $("fl-prem-v");
+    v.textContent = (r >= 0 ? "+" : "−") + pctText(r, 3); v.className = "num " + (r > 0 ? "up" : r < 0 ? "down" : "");
+    $("fl-prem-d").textContent = "(" + (d >= 0 ? "+" : "−") + fmtPrice(Math.abs(d)) + " $" + (ref.id === "okx" ? " · OKX" : "") + ")";
+  }
+
+  // Flow in the zone: from the moment the price enters a band, buys and sells of the shown venues inside it.
+  function zoneOf(p) { var best = null; zones.forEach(function (z) { if (p >= z.low && p <= z.high && (!best || z.high - z.low < best.high - best.low)) best = z; }); return best; }
+  function renderZoneFlow(bs) {
+    var t = w(), last = trades.length ? trades[trades.length - 1] : null, p = bs ? bs.mid : last ? last.p : 0, now = Date.now();
+    if (p) {
+      var z = zoneOf(p);
+      if (z && !(zs && zs.active && zs.z === z)) zs = { z: z, since: now, p0: p, p1: p, v: {}, active: true };
+      else if (!z && zs && zs.active) { zs.active = false; zs.end = now; }
+      if (zs && zs.active) zs.p1 = p;
+    }
+    var head = $("fl-zf-head"), body = $("fl-zf-body"), msg = $("fl-zf-msg");
+    if (!zs) { body.hidden = true; msg.hidden = false; msg.textContent = zones.length ? t.zfNone : t.zfNoZones; head.textContent = ""; return; }
+    var sup = zs.z.type === "support", typ = sup ? t.support : t.resistance, range = fmtPrice(zs.z.low) + " – " + fmtPrice(zs.z.high);
+    typ = typ.charAt(0).toUpperCase() + typ.slice(1);
+    head.textContent = zs.active ? fill(t.zfSince, { type: typ, range: range, min: Math.floor((now - zs.since) / 60000) }) : fill(t.zfLast, { type: typ, range: range, min: Math.floor((now - zs.end) / 60000) });
+    msg.hidden = zs.active; msg.textContent = zs.active ? "" : t.zfNone;
+    body.hidden = false;
+    var bv = 0, sv = 0; selected().forEach(function (id) { var x = zs.v[id]; if (x) { bv += x.bv; sv += x.sv; } });
+    var dc = bv - sv, tot = bv + sv;
+    $("fl-zf-b").textContent = fmtSize(bv) + " " + base; $("fl-zf-s").textContent = fmtSize(sv) + " " + base;
+    var c = $("fl-zf-c"); c.textContent = (dc < 0 ? "−" : dc > 0 ? "+" : "") + fmtSize(Math.abs(dc)) + " " + base; c.className = "num " + (dc > 0 ? "up" : dc < 0 ? "down" : "");
+    $("fl-zf-bar-b").style.flex = String(tot ? bv / tot : 0.5); $("fl-zf-bar-s").style.flex = String(tot ? sv / tot : 0.5);
+    $("fl-zf-bt").textContent = fill(t.bids, { p: tot ? pctText(bv / tot, 1) : "—" }); $("fl-zf-st").textContent = fill(t.asks, { p: tot ? pctText(sv / tot, 1) : "—" });
+    // Resting orders inside the band on the zone's side (only as far as the books reach).
+    $("fl-zf-rl").textContent = sup ? t.zfRestBid : t.zfRestAsk;
+    var rest = 0;
+    if (bs) bs.venues.forEach(function (o) { (sup ? o.v.bids : o.v.asks).forEach(function (q, pr) { pr *= o.k; if (pr >= zs.z.low && pr <= zs.z.high) rest += q; }); });
+    $("fl-zf-r").textContent = bs ? fmtSize(rest) + " " + base : "—";
+    var read = $("fl-zf-read"), dp = zs.p0 ? zs.p1 / zs.p0 - 1 : 0;
+    if (!zs.active) { read.hidden = true; return; }
+    read.hidden = false;
+    if (now - zs.since < 30000 || !tot) { read.textContent = t.zfWait; return; }
+    var move = " (" + fill(t.zfMove, { p: (dp >= 0 ? "+" : "−") + pctText(dp), c: dc >= 0 ? "+" : "−" }) + ")";
+    if (Math.abs(dc) < tot * 0.05) read.textContent = t.zfBal + move;
+    else if (dc > 0) read.textContent = (dp > 0.0003 ? t.zfUpUp : t.zfUpFlat) + move;
+    else read.textContent = (dp < -0.0003 ? t.zfDnDn : t.zfDnFlat) + move;
+  }
+
+  // Session volume profile of the shown venues (Coinbase scaled like the book), up to 24 rows.
+  function renderProfile(bs) {
+    var t = w(), sel = selected(), pts = [];
+    sel.forEach(function (id) {
+      var vp = profile[id]; if (!vp) return;
+      var k = 1; if (bs) bs.venues.forEach(function (o) { if (o.v.id === id) k = o.k; });
+      vp.m.forEach(function (q, pr) { pts.push([pr * k, q]); });
+    });
+    var box = $("fl-vp"), poc = $("fl-vp-poc");
+    if (!pts.length) { box.textContent = ""; poc.textContent = t.waiting; return; }
+    var lo = Infinity, hi = 0; pts.forEach(function (x) { if (x[0] < lo) lo = x[0]; if (x[0] > hi) hi = x[0]; });
+    var bucket = Math.max(step || 0, niceStep(Math.max((hi - lo) / 24, lo * 0.00001)));
+    var top = Math.ceil(hi / bucket) * bucket, n = Math.max(1, Math.min(24, Math.round((top - Math.floor(lo / bucket) * bucket) / bucket) + 1)), rows = new Array(n).fill(0);
+    pts.forEach(function (x) { var i = Math.round((top - x[0]) / bucket); if (i >= 0 && i < n) rows[i] += x[1]; });
+    var max = Math.max.apply(null, rows) || 1, pi = rows.indexOf(max), d = Math.max(digits || 0, decimals(bucket)), cur = bs ? bs.mid : 0;
+    box.textContent = "";
+    rows.forEach(function (q, i) {
+      var pr = top - i * bucket, z = zoneAt(pr - bucket / 2, pr + bucket / 2);
+      var lab = document.createElement("span"); lab.className = "num" + (cur && Math.abs(cur - pr) <= bucket / 2 ? " cur" : "") + (z ? " z-" + z : ""); lab.textContent = fmtPrice(pr, d);
+      var bar = document.createElement("i"); bar.style.width = (q / max * 100).toFixed(1) + "%"; bar.className = i === pi ? "poc" : "";
+      box.appendChild(lab); box.appendChild(bar);
+    });
+    poc.textContent = fill(t.vpPoc, { p: fmtPrice(top - pi * bucket, d) });
+  }
+
   function renderStatus() {
     var t = w(), box = $("fl-venues"); box.textContent = "";
     var any = false, wait = false;
@@ -439,14 +533,14 @@
     frame++;
     var bs = renderBook(bookState());
     if (bs && digits == null) digits = window.MarketUI ? MarketUI.digitsFor(bs.mid) : 2;
-    renderContext(bs); renderTape(); renderStatus();
-    if (frame % 2 === 0 || dirty) { renderCvd(); renderDepth(bs); }
+    renderContext(bs); renderTape(); renderStatus(); renderPremium(); renderZoneFlow(bs);
+    if (frame % 2 === 0 || dirty) { renderCvd(); renderDepth(bs); renderProfile(bs); }
     dirty = false;
   }
 
   // ─── Lifecycle ───────────────────────────────────────────────────────────
   function start() {
-    trades = []; secs = []; started = Date.now(); paused = false;
+    trades = []; secs = []; profile = {}; zs = null; started = Date.now(); paused = false;
     venues = { binance: new Binance(base), okx: new Okx(base), coinbase: new Coinbase(base) };
     ORDER.forEach(function (id) { venues[id].connect(); });
   }
@@ -488,6 +582,7 @@
     var t = w();
     document.querySelectorAll("[data-fl]").forEach(function (el) { var v = t[el.dataset.fl]; if (typeof v === "string") el.textContent = v; });
     var all = document.querySelector('#fl-venue option[value="all"]'); if (all) all.textContent = t.venueAll;
+    var pr = $("fl-prem"); if (pr) pr.title = t.premTitle;
     document.title = "MarketLevelMap — " + (base ? base + " · " : "") + t.title;
     if (ladder) { dirty = true; render(); }
   }
@@ -504,6 +599,7 @@
       fetch(e.report.url, { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (rep) {
         zones = (rep && Array.isArray(rep.zones) ? rep.zones : []).map(function (z) { var a = Number(z.low), b = Number(z.high); return { low: Math.min(a, b), high: Math.max(a, b), type: z.type === "support" ? "support" : "resistance" }; })
           .filter(function (z) { return z.low > 0 && z.high > 0; });
+        zs = null;
         var src = $("fl-zsrc"); delete src.dataset.fl;
         src.textContent = fill(w().zonesFrom, { date: rep && rep.analyzedAt ? MarketUI.date(rep.analyzedAt) : "—" });
         dirty = true; render();
