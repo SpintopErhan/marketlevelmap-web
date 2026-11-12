@@ -40,7 +40,7 @@ main{padding:0 0 70px}
 .lab{display:flex;justify-content:space-between;gap:8px;margin-top:4px;color:var(--muted);font-size:11px}
 .note{margin:8px 0 0;color:var(--muted);font-size:11px}
 .seg{display:inline-flex;padding:2px;border:1px solid var(--line);border-radius:8px}.seg button{padding:2px 8px;border:0;border-radius:6px;background:none;color:var(--muted);font-size:11px;font-weight:600;cursor:pointer}.seg button[aria-pressed=true]{background:var(--raise);color:var(--fg)}
-canvas{display:block;width:100%}#fl-cvd{height:170px}#fl-depth{height:245px}.card h2>span:first-child{white-space:nowrap}.card h2 .sub{text-align:right}
+canvas{display:block;width:100%}#fl-cvd{height:170px}#fl-depth{height:200px}.card h2>span:first-child{white-space:nowrap}.card h2 .sub{text-align:right}
 .legend{display:flex;gap:16px;margin-top:4px;color:var(--muted);font-size:11px}.legend i{display:inline-block;width:14px;margin-right:5px;vertical-align:middle;border-top:2px solid var(--accent)}.legend i.p{border-top:2px dashed var(--fg)}
 .flag{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;font-weight:600}
 .flag.muted{color:var(--muted)}.flag.on{border-color:color-mix(in srgb,var(--cz) 60%,transparent);color:var(--cz)}
@@ -53,6 +53,18 @@ canvas{display:block;width:100%}#fl-cvd{height:170px}#fl-depth{height:245px}.car
 .gate p{margin:0 0 16px}.gate a{display:inline-flex;align-items:center;height:38px;padding:0 18px;border-radius:10px;background:var(--accent);color:#06221d;font-weight:700;text-decoration:none}.gate a[hidden]{display:none}
 .fl-foot{margin:14px 0 0;color:var(--muted);font-size:11px;max-width:900px}
 #fl-app[hidden]{display:none}
+.heat{margin:0 0 14px}#fl-heat{height:320px;border-radius:8px}
+.heat-ctl{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px}.heat-ctl .sub{margin-right:4px}
+.fs-btn{height:26px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--fg);font-size:11px;font-weight:600;cursor:pointer}.fs-btn:hover{border-color:var(--accent);color:var(--accent)}
+.heat.fs{position:fixed;inset:0;z-index:90;margin:0;border-radius:0;display:flex;flex-direction:column;padding:14px 18px}.heat.fs #fl-heat{flex:1;height:auto;min-height:0}
+.heat:fullscreen{display:flex;flex-direction:column;padding:14px 18px;background:var(--panel)}.heat:fullscreen #fl-heat{flex:1;height:auto}
+/* Futures: depth · CVD · volume profile · liquidations on top; order book · Time & Sales · zone flow (with funding and OI under it) below. */
+.fx-top{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:stretch;margin:0 0 14px}
+.fx-bot{display:grid;grid-template-columns:330px minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+.fx-col{display:grid;gap:14px;min-width:0}
+.fx-top #fl-depth{height:170px}.fx-top .kpis{gap:6px}.fx-top .kpis div{padding:7px 8px}.fx-top .kpis b{font-size:13px}
+@media(max-width:1100px){.fx-top{grid-template-columns:repeat(2,minmax(0,1fr))}.fx-bot{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.fx-bot .fx-col{grid-column:1/-1}}
+@media(max-width:640px){.fx-top,.fx-bot{grid-template-columns:minmax(0,1fr)}}
 .fl-mid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:stretch}
 .fl-mid .kpis{gap:6px}.fl-mid .kpis div{padding:7px 8px}.fl-mid .kpis b{font-size:13px}
 .fl-mid .kpis.four{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -71,8 +83,8 @@ canvas{display:block;width:100%}#fl-cvd{height:170px}#fl-depth{height:245px}.car
 .vp i{display:block;height:12px;min-width:1px;border-radius:2px;background:color-mix(in srgb,var(--accent) 40%,transparent)}.vp i.poc{background:var(--accent)}
 .vp span{padding-left:7px}.vp span.z-support{box-shadow:inset 3px 0 0 var(--up)}.vp span.z-resistance{box-shadow:inset 3px 0 0 var(--down)}
 @media(max-width:1100px){.fl-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.fl-grid .center{grid-column:1/-1;order:-1}}
-@media(max-width:640px){#fl-depth{height:170px}.fl-grid,.fl-grid2,.fl-mid{grid-template-columns:minmax(0,1fr)}.kpis.four{grid-template-columns:repeat(2,minmax(0,1fr))}.ctx .src{margin-left:0}.fl-ctl,.fl-venues{justify-content:flex-start}.fl-head h1 small{display:block;margin:4px 0 0}}
-</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/flow.js?v=892bfd35" defer></script></head><body><div class="shell"><header>
+@media(max-width:640px){#fl-depth{height:170px}#fl-heat{height:260px}.heat-ctl .sub{display:none}.fl-grid,.fl-grid2,.fl-mid{grid-template-columns:minmax(0,1fr)}.kpis.four{grid-template-columns:repeat(2,minmax(0,1fr))}.ctx .src{margin-left:0}.fl-ctl,.fl-venues{justify-content:flex-start}.fl-head h1 small{display:block;margin:4px 0 0}}
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/flow.js?v=b950d798" defer></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış" aria-current="page">Live flow</a><a href="scanner" data-tr="Tarayıcı">Scanner</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
@@ -85,35 +97,38 @@ canvas{display:block;width:100%}#fl-cvd{height:170px}#fl-depth{height:245px}.car
 <div class="gate" id="fl-gate" hidden><p id="fl-gate-msg"></p><a id="fl-gate-link" href="/account"></a></div>
 <div id="fl-app" hidden>
 <div class="ctx"><span><span data-fl="price">Price</span> <b class="num" id="fl-ctx-price">—</b></span><span id="fl-ctx-zones"></span><span id="fl-prem" hidden><span data-fl="prem">Coinbase premium</span> <b class="num" id="fl-prem-v"></b> <span class="muted num" id="fl-prem-d"></span></span><span id="ff-ctx" hidden><span class="fk"><span data-fl="fFund"></span><b class="num" id="ff-fund">—</b></span><span class="fk"><span data-fl="fNext"></span><b class="num" id="ff-next">—</b></span><span class="fk"><span data-fl="fOi"></span><b class="num" id="ff-oi">—</b></span><span class="fk"><span data-fl="fOiCh"></span><b class="num" id="ff-oich">—</b></span><span class="fk"><span data-fl="fBasis"></span><b class="num" id="ff-basis">—</b></span></span><span class="src"><span id="fl-zsrc"></span><select class="fl-sel" id="fl-ztf" aria-label="Zone timeframe"></select></span></div>
+<section class="card heat" id="c-heat"><h2><span data-fl="heat">Liquidity heatmap</span><span class="heat-ctl"><span class="sub" data-fl="heatSub"></span><span class="seg" id="fl-heat-win"><button type="button" data-w="15" aria-pressed="false">15m</button><button type="button" data-w="30" aria-pressed="true">30m</button><button type="button" data-w="60" aria-pressed="false">60m</button></span><span class="seg"><button type="button" id="fl-heat-out" aria-label="Zoom out">−</button><button type="button" id="fl-heat-in" aria-label="Zoom in">+</button></span><button type="button" class="fs-btn" id="fl-heat-fs" data-fl="heatFull">Full screen</button></span></h2>
+<canvas id="fl-heat"></canvas>
+<p class="note"><span id="fl-heat-zoom"></span> · <span id="fl-heat-note"></span></p></section>
 <div class="fl-grid2 ff" id="ff-panels" hidden>
-<section class="card"><h2><span data-fl="fPanel">Funding and open interest</span><span class="sub" data-fl="fPerVenue"></span></h2>
+<section class="card" id="c-fund"><h2><span data-fl="fPanel">Funding and open interest</span><span class="sub" data-fl="fPerVenue"></span></h2>
 <table class="ff-tbl"><thead><tr><th data-fl="fVenue">Venue</th><th class="r" data-fl="fRate">Funding</th><th class="r" data-fl="fYear">Annual</th><th class="r" data-fl="fOiS">Open interest</th><th class="r" data-fl="fSess">Session Δ</th></tr></thead><tbody id="ff-rows"></tbody></table>
 <canvas id="ff-chart"></canvas>
 <div class="legend"><span><i class="oi"></i><span data-fl="fOiLeg">Open interest (session)</span></span><span><i class="p"></i><span data-fl="fPriceLeg">Price</span></span></div>
 <p class="read" id="ff-read"></p></section>
-<section class="card"><h2><span data-fl="liq">Liquidations</span><span class="sub">Binance · OKX · Bybit</span></h2>
+<section class="card" id="c-liq"><h2><span data-fl="liq">Liquidations</span><span class="sub">Binance · OKX · Bybit</span></h2>
 <div class="meter" style="margin:0"><div class="bar"><i class="s" id="ff-lb"></i><i class="b" id="ff-sb"></i></div><div class="lab"><span id="ff-lt"></span><span data-fl="liq15"></span><span id="ff-st"></span></div></div>
 <div class="tape liq" id="ff-liq"></div><div class="wait" id="ff-liq-wait" data-fl="liqWait"></div>
 <p class="note" data-fl="liqNote"></p></section>
 </div>
 <div class="fl-grid">
-<section class="card"><h2><span data-fl="book">Order book</span><label><span data-fl="grouping">Grouping</span><select id="fl-group"></select></label></h2>
+<section class="card" id="c-book"><h2><span data-fl="book">Order book</span><label><span data-fl="grouping">Grouping</span><select id="fl-group"></select></label></h2>
 <div id="fl-book-rows"><div class="mid" id="fl-mid" hidden><span><span data-fl="spread">Spread</span> <span class="num" id="fl-spread"></span></span><b class="num" id="fl-midp"></b></div></div>
 <div class="wait" id="fl-book-wait" data-fl="waiting">Waiting for data…</div>
 <div class="meter"><div class="bar"><i class="b" id="fl-bal-b"></i><i class="s" id="fl-bal-a"></i></div><div class="lab"><span id="fl-bal-bt"></span><span id="fl-bal-l"></span><span id="fl-bal-at"></span></div></div>
 <p class="note" data-fl="bookNote"></p></section>
 <div class="center fl-mid">
-<section class="card"><h2><span>CVD</span><span class="seg" id="fl-int"><button type="button" data-s="1" aria-pressed="false">1s</button><button type="button" data-s="5" aria-pressed="true">5s</button><button type="button" data-s="15" aria-pressed="false">15s</button><button type="button" data-s="60" aria-pressed="false">1m</button></span></h2>
+<section class="card" id="c-cvd"><h2><span>CVD</span><span class="seg" id="fl-int"><button type="button" data-s="1" aria-pressed="false">1s</button><button type="button" data-s="5" aria-pressed="true">5s</button><button type="button" data-s="15" aria-pressed="false">15s</button><button type="button" data-s="60" aria-pressed="false">1m</button></span></h2>
 <canvas id="fl-cvd"></canvas>
 <div class="legend"><span><i></i><span data-fl="cvdLegend">CVD (session)</span></span><span><i class="p"></i><span data-fl="priceLegend">Price</span></span></div>
 <span class="flag muted" id="fl-div"></span>
 <div class="kpis"><div><span data-fl="cvdSession">CVD (session)</span><b class="num" id="fl-k-cvd">—</b></div><div><span data-fl="bs5"></span><b class="num" id="fl-k-5">—</b></div><div><span data-fl="bs15"></span><b class="num" id="fl-k-15">—</b></div></div>
 </section>
-<section class="card"><h2><span data-fl="depth">Depth</span><span class="sub" id="fl-depth-sub"></span></h2>
-<canvas id="fl-depth"></canvas>
-<div class="kpis two"><div><span data-fl="r10"></span><b class="num" id="fl-r10">—</b></div><div><span data-fl="r25"></span><b class="num" id="fl-r25">—</b></div></div>
+<section class="card" id="c-vp"><h2><span data-fl="vp">Session volume profile</span><span class="sub" data-fl="vpSub"></span></h2>
+<div class="vp" id="fl-vp"></div>
+<p class="note"><span id="fl-vp-poc"></span> · <span data-fl="vpZone"></span></p>
 </section>
-<section class="card"><h2><span data-fl="zf">Flow in the zone</span><span class="sub" id="fl-zf-head"></span></h2>
+<section class="card" id="c-zf"><h2><span data-fl="zf">Flow in the zone</span><span class="sub" id="fl-zf-head"></span></h2>
 <p class="wait" id="fl-zf-msg"></p>
 <div id="fl-zf-body" hidden>
 <div class="kpis four"><div><span data-fl="zfBuy"></span><b class="num up" id="fl-zf-b">—</b></div><div><span data-fl="zfSell"></span><b class="num down" id="fl-zf-s">—</b></div><div><span data-fl="zfCvd"></span><b class="num" id="fl-zf-c">—</b></div><div><span id="fl-zf-rl"></span><b class="num" id="fl-zf-r">—</b><small data-fl="zfBook"></small></div></div>
@@ -121,12 +136,12 @@ canvas{display:block;width:100%}#fl-cvd{height:170px}#fl-depth{height:245px}.car
 <p class="read" id="fl-zf-read" hidden></p>
 <p class="note" data-fl="zfNote"></p></div>
 </section>
-<section class="card"><h2><span data-fl="vp">Session volume profile</span><span class="sub" data-fl="vpSub"></span></h2>
-<div class="vp" id="fl-vp"></div>
-<p class="note"><span id="fl-vp-poc"></span> · <span data-fl="vpZone"></span></p>
+<section class="card" id="c-depth"><h2><span data-fl="depth">Depth</span><span class="sub" id="fl-depth-sub"></span></h2>
+<canvas id="fl-depth"></canvas>
+<div class="kpis two"><div><span data-fl="r10"></span><b class="num" id="fl-r10">—</b></div><div><span data-fl="r25"></span><b class="num" id="fl-r25">—</b></div></div>
 </section>
 </div>
-<section class="card"><h2><span data-fl="tape">Time &amp; Sales</span><span class="seg" id="fl-big"><button type="button" data-x="0" aria-pressed="true" data-fl="all">All</button><button type="button" data-x="2" aria-pressed="false">≥2×</button><button type="button" data-x="5" aria-pressed="false">≥5×</button><button type="button" data-x="10" aria-pressed="false">≥10×</button></span></h2>
+<section class="card" id="c-tape"><h2><span data-fl="tape">Time &amp; Sales</span><span class="seg" id="fl-big"><button type="button" data-x="0" aria-pressed="true" data-fl="all">All</button><button type="button" data-x="2" aria-pressed="false">≥2×</button><button type="button" data-x="5" aria-pressed="false">≥5×</button><button type="button" data-x="10" aria-pressed="false">≥10×</button></span></h2>
 <div class="split"><div class="bar"><i class="b" id="fl-split-b"></i><i class="s" id="fl-split-s"></i></div><div class="lab"><span id="fl-split-bt"></span><span id="fl-split-n"></span><span id="fl-split-st"></span></div></div>
 <div class="tape" id="fl-tape"></div><div class="wait" id="fl-tape-wait" data-fl="waiting">Waiting for data…</div>
 </section>
