@@ -53,12 +53,39 @@ cache previews per link, so a link shared before a change keeps its old card for
 - `bulletin.html?asset=BTCUSDT&tf=4h` — analysis page: 1H/4H/1D chart, note, support/resistance zones,
   key levels and earlier analyses. A switch at the top chooses the discipline: Critical Zones (default) or
   Price Action (`&method=pa`, see "Price Action view").
+- `flow.html?asset=BTCUSDT` — members-only live order flow (see "Live order flow").
 - `weekly-events.html` — this/next week's events. `archive.html` — placeholder until archives are published.
 - `tr/hakkinda/`, `en/about/` — About: what the site is and why (approach and engine steps, what it offers,
   membership, analysis time, what it is not). `tr/rehber/`, `en/guide/` — Reading guide: what is on the chart
   and how to read it (the two views, zones, key levels, timeframes, five-step checklist, examples, mistakes,
   glossary). The guide does not link to About. Both pages use the library's type sizes and its sticky
   "On this page" card (hidden on phones; the guide keeps a contents list at the top there). Edited by hand.
+
+## Live order flow
+
+`flow.html?asset=BTCUSDT` (`/flow`), linked as "Live flow" from the analysis page of USDT (crypto) assets.
+Members only: guests get a sign-in card and registered/pending accounts a profile link (admins count as members).
+The gate is in the page, because the data never passes through our server: `assets/flow.js` opens the exchanges'
+public spot WebSockets in the visitor's browser, and nothing is stored or recorded. The session starts when the
+page opens; after a minute in the background the connections close, and coming back starts a new session.
+
+- **Venues** — Binance (`<sym>@depth@100ms` kept in sync with a 5000-level REST snapshot, `aggTrade`),
+  OKX (`books` 400 levels, `trades`), Coinbase Advanced Trade (`level2`, `market_trades`, `heartbeats`;
+  `BASE-USD`). Combined by default; one venue can be picked. In the combined book each venue's prices are scaled
+  by the first live venue's mid over its own, so the USD book lines up with the USDT books. Coinbase's trade side
+  is taken from its own book (at/above the ask = buy). A venue that does not list the asset is marked "not listed".
+- **Order book** — 12 buckets each side (grouping 0.5 bp of the price rounded to 1-2-5 and three larger steps),
+  notional per bucket, walls (≥3× the median bucket and ≥half the largest) in bold, buckets inside a Critical
+  Zones band striped in the zone's colour, book balance within ±50 bp (narrower when the books do not reach).
+- **CVD** — taker buy minus sell volume since the page opened, per 1s/5s/15s/1m bar with the price dashed;
+  divergence flag when over the last minute the price moved ≥3 bp one way and the CVD (≥10% of the volume) the
+  other. Last 5/15 min buy/sell share.
+- **Depth** — cumulative book within ±1% (or as far as every selected book reaches), with the zones shaded;
+  bid/ask ratios within ±10 and ±25 bp (only books that reach that far count).
+- **Time & Sales** — newest 40 trades with venue, filters ≥2×/≥5×/≥10× the venue's average trade size
+  (≥5× highlighted), buy/sell share of the last 200 trades.
+- **Zones** — the latest Critical Zones report of the asset (1D first, other timeframes selectable): whether the
+  price is inside a band, the nearest resistance above and support below.
 
 ## Weekly outlook
 

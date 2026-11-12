@@ -1,0 +1,112 @@
+<!doctype html>
+<!-- Live order flow (README "Live order flow"): members only; the exchanges are read in the browser by assets/flow.js. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap"><script src="/assets/pwa.js?v=b0dd56f5" defer></script><meta name="color-scheme" content="dark light"><title>MarketLevelMap — Live flow</title><meta name="robots" content="noindex"><link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png"><link rel="stylesheet" href="assets/site.css?v=c0028433"><style>*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.45}
+button,select,input{font:inherit}button{color:inherit}
+main{padding:0 0 70px}
+.num{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.up{color:var(--up)}.down{color:var(--down)}.muted{color:var(--muted)}
+.fl-head{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;margin:30px 0 14px}
+.fl-head h1{margin:0;font-size:26px;font-weight:700;letter-spacing:-.5px}.fl-head h1 small{margin-left:10px;color:var(--muted);font-size:14px;font-weight:500;letter-spacing:0}
+.fl-ctl{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;justify-content:flex-end}.fl-ctl[hidden]{display:none}
+.fl-sel{height:34px;padding:0 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--fg);font-size:13px;font-weight:600;max-width:100%}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted)}.live i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.live.on{color:var(--up)}.live.on i{background:var(--up);animation:fl-pulse 2s ease-in-out infinite}
+.live.wait{color:var(--cz)}.live.wait i{background:var(--cz)}
+@keyframes fl-pulse{0%,100%{box-shadow:0 0 0 2px color-mix(in srgb,var(--up) 35%,transparent)}50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--up) 0%,transparent)}}
+@media(prefers-reduced-motion:reduce){.live.on i{animation:none}}
+.fl-venues{display:flex;flex-wrap:wrap;gap:4px 12px;width:100%;justify-content:flex-end;font-size:11px;color:var(--muted)}
+.vs{display:inline-flex;align-items:center;gap:5px}.vs i{width:6px;height:6px;border-radius:50%;background:var(--muted)}.vs.live i{background:var(--up)}.vs.connecting i{background:var(--cz)}.vs.unavailable{opacity:.55;text-decoration:line-through}
+.ctx{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;margin:0 0 14px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:13px}
+.ctx b{font-weight:700}.ctx .in.up{color:var(--up)}.ctx .in.down{color:var(--down)}
+#fl-ctx-zones{display:contents}
+.ctx .src{margin-left:auto;display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}.ctx .src select{height:28px;padding:0 6px;font-size:12px}.ctx .src select[hidden]{display:none}
+.fl-grid{display:grid;grid-template-columns:330px minmax(0,1fr) 300px;gap:14px;align-items:start}
+.card{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:12px 14px;min-width:0}
+.card h2{margin:0 0 8px;font-size:14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px}.card h2 .sub{color:var(--muted);font-size:11px;font-weight:500}
+.card h2 label{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;font-weight:500}.card h2 select{height:24px;padding:0 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font-size:11px}
+.card h2.gap{margin-top:16px}
+.wait{padding:30px 0;color:var(--muted);font-size:12px;text-align:center}.wait[hidden]{display:none}
+.ob-row{position:relative;display:grid;grid-template-columns:1fr 70px 52px;gap:6px;height:20px;align-items:center;padding:0 6px;font-size:12px}.ob-row[hidden]{display:none}
+.ob-row>i{position:absolute;top:2px;bottom:2px;right:0;border-radius:3px;opacity:.22;pointer-events:none;transition:width .2s ease}
+.ob-row.ask>i{background:var(--down)}.ob-row.bid>i{background:var(--up)}.ob-row.ask span:first-of-type{color:var(--down)}.ob-row.bid span:first-of-type{color:var(--up)}
+.ob-row span{position:relative}.ob-row .r{text-align:right}.ob-row .m{color:var(--muted)}
+.ob-row.wall{font-weight:700}.ob-row.wall>i{opacity:.55}
+.ob-row.z-support{box-shadow:inset 3px 0 0 var(--up);background:color-mix(in srgb,var(--up) 6%,transparent)}
+.ob-row.z-resistance{box-shadow:inset 3px 0 0 var(--down);background:color-mix(in srgb,var(--down) 6%,transparent)}
+.mid{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:4px 0;padding:6px 8px;border-radius:8px;background:var(--bg);font-size:12px}.mid[hidden]{display:none}.mid b{font-size:16px}
+.meter{margin-top:10px}.bar{display:flex;height:10px;border-radius:6px;overflow:hidden;gap:2px}.bar i{display:block;flex:1;transition:flex .4s ease}
+.bar .b{background:var(--up)}.bar .s{background:var(--down)}
+.lab{display:flex;justify-content:space-between;gap:8px;margin-top:4px;color:var(--muted);font-size:11px}
+.note{margin:8px 0 0;color:var(--muted);font-size:11px}
+.seg{display:inline-flex;padding:2px;border:1px solid var(--line);border-radius:8px}.seg button{padding:2px 8px;border:0;border-radius:6px;background:none;color:var(--muted);font-size:11px;font-weight:600;cursor:pointer}.seg button[aria-pressed=true]{background:var(--raise);color:var(--fg)}
+canvas{display:block;width:100%}#fl-cvd{height:220px}#fl-depth{height:160px}
+.legend{display:flex;gap:16px;margin-top:4px;color:var(--muted);font-size:11px}.legend i{display:inline-block;width:14px;margin-right:5px;vertical-align:middle;border-top:2px solid var(--accent)}.legend i.p{border-top:2px dashed var(--fg)}
+.flag{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;font-weight:600}
+.flag.muted{color:var(--muted)}.flag.on{border-color:color-mix(in srgb,var(--cz) 60%,transparent);color:var(--cz)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.kpis.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.kpis div{padding:8px 10px;border-radius:10px;background:var(--bg);color:var(--muted);font-size:11px}.kpis b{display:block;margin-top:2px;color:var(--fg);font-size:15px}.kpis b.up{color:var(--up)}.kpis b.down{color:var(--down)}
+.tape{font-size:11.5px}.tape>div{display:grid;grid-template-columns:86px minmax(0,1fr) 70px 30px;gap:6px;padding:3px 4px;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent)}.tape>div[hidden]{display:none}
+.tape .b{color:var(--up)}.tape .s{color:var(--down)}.tape .r{text-align:right}.tape .v{color:var(--muted)}.tape .big{background:color-mix(in srgb,var(--cz) 14%,transparent);font-weight:700}
+.split{margin:0 0 6px}.split .bar{height:8px}
+.gate{max-width:560px;margin:40px auto;padding:28px;border:1px solid var(--line);border-radius:16px;background:var(--panel);text-align:center}.gate[hidden]{display:none}
+.gate p{margin:0 0 16px}.gate a{display:inline-flex;align-items:center;height:38px;padding:0 18px;border-radius:10px;background:var(--accent);color:#06221d;font-weight:700;text-decoration:none}.gate a[hidden]{display:none}
+.fl-foot{margin:14px 0 0;color:var(--muted);font-size:11px;max-width:900px}
+#fl-app[hidden]{display:none}
+@media(max-width:1100px){.fl-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.fl-grid .center{grid-column:1/-1;order:-1}}
+@media(max-width:640px){.fl-grid{grid-template-columns:minmax(0,1fr)}.ctx .src{margin-left:0}.fl-ctl,.fl-venues{justify-content:flex-start}.fl-head h1 small{display:block;margin:4px 0 0}}
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/flow.js?v=3efb86c1" defer></script></head><body><div class="shell"><header>
+<a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<script>/* Keep the header in the saved language before the first paint. */
+(function(){var lang;try{lang=localStorage.getItem("mlm-lang")}catch(e){}if(lang!=="tr")return;document.documentElement.lang="tr";document.querySelectorAll("header [data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=el.dataset.tr});document.querySelectorAll("header [data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",el.dataset.hrefTr)});var sel=document.getElementById("lang");if(sel)sel.value="tr"})();
+</script>
+<main class="shell">
+<div class="fl-head"><h1><span id="fl-asset"></span> · <span data-fl="title">Live flow</span><small data-fl="sub">Spot · members only</small></h1>
+<div class="fl-ctl" id="fl-ctl" hidden><select class="fl-sel" id="fl-asset-sel" aria-label="Asset"></select><select class="fl-sel" id="fl-venue" aria-label="Venue"><option value="all">Combined: Binance · OKX · Coinbase</option><option value="binance">Binance</option><option value="okx">OKX</option><option value="coinbase">Coinbase</option></select><span class="live wait" id="fl-live"><i></i><span>…</span></span><div class="fl-venues" id="fl-venues"></div></div></div>
+<div class="gate" id="fl-gate" hidden><p id="fl-gate-msg"></p><a id="fl-gate-link" href="/account"></a></div>
+<div id="fl-app" hidden>
+<div class="ctx"><span><span data-fl="price">Price</span> <b class="num" id="fl-ctx-price">—</b></span><span id="fl-ctx-zones"></span><span class="src"><span id="fl-zsrc"></span><select class="fl-sel" id="fl-ztf" aria-label="Zone timeframe"></select></span></div>
+<div class="fl-grid">
+<section class="card"><h2><span data-fl="book">Order book</span><label><span data-fl="grouping">Grouping</span><select id="fl-group"></select></label></h2>
+<div id="fl-book-rows"><div class="mid" id="fl-mid" hidden><span><span data-fl="spread">Spread</span> <span class="num" id="fl-spread"></span></span><b class="num" id="fl-midp"></b></div></div>
+<div class="wait" id="fl-book-wait" data-fl="waiting">Waiting for data…</div>
+<div class="meter"><div class="bar"><i class="b" id="fl-bal-b"></i><i class="s" id="fl-bal-a"></i></div><div class="lab"><span id="fl-bal-bt"></span><span id="fl-bal-l"></span><span id="fl-bal-at"></span></div></div>
+<p class="note" data-fl="bookNote"></p></section>
+<section class="card center"><h2><span>CVD</span><span class="seg" id="fl-int"><button type="button" data-s="1" aria-pressed="false">1s</button><button type="button" data-s="5" aria-pressed="true">5s</button><button type="button" data-s="15" aria-pressed="false">15s</button><button type="button" data-s="60" aria-pressed="false">1m</button></span></h2>
+<canvas id="fl-cvd"></canvas>
+<div class="legend"><span><i></i><span data-fl="cvdLegend">CVD (session)</span></span><span><i class="p"></i><span data-fl="priceLegend">Price</span></span></div>
+<span class="flag muted" id="fl-div"></span>
+<div class="kpis"><div><span data-fl="cvdSession">CVD (session)</span><b class="num" id="fl-k-cvd">—</b></div><div><span data-fl="bs5"></span><b class="num" id="fl-k-5">—</b></div><div><span data-fl="bs15"></span><b class="num" id="fl-k-15">—</b></div></div>
+<h2 class="gap"><span data-fl="depth">Depth</span><span class="sub" id="fl-depth-sub"></span></h2>
+<canvas id="fl-depth"></canvas>
+<div class="kpis two"><div><span data-fl="r10"></span><b class="num" id="fl-r10">—</b></div><div><span data-fl="r25"></span><b class="num" id="fl-r25">—</b></div></div>
+</section>
+<section class="card"><h2><span data-fl="tape">Time &amp; Sales</span><span class="seg" id="fl-big"><button type="button" data-x="0" aria-pressed="true" data-fl="all">All</button><button type="button" data-x="2" aria-pressed="false">≥2×</button><button type="button" data-x="5" aria-pressed="false">≥5×</button><button type="button" data-x="10" aria-pressed="false">≥10×</button></span></h2>
+<div class="split"><div class="bar"><i class="b" id="fl-split-b"></i><i class="s" id="fl-split-s"></i></div><div class="lab"><span id="fl-split-bt"></span><span id="fl-split-n"></span><span id="fl-split-st"></span></div></div>
+<div class="tape" id="fl-tape"></div><div class="wait" id="fl-tape-wait" data-fl="waiting">Waiting for data…</div>
+</section>
+</div>
+<p class="fl-foot" data-fl="note"></p>
+</div>
+</main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+<script>
+var copy={en:{title:"Live flow"},tr:{title:"Canlı akış"}};
+function words(){return copy[document.getElementById("lang").value]||copy.en}
+function applyLanguage(value){
+  var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){if(t[el.dataset.i18n])el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+  document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
+  try{localStorage.setItem("mlm-lang",value)}catch(e){}
+}
+var lang=document.getElementById("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
+lang.value=savedLang==="tr"?"tr":"en";applyLanguage(lang.value);lang.addEventListener("change",function(){applyLanguage(this.value)});
+var toggle=document.getElementById("theme-toggle");
+function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+</script>
+</body></html>
