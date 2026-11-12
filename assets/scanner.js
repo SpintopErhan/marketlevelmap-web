@@ -264,7 +264,7 @@
         seg.addEventListener("click", function (e) { var b = e.target.closest("button[data-tf]"); if (b) setTf(b.dataset.tf); });
         setTf(tfs.indexOf(saved) > -1 ? saved : tfs.indexOf("1d") > -1 ? "1d" : tfs[0] || "1d");
         Object.keys(alarms).forEach(function (k) { var f = k.split("|")[1]; if (TF_ORDER.indexOf(f) > -1) loadTf(f); });
-        if (assets.length) MarketFeed.start(assets, { onData: function (sym, d) { var p = Number(d.c); if (!(p > 0)) return; prices[sym] = p; if (Number(d.o) > 0) opens[sym] = Number(d.o); dirty = true; checkAlarms(sym); } });
+        if (assets.length) MarketFeed.start(assets, { background: true, onData: function (sym, d) { var p = Number(d.c); if (!(p > 0)) return; prices[sym] = p; if (Number(d.o) > 0) opens[sym] = Number(d.o); dirty = true; checkAlarms(sym); } });
         bigStart(assets);
         syncNotify();
       });

@@ -19,6 +19,8 @@ var MarketFeed=(function(){
     var symbols=(list||[]).filter(function(s){return /^[A-Z0-9]{2,20}$/.test(s)});
     var state={},source=null,streaming=null,socket=null,streamIndex=0,retryTimer=null,pollTimer=null,polling=false,retryDelay=2000;
     var coinbasePairs={},rejectedPairs={},pending={},paintTimer=null,cache=window.MarketCache||null;
+    // handlers.background: keep streaming in a background tab (the scanner's alarms); other pages pause there.
+    var bg=!!handlers.background;function away(){return document.hidden&&!bg}
     if(!symbols.length)return{get:function(){return null},source:function(){return null}};
 
     function setSource(s){if(s&&source!==s){source=s;if(handlers.onSource)handlers.onSource(s)}}
@@ -45,14 +47,14 @@ var MarketFeed=(function(){
       }).catch(function(){return false});
     }
     function startPolling(){if(polling)return;polling=true;schedulePoll()}
-    function schedulePoll(){clearTimeout(pollTimer);if(!document.hidden&&polling)pollTimer=setTimeout(function(){snapshot().then(schedulePoll)},POLL_MS)}
+    function schedulePoll(){clearTimeout(pollTimer);if(!away()&&polling)pollTimer=setTimeout(function(){snapshot().then(schedulePoll)},POLL_MS)}
 
     // Coinbase sends a message per trade; apply at most once a second.
     function queue(d){pending[d.s]=d;if(!paintTimer)paintTimer=setTimeout(function(){paintTimer=null;var batch=pending;pending={};Object.keys(batch).forEach(function(k){merge(k,batch[k],"coinbase",true)})},COINBASE_PAINT_MS)}
     function coinbaseProducts(){var bySymbol={};symbols.forEach(function(sym){var id=coinbasePairs[sym]||sym.replace(/USDT$/,"")+"-USD";if(!rejectedPairs[id])bySymbol[sym]=id});return bySymbol}
 
     function connect(){
-      if(document.hidden||socket||polling)return;
+      if(away()||socket||polling)return;
       var stream=STREAMS[streamIndex],ws,ready=false,symbolOf={};
       var url=stream.kind==="binance"?stream.url+symbols.map(function(s){var l=s.toLowerCase();return [l+"@miniTicker",l+"@kline_1d",l+"@kline_1w",l+"@kline_1M"].join("/")}).join("/"):stream.url;
       try{ws=socket=new WebSocket(url)}catch(e){socket=null;return streamFailed()}
@@ -77,7 +79,7 @@ var MarketFeed=(function(){
         else if(m.type==="error"){var why=String(m.reason||"")+" "+String(m.message||"");Object.keys(symbolOf).forEach(function(id){if(why.indexOf(id)>-1)rejectedPairs[id]=true})}
       };
       ws.onerror=function(){try{ws.close()}catch(e){}};
-      ws.onclose=function(){clearTimeout(giveUp);if(socket===ws){socket=null;streaming=null}if(document.hidden)return;if(ready){retryTimer=setTimeout(connect,retryDelay);retryDelay=Math.min(30000,retryDelay*2)}else streamFailed()};
+      ws.onclose=function(){clearTimeout(giveUp);if(socket===ws){socket=null;streaming=null}if(away())return;if(ready){retryTimer=setTimeout(connect,retryDelay);retryDelay=Math.min(30000,retryDelay*2)}else streamFailed()};
     }
     function streamFailed(){
       streamIndex++;
@@ -102,6 +104,7 @@ var MarketFeed=(function(){
       probe.onclose=function(){clearTimeout(giveUp);if(!done){done=true;probeBinance(host+1)}};
     }
     document.addEventListener("visibilitychange",function(){
+      if(bg)return;
       clearTimeout(retryTimer);clearTimeout(pollTimer);
       if(document.hidden){if(socket){var ws=socket;socket=null;ws.onclose=null;ws.close()}return}
       snapshot();if(polling)schedulePoll();else connect();

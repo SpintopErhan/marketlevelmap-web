@@ -118,7 +118,7 @@
     try { ws = new WebSocket(url); } catch (e) { this.retryLater(); return; }
     this.ws = ws;
     ws.onopen = function () { if (self.ws === ws) { self.retry = 0; self.onopen(ws); } };
-    ws.onmessage = function (e) { if (self.ws !== ws) return; var m; try { m = JSON.parse(e.data); } catch (_) { return; } self.onmsg(m); };
+    ws.onmessage = function (e) { if (self.ws !== ws) return; var m; try { m = JSON.parse(e.data); } catch (_) { return; } self.onmsg(m); pulse(); };
     ws.onclose = function () { if (self.ws !== ws) return; self.ws = null; clearInterval(self.ping); self.retryLater(); };
     ws.onerror = function () {};
   };
@@ -267,7 +267,7 @@
           self.merge();
         }).catch(function () {});
       };
-      poll(); this.pollT = setInterval(poll, 5000);
+      poll(); this.lastPoll = Date.now(); this.pollT = setInterval(function () { self.lastPoll = Date.now(); poll(); }, 5000); this.poll = poll;
       fetch(BF + "/fapi/v1/fundingInfo", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (list) {
         var it = (list || []).filter(function (x) { return x.symbol === self.sym; })[0]; self.d.hrs = it && it.fundingIntervalHours > 0 ? it.fundingIntervalHours : 8;
       }).catch(function () { self.d.hrs = 8; });
@@ -280,7 +280,7 @@
     try { ws = new WebSocket("wss://fstream.binance.com/public/ws"); } catch (e) { return; }
     this.dws = ws;
     ws.onopen = function () { self.dretry = 0; ws.send(JSON.stringify({ method: "SUBSCRIBE", params: [self.sym.toLowerCase() + "@depth20@100ms"], id: 2 })); };
-    ws.onmessage = function (e) { if (self.dws !== ws) return; var m; try { m = JSON.parse(e.data); } catch (_) { return; } if (m && (m.e === "depthUpdate" || m.lastUpdateId)) self.depth(m.b || m.bids, m.a || m.asks); };
+    ws.onmessage = function (e) { if (self.dws !== ws) return; var m; try { m = JSON.parse(e.data); } catch (_) { return; } if (m && (m.e === "depthUpdate" || m.lastUpdateId)) self.depth(m.b || m.bids, m.a || m.asks); pulse(); };
     ws.onclose = function () { if (self.dws !== ws || self.stopped) return; self.dws = null; self.later(function () { self.openDepth(); }, Math.min(30000, 1000 * Math.pow(2, self.dretry = (self.dretry || 0) + 1))); };
   };
   BinanceF.prototype.depth = function (b, a) {
@@ -298,6 +298,8 @@
     this.bids = side(this.live.b, this.deep.b, true); this.asks = side(this.live.a, this.deep.a, false); this.top = null; dirty = true;
   };
   BinanceF.prototype.onmsg = function (m) {
+    // Timers of a background tab are slowed to once a minute; the stream keeps arriving, so it also drives the polls.
+    if (this.poll && Date.now() - this.lastPoll >= 5000) { this.lastPoll = Date.now(); this.poll(); }
     if (m.e === "aggTrade") trade(this, +m.p, +m.q, !m.m);
     else if (m.e === "markPriceUpdate") setD(this, { fr: num(m.r), next: num(m.T), index: num(m.i) });
     else if (m.e === "forceOrder" && m.o) { var o = m.o; liq(this, o.S === "SELL" ? "long" : "short", num(o.ap) || num(o.p), num(o.z) || num(o.q)); }
@@ -618,20 +620,37 @@
     $("fl-prem-d").textContent = "(" + (d >= 0 ? "+" : "−") + fmtPrice(Math.abs(d)) + " $" + (ref.id === "okx" ? " · OKX" : "") + ")";
   }
 
+  // ─── Background-safe tick ────────────────────────────────────────────────
+  // Browsers slow the timers of a background tab (Chrome and Opera: to once a minute after a while) but keep delivering
+  // WebSocket messages. Each message calls pulse(); once a second it samples what must not have gaps: the heatmap
+  // column, the zone the price is in and the open-interest series. The 1 s timer does the same while the tab is shown.
+  var lastTick = 0;
+  function pulse() { var now = Date.now(); if (now - lastTick >= 1000) { lastTick = now; tick(); } }
+  function tick() { var bs = bookState(); sampleHeat(bs); updateZone(bs); if (MARKET === "futures") sampleOi(bs ? bs.mid : trades.length ? trades[trades.length - 1].p : 0); }
+
   // ─── Liquidity heatmap ───────────────────────────────────────────────────
   // Every second: resting size of the shown venues per price bucket (1 bp of the price, rounded 1-2-5) within ±1%
   // (or as far as the books reach), kept for 60 minutes in memory only. Drawn as an image (one pixel per second and
   // bucket) scaled to the canvas, with the price line, big prints, liquidations and the analysis zones on top.
-  var HEAT_KEEP = 3600, heatStep = 0, heatWin = 30, heatRange = 0.005;
-  function sampleHeat() {
-    var bs = bookState(); if (!bs) return;
+  var HEAT_KEEP = 3600, heatStep = 0, heatWin = 30, heatRange = 0.005, heatLast = {}, heatRef = 0, heatRefRange = 0;
+  function sampleHeat(bs) {
+    if (!bs) return;
     if (!heatStep) heatStep = niceStep(bs.mid * 0.0001);
     var R = Math.min(0.01, Math.max.apply(null, bs.venues.map(function (o) { return o.cover; })));
     if (!(R > 0)) return;
-    var lo = Math.floor(bs.mid * (1 - R) / heatStep), hi = Math.ceil(bs.mid * (1 + R) / heatStep), a = new Float32Array(hi - lo + 1);
+    var lo = Math.floor(bs.mid * (1 - R) / heatStep), hi = Math.ceil(bs.mid * (1 + R) / heatStep), a = new Float32Array(hi - lo + 1), now = Date.now(), seen = {};
     bs.venues.forEach(function (o) {
-      function add(q, pr) { pr *= o.k; var i = Math.floor(pr / heatStep) - lo; if (i >= 0 && i < a.length) a[i] += q; }
+      var va = new Float32Array(a.length);
+      function add(q, pr) { pr *= o.k; var i = Math.floor(pr / heatStep) - lo; if (i >= 0 && i < va.length) va[i] += q; }
       o.v.bids.forEach(add); o.v.asks.forEach(add);
+      for (var i = 0; i < a.length; i++) a[i] += va[i];
+      heatLast[o.v.id] = { t: now, lo: lo, a: va }; seen[o.v.id] = 1;
+    });
+    // A venue whose book is briefly unusable (resync, reconnect) keeps its last column for up to 15 s, so the map does
+    // not flash darker and brighter.
+    selected().forEach(function (id) {
+      var L = heatLast[id]; if (seen[id] || !L || now - L.t > 15000) return;
+      for (var i = 0; i < L.a.length; i++) { var j = i + L.lo - lo; if (j >= 0 && j < a.length) a[j] += L.a[i]; }
     });
     var l = trades.length ? trades[trades.length - 1].p : bs.mid;
     heat.push({ t: Date.now(), b0: lo, a: a, p: bs.mid, l: l });
@@ -663,7 +682,10 @@
     var vals = [];
     cols.forEach(function (col, ci) { if (ci % 3) return; for (var r = r0; r <= r1; r += 2) { var v = col.a[r - col.b0]; if (v > 0) vals.push(v); } });
     vals.sort(function (x, y) { return x - y; });
-    var ref = vals.length ? vals[Math.floor(vals.length * 0.99)] : 1;
+    // The reference moves slowly toward the current 99th percentile, so the colours do not jump between frames.
+    var target = vals.length ? vals[Math.floor(vals.length * 0.99)] : 1;
+    heatRef = heatRef > 0 && heatRefRange === heatRange ? heatRef + (target - heatRef) * 0.08 : target; heatRefRange = heatRange;
+    var ref = heatRef;
     rampSet = lightTheme() ? RAMP_L : RAMP;
     heatImg.width = cols.length; heatImg.height = rows;
     var hg = heatImg.getContext("2d"), img = hg.createImageData(cols.length, rows), d = img.data;
@@ -726,7 +748,7 @@
     });
     document.addEventListener("fullscreenchange", function () { if (!document.fullscreenElement && card.classList.contains("fs")) setFull(false); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && card.classList.contains("fs") && !document.fullscreenElement) setFull(false); });
-    setInterval(function () { sampleHeat(); drawHeat(); }, 1000);
+    setInterval(function () { pulse(); drawHeat(); }, 1000);
   }
 
   // ─── Futures panels ──────────────────────────────────────────────────────
@@ -760,9 +782,7 @@
       var r = d.oi > 0 && v.oi0 > 0 ? d.oi / v.oi0 - 1 : null; td(r != null ? signPct(r, 1) : "—", "r num " + (r > 0 ? "up" : r < 0 ? "down" : ""));
       body.appendChild(tr);
     });
-    // Session series: every 5 s, open interest per venue and the price.
-    var lastS = oiS[oiS.length - 1];
-    if (p && (!lastS || now - lastS.t >= 5000)) { var rec = { t: now, p: p, oi: {} }; ORDER.forEach(function (id) { if (venues[id] && venues[id].d.oi > 0) rec.oi[id] = venues[id].d.oi; }); oiS.push(rec); if (oiS.length > 1440) oiS.shift(); drawOi(); }
+    if (sampleOi(p)) drawOi();
     var read = $("ff-read"), ids = selected();
     function tot(r) { var s2 = 0, ok = true; ids.forEach(function (id) { if (r.oi[id] > 0) s2 += r.oi[id]; else ok = false; }); return ok ? s2 : 0; }
     var a = oiS.filter(function (r) { return r.t <= now - 300000; }).pop(), b = oiS[oiS.length - 1];
@@ -771,6 +791,13 @@
     if (Math.abs(dOi) < 0.001) read.textContent = t.fFlat + move;
     else if (dOi > 0) read.textContent = (dP >= 0 ? t.fUpUp : t.fUpDn) + move;
     else read.textContent = (dP >= 0 ? t.fDnUp : t.fDnDn) + move;
+  }
+  // Session series: every 5 s, open interest per venue and the price.
+  function sampleOi(p) {
+    var now = Date.now(), lastS = oiS[oiS.length - 1];
+    if (!p || (lastS && now - lastS.t < 5000)) return false;
+    var rec = { t: now, p: p, oi: {} }; ORDER.forEach(function (id) { if (venues[id] && venues[id].d.oi > 0) rec.oi[id] = venues[id].d.oi; });
+    oiS.push(rec); if (oiS.length > 1440) oiS.shift(); return true;
   }
   function drawOi() {
     var c = $("ff-chart"); if (!c || document.hidden) return;
@@ -801,14 +828,17 @@
 
   // Flow in the zone: from the moment the price enters a band, buys and sells of the shown venues inside it.
   function zoneOf(p) { var best = null; zones.forEach(function (z) { if (p >= z.low && p <= z.high && (!best || z.high - z.low < best.high - best.low)) best = z; }); return best; }
+  function updateZone(bs) {
+    var last = trades.length ? trades[trades.length - 1] : null, p = bs ? bs.mid : last ? last.p : 0, now = Date.now();
+    if (!p) return;
+    var z = zoneOf(p);
+    if (z && !(zs && zs.active && zs.z === z)) zs = { z: z, since: now, p0: p, p1: p, v: {}, active: true };
+    else if (!z && zs && zs.active) { zs.active = false; zs.end = now; }
+    if (zs && zs.active) zs.p1 = p;
+  }
   function renderZoneFlow(bs) {
-    var t = w(), last = trades.length ? trades[trades.length - 1] : null, p = bs ? bs.mid : last ? last.p : 0, now = Date.now();
-    if (p) {
-      var z = zoneOf(p);
-      if (z && !(zs && zs.active && zs.z === z)) zs = { z: z, since: now, p0: p, p1: p, v: {}, active: true };
-      else if (!z && zs && zs.active) { zs.active = false; zs.end = now; }
-      if (zs && zs.active) zs.p1 = p;
-    }
+    var t = w(), now = Date.now();
+    updateZone(bs);
     var head = $("fl-zf-head"), body = $("fl-zf-body"), msg = $("fl-zf-msg");
     if (!zs) { body.hidden = true; msg.hidden = false; msg.textContent = zones.length ? t.zfNone : t.zfNoZones; head.textContent = ""; return; }
     var sup = zs.z.type === "support", typ = sup ? t.support : t.resistance, range = fmtPrice(zs.z.low) + " – " + fmtPrice(zs.z.high);
@@ -895,10 +925,10 @@
   }
   function stop() { ORDER.forEach(function (id) { if (venues[id]) venues[id].stop(); }); }
   var hideTimer = null;
+  // The flow keeps running in a background tab (no pause): coming back just redraws.
   document.addEventListener("visibilitychange", function () {
-    if (!ladder) return;
-    if (document.hidden) { hideTimer = setTimeout(function () { stop(); paused = true; }, 60000); }
-    else { clearTimeout(hideTimer); if (paused) start(); render(); }
+    if (!ladder || document.hidden) return;
+    dirty = true; render(); drawHeat();
   });
   window.addEventListener("pagehide", stop);
 

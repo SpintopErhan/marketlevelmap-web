@@ -68,7 +68,11 @@ cache previews per link, so a link shared before a change keeps its old card for
 Members only: guests get a sign-in card and registered/pending accounts a profile link (admins count as members).
 The gate is in the page, because the data never passes through our server: `assets/flow.js` opens the exchanges'
 public spot WebSockets in the visitor's browser, and nothing is stored or recorded. The session starts when the
-page opens; after a minute in the background the connections close, and coming back starts a new session.
+page opens and keeps running in a background tab. Browsers slow background timers (Chrome and Opera to once a
+minute), but WebSocket messages keep arriving, so each message drives a once-a-second tick (heatmap column, the zone
+the price is in, the open-interest series, Binance futures polls); drawing waits until the tab is shown again. A tab
+the browser freezes or discards (memory/energy saver) stops; keep the site active in the browser's settings or the
+page in its own unminimised window.
 
 - **Venues** — Binance (`<sym>@depth@100ms` kept in sync with a 5000-level REST snapshot, `aggTrade`),
   OKX (`books` 400 levels, `trades`), Coinbase Advanced Trade (`level2`, `market_trades`, `heartbeats`;
@@ -105,7 +109,9 @@ page opens; after a minute in the background the connections close, and coming b
   the shown venues is summed per price bucket (1 bp of the price, rounded 1-2-5) within ±1% (or as far as the books
   reach) and kept in memory for 60 minutes; nothing is stored. Window 15/30/60 min (30 by default; a younger session
   fills the width), price range ±0.1/0.25/0.5/1% around the price (±0.5% by default; −/+ buttons, the wheel in full
-  screen), brightness by the 99th percentile of the visible cells (power 0.9, so only clear walls glow; a dark ramp on
+  screen), brightness by the 99th percentile of the visible cells, approached gradually so colours do not jump
+  between frames (power 0.9, so only clear walls glow; a venue whose book is briefly unusable keeps its last
+  column for 15 s; a dark ramp on
   the light theme). A legend under the title explains the marks. On top: the price line, big trades (≥5× the venue's running average, circles), liquidations on futures
   (squares) and the Critical Zones bands. "Full screen" uses the Fullscreen API, else a fixed overlay.
 - **How to read** — a button next to the title and a "?" on every panel open one dialog (`HELP` in `flow.js`, TR/EN)
@@ -138,7 +144,8 @@ with their distance. Rows are sorted by closeness; the asset links to its live f
 
 - **Alarms** — the bell on a row: ring when the price enters a zone and/or leaves one (per asset and timeframe).
   They are kept in this browser only (`localStorage` `mlm-zone-alarms`) and ring while the page is open, also in a
-  background tab: a card on the page and, when allowed, a browser notification. Nothing is sent to our server.
+  background tab (the scanner starts the price feed with `background: true`, so it does not pause there): a card
+  on the page and, when allowed, a browser notification. Nothing is sent to our server.
 - **Big trades** — Binance `aggTrade` for every USDT asset in one public stream (`data-stream.binance.vision`, else
   `stream.binance.com`). aggTrades of one taker order (same time and side) are added up first; a print is listed
   when it is at least 5×/10×/20× (chosen) the asset's average print of the last 500 and at least $10K.
@@ -230,7 +237,8 @@ this browser saw (`assets/market-cache.js`, localStorage), then a snapshot from 
 (`functions/api/prices.js`, edge-cached 3 s), then opens a public WebSocket from the browser: Binance
 (miniTicker plus 1d/1w/1M klines for the daily, weekly and monthly opens) or, where Binance is blocked
 (e.g. the Netherlands, the US — Binance also refuses requests from Cloudflare), Coinbase's `ticker` channel
-(USD pair, else USDT). Only if no stream works does it refresh from `/api/prices` every 15 s. Live updates
+(USD pair, else USDT). Only if no stream works does it refresh from `/api/prices` every 15 s. In a background
+tab the feed closes and resumes on return, unless the page starts it with `background: true` (the scanner). Live updates
 never pass through Cloudflare. While Binance is marked unreachable (30 min) pages start on Coinbase but
 keep probing Binance and switch back when it answers.
 
