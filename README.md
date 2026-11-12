@@ -75,6 +75,8 @@ page opens; after a minute in the background the connections close, and coming b
   `BASE-USD`). Combined by default; one venue can be picked. In the combined book each venue's prices are scaled
   by the first live venue's mid over its own, so the USD book lines up with the USDT books. Coinbase's trade side
   is taken from its own book (at/above the ask = buy). A venue that does not list the asset is marked "not listed".
+- **Layout** — order book on the left, Time & Sales (30 rows) on the right; in the middle a 2×2 grid: CVD and depth,
+  then flow in the zone and the session volume profile (up to 16 rows). Futures panels sit above them.
 - **Order book** — 12 buckets each side (grouping 0.5 bp of the price rounded to 1-2-5 and three larger steps),
   notional per bucket, walls (≥3× the median bucket and ≥half the largest) in bold, buckets inside a Critical
   Zones band striped in the zone's colour, book balance within ±50 bp (narrower when the books do not reach).
@@ -96,6 +98,23 @@ page opens; after a minute in the background the connections close, and coming b
   zone stays shown until the next one.
 - **Session volume profile** — traded volume per price since the page opened (up to 24 rows, at least the book's
   grouping), the busiest level (POC) highlighted, rows inside a zone striped.
+
+- **Spot | Futures** — the switch at the top reloads the page with `&market=futures` (a new session). Futures uses
+  USDT perpetuals of Binance (USD-M: `aggTrade`, `markPrice@1s`, `forceOrder` on `fstream.binance.com/market/ws`,
+  top-20 `depth20@100ms` on `/public/ws` plus a 1000-level REST snapshot every 5 s beyond it, open interest from
+  `/fapi/v1/openInterest` every 5 s, funding interval from `/fapi/v1/fundingInfo`), OKX (`<BASE>-USDT-SWAP`; sizes
+  × `ctVal` from `/api/v5/public/instruments`; `books`, `trades`, `open-interest`, `funding-rate`, `index-tickers`,
+  `liquidation-orders`) and Bybit linear (`orderbook.1000`, `publicTrade`, `tickers`, `allLiquidation`). Every spot
+  panel works the same on futures data; on top of them:
+  - context bar: funding (open-interest weighted average of the shown venues), countdown to the next funding, total
+    open interest (coin and $), its change since the page opened, basis (perp mid − index price; Binance, else Bybit,
+    else OKX index). The Coinbase premium is spot only.
+  - **Funding and open interest** — per venue: funding, annualised (by the venue's interval, 8 h when unknown),
+    open interest and its session change; the session's open interest and price (sampled every 5 s); after 5 min a
+    one-line description of the last 5 min (OI change under 0.1% counts as flat).
+  - **Liquidations** — the venues' public liquidation feeds (long = forced sell, red; short = forced buy, green),
+    long/short totals of the last 15 min, ≥$100K highlighted. Exchanges publish only part of them (Binance at most one
+    per second per symbol), so totals are a floor; the page says so.
 
 ## Zone scanner
 
