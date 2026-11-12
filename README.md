@@ -101,6 +101,13 @@ page opens; after a minute in the background the connections close, and coming b
 - **Session volume profile** — traded volume per price since the page opened (up to 24 rows, at least the book's
   grouping), the busiest level (POC) highlighted, rows inside a zone striped.
 
+- **Liquidity heatmap** — full width above the other panels, on spot and futures. Every second the resting size of
+  the shown venues is summed per price bucket (1 bp of the price, rounded 1-2-5) within ±1% (or as far as the books
+  reach) and kept in memory for 60 minutes; nothing is stored. Window 15/30/60 min (30 by default; a younger session
+  fills the width), price range ±0.1/0.25/0.5/1% around the price (±0.5% by default; −/+ buttons, the wheel in full
+  screen), brightness by the 98th percentile of the visible cells (square-root curve; a dark ramp on the light
+  theme). On top: the price line, big trades (≥5× the venue's running average, circles), liquidations on futures
+  (squares) and the Critical Zones bands. "Full screen" uses the Fullscreen API, else a fixed overlay.
 - **Spot | Futures** — the switch at the top reloads the page with `&market=futures` (a new session). Futures uses
   USDT perpetuals of Binance (USD-M: `aggTrade`, `markPrice@1s`, `forceOrder` on `fstream.binance.com/market/ws`,
   top-20 `depth20@100ms` on `/public/ws` plus a 1000-level REST snapshot every 5 s beyond it, open interest from

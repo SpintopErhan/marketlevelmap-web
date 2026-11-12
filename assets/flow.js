@@ -39,6 +39,9 @@
       liq: "Liquidations", liqLong: "Long liquidations {v}", liqShort: "Short {v}", liq15: "last 15 min", liqWait: "No liquidations yet.",
       liqNote: "Long liquidation = forced sell (red); short liquidation = forced buy (green). Exchanges publish only part of them (Binance at most one per second per symbol), so totals are a floor.",
       noteF: "Live data from Binance, OKX and Bybit USDT perpetuals, read directly by your browser. Nothing is recorded; the flow stops when you leave the page. Prices are perpetual prices; zones come from the spot analysis. For information only, not a signal.",
+      heat: "Liquidity heatmap", heatSub: "resting orders by price over time · since the page opened", heatFull: "Full screen", heatExit: "Close",
+      heatNote: "Brighter = more resting orders at that price. Line: price; circles: big trades (≥5× average){liq}; bands: analysis zones. The map fills while the page is open.",
+      heatLiq: "; squares: liquidations", heatNow: "now", heatMin: "−{m} min", heatZoom: "Price range ±{r}",
       note: "Live data from Binance, OKX and Coinbase spot, read directly by your browser. Nothing is recorded; the flow stops when you leave the page. In the combined book, Coinbase (USD) prices are aligned to USDT. For information only, not a signal."
     },
     tr: {
@@ -74,6 +77,9 @@
       liq: "Likidasyonlar", liqLong: "Long likidasyon {v}", liqShort: "Short {v}", liq15: "son 15 dk", liqWait: "Henüz likidasyon yok.",
       liqNote: "Long likidasyon = zorla satış (kırmızı); short likidasyon = zorla alış (yeşil). Borsalar likidasyonların yalnızca bir kısmını yayınlar (Binance sembol başına saniyede en fazla bir), bu yüzden toplamlar alt sınırdır.",
       noteF: "Canlı veri: Binance, OKX ve Bybit USDT sürekli vadeli; doğrudan tarayıcınız okur. Hiçbir veri kaydedilmez; sayfadan çıkınca akış durur. Fiyatlar vadeli fiyatlarıdır; bölgeler spot analizinden gelir. Bilgi amaçlıdır, sinyal değildir.",
+      heat: "Likidite ısı haritası", heatSub: "fiyata göre bekleyen emirler, zaman içinde · sayfa açıldığından beri", heatFull: "Tam ekran", heatExit: "Kapat",
+      heatNote: "Daha parlak = o fiyatta daha çok bekleyen emir. Çizgi: fiyat; daireler: büyük işlemler (ortalamanın ≥5 katı){liq}; bantlar: analiz bölgeleri. Harita sayfa açık kaldıkça dolar.",
+      heatLiq: "; kareler: likidasyonlar", heatNow: "şimdi", heatMin: "−{m} dk", heatZoom: "Fiyat aralığı ±{r}",
       note: "Canlı veri: Binance, OKX ve Coinbase spot; doğrudan tarayıcınız okur. Hiçbir veri kaydedilmez; sayfadan çıkınca akış durur. Birleşik defterde Coinbase (USD) fiyatları USDT'ye hizalanır. Bilgi amaçlıdır, sinyal değildir."
     }
   };
@@ -364,7 +370,7 @@
   };
 
   // ─── Session data ────────────────────────────────────────────────────────
-  var venues = {}, trades = [], secs = [], mode = "all", base = "", started = 0, profile = {}, zs = null, liqs = [], oiS = [];
+  var venues = {}, trades = [], secs = [], mode = "all", base = "", started = 0, profile = {}, zs = null, liqs = [], oiS = [], heat = [], bigs = [], avgQ = {};
   function liq(v, side, p, q) { if (!(p > 0 && q > 0)) return; liqs.unshift({ v: v.id, side: side, p: p, q: q, t: Date.now() }); if (liqs.length > 500) liqs.pop(); dirty = true; }
   function trade(v, p, q, buy) {
     if (!(p > 0 && q > 0)) return;
@@ -380,6 +386,10 @@
     var vp = profile[v.id] || (profile[v.id] = { fine: niceStep(p * 0.00001), m: new Map() }), key = Math.round(p / vp.fine) * vp.fine;
     vp.m.set(key, (vp.m.get(key) || 0) + q);
     if (zs && zs.active) { var zv = zs.v[v.id] || (zs.v[v.id] = { bv: 0, sv: 0 }); if (buy) zv.bv += q; else zv.sv += q; }
+    // Big prints for the heatmap: at least 5× the venue's running average trade (after 50 trades).
+    var av = avgQ[v.id] || (avgQ[v.id] = { n: 0, m: 0 });
+    if (av.n >= 50 && q >= av.m * 5) { bigs.push({ t: now, p: p, q: q, buy: buy, v: v.id }); if (bigs.length > 3000) bigs.shift(); }
+    av.n++; av.m += (q - av.m) / Math.min(av.n, 500);
     dirty = true;
   }
   function selected() { return (mode === "all" ? ORDER : [mode]).filter(function (id) { return venues[id] && venues[id].status !== "unavailable"; }); }
@@ -606,6 +616,117 @@
     $("fl-prem-d").textContent = "(" + (d >= 0 ? "+" : "−") + fmtPrice(Math.abs(d)) + " $" + (ref.id === "okx" ? " · OKX" : "") + ")";
   }
 
+  // ─── Liquidity heatmap ───────────────────────────────────────────────────
+  // Every second: resting size of the shown venues per price bucket (1 bp of the price, rounded 1-2-5) within ±1%
+  // (or as far as the books reach), kept for 60 minutes in memory only. Drawn as an image (one pixel per second and
+  // bucket) scaled to the canvas, with the price line, big prints, liquidations and the analysis zones on top.
+  var HEAT_KEEP = 3600, heatStep = 0, heatWin = 30, heatRange = 0.005;
+  function sampleHeat() {
+    var bs = bookState(); if (!bs) return;
+    if (!heatStep) heatStep = niceStep(bs.mid * 0.0001);
+    var R = Math.min(0.01, Math.max.apply(null, bs.venues.map(function (o) { return o.cover; })));
+    if (!(R > 0)) return;
+    var lo = Math.floor(bs.mid * (1 - R) / heatStep), hi = Math.ceil(bs.mid * (1 + R) / heatStep), a = new Float32Array(hi - lo + 1);
+    bs.venues.forEach(function (o) {
+      function add(q, pr) { pr *= o.k; var i = Math.floor(pr / heatStep) - lo; if (i >= 0 && i < a.length) a[i] += q; }
+      o.v.bids.forEach(add); o.v.asks.forEach(add);
+    });
+    var l = trades.length ? trades[trades.length - 1].p : bs.mid;
+    heat.push({ t: Date.now(), b0: lo, a: a, p: bs.mid, l: l });
+    if (heat.length > HEAT_KEEP) heat.shift();
+  }
+  var RAMP = [[0, 0, 0, 0], [20, 70, 110, 120], [30, 150, 160, 200], [90, 210, 170, 235], [245, 210, 100, 250], [255, 250, 230, 255]];
+  // On the light theme a dark ramp (light teal to navy) reads better than the glow.
+  var RAMP_L = [[0, 0, 0, 0], [170, 215, 210, 110], [70, 175, 165, 190], [25, 115, 125, 230], [30, 55, 95, 250], [12, 22, 45, 255]];
+  function lightTheme() { var m = /#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(cssVar("--bg")); return m ? parseInt(m[1], 16) + parseInt(m[2], 16) + parseInt(m[3], 16) > 384 : false; }
+  var rampSet = RAMP;
+  function ramp(x) {
+    var RAMP = rampSet, f = Math.max(0, Math.min(1, x)) * (RAMP.length - 1), i = Math.min(RAMP.length - 2, Math.floor(f)), r = f - i, A = RAMP[i], B = RAMP[i + 1];
+    return [A[0] + (B[0] - A[0]) * r, A[1] + (B[1] - A[1]) * r, A[2] + (B[2] - A[2]) * r, A[3] + (B[3] - A[3]) * r];
+  }
+  var heatImg = document.createElement("canvas");
+  function drawHeat() {
+    var c = $("fl-heat"); if (!c || document.hidden) return;
+    var cv = sizeCanvas(c), g = cv.g, t = w(), now = Date.now(), win = heatWin * 60000;
+    // A young session fills the width: the window is the session's age (at least 30 s) up to the chosen one.
+    if (heat.length) win = Math.min(win, Math.max(30000, now - heat[0].t));
+    var cols = heat.filter(function (x) { return x.t > now - win; });
+    var axisW = 64, W = cv.w - axisW, H = cv.h - 16;
+    g.fillStyle = cssVar("--bg"); g.fillRect(0, 0, W, H);
+    $("fl-heat-zoom").textContent = fill(t.heatZoom, { r: pctText(heatRange, heatRange < 0.01 ? 1 : 0) });
+    if (cols.length < 2 || !heatStep) { g.fillStyle = cssVar("--muted"); g.font = "12px Inter, system-ui, sans-serif"; g.textAlign = "center"; g.fillText(t.waiting, W / 2, H / 2); return; }
+    var center = cols[cols.length - 1].p, top = center * (1 + heatRange), bot = center * (1 - heatRange);
+    var r0 = Math.floor(bot / heatStep), r1 = Math.ceil(top / heatStep), rows = r1 - r0 + 1;
+    // Scale: the 98th percentile of the visible non-empty cells is full brightness (square-root curve).
+    var vals = [];
+    cols.forEach(function (col, ci) { if (ci % 3) return; for (var r = r0; r <= r1; r += 2) { var v = col.a[r - col.b0]; if (v > 0) vals.push(v); } });
+    vals.sort(function (x, y) { return x - y; });
+    var ref = vals.length ? vals[Math.floor(vals.length * 0.98)] : 1;
+    rampSet = lightTheme() ? RAMP_L : RAMP;
+    heatImg.width = cols.length; heatImg.height = rows;
+    var hg = heatImg.getContext("2d"), img = hg.createImageData(cols.length, rows), d = img.data;
+    cols.forEach(function (col, x) {
+      for (var r = r0; r <= r1; r++) {
+        var v = col.a[r - col.b0]; if (!(v > 0)) continue;
+        var px = ramp(Math.sqrt(v / ref)), o = ((r1 - r) * cols.length + x) * 4;
+        d[o] = px[0]; d[o + 1] = px[1]; d[o + 2] = px[2]; d[o + 3] = px[3];
+      }
+    });
+    hg.putImageData(img, 0, 0);
+    var x0 = W * (1 - (now - cols[0].t) / win);
+    function X(tm) { return W * (1 - (now - tm) / win); }
+    function Y(pr) { return (top - pr) / (top - bot) * H; }
+    g.imageSmoothingEnabled = false;
+    g.drawImage(heatImg, 0, 0, cols.length, rows, x0, Y((r1 + 1) * heatStep), W - x0, Y(r0 * heatStep) - Y((r1 + 1) * heatStep));
+    // Zones.
+    zones.forEach(function (z) {
+      if (z.high < bot || z.low > top) return;
+      var col2 = z.type === "support" ? cssVar("--up") : cssVar("--down"), y1 = Y(Math.min(z.high, top)), y2 = Y(Math.max(z.low, bot));
+      g.globalAlpha = 0.08; g.fillStyle = col2; g.fillRect(0, y1, W, y2 - y1); g.globalAlpha = 0.7; g.strokeStyle = col2; g.setLineDash([5, 4]); g.lineWidth = 1;
+      [z.high, z.low].forEach(function (v2) { if (v2 <= top && v2 >= bot) { var yy = Math.round(Y(v2)) + 0.5; g.beginPath(); g.moveTo(0, yy); g.lineTo(W, yy); g.stroke(); } });
+      g.setLineDash([]); g.globalAlpha = 1;
+    });
+    // Price line.
+    g.beginPath(); g.strokeStyle = cssVar("--fg"); g.lineWidth = 1.5;
+    cols.forEach(function (col, i) { var xx = X(col.t), yy = Y(col.l); if (i) g.lineTo(xx, yy); else g.moveTo(xx, yy); }); g.stroke();
+    // Big prints of the shown venues and, on futures, liquidations.
+    var sel = selected(), up = cssVar("--up"), down = cssVar("--down"), maxN = 1;
+    var bp = bigs.filter(function (b) { return b.t > now - win && sel.indexOf(b.v) > -1 && b.p <= top && b.p >= bot; });
+    bp.forEach(function (b) { maxN = Math.max(maxN, b.q); });
+    bp.forEach(function (b) { g.beginPath(); g.arc(X(b.t), Y(b.p), 2 + 5 * Math.sqrt(b.q / maxN), 0, Math.PI * 2); g.globalAlpha = 0.45; g.fillStyle = b.buy ? up : down; g.fill(); g.globalAlpha = 1; g.strokeStyle = b.buy ? up : down; g.stroke(); });
+    if (MARKET === "futures") liqs.forEach(function (l) {
+      if (l.t <= now - win || sel.indexOf(l.v) < 0 || l.p > top || l.p < bot) return;
+      var s2 = 3 + Math.min(8, Math.sqrt(l.p * l.q / 20000)); g.fillStyle = l.side === "long" ? down : up; g.fillRect(X(l.t) - s2 / 2, Y(l.p) - s2 / 2, s2, s2);
+    });
+    // Price axis and time labels.
+    g.fillStyle = cssVar("--panel"); g.fillRect(W, 0, axisW, cv.h); g.fillRect(0, H, W, 16);
+    g.fillStyle = cssVar("--muted"); g.font = "11px ui-monospace, Menlo, monospace"; g.textAlign = "left"; g.textBaseline = "middle";
+    var tickStep = niceStep((top - bot) / 6), d2 = Math.max(digits || 0, decimals(tickStep));
+    for (var v3 = Math.ceil(bot / tickStep) * tickStep; v3 <= top; v3 += tickStep) { var yy2 = Y(v3); g.fillRect(W, yy2, 4, 1); g.fillText(fmtPrice(v3, d2), W + 7, yy2); }
+    var last = cols[cols.length - 1].l; g.fillStyle = cssVar("--fg"); g.fillRect(W, Y(last) - 8, axisW, 16); g.fillStyle = cssVar("--bg"); g.font = "bold 11px ui-monospace, Menlo, monospace"; g.fillText(fmtPrice(last), W + 4, Y(last));
+    g.fillStyle = cssVar("--muted"); g.font = "11px Inter, system-ui, sans-serif"; g.textBaseline = "alphabetic";
+    g.textAlign = "left"; var wm = win / 60000, mt = function (m) { return fill(t.heatMin, { m: m >= 10 ? Math.round(m) : nf(m, 1) }); };
+    g.fillText(mt(wm), 2, cv.h - 3); g.textAlign = "center"; g.fillText(mt(wm / 2), W / 2, cv.h - 3); g.textAlign = "right"; g.fillText(t.heatNow, W - 2, cv.h - 3);
+  }
+  function setupHeat() {
+    var card = $("c-heat");
+    $("fl-heat-win").addEventListener("click", function (e) { var b = e.target.closest("button[data-w]"); if (!b) return; heatWin = +b.dataset.w; this.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); }); drawHeat(); });
+    var RANGES = [0.001, 0.0025, 0.005, 0.01];
+    function zoom(dir) { var i = RANGES.indexOf(heatRange) + dir; heatRange = RANGES[Math.max(0, Math.min(RANGES.length - 1, i))]; drawHeat(); }
+    $("fl-heat-in").addEventListener("click", function () { zoom(-1); });
+    $("fl-heat-out").addEventListener("click", function () { zoom(1); });
+    $("fl-heat").addEventListener("wheel", function (e) { if (!card.classList.contains("fs") && !document.fullscreenElement) return; e.preventDefault(); zoom(e.deltaY > 0 ? 1 : -1); }, { passive: false });
+    function setFull(on) { card.classList.toggle("fs", on); $("fl-heat-fs").textContent = on ? w().heatExit : w().heatFull; setTimeout(drawHeat, 50); }
+    $("fl-heat-fs").addEventListener("click", function () {
+      var on = !(card.classList.contains("fs"));
+      if (on && card.requestFullscreen) card.requestFullscreen().then(function () { setFull(true); }).catch(function () { setFull(true); });
+      else if (!on && document.fullscreenElement) document.exitFullscreen().catch(function () {}); else setFull(on);
+    });
+    document.addEventListener("fullscreenchange", function () { if (!document.fullscreenElement && card.classList.contains("fs")) setFull(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && card.classList.contains("fs") && !document.fullscreenElement) setFull(false); });
+    setInterval(function () { sampleHeat(); drawHeat(); }, 1000);
+  }
+
   // ─── Futures panels ──────────────────────────────────────────────────────
   function signPct(r, d) { var z = Math.abs(r) * 100 < 0.5 * Math.pow(10, -(d == null ? 2 : d)); return (z ? "" : r > 0 ? "+" : r < 0 ? "−" : "") + pctText(r, d); }
   function lastPrice(bs) { var l = trades.length ? trades[trades.length - 1] : null; return bs ? bs.mid : l ? l.p : 0; }
@@ -766,7 +887,7 @@
 
   // ─── Lifecycle ───────────────────────────────────────────────────────────
   function start() {
-    trades = []; secs = []; profile = {}; zs = null; liqs = []; oiS = []; started = Date.now(); paused = false;
+    trades = []; secs = []; profile = {}; zs = null; liqs = []; oiS = []; heat = []; bigs = []; avgQ = {}; started = Date.now(); paused = false;
     venues = MARKET === "futures" ? { binance: new BinanceF(base), okx: new OkxF(base), bybit: new BybitF(base) } : { binance: new Binance(base), okx: new Okx(base), coinbase: new Coinbase(base) };
     ORDER.forEach(function (id) { venues[id].connect(); });
   }
@@ -810,6 +931,8 @@
     var all = document.querySelector('#fl-venue option[value="all"]'); if (all) all.textContent = MARKET === "futures" ? t.venueAllF : t.venueAll;
     if (MARKET === "futures") { var sb = document.querySelector('[data-fl="sub"]'); if (sb) sb.textContent = t.subF; var nt = document.querySelector('.fl-foot'); if (nt) nt.textContent = t.noteF; }
     var pr = $("fl-prem"); if (pr) pr.title = t.premTitle;
+    var hn = $("fl-heat-note"); if (hn) hn.textContent = fill(t.heatNote, { liq: MARKET === "futures" ? t.heatLiq : "" });
+    var hf = $("fl-heat-fs"), hc = $("c-heat"); if (hf) hf.textContent = hc && hc.classList.contains("fs") ? t.heatExit : t.heatFull;
     document.title = "MarketLevelMap — " + (base ? base + " · " : "") + t.title;
     if (ladder) { dirty = true; render(); }
   }
@@ -858,7 +981,7 @@
       if (!base) { $("fl-gate").hidden = false; $("fl-gate-msg").dataset.fl = "notCrypto"; $("fl-gate-msg").textContent = w().notCrypto; $("fl-gate-link").hidden = true; return; }
       $("fl-app").hidden = false; $("fl-ctl").hidden = false;
       setupMarket(asset);
-      buildDom(); start(); setInterval(render, 250);
+      buildDom(); start(); setInterval(render, 250); setupHeat();
       fetch("/api/publication", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (body) {
         var entries = (body && body.entries) || [], assets = {};
         entries.forEach(function (e) { var a = MarketUI.assetOf(e); if (/^[A-Z0-9]{2,15}USDT$/.test(a)) assets[a] = 1; });
@@ -893,6 +1016,6 @@
     }
     applyWords();
   }
-  window.MLMFlow = { _state: function () { return { venues: venues, trades: trades, secs: secs, zones: zones, step: step, liqs: liqs, oiS: oiS, market: MARKET }; } };
+  window.MLMFlow = { _state: function () { return { venues: venues, trades: trades, secs: secs, zones: zones, step: step, liqs: liqs, oiS: oiS, market: MARKET, heat: heat, bigs: bigs, heatStep: heatStep }; } };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
