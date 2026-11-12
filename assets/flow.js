@@ -41,7 +41,7 @@
       noteF: "Live data from Binance, OKX and Bybit USDT perpetuals, read directly by your browser. Nothing is recorded; the flow stops when you leave the page. Prices are perpetual prices; zones come from the spot analysis. For information only, not a signal.",
       heat: "Liquidity heatmap", heatSub: "resting orders by price over time · since the page opened", heatFull: "Full screen", heatExit: "Close",
       heatNote: "Brighter = more resting orders at that price. Line: price; circles: big trades (≥5× average){liq}; bands: analysis zones. The map fills while the page is open.",
-      heatLiq: "; squares: liquidations", lgAbs: "Absorption", lgPull: "Pulled wall", lgBuy: "Big buy", lgSell: "Big sell", lgLiq: "Liquidation", lgZone: "Analysis zone", lgFew: "few", lgMany: "many resting orders", heatNow: "now", heatMin: "−{m} min", heatZoom: "Price range ±{r}",
+      heatLiq: "; squares: liquidations", pngBtn: "Save PNG", pngSub: "{market} · {venues} · {time} UTC", pngNote: "Live order flow · for information only, not investment advice", lgAbs: "Absorption", lgPull: "Pulled wall", lgBuy: "Big buy", lgSell: "Big sell", lgLiq: "Liquidation", lgZone: "Analysis zone", lgFew: "few", lgMany: "many resting orders", heatNow: "now", heatMin: "−{m} min", heatZoom: "Price range ±{r}",
       note: "Live data from Binance, OKX and Coinbase spot, read directly by your browser. Nothing is recorded; the flow stops when you leave the page. In the combined book, Coinbase (USD) prices are aligned to USDT. For information only, not a signal."
     },
     tr: {
@@ -79,7 +79,7 @@
       noteF: "Canlı veri: Binance, OKX ve Bybit USDT sürekli vadeli; doğrudan tarayıcınız okur. Hiçbir veri kaydedilmez; sayfadan çıkınca akış durur. Fiyatlar vadeli fiyatlarıdır; bölgeler spot analizinden gelir. Bilgi amaçlıdır, sinyal değildir.",
       heat: "Likidite ısı haritası", heatSub: "fiyata göre bekleyen emirler, zaman içinde · sayfa açıldığından beri", heatFull: "Tam ekran", heatExit: "Kapat",
       heatNote: "Daha parlak = o fiyatta daha çok bekleyen emir. Çizgi: fiyat; daireler: büyük işlemler (ortalamanın ≥5 katı){liq}; bantlar: analiz bölgeleri. Harita sayfa açık kaldıkça dolar.",
-      heatLiq: "; kareler: likidasyonlar", lgAbs: "Emilim", lgPull: "Çekilen duvar", lgBuy: "Büyük alış", lgSell: "Büyük satış", lgLiq: "Likidasyon", lgZone: "Analiz bölgesi", lgFew: "az", lgMany: "çok bekleyen emir", heatNow: "şimdi", heatMin: "−{m} dk", heatZoom: "Fiyat aralığı ±{r}",
+      heatLiq: "; kareler: likidasyonlar", pngBtn: "PNG indir", pngSub: "{market} · {venues} · {time} UTC", pngNote: "Canlı emir akışı · bilgi amaçlıdır, yatırım tavsiyesi değildir", lgAbs: "Emilim", lgPull: "Çekilen duvar", lgBuy: "Büyük alış", lgSell: "Büyük satış", lgLiq: "Likidasyon", lgZone: "Analiz bölgesi", lgFew: "az", lgMany: "çok bekleyen emir", heatNow: "şimdi", heatMin: "−{m} dk", heatZoom: "Fiyat aralığı ±{r}",
       note: "Canlı veri: Binance, OKX ve Coinbase spot; doğrudan tarayıcınız okur. Hiçbir veri kaydedilmez; sayfadan çıkınca akış durur. Birleşik defterde Coinbase (USD) fiyatları USDT'ye hizalanır. Bilgi amaçlıdır, sinyal değildir."
     }
   };
@@ -779,6 +779,7 @@
     var RANGES = [0.001, 0.0025, 0.005, 0.01];
     function zoom(dir) { var i = RANGES.indexOf(heatRange) + dir; heatRange = RANGES[Math.max(0, Math.min(RANGES.length - 1, i))]; drawHeat(); }
     $("fl-heat-in").addEventListener("click", function () { zoom(-1); });
+    $("fl-png").addEventListener("click", function () { drawHeat(); exportPng(); });
     $("fl-heat-out").addEventListener("click", function () { zoom(1); });
     $("fl-heat").addEventListener("wheel", function (e) { if (!card.classList.contains("fs") && !document.fullscreenElement) return; e.preventDefault(); zoom(e.deltaY > 0 ? 1 : -1); }, { passive: false });
     function setFull(on) { card.classList.toggle("fs", on); $("fl-heat-fs").textContent = on ? w().heatExit : w().heatFull; setTimeout(drawHeat, 50); }
@@ -790,6 +791,56 @@
     document.addEventListener("fullscreenchange", function () { if (!document.fullscreenElement && card.classList.contains("fs")) setFull(false); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && card.classList.contains("fs") && !document.fullscreenElement) setFull(false); });
     setInterval(function () { pulse(); drawHeat(); }, 1000);
+  }
+
+  // ─── PNG export (for X posts) ────────────────────────────────────────────
+  // 1600×900 in the page's theme: title, the context line, the heatmap, CVD and depth as drawn on the page, and the
+  // key figures (zone flow, CVD, buy/sell; futures: funding, OI, liquidations).
+  function exportPng() {
+    var t = w(), W = 1600, H = 900, c = document.createElement("canvas"); c.width = W; c.height = H;
+    var g = c.getContext("2d"), bg = cssVar("--bg"), panel = cssVar("--panel"), line = cssVar("--line"), fg = cssVar("--fg"), muted = cssVar("--muted"), font = " Inter, 'Segoe UI', system-ui, sans-serif";
+    function txt(s2, x, y, size, weight, color, align) { g.font = (weight || 500) + " " + size + "px" + font; g.fillStyle = color || fg; g.textAlign = align || "left"; g.textBaseline = "alphabetic"; g.fillText(s2, x, y); }
+    function fit(s2, size, weight, max) { g.font = (weight || 500) + " " + size + "px" + font; if (g.measureText(s2).width <= max) return s2; while (s2.length > 1 && g.measureText(s2 + "…").width > max) s2 = s2.slice(0, -1); return s2 + "…"; }
+    function box(x, y, bw, bh) { g.fillStyle = panel; g.fillRect(x, y, bw, bh); g.strokeStyle = line; g.lineWidth = 1; g.strokeRect(x + 0.5, y + 0.5, bw - 1, bh - 1); }
+    g.fillStyle = bg; g.fillRect(0, 0, W, H);
+    var now = new Date(), stamp = now.toISOString().slice(0, 16).replace("T", " ");
+    var vsel = $("fl-venue"), venuesText = vsel.options[vsel.selectedIndex] ? vsel.options[vsel.selectedIndex].textContent : "";
+    txt(base + " · " + t.title, 40, 58, 34, 700);
+    txt(fill(t.pngSub, { market: MARKET === "futures" ? t.futures : t.spot, venues: venuesText, time: stamp }), 40, 88, 17, 500, muted);
+    txt("MarketLevelMap", W - 40, 58, 26, 700, cssVar("--accent"), "right");
+    txt(t.pngNote, W - 40, 88, 14, 500, muted, "right");
+    // Context line: price, zone position, premium or futures figures, as on the page.
+    var ctx = [$("fl-ctx-price").textContent ? t.price + " " + $("fl-ctx-price").textContent : ""];
+    [].forEach.call($("fl-ctx-zones").children, function (e2) { ctx.push(e2.textContent.replace(/\s+/g, " ").trim()); });
+    if (MARKET === "futures") ["ff-fund", "ff-oich", "ff-basis"].forEach(function (id) { var e2 = $(id), lab = e2.previousElementSibling; ctx.push((lab ? lab.textContent + " " : "") + e2.textContent); });
+    else if (!$("fl-prem").hidden) ctx.push(t.prem + " " + $("fl-prem-v").textContent + " " + $("fl-prem-d").textContent);
+    box(40, 108, W - 80, 44); txt(fit(ctx.filter(Boolean).join("   ·   "), 16, 600, W - 120), 60, 137, 16, 600);
+    // Heatmap.
+    box(40, 166, W - 80, 430); txt(t.heat, 58, 194, 17, 700);
+    var hc = $("fl-heat"); try { g.drawImage(hc, 56, 206, W - 112, 378); } catch (e) {}
+    // CVD and depth.
+    var pw = 500;
+    box(40, 610, pw, 250); txt("CVD", 58, 638, 17, 700); try { g.drawImage($("fl-cvd"), 56, 650, pw - 32, 160); } catch (e) {}
+    txt(fit(t.cvdSession + " " + $("fl-k-cvd").textContent + "   " + $("fl-div").textContent, 13, 500, pw - 36), 58, 840, 13, 500, muted);
+    box(40 + pw + 20, 610, pw, 250); txt(t.depth + "  " + $("fl-depth-sub").textContent, 58 + pw + 20, 638, 17, 700); try { g.drawImage($("fl-depth"), 56 + pw + 20, 650, pw - 32, 160); } catch (e) {}
+    txt(t.r10 + " " + $("fl-r10").textContent + "    " + t.r25 + " " + $("fl-r25").textContent, 58 + pw + 20, 840, 13, 500, muted);
+    // Key figures.
+    var x3 = 40 + 2 * (pw + 20), w3 = W - 40 - x3, y = 638; box(x3, 610, w3, 250);
+    function row(label, value, color) { txt(fit(label, 13, 500, w3 * 0.55), x3 + 18, y, 13, 500, muted); txt(fit(value, 15, 700, w3 * 0.45 - 30), x3 + w3 - 18, y, 15, 700, color || fg, "right"); y += 28; }
+    txt(t.zf, x3 + 18, y, 17, 700); y += 30;
+    if (!$("fl-zf-body").hidden) {
+      txt(fit($("fl-zf-head").textContent, 12, 500, w3 - 36), x3 + 18, y, 12, 500, muted); y += 26;
+      row(t.zfCvd, $("fl-zf-c").textContent, $("fl-zf-c").classList.contains("up") ? cssVar("--up") : $("fl-zf-c").classList.contains("down") ? cssVar("--down") : fg);
+      if (!$("fl-zf-read").hidden) { txt(fit($("fl-zf-read").textContent, 13, 600, w3 - 36), x3 + 18, y, 13, 600, cssVar("--cz")); y += 28; }
+    } else { txt(fit($("fl-zf-msg").textContent, 13, 500, w3 - 36), x3 + 18, y, 13, 500, muted); y += 28; }
+    row(t.bs5, $("fl-k-5").textContent); row(t.bs15, $("fl-k-15").textContent);
+    if (MARKET === "futures") { row(t.fOi, $("ff-oi").textContent); row(t.liq + " (" + t.liq15 + ")", $("ff-lt").textContent.replace(/^[^0-9−+]*/, "L ") + " / " + $("ff-st").textContent.replace(/^[^0-9−+]*/, "S ")); }
+    c.toBlob(function (blob) {
+      if (!blob) return; var a = document.createElement("a"), url = URL.createObjectURL(blob);
+      a.href = url; a.download = "MarketLevelMap_" + base + "_" + (MARKET === "futures" ? "futures" : "spot") + "_flow_" + stamp.replace(/[-: ]/g, "").slice(0, 12) + ".png";
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 10000);
+    }, "image/png");
+    return c;
   }
 
   // ─── Futures panels ──────────────────────────────────────────────────────
@@ -1119,6 +1170,6 @@
     $("fl-help-close").addEventListener("click", function () { var d = $("fl-help"); if (d.close) d.close(); else d.removeAttribute("open"); });
     $("fl-help").addEventListener("click", function (e) { if (e.target === this && this.close) this.close(); });
   }
-  window.MLMFlow = { _state: function () { return { wallMarks: wallMarks, venues: venues, trades: trades, secs: secs, zones: zones, step: step, liqs: liqs, oiS: oiS, market: MARKET, heat: heat, bigs: bigs, heatStep: heatStep }; } };
+  window.MLMFlow = { _state: function () { return { exportPng: exportPng, wallMarks: wallMarks, venues: venues, trades: trades, secs: secs, zones: zones, step: step, liqs: liqs, oiS: oiS, market: MARKET, heat: heat, bigs: bigs, heatStep: heatStep }; } };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
