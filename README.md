@@ -54,6 +54,7 @@ cache previews per link, so a link shared before a change keeps its old card for
   key levels and earlier analyses. A switch at the top chooses the discipline: Critical Zones (default) or
   Price Action (`&method=pa`, see "Price Action view").
 - `flow.html?asset=BTCUSDT` — members-only live order flow (see "Live order flow").
+- `scanner.html` — members-only zone scanner, alarms and big trades (see "Zone scanner").
 - `weekly-events.html` — this/next week's events. `archive.html` — placeholder until archives are published.
 - `tr/hakkinda/`, `en/about/` — About: what the site is and why (approach and engine steps, what it offers,
   membership, analysis time, what it is not). `tr/rehber/`, `en/guide/` — Reading guide: what is on the chart
@@ -86,6 +87,34 @@ page opens; after a minute in the background the connections close, and coming b
   (≥5× highlighted), buy/sell share of the last 200 trades.
 - **Zones** — the latest Critical Zones report of the asset (1D first, other timeframes selectable): whether the
   price is inside a band, the nearest resistance above and support below.
+- **Coinbase premium** — Coinbase USD mid over Binance USDT mid (OKX when Binance is not reachable), in the
+  context bar, whatever venue is shown.
+- **Flow in the zone** — from the moment the price enters a band (the narrowest one it is in): buys, sells and CVD of
+  the shown venues inside it, resting orders inside the band on the zone's side (as far as the books reach), and
+  after 30 s a one-line description (buying lifts the price / is absorbed, selling pushes it down / is absorbed,
+  balanced within 5% of the volume; ±3 bp counts as a move). It resets when the price leaves the band; the last
+  zone stays shown until the next one.
+- **Session volume profile** — traded volume per price since the page opened (up to 24 rows, at least the book's
+  grouping), the busiest level (POC) highlighted, rows inside a zone striped.
+
+## Zone scanner
+
+`scanner.html` (`/scanner`), members only (same gate as the live flow). Every asset with a Critical Zones report
+on the chosen timeframe (4H/1D/1W, as published; remembered per browser): live price (`assets/market-feed.js`),
+status (inside the support/resistance zone, within 1% of the nearest resistance/support, between zones), a
+position bar from the support zone below to the resistance zone above, and the nearest resistance and support
+with their distance. Rows are sorted by closeness; the asset links to its live flow.
+
+- **Alarms** — the bell on a row: ring when the price enters a zone and/or leaves one (per asset and timeframe).
+  They are kept in this browser only (`localStorage` `mlm-zone-alarms`) and ring while the page is open, also in a
+  background tab: a card on the page and, when allowed, a browser notification. Nothing is sent to our server.
+- **Big trades** — Binance `aggTrade` for every USDT asset in one public stream (`data-stream.binance.vision`, else
+  `stream.binance.com`). aggTrades of one taker order (same time and side) are added up first; a print is listed
+  when it is at least 5×/10×/20× (chosen) the asset's average print of the last 500 and at least $10K.
+
+`assets/scanner.js` does all of it in the browser. The menu of every page (and the library template) links
+"Live flow" and "Scanner"; between 521 and 1180 px wide the menu takes its own row under the logo.
+
 
 ## Weekly outlook
 

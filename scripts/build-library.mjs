@@ -33,7 +33,7 @@ const WORDS = {
   tr: {
     guideTag: "Öne çıkan", guideTitle: "Grafik nasıl okunur?", guideCta: "Rehberi oku →",
     guideText: "Bir grafiği açtığınızda neye, hangi sırayla bakmalı? Beş adımlık kontrol listesi, gerçek örnekler ve sık yapılan okuma hataları.",
-    library: "Kütüphane", about: "Hakkında", market: "Piyasa", events: "Haftalık olaylar", language: "Dil",
+    library: "Kütüphane", about: "Hakkında", market: "Piyasa", events: "Haftalık olaylar", flow: "Canlı akış", scanner: "Tarayıcı", language: "Dil",
     titleSuffix: "MarketLevelMap Kütüphane", patternWord: "Formasyonu",
     libraryTitle: "Kütüphane",
     libraryLead: "Piyasa okuryazarlığı için temel kavramlar ve açıklamalar.",
@@ -64,7 +64,7 @@ const WORDS = {
   en: {
     guideTag: "Featured", guideTitle: "How to read a chart", guideCta: "Read the guide →",
     guideText: "What to look at, and in which order, when you open a chart: a five-step checklist, real examples and common reading mistakes.",
-    library: "Library", about: "About", market: "Market", events: "Weekly events", language: "Language",
+    library: "Library", about: "About", market: "Market", events: "Weekly events", flow: "Live flow", scanner: "Scanner", language: "Language",
     titleSuffix: "MarketLevelMap Library", patternWord: "Pattern",
     libraryTitle: "Library",
     libraryLead: "Core concepts and explanations for market literacy.",
@@ -366,7 +366,7 @@ function page({ lang, path, alternates, title, description, body, jsonLd }) {
   ].join("\n");
   const header = `<div class="shell"><header>
 <a href="/" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="${asset("assets/MarketLevelMap-mark-color.svg")}"><img class="logo logo-header" src="${asset("assets/MarketLevelMap-full-color.svg")}" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="${asset("assets/MarketLevelMap-mark-reverse.svg")}"><img class="logo logo-header" src="${asset("assets/MarketLevelMap-full-reverse.svg")}" alt="MarketLevelMap"></picture></a>
-<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="/">${w.market}</a><a href="/weekly-events">${w.events}</a><a href="${BASE[lang]}" aria-current="page">${w.library}</a><a href="${ABOUT[lang]}">${w.about}</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">${w.language}</label><select id="lang" data-href-tr="${esc(alternates.tr)}" data-href-en="${esc(alternates.en)}"><option value="en"${lang === "en" ? " selected" : ""}>EN</option><option value="tr"${lang === "tr" ? " selected" : ""}>TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="/">${w.market}</a><a href="/weekly-events">${w.events}</a><a href="/flow">${w.flow}</a><a href="/scanner">${w.scanner}</a><a href="${BASE[lang]}" aria-current="page">${w.library}</a><a href="${ABOUT[lang]}">${w.about}</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">${w.language}</label><select id="lang" data-href-tr="${esc(alternates.tr)}" data-href-en="${esc(alternates.en)}"><option value="en"${lang === "en" ? " selected" : ""}>EN</option><option value="tr"${lang === "tr" ? " selected" : ""}>TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>`;
   const footer = `<div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span>${esc(w.footer)}</span><br><button class="disclaimer-link" type="button" data-disclaimer>${esc(w.riskNotice)}</button></p></footer></div>`;
   return `<!doctype html>\n${GENERATED}\n<html lang="${lang}"><head>\n${head}\n</head><body>\n${header}\n<main class="shell lib"><div class="lib-layout">\n${libNav(lang, path)}\n<div class="lib-main">\n${body}\n</div></div></main>\n${footer}\n</body></html>\n`;

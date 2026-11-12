@@ -58,3 +58,6 @@ footer p{margin:0;line-height:1.75}
 
 /* Installed app (PWA) on notched phones: keep content out of the screen edges, notch and home bar. Zero elsewhere. */
 body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+/* Six menu items: between phone and wide desktop the menu takes its own row under the logo (as on phones). */
+.nav-links a{white-space:nowrap}
+@media(min-width:521px) and (max-width:1180px){header{display:grid;grid-template-columns:1fr auto;align-items:center;height:auto;padding-top:16px;row-gap:10px}.nav{display:contents}.controls{grid-column:2;grid-row:1;margin-left:0}.nav-links{grid-column:1/-1;grid-row:2;gap:24px;overflow-x:auto}.nav .nav-links a{padding:2px 0 10px;border-bottom:2px solid transparent;font-size:13px}.nav .nav-links a[aria-current="page"]{border-bottom-color:var(--accent)}}
