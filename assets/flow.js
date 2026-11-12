@@ -881,6 +881,16 @@
     var sel = $("fl-venue"); sel.textContent = "";
     ["all"].concat(ORDER).forEach(function (id) { var o = document.createElement("option"); o.value = id; o.textContent = id === "all" ? (fut ? w().venueAllF : w().venueAll) : NAME[id]; sel.appendChild(o); });
     $("ff-ctx").hidden = !fut; $("ff-panels").hidden = !fut;
+    if (fut) {
+      // Rearrange the same cards for futures (see flow.html "Futures:" styles).
+      var grid = document.querySelector(".fl-grid"), top = document.createElement("div"), bot = document.createElement("div"), col = document.createElement("div");
+      top.className = "fx-top"; bot.className = "fx-bot"; col.className = "fx-col";
+      ["c-depth", "c-cvd", "c-vp", "c-liq"].forEach(function (id) { top.appendChild($(id)); });
+      ["c-zf", "c-fund"].forEach(function (id) { col.appendChild($(id)); });
+      bot.appendChild($("c-book")); bot.appendChild($("c-tape")); bot.appendChild(col);
+      grid.parentNode.insertBefore(top, grid); grid.parentNode.insertBefore(bot, grid);
+      grid.hidden = true; $("ff-panels").hidden = true; grid.style.display = "none";
+    }
     applyWords();
   }
   window.MLMFlow = { _state: function () { return { venues: venues, trades: trades, secs: secs, zones: zones, step: step, liqs: liqs, oiS: oiS, market: MARKET }; } };

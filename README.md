@@ -75,8 +75,10 @@ page opens; after a minute in the background the connections close, and coming b
   `BASE-USD`). Combined by default; one venue can be picked. In the combined book each venue's prices are scaled
   by the first live venue's mid over its own, so the USD book lines up with the USDT books. Coinbase's trade side
   is taken from its own book (at/above the ask = buy). A venue that does not list the asset is marked "not listed".
-- **Layout** — order book on the left, Time & Sales (30 rows) on the right; in the middle a 2×2 grid: CVD and depth,
-  then flow in the zone and the session volume profile (up to 16 rows). Futures panels sit above them.
+- **Layout** — spot: order book on the left, Time & Sales (30 rows) on the right; in the middle a 2×2 grid: CVD and
+  volume profile (up to 16 rows), then flow in the zone and depth. Futures: depth, CVD, volume profile and
+  liquidations across the top; below them order book, Time & Sales, and flow in the zone with funding and open
+  interest under it (`flow.js` moves the same cards into `.fx-top` / `.fx-bot`).
 - **Order book** — 12 buckets each side (grouping 0.5 bp of the price rounded to 1-2-5 and three larger steps),
   notional per bucket, walls (≥3× the median bucket and ≥half the largest) in bold, buckets inside a Critical
   Zones band striped in the zone's colour, book balance within ±50 bp (narrower when the books do not reach).
