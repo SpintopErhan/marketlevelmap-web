@@ -29,6 +29,16 @@
       zfMove: "price {p}, CVD {c}", zfNote: "The count resets when the price leaves the zone and starts again in the next one.",
       vp: "Session volume profile", vpSub: "since the page opened", vpPoc: "Busiest level (POC) {p}", vpZone: "stripe: levels inside an analysis zone",
       prem: "Coinbase premium", premTitle: "Coinbase USD mid against Binance USDT mid (OKX when Binance is not reachable)",
+      spot: "Spot", futures: "Futures", subF: "Futures · members only", venueAllF: "Combined: Binance · OKX · Bybit",
+      fFund: "Funding (avg.)", fNext: "Next funding", fOi: "Open interest", fOiCh: "OI change (session)", fBasis: "Basis (perp − index)",
+      fPanel: "Funding and open interest", fPerVenue: "per venue", fVenue: "Venue", fRate: "Funding", fYear: "Annual", fOiS: "Open interest", fSess: "Session Δ",
+      fOiLeg: "Open interest (session)", fPriceLeg: "Price", fReadWait: "Reading after 5 minutes of data",
+      fUpUp: "OI rising with the price: new positions on the buy side", fUpDn: "OI rising, price falling: new positions on the sell side",
+      fDnUp: "OI falling, price rising: shorts closing", fDnDn: "OI falling with the price: longs closing", fFlat: "No clear change in open interest",
+      fRead5: "last 5 min: OI {o}, price {p}",
+      liq: "Liquidations", liqLong: "Long liquidations {v}", liqShort: "Short {v}", liq15: "last 15 min", liqWait: "No liquidations yet.",
+      liqNote: "Long liquidation = forced sell (red); short liquidation = forced buy (green). Exchanges publish only part of them (Binance at most one per second per symbol), so totals are a floor.",
+      noteF: "Live data from Binance, OKX and Bybit USDT perpetuals, read directly by your browser. Nothing is recorded; the flow stops when you leave the page. Prices are perpetual prices; zones come from the spot analysis. For information only, not a signal.",
       note: "Live data from Binance, OKX and Coinbase spot, read directly by your browser. Nothing is recorded; the flow stops when you leave the page. In the combined book, Coinbase (USD) prices are aligned to USDT. For information only, not a signal."
     },
     tr: {
@@ -54,6 +64,16 @@
       zfMove: "fiyat {p}, CVD {c}", zfNote: "Fiyat bölgeden çıkınca sayaç sıfırlanır; sonraki bölgede yeniden başlar.",
       vp: "Oturum hacim profili", vpSub: "sayfa açıldığından beri", vpPoc: "En yoğun seviye (POC) {p}", vpZone: "şerit: analiz bölgesinin içindeki seviyeler",
       prem: "Coinbase primi", premTitle: "Coinbase USD orta fiyatı ile Binance USDT orta fiyatı arasındaki fark (Binance'e ulaşılamazsa OKX)",
+      spot: "Spot", futures: "Vadeli", subF: "Vadeli · üyelere özel", venueAllF: "Birleşik: Binance · OKX · Bybit",
+      fFund: "Fonlama (ort.)", fNext: "Sonraki fonlama", fOi: "Açık pozisyon", fOiCh: "AP değişimi (oturum)", fBasis: "Baz (perp − endeks)",
+      fPanel: "Fonlama ve açık pozisyon", fPerVenue: "borsa bazında", fVenue: "Borsa", fRate: "Fonlama", fYear: "Yıllık", fOiS: "Açık pozisyon", fSess: "Oturum Δ",
+      fOiLeg: "Açık pozisyon (oturum)", fPriceLeg: "Fiyat", fReadWait: "Okuma 5 dakikalık veriden sonra başlar",
+      fUpUp: "AP fiyatla birlikte artıyor: yeni pozisyonlar alış yönünde", fUpDn: "AP artıyor, fiyat düşüyor: yeni pozisyonlar satış yönünde",
+      fDnUp: "AP azalıyor, fiyat yükseliyor: short pozisyonlar kapanıyor", fDnDn: "AP fiyatla birlikte azalıyor: long pozisyonlar kapanıyor", fFlat: "Açık pozisyonda belirgin değişim yok",
+      fRead5: "son 5 dk: AP {o}, fiyat {p}",
+      liq: "Likidasyonlar", liqLong: "Long likidasyon {v}", liqShort: "Short {v}", liq15: "son 15 dk", liqWait: "Henüz likidasyon yok.",
+      liqNote: "Long likidasyon = zorla satış (kırmızı); short likidasyon = zorla alış (yeşil). Borsalar likidasyonların yalnızca bir kısmını yayınlar (Binance sembol başına saniyede en fazla bir), bu yüzden toplamlar alt sınırdır.",
+      noteF: "Canlı veri: Binance, OKX ve Bybit USDT sürekli vadeli; doğrudan tarayıcınız okur. Hiçbir veri kaydedilmez; sayfadan çıkınca akış durur. Fiyatlar vadeli fiyatlarıdır; bölgeler spot analizinden gelir. Bilgi amaçlıdır, sinyal değildir.",
       note: "Canlı veri: Binance, OKX ve Coinbase spot; doğrudan tarayıcınız okur. Hiçbir veri kaydedilmez; sayfadan çıkınca akış durur. Birleşik defterde Coinbase (USD) fiyatları USDT'ye hizalanır. Bilgi amaçlıdır, sinyal değildir."
     }
   };
@@ -65,12 +85,14 @@
   function nf(v, d) { return Number(v).toLocaleString(locale(), { minimumFractionDigits: d, maximumFractionDigits: d }); }
   function pctText(r, d) { var s = nf(Math.abs(r) * 100, d == null ? 2 : d); return lang() === "tr" ? "%" + s : s + "%"; }
 
-  var ORDER = ["binance", "okx", "coinbase"], NAME = { binance: "Binance", okx: "OKX", coinbase: "Coinbase" }, SHORT = { binance: "BIN", okx: "OKX", coinbase: "CB" };
+  var MARKET = /[?&]market=futures(&|$)/.test(location.search) ? "futures" : "spot";
+  var ORDER = MARKET === "futures" ? ["binance", "okx", "bybit"] : ["binance", "okx", "coinbase"];
+  var NAME = { binance: "Binance", okx: "OKX", coinbase: "Coinbase", bybit: "Bybit" }, SHORT = { binance: "BIN", okx: "OKX", coinbase: "CB", bybit: "BYB" };
   var KEEP_SECS = 7200, KEEP_TRADES = 1500, ROWS = 12, TAPE_ROWS = 40;
   var dirty = true;
 
   // ─── Venues ──────────────────────────────────────────────────────────────
-  function Venue(id, base) { this.id = id; this.base = base; this.bids = new Map(); this.asks = new Map(); this.status = "connecting"; this.ws = null; this.timers = []; this.retry = 0; this.stopped = false; this.ready = false; }
+  function Venue(id, base) { this.id = id; this.base = base; this.d = {}; this.bids = new Map(); this.asks = new Map(); this.status = "connecting"; this.ws = null; this.timers = []; this.retry = 0; this.stopped = false; this.ready = false; }
   Venue.prototype.setStatus = function (s) { if (this.status !== s) { this.status = s; dirty = true; } };
   Venue.prototype.later = function (fn, ms) { var t = setTimeout(fn, ms); this.timers.push(t); };
   Venue.prototype.set = function (side, p, q) { p = +p; q = +q; if (!(p > 0)) return; var m = side === "b" ? this.bids : this.asks; if (q > 0) m.set(p, q); else m.delete(p); this.top = null; };
@@ -209,8 +231,141 @@
     }
   };
 
+  // ─── Futures venues (USDT perpetuals) ────────────────────────────────────
+  // Derivatives figures go to venue.d: oi (open interest, base coin), fr (funding rate), next (next funding, ms),
+  // hrs (funding interval), index (index price). Liquidations go to liq().
+  function num(x) { var n = Number(x); return isFinite(n) ? n : undefined; }
+  function setD(v, o) { Object.keys(o).forEach(function (k) { if (o[k] !== undefined && !(k !== "fr" && !(o[k] > 0))) v.d[k] = o[k]; }); if (v.d.oi > 0 && v.oi0 == null) v.oi0 = v.d.oi; dirty = true; }
+
+  // Binance USD-M: aggTrade, markPrice@1s (funding, index) and forceOrder on /market; top-20 depth on /public,
+  // with a 1000-level REST snapshot every 5 s beyond it; open interest polled every 10 s.
+  var BF = "https://fapi.binance.com";
+  function BinanceF(base) { Venue.call(this, "binance", base); this.sym = base + "USDT"; this.live = { b: new Map(), a: new Map() }; this.deep = { b: new Map(), a: new Map() }; }
+  BinanceF.prototype = Object.create(Venue.prototype);
+  BinanceF.prototype.connect = function () {
+    var self = this, s = this.sym.toLowerCase();
+    this.open("wss://fstream.binance.com/market/ws");
+    if (!this.dws) this.openDepth();
+    if (!this.polling) {
+      this.polling = true;
+      var poll = function () {
+        if (self.stopped) return;
+        fetch(BF + "/fapi/v1/openInterest?symbol=" + self.sym, { cache: "no-store" }).then(function (r) {
+          if (r.status === 400) { self.unavailable(); return null; } return r.ok ? r.json() : null;
+        }).then(function (b) { if (b) setD(self, { oi: num(b.openInterest) }); }).catch(function () {});
+        fetch(BF + "/fapi/v1/depth?symbol=" + self.sym + "&limit=1000", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
+          if (!b || !b.bids) return; self.deep.b = new Map(); self.deep.a = new Map();
+          b.bids.forEach(function (l) { if (+l[1] > 0) self.deep.b.set(+l[0], +l[1]); }); b.asks.forEach(function (l) { if (+l[1] > 0) self.deep.a.set(+l[0], +l[1]); });
+          self.merge();
+        }).catch(function () {});
+      };
+      poll(); this.pollT = setInterval(poll, 5000);
+      fetch(BF + "/fapi/v1/fundingInfo", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (list) {
+        var it = (list || []).filter(function (x) { return x.symbol === self.sym; })[0]; self.d.hrs = it && it.fundingIntervalHours > 0 ? it.fundingIntervalHours : 8;
+      }).catch(function () { self.d.hrs = 8; });
+    }
+    this.subs = [s + "@aggTrade", s + "@markPrice@1s", s + "@forceOrder"];
+  };
+  BinanceF.prototype.onopen = function (ws) { ws.send(JSON.stringify({ method: "SUBSCRIBE", params: this.subs, id: 1 })); };
+  BinanceF.prototype.openDepth = function () {
+    var self = this, ws; if (this.stopped) return;
+    try { ws = new WebSocket("wss://fstream.binance.com/public/ws"); } catch (e) { return; }
+    this.dws = ws;
+    ws.onopen = function () { self.dretry = 0; ws.send(JSON.stringify({ method: "SUBSCRIBE", params: [self.sym.toLowerCase() + "@depth20@100ms"], id: 2 })); };
+    ws.onmessage = function (e) { if (self.dws !== ws) return; var m; try { m = JSON.parse(e.data); } catch (_) { return; } if (m && (m.e === "depthUpdate" || m.lastUpdateId)) self.depth(m.b || m.bids, m.a || m.asks); };
+    ws.onclose = function () { if (self.dws !== ws || self.stopped) return; self.dws = null; self.later(function () { self.openDepth(); }, Math.min(30000, 1000 * Math.pow(2, self.dretry = (self.dretry || 0) + 1))); };
+  };
+  BinanceF.prototype.depth = function (b, a) {
+    var lb = new Map(), la = new Map();
+    (b || []).forEach(function (l) { if (+l[1] > 0) lb.set(+l[0], +l[1]); }); (a || []).forEach(function (l) { if (+l[1] > 0) la.set(+l[0], +l[1]); });
+    this.live = { b: lb, a: la }; this.merge(); this.ready = true; this.setStatus("live");
+  };
+  // The live top 20 inside its own range, the REST snapshot beyond it.
+  BinanceF.prototype.merge = function () {
+    function side(live, deep, isBid) {
+      if (!live.size) return new Map(deep);
+      var edge = isBid ? Infinity : 0; live.forEach(function (q, p) { edge = isBid ? Math.min(edge, p) : Math.max(edge, p); });
+      var out = new Map(live); deep.forEach(function (q, p) { if (isBid ? p < edge : p > edge) out.set(p, q); }); return out;
+    }
+    this.bids = side(this.live.b, this.deep.b, true); this.asks = side(this.live.a, this.deep.a, false); this.top = null; dirty = true;
+  };
+  BinanceF.prototype.onmsg = function (m) {
+    if (m.e === "aggTrade") trade(this, +m.p, +m.q, !m.m);
+    else if (m.e === "markPriceUpdate") setD(this, { fr: num(m.r), next: num(m.T), index: num(m.i) });
+    else if (m.e === "forceOrder" && m.o) { var o = m.o; liq(this, o.S === "SELL" ? "long" : "short", num(o.ap) || num(o.p), num(o.z) || num(o.q)); }
+  };
+  BinanceF.prototype.stop = function () {
+    Venue.prototype.stop.call(this); clearInterval(this.pollT); this.polling = false;
+    var d = this.dws; this.dws = null; if (d) try { d.close(); } catch (e) {}
+  };
+
+  // OKX USDT swaps: sizes are in contracts, so the contract value (ctVal) is read first.
+  function OkxF(base) { Venue.call(this, "okx", base); this.inst = base + "-USDT-SWAP"; this.ct = 0; }
+  OkxF.prototype = Object.create(Venue.prototype);
+  OkxF.prototype.connect = function () {
+    var self = this;
+    if (this.ct) { this.open("wss://ws.okx.com:8443/ws/v5/public"); return; }
+    fetch("https://www.okx.com/api/v5/public/instruments?instType=SWAP&instId=" + this.inst, { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
+      if (self.stopped) return;
+      if (b && Array.isArray(b.data) && !b.data.length) { self.unavailable(); return; }
+      var v = b && b.data && b.data[0] && Number(b.data[0].ctVal);
+      if (!(v > 0)) { self.retryLater(); return; }
+      self.ct = v; self.connect();
+    }).catch(function () { self.retryLater(); });
+  };
+  OkxF.prototype.onopen = function (ws) {
+    var i = this.inst;
+    ws.send(JSON.stringify({ op: "subscribe", args: [{ channel: "trades", instId: i }, { channel: "books", instId: i }, { channel: "open-interest", instId: i }, { channel: "funding-rate", instId: i }, { channel: "index-tickers", instId: i.replace(/-SWAP$/, "") }, { channel: "liquidation-orders", instType: "SWAP" }] }));
+    clearInterval(this.ping); this.ping = setInterval(function () { try { ws.send("ping"); } catch (e) {} }, 20000);
+  };
+  OkxF.prototype.onmsg = function (m) {
+    var self = this, ct = this.ct;
+    if (m.event === "error") { if (!this.ready) this.unavailable(); return; }
+    if (!m.arg || !Array.isArray(m.data)) return;
+    var ch = m.arg.channel;
+    if (ch === "books") {
+      if (m.action === "snapshot") { this.bids.clear(); this.asks.clear(); this.top = null; }
+      m.data.forEach(function (d) { (d.bids || []).forEach(function (l) { self.set("b", l[0], l[1] * ct); }); (d.asks || []).forEach(function (l) { self.set("a", l[0], l[1] * ct); }); });
+      this.ready = true; this.setStatus("live"); dirty = true;
+    } else if (ch === "trades") m.data.forEach(function (t) { trade(self, +t.px, +t.sz * ct, t.side === "buy"); });
+    else if (ch === "open-interest") m.data.forEach(function (d) { setD(self, { oi: num(d.oiCcy) }); });
+    else if (ch === "funding-rate") m.data.forEach(function (d) { var a = num(d.fundingTime), b = num(d.nextFundingTime); setD(self, { fr: num(d.fundingRate), next: a, hrs: a && b && b > a ? (b - a) / 3600000 : undefined }); });
+    else if (ch === "index-tickers") m.data.forEach(function (d) { setD(self, { index: num(d.idxPx) }); });
+    else if (ch === "liquidation-orders") m.data.forEach(function (it) {
+      if (it.instId !== self.inst) return;
+      (it.details || []).forEach(function (d) { liq(self, d.posSide === "long" || (d.posSide !== "short" && d.side === "sell") ? "long" : "short", +d.bkPx, +d.sz * ct); });
+    });
+  };
+
+  // Bybit linear: publicTrade, orderbook.1000 (snapshot + deltas), tickers (snapshot + changed fields), allLiquidation.
+  function BybitF(base) { Venue.call(this, "bybit", base); this.sym = base + "USDT"; }
+  BybitF.prototype = Object.create(Venue.prototype);
+  BybitF.prototype.connect = function () { this.open("wss://stream.bybit.com/v5/public/linear"); };
+  BybitF.prototype.onopen = function (ws) {
+    var s = this.sym; this.seq = 0;
+    ws.send(JSON.stringify({ op: "subscribe", args: ["publicTrade." + s, "orderbook.1000." + s, "tickers." + s, "allLiquidation." + s] }));
+    clearInterval(this.ping); this.ping = setInterval(function () { try { ws.send(JSON.stringify({ op: "ping" })); } catch (e) {} }, 20000);
+  };
+  BybitF.prototype.onmsg = function (m) {
+    var self = this;
+    if (m.op === "subscribe" && m.success === false) { if (!this.ready) this.unavailable(); return; }
+    if (!m.topic) return;
+    if (m.topic.indexOf("publicTrade.") === 0) (m.data || []).forEach(function (t) { trade(self, +t.p, +t.v, t.S === "Buy"); });
+    else if (m.topic.indexOf("orderbook.") === 0) {
+      var d = m.data || {};
+      if (m.type === "snapshot") { this.bids.clear(); this.asks.clear(); this.top = null; }
+      else if (this.seq && d.u > this.seq + 1) { this.clear(); var ws = this.ws, t = "orderbook.1000." + this.sym; if (ws) { ws.send(JSON.stringify({ op: "unsubscribe", args: [t] })); ws.send(JSON.stringify({ op: "subscribe", args: [t] })); } this.seq = 0; return; }
+      (d.b || []).forEach(function (l) { self.set("b", l[0], l[1]); }); (d.a || []).forEach(function (l) { self.set("a", l[0], l[1]); });
+      this.seq = d.u; this.ready = true; this.setStatus("live"); dirty = true;
+    } else if (m.topic.indexOf("tickers.") === 0) {
+      var x = m.data || {};
+      setD(this, { oi: num(x.openInterest), fr: x.fundingRate != null && x.fundingRate !== "" ? num(x.fundingRate) : undefined, next: num(x.nextFundingTime), hrs: num(x.fundingIntervalHour), index: num(x.indexPrice) });
+    } else if (m.topic.indexOf("allLiquidation.") === 0) (m.data || []).forEach(function (l) { liq(self, l.S === "Buy" ? "long" : "short", +l.p, +l.v); });
+  };
+
   // ─── Session data ────────────────────────────────────────────────────────
-  var venues = {}, trades = [], secs = [], mode = "all", base = "", started = 0, profile = {}, zs = null;
+  var venues = {}, trades = [], secs = [], mode = "all", base = "", started = 0, profile = {}, zs = null, liqs = [], oiS = [];
+  function liq(v, side, p, q) { if (!(p > 0 && q > 0)) return; liqs.unshift({ v: v.id, side: side, p: p, q: q, t: Date.now() }); if (liqs.length > 500) liqs.pop(); dirty = true; }
   function trade(v, p, q, buy) {
     if (!(p > 0 && q > 0)) return;
     var now = Date.now();
@@ -451,6 +606,76 @@
     $("fl-prem-d").textContent = "(" + (d >= 0 ? "+" : "−") + fmtPrice(Math.abs(d)) + " $" + (ref.id === "okx" ? " · OKX" : "") + ")";
   }
 
+  // ─── Futures panels ──────────────────────────────────────────────────────
+  function signPct(r, d) { return (r > 0 ? "+" : r < 0 ? "−" : "") + pctText(r, d); }
+  function lastPrice(bs) { var l = trades.length ? trades[trades.length - 1] : null; return bs ? bs.mid : l ? l.p : 0; }
+  function renderFutures(bs) {
+    var t = w(), sel = selected().map(function (id) { return venues[id]; }), p = lastPrice(bs), now = Date.now();
+    // Funding: open-interest weighted average of the shown venues; the nearest next funding.
+    var fw = 0, fs = 0, next = Infinity, oi = 0, oi0 = 0, any0 = false;
+    sel.forEach(function (v) {
+      var d = v.d; if (d.fr != null) { var wgt = d.oi > 0 ? d.oi : 1; fw += wgt; fs += d.fr * wgt; }
+      if (d.next > now && d.next < next) next = d.next;
+      if (d.oi > 0) { oi += d.oi; if (v.oi0 > 0) { oi0 += v.oi0; any0 = true; } }
+    });
+    var fr = fw ? fs / fw : null, el = $("ff-fund");
+    el.textContent = fr == null ? "—" : signPct(fr, 4); el.className = "num " + (fr > 0 ? "up" : fr < 0 ? "down" : "");
+    if (next < Infinity) { var sec = Math.max(0, Math.round((next - now) / 1000)); $("ff-next").textContent = [Math.floor(sec / 3600), Math.floor(sec / 60) % 60, sec % 60].map(function (x) { return String(x).padStart(2, "0"); }).join(":"); } else $("ff-next").textContent = "—";
+    $("ff-oi").textContent = oi > 0 ? fmtSize(oi) + " " + base + (p ? " · " + compact(oi * p) + " $" : "") : "—";
+    var ch = $("ff-oich"); if (any0 && oi0 > 0) { var dd = oi - oi0; ch.textContent = (dd >= 0 ? "+" : "−") + fmtSize(Math.abs(dd)) + " " + base + " (" + signPct(dd / oi0, 1) + ")"; ch.className = "num " + (dd > 0 ? "up" : dd < 0 ? "down" : ""); } else ch.textContent = "—";
+    var idxV = ["binance", "bybit", "okx"].map(function (id) { return venues[id] && venues[id].d.index; }).filter(function (x) { return x > 0; })[0];
+    $("ff-basis").textContent = idxV && bs ? (bs.mid - idxV >= 0 ? "+" : "−") + fmtPrice(Math.abs(bs.mid - idxV)) + " $ · " + signPct(bs.mid / idxV - 1, 3) : "—";
+    // Per-venue table.
+    var body = $("ff-rows"); body.textContent = "";
+    sel.forEach(function (v) {
+      var d = v.d, tr = document.createElement("tr"), hrs = d.hrs > 0 ? d.hrs : 8;
+      function td(text, cls) { var c = document.createElement("td"); c.className = cls || ""; c.textContent = text; tr.appendChild(c); }
+      td(NAME[v.id]); tr.firstChild.style.fontWeight = "700";
+      td(d.fr != null ? signPct(d.fr, 4) : "—", "r num " + (d.fr > 0 ? "up" : d.fr < 0 ? "down" : ""));
+      td(d.fr != null ? signPct(d.fr * 24 / hrs * 365, 1) : "—", "r num");
+      td(d.oi > 0 ? fmtSize(d.oi) + " " + base : "—", "r num");
+      var r = d.oi > 0 && v.oi0 > 0 ? d.oi / v.oi0 - 1 : null; td(r != null ? signPct(r, 1) : "—", "r num " + (r > 0 ? "up" : r < 0 ? "down" : ""));
+      body.appendChild(tr);
+    });
+    // Session series: every 5 s, open interest per venue and the price.
+    var lastS = oiS[oiS.length - 1];
+    if (p && (!lastS || now - lastS.t >= 5000)) { var rec = { t: now, p: p, oi: {} }; ORDER.forEach(function (id) { if (venues[id] && venues[id].d.oi > 0) rec.oi[id] = venues[id].d.oi; }); oiS.push(rec); if (oiS.length > 1440) oiS.shift(); drawOi(); }
+    var read = $("ff-read"), ids = selected();
+    function tot(r) { var s2 = 0, ok = true; ids.forEach(function (id) { if (r.oi[id] > 0) s2 += r.oi[id]; else ok = false; }); return ok ? s2 : 0; }
+    var a = oiS.filter(function (r) { return r.t <= now - 300000; }).pop(), b = oiS[oiS.length - 1];
+    if (!a || !b || !tot(a) || !tot(b)) { read.textContent = t.fReadWait; return; }
+    var dOi = tot(b) / tot(a) - 1, dP = b.p / a.p - 1, move = " (" + fill(t.fRead5, { o: signPct(dOi, 2), p: signPct(dP, 2) }) + ")";
+    if (Math.abs(dOi) < 0.001) read.textContent = t.fFlat + move;
+    else if (dOi > 0) read.textContent = (dP >= 0 ? t.fUpUp : t.fUpDn) + move;
+    else read.textContent = (dP >= 0 ? t.fDnUp : t.fDnDn) + move;
+  }
+  function drawOi() {
+    var c = $("ff-chart"); if (!c || document.hidden) return;
+    var cv = sizeCanvas(c), g = cv.g, ids = selected(), pts = oiS.map(function (r) { var s2 = 0, ok = true; ids.forEach(function (id) { if (r.oi[id] > 0) s2 += r.oi[id]; else ok = false; }); return { oi: ok ? s2 : 0, p: r.p }; }).filter(function (x) { return x.oi > 0; });
+    g.strokeStyle = cssVar("--line"); g.lineWidth = 1; for (var k = 1; k < 4; k++) { var y = Math.round(cv.h * k / 4) + 0.5; g.beginPath(); g.moveTo(0, y); g.lineTo(cv.w, y); g.stroke(); }
+    if (pts.length < 2) { g.fillStyle = cssVar("--muted"); g.font = "12px Inter, system-ui, sans-serif"; g.textAlign = "center"; g.fillText(w().waiting, cv.w / 2, cv.h / 2); return; }
+    function plot(key, color, dash, wd) {
+      var vals = pts.map(function (x) { return x[key]; }), mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals), sp = mx - mn || 1;
+      g.beginPath(); g.setLineDash(dash); g.strokeStyle = color; g.lineWidth = wd;
+      vals.forEach(function (v, i) { var x = i / (vals.length - 1) * cv.w, y = 6 + (1 - (v - mn) / sp) * (cv.h - 12); if (i) g.lineTo(x, y); else g.moveTo(x, y); }); g.stroke(); g.setLineDash([]);
+    }
+    plot("p", cssVar("--fg"), [4, 3], 1.2); plot("oi", cssVar("--cz"), [], 2);
+  }
+  function renderLiq() {
+    var t = w(), sel = selected(), now = Date.now(), L = 0, S = 0;
+    var list = liqs.filter(function (x) { return sel.indexOf(x.v) > -1; });
+    list.forEach(function (x) { if (x.t > now - 900000) { if (x.side === "long") L += x.p * x.q; else S += x.p * x.q; } });
+    $("ff-lb").style.flex = String(L + S ? L / (L + S) : 0.5); $("ff-sb").style.flex = String(L + S ? S / (L + S) : 0.5);
+    $("ff-lt").textContent = fill(t.liqLong, { v: compact(L) + " $" }); $("ff-st").textContent = fill(t.liqShort, { v: compact(S) + " $" });
+    var box = $("ff-liq"); box.textContent = ""; $("ff-liq-wait").hidden = list.length > 0;
+    list.slice(0, 14).forEach(function (x) {
+      var row = document.createElement("div"), d = new Date(x.t), n = x.p * x.q; row.className = n >= 100000 ? "big" : "";
+      [[String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0") + ":" + String(d.getSeconds()).padStart(2, "0"), "num v"], [SHORT[x.v], "v"],
+       [(x.side === "long" ? "LONG " : "SHORT ") + fmtPrice(x.p), "num " + (x.side === "long" ? "s" : "b")], [compact(n) + " $", "num r"]].forEach(function (c) { var sp = document.createElement("span"); sp.className = c[1]; sp.textContent = c[0]; row.appendChild(sp); });
+      box.appendChild(row);
+    });
+  }
+
   // Flow in the zone: from the moment the price enters a band, buys and sells of the shown venues inside it.
   function zoneOf(p) { var best = null; zones.forEach(function (z) { if (p >= z.low && p <= z.high && (!best || z.high - z.low < best.high - best.low)) best = z; }); return best; }
   function renderZoneFlow(bs) {
@@ -533,15 +758,16 @@
     frame++;
     var bs = renderBook(bookState());
     if (bs && digits == null) digits = window.MarketUI ? MarketUI.digitsFor(bs.mid) : 2;
-    renderContext(bs); renderTape(); renderStatus(); renderPremium(); renderZoneFlow(bs);
-    if (frame % 2 === 0 || dirty) { renderCvd(); renderDepth(bs); renderProfile(bs); }
+    renderContext(bs); renderTape(); renderStatus(); renderZoneFlow(bs);
+    if (MARKET === "futures") { renderFutures(bs); renderLiq(); } else renderPremium();
+    if (frame % 2 === 0 || dirty) { renderCvd(); renderDepth(bs); renderProfile(bs); if (MARKET === "futures" && frame % 8 === 0) drawOi(); }
     dirty = false;
   }
 
   // ─── Lifecycle ───────────────────────────────────────────────────────────
   function start() {
-    trades = []; secs = []; profile = {}; zs = null; started = Date.now(); paused = false;
-    venues = { binance: new Binance(base), okx: new Okx(base), coinbase: new Coinbase(base) };
+    trades = []; secs = []; profile = {}; zs = null; liqs = []; oiS = []; started = Date.now(); paused = false;
+    venues = MARKET === "futures" ? { binance: new BinanceF(base), okx: new OkxF(base), bybit: new BybitF(base) } : { binance: new Binance(base), okx: new Okx(base), coinbase: new Coinbase(base) };
     ORDER.forEach(function (id) { venues[id].connect(); });
   }
   function stop() { ORDER.forEach(function (id) { if (venues[id]) venues[id].stop(); }); }
@@ -581,7 +807,8 @@
   function applyWords() {
     var t = w();
     document.querySelectorAll("[data-fl]").forEach(function (el) { var v = t[el.dataset.fl]; if (typeof v === "string") el.textContent = v; });
-    var all = document.querySelector('#fl-venue option[value="all"]'); if (all) all.textContent = t.venueAll;
+    var all = document.querySelector('#fl-venue option[value="all"]'); if (all) all.textContent = MARKET === "futures" ? t.venueAllF : t.venueAll;
+    if (MARKET === "futures") { var sb = document.querySelector('[data-fl="sub"]'); if (sb) sb.textContent = t.subF; var nt = document.querySelector('.fl-foot'); if (nt) nt.textContent = t.noteF; }
     var pr = $("fl-prem"); if (pr) pr.title = t.premTitle;
     document.title = "MarketLevelMap — " + (base ? base + " · " : "") + t.title;
     if (ladder) { dirty = true; render(); }
@@ -630,6 +857,7 @@
       if (!member) { gate(user); return; }
       if (!base) { $("fl-gate").hidden = false; $("fl-gate-msg").dataset.fl = "notCrypto"; $("fl-gate-msg").textContent = w().notCrypto; $("fl-gate-link").hidden = true; return; }
       $("fl-app").hidden = false; $("fl-ctl").hidden = false;
+      setupMarket(asset);
       buildDom(); start(); setInterval(render, 250);
       fetch("/api/publication", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (body) {
         var entries = (body && body.entries) || [], assets = {};
@@ -637,11 +865,24 @@
         assets[asset] = 1;
         var sel = $("fl-asset-sel"); sel.textContent = "";
         Object.keys(assets).sort(MarketUI.byPopularity).forEach(function (a) { var o = document.createElement("option"); o.value = a; o.textContent = a; if (a === asset) o.selected = true; sel.appendChild(o); });
-        sel.onchange = function () { location.search = "?asset=" + encodeURIComponent(sel.value); };
+        sel.onchange = function () { location.search = "?asset=" + encodeURIComponent(sel.value) + (MARKET === "futures" ? "&market=futures" : ""); };
         loadZones(entries.filter(function (e) { return MarketUI.assetOf(e) === asset; }));
       }).catch(function () {});
     });
   }
-  window.MLMFlow = { _state: function () { return { venues: venues, trades: trades, secs: secs, zones: zones, step: step }; } };
+  // Spot | Futures switch (a new session: the page reloads with ?market=futures), venue list and futures panels.
+  function setupMarket(asset) {
+    var fut = MARKET === "futures";
+    document.documentElement.dataset.market = MARKET;
+    $("fl-market").querySelectorAll("button").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.dataset.m === MARKET));
+      b.addEventListener("click", function () { if (b.dataset.m !== MARKET) location.search = "?asset=" + encodeURIComponent(asset) + (b.dataset.m === "futures" ? "&market=futures" : ""); });
+    });
+    var sel = $("fl-venue"); sel.textContent = "";
+    ["all"].concat(ORDER).forEach(function (id) { var o = document.createElement("option"); o.value = id; o.textContent = id === "all" ? (fut ? w().venueAllF : w().venueAll) : NAME[id]; sel.appendChild(o); });
+    $("ff-ctx").hidden = !fut; $("ff-panels").hidden = !fut;
+    applyWords();
+  }
+  window.MLMFlow = { _state: function () { return { venues: venues, trades: trades, secs: secs, zones: zones, step: step, liqs: liqs, oiS: oiS, market: MARKET }; } };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
