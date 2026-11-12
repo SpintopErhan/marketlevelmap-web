@@ -88,7 +88,7 @@
   var MARKET = /[?&]market=futures(&|$)/.test(location.search) ? "futures" : "spot";
   var ORDER = MARKET === "futures" ? ["binance", "okx", "bybit"] : ["binance", "okx", "coinbase"];
   var NAME = { binance: "Binance", okx: "OKX", coinbase: "Coinbase", bybit: "Bybit" }, SHORT = { binance: "BIN", okx: "OKX", coinbase: "CB", bybit: "BYB" };
-  var KEEP_SECS = 7200, KEEP_TRADES = 1500, ROWS = 12, TAPE_ROWS = 40;
+  var KEEP_SECS = 7200, KEEP_TRADES = 1500, ROWS = 12, TAPE_ROWS = 30;
   var dirty = true;
 
   // ─── Venues ──────────────────────────────────────────────────────────────
@@ -607,7 +607,7 @@
   }
 
   // ─── Futures panels ──────────────────────────────────────────────────────
-  function signPct(r, d) { return (r > 0 ? "+" : r < 0 ? "−" : "") + pctText(r, d); }
+  function signPct(r, d) { var z = Math.abs(r) * 100 < 0.5 * Math.pow(10, -(d == null ? 2 : d)); return (z ? "" : r > 0 ? "+" : r < 0 ? "−" : "") + pctText(r, d); }
   function lastPrice(bs) { var l = trades.length ? trades[trades.length - 1] : null; return bs ? bs.mid : l ? l.p : 0; }
   function renderFutures(bs) {
     var t = w(), sel = selected().map(function (id) { return venues[id]; }), p = lastPrice(bs), now = Date.now();
@@ -668,7 +668,7 @@
     $("ff-lb").style.flex = String(L + S ? L / (L + S) : 0.5); $("ff-sb").style.flex = String(L + S ? S / (L + S) : 0.5);
     $("ff-lt").textContent = fill(t.liqLong, { v: compact(L) + " $" }); $("ff-st").textContent = fill(t.liqShort, { v: compact(S) + " $" });
     var box = $("ff-liq"); box.textContent = ""; $("ff-liq-wait").hidden = list.length > 0;
-    list.slice(0, 14).forEach(function (x) {
+    list.slice(0, 9).forEach(function (x) {
       var row = document.createElement("div"), d = new Date(x.t), n = x.p * x.q; row.className = n >= 100000 ? "big" : "";
       [[String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0") + ":" + String(d.getSeconds()).padStart(2, "0"), "num v"], [SHORT[x.v], "v"],
        [(x.side === "long" ? "LONG " : "SHORT ") + fmtPrice(x.p), "num " + (x.side === "long" ? "s" : "b")], [compact(n) + " $", "num r"]].forEach(function (c) { var sp = document.createElement("span"); sp.className = c[1]; sp.textContent = c[0]; row.appendChild(sp); });
@@ -725,8 +725,8 @@
     var box = $("fl-vp"), poc = $("fl-vp-poc");
     if (!pts.length) { box.textContent = ""; poc.textContent = t.waiting; return; }
     var lo = Infinity, hi = 0; pts.forEach(function (x) { if (x[0] < lo) lo = x[0]; if (x[0] > hi) hi = x[0]; });
-    var bucket = Math.max(step || 0, niceStep(Math.max((hi - lo) / 24, lo * 0.00001)));
-    var top = Math.ceil(hi / bucket) * bucket, n = Math.max(1, Math.min(24, Math.round((top - Math.floor(lo / bucket) * bucket) / bucket) + 1)), rows = new Array(n).fill(0);
+    var bucket = Math.max(step || 0, niceStep(Math.max((hi - lo) / 16, lo * 0.00001)));
+    var top = Math.ceil(hi / bucket) * bucket, n = Math.max(1, Math.min(16, Math.round((top - Math.floor(lo / bucket) * bucket) / bucket) + 1)), rows = new Array(n).fill(0);
     pts.forEach(function (x) { var i = Math.round((top - x[0]) / bucket); if (i >= 0 && i < n) rows[i] += x[1]; });
     var max = Math.max.apply(null, rows) || 1, pi = rows.indexOf(max), d = Math.max(digits || 0, decimals(bucket)), cur = bs ? bs.mid : 0;
     box.textContent = "";
