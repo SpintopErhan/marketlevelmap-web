@@ -1,13 +1,15 @@
-// Market context (README "Market context"): BTC and USDT dominance, total crypto market cap, ETH/BTC and the US dollar
-// index, for the analysis page card and the live flow panel. One request per visitor every few
-// minutes; the sources are asked at most once per CACHE_SECONDS at each edge location.
+// Market context (README "Market context"): BTC, ETH and USDT dominance, total crypto market cap, ETH/BTC, the US dollar
+// index, the US 10-year yield, S&P 500 and Nasdaq 100 futures, and gold and silver spot, for the analysis page card and
+// the live flow panel. One request per visitor every few minutes; the sources are asked at most once per CACHE_SECONDS at each edge location.
 //   CoinGecko /global            total market cap (USD), its 24 h change, market-cap shares (dominance)
-//   CoinGecko /simple/price      BTC and USDT market caps and 24 h changes, to work out the dominance 24 h ago
+//   CoinGecko /simple/price      BTC, ETH and USDT market caps and 24 h changes, to work out the dominance 24 h ago
 //   CoinPaprika /global, /tickers  the same figures when CoinGecko refuses the edge (it rate-limits shared IPs)
-//   CoinLore /global, /ticker      last fallback (free, no key): total cap and its change, BTC and USDT caps
+//   CoinLore /global, /ticker      last fallback (free, no key): total cap and its change, BTC, ETH and USDT caps
 //   Coinbase ETH-BTC /stats      ETH/BTC last and 24 h open (Binance refuses requests from Cloudflare)
 //   OKX ETH-BTC /market/ticker   the same when Coinbase refuses the edge (last, open24h)
-//   Yahoo Finance DX-Y.NYB       DXY, delayed about 15 minutes, closed at weekends
+//   Yahoo Finance DX-Y.NYB, ^TNX, ES=F, NQ=F   DXY, 10-year yield, S&P 500 and Nasdaq 100 futures (about 15 min delayed)
+//   Swissquote XAU/USD, XAG/USD  gold and silver spot (bid/ask mid); gold-api.com when it refuses. The day's change
+//                                comes from the COMEX futures (Yahoo GC=F, SI=F) against their previous close.
 // A source that fails leaves its fields null; the rest still answers (200 with `errors`).
 const CACHE_SECONDS = 180;
 const UA = { "User-Agent": "Mozilla/5.0 (compatible; MarketLevelMap/1.0)", Accept: "application/json" };
@@ -30,7 +32,7 @@ const num = (x) => { const n = Number(x); return Number.isFinite(n) ? n : null; 
 async function coingecko() {
   const [g, s] = await Promise.all([
     getJson("https://api.coingecko.com/api/v3/global"),
-    getJson("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=usd&include_market_cap=true&include_24hr_change=true").catch(() => null),
+    getJson("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd&include_market_cap=true&include_24hr_change=true").catch(() => null),
   ]);
   const d = g && g.data;
   if (!d || !d.total_market_cap) throw new Error("no global data");
@@ -46,13 +48,14 @@ async function coingecko() {
     }
     return { value: v, change };
   }
-  return { total: { usd: total, change: totalChg }, btc: dom("btc", "bitcoin"), usdt: dom("usdt", "tether") };
+  return { total: { usd: total, change: totalChg }, btc: dom("btc", "bitcoin"), eth: dom("eth", "ethereum"), usdt: dom("usdt", "tether") };
 }
-// CoinPaprika: total cap and its 24 h change from /global; BTC and USDT caps and their 24 h changes from /tickers.
+// CoinPaprika: total cap and its 24 h change from /global; BTC, ETH and USDT caps and their 24 h changes from /tickers.
 async function coinpaprika() {
-  const [g, b, u] = await Promise.all([
+  const [g, b, e, u] = await Promise.all([
     getJson("https://api.coinpaprika.com/v1/global"),
     getJson("https://api.coinpaprika.com/v1/tickers/btc-bitcoin").catch(() => null),
+    getJson("https://api.coinpaprika.com/v1/tickers/eth-ethereum").catch(() => null),
     getJson("https://api.coinpaprika.com/v1/tickers/usdt-tether").catch(() => null),
   ]);
   const total = num(g && g.market_cap_usd), totalChg = num(g && g.market_cap_change_24h);
@@ -64,12 +67,12 @@ async function coinpaprika() {
     const change = c != null && totalChg != null ? value - (cap / (1 + c / 100)) / (total / (1 + totalChg / 100)) * 100 : null;
     return { value, change };
   }
-  return { total: { usd: total, change: totalChg }, btc: dom(b), usdt: dom(u) };
+  return { total: { usd: total, change: totalChg }, btc: dom(b), eth: dom(e), usdt: dom(u) };
 }
-// CoinLore: /global gives total_mcap and mcap_change (24 h, %); /ticker/?id=90,518 BTC and USDT with market_cap_usd and
+// CoinLore: /global gives total_mcap and mcap_change (24 h, %); /ticker/?id=90,80,518 BTC, ETH and USDT with market_cap_usd and
 // percent_change_24h (price change, close to the cap change for both).
 async function coinlore() {
-  const [g, t] = await Promise.all([getJson("https://api.coinlore.net/api/global/"), getJson("https://api.coinlore.net/api/ticker/?id=90,518").catch(() => null)]);
+  const [g, t] = await Promise.all([getJson("https://api.coinlore.net/api/global/"), getJson("https://api.coinlore.net/api/ticker/?id=90,80,518").catch(() => null)]);
   const row = Array.isArray(g) ? g[0] : g, total = num(row && row.total_mcap), totalChg = num(row && row.mcap_change);
   if (!total) throw new Error("no global data");
   const by = {}; (Array.isArray(t) ? t : []).forEach((x) => { by[x.symbol] = x; });
@@ -80,8 +83,8 @@ async function coinlore() {
     return { value, change: c != null && totalChg != null ? value - (cap / (1 + c / 100)) / (total / (1 + totalChg / 100)) * 100 : null };
   }
   // CoinLore's market-cap change and the coins' 24 h changes do not line up, so its dominance change is left out.
-  const b = dom("BTC"), u = dom("USDT"); b.change = null; u.change = null;
-  return { total: { usd: total, change: totalChg }, btc: b, usdt: u };
+  const b = dom("BTC"), e = dom("ETH"), u = dom("USDT"); b.change = null; e.change = null; u.change = null;
+  return { total: { usd: total, change: totalChg }, btc: b, eth: e, usdt: u };
 }
 async function ethbtc() {
   const s = await getJson("https://api.exchange.coinbase.com/products/ETH-BTC/stats");
@@ -95,15 +98,39 @@ async function ethbtcOkx() {
   if (!last) throw new Error("no ETH-BTC");
   return { price: last, change: open ? (last / open - 1) * 100 : null };
 }
-async function dxy() {
-  let body = null;
+// Yahoo chart meta: the last price and the previous close (the change is against it).
+async function yahoo(symbol) {
+  let body = null, err = null;
   for (const host of ["query1", "query2"]) {
-    try { body = await getJson(`https://${host}.finance.yahoo.com/v8/finance/chart/DX-Y.NYB?range=1d&interval=5m`); break; } catch (e) { body = null; }
+    try { body = await getJson(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=1d&interval=5m`); break; } catch (e) { body = null; err = e; }
   }
   const m = body && body.chart && body.chart.result && body.chart.result[0] && body.chart.result[0].meta;
-  if (!m || !num(m.regularMarketPrice)) throw new Error("no DXY");
+  if (!m || !num(m.regularMarketPrice)) throw err || new Error(`no ${symbol}`);
   const price = num(m.regularMarketPrice), prev = num(m.chartPreviousClose) || num(m.previousClose);
-  return { price, change: prev ? (price / prev - 1) * 100 : null, time: m.regularMarketTime ? new Date(m.regularMarketTime * 1000).toISOString() : null };
+  return { price, prev, change: prev ? (price / prev - 1) * 100 : null, time: m.regularMarketTime ? new Date(m.regularMarketTime * 1000).toISOString() : null };
+}
+const dxy = async () => { const y = await yahoo("DX-Y.NYB"); return { price: y.price, change: y.change, time: y.time }; };
+const future = async (s) => { const y = await yahoo(s); return { price: y.price, change: y.change, time: y.time }; };
+// ^TNX is the yield in percent (older feeds quoted it times ten); the change is in basis points.
+async function us10y() {
+  const y = await yahoo("^TNX"), k = y.price > 20 ? 10 : 1;
+  return { value: y.price / k, changeBp: y.prev ? (y.price - y.prev) / k * 100 : null, time: y.time };
+}
+// Spot metal (XAU or XAG) in USD per ounce: Swissquote's public quote feed (mid of the first bid/ask), else gold-api.com.
+async function spot(sym) {
+  try {
+    const q = await getJson(`https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/${sym}/USD`);
+    const p = Array.isArray(q) && q[0] && Array.isArray(q[0].spreadProfilePrices) ? q[0].spreadProfilePrices[0] : null;
+    const bid = num(p && p.bid), ask = num(p && p.ask);
+    if (bid && ask) return { price: (bid + ask) / 2, src: "Swissquote" };
+  } catch (e) { /* next source */ }
+  const g = await getJson(`https://api.gold-api.com/price/${sym}`), price = num(g && g.price);
+  if (!price) throw new Error(`no ${sym}`);
+  return { price, src: "gold-api.com" };
+}
+async function metal(sym, fut) {
+  const [s, f] = await Promise.all([spot(sym), yahoo(fut).catch(() => null)]);
+  return { price: s.price, change: f ? f.change : null, src: s.src };
 }
 
 export async function onRequestGet(context) {
@@ -113,7 +140,10 @@ export async function onRequestGet(context) {
   if (cache) { const hit = await cache.match(key); if (hit) return hit; }
   const errors = [];
   const settle = (p, name) => p.catch((e) => { errors.push(`${name}: ${e && e.message ? e.message : e}`); return null; });
-  let [cg, eb, dx] = await Promise.all([settle(coingecko(), "coingecko"), settle(ethbtc(), "coinbase"), settle(dxy(), "yahoo")]);
+  let [cg, eb, dx, tn, es, nq, au, ag] = await Promise.all([
+    settle(coingecko(), "coingecko"), settle(ethbtc(), "coinbase"), settle(dxy(), "yahoo DXY"), settle(us10y(), "yahoo TNX"),
+    settle(future("ES=F"), "yahoo ES"), settle(future("NQ=F"), "yahoo NQ"), settle(metal("XAU", "GC=F"), "gold"), settle(metal("XAG", "SI=F"), "silver"),
+  ]);
   let domSource = cg ? "CoinGecko" : null;
   if (!cg) { cg = await settle(coinpaprika(), "coinpaprika"); if (cg) domSource = "CoinPaprika"; }
   if (!cg) { cg = await settle(coinlore(), "coinlore"); if (cg) domSource = "CoinLore"; }
@@ -123,15 +153,22 @@ export async function onRequestGet(context) {
     at: new Date().toISOString(),
     total: cg ? cg.total : null,
     btcDominance: cg ? cg.btc : null,
+    ethDominance: cg ? cg.eth : null,
     usdtDominance: cg ? cg.usdt : null,
     domSource,
     ethbtc: eb,
     ethSource,
     dxy: dx,
+    us10y: tn,
+    spx: es,
+    ndx: nq,
+    gold: au,
+    silver: ag,
+    metalSource: (au && au.src) || (ag && ag.src) || null,
     ...(errors.length ? { errors } : {}),
   };
   // A fully failed answer is cached for a short time only, so a source outage does not stick for minutes.
-  const response = json(body, cg || eb || dx ? CACHE_SECONDS : 30);
+  const response = json(body, cg || eb || dx || es || au ? CACHE_SECONDS : 30);
   if (cache) context.waitUntil(cache.put(key, response.clone()));
   return response;
 }

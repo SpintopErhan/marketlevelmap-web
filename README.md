@@ -91,9 +91,9 @@ page in its own unminimised window.
   "Gerçekleşen işlemler" (Time & Sales) 1×1…2×2; funding and OI 2×1/2×2/4×1; scanner 2×1…4×2; big trades 1×1…2×2), ↑ ↓ and hide (×); hidden panels can be added
   back, and "Reset to default" restores the default. Holes stay holes (no automatic packing). The layout is kept in
   `localStorage` `mlm-flow-layout-spot` / `-futures`. Defaults — futures: heatmap 3×1 and volume profile 1×1; CVD, depth,
-  trades, order book 1×1; liquidations 1×1, zone flow 1×1, funding and OI 2×1; scanner 2×1, big trades 1×1 and market
-  context 1×1. Spot: the same first two rows, then zone flow 2×1 and big trades 2×1, then the scanner 3×1 and market
-  context 1×1. A saved layout keeps its own sizes. Tablets use 2 columns (wider panels clipped to 2), phones one
+  trades, order book 1×1; liquidations 1×1, zone flow 1×1, funding and OI 2×1; scanner 2×2, big trades 1×2 and market
+  context 1×2. Spot: the same first two rows, then zone flow 2×1 and big trades 2×1, then the scanner 3×1 and market
+  context 1×2. A saved layout keeps its own sizes. Tablets use 2 columns (wider panels clipped to 2), phones one
   column in the chosen order. The order book and the volume profile show as many rows as their card fits.
 - **Order book** — 12 buckets each side (grouping 0.5 bp of the price rounded to 1-2-5 and three larger steps),
   notional per bucket, walls (≥3× the median bucket and ≥half the largest) in bold, buckets inside a Critical
@@ -315,25 +315,35 @@ same file.
 
 ## Market context
 
-General market figures, public: BTC dominance and USDT dominance (share of the total crypto market cap, with the change
-in percentage points over 24 h), ETH/BTC (24 h change), the total crypto market cap (24 h change) and the US dollar
-index DXY (change from the previous close; delayed about 15 minutes, closed at weekends).
+General market figures, public, in three groups:
+- **Crypto:** BTC, ETH and USDT dominance (share of the total crypto market cap, with the change in percentage points
+  over 24 h), the total crypto market cap and ETH/BTC (24 h changes).
+- **Macro** (Yahoo Finance, delayed about 15 minutes, change from the previous close): the US dollar index DXY, the US
+  10-year yield (`^TNX`, change in basis points), S&P 500 and Nasdaq 100 futures (`ES=F`, `NQ=F`).
+- **Commodities:** gold and silver spot in USD per ounce, from Swissquote's public quote feed (bid/ask mid), else
+  gold-api.com. Spot feeds give no previous close, so the day's change is the COMEX futures' (`GC=F`, `SI=F`) change
+  from their previous close; spot and futures move together, a few dollars apart.
 
 - `GET /api/market-context` (`functions/api/market-context.js`) collects them at the edge, cached 3 minutes (30 s when
-  every source failed): CoinGecko `/global` (total cap, its change, dominance) and `/simple/price` (BTC and USDT caps and
-  changes, to work out the dominance 24 h ago), else CoinPaprika `/global` and `/tickers/btc-bitcoin`, `/tickers/usdt-tether`
+  every source failed): CoinGecko `/global` (total cap, its change, dominance) and `/simple/price` (BTC, ETH and USDT caps and
+  changes, to work out the dominance 24 h ago), else CoinPaprika `/global` and `/tickers/btc-bitcoin`, `/eth-ethereum`, `/usdt-tether`
   (CoinGecko rate-limits shared server addresses; CoinPaprika answers 402 to them too), else CoinLore `/global` and
-  `/ticker/?id=90,518`, Coinbase `ETH-BTC/stats` (Binance refuses Cloudflare), else OKX `market/ticker?instId=ETH-BTC`
+  `/ticker/?id=90,80,518`, Coinbase `ETH-BTC/stats` (Binance refuses Cloudflare), else OKX `market/ticker?instId=ETH-BTC`
   (the browser asks Binance, then Coinbase, itself when both fail; `ethSource` names the one used), Yahoo Finance
-  `DX-Y.NYB` chart meta (query1, else query2). A failed source leaves its field `null` and is listed in `errors`.
-- `assets/market-context.js` fills `[data-mctx]`: the analysis
-  page's "Piyasa geneli / Market context" card in the side column (`card`), and the live flow's "Market context" panel
-  (`panel`, 1×1/1×2/2×1; last in both default layouts). It refreshes every 3 minutes while shown; the live flow panel
+  chart meta for `DX-Y.NYB`, `^TNX`, `ES=F`, `NQ=F`, `GC=F`, `SI=F` (query1, else query2), Swissquote
+  `public-quotes/bboquotes/instrument/XAU/USD` and `XAG/USD`, else gold-api.com `/price/XAU`, `/price/XAG`
+  (`metalSource`). A failed source leaves its field `null` and is listed in `errors`.
+- `assets/market-context.js` fills `[data-mctx]`: the home page's "Piyasa geneli / Market context" card in the side
+  column under the week's events and the analysis page's card in its side column (`card`), and the live flow's "Market
+  context" panel (`panel`, 1×1/1×2/2×1; last in both default layouts). The panel uses one-line rows and keeps the notes
+  behind a "Sources and notes" toggle, so every row fits a 1×1 panel; at 1×2 (the default) the rows are roomier and the
+  notes start open. It refreshes every 3 minutes while shown; the live flow panel
   asks for nothing while hidden (`MLMContext.setActive`). The browser asks CoinGecko itself first (the visitor's own
   address is not rate-limited like the edge) and keeps the endpoint's figures only when it cannot; with neither, it asks
   CoinLore. CoinLore's dominance change is left out (its market-cap
   change and the coins' 24 h changes do not line up), and its total counts fewer coins, so its dominance reads higher.
-  The card names the dominance source (`domSource`). DXY links to the library's dollar index page.
+  When the endpoint has no gold or silver, the browser asks gold-api.com (no day's change then). The card shows the
+  groups Crypto, Macro and Commodities and names the sources (`domSource`, `ethSource`, `metalSource`). DXY links to the library's dollar index page.
 
 ## Indicator summary
 
