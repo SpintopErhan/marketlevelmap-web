@@ -143,10 +143,13 @@ page in its own unminimised window.
 ## Flow summary
 
 `assets/flow-mini.js`, on the analysis page of USDT assets for members (not in the admin desk embed): a card at the
-top of the side column with the last 5 min buy/sell share and the session CVD (Binance spot `aggTrade`), funding and
-basis (`<sym>@markPrice@1s`), liquidations of the last 15 min (`<sym>@forceOrder`), the open-interest 1-hour change
-(`openInterestHist`), a one-line "last 5 min: price, CVD" and a link to the live flow. Read in the browser; nothing
-is stored.
+top of the side column with the last 5 min buy/sell share and the session CVD, funding and basis, liquidations of the
+last 15 min, the open-interest 1-hour change, a one-line "last 5 min: price, CVD" and a link to the live flow. One
+venue at a time, chosen on the card (Binance | OKX, remembered in `localStorage` `mlm-fm-venue`; switching closes the
+old sockets and starts over). Binance: spot `aggTrade`, USD-M `<sym>@markPrice@1s` and `<sym>@forceOrder`,
+`openInterestHist`. OKX: one socket with spot `trades`, swap `funding-rate`, `mark-price`, `index-tickers` and
+`liquidation-orders` (sizes × `ctVal`), and `rubik/stat/contracts/open-interest-volume` (5-minute periods) for the
+1-hour change. Read in the browser; nothing is stored.
 
 ## Zone scanner
 
