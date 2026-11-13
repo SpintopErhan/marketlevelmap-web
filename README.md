@@ -65,6 +65,8 @@ cache previews per link, so a link shared before a change keeps its old card for
 ## Live order flow
 
 `flow.html?asset=BTCUSDT` (`/flow`), linked as "Live flow" from the analysis page of USDT (crypto) assets.
+Opened without an asset (the menu link), it shows the asset and market (spot/futures) looked at last in this browser
+(`localStorage` `mlm-flow-last`; BTC spot the first time).
 Members only: guests get a sign-in card and registered/pending accounts a profile link (admins count as members).
 The gate is in the page, because the data never passes through our server: `assets/flow.js` opens the exchanges'
 public spot WebSockets in the visitor's browser, and nothing is stored or recorded. The session starts when the
