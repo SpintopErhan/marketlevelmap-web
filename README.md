@@ -91,7 +91,7 @@ page in its own unminimised window.
   "Gerçekleşen işlemler" (Time & Sales) 1×1…2×2; funding and OI 2×1/2×2/4×1; scanner 2×1…4×2; big trades 1×1…2×2), ↑ ↓ and hide (×); hidden panels can be added
   back, and "Reset to default" restores the default. Holes stay holes (no automatic packing). The layout is kept in
   `localStorage` `mlm-flow-layout-spot` / `-futures`. Defaults — futures: heatmap 3×1 and volume profile 1×1; CVD, depth,
-  trades, order book 1×1; liquidations 1×1, zone flow 1×1, funding and OI 2×1; scanner 2×1, big trades 1×1 and market
+  trades, order book 1×1; liquidations 1×1, zone flow 1×1, funding and OI 2×1; scanner 2×2, big trades 1×2 and market
   context 1×2. Spot: the same first two rows, then zone flow 2×1 and big trades 2×1, then the scanner 3×1 and market
   context 1×2. A saved layout keeps its own sizes. Tablets use 2 columns (wider panels clipped to 2), phones one
   column in the chosen order. The order book and the volume profile show as many rows as their card fits.
