@@ -53,6 +53,9 @@ cache previews per link, so a link shared before a change keeps its old card for
 - `bulletin.html?asset=BTCUSDT&tf=4h` — analysis page: 1H/4H/1D chart, note, support/resistance zones,
   key levels and earlier analyses. A switch at the top chooses the discipline: Critical Zones (default) or
   Price Action (`&method=pa`, see "Price Action view").
+- Home page **"For members"** section (under the table): the live flow, scanner and flow summary with sample
+  screenshots (`assets/members/*.jpg`, made from the test feeds) and a call to action that follows the account:
+  guests sign in to apply, applicants see their profile, members open the live flow.
 - `flow.html?asset=BTCUSDT` — members-only live order flow (see "Live order flow").
 - `scanner.html` — members-only zone scanner, alarms and big trades (see "Zone scanner").
 - `weekly-events.html` — this/next week's events. `archive.html` — placeholder until archives are published.
