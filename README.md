@@ -92,8 +92,8 @@ page in its own unminimised window.
   back, and "Reset to default" restores the default. Holes stay holes (no automatic packing). The layout is kept in
   `localStorage` `mlm-flow-layout-spot` / `-futures`. Defaults — futures: heatmap 3×1 and volume profile 1×1; CVD, depth,
   trades, order book 1×1; liquidations 1×1, zone flow 1×1, funding and OI 2×1; scanner 2×1, big trades 1×1 and market
-  context 1×1. Spot: the same first two rows, then zone flow 2×1 and big trades 2×1, then the scanner 3×1 and market
-  context 1×1. A saved layout keeps its own sizes. Tablets use 2 columns (wider panels clipped to 2), phones one
+  context 1×2. Spot: the same first two rows, then zone flow 2×1 and big trades 2×1, then the scanner 3×1 and market
+  context 1×2. A saved layout keeps its own sizes. Tablets use 2 columns (wider panels clipped to 2), phones one
   column in the chosen order. The order book and the volume profile show as many rows as their card fits.
 - **Order book** — 12 buckets each side (grouping 0.5 bp of the price rounded to 1-2-5 and three larger steps),
   notional per bucket, walls (≥3× the median bucket and ≥half the largest) in bold, buckets inside a Critical
@@ -336,7 +336,8 @@ General market figures, public, in three groups:
 - `assets/market-context.js` fills `[data-mctx]`: the home page's "Piyasa geneli / Market context" card in the side
   column under the week's events and the analysis page's card in its side column (`card`), and the live flow's "Market
   context" panel (`panel`, 1×1/1×2/2×1; last in both default layouts). The panel uses one-line rows and keeps the notes
-  behind a "Sources and notes" toggle, so every row fits a 1×1 panel. It refreshes every 3 minutes while shown; the live flow panel
+  behind a "Sources and notes" toggle, so every row fits a 1×1 panel; at 1×2 (the default) the rows are roomier and the
+  notes start open. It refreshes every 3 minutes while shown; the live flow panel
   asks for nothing while hidden (`MLMContext.setActive`). The browser asks CoinGecko itself first (the visitor's own
   address is not rate-limited like the edge) and keeps the endpoint's figures only when it cannot; with neither, it asks
   CoinLore. CoinLore's dominance change is left out (its market-cap

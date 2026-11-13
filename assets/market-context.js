@@ -29,7 +29,7 @@
   function pct(v, d) { var s = nf(Math.abs(v), d); return lang() === "tr" ? "%" + s : s + "%"; }
   function signed(v, d, asPct) { if (v == null || !isFinite(v)) return ""; var z = Math.abs(v) < 0.5 * Math.pow(10, -d); return (z ? "" : v > 0 ? "+" : "−") + (asPct ? pct(v, d) : nf(Math.abs(v), d)); }
   function compact(v) { return Number(v).toLocaleString(loc(), { notation: "compact", maximumFractionDigits: 2 }) + " $"; }
-  var data = null, timer = null, active = { page: false, panel: false };
+  var notesOpen = null, data = null, timer = null, active = { page: false, panel: false };
 
   function items() {
     var t = w(), d = data || {}, out = [];
@@ -67,7 +67,13 @@
       });
       // The live flow panel keeps the notes behind a "Sources" toggle so all rows fit a 1×1 panel.
       var at = data.at ? new Date(data.at) : null, notes = box;
-      if (box.dataset.mctx === "panel") { notes = el("details"); notes.appendChild(el("summary", null, t.sources)); box.appendChild(notes); }
+      if (box.dataset.mctx === "panel") {
+        // Open by default when the panel is tall (1×2); a reader's own toggle is kept across refreshes.
+        box.classList.toggle("tall", box.clientHeight >= 500);
+        var sum = el("summary", null, t.sources), d = notes = el("details"); d.appendChild(sum); box.appendChild(d);
+        d.open = notesOpen != null ? notesOpen : box.classList.contains("tall");
+        sum.addEventListener("click", function () { notesOpen = !d.open; });
+      }
       notes.appendChild(el("p", "mctx-src", t.domNote));
       notes.appendChild(el("p", "mctx-src", t.src.replace("{d}", data.domSource || "—").replace("{e}", data.ethSource || "—").replace("{m}", data.metalSource || "—").replace("{t}", at ? at.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) : "—")));
     });
@@ -150,6 +156,6 @@
     new MutationObserver(function () { render(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
     render(); sync();
   }
-  window.MLMContext = { setActive: function (on) { active.panel = !!on; sync(); }, _state: function () { return { data: data, timer: !!timer, active: active }; } };
+  window.MLMContext = { setActive: function (on) { active.panel = !!on; sync(); if (on && data) render(); }, _state: function () { return { data: data, timer: !!timer, active: active }; } };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();

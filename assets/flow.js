@@ -1244,8 +1244,8 @@
     mkt: { id: "c-mkt", sizes: ["1x1", "1x2", "2x1"] }
   };
   var DEFAULTS = {
-    spot: [["heat", "3x1"], ["vp", "1x1"], ["cvd", "1x1"], ["depth", "1x1"], ["tape", "1x1"], ["book", "1x1"], ["zf", "2x1"], ["big", "2x1"], ["scan", "3x1"], ["mkt", "1x1"]],
-    futures: [["heat", "3x1"], ["vp", "1x1"], ["cvd", "1x1"], ["depth", "1x1"], ["tape", "1x1"], ["book", "1x1"], ["liq", "1x1"], ["zf", "1x1"], ["fund", "2x1"], ["scan", "2x1"], ["big", "1x1"], ["mkt", "1x1"]]
+    spot: [["heat", "3x1"], ["vp", "1x1"], ["cvd", "1x1"], ["depth", "1x1"], ["tape", "1x1"], ["book", "1x1"], ["zf", "2x1"], ["big", "2x1"], ["scan", "3x1"], ["mkt", "1x2"]],
+    futures: [["heat", "3x1"], ["vp", "1x1"], ["cvd", "1x1"], ["depth", "1x1"], ["tape", "1x1"], ["book", "1x1"], ["liq", "1x1"], ["zf", "1x1"], ["fund", "2x1"], ["scan", "2x1"], ["big", "1x1"], ["mkt", "1x2"]]
   };
   var layout = null, LKEY = "mlm-flow-layout-" + MARKET;
   function panelKeys() { return Object.keys(PANELS).filter(function (k) { return !PANELS[k].fut || MARKET === "futures"; }); }
