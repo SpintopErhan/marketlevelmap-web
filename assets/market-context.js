@@ -6,10 +6,10 @@
   "use strict";
   var W = {
     en: { btcDom: "BTC dominance", usdtDom: "USDT dominance", total: "Total crypto market cap", ethbtc: "ETH/BTC", dxy: "US dollar index (DXY)",
-      pts: "{v} pts", h24: "24 h", noData: "no data", delayed: "delayed ~15 min", src: "Sources: CoinGecko or CoinPaprika, Coinbase, Yahoo Finance (DXY delayed about 15 minutes). Updated {t}.",
+      pts: "{v} pts", h24: "24 h", noData: "no data", delayed: "delayed ~15 min", src: "Sources: CoinGecko, CoinPaprika or CoinLore, Coinbase, Yahoo Finance (DXY delayed about 15 minutes). Updated {t}.",
       domNote: "Dominance: the coin's share of the total crypto market cap; the change is in percentage points over 24 h." },
     tr: { btcDom: "BTC dominansı", usdtDom: "USDT dominansı", total: "Toplam kripto piyasa değeri", ethbtc: "ETH/BTC", dxy: "Dolar endeksi (DXY)",
-      pts: "{v} puan", h24: "24 sa", noData: "veri yok", delayed: "~15 dk gecikmeli", src: "Kaynaklar: CoinGecko ya da CoinPaprika, Coinbase, Yahoo Finance (DXY yaklaşık 15 dakika gecikmeli). Güncelleme {t}.",
+      pts: "{v} puan", h24: "24 sa", noData: "veri yok", delayed: "~15 dk gecikmeli", src: "Kaynaklar: CoinGecko, CoinPaprika ya da CoinLore, Coinbase, Yahoo Finance (DXY yaklaşık 15 dakika gecikmeli). Güncelleme {t}.",
       domNote: "Dominans: varlığın toplam kripto piyasa değerindeki payı; değişim 24 saatte yüzde puan olarak." }
   };
   var LIB = { dxy: ["dolar-endeksi", "dollar-index"] };
@@ -71,6 +71,23 @@
         return { value: v, change: ch };
       }
       b.total = { usd: total, change: tc }; b.btcDominance = dom("btc", "bitcoin"); b.usdtDominance = dom("usdt", "tether");
+      return b;
+    }).catch(function () { return b; }).then(function (b2) { return b2.btcDominance && b2.btcDominance.value != null ? b2 : fromCoinLore(b2); });
+  }
+  // Second browser fallback: CoinLore (free, no key).
+  function fromCoinLore(b) {
+    return Promise.all([
+      fetch("https://api.coinlore.net/api/global/").then(function (r) { return r.ok ? r.json() : null; }),
+      fetch("https://api.coinlore.net/api/ticker/?id=90,518").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    ]).then(function (res) {
+      var g = Array.isArray(res[0]) ? res[0][0] : res[0], total = n(g && g.total_mcap), tc = n(g && g.mcap_change); if (!total) return b;
+      var by = {}; (Array.isArray(res[1]) ? res[1] : []).forEach(function (x) { by[x.symbol] = x; });
+      function dom(sym) {
+        var x = by[sym], cap = x ? n(x.market_cap_usd) : null, c = x ? n(x.percent_change_24h) : null;
+        if (!cap) return { value: sym === "BTC" ? n(g.btc_d) : null, change: null };
+        var v = cap / total * 100; return { value: v, change: c != null && tc != null ? v - (cap / (1 + c / 100)) / (total / (1 + tc / 100)) * 100 : null };
+      }
+      b.total = { usd: total, change: tc }; b.btcDominance = dom("BTC"); b.usdtDominance = dom("USDT");
       return b;
     }).catch(function () { return b; });
   }

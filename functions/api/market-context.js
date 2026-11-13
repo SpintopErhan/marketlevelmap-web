@@ -4,6 +4,7 @@
 //   CoinGecko /global            total market cap (USD), its 24 h change, market-cap shares (dominance)
 //   CoinGecko /simple/price      BTC and USDT market caps and 24 h changes, to work out the dominance 24 h ago
 //   CoinPaprika /global, /tickers  the same figures when CoinGecko refuses the edge (it rate-limits shared IPs)
+//   CoinLore /global, /ticker      last fallback (free, no key): total cap and its change, BTC and USDT caps
 //   Coinbase ETH-BTC /stats      ETH/BTC last and 24 h open (Binance refuses requests from Cloudflare)
 //   Yahoo Finance DX-Y.NYB       DXY, delayed about 15 minutes, closed at weekends
 // A source that fails leaves its fields null; the rest still answers (200 with `errors`).
@@ -64,6 +65,21 @@ async function coinpaprika() {
   }
   return { total: { usd: total, change: totalChg }, btc: dom(b), usdt: dom(u) };
 }
+// CoinLore: /global gives total_mcap and mcap_change (24 h, %); /ticker/?id=90,518 BTC and USDT with market_cap_usd and
+// percent_change_24h (price change, close to the cap change for both).
+async function coinlore() {
+  const [g, t] = await Promise.all([getJson("https://api.coinlore.net/api/global/"), getJson("https://api.coinlore.net/api/ticker/?id=90,518").catch(() => null)]);
+  const row = Array.isArray(g) ? g[0] : g, total = num(row && row.total_mcap), totalChg = num(row && row.mcap_change);
+  if (!total) throw new Error("no global data");
+  const by = {}; (Array.isArray(t) ? t : []).forEach((x) => { by[x.symbol] = x; });
+  function dom(sym) {
+    const x = by[sym], cap = x ? num(x.market_cap_usd) : null, c = x ? num(x.percent_change_24h) : null;
+    if (!cap) return { value: sym === "BTC" ? num(row.btc_d) : null, change: null };
+    const value = cap / total * 100;
+    return { value, change: c != null && totalChg != null ? value - (cap / (1 + c / 100)) / (total / (1 + totalChg / 100)) * 100 : null };
+  }
+  return { total: { usd: total, change: totalChg }, btc: dom("BTC"), usdt: dom("USDT") };
+}
 async function ethbtc() {
   const s = await getJson("https://api.exchange.coinbase.com/products/ETH-BTC/stats");
   const last = num(s.last), open = num(s.open);
@@ -90,6 +106,7 @@ export async function onRequestGet(context) {
   const settle = (p, name) => p.catch((e) => { errors.push(`${name}: ${e && e.message ? e.message : e}`); return null; });
   let [cg, eb, dx] = await Promise.all([settle(coingecko(), "coingecko"), settle(ethbtc(), "coinbase"), settle(dxy(), "yahoo")]);
   if (!cg) cg = await settle(coinpaprika(), "coinpaprika");
+  if (!cg) cg = await settle(coinlore(), "coinlore");
   const body = {
     at: new Date().toISOString(),
     total: cg ? cg.total : null,

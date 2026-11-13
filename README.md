@@ -321,13 +321,14 @@ index DXY (change from the previous close; delayed about 15 minutes, closed at w
 - `GET /api/market-context` (`functions/api/market-context.js`) collects them at the edge, cached 3 minutes (30 s when
   every source failed): CoinGecko `/global` (total cap, its change, dominance) and `/simple/price` (BTC and USDT caps and
   changes, to work out the dominance 24 h ago), else CoinPaprika `/global` and `/tickers/btc-bitcoin`, `/tickers/usdt-tether`
-  (CoinGecko rate-limits shared server addresses), Coinbase `ETH-BTC/stats` (Binance refuses Cloudflare), Yahoo Finance
+  (CoinGecko rate-limits shared server addresses; CoinPaprika answers 402 to them too), else CoinLore `/global` and
+  `/ticker/?id=90,518`, Coinbase `ETH-BTC/stats` (Binance refuses Cloudflare), Yahoo Finance
   `DX-Y.NYB` chart meta (query1, else query2). A failed source leaves its field `null` and is listed in `errors`.
 - `assets/market-context.js` fills `[data-mctx]`: the analysis
   page's "Piyasa geneli / Market context" card in the side column (`card`), and the live flow's "Market context" panel
   (`panel`, 1×1/1×2/2×1; last in both default layouts). It refreshes every 3 minutes while shown; the live flow panel
   asks for nothing while hidden (`MLMContext.setActive`). When the endpoint has no dominance (both sources refused the
-  edge), the browser asks CoinGecko itself and works out the same figures. DXY links to the library's dollar index page.
+  edge), the browser asks CoinGecko itself, else CoinLore, and works out the same figures. DXY links to the library's dollar index page.
 
 ## Indicator summary
 
