@@ -91,8 +91,9 @@ page in its own unminimised window.
   "Gerçekleşen işlemler" (Time & Sales) 1×1…2×2; funding and OI 2×1/2×2/4×1; scanner 2×1…4×2; big trades 1×1…2×2), ↑ ↓ and hide (×); hidden panels can be added
   back, and "Reset to default" restores the default. Holes stay holes (no automatic packing). The layout is kept in
   `localStorage` `mlm-flow-layout-spot` / `-futures`. Defaults — futures: heatmap 3×1 and volume profile 1×1; CVD, depth,
-  trades, order book 1×1; liquidations 1×1, zone flow 1×1, funding and OI 2×1; scanner 3×1 and big trades 1×1. Spot: the
-  same first two rows, then zone flow 2×1 and big trades 2×1, then the scanner 4×1. Tablets use 2 columns (wider panels clipped to 2), phones one
+  trades, order book 1×1; liquidations 1×1, zone flow 1×1, funding and OI 2×1; scanner 2×1, big trades 1×1 and market
+  context 1×1. Spot: the same first two rows, then zone flow 2×1 and big trades 2×1, then the scanner 3×1 and market
+  context 1×1. A saved layout keeps its own sizes. Tablets use 2 columns (wider panels clipped to 2), phones one
   column in the chosen order. The order book and the volume profile show as many rows as their card fits.
 - **Order book** — 12 buckets each side (grouping 0.5 bp of the price rounded to 1-2-5 and three larger steps),
   notional per bucket, walls (≥3× the median bucket and ≥half the largest) in bold, buckets inside a Critical
@@ -322,7 +323,8 @@ index DXY (change from the previous close; delayed about 15 minutes, closed at w
   every source failed): CoinGecko `/global` (total cap, its change, dominance) and `/simple/price` (BTC and USDT caps and
   changes, to work out the dominance 24 h ago), else CoinPaprika `/global` and `/tickers/btc-bitcoin`, `/tickers/usdt-tether`
   (CoinGecko rate-limits shared server addresses; CoinPaprika answers 402 to them too), else CoinLore `/global` and
-  `/ticker/?id=90,518`, Coinbase `ETH-BTC/stats` (Binance refuses Cloudflare), Yahoo Finance
+  `/ticker/?id=90,518`, Coinbase `ETH-BTC/stats` (Binance refuses Cloudflare), else OKX `market/ticker?instId=ETH-BTC`
+  (the browser asks Binance, then Coinbase, itself when both fail; `ethSource` names the one used), Yahoo Finance
   `DX-Y.NYB` chart meta (query1, else query2). A failed source leaves its field `null` and is listed in `errors`.
 - `assets/market-context.js` fills `[data-mctx]`: the analysis
   page's "Piyasa geneli / Market context" card in the side column (`card`), and the live flow's "Market context" panel

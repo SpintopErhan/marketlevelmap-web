@@ -6,10 +6,10 @@
   "use strict";
   var W = {
     en: { btcDom: "BTC dominance", usdtDom: "USDT dominance", total: "Total crypto market cap", ethbtc: "ETH/BTC", dxy: "US dollar index (DXY)",
-      pts: "{v} pts", h24: "24 h", noData: "no data", delayed: "delayed ~15 min", src: "Dominance and market cap: {d}. ETH/BTC: Coinbase. DXY: Yahoo Finance (delayed about 15 minutes). Updated {t}.",
+      pts: "{v} pts", h24: "24 h", noData: "no data", delayed: "delayed ~15 min", src: "Dominance and market cap: {d}. ETH/BTC: {e}. DXY: Yahoo Finance (delayed about 15 minutes). Updated {t}.",
       domNote: "Dominance: the coin's share of the total crypto market cap; the change is in percentage points over 24 h." },
     tr: { btcDom: "BTC dominansı", usdtDom: "USDT dominansı", total: "Toplam kripto piyasa değeri", ethbtc: "ETH/BTC", dxy: "Dolar endeksi (DXY)",
-      pts: "{v} puan", h24: "24 sa", noData: "veri yok", delayed: "~15 dk gecikmeli", src: "Dominans ve piyasa değeri: {d}. ETH/BTC: Coinbase. DXY: Yahoo Finance (yaklaşık 15 dakika gecikmeli). Güncelleme {t}.",
+      pts: "{v} puan", h24: "24 sa", noData: "veri yok", delayed: "~15 dk gecikmeli", src: "Dominans ve piyasa değeri: {d}. ETH/BTC: {e}. DXY: Yahoo Finance (yaklaşık 15 dakika gecikmeli). Güncelleme {t}.",
       domNote: "Dominans: varlığın toplam kripto piyasa değerindeki payı; değişim 24 saatte yüzde puan olarak." }
   };
   var LIB = { dxy: ["dolar-endeksi", "dollar-index"] };
@@ -51,7 +51,7 @@
       if (mode !== "strip") {
         var at = data.at ? new Date(data.at) : null;
         box.appendChild(el("p", "mctx-src", t.domNote));
-        box.appendChild(el("p", "mctx-src", t.src.replace("{d}", data.domSource || "—").replace("{t}", at ? at.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) : "—")));
+        box.appendChild(el("p", "mctx-src", t.src.replace("{d}", data.domSource || "—").replace("{e}", data.ethSource || "—").replace("{t}", at ? at.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) : "—")));
       }
     });
   }
@@ -91,13 +91,27 @@
       return b;
     }).catch(function () { return b; });
   }
+  // ETH/BTC when the endpoint has none: Binance from the browser (it refuses Cloudflare, not visitors), else Coinbase.
+  function ethFromBrowser(b) {
+    if (b.ethbtc && b.ethbtc.price) return Promise.resolve(b);
+    return fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=ETHBTC").then(function (r) { return r.ok ? r.json() : null; }).then(function (t) {
+      var last = t && n(t.lastPrice), open = t && n(t.openPrice); if (!last) throw new Error("no");
+      b.ethbtc = { price: last, change: open ? (last / open - 1) * 100 : null }; b.ethSource = "Binance"; return b;
+    }).catch(function () {
+      return fetch("https://api.exchange.coinbase.com/products/ETH-BTC/stats").then(function (r) { return r.ok ? r.json() : null; }).then(function (s) {
+        var last = s && n(s.last), open = s && n(s.open);
+        if (last) { b.ethbtc = { price: last, change: open ? (last / open - 1) * 100 : null }; b.ethSource = "Coinbase"; }
+        return b;
+      }).catch(function () { return b; });
+    });
+  }
   function load() {
     fetch("/api/market-context", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
       if (!b) return null;
       // The browser asks CoinGecko first (the visitor's own address is not rate-limited like the edge); the endpoint's
       // figures (CoinGecko, CoinPaprika or CoinLore) stay when it cannot.
       var kept = { total: b.total, btcDominance: b.btcDominance, usdtDominance: b.usdtDominance, domSource: b.domSource };
-      return fromBrowser(b).then(function (r) { if (r.domSource !== "CoinGecko" && kept.btcDominance && kept.btcDominance.value != null) { r.total = kept.total; r.btcDominance = kept.btcDominance; r.usdtDominance = kept.usdtDominance; r.domSource = kept.domSource; } return r; });
+      return fromBrowser(b).then(function (r) { if (r.domSource !== "CoinGecko" && kept.btcDominance && kept.btcDominance.value != null) { r.total = kept.total; r.btcDominance = kept.btcDominance; r.usdtDominance = kept.usdtDominance; r.domSource = kept.domSource; } return r; }).then(ethFromBrowser);
     }).then(function (b) { if (b) { data = b; render(); } }).catch(function () {});
   }
   function sync() {

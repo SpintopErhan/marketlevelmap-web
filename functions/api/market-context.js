@@ -6,6 +6,7 @@
 //   CoinPaprika /global, /tickers  the same figures when CoinGecko refuses the edge (it rate-limits shared IPs)
 //   CoinLore /global, /ticker      last fallback (free, no key): total cap and its change, BTC and USDT caps
 //   Coinbase ETH-BTC /stats      ETH/BTC last and 24 h open (Binance refuses requests from Cloudflare)
+//   OKX ETH-BTC /market/ticker   the same when Coinbase refuses the edge (last, open24h)
 //   Yahoo Finance DX-Y.NYB       DXY, delayed about 15 minutes, closed at weekends
 // A source that fails leaves its fields null; the rest still answers (200 with `errors`).
 const CACHE_SECONDS = 180;
@@ -88,6 +89,12 @@ async function ethbtc() {
   if (!last) throw new Error("no ETH-BTC");
   return { price: last, change: open ? (last / open - 1) * 100 : null };
 }
+async function ethbtcOkx() {
+  const s = await getJson("https://www.okx.com/api/v5/market/ticker?instId=ETH-BTC");
+  const t = s && Array.isArray(s.data) ? s.data[0] : null, last = num(t && t.last), open = num(t && t.open24h);
+  if (!last) throw new Error("no ETH-BTC");
+  return { price: last, change: open ? (last / open - 1) * 100 : null };
+}
 async function dxy() {
   let body = null;
   for (const host of ["query1", "query2"]) {
@@ -110,6 +117,8 @@ export async function onRequestGet(context) {
   let domSource = cg ? "CoinGecko" : null;
   if (!cg) { cg = await settle(coinpaprika(), "coinpaprika"); if (cg) domSource = "CoinPaprika"; }
   if (!cg) { cg = await settle(coinlore(), "coinlore"); if (cg) domSource = "CoinLore"; }
+  let ethSource = eb ? "Coinbase" : null;
+  if (!eb) { eb = await settle(ethbtcOkx(), "okx"); if (eb) ethSource = "OKX"; }
   const body = {
     at: new Date().toISOString(),
     total: cg ? cg.total : null,
@@ -117,6 +126,7 @@ export async function onRequestGet(context) {
     usdtDominance: cg ? cg.usdt : null,
     domSource,
     ethbtc: eb,
+    ethSource,
     dxy: dx,
     ...(errors.length ? { errors } : {}),
   };
