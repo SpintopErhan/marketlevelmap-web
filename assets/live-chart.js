@@ -548,6 +548,25 @@ var LiveChart = (function () {
       indPaneCount = pane - 2;
       fitHeight();
       drawIndicators();
+      drawDivergences();
+    }
+
+    // Divergences (README "Indicator summary"): a dashed line between the two swing points on the candles and, when
+    // that pane is open, between the same two points on the RSI or MACD line. Green: positive, red: negative.
+    var divList = [], divShown = true, divSeries = [];
+    function drawDivergences() {
+      divSeries.forEach(function (sr) { try { chart.removeSeries(sr); } catch (e) {} }); divSeries = [];
+      if (!divShown || destroyed) return;
+      divList.forEach(function (d) {
+        var color = d.type === "bull" ? "#3bcf91" : "#ef6b73";
+        function seg(points, pane) {
+          var sr = chart.addSeries(LC.LineSeries, { color: color, lineWidth: 2, lineStyle: LC.LineStyle.Dashed, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, autoscaleInfoProvider: function () { return null; } }, pane);
+          sr.setData(points); divSeries.push(sr);
+        }
+        seg([{ time: d.t1, value: d.p1 }, { time: d.t2, value: d.p2 }], 0);
+        var target = d.kind === "rsi" ? indSeries.rsi : d.kind === "macd" ? indSeries.macd : null;
+        if (target) { try { seg([{ time: d.t1, value: d.v1 }, { time: d.t2, value: d.v2 }], target.getPane().paneIndex()); } catch (e) {} }
+      });
     }
 
     function setData() {
@@ -753,6 +772,14 @@ var LiveChart = (function () {
 
     return {
       setLevels: setLevels,
+      // Closed candles with RSI 14, MACD 12/26/9 and EMA 20/50/200, for the indicator summary.
+      indicatorData: function () {
+        var rows = allRows(), v = indicators(rows.map(function (r) { return r[4]; }));
+        return { time: rows.map(function (r) { return r[0]; }), high: rows.map(function (r) { return r[2]; }), low: rows.map(function (r) { return r[3]; }), close: rows.map(function (r) { return r[4]; }),
+          ema: [0, 1, 2].map(function (i) { return rows.map(function (r) { return r[6 + i]; }); }), rsi: v.rsi, macd: v.macd, signal: v.signal, hist: v.hist, warmup: IND_WARMUP };
+      },
+      // [{ kind: "rsi"|"macd", type: "bull"|"bear", t1, t2, p1, p2, v1, v2 }] and whether to draw them.
+      setDivergences: function (list, shown) { divList = list || []; divShown = shown !== false; drawDivergences(); },
       // Bollinger (price pane), RSI and MACD (panes under the volume): { bb, rsi, macd } booleans.
       setIndicators: function (prefs) {
         // EMA 20/50/200 stay on unless turned off explicitly.

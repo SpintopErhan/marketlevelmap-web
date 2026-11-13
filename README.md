@@ -312,6 +312,27 @@ file has no `keyLevels` yet, keep the report's levels (the report's `OATH`, the 
 in for ATH). The market table (YO, ATH, opens as fallback) and the weekly outlook (MO, YO, ATH) read the
 same file.
 
+## Indicator summary
+
+A "Göstergeler / Indicators" card in the analysis page's side column (above the key levels), shown when the chart is
+(the same rule as the page: 1D for everyone, the other timeframes for members; hidden on a locked timeframe). It reads
+the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/26/9 and EMA 20/50/200, the formulas of
+`assets/live-chart.js`) and refreshes every 5 s:
+
+- **RSI 14** — value; overbought above 70, oversold below 30; "left the oversold/overbought zone n candles ago" (last 5).
+- **MACD 12/26/9** — above/below the signal line, the last signal cross (last 10 candles), histogram growing or
+  shrinking, which side of the zero line.
+- **EMA 20/50/200** — price above all, below all or between (which ones), the order of the three, the last EMA 50/200
+  cross (last 30 candles).
+- **RSI and MACD divergence** — classic only. Swing highs/lows: a candle whose high (low) is the highest (lowest) of the
+  3 candles on each side. The latest swing (at most 10 candles before the last closed one) is compared with the swing
+  before it, at least 5 candles apart, within the last 60 candles: price higher high with a lower RSI/MACD high
+  (negative), or price lower low with a higher RSI/MACD low (positive).
+
+Each row links to its library page. Divergences are drawn on the chart as a dashed line between the two swings (green
+positive, red negative) and on the RSI/MACD pane when it is open (`liveChart.setDivergences`); the "Draw divergences"
+box turns this off (`localStorage` `mlm-sig-draw`). The card describes; it gives no buy or sell signal.
+
 ## Chart watermark
 
 The interactive analysis chart carries a faint "MarketLevelMap / marketlevelmap.com" text watermark in the
