@@ -316,7 +316,7 @@ same file.
 
 A "Göstergeler / Indicators" card in the analysis page's side column (above the key levels), shown when the chart is
 (the same rule as the page: 1D for everyone, the other timeframes for members; hidden on a locked timeframe). It reads
-the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/26/9 and EMA 20/50/200, the formulas of
+the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/26/9, EMA 20/50/200 and Bollinger 20/2, the formulas of
 `assets/live-chart.js`) and refreshes every 5 s:
 
 - **RSI 14** — value; overbought above 70, oversold below 30; "left the oversold/overbought zone n candles ago" (last 5).
@@ -324,6 +324,9 @@ the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/
   shrinking, which side of the zero line.
 - **EMA 20/50/200** — price above all, below all or between (which ones), the order of the three, the last EMA 50/200
   cross (last 30 candles).
+- **Bollinger 20/2** — above the upper band, below the lower band, or inside with %B (0 lower band, 1 upper band);
+  bands widening or narrowing (against 5 candles before); a squeeze when the band width ((upper − lower) / middle) is
+  within the narrowest 10% of the last 120 candles.
 - **RSI and MACD divergence** — classic only. Swing highs/lows: a candle whose high (low) is the highest (lowest) of the
   3 candles on each side. The latest swing (at most 10 candles before the last closed one) is compared with the swing
   before it, at least 5 candles apart, within the last 60 candles: price higher high with a lower RSI/MACD high
