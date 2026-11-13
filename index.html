@@ -45,10 +45,6 @@ main{padding:0 0 72px}
 .mb-body{padding:16px 18px 18px}.mb-body h3{margin:0 0 6px;font-size:17px}.mb-body p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.55}
 .mb-cta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:18px}.mb-note{color:var(--muted);font-size:13px}.mb-sample{margin:10px 0 0;color:var(--muted);font-size:11px}
 @media(max-width:900px){.mb-grid{grid-template-columns:minmax(0,1fr)}.mb-card.big{grid-row:auto}}
-/* Market context strip (README "Market context"). */
-.mctx-strip{display:flex;gap:10px 22px;align-items:baseline;overflow-x:auto;margin:0 0 18px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:13px;white-space:nowrap;scrollbar-width:thin}
-.mctx-strip .mctx-item{display:inline-flex;gap:6px;align-items:baseline}.mctx-strip .mctx-l{color:var(--muted)}.mctx-strip .mctx-v{font-weight:700}.mctx-strip .mctx-c{font-size:12px}
-.mctx-item .up{color:var(--up)}.mctx-item .down{color:var(--down)}.mctx-v{font-variant-numeric:tabular-nums}
 .kicker{margin:0 0 12px;font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent)}
 .hero h1{margin:0;max-width:none;font-size:clamp(26px,2.4vw,40px);line-height:1.12;font-weight:700;letter-spacing:-.9px;white-space:nowrap}
 .hero-text{margin:14px 0 0;max-width:none;color:var(--muted);font-size:16px;white-space:nowrap}
@@ -230,7 +226,7 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 <script>
 try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
 </script>
-<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/market-context.js?v=de996e6d" defer></script><script src="assets/event-links.js?v=39e55a33"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
+<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/event-links.js?v=39e55a33"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
 <body>
 <div class="page-bg" aria-hidden="true"><div class="page-bg-in"><svg class="page-bg-art" viewBox="0 0 720 460" fill="none">
 <line class="bg-guide" x1="20" y1="78" x2="700" y2="78"/><line class="bg-guide" x1="20" y1="168" x2="700" y2="168"/><line class="bg-guide" x1="20" y1="262" x2="700" y2="262"/><line class="bg-guide" x1="20" y1="348" x2="700" y2="348"/>
@@ -254,7 +250,6 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 </div>
 <aside class="wk-card rise rise-4" id="wk-card" hidden aria-labelledby="wk-card-title"><p class="wk-eyebrow" id="wk-card-title" data-i18n="wkTitle">Weekly outlook</p><p class="wk-range"><span data-i18n="wkLast">Last week</span> <span id="wk-card-range"></span></p><div class="wk-mini" id="wk-mini"></div><a class="wk-go" href="weekly.html" data-i18n="wkGo">See the weekly outlook →</a></aside>
 </section>
-<div class="mctx-strip" data-mctx="strip" aria-label="Market context"></div>
 <section class="home-split" aria-labelledby="table-title">
 <div class="page-head rise rise-5"><div><h2 id="table-title" data-i18n="tableTitle">Market table</h2>
 <p data-i18n="tableNote">The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.</p></div>

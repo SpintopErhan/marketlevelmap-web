@@ -1,15 +1,15 @@
 /* Market context (README "Market context"): BTC and USDT dominance, total crypto market cap, ETH/BTC and DXY from
-   /api/market-context, refreshed every 3 minutes while shown. Any element with data-mctx="strip" (home page),
-   "card" (analysis page) or "panel" (live flow) is filled. The live flow turns its panel on and off with
+   /api/market-context, refreshed every 3 minutes while shown. Any element with data-mctx="card" (analysis page) or "panel"
+   (live flow) is filled. The live flow turns its panel on and off with
    MLMContext.setActive(on): a hidden panel asks for nothing. Public; the data is general market information. */
 (function () {
   "use strict";
   var W = {
     en: { btcDom: "BTC dominance", usdtDom: "USDT dominance", total: "Total crypto market cap", ethbtc: "ETH/BTC", dxy: "US dollar index (DXY)",
-      pts: "{v} pts", h24: "24 h", noData: "no data", delayed: "delayed ~15 min", src: "Sources: CoinGecko, Coinbase, Yahoo Finance (DXY delayed about 15 minutes). Updated {t}.",
+      pts: "{v} pts", h24: "24 h", noData: "no data", delayed: "delayed ~15 min", src: "Sources: CoinGecko or CoinPaprika, Coinbase, Yahoo Finance (DXY delayed about 15 minutes). Updated {t}.",
       domNote: "Dominance: the coin's share of the total crypto market cap; the change is in percentage points over 24 h." },
     tr: { btcDom: "BTC dominansı", usdtDom: "USDT dominansı", total: "Toplam kripto piyasa değeri", ethbtc: "ETH/BTC", dxy: "Dolar endeksi (DXY)",
-      pts: "{v} puan", h24: "24 sa", noData: "veri yok", delayed: "~15 dk gecikmeli", src: "Kaynaklar: CoinGecko, Coinbase, Yahoo Finance (DXY yaklaşık 15 dakika gecikmeli). Güncelleme {t}.",
+      pts: "{v} puan", h24: "24 sa", noData: "veri yok", delayed: "~15 dk gecikmeli", src: "Kaynaklar: CoinGecko ya da CoinPaprika, Coinbase, Yahoo Finance (DXY yaklaşık 15 dakika gecikmeli). Güncelleme {t}.",
       domNote: "Dominans: varlığın toplam kripto piyasa değerindeki payı; değişim 24 saatte yüzde puan olarak." }
   };
   var LIB = { dxy: ["dolar-endeksi", "dollar-index"] };
@@ -55,8 +55,30 @@
       }
     });
   }
+  // When the edge could not reach CoinGecko or CoinPaprika (both rate-limit shared server addresses), the browser asks
+  // CoinGecko itself, from the visitor's own address, and works out the same dominance figures.
+  function n(x) { var v = Number(x); return isFinite(v) ? v : null; }
+  function fromBrowser(b) {
+    return Promise.all([
+      fetch("https://api.coingecko.com/api/v3/global").then(function (r) { return r.ok ? r.json() : null; }),
+      fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=usd&include_market_cap=true&include_24hr_change=true").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    ]).then(function (res) {
+      var d = res[0] && res[0].data, s2 = res[1]; if (!d || !d.total_market_cap) return b;
+      var total = n(d.total_market_cap.usd), tc = n(d.market_cap_change_percentage_24h_usd), pc = d.market_cap_percentage || {};
+      function dom(key, id) {
+        var v = n(pc[key]), c = s2 && s2[id] ? n(s2[id].usd_24h_change) : null, cap = s2 && s2[id] ? n(s2[id].usd_market_cap) : null, ch = null;
+        if (v != null && c != null && cap && total && tc != null) ch = v - (cap / (1 + c / 100)) / (total / (1 + tc / 100)) * 100;
+        return { value: v, change: ch };
+      }
+      b.total = { usd: total, change: tc }; b.btcDominance = dom("btc", "bitcoin"); b.usdtDominance = dom("usdt", "tether");
+      return b;
+    }).catch(function () { return b; });
+  }
   function load() {
-    fetch("/api/market-context", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) { if (b) { data = b; render(); } }).catch(function () {});
+    fetch("/api/market-context", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
+      if (!b) return null;
+      return b.btcDominance && b.btcDominance.value != null ? b : fromBrowser(b);
+    }).then(function (b) { if (b) { data = b; render(); } }).catch(function () {});
   }
   function sync() {
     var on = active.page || active.panel;

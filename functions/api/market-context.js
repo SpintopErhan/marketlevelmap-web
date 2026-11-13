@@ -3,6 +3,7 @@
 // minutes; the sources are asked at most once per CACHE_SECONDS at each edge location.
 //   CoinGecko /global            total market cap (USD), its 24 h change, market-cap shares (dominance)
 //   CoinGecko /simple/price      BTC and USDT market caps and 24 h changes, to work out the dominance 24 h ago
+//   CoinPaprika /global, /tickers  the same figures when CoinGecko refuses the edge (it rate-limits shared IPs)
 //   Coinbase ETH-BTC /stats      ETH/BTC last and 24 h open (Binance refuses requests from Cloudflare)
 //   Yahoo Finance DX-Y.NYB       DXY, delayed about 15 minutes, closed at weekends
 // A source that fails leaves its fields null; the rest still answers (200 with `errors`).
@@ -45,6 +46,24 @@ async function coingecko() {
   }
   return { total: { usd: total, change: totalChg }, btc: dom("btc", "bitcoin"), usdt: dom("usdt", "tether") };
 }
+// CoinPaprika: total cap and its 24 h change from /global; BTC and USDT caps and their 24 h changes from /tickers.
+async function coinpaprika() {
+  const [g, b, u] = await Promise.all([
+    getJson("https://api.coinpaprika.com/v1/global"),
+    getJson("https://api.coinpaprika.com/v1/tickers/btc-bitcoin").catch(() => null),
+    getJson("https://api.coinpaprika.com/v1/tickers/usdt-tether").catch(() => null),
+  ]);
+  const total = num(g && g.market_cap_usd), totalChg = num(g && g.market_cap_change_24h);
+  if (!total) throw new Error("no global data");
+  function dom(t) {
+    const q = t && t.quotes && t.quotes.USD, cap = q ? num(q.market_cap) : null, c = q ? num(q.market_cap_change_24h) : null;
+    if (!cap) return { value: null, change: null };
+    const value = cap / total * 100;
+    const change = c != null && totalChg != null ? value - (cap / (1 + c / 100)) / (total / (1 + totalChg / 100)) * 100 : null;
+    return { value, change };
+  }
+  return { total: { usd: total, change: totalChg }, btc: dom(b), usdt: dom(u) };
+}
 async function ethbtc() {
   const s = await getJson("https://api.exchange.coinbase.com/products/ETH-BTC/stats");
   const last = num(s.last), open = num(s.open);
@@ -69,7 +88,8 @@ export async function onRequestGet(context) {
   if (cache) { const hit = await cache.match(key); if (hit) return hit; }
   const errors = [];
   const settle = (p, name) => p.catch((e) => { errors.push(`${name}: ${e && e.message ? e.message : e}`); return null; });
-  const [cg, eb, dx] = await Promise.all([settle(coingecko(), "coingecko"), settle(ethbtc(), "coinbase"), settle(dxy(), "yahoo")]);
+  let [cg, eb, dx] = await Promise.all([settle(coingecko(), "coingecko"), settle(ethbtc(), "coinbase"), settle(dxy(), "yahoo")]);
+  if (!cg) cg = await settle(coinpaprika(), "coinpaprika");
   const body = {
     at: new Date().toISOString(),
     total: cg ? cg.total : null,
