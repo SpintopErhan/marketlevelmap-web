@@ -93,6 +93,13 @@
   function nf(v, d) { return Number(v).toLocaleString(locale(), { minimumFractionDigits: d, maximumFractionDigits: d }); }
   function pctText(r, d) { var s = nf(Math.abs(r) * 100, d == null ? 2 : d); return lang() === "tr" ? "%" + s : s + "%"; }
 
+  // The menu links to /flow without an asset: open the asset and market looked at last in this browser.
+  (function () {
+    if (/[?&]asset=/.test(location.search)) return;
+    var last = null; try { last = JSON.parse(localStorage.getItem("mlm-flow-last") || "null"); } catch (e) {}
+    if (!last || !/^[A-Z0-9]{2,15}USDT$/.test(last.asset)) return;
+    try { history.replaceState(null, "", location.pathname + "?asset=" + encodeURIComponent(last.asset) + (last.market === "futures" ? "&market=futures" : "") + location.hash); } catch (e) {}
+  })();
   var MARKET = /[?&]market=futures(&|$)/.test(location.search) ? "futures" : "spot";
   var ORDER = MARKET === "futures" ? ["binance", "okx", "bybit"] : ["binance", "okx", "coinbase"];
   var NAME = { binance: "Binance", okx: "OKX", coinbase: "Coinbase", bybit: "Bybit" }, SHORT = { binance: "BIN", okx: "OKX", coinbase: "CB", bybit: "BYB" };
@@ -1100,6 +1107,7 @@
     var q = new URLSearchParams(location.search), asset = String(q.get("asset") || "BTCUSDT").toUpperCase().replace(/[^A-Z0-9]/g, "");
     var m = /^([A-Z0-9]{2,15})USDT$/.exec(asset);
     base = m ? m[1] : "";
+    if (base) try { localStorage.setItem("mlm-flow-last", JSON.stringify({ asset: asset, market: MARKET })); } catch (e) {}
     $("fl-asset").textContent = base || asset;
     $("lang").addEventListener("change", function () { setTimeout(applyWords, 0); });
     applyWords();
