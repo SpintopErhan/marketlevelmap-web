@@ -20,7 +20,7 @@
       notifyOff: "Browser notifications are blocked; alarms show on the page only.",
       spot: "Spot", futures: "Futures", fFund: "Funding", fOi: "Open interest", fOi1h: "OI 1h", fLiq: "Liquidations 15 min", fYear: "annual {p}",
       fNote: "Futures columns: Binance USDT perpetuals. Funding is the current rate (annualised under it); open interest is read every minute and its 1-hour change comes from Binance's 5-minute history (marked “session” when it is taken from this page's own samples instead); liquidations are summed since the page opened (at most the last 15 min; L = longs liquidated, S = shorts). Click a column title to sort.",
-      bigSubF: "all assets · futures · Binance", byCol: "by the chosen column", sess: "session", srcBin: "Futures source: Binance USD-M.", srcOkx: "Futures source: OKX USDT swaps (Binance futures did not answer from here).", bigSubFO: "all assets · futures · OKX", sortBy: "Sort by {c}"
+      bigSubF: "all assets · futures · Binance", byCol: "by the chosen column", flowNote: "Buy/sell 5 min: share of taker-buy volume in the asset's trades of the last 5 minutes (the big-trades stream: Binance spot, or the futures source on futures). Click the title to sort.", sess: "session", flow5: "Buy/sell 5 min", flowTxt: "buy {b}", srcBin: "Futures source: Binance USD-M.", srcOkx: "Futures source: OKX USDT swaps (Binance futures did not answer from here).", bigSubFO: "all assets · futures · OKX", sortBy: "Sort by {c}"
     },
     tr: {
       title: "Tarayıcı", sub: "canlı · Kritik Bölgeler", lead: "Her varlığın fiyatının analiz bölgelerine göre nerede durduğu.", tf: "Zaman dilimi",
@@ -37,7 +37,7 @@
       notifyOff: "Tarayıcı bildirimleri engelli; alarmlar yalnızca sayfada görünür.",
       spot: "Spot", futures: "Vadeli", fFund: "Fonlama", fOi: "Açık pozisyon", fOi1h: "AP 1 sa", fLiq: "Likidasyon 15 dk", fYear: "yıllık {p}",
       fNote: "Vadeli sütunlar: Binance USDT sürekli vadeli. Fonlama güncel orandır (altında yıllık karşılığı); açık pozisyon dakikada bir okunur, 1 saatlik değişimi Binance'in 5 dakikalık geçmişinden gelir (bu sayfanın kendi örneklerinden hesaplanırsa “oturum” yazar); likidasyonlar sayfa açıldığından beri toplanır (en fazla son 15 dk; L = long likidasyonu, S = short). Sıralamak için sütun başlığına tıklayın.",
-      bigSubF: "tüm varlıklar · vadeli · Binance", byCol: "seçilen sütuna göre", sess: "oturum", srcBin: "Vadeli kaynak: Binance USD-M.", srcOkx: "Vadeli kaynak: OKX USDT swap (Binance vadeli buradan cevap vermedi).", bigSubFO: "tüm varlıklar · vadeli · OKX", sortBy: "{c} göre sırala"
+      bigSubF: "tüm varlıklar · vadeli · Binance", byCol: "seçilen sütuna göre", flowNote: "Alış/satış 5 dk: varlığın son 5 dakikadaki işlemlerinde agresif alış hacminin payı (büyük işlemler akışından: spotta Binance spot, vadelide vadeli kaynak). Sıralamak için başlığa tıklayın.", sess: "oturum", flow5: "Alış/satış 5 dk", flowTxt: "alış {b}", srcBin: "Vadeli kaynak: Binance USD-M.", srcOkx: "Vadeli kaynak: OKX USDT swap (Binance vadeli buradan cevap vermedi).", bigSubFO: "tüm varlıklar · vadeli · OKX", sortBy: "{c} göre sırala"
     }
   };
   function lang() { var s = document.getElementById("lang"); return s && s.value === "tr" ? "tr" : "en"; }
@@ -234,8 +234,8 @@
     var rows = assets.map(function (a) { return { a: a, p: prices[a], st: zones[a] === undefined ? undefined : state(prices[a], zones[a]), has: !!(entries[a] && entries[a][tf]) }; })
       .filter(function (r) { return r.has; })
       .sort(function (x, y) {
-        if (FUT && sortKey) {
-          function v(r) { var f = fut[r.a] || {}, l = liq15(r.a); return sortKey === "fr" ? Math.abs(f.fr || 0) : sortKey === "oi" ? f.oiV || 0 : sortKey === "oi1h" ? Math.abs(f.oi1h || 0) : l.L + l.S; }
+        if (sortKey) {
+          function v(r) { if (sortKey === "flow") { var fl = flow5(r.a); return fl == null ? -1 : fl; } var f = fut[r.a] || {}, l = liq15(r.a); return sortKey === "fr" ? Math.abs(f.fr || 0) : sortKey === "oi" ? f.oiV || 0 : sortKey === "oi1h" ? Math.abs(f.oi1h || 0) : l.L + l.S; }
           return v(y) - v(x) || MarketUI.byPopularity(x.a, y.a);
         }
         function k(r) { return !r.st ? 9 : r.st.inside ? -1 + 1e-6 * (r.st.inside.high - r.st.inside.low) / r.p : r.st.near; } return k(x) - k(y) || MarketUI.byPopularity(x.a, y.a); });
@@ -246,6 +246,11 @@
       var c0 = el("td"); var link = el("a", "", MarketUI.baseOf(r.a)); link.href = "flow?asset=" + encodeURIComponent(r.a); c0.appendChild(el("b")).appendChild(link); tr.appendChild(c0);
       var c1 = el("td", "r num", r.p ? price(r.p) : "—"); if (isFinite(ch)) { c1.appendChild(document.createTextNode(" ")); c1.appendChild(el("small", MarketUI.signClass(ch), (ch >= 0 ? "+" : "−") + pct(ch))); } tr.appendChild(c1);
       var c2 = el("td"); c2.appendChild(zones[r.a] === null ? el("span", "pill far", t.noZones) : !r.st ? el("span", "pill far", t.loading) : statusPill(r.st)); tr.appendChild(c2);
+      var fl = flow5(r.a), cfl = el("td", "flowc");
+      if (fl == null) cfl.textContent = "—";
+      else { var bar = el("span", "fbar"), bi = el("i", "b"), si = el("i", "s"); bi.style.flex = String(fl); si.style.flex = String(1 - fl); bar.appendChild(bi); bar.appendChild(si); cfl.appendChild(bar);
+        cfl.appendChild(el("span", "num " + (fl >= 0.55 ? "up" : fl <= 0.45 ? "down" : "muted"), fill(t.flowTxt, { b: pct(fl, 0) }))); }
+      tr.appendChild(cfl);
       if (FUT) {
         var f = fut[r.a] || {}, l = liq15(r.a), hrs = 8;
         var cf = el("td", "r num " + (f.fr > 0 ? "up" : f.fr < 0 ? "down" : ""), f.fr != null ? signPct(f.fr, 4) : "—");
@@ -344,8 +349,21 @@
     ws.onerror = function () {};
   }
   // aggTrades of one taker order share the time and side: they are added up into one print first.
+  // Flow column: taker buy and sell volume per second of every asset (the same stream), last 5 minutes.
+  var flowB = {};
+  function flowAdd(s, buy, q) {
+    var sec = Math.floor(Date.now() / 1000), l = flowB[s] || (flowB[s] = []), last = l[l.length - 1];
+    if (!last || last.t !== sec) { last = { t: sec, b: 0, s: 0, n: 0 }; l.push(last); while (l.length && l[0].t < sec - 300) l.shift(); }
+    if (buy) last.b += q; else last.s += q; last.n++;
+  }
+  function flow5(s) {
+    var l = flowB[s] || [], now = Math.floor(Date.now() / 1000), b = 0, sv = 0, n = 0;
+    l.forEach(function (x) { if (x.t > now - 300) { b += x.b; sv += x.s; n += x.n; } });
+    return n >= 20 && b + sv > 0 ? b / (b + sv) : null;
+  }
   function onAgg(d) {
     var s = d.s, buy = !d.m, q = +d.q, p = +d.p, cur = pend[s];
+    if (q > 0) flowAdd(s, buy, q);
     if (cur && (cur.T !== d.T || cur.buy !== buy)) { flush(s); cur = null; }
     if (!cur) { cur = pend[s] = { s: s, T: d.T, buy: buy, q: 0, n: 0, p: p, at: Date.now() }; setTimeout(function () { if (pend[s] === cur) flush(s); }, 250); }
     cur.q += q; cur.n += q * p; cur.p = p;
@@ -405,7 +423,8 @@
       b.addEventListener("click", function () { sortKey = sortKey === key ? "" : key; buildHead(); dirty = true; render(); }); c.appendChild(b); tr.appendChild(c);
     }
     var bn = document.querySelector('[data-sc="byNear"]'); if (bn) bn.textContent = sortKey ? t.byCol : t.byNear;
-    th(t.asset); th(t.price, "r"); th(t.status);
+    var fn = document.querySelector('[data-sc="flowNote"]'); if (fn) fn.textContent = t.flowNote;
+    th(t.asset); th(t.price, "r"); th(t.status); th(t.flow5, "", "flow");
     if (FUT) { th(t.fFund, "r", "fr"); th(t.fOi, "r hide-m", "oi"); th(t.fOi1h, "r", "oi1h"); th(t.fLiq, "r", "liq"); }
     else { th(t.position, "hide-m"); th(t.res, "r hide-m"); th(t.sup, "r hide-m"); }
     th("");
