@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <rect class="f-point" x="24" y="20" width="512" height="270" rx="6" opacity="0.06"/>
+  <g>
+    <rect class="f-accent" x="24" y="62" width="300" height="8" opacity="0.75"/>
+    <rect class="f-accent" x="24" y="96" width="512" height="5" opacity="0.25"/>
+    <rect class="f-up" x="24" y="126" width="512" height="5" opacity="0.25"/>
+    <rect class="f-accent" x="24" y="196" width="512" height="9" opacity="0.8"/>
+    <rect class="f-up" x="24" y="230" width="512" height="5" opacity="0.3"/>
+    <rect class="f-accent" x="24" y="258" width="512" height="5" opacity="0.2"/>
+    <rect class="f-up" x="24" y="44" width="512" height="4" opacity="0.18"/>
+    <rect class="f-up" x="24" y="160" width="512" height="4" opacity="0.18"/>
+  </g>
+  <polyline class="s-line" points="24,150 70,140 110,128 150,118 190,104 230,92 270,82 300,76 330,92 370,118 410,150 440,178 470,192 500,190 536,186" fill="none" stroke-width="2.2"/>
+  <path class="s-line" d="M318 58 L332 72 M332 58 L318 72" stroke-width="2.5"/>
+  <path class="f-accent" d="M486 188 L496 198 L486 208 L476 198 Z"/>
+  <text class="t-label" x="34" y="56" font-size="12">{{wall}}</text>
+  <text class="t-accent" x="340" y="52" font-size="12">{{pulled}}</text>
+  <text class="t-accent" x="400" y="228" font-size="12">{{absorption}}</text>
+  <text class="t-label" x="34" y="306" font-size="11">{{time}}</text>
+  <text class="t-label" x="500" y="306" font-size="11">{{now}}</text>
+</svg>

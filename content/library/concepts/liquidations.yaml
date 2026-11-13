@@ -1,0 +1,155 @@
+id: liquidations
+kind: order-flow
+order: 60
+related: [funding-rate, open-interest, liquidity-sweep, after-sharp-moves]
+example: null
+updated: 2026-11-13
+
+tr:
+  slug: likidasyonlar
+  name: Likidasyonlar
+  alt_name: Liquidations
+  summary: >-
+    Likidasyon, kaldıraçlı bir pozisyonun teminatı yetmediğinde borsa tarafından zorla kapatılmasıdır.
+    Long likidasyonu zorla satış, short likidasyonu zorla alış demektir; ardı ardına gelenler hareketi
+    hızlandırabilir.
+  sections:
+    - type: text
+      id: definition
+      title: Likidasyon nedir?
+      paragraphs:
+        - >-
+          Kaldıraçlı bir pozisyon, fiyat aleyhine gittiğinde teminatını kaybeder. Teminat belirli bir
+          seviyenin altına inince borsa pozisyonu piyasa emriyle kapatır. Bu kapanışa likidasyon denir.
+        - >-
+          Bir **long likidasyonu** zorla yapılan bir satıştır ve fiyatı aşağı iter. Bir **short
+          likidasyonu** zorla yapılan bir alıştır ve fiyatı yukarı iter. Bu yüzden likidasyonlar çoğu
+          zaman hareketin yönünde gelir.
+    - type: bullets
+      id: cascade
+      title: Zincirleme likidasyon
+      items:
+        - text: "Fiyat düşer, en yüksek kaldıraçlı long'lar likide olur; bu zorla satışlar fiyatı biraz daha düşürür."
+          marker: down
+        - text: "Daha düşük fiyatta başka long'ların likidasyon seviyesine gelinir ve yeni zorla satışlar başlar."
+          marker: down
+        - text: "Zincir, likide olacak pozisyonlar tükenince ya da karşı taraf bu satışları karşılayınca durur."
+          marker: neutral
+      note: Aynı süreç yukarı yönde short'lar için de işler (short squeeze).
+    - type: scenarios
+      id: readings
+      title: Likidasyonlar nasıl okunur?
+      items:
+        - title: Long likidasyonları yoğunlaşıyor
+          tone: down
+          text: Düşüş zorla satışlarla hızlanıyor. Zincir bittiğinde hareket çoğu zaman yavaşlar.
+        - title: Short likidasyonları yoğunlaşıyor
+          tone: up
+          text: Yükseliş zorla alışlarla hızlanıyor. Zincir bittiğinde hareket çoğu zaman yavaşlar.
+        - title: Likidasyon yok
+          tone: neutral
+          text: Hareket kaldıraçlı pozisyonları zorlamıyor ya da pozisyonlar düşük kaldıraçlı.
+    - type: limits
+      shows:
+        - Hangi tarafın zorla kapatıldığını ve ne kadar
+        - Bir hareketin zorla kapanışlarla hızlanıp hızlanmadığını
+        - Likidasyonların hangi fiyatlarda yoğunlaştığını
+      not_proves:
+        - Hareketin bittiğini ya da devam edeceğini
+        - Tüm likidasyonları; borsalar yalnızca bir kısmını yayınlar (Binance sembol başına saniyede en fazla birini)
+        - Bekleyen likidasyon seviyelerini; burada gösterilen gerçekleşmiş likidasyonlardır
+    - type: zones
+      paragraphs:
+        - >-
+          Fiyat bir Kritik Bölgeyi kırarken likidasyonların yoğunlaşması, kırılımın kaldıraçlı
+          pozisyonların zorla kapanmasıyla hızlandığını gösterir. Zincir bittikten sonra fiyatın bölgeye
+          geri dönüp dönmediği ayrıca izlenir. Canlı akış sayfasının vadeli modunda likidasyonlar ısı
+          haritasında kare olarak ve ayrı bir panelde listelenir.
+  confusions:
+    - id: liquidity-sweep
+      text: Likidite süpürmesi stop emirlerinin tetiklenmesidir; likidasyon kaldıraçlı pozisyonların borsa tarafından kapatılmasıdır. İkisi çoğu zaman aynı hareketin içinde görülür.
+  key_points:
+    - Likidasyon, teminatı yetmeyen pozisyonun zorla kapatılmasıdır.
+    - Long likidasyonu zorla satış, short likidasyonu zorla alıştır.
+    - Ardı ardına gelen likidasyonlar hareketi hızlandırabilir.
+    - Borsalar likidasyonların yalnızca bir kısmını yayınlar.
+  svg_labels:
+    price: Fiyat
+    cascade: Zincirleme likidasyon
+    long_liq: Long likidasyonları
+    short_liq: Short likidasyonları
+  svg_alt: "Likidasyon çizimi: üstte yatay seyreden fiyatın birden sert düştüğü çizgi, altta düşüş sırasında yoğunlaşan kırmızı long likidasyonu çubukları ve birkaç küçük yeşil short likidasyonu çubuğu"
+  svg_caption: Fiyat düşerken long likidasyonları yoğunlaştı ve düşüşü hızlandırdı. Zincir bittiğinde fiyat yavaşladı.
+
+en:
+  slug: liquidations
+  name: Liquidations
+  summary: >-
+    A liquidation is the exchange closing a leveraged position by force when its margin runs out. A long
+    liquidation is a forced sell, a short liquidation a forced buy; several in a row can speed a move up.
+  sections:
+    - type: text
+      id: definition
+      title: What is a liquidation?
+      paragraphs:
+        - >-
+          A leveraged position loses margin as price moves against it. When the margin falls below a set
+          level, the exchange closes the position with a market order. This closing is a liquidation.
+        - >-
+          A **long liquidation** is a forced sell and pushes price down. A **short liquidation** is a
+          forced buy and pushes price up. So liquidations usually come in the direction of the move.
+    - type: bullets
+      id: cascade
+      title: Liquidation cascade
+      items:
+        - text: "Price falls and the most leveraged longs are liquidated; these forced sells push price a little lower."
+          marker: down
+        - text: "At the lower price other longs reach their liquidation level and new forced sells begin."
+          marker: down
+        - text: "The chain stops when positions to liquidate run out or the other side absorbs the selling."
+          marker: neutral
+      note: The same works upward for shorts (a short squeeze).
+    - type: scenarios
+      id: readings
+      title: How to read liquidations
+      items:
+        - title: Long liquidations cluster
+          tone: down
+          text: The fall is sped up by forced selling. When the chain ends, the move often slows.
+        - title: Short liquidations cluster
+          tone: up
+          text: The rise is sped up by forced buying. When the chain ends, the move often slows.
+        - title: No liquidations
+          tone: neutral
+          text: The move is not pressing leveraged positions, or positions are lightly leveraged.
+    - type: limits
+      shows:
+        - Which side is being closed by force, and how much
+        - Whether a move is sped up by forced closing
+        - At which prices liquidations cluster
+      not_proves:
+        - That the move is over or will carry on
+        - Every liquidation; exchanges publish only part of them (Binance at most one per symbol per second)
+        - Pending liquidation levels; what is shown here are liquidations that happened
+    - type: zones
+      paragraphs:
+        - >-
+          Liquidations clustering as price breaks a Critical Zone show the break is sped up by leveraged
+          positions closing by force. Whether price returns to the zone after the chain ends is watched
+          separately. In the live flow's futures mode liquidations are drawn as squares on the heatmap and
+          listed in their own panel.
+  confusions:
+    - id: liquidity-sweep
+      text: A liquidity sweep is stop orders being triggered; a liquidation is the exchange closing leveraged positions. Both often appear within the same move.
+  key_points:
+    - A liquidation is a position closed by force when its margin runs out.
+    - A long liquidation is a forced sell, a short liquidation a forced buy.
+    - Liquidations in a row can speed a move up.
+    - Exchanges publish only part of them.
+  svg_labels:
+    price: Price
+    cascade: Liquidation cascade
+    long_liq: Long liquidations
+    short_liq: Short liquidations
+  svg_alt: "Liquidations drawing: a price line moving sideways then dropping sharply above; below, red long-liquidation bars clustering during the drop and a few small green short-liquidation bars"
+  svg_caption: As price fell, long liquidations clustered and sped up the drop. When the chain ended, price slowed.

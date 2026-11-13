@@ -128,7 +128,9 @@ page in its own unminimised window.
   wall's size traded into it, yet it keeps ≥70% of its size. One mark per bucket and kind every 30 s.
 - **Save PNG** — a 1600×900 image in the page's theme: title (asset, spot/futures, venues, UTC time), the context
   line, the heatmap, CVD and depth as drawn, and the key figures (zone flow, buy/sell; futures: OI, liquidations).
-- **How to read** — a button next to the title and a "?" on every panel open one dialog (`HELP` in `flow.js`, TR/EN)
+- **How to read** — sections link to the library's **Order flow** pages (`content/library/concepts`: order-book,
+  cvd, liquidity-heatmap, funding-rate, open-interest, liquidations; and volume-profile). Otherwise:
+   a button next to the title and a "?" on every panel open one dialog (`HELP` in `flow.js`, TR/EN)
   with a section per panel (what it shows, how to read it); a panel's "?" opens it at that section. Futures-only
   sections show on futures, the Coinbase premium on spot.
 - **Spot | Futures** — the switch at the top reloads the page with `&market=futures` (a new session). On futures, a Binance

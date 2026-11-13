@@ -1,0 +1,205 @@
+id: order-book
+kind: order-flow
+order: 10
+related: [liquidity-heatmap, cvd, volume-profile, support-and-resistance]
+example: null
+updated: 2026-11-13
+
+tr:
+  slug: emir-defteri-ve-likidite
+  name: Emir defteri ve likidite
+  alt_name: Order book
+  summary: >-
+    Emir defteri, bir varlık için bekleyen alış ve satış emirlerinin fiyata göre listesidir. Fiyatın
+    altında alıcılar, üstünde satıcılar bekler. Bu bekleyen emirlere likidite denir; fiyatın bir
+    seviyeye geldiğinde ne kadar emirle karşılaşacağını gösterir.
+  sections:
+    - type: text
+      id: definition
+      title: Emir defteri nedir?
+      paragraphs:
+        - >-
+          Bir borsada iki tür emir vardır. **Limit emirler** belirli bir fiyattan alım ya da satım için
+          bekler ve deftere yazılır. **Piyasa emirleri** beklemez; defterdeki en iyi fiyattan hemen
+          gerçekleşir ve oradaki limit emirleri tüketir.
+        - >-
+          Defterin alış tarafındaki en yüksek fiyat ile satış tarafındaki en düşük fiyat arasındaki
+          farka **spread** denir. Fiyat, piyasa emirleri bir taraftaki limit emirleri tükettikçe hareket
+          eder. Bu yüzden defterin ne kadar dolu olduğu, bir hareketin ne kadar kolay ilerleyebileceği
+          hakkında bilgi verir.
+    - type: bullets
+      id: terms
+      title: Temel kavramlar
+      items:
+        - text: "**Alış ve satış tarafı (bid / ask):** fiyatın altında bekleyen alış emirleri ve üstünde bekleyen satış emirleri."
+          marker: neutral
+        - text: "**Duvar:** çevresindeki seviyelere göre belirgin biçimde büyük bekleyen emir."
+          marker: accent
+        - text: "**Derinlik:** orta fiyattan belirli bir uzaklığa kadar biriken toplam emir miktarı."
+          marker: neutral
+        - text: "**Defter dengesi:** yakın mesafedeki alış ve satış emirlerinin birbirine oranı."
+          marker: neutral
+    - type: steps
+      id: how-to-read
+      title: Nasıl okunur?
+      items:
+        - title: Duvarları bul.
+          text: Çevresinden belirgin biçimde büyük emirler, fiyatın o seviyede yavaşlayabileceği yerlerdir.
+        - title: Duvarın davranışını izle.
+          text: Fiyat yaklaştığında duvar yerinde mi kalıyor, işlem görerek mi eriyor, yoksa işlem görmeden mi kayboluyor? Bekleyen emirler kolayca iptal edilebildiği için davranış büyüklükten daha çok şey söyler.
+        - title: İşlemlerle birlikte oku.
+          text: Defter niyeti, gerçekleşen işlemler (Time & Sales, CVD) sonucu gösterir. İkisi birlikte okunduğunda anlam kazanır.
+    - type: scenarios
+      id: walls
+      title: Fiyat bir duvara geldiğinde
+      intro: Bir duvara ulaşan fiyat için sık görülen üç durum. Her biri bir okumadır, sonuç değildir.
+      items:
+        - title: Duvar tutuyor
+          tone: neutral
+          text: Duvara çok işlem giriyor ama duvar küçülmüyor ya da yeniden doluyor. Bu emilim olarak okunur; fiyat çoğu zaman o seviyede duraklar.
+        - title: Duvar eriyor
+          tone: up
+          text: Duvar işlem görerek küçülüyor. Karşı taraf duvarı tüketiyor demektir; duvar bittiğinde fiyat seviyeyi geçebilir.
+        - title: Duvar kayboluyor
+          tone: down
+          text: Fiyat yaklaşırken duvar işlem görmeden çekiliyor. Emir gerçek bir niyet taşımıyor olabilir; seviyenin gücü yeniden değerlendirilir.
+    - type: limits
+      shows:
+        - Şu an hangi fiyatlarda ne kadar emir beklediğini
+        - Fiyatın yakınında hangi tarafın daha kalın olduğunu
+        - Büyük emirlerin nerede durduğunu ve fiyat yaklaştığında nasıl davrandığını
+      not_proves:
+        - Bekleyen emirlerin gerçekten işlem göreceğini; emirler her an iptal edilebilir
+        - Fiyatın duvardan döneceğini ya da duvarı kıracağını
+        - Tüm piyasayı; her borsanın defteri ayrıdır ve borsalar defterin yalnızca bir kısmını yayınlar
+    - type: zones
+      paragraphs:
+        - >-
+          Kritik Bölgeler fiyatın geçmişte tepki verdiği alanlardır; emir defteri ise o alanda **şu an**
+          ne beklediğini gösterir. Canlı akış sayfasında bir bölgenin içine düşen defter seviyeleri
+          şeritle işaretlenir. Bir destek bölgesinin içinde kalın alış emirleri bekliyorsa bölge defterde
+          de karşılık bulmuş demektir.
+        - >-
+          Tersi de bilgi verir: bir bölgenin içinde defter boşsa ya da fiyat yaklaşırken duvarlar
+          çekiliyorsa, bölgenin bu kez ne kadar tepki üreteceği daha belirsizdir.
+    - type: box
+      title: Veri sınırları
+      text: >-
+        Borsalar defterin tamamını değil, fiyata yakın belirli sayıda seviyeyi yayınlar. Birleşik görünümde
+        birden çok borsanın defteri toplanır; USD ve USDT fiyatları farklı olduğu için hizalanır. Gösterilen
+        miktarlar o borsalarla sınırlıdır.
+  confusions:
+    - id: volume-profile
+      text: Hacim profili gerçekleşmiş işlemleri, emir defteri henüz gerçekleşmemiş bekleyen emirleri gösterir.
+    - id: liquidity-heatmap
+      text: Emir defteri bir andaki durumu, likidite ısı haritası aynı defterin zaman içindeki değişimini gösterir.
+  key_points:
+    - Emir defteri bekleyen alış ve satış emirlerinin fiyata göre listesidir.
+    - Duvarın büyüklüğünden çok fiyat yaklaştığındaki davranışı önemlidir.
+    - Bekleyen emirler iptal edilebilir; defter tek başına yön göstermez.
+    - Kritik Bölgelerle birlikte okunduğunda bir bölgenin defterde karşılığı görülür.
+  svg_labels:
+    asks: Satış emirleri
+    bids: Alış emirleri
+    wall: Duvar
+    spread: Spread
+  svg_alt: "Emir defteri çizimi: üstte kırmızı satış emirleri, altta yeşil alış emirleri, ortada spread; her iki tarafta birer büyük emir duvar olarak işaretli"
+  svg_caption: Fiyatın üstünde satış, altında alış emirleri bekler. Çubuk uzunluğu o fiyattaki emir miktarıdır. Belirgin biçimde uzun çubuklar duvardır.
+
+en:
+  slug: order-book-and-liquidity
+  name: Order book and liquidity
+  summary: >-
+    The order book lists the resting buy and sell orders for an asset by price. Buyers wait below the
+    price, sellers above it. These resting orders are called liquidity; they show how many orders price
+    will meet when it reaches a level.
+  sections:
+    - type: text
+      id: definition
+      title: What is the order book?
+      paragraphs:
+        - >-
+          An exchange has two kinds of orders. **Limit orders** wait to buy or sell at a set price and go
+          into the book. **Market orders** do not wait; they fill at once at the best price in the book and
+          use up the limit orders there.
+        - >-
+          The gap between the highest bid and the lowest ask is the **spread**. Price moves as market
+          orders use up the limit orders on one side. So how full the book is says something about how
+          easily a move can carry on.
+    - type: bullets
+      id: terms
+      title: Key terms
+      items:
+        - text: "**Bid and ask side:** buy orders resting below the price and sell orders resting above it."
+          marker: neutral
+        - text: "**Wall:** a resting order clearly larger than the levels around it."
+          marker: accent
+        - text: "**Depth:** the total size resting up to a given distance from the mid price."
+          marker: neutral
+        - text: "**Book balance:** bids against asks close to the price."
+          marker: neutral
+    - type: steps
+      id: how-to-read
+      title: How to read it
+      items:
+        - title: Find the walls.
+          text: Orders clearly larger than their neighbours are where price may slow down.
+        - title: Watch what the wall does.
+          text: As price comes near, does the wall stay, melt as it trades, or vanish without trading? Resting orders are easy to cancel, so behaviour says more than size.
+        - title: Read it with the trades.
+          text: The book shows intent, executed trades (Time & Sales, CVD) show the result. They make sense together.
+    - type: scenarios
+      id: walls
+      title: When price reaches a wall
+      intro: Three common cases when price reaches a wall. Each is a reading, not an outcome.
+      items:
+        - title: The wall holds
+          tone: neutral
+          text: Plenty trades into it but it does not shrink, or it refills. This reads as absorption; price often pauses there.
+        - title: The wall melts
+          tone: up
+          text: The wall shrinks as it trades. The other side is using it up; once it is gone, price may pass the level.
+        - title: The wall vanishes
+          tone: down
+          text: The wall is pulled without trading as price comes near. The order may not have been a real intention; the level's strength is reassessed.
+    - type: limits
+      shows:
+        - How much is resting at each price right now
+        - Which side is thicker close to the price
+        - Where large orders sit and how they behave as price comes near
+      not_proves:
+        - That resting orders will actually trade; they can be cancelled at any moment
+        - That price will turn at a wall or break it
+        - The whole market; each exchange has its own book and publishes only part of it
+    - type: zones
+      paragraphs:
+        - >-
+          Critical Zones are areas where price reacted in the past; the order book shows what is waiting
+          in that area **right now**. On the live flow page, book levels inside a zone are striped. Thick
+          bids resting inside a support zone mean the zone is backed in the book too.
+        - >-
+          The opposite also tells something: if the book inside a zone is thin, or walls are pulled as
+          price comes near, how much reaction the zone produces this time is less certain.
+    - type: box
+      title: Data limits
+      text: >-
+        Exchanges publish a set number of levels near the price, not the whole book. The combined view adds
+        up several exchanges' books; USD and USDT prices differ, so they are aligned. The sizes shown are
+        limited to those exchanges.
+  confusions:
+    - id: volume-profile
+      text: A volume profile shows trades that happened; the order book shows resting orders that have not traded yet.
+    - id: liquidity-heatmap
+      text: The order book is one moment; the liquidity heatmap is the same book over time.
+  key_points:
+    - The order book lists resting buy and sell orders by price.
+    - How a wall behaves as price comes near matters more than its size.
+    - Resting orders can be cancelled; the book alone does not show direction.
+    - Read with the Critical Zones, it shows whether a zone is backed in the book.
+  svg_labels:
+    asks: Sell orders
+    bids: Buy orders
+    wall: Wall
+    spread: Spread
+  svg_alt: "Order book drawing: red sell orders above, green buy orders below, the spread in the middle; one large order on each side marked as a wall"
+  svg_caption: Sell orders rest above the price, buy orders below. Bar length is the size at that price. Clearly longer bars are walls.

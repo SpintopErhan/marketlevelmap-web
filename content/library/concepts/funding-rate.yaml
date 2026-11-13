@@ -1,0 +1,155 @@
+id: funding-rate
+kind: order-flow
+order: 40
+related: [open-interest, liquidations, market-cycle-psychology]
+example: null
+updated: 2026-11-13
+
+tr:
+  slug: fonlama-orani
+  name: Fonlama oranı
+  alt_name: Funding rate
+  summary: >-
+    Fonlama oranı, sürekli vadeli sözleşmelerde long ve short pozisyonlar arasında belli aralıklarla
+    yapılan ödemedir. Vadeli fiyatı spot fiyata yakın tutar ve piyasanın hangi tarafa yaslandığını gösterir.
+  sections:
+    - type: text
+      id: definition
+      title: Fonlama oranı nedir?
+      paragraphs:
+        - >-
+          Sürekli vadeli sözleşmelerin (perpetual) vade sonu yoktur. Vadeli fiyatın spot fiyattan çok
+          uzaklaşmaması için borsalar belli aralıklarla (çoğunlukla 8 saatte bir) iki taraf arasında bir
+          ödeme yaptırır.
+        - >-
+          Oran **pozitifse** long pozisyonlar short pozisyonlara öder; vadeli fiyat spotun üzerindedir ve
+          piyasa long ağırlıklıdır. Oran **negatifse** short pozisyonlar long pozisyonlara öder. Ödeme
+          borsalar arasında değil, aynı borsadaki pozisyonlar arasında yapılır.
+    - type: bullets
+      id: terms
+      title: Okurken bilinmesi gerekenler
+      items:
+        - text: "**Aralık:** çoğu sözleşme 8 saatte bir öder; bazıları 4 ya da 1 saatte bir. Yıllık karşılık aralığa göre hesaplanır."
+          marker: neutral
+        - text: "**Yıllık karşılık:** oran × günlük ödeme sayısı × 365. Oranların ne kadar uç olduğunu karşılaştırmayı kolaylaştırır."
+          marker: neutral
+        - text: "**Sonraki fonlama:** oran ödeme anına kadar değişebilir; geri sayım ödemenin ne zaman yapılacağını gösterir."
+          marker: neutral
+    - type: scenarios
+      id: readings
+      title: Fonlama nasıl okunur?
+      intro: Fonlama tek başına yön göstermez; pozisyonların hangi tarafta kalabalıklaştığını anlatır.
+      items:
+        - title: Yüksek pozitif fonlama
+          tone: down
+          text: Long pozisyonlar kalabalık ve taşıma maliyeti yüksek. Fiyat düşerse long kapanışları hareketi hızlandırabilir.
+        - title: Nötre yakın fonlama
+          tone: neutral
+          text: İki taraf arasında belirgin bir yığılma yok.
+        - title: Negatif fonlama
+          tone: up
+          text: Short pozisyonlar kalabalık. Fiyat yükselirse short kapanışları hareketi hızlandırabilir.
+    - type: limits
+      shows:
+        - Vadeli piyasanın hangi tarafa yaslandığını
+        - Pozisyonların bir tarafta kalabalıklaşıp kalabalıklaşmadığını
+        - Pozisyon taşımanın maliyetini
+      not_proves:
+        - Fiyatın yönünü; yüksek fonlama uzun süre devam edebilir
+        - Spot piyasadaki talebi; fonlama yalnızca vadeli sözleşmelerle ilgilidir
+        - Tüm borsaları; her borsanın oranı ayrıdır
+    - type: zones
+      paragraphs:
+        - >-
+          Fiyat bir Kritik Bölgeye yaklaşırken fonlamanın bir tarafta uç değerlere çıkması, o bölgede
+          bir hareket olursa pozisyon kapanışlarının hareketi hızlandırabileceğine işaret eder. Canlı
+          akış sayfasının vadeli modunda fonlama borsa bazında ve ortalama olarak, tarayıcının vadeli
+          modunda tüm varlıklar için görünür.
+  confusions:
+    - id: open-interest
+      text: Fonlama pozisyonların hangi tarafa yaslandığını, açık pozisyon ise ne kadar pozisyon açık olduğunu gösterir.
+  key_points:
+    - Fonlama long ve short arasındaki periyodik ödemedir.
+    - Pozitifse long'lar, negatifse short'lar öder.
+    - Uç değerler kalabalık pozisyonlara işaret eder, yön göstermez.
+    - Oranlar aralığa göre yıllığa çevrilerek karşılaştırılır.
+  svg_labels:
+    zero: "0"
+    longs_pay: "Pozitif: long'lar öder"
+    shorts_pay: "Negatif: short'lar öder"
+    crowded: Kalabalık long
+  svg_alt: "Fonlama oranı çizimi: sıfır çizgisinin üstünde giderek büyüyen yeşil çubuklar (pozitif fonlama) ve en büyüğü kalabalık long olarak işaretli; ardından sıfırın altında kırmızı çubuklar (negatif fonlama)"
+  svg_caption: Çubuklar her ödeme dönemindeki oranı gösterir. Pozitif oran büyüdükçe long pozisyonlar kalabalıklaşır; oran negatife dönünce short'lar ödemeye başlar.
+
+en:
+  slug: funding-rate
+  name: Funding rate
+  summary: >-
+    The funding rate is a periodic payment between long and short positions on perpetual futures. It
+    keeps the futures price close to spot and shows which way the market leans.
+  sections:
+    - type: text
+      id: definition
+      title: What is the funding rate?
+      paragraphs:
+        - >-
+          Perpetual futures have no expiry. To keep the futures price from drifting far from spot, exchanges
+          make the two sides pay each other at set intervals (mostly every 8 hours).
+        - >-
+          When the rate is **positive**, longs pay shorts; futures trade above spot and the market leans
+          long. When it is **negative**, shorts pay longs. The payment is between positions on the same
+          exchange, not between exchanges.
+    - type: bullets
+      id: terms
+      title: Worth knowing when reading it
+      items:
+        - text: "**Interval:** most contracts pay every 8 hours; some every 4 or 1. The annual figure depends on the interval."
+          marker: neutral
+        - text: "**Annualised:** rate × payments a day × 365. It makes it easier to compare how extreme rates are."
+          marker: neutral
+        - text: "**Next funding:** the rate can change until the payment; the countdown shows when it is made."
+          marker: neutral
+    - type: scenarios
+      id: readings
+      title: How to read funding
+      intro: Funding alone does not show direction; it tells where positions are crowding.
+      items:
+        - title: High positive funding
+          tone: down
+          text: Longs are crowded and expensive to hold. If price falls, longs closing can speed the move up.
+        - title: Funding near neutral
+          tone: neutral
+          text: No clear crowding on either side.
+        - title: Negative funding
+          tone: up
+          text: Shorts are crowded. If price rises, shorts closing can speed the move up.
+    - type: limits
+      shows:
+        - Which way the futures market leans
+        - Whether positions are crowding on one side
+        - The cost of holding a position
+      not_proves:
+        - The direction of price; high funding can last a long time
+        - Demand in the spot market; funding concerns futures only
+        - Every exchange; each has its own rate
+    - type: zones
+      paragraphs:
+        - >-
+          Funding reaching extremes on one side as price nears a Critical Zone suggests that, if the zone
+          produces a move, positions closing could speed it up. In the live flow's futures mode funding
+          shows per venue and on average; in the scanner's futures mode for every asset.
+  confusions:
+    - id: open-interest
+      text: Funding shows which way positions lean; open interest shows how many positions are open.
+  key_points:
+    - Funding is a periodic payment between longs and shorts.
+    - When positive longs pay, when negative shorts pay.
+    - Extremes point to crowded positions, not to direction.
+    - Rates are compared after annualising by their interval.
+  svg_labels:
+    zero: "0"
+    longs_pay: "Positive: longs pay"
+    shorts_pay: "Negative: shorts pay"
+    crowded: Crowded longs
+  svg_alt: "Funding rate drawing: green bars above the zero line growing larger (positive funding), the largest marked as crowded longs; then red bars below zero (negative funding)"
+  svg_caption: Each bar is the rate of one payment period. As a positive rate grows, longs crowd; once it turns negative, shorts start paying.

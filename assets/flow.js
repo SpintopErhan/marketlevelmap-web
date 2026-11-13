@@ -1177,6 +1177,17 @@
     }
     applyWords();
   }
+  // Library pages for each help section (content/library/concepts, category "Order flow").
+  var LIB = {
+    "order-book": { tr: "emir-defteri-ve-likidite", en: "order-book-and-liquidity", ntr: "Emir defteri ve likidite", nen: "Order book and liquidity" },
+    "cvd": { tr: "cvd-kumulatif-hacim-farki", en: "cvd", ntr: "CVD", nen: "CVD" },
+    "heatmap": { tr: "likidite-isi-haritasi", en: "liquidity-heatmap", ntr: "Likidite ısı haritası", nen: "Liquidity heatmap" },
+    "funding": { tr: "fonlama-orani", en: "funding-rate", ntr: "Fonlama oranı", nen: "Funding rate" },
+    "oi": { tr: "acik-pozisyon", en: "open-interest", ntr: "Açık pozisyon", nen: "Open interest" },
+    "liq": { tr: "likidasyonlar", en: "liquidations", ntr: "Likidasyonlar", nen: "Liquidations" },
+    "vp": { tr: "hacim-profili", en: "volume-profile", ntr: "Hacim profili", nen: "Volume profile" }
+  };
+  var HELP_LIB = { heat: ["heatmap"], book: ["order-book"], tape: ["cvd"], cvd: ["cvd"], depth: ["order-book"], vp: ["vp"], fund: ["funding", "oi"], liq: ["liq"] };
   var HELP_OF = { "c-heat": "heat", "c-book": "book", "c-tape": "tape", "c-cvd": "cvd", "c-depth": "depth", "c-vp": "vp", "c-zf": "zf", "c-fund": "fund", "c-liq": "liq" };
   function openHelp(key) {
     var h = HELP[lang()], dlg = $("fl-help"), body = $("fl-help-body");
@@ -1186,7 +1197,13 @@
       if (MARKET === "futures" ? x[0] === "prem" : x[0] === "fund" || x[0] === "liq") return;
       var sec = document.createElement("section"); sec.id = "help-" + x[0];
       var t = document.createElement("h3"); t.textContent = x[1]; var p = document.createElement("p"); p.textContent = x[2];
-      sec.appendChild(t); sec.appendChild(p); body.appendChild(sec);
+      sec.appendChild(t); sec.appendChild(p);
+      (HELP_LIB[x[0]] || []).forEach(function (id) {
+        var lib = LIB[id]; if (!lib) return;
+        var a = document.createElement("a"); a.className = "help-lib"; a.href = (lang() === "tr" ? "/tr/kutuphane/" : "/en/library/") + lib[lang()] + "/"; a.target = "_blank"; a.rel = "noopener";
+        a.textContent = (lang() === "tr" ? "Kütüphanede: " : "In the library: ") + lib["n" + lang()] + " →"; sec.appendChild(a);
+      });
+      body.appendChild(sec);
     });
     if (dlg.showModal) { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute("open", "");
     var target = key && $("help-" + key);
