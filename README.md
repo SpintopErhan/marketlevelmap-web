@@ -95,8 +95,11 @@ page in its own unminimised window.
   bid/ask ratios within ±10 and ±25 bp (only books that reach that far count).
 - **Time & Sales** — newest 40 trades with venue, filters ≥2×/≥5×/≥10× the venue's average trade size
   (≥5× highlighted), buy/sell share of the last 200 trades.
-- **Zones** — the latest Critical Zones report of the asset (1D first, other timeframes selectable): whether the
-  price is inside a band, the nearest resistance above and support below.
+- **Zones** — the latest Critical Zones reports of the asset: all timeframes together by default ("All"), or one
+  (remembered in `localStorage` `mlm-flow-ztf`). Each zone carries its timeframe (a tag in the context bar, a label on
+  the heatmap band); where zones of different timeframes overlap the list is joined ("1D+1W"), the band is drawn
+  stronger and order-book/profile rows get an amber stripe. The context bar shows whether the price is inside a
+  band and the nearest resistance above and support below.
 - **Coinbase premium** — Coinbase USD mid over Binance USDT mid (OKX when Binance is not reachable), in the
   context bar, whatever venue is shown.
 - **Flow in the zone** — from the moment the price enters a band (the narrowest one it is in): buys, sells and CVD of
