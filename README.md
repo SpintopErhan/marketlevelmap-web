@@ -84,10 +84,15 @@ page in its own unminimised window.
   `BASE-USD`). Combined by default; one venue can be picked. In the combined book each venue's prices are scaled
   by the first live venue's mid over its own, so the USD book lines up with the USDT books. Coinbase's trade side
   is taken from its own book (at/above the ask = buy). A venue that does not list the asset is marked "not listed".
-- **Layout** — spot: order book on the left, Time & Sales (30 rows) on the right; in the middle a 2×2 grid: CVD and
-  volume profile (up to 16 rows), then flow in the zone and depth. Futures: depth, CVD, volume profile and
-  liquidations across the top; below them order book, Time & Sales, and flow in the zone with funding and open
-  interest under it (`flow.js` moves the same cards into `.fx-top` / `.fx-bot`).
+- **Layout** — a custom board (`setupBoard` in `flow.js`): every panel is a card on a 4-column grid, one unit 360 px
+  high. "Edit layout" shows per card a drag handle (⠿, desktop), a size picker limited to the sizes that suit the panel
+  (heatmap 2×1…4×2; depth/CVD 1×1…2×2; volume profile, liquidations, zone flow 1×1/1×2/2×1; order book 1×1/1×2/2×2;
+  "Gerçekleşen işlemler" (Time & Sales) 1×1…2×2; funding and OI 2×1/2×2/4×1), ↑ ↓ and hide (×); hidden panels can be added
+  back, and "Reset to default" restores the default. Holes stay holes (no automatic packing). The layout is kept in
+  `localStorage` `mlm-flow-layout-spot` / `-futures`. Defaults — spot: heatmap 4×1; CVD, volume profile 1×1, zone flow 2×1;
+  order book 1×2, trades 2×2, depth 1×2. Futures: heatmap 4×1; depth, CVD, volume profile, liquidations 1×1; order book
+  1×2, trades 2×2, zone flow 1×2; funding and OI 4×1. Tablets use 2 columns (wider panels clipped to 2), phones one
+  column in the chosen order. The order book and the volume profile show as many rows as their card fits.
 - **Order book** — 12 buckets each side (grouping 0.5 bp of the price rounded to 1-2-5 and three larger steps),
   notional per bucket, walls (≥3× the median bucket and ≥half the largest) in bold, buckets inside a Critical
   Zones band striped in the zone's colour, book balance within ±50 bp (narrower when the books do not reach).
