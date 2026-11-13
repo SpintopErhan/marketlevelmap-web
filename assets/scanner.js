@@ -19,8 +19,8 @@
       gateMember: "The scanner is for members. It opens once your membership is approved.", profile: "Your profile",
       notifyOff: "Browser notifications are blocked; alarms show on the page only.",
       spot: "Spot", futures: "Futures", fFund: "Funding", fOi: "Open interest", fOi1h: "OI 1h", fLiq: "Liquidations 15 min", fYear: "annual {p}",
-      fNote: "Futures columns: Binance USDT perpetuals. Funding is the current rate (annualised under it); open interest and its 1-hour change come from Binance's 5-minute history; liquidations are summed since the page opened (at most the last 15 min; L = longs liquidated, S = shorts). Click a column title to sort.",
-      bigSubF: "all assets · futures · Binance", byCol: "by the chosen column", sortBy: "Sort by {c}"
+      fNote: "Futures columns: Binance USDT perpetuals. Funding is the current rate (annualised under it); open interest is read every minute and its 1-hour change comes from Binance's 5-minute history (marked “session” when it is taken from this page's own samples instead); liquidations are summed since the page opened (at most the last 15 min; L = longs liquidated, S = shorts). Click a column title to sort.",
+      bigSubF: "all assets · futures · Binance", byCol: "by the chosen column", sess: "session", srcBin: "Futures source: Binance USD-M.", srcOkx: "Futures source: OKX USDT swaps (Binance futures did not answer from here).", bigSubFO: "all assets · futures · OKX", sortBy: "Sort by {c}"
     },
     tr: {
       title: "Tarayıcı", sub: "canlı · Kritik Bölgeler", lead: "Her varlığın fiyatının analiz bölgelerine göre nerede durduğu.", tf: "Zaman dilimi",
@@ -36,8 +36,8 @@
       gateMember: "Tarayıcı üyelere özeldir. Üyeliğiniz onaylandığında açılır.", profile: "Profiliniz",
       notifyOff: "Tarayıcı bildirimleri engelli; alarmlar yalnızca sayfada görünür.",
       spot: "Spot", futures: "Vadeli", fFund: "Fonlama", fOi: "Açık pozisyon", fOi1h: "AP 1 sa", fLiq: "Likidasyon 15 dk", fYear: "yıllık {p}",
-      fNote: "Vadeli sütunlar: Binance USDT sürekli vadeli. Fonlama güncel orandır (altında yıllık karşılığı); açık pozisyon ve 1 saatlik değişimi Binance'in 5 dakikalık geçmişinden gelir; likidasyonlar sayfa açıldığından beri toplanır (en fazla son 15 dk; L = long likidasyonu, S = short). Sıralamak için sütun başlığına tıklayın.",
-      bigSubF: "tüm varlıklar · vadeli · Binance", byCol: "seçilen sütuna göre", sortBy: "{c} göre sırala"
+      fNote: "Vadeli sütunlar: Binance USDT sürekli vadeli. Fonlama güncel orandır (altında yıllık karşılığı); açık pozisyon dakikada bir okunur, 1 saatlik değişimi Binance'in 5 dakikalık geçmişinden gelir (bu sayfanın kendi örneklerinden hesaplanırsa “oturum” yazar); likidasyonlar sayfa açıldığından beri toplanır (en fazla son 15 dk; L = long likidasyonu, S = short). Sıralamak için sütun başlığına tıklayın.",
+      bigSubF: "tüm varlıklar · vadeli · Binance", byCol: "seçilen sütuna göre", sess: "oturum", srcBin: "Vadeli kaynak: Binance USD-M.", srcOkx: "Vadeli kaynak: OKX USDT swap (Binance vadeli buradan cevap vermedi).", bigSubFO: "tüm varlıklar · vadeli · OKX", sortBy: "{c} göre sırala"
     }
   };
   function lang() { var s = document.getElementById("lang"); return s && s.value === "tr" ? "tr" : "en"; }
@@ -52,33 +52,126 @@
   var TF_ORDER = ["1h", "4h", "1d", "1w"], NEAR = 0.01;
   var MARKET = /[?&]market=futures(&|$)/.test(location.search) ? "futures" : "spot", FUT = MARKET === "futures";
   // ─── Futures data (Binance USD-M): all-market mark price/funding and liquidations in one socket, OI history by REST.
-  var fut = {}, liqAll = [], sortKey = "";
+  var fut = {}, liqAll = [], sortKey = "", futSrc = "binance";
+  // Per-symbol streams on /market (the same ones the live flow page uses): <sym>@markPrice@1s and <sym>@forceOrder.
+  // Open interest from /fapi/v1/openInterest every minute; its 1-hour change from Binance's 5-minute history when that
+  // answers, else from this page's own minute samples (marked "session").
   function futStart(list) {
     var syms = list.filter(function (a) { return /USDT$/.test(a); }); if (!syms.length) return;
-    var retry = 0;
+    var retry = 0, params = [], bws = null;
+    syms.forEach(function (s) { params.push(s.toLowerCase() + "@markPrice@1s", s.toLowerCase() + "@forceOrder"); });
+    // The rule: when Binance futures sends no funding within 10 s (it is restricted in some countries), the
+    // futures columns and big trades switch to OKX for this page.
+    setTimeout(function () { if (futSrc === "binance" && !syms.some(function (x) { return fut[x] && fut[x].fr != null; })) { futSrc = "okx"; if (bws) { var x = bws; bws = null; try { x.close(); } catch (e) {} } futOkx(syms); } }, 10000);
     (function open() {
+      if (futSrc !== "binance") return;
       var ws; try { ws = new WebSocket("wss://fstream.binance.com/market/ws"); } catch (e) { return; }
-      ws.onopen = function () { retry = 0; ws.send(JSON.stringify({ method: "SUBSCRIBE", params: ["!markPrice@arr@1s", "!forceOrder@arr"], id: 1 })); };
+      bws = ws;
+      ws.onopen = function () { retry = 0; ws.send(JSON.stringify({ method: "SUBSCRIBE", params: params, id: 1 })); };
       ws.onmessage = function (e) {
         var m; try { m = JSON.parse(e.data); } catch (_) { return; }
-        if (Array.isArray(m)) m.forEach(function (x) { if (x && x.e === "markPriceUpdate" && syms.indexOf(x.s) > -1) { var f = fut[x.s] || (fut[x.s] = {}); f.mark = +x.p; f.fr = +x.r; f.next = +x.T; dirty = true; } });
-        else if (m && m.e === "forceOrder" && m.o && syms.indexOf(m.o.s) > -1) { var o = m.o, pr = +o.ap || +o.p, q = +o.z || +o.q; if (pr > 0 && q > 0) { liqAll.push({ s: o.s, side: o.S === "SELL" ? "L" : "S", n: pr * q, t: Date.now() }); if (liqAll.length > 5000) liqAll.shift(); dirty = true; } }
+        var list2 = Array.isArray(m) ? m : [m.data || m];
+        list2.forEach(function (x) {
+          if (!x) return;
+          if (x.e === "markPriceUpdate" && syms.indexOf(x.s) > -1) { var f = fut[x.s] || (fut[x.s] = {}); f.mark = +x.p; f.fr = +x.r; f.next = +x.T; if (f.oi > 0) f.oiV = f.oi * f.mark; dirty = true; }
+          else if (x.e === "forceOrder" && x.o && syms.indexOf(x.o.s) > -1) { var o = x.o, pr = +o.ap || +o.p, q = +o.z || +o.q; if (pr > 0 && q > 0) { liqAll.push({ s: o.s, side: o.S === "SELL" ? "L" : "S", n: pr * q, t: Date.now() }); if (liqAll.length > 5000) liqAll.shift(); dirty = true; } }
+        });
       };
-      ws.onclose = function () { setTimeout(open, Math.min(30000, 1000 * Math.pow(2, retry++))); };
+      ws.onclose = function () { if (bws !== ws) return; setTimeout(open, Math.min(30000, 1000 * Math.pow(2, retry++))); };
     })();
-    function oi() {
+    var histOk = {};
+    function oiNow() {
       syms.forEach(function (sym, i) {
         setTimeout(function () {
-          fetch("https://fapi.binance.com/futures/data/openInterestHist?symbol=" + sym + "&period=5m&limit=13", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (list) {
-            if (!Array.isArray(list) || !list.length) return;
-            list.sort(function (a, b) { return a.timestamp - b.timestamp; });
-            var last = list[list.length - 1], first = list[0], f = fut[sym] || (fut[sym] = {});
-            f.oiV = +last.sumOpenInterestValue; f.oi1h = +first.sumOpenInterest > 0 ? +last.sumOpenInterest / +first.sumOpenInterest - 1 : null; dirty = true;
+          if (futSrc !== "binance") return;
+          fetch("https://fapi.binance.com/fapi/v1/openInterest?symbol=" + sym, { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
+            if (futSrc !== "binance" || !b || !(+b.openInterest > 0)) return;
+            var f = fut[sym] || (fut[sym] = {}), now = Date.now(); f.oi = +b.openInterest; if (f.mark > 0) f.oiV = f.oi * f.mark;
+            var smp = f.smp || (f.smp = []); smp.push({ t: now, oi: f.oi }); while (smp.length && smp[0].t < now - 3900000) smp.shift();
+            if (!histOk[sym] && smp.length > 1) { var ref = smp.filter(function (x) { return x.t <= now - 3600000; }).pop() || smp[0]; f.oi1h = f.oi / ref.oi - 1; f.oiSess = now - ref.t < 3500000; }
+            dirty = true;
+          }).catch(function () {});
+        }, i * 200);
+      });
+    }
+    function oiHist() {
+      syms.forEach(function (sym, i) {
+        setTimeout(function () {
+          if (futSrc !== "binance") return;
+          fetch("https://fapi.binance.com/futures/data/openInterestHist?symbol=" + sym + "&period=5m&limit=13", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (l) {
+            if (futSrc !== "binance" || !Array.isArray(l) || l.length < 2) return;
+            l.sort(function (a, b) { return a.timestamp - b.timestamp; });
+            var f = fut[sym] || (fut[sym] = {}); if (+l[0].sumOpenInterest > 0) { f.oi1h = +l[l.length - 1].sumOpenInterest / +l[0].sumOpenInterest - 1; f.oiSess = false; histOk[sym] = true; dirty = true; }
           }).catch(function () {});
         }, i * 250);
       });
     }
-    oi(); setInterval(oi, 300000);
+    oiNow(); oiHist(); setInterval(oiNow, 60000); setInterval(oiHist, 300000);
+  }
+  // OKX USDT swaps: one socket with funding-rate, mark-price and trades per asset plus liquidation-orders; sizes are in
+  // contracts (× ctVal from the instrument list). Open interest of all swaps every minute; the 1-hour change from OKX's
+  // 5-minute history per instrument, else from this page's samples ("session").
+  function futOkx(syms) {
+    var inst = {}, ct = {}, retry = 0;
+    fut = {}; liqAll.length = 0; dirty = true; syncSrc();
+    if (bigWs) { var bw = bigWs; bigWs = null; try { bw.close(); } catch (e) {} } big.length = 0; stats = {}; pend = {}; bigDirty = true;
+    fetch("https://www.okx.com/api/v5/public/instruments?instType=SWAP", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
+      ((b && b.data) || []).forEach(function (d) { var m = /^([A-Z0-9]+)-USDT-SWAP$/.exec(d.instId); if (m && syms.indexOf(m[1] + "USDT") > -1) { inst[d.instId] = m[1] + "USDT"; ct[d.instId] = +d.ctVal || 1; } });
+      var ids = Object.keys(inst); if (!ids.length) return;
+      (function open() {
+        var ws; try { ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public"); } catch (e) { return; }
+        var ping = null;
+        ws.onopen = function () {
+          retry = 0; var args = [{ channel: "liquidation-orders", instType: "SWAP" }];
+          ids.forEach(function (id) { args.push({ channel: "funding-rate", instId: id }, { channel: "mark-price", instId: id }, { channel: "trades", instId: id }); });
+          ws.send(JSON.stringify({ op: "subscribe", args: args })); ping = setInterval(function () { try { ws.send("ping"); } catch (e) {} }, 20000);
+        };
+        ws.onmessage = function (e) {
+          if (e.data === "pong") return; var m; try { m = JSON.parse(e.data); } catch (_) { return; }
+          if (!m.arg || !Array.isArray(m.data)) return; var ch = m.arg.channel;
+          m.data.forEach(function (d) {
+            if (ch === "liquidation-orders") { var sy = inst[d.instId]; if (!sy) return; (d.details || []).forEach(function (x) { var n = +x.bkPx * +x.sz * ct[d.instId]; if (n > 0) { liqAll.push({ s: sy, side: x.posSide === "long" || (x.posSide !== "short" && x.side === "sell") ? "L" : "S", n: n, t: Date.now() }); if (liqAll.length > 5000) liqAll.shift(); dirty = true; } }); return; }
+            var s2 = inst[d.instId]; if (!s2) return; var f = fut[s2] || (fut[s2] = {});
+            if (ch === "funding-rate") { f.fr = +d.fundingRate; f.next = +d.fundingTime; }
+            else if (ch === "mark-price") f.mark = +d.markPx;
+            else if (ch === "trades") onAgg({ s: s2, T: +d.ts, m: d.side === "sell", q: +d.sz * ct[d.instId], p: +d.px });
+            dirty = true;
+          });
+        };
+        ws.onclose = function () { clearInterval(ping); setTimeout(open, Math.min(30000, 1000 * Math.pow(2, retry++))); };
+      })();
+      var histOk = {};
+      function oiNow() {
+        fetch("https://www.okx.com/api/v5/public/open-interest?instType=SWAP", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
+          var now = Date.now();
+          ((b && b.data) || []).forEach(function (d) {
+            var s2 = inst[d.instId]; if (!s2) return; var f = fut[s2] || (fut[s2] = {});
+            f.oi = +d.oiCcy; f.oiV = +d.oiUsd || (f.mark > 0 ? f.oi * f.mark : 0);
+            var smp = f.smp || (f.smp = []); smp.push({ t: now, oi: f.oi }); while (smp.length && smp[0].t < now - 3900000) smp.shift();
+            if (!histOk[s2] && smp.length > 1) { var ref = smp.filter(function (x) { return x.t <= now - 3600000; }).pop() || smp[0]; f.oi1h = f.oi / ref.oi - 1; f.oiSess = now - ref.t < 3500000; }
+          });
+          dirty = true;
+        }).catch(function () {});
+      }
+      function oiHist() {
+        ids.forEach(function (id, i) {
+          setTimeout(function () {
+            fetch("https://www.okx.com/api/v5/rubik/stat/contracts/open-interest-history?instId=" + id + "&period=5m&limit=13", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
+              var l = b && Array.isArray(b.data) ? b.data.slice() : []; if (l.length < 2) return;
+              l.sort(function (a, c) { return +a[0] - +c[0]; });
+              var s2 = inst[id], f = fut[s2] || (fut[s2] = {}), a0 = +l[0][2], a1 = +l[l.length - 1][2];
+              if (a0 > 0) { f.oi1h = a1 / a0 - 1; f.oiSess = false; histOk[s2] = true; dirty = true; }
+            }).catch(function () {});
+          }, i * 300);
+        });
+      }
+      oiNow(); oiHist(); setInterval(oiNow, 60000); setInterval(oiHist, 300000);
+    }).catch(function () {});
+  }
+  function syncSrc() {
+    var t = w(), e = $("sc-fsrc"); if (!e) return;
+    e.hidden = !FUT; e.textContent = futSrc === "okx" ? t.srcOkx : t.srcBin;
+    var bs = document.querySelector('[data-sc="bigSub"]'); if (bs && FUT) bs.textContent = futSrc === "okx" ? t.bigSubFO : t.bigSubF;
   }
   function liq15(sym) { var now = Date.now(), L = 0, S = 0; liqAll.forEach(function (x) { if (x.s === sym && x.t > now - 900000) { if (x.side === "L") L += x.n; else S += x.n; } }); return { L: L, S: S }; }
   function money(v) { return v > 0 ? v.toLocaleString(locale(), { notation: "compact", maximumFractionDigits: v >= 1e6 ? 2 : 0 }) + " $" : "0 $"; }
@@ -159,7 +252,7 @@
         if (f.fr != null) { cf.appendChild(el("small", "muted blk", fill(t.fYear, { p: signPct(f.fr * 24 / hrs * 365, 1) }))); }
         tr.appendChild(cf);
         tr.appendChild(el("td", "r num hide-m", f.oiV ? money(f.oiV) : "—"));
-        tr.appendChild(el("td", "r num " + (f.oi1h > 0 ? "up" : f.oi1h < 0 ? "down" : ""), f.oi1h != null ? signPct(f.oi1h, 1) : "—"));
+        var co = el("td", "r num " + (f.oi1h > 0 ? "up" : f.oi1h < 0 ? "down" : ""), f.oi1h != null ? signPct(f.oi1h, 1) : "—"); if (f.oi1h != null && f.oiSess) co.appendChild(el("small", "muted blk", t.sess)); tr.appendChild(co);
         var cl = el("td", "r num liqc"); cl.appendChild(el("span", "down", "L " + money(l.L))); cl.appendChild(el("span", "up", "S " + money(l.S))); tr.appendChild(cl);
       } else {
       var c3 = el("td", "hide-m"); c3.appendChild(meter(r.st, r.p)); tr.appendChild(c3);
@@ -239,7 +332,7 @@
   var BIG_URLS = ["wss://data-stream.binance.vision/stream?streams=", "wss://stream.binance.com:9443/stream?streams="];
   var big = [], bigMult = 10, stats = {}, pend = {}, bigWs = null, bigUrl = 0, bigRetry = 0, bigGot = false;
   function bigStart(list) {
-    var syms = list.filter(function (a) { return /USDT$/.test(a); }); if (!syms.length) return;
+    var syms = list.filter(function (a) { return /USDT$/.test(a); }); if (!syms.length || (FUT && futSrc !== "binance")) return;
     var streams = syms.map(function (a) { return a.toLowerCase() + "@aggTrade"; }), ws;
     // Futures: Binance USD-M serves aggTrade on /market (subscribed after opening); spot: a combined-stream URL.
     var url = FUT ? "wss://fstream.binance.com/market/ws" : BIG_URLS[bigUrl % BIG_URLS.length] + streams.join("/");
@@ -247,7 +340,7 @@
     bigWs = ws; var got = false;
     if (FUT) ws.onopen = function () { ws.send(JSON.stringify({ method: "SUBSCRIBE", params: streams, id: 2 })); };
     ws.onmessage = function (e) { var m; try { m = JSON.parse(e.data); } catch (_) { return; } var d = m && (m.data || m); if (d && d.e === "aggTrade") { got = bigGot = true; bigRetry = 0; onAgg(d); } };
-    ws.onclose = function () { if (bigWs !== ws) return; bigWs = null; if (!got) bigUrl++; if (!bigGot && bigUrl >= BIG_URLS.length * 2) { $("sc-big-wait").textContent = w().bigOff; return; } setTimeout(function () { bigStart(list); }, Math.min(30000, 1000 * Math.pow(2, bigRetry++))); };
+    ws.onclose = function () { if (bigWs !== ws) return; bigWs = null; if (FUT && futSrc !== "binance") return; if (!got) bigUrl++; if (!bigGot && bigUrl >= BIG_URLS.length * 2) { $("sc-big-wait").textContent = w().bigOff; return; } setTimeout(function () { bigStart(list); }, Math.min(30000, 1000 * Math.pow(2, bigRetry++))); };
     ws.onerror = function () {};
   }
   // aggTrades of one taker order share the time and side: they are added up into one print first.
@@ -286,8 +379,7 @@
     var t = w();
     document.querySelectorAll("[data-sc]").forEach(function (e) { var v = t[e.dataset.sc]; if (typeof v === "string") e.textContent = v; });
     document.title = "MarketLevelMap — " + t.title;
-    var bs = document.querySelector('[data-sc="bigSub"]'); if (bs && FUT) bs.textContent = t.bigSubF;
-    buildHead();
+    buildHead(); syncSrc();
     dirty = bigDirty = true; if (assets.length) { render(); renderBig(); }
   }
   function gate(user) {
@@ -351,6 +443,6 @@
       setInterval(function () { if (document.hidden) return; render(); renderBig(); }, 500);
     });
   }
-  window.MLMScanner = { _state: function () { return { fut: fut, liqAll: liqAll, market: MARKET, assets: assets, prices: prices, zonesBy: zonesBy, alarms: alarms, big: big, stats: stats, tf: tf }; }, _check: checkAlarms };
+  window.MLMScanner = { _state: function () { return { futSrc: futSrc, fut: fut, liqAll: liqAll, market: MARKET, assets: assets, prices: prices, zonesBy: zonesBy, alarms: alarms, big: big, stats: stats, tf: tf }; }, _check: checkAlarms };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();

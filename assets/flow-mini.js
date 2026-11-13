@@ -8,9 +8,9 @@
   "use strict";
   var W = {
     en: { title: "Flow summary", sub: "live · {venue} · since the page opened", open: "Open live flow →", bs5: "Last 5 min buy/sell", cvd: "CVD (session)",
-      fund: "Funding", basis: "Basis (perp − index)", oi1h: "Open interest 1 h", liq: "Liquidations 15 min", read: "Last 5 min: price {p}, CVD {c}", wait: "Collecting the first minutes…" },
+      fund: "Funding", basis: "Basis (perp − index)", oi1h: "Open interest 1 h", liq: "Liquidations 15 min", read: "Last 5 min: price {p}, CVD {c}", autoOkx: "OKX (Binance did not answer)", wait: "Collecting the first minutes…" },
     tr: { title: "Akış özeti", sub: "canlı · {venue} · sayfa açıldığından beri", open: "Canlı akışı aç →", bs5: "Son 5 dk alış/satış", cvd: "CVD (oturum)",
-      fund: "Fonlama", basis: "Baz (perp − endeks)", oi1h: "Açık pozisyon 1 sa", liq: "Likidasyon 15 dk", read: "Son 5 dk: fiyat {p}, CVD {c}", wait: "İlk dakikalar toplanıyor…" }
+      fund: "Fonlama", basis: "Baz (perp − endeks)", oi1h: "Açık pozisyon 1 sa", liq: "Likidasyon 15 dk", read: "Son 5 dk: fiyat {p}, CVD {c}", autoOkx: "OKX (Binance cevap vermedi)", wait: "İlk dakikalar toplanıyor…" }
   };
   function $(id) { return document.getElementById(id); }
   function lang() { var s = $("lang"); return s && s.value === "tr" ? "tr" : "en"; }
@@ -42,7 +42,13 @@
     socks.forEach(function (ws) { try { ws.close(); } catch (e) {} }); socks = [];
     trades = []; cvd = 0; f = {}; liqs = [];
   }
-  function start() { stop(); if (venue === "okx") startOkx(); else startBinance(); timers.push(setInterval(render, 1000)); render(); }
+  // The futures rule: when Binance sends no funding within 10 s (restricted from here), the card uses OKX for this
+  // visit (the saved choice stays Binance).
+  var auto = false;
+  function start() {
+    stop(); if (venue === "okx") startOkx(); else startBinance(); timers.push(setInterval(render, 1000)); render();
+    if (venue === "binance") { var my = run; timers.push(setTimeout(function () { if (my === run && f.fr == null) { auto = true; venue = "okx"; words(); start(); } }, 10000)); }
+  }
   function startOkx() {
     var spot = base + "-USDT", swap = base + "-USDT-SWAP", my = run, ct = 0;
     function go() {
@@ -90,10 +96,19 @@
     function oi() {
       fetch("https://fapi.binance.com/futures/data/openInterestHist?symbol=" + sym + "&period=5m&limit=13", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (l) {
         if (!Array.isArray(l) || l.length < 2) return; l.sort(function (a, b) { return a.timestamp - b.timestamp; });
-        f.oi1h = +l[0].sumOpenInterest > 0 ? +l[l.length - 1].sumOpenInterest / +l[0].sumOpenInterest - 1 : null;
+        if (+l[0].sumOpenInterest > 0) { f.oi1h = +l[l.length - 1].sumOpenInterest / +l[0].sumOpenInterest - 1; histOk = true; }
       }).catch(function () {});
     }
-    oi(); timers.push(setInterval(oi, 300000));
+    // Fallback when the history does not answer: this page's own minute samples of /fapi/v1/openInterest.
+    var histOk = false, smp = [], my = run;
+    function oiNow() {
+      fetch("https://fapi.binance.com/fapi/v1/openInterest?symbol=" + sym, { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
+        if (my !== run || histOk || !b || !(+b.openInterest > 0)) return;
+        var now = Date.now(); smp.push({ t: now, oi: +b.openInterest }); while (smp.length && smp[0].t < now - 3900000) smp.shift();
+        if (smp.length > 1) { var ref = smp.filter(function (x) { return x.t <= now - 3600000; }).pop() || smp[0]; f.oi1h = smp[smp.length - 1].oi / ref.oi - 1; }
+      }).catch(function () {});
+    }
+    oi(); oiNow(); timers.push(setInterval(oi, 300000)); timers.push(setInterval(oiNow, 60000));
   }
   function set(id, text, cls) { var e = $(id); if (!e) return; e.textContent = text; e.className = "num" + (cls ? " " + cls : ""); }
   function render() {
@@ -113,7 +128,7 @@
   }
   function words() {
     if (!box) return; var t = w();
-    box.querySelectorAll("[data-fm]").forEach(function (e) { e.textContent = fill(t[e.dataset.fm], { venue: venue === "okx" ? "OKX" : "Binance" }); });
+    box.querySelectorAll("[data-fm]").forEach(function (e) { e.textContent = fill(t[e.dataset.fm], { venue: venue === "okx" ? (auto ? t.autoOkx : "OKX") : "Binance" }); });
     box.querySelectorAll("#fm-venue button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.v === venue)); });
     render();
   }
@@ -127,7 +142,7 @@
       box.hidden = false; words(); start();
       $("fm-venue").addEventListener("click", function (e) {
         var b = e.target.closest("button[data-v]"); if (!b || b.dataset.v === venue) return;
-        venue = b.dataset.v; try { localStorage.setItem("mlm-fm-venue", venue); } catch (_) {}
+        venue = b.dataset.v; auto = false; try { localStorage.setItem("mlm-fm-venue", venue); } catch (_) {}
         words(); start();
       });
       var l = $("lang"); if (l) l.addEventListener("change", function () { setTimeout(words, 0); });
