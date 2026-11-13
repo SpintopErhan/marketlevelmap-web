@@ -29,8 +29,8 @@
       zfMove: "price {p}, CVD {c}", zoneAll: "All", zfNote: "The count resets when the price leaves the zone and starts again in the next one.",
       vp: "Session volume profile", vpSub: "since the page opened", vpPoc: "Busiest level (POC) {p}", vpZone: "stripe: levels inside an analysis zone",
       prem: "Coinbase premium", premTitle: "Coinbase USD mid against Binance USDT mid (OKX when Binance is not reachable)",
-      edit: "Edit layout", editDone: "Done", editReset: "Reset to default", editHidden: "Hidden panels:", editNone: "none",
-      editHint: "Drag a panel by ⠿ (or use ↑ ↓), pick its size, or hide it (×). The layout is saved in this browser, separately for spot and futures.",
+      hiddenNote: "Hidden panels receive no data and do not run: for example, with the Scanner panel hidden, zone alarms do not ring.", edit: "Edit layout", editDone: "Done", editReset: "Reset to default", editHidden: "Hidden panels:", editNone: "none",
+      editHint: "Drag a panel by ⠿ (or use ↑ ↓), pick its size, or hide it (×). Hidden panels receive no data. The layout is saved in this browser, separately for spot and futures.",
       editSize: "Size", editUp: "Move earlier", editDown: "Move later", editHide: "Hide",
       spot: "Spot", futures: "Futures", subF: "Futures · members only", venueAllF: "Combined: Binance · OKX · Bybit",
       fFund: "Funding (avg.)", fNext: "Next funding", fOi: "Open interest", fOiCh: "OI change (session)", fBasis: "Basis (perp − index)",
@@ -70,8 +70,8 @@
       zfMove: "fiyat {p}, CVD {c}", zoneAll: "Tümü", zfNote: "Fiyat bölgeden çıkınca sayaç sıfırlanır; sonraki bölgede yeniden başlar.",
       vp: "Oturum hacim profili", vpSub: "sayfa açıldığından beri", vpPoc: "En yoğun seviye (POC) {p}", vpZone: "şerit: analiz bölgesinin içindeki seviyeler",
       prem: "Coinbase primi", premTitle: "Coinbase USD orta fiyatı ile Binance USDT orta fiyatı arasındaki fark (Binance'e ulaşılamazsa OKX)",
-      edit: "Düzeni düzenle", editDone: "Bitti", editReset: "Varsayılana dön", editHidden: "Gizli paneller:", editNone: "yok",
-      editHint: "Paneli ⠿ ile sürükleyin (ya da ↑ ↓), boyutunu seçin ya da gizleyin (×). Düzen bu tarayıcıda, spot ve vadeli için ayrı kaydedilir.",
+      hiddenNote: "Gizlenen paneller veri almaz ve çalışmaz: örneğin Tarayıcı paneli gizliyse bölge alarmları da çalmaz.", edit: "Düzeni düzenle", editDone: "Bitti", editReset: "Varsayılana dön", editHidden: "Gizli paneller:", editNone: "yok",
+      editHint: "Paneli ⠿ ile sürükleyin (ya da ↑ ↓), boyutunu seçin ya da gizleyin (×). Gizlenen paneller veri almaz. Düzen bu tarayıcıda, spot ve vadeli için ayrı kaydedilir.",
       editSize: "Boyut", editUp: "Öne al", editDown: "Geri al", editHide: "Gizle",
       spot: "Spot", futures: "Vadeli", subF: "Vadeli · üyelere özel", venueAllF: "Birleşik: Binance · OKX · Bybit",
       fFund: "Fonlama (ort.)", fNext: "Sonraki fonlama", fOi: "Açık pozisyon", fOiCh: "AP değişimi (oturum)", fBasis: "Baz (perp − endeks)",
@@ -1238,11 +1238,13 @@
     book: { id: "c-book", sizes: ["1x1", "1x2", "2x2"] },
     tape: { id: "c-tape", sizes: ["1x1", "1x2", "2x1", "2x2"] },
     zf: { id: "c-zf", sizes: ["1x1", "1x2", "2x1"] },
-    fund: { id: "c-fund", sizes: ["2x1", "2x2", "4x1"], fut: true }
+    fund: { id: "c-fund", sizes: ["2x1", "2x2", "4x1"], fut: true },
+    scan: { id: "c-scan", sizes: ["2x1", "3x1", "4x1", "2x2", "3x2", "4x2"] },
+    big: { id: "c-big", sizes: ["1x1", "1x2", "2x1", "2x2"] }
   };
   var DEFAULTS = {
-    spot: [["heat", "4x1"], ["cvd", "1x1"], ["vp", "1x1"], ["zf", "2x1"], ["book", "1x2"], ["tape", "2x2"], ["depth", "1x2"]],
-    futures: [["heat", "4x1"], ["depth", "1x1"], ["cvd", "1x1"], ["vp", "1x1"], ["liq", "1x1"], ["book", "1x2"], ["tape", "2x2"], ["zf", "1x2"], ["fund", "4x1"]]
+    spot: [["heat", "3x1"], ["vp", "1x1"], ["cvd", "1x1"], ["depth", "1x1"], ["tape", "1x1"], ["book", "1x1"], ["zf", "2x1"], ["big", "2x1"], ["scan", "4x1"]],
+    futures: [["heat", "3x1"], ["vp", "1x1"], ["cvd", "1x1"], ["depth", "1x1"], ["tape", "1x1"], ["book", "1x1"], ["liq", "1x1"], ["zf", "1x1"], ["fund", "2x1"], ["scan", "3x1"], ["big", "1x1"]]
   };
   var layout = null, LKEY = "mlm-flow-layout-" + MARKET;
   function panelKeys() { return Object.keys(PANELS).filter(function (k) { return !PANELS[k].fut || MARKET === "futures"; }); }
@@ -1271,6 +1273,8 @@
     });
     layout.hidden.forEach(function (k) { var c = $(PANELS[k].id); board.appendChild(c); c.hidden = true; });
     renderEditBar(); dirty = true;
+    // Hidden panels listen to nothing: the scanner opens its feeds only for the panels shown.
+    if (window.MLMScanner && MLMScanner.setActive) MLMScanner.setActive(layout.hidden.indexOf("scan") < 0, layout.hidden.indexOf("big") < 0);
     setTimeout(function () { render(); drawHeat(); if (MARKET === "futures") drawOi(); }, 30);
   }
   function move(k, dir) {

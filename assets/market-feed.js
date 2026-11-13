@@ -20,7 +20,7 @@ var MarketFeed=(function(){
     var state={},source=null,streaming=null,socket=null,streamIndex=0,retryTimer=null,pollTimer=null,polling=false,retryDelay=2000;
     var coinbasePairs={},rejectedPairs={},pending={},paintTimer=null,cache=window.MarketCache||null;
     // handlers.background: keep streaming in a background tab (the scanner's alarms); other pages pause there.
-    var bg=!!handlers.background;function away(){return document.hidden&&!bg}
+    var bg=!!handlers.background,dead=false;function away(){return dead||(document.hidden&&!bg)}
     if(!symbols.length)return{get:function(){return null},source:function(){return null}};
 
     function setSource(s){if(s&&source!==s){source=s;if(handlers.onSource)handlers.onSource(s)}}
@@ -117,7 +117,9 @@ var MarketFeed=(function(){
       if(cache.binanceBlocked()){streamIndex=STREAMS.map(function(s){return s.kind}).indexOf("coinbase");probeBinance(0)}
     }
     snapshot();connect();
-    return{get:function(symbol){return state[symbol]||null},source:function(){return source}};
+    // stop(): close the stream for good (the live flow's scanner panel when it is hidden).
+    function stop(){dead=true;polling=false;clearTimeout(retryTimer);clearTimeout(pollTimer);if(socket){var ws=socket;socket=null;ws.onclose=null;try{ws.close()}catch(e){}}}
+    return{get:function(symbol){return state[symbol]||null},source:function(){return source},stop:stop};
   }
   return{start:start};
 })();

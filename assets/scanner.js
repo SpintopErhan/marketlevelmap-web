@@ -10,7 +10,7 @@
       assets: "Assets", byNear: "nearest first", asset: "Asset", price: "Price", status: "Status", position: "Position", res: "Nearest resistance", sup: "Nearest support",
       inS: "Inside the support zone", inR: "Inside the resistance zone", nearR: "{p} below resistance", nearS: "{p} above support", between: "Between zones", noZones: "No zones",
       inside: "inside", loading: "Loading…", noAnalysis: "No Critical Zones analysis on this timeframe",
-      alarms: "Alarms", alarmsNone: "No alarms. Use the bell on a row.", alarmsNote: "Alarms ring while this page is open (also in a background tab) and are kept only in this browser.",
+      alarms: "Alarms", alarmsNone: "No alarms. Use the bell on a row.", alarmsNote: "Alarms ring while the live flow is open with the Scanner panel shown (also in a background tab) and are kept only in this browser.",
       enter: "When the price enters a zone", exit: "When the price leaves a zone", remove: "Remove",
       entered: "{asset} entered the {type} zone", left: "{asset} left the {type} zone", support: "support", resistance: "resistance", priceNow: "price {p}",
       big: "Big trades", bigSub: "all assets · spot · Binance", bigNote: "A print is at least the chosen multiple of the asset's average trade and $10K. Click a row for the live flow.",
@@ -19,7 +19,7 @@
       gateMember: "The scanner is for members. It opens once your membership is approved.", profile: "Your profile",
       notifyOff: "Browser notifications are blocked; alarms show on the page only.",
       spot: "Spot", futures: "Futures", fFund: "Funding", fOi: "Open interest", fOi1h: "OI 1h", fLiq: "Liquidations 15 min", fYear: "annual {p}",
-      fNote: "Futures columns: Binance USDT perpetuals. Funding is the current rate (annualised under it); open interest is read every minute and its 1-hour change comes from Binance's 5-minute history (marked “session” when it is taken from this page's own samples instead); liquidations are summed since the page opened (at most the last 15 min; L = longs liquidated, S = shorts). Click a column title to sort.",
+      fNote: "Futures columns: Binance USDT perpetuals (OKX USDT swaps when Binance does not answer). Funding is the current rate (annualised under it); open interest is read every minute and its 1-hour change comes from Binance's 5-minute history (marked “session” when it is taken from this page's own samples instead); liquidations are summed since the page opened (at most the last 15 min; L = longs liquidated, S = shorts). Click a column title to sort.",
       bigSubF: "all assets · futures · Binance", byCol: "by the chosen column", flowNote: "Buy/sell 5 min: share of taker-buy volume in the asset's trades of the last 5 minutes (the big-trades stream: Binance spot, or the futures source on futures). Click the title to sort.", sess: "session", flow5: "Buy/sell 5 min", flowTxt: "buy {b}", srcBin: "Futures source: Binance USD-M.", srcOkx: "Futures source: OKX USDT swaps (Binance futures did not answer from here).", bigSubFO: "all assets · futures · OKX", sortBy: "Sort by {c}"
     },
     tr: {
@@ -27,7 +27,7 @@
       assets: "Varlıklar", byNear: "yakınlık sırasına göre", asset: "Varlık", price: "Fiyat", status: "Durum", position: "Konum", res: "En yakın direnç", sup: "En yakın destek",
       inS: "Destek bölgesinin içinde", inR: "Direnç bölgesinin içinde", nearR: "Dirence {p} uzakta", nearS: "Desteğe {p} uzakta", between: "Bölgeler arası", noZones: "Bölge yok",
       inside: "içinde", loading: "Yükleniyor…", noAnalysis: "Bu zaman diliminde Kritik Bölgeler analizi yok",
-      alarms: "Alarmlar", alarmsNone: "Alarm yok. Satırdaki zili kullanın.", alarmsNote: "Alarmlar bu sayfa açıkken çalar (arka plandaki sekmede de) ve yalnızca bu tarayıcıda tutulur.",
+      alarms: "Alarmlar", alarmsNone: "Alarm yok. Satırdaki zili kullanın.", alarmsNote: "Alarmlar, canlı akış açık ve Tarayıcı paneli görünürken çalar (arka plandaki sekmede de) ve yalnızca bu tarayıcıda tutulur.",
       enter: "Fiyat bölgeye girince", exit: "Fiyat bölgeden çıkınca", remove: "Kaldır",
       entered: "{asset} {type} bölgesine girdi", left: "{asset} {type} bölgesinden çıktı", support: "destek", resistance: "direnç", priceNow: "fiyat {p}",
       big: "Büyük işlemler", bigSub: "tüm varlıklar · spot · Binance", bigNote: "İşlem, varlığın ortalama işleminin seçilen katı ve en az 10 B $ olmalıdır. Satıra tıklayınca canlı akış açılır.",
@@ -36,7 +36,7 @@
       gateMember: "Tarayıcı üyelere özeldir. Üyeliğiniz onaylandığında açılır.", profile: "Profiliniz",
       notifyOff: "Tarayıcı bildirimleri engelli; alarmlar yalnızca sayfada görünür.",
       spot: "Spot", futures: "Vadeli", fFund: "Fonlama", fOi: "Açık pozisyon", fOi1h: "AP 1 sa", fLiq: "Likidasyon 15 dk", fYear: "yıllık {p}",
-      fNote: "Vadeli sütunlar: Binance USDT sürekli vadeli. Fonlama güncel orandır (altında yıllık karşılığı); açık pozisyon dakikada bir okunur, 1 saatlik değişimi Binance'in 5 dakikalık geçmişinden gelir (bu sayfanın kendi örneklerinden hesaplanırsa “oturum” yazar); likidasyonlar sayfa açıldığından beri toplanır (en fazla son 15 dk; L = long likidasyonu, S = short). Sıralamak için sütun başlığına tıklayın.",
+      fNote: "Vadeli sütunlar: Binance USDT sürekli vadeli (Binance cevap vermezse OKX USDT swap). Fonlama güncel orandır (altında yıllık karşılığı); açık pozisyon dakikada bir okunur, 1 saatlik değişimi Binance'in 5 dakikalık geçmişinden gelir (bu sayfanın kendi örneklerinden hesaplanırsa “oturum” yazar); likidasyonlar sayfa açıldığından beri toplanır (en fazla son 15 dk; L = long likidasyonu, S = short). Sıralamak için sütun başlığına tıklayın.",
       bigSubF: "tüm varlıklar · vadeli · Binance", byCol: "seçilen sütuna göre", flowNote: "Alış/satış 5 dk: varlığın son 5 dakikadaki işlemlerinde agresif alış hacminin payı (büyük işlemler akışından: spotta Binance spot, vadelide vadeli kaynak). Sıralamak için başlığa tıklayın.", sess: "oturum", flow5: "Alış/satış 5 dk", flowTxt: "alış {b}", srcBin: "Vadeli kaynak: Binance USD-M.", srcOkx: "Vadeli kaynak: OKX USDT swap (Binance vadeli buradan cevap vermedi).", bigSubFO: "tüm varlıklar · vadeli · OKX", sortBy: "{c} göre sırala"
     }
   };
@@ -53,19 +53,27 @@
   var MARKET = /[?&]market=futures(&|$)/.test(location.search) ? "futures" : "spot", FUT = MARKET === "futures";
   // ─── Futures data (Binance USD-M): all-market mark price/funding and liquidations in one socket, OI history by REST.
   var fut = {}, liqAll = [], sortKey = "", futSrc = "binance";
+  // The live flow turns the scanner panels on and off (a hidden panel listens to nothing): futOn/bigOn gate every
+  // socket and timer; stopFut()/stopBig() close what is open.
+  var futOn = false, futSocks = [], futTimers = [], bigOn = false;
+  function stopFut() { futOn = false; futSocks.forEach(function (x) { try { x.onclose = null; x.close(); } catch (e) {} }); futSocks = []; futTimers.forEach(function (x) { clearInterval(x); clearTimeout(x); }); futTimers = []; }
   // Per-symbol streams on /market (the same ones the live flow page uses): <sym>@markPrice@1s and <sym>@forceOrder.
   // Open interest from /fapi/v1/openInterest every minute; its 1-hour change from Binance's 5-minute history when that
   // answers, else from this page's own minute samples (marked "session").
   function futStart(list) {
     var syms = list.filter(function (a) { return /USDT$/.test(a); }); if (!syms.length) return;
+    // Already switched to OKX on this page (Binance did not answer): go straight there when the panel comes back.
+    if (futSrc === "okx") { futOkx(syms); return; }
     var retry = 0, params = [], bws = null;
     syms.forEach(function (s) { params.push(s.toLowerCase() + "@markPrice@1s", s.toLowerCase() + "@forceOrder"); });
     // The rule: when Binance futures sends no funding within 10 s (it is restricted in some countries), the
     // futures columns and big trades switch to OKX for this page.
-    setTimeout(function () { if (futSrc === "binance" && !syms.some(function (x) { return fut[x] && fut[x].fr != null; })) { futSrc = "okx"; if (bws) { var x = bws; bws = null; try { x.close(); } catch (e) {} } futOkx(syms); } }, 10000);
+    futTimers.push(setTimeout(function () { if (futOn && futSrc === "binance" && !syms.some(function (x) { return fut[x] && fut[x].fr != null; })) { futSrc = "okx"; if (bws) { var x = bws; bws = null; try { x.close(); } catch (e) {} } futOkx(syms); } }, 10000));
     (function open() {
       if (futSrc !== "binance") return;
+      if (!futOn) return;
       var ws; try { ws = new WebSocket("wss://fstream.binance.com/market/ws"); } catch (e) { return; }
+      futSocks.push(ws);
       bws = ws;
       ws.onopen = function () { retry = 0; ws.send(JSON.stringify({ method: "SUBSCRIBE", params: params, id: 1 })); };
       ws.onmessage = function (e) {
@@ -77,7 +85,7 @@
           else if (x.e === "forceOrder" && x.o && syms.indexOf(x.o.s) > -1) { var o = x.o, pr = +o.ap || +o.p, q = +o.z || +o.q; if (pr > 0 && q > 0) { liqAll.push({ s: o.s, side: o.S === "SELL" ? "L" : "S", n: pr * q, t: Date.now() }); if (liqAll.length > 5000) liqAll.shift(); dirty = true; } }
         });
       };
-      ws.onclose = function () { if (bws !== ws) return; setTimeout(open, Math.min(30000, 1000 * Math.pow(2, retry++))); };
+      ws.onclose = function () { if (bws !== ws || !futOn) return; setTimeout(open, Math.min(30000, 1000 * Math.pow(2, retry++))); };
     })();
     var histOk = {};
     function oiNow() {
@@ -106,7 +114,7 @@
         }, i * 250);
       });
     }
-    oiNow(); oiHist(); setInterval(oiNow, 60000); setInterval(oiHist, 300000);
+    oiNow(); oiHist(); futTimers.push(setInterval(oiNow, 60000), setInterval(oiHist, 300000));
   }
   // OKX USDT swaps: one socket with funding-rate, mark-price and trades per asset plus liquidation-orders; sizes are in
   // contracts (× ctVal from the instrument list). Open interest of all swaps every minute; the 1-hour change from OKX's
@@ -119,7 +127,9 @@
       ((b && b.data) || []).forEach(function (d) { var m = /^([A-Z0-9]+)-USDT-SWAP$/.exec(d.instId); if (m && syms.indexOf(m[1] + "USDT") > -1) { inst[d.instId] = m[1] + "USDT"; ct[d.instId] = +d.ctVal || 1; } });
       var ids = Object.keys(inst); if (!ids.length) return;
       (function open() {
+        if (!futOn) return;
         var ws; try { ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public"); } catch (e) { return; }
+        futSocks.push(ws);
         var ping = null;
         ws.onopen = function () {
           retry = 0; var args = [{ channel: "liquidation-orders", instType: "SWAP" }];
@@ -138,7 +148,7 @@
             dirty = true;
           });
         };
-        ws.onclose = function () { clearInterval(ping); setTimeout(open, Math.min(30000, 1000 * Math.pow(2, retry++))); };
+        ws.onclose = function () { clearInterval(ping); if (!futOn) return; setTimeout(open, Math.min(30000, 1000 * Math.pow(2, retry++))); };
       })();
       var histOk = {};
       function oiNow() {
@@ -165,7 +175,7 @@
           }, i * 300);
         });
       }
-      oiNow(); oiHist(); setInterval(oiNow, 60000); setInterval(oiHist, 300000);
+      oiNow(); oiHist(); futTimers.push(setInterval(oiNow, 60000), setInterval(oiHist, 300000));
     }).catch(function () {});
   }
   function syncSrc() {
@@ -243,7 +253,7 @@
     $("sc-empty").hidden = rows.length > 0;
     rows.forEach(function (r) {
       var tr = el("tr"), o = opens[r.a], ch = r.p && o ? r.p / o - 1 : NaN;
-      var c0 = el("td"); var link = el("a", "", MarketUI.baseOf(r.a)); link.href = "flow?asset=" + encodeURIComponent(r.a); c0.appendChild(el("b")).appendChild(link); tr.appendChild(c0);
+      var c0 = el("td"); var link = el("a", "", MarketUI.baseOf(r.a)); link.href = "flow?asset=" + encodeURIComponent(r.a) + (FUT ? "&market=futures" : ""); c0.appendChild(el("b")).appendChild(link); tr.appendChild(c0);
       var c1 = el("td", "r num", r.p ? price(r.p) : "—"); if (isFinite(ch)) { c1.appendChild(document.createTextNode(" ")); c1.appendChild(el("small", MarketUI.signClass(ch), (ch >= 0 ? "+" : "−") + pct(ch))); } tr.appendChild(c1);
       var c2 = el("td"); c2.appendChild(zones[r.a] === null ? el("span", "pill far", t.noZones) : !r.st ? el("span", "pill far", t.loading) : statusPill(r.st)); tr.appendChild(c2);
       var fl = flow5(r.a), cfl = el("td", "flowc");
@@ -312,7 +322,7 @@
   }
   function syncNotify() { $("sc-notify").hidden = !("Notification" in window) || Notification.permission !== "denied" || !Object.keys(alarms).length; }
   function notify(text, sub, asset) {
-    var box = $("sc-toasts"), card = el("a", "toast"); card.href = "flow?asset=" + encodeURIComponent(asset);
+    var box = $("sc-toasts"), card = el("a", "toast"); card.href = "flow?asset=" + encodeURIComponent(asset) + (FUT ? "&market=futures" : "");
     card.appendChild(el("b", "", "🔔 " + text)); card.appendChild(el("span", "", sub));
     box.prepend(card); setTimeout(function () { card.classList.add("out"); setTimeout(function () { card.remove(); }, 400); }, 20000);
     while (box.children.length > 4) box.lastChild.remove();
@@ -336,7 +346,9 @@
   // ─── Big trades (Binance aggTrade for every USDT asset) ──────────────────
   var BIG_URLS = ["wss://data-stream.binance.vision/stream?streams=", "wss://stream.binance.com:9443/stream?streams="];
   var big = [], bigMult = 10, stats = {}, pend = {}, bigWs = null, bigUrl = 0, bigRetry = 0, bigGot = false;
+  function stopBig() { bigOn = false; if (bigWs) { var x = bigWs; bigWs = null; try { x.onclose = null; x.close(); } catch (e) {} } }
   function bigStart(list) {
+    if (!bigOn) return;
     var syms = list.filter(function (a) { return /USDT$/.test(a); }); if (!syms.length || (FUT && futSrc !== "binance")) return;
     var streams = syms.map(function (a) { return a.toLowerCase() + "@aggTrade"; }), ws;
     // Futures: Binance USD-M serves aggTrade on /market (subscribed after opening); spot: a combined-stream URL.
@@ -345,7 +357,7 @@
     bigWs = ws; var got = false;
     if (FUT) ws.onopen = function () { ws.send(JSON.stringify({ method: "SUBSCRIBE", params: streams, id: 2 })); };
     ws.onmessage = function (e) { var m; try { m = JSON.parse(e.data); } catch (_) { return; } var d = m && (m.data || m); if (d && d.e === "aggTrade") { got = bigGot = true; bigRetry = 0; onAgg(d); } };
-    ws.onclose = function () { if (bigWs !== ws) return; bigWs = null; if (FUT && futSrc !== "binance") return; if (!got) bigUrl++; if (!bigGot && bigUrl >= BIG_URLS.length * 2) { $("sc-big-wait").textContent = w().bigOff; return; } setTimeout(function () { bigStart(list); }, Math.min(30000, 1000 * Math.pow(2, bigRetry++))); };
+    ws.onclose = function () { if (bigWs !== ws || !bigOn) return; bigWs = null; if (FUT && futSrc !== "binance") return; if (!got) bigUrl++; if (!bigGot && bigUrl >= BIG_URLS.length * 2) { $("sc-big-wait").textContent = w().bigOff; return; } setTimeout(function () { bigStart(list); }, Math.min(30000, 1000 * Math.pow(2, bigRetry++))); };
     ws.onerror = function () {};
   }
   // aggTrades of one taker order share the time and side: they are added up into one print first.
@@ -382,7 +394,7 @@
     box.textContent = "";
     $("sc-big-wait").hidden = list.length > 0;
     list.forEach(function (o) {
-      var a = el("a", o.x >= bigMult * 3 ? "huge" : ""); a.href = "flow?asset=" + encodeURIComponent(o.s);
+      var a = el("a", o.x >= bigMult * 3 ? "huge" : ""); a.href = "flow?asset=" + encodeURIComponent(o.s) + (FUT ? "&market=futures" : "");
       var d = new Date(o.T); a.appendChild(el("span", "num muted", String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0") + ":" + String(d.getSeconds()).padStart(2, "0")));
       a.appendChild(el("b", "", MarketUI.baseOf(o.s)));
       a.appendChild(el("span", "num " + (o.buy ? "up" : "down"), (o.buy ? t.buy : t.sell) + " " + price(o.p)));
@@ -396,17 +408,11 @@
   function applyWords() {
     var t = w();
     document.querySelectorAll("[data-sc]").forEach(function (e) { var v = t[e.dataset.sc]; if (typeof v === "string") e.textContent = v; });
-    document.title = "MarketLevelMap — " + t.title;
+
     buildHead(); syncSrc();
     dirty = bigDirty = true; if (assets.length) { render(); renderBig(); }
   }
-  function gate(user) {
-    var t = w(), msg = $("sc-gate-msg"), link = $("sc-gate-link");
-    $("sc-gate").hidden = false;
-    if (!user) { msg.dataset.sc = "gateGuest"; link.dataset.sc = "signIn"; link.href = "/api/auth/google/start?return=" + encodeURIComponent(location.pathname + location.search); }
-    else { msg.dataset.sc = "gateMember"; link.dataset.sc = "profile"; link.href = "/account"; }
-    msg.textContent = t[msg.dataset.sc]; link.textContent = t[link.dataset.sc];
-  }
+
   function setTf(next) {
     tf = next; dirty = true;
     $("sc-tf").querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.tf === tf)); });
@@ -429,39 +435,49 @@
     else { th(t.position, "hide-m"); th(t.res, "r hide-m"); th(t.sup, "r hide-m"); }
     th("");
   }
-  function boot() {
+  // The scanner lives in the live flow page as two panels: "Scanner" (#c-scan: the zone table, flow and futures
+  // columns, alarms) and "Big trades" (#c-big). flow.js calls setActive(list, big) whenever the layout changes;
+  // only what a shown panel needs is opened (the trade stream feeds both the big trades and the flow column).
+  var inited = null, act = { list: false, big: false }, feed = null;
+  function init() {
+    if (inited) return inited;
     $("lang").addEventListener("change", function () { setTimeout(applyWords, 0); });
-    applyWords();
-    (window.MLMAccount ? MLMAccount.ready : Promise.resolve(null)).then(function (user) {
-      if (!(user && (user.status === "approved" || user.isAdmin))) { gate(user); return; }
-      $("sc-app").hidden = false;
-      $("sc-fnote").hidden = !FUT;
-      $("sc-market").querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.m === MARKET)); b.addEventListener("click", function () { if (b.dataset.m !== MARKET) location.search = b.dataset.m === "futures" ? "?market=futures" : ""; }); });
-      fetch("/api/publication", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (body) {
-        ((body && body.entries) || []).forEach(function (e) {
-          if (MarketUI.methodOf(e) !== "cz" || !e.report) return;
-          var a = MarketUI.assetOf(e), f = MarketUI.timeframeOf(e).toLowerCase(); if (!/^[A-Z0-9]{2,20}$/.test(a) || TF_ORDER.indexOf(f) < 0) return;
-          (entries[a] || (entries[a] = {}))[f] = e;
-        });
-        assets = Object.keys(entries).sort(MarketUI.byPopularity);
-        var tfs = TF_ORDER.filter(function (f) { return assets.some(function (a) { return entries[a][f]; }); }), seg = $("sc-tf");
-        seg.textContent = "";
-        tfs.forEach(function (f) { var b = el("button", "", f.toUpperCase()); b.type = "button"; b.dataset.tf = f; seg.appendChild(b); });
-        var saved; try { saved = localStorage.getItem("mlm-scanner-tf"); } catch (e) {}
-        seg.addEventListener("click", function (e) { var b = e.target.closest("button[data-tf]"); if (b) setTf(b.dataset.tf); });
-        setTf(tfs.indexOf(saved) > -1 ? saved : tfs.indexOf("1d") > -1 ? "1d" : tfs[0] || "1d");
-        Object.keys(alarms).forEach(function (k) { var f = k.split("|")[1]; if (TF_ORDER.indexOf(f) > -1) loadTf(f); });
-        if (assets.length) MarketFeed.start(assets, { background: true, onData: function (sym, d) { var p = Number(d.c); if (!(p > 0)) return; prices[sym] = p; if (Number(d.o) > 0) opens[sym] = Number(d.o); dirty = true; checkAlarms(sym); } });
-        bigStart(assets); if (FUT) futStart(assets);
-        syncNotify();
+    applyWords(); $("sc-fnote").hidden = !FUT;
+    $("sc-rows").addEventListener("click", function (e) { var b = e.target.closest("button.bell"); if (b) { e.stopPropagation(); openMenu(b); } });
+    document.addEventListener("click", function (e) { if (menu && !menu.contains(e.target)) closeMenu(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMenu(); });
+    $("sc-mult").addEventListener("click", function (e) { var b = e.target.closest("button[data-x]"); if (!b) return; bigMult = +b.dataset.x; this.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); }); bigDirty = true; renderBig(); });
+    setInterval(function () { if (document.hidden) return; render(); renderBig(); }, 500);
+    inited = fetch("/api/publication", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (body) {
+      ((body && body.entries) || []).forEach(function (e) {
+        if (MarketUI.methodOf(e) !== "cz" || !e.report) return;
+        var a = MarketUI.assetOf(e), f = MarketUI.timeframeOf(e).toLowerCase(); if (!/^[A-Z0-9]{2,20}$/.test(a) || TF_ORDER.indexOf(f) < 0) return;
+        (entries[a] || (entries[a] = {}))[f] = e;
       });
-      $("sc-rows").addEventListener("click", function (e) { var b = e.target.closest("button.bell"); if (b) { e.stopPropagation(); openMenu(b); } });
-      document.addEventListener("click", function (e) { if (menu && !menu.contains(e.target)) closeMenu(); });
-      document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMenu(); });
-      $("sc-mult").addEventListener("click", function (e) { var b = e.target.closest("button[data-x]"); if (!b) return; bigMult = +b.dataset.x; this.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); }); bigDirty = true; renderBig(); });
-      setInterval(function () { if (document.hidden) return; render(); renderBig(); }, 500);
+      assets = Object.keys(entries).sort(MarketUI.byPopularity);
+      var tfs = TF_ORDER.filter(function (f) { return assets.some(function (a) { return entries[a][f]; }); }), seg = $("sc-tf");
+      seg.textContent = "";
+      tfs.forEach(function (f) { var b = el("button", "", f.toUpperCase()); b.type = "button"; b.dataset.tf = f; seg.appendChild(b); });
+      var saved; try { saved = localStorage.getItem("mlm-scanner-tf"); } catch (e) {}
+      seg.addEventListener("click", function (e) { var b = e.target.closest("button[data-tf]"); if (b) setTf(b.dataset.tf); });
+      setTf(tfs.indexOf(saved) > -1 ? saved : tfs.indexOf("1d") > -1 ? "1d" : tfs[0] || "1d");
+      Object.keys(alarms).forEach(function (k) { var f = k.split("|")[1]; if (TF_ORDER.indexOf(f) > -1) loadTf(f); });
+      syncNotify();
+    }).catch(function () {});
+    return inited;
+  }
+  function setActive(list, big) {
+    if (!list && !big && !inited) return;
+    init().then(function () {
+      if (!assets.length) return;
+      if (list && !act.list) {
+        feed = MarketFeed.start(assets, { background: true, onData: function (sym, d) { var p = Number(d.c); if (!(p > 0)) return; prices[sym] = p; if (Number(d.o) > 0) opens[sym] = Number(d.o); dirty = true; checkAlarms(sym); } });
+        if (FUT) { futOn = true; futStart(assets); }
+      } else if (!list && act.list) { if (feed && feed.stop) feed.stop(); feed = null; stopFut(); }
+      var need = list || big, had = act.list || act.big;
+      if (need && !had) { bigOn = true; bigStart(assets); } else if (!need && had) stopBig();
+      act = { list: list, big: big }; dirty = bigDirty = true;
     });
   }
-  window.MLMScanner = { _state: function () { return { futSrc: futSrc, fut: fut, liqAll: liqAll, market: MARKET, assets: assets, prices: prices, zonesBy: zonesBy, alarms: alarms, big: big, stats: stats, tf: tf }; }, _check: checkAlarms };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+  window.MLMScanner = { setActive: setActive, _state: function () { return { act: act, bigWs: !!bigWs, futSocks: futSocks.length, feed: !!feed, futSrc: futSrc, fut: fut, liqAll: liqAll, market: MARKET, assets: assets, prices: prices, zonesBy: zonesBy, alarms: alarms, big: big, stats: stats, tf: tf }; }, _check: checkAlarms };
 })();

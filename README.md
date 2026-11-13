@@ -57,7 +57,7 @@ cache previews per link, so a link shared before a change keeps its old card for
   screenshots (`assets/members/*.jpg`, made from the test feeds) and a call to action that follows the account:
   guests sign in to apply, applicants see their profile, members open the live flow.
 - `flow.html?asset=BTCUSDT` — members-only live order flow (see "Live order flow").
-- `scanner.html` — members-only zone scanner, alarms and big trades (see "Zone scanner").
+- `scanner.html` — forwards to `/flow` (the scanner is a panel of the live flow; see "Zone scanner").
 - `weekly-events.html` — this/next week's events. `archive.html` — placeholder until archives are published.
 - `tr/hakkinda/`, `en/about/` — About: what the site is and why (approach and engine steps, what it offers,
   membership, analysis time, what it is not). `tr/rehber/`, `en/guide/` — Reading guide: what is on the chart
@@ -87,11 +87,11 @@ page in its own unminimised window.
 - **Layout** — a custom board (`setupBoard` in `flow.js`): every panel is a card on a 4-column grid, one unit 360 px
   high. "Edit layout" shows per card a drag handle (⠿, desktop), a size picker limited to the sizes that suit the panel
   (heatmap 2×1…4×2; depth/CVD 1×1…2×2; volume profile, liquidations, zone flow 1×1/1×2/2×1; order book 1×1/1×2/2×2;
-  "Gerçekleşen işlemler" (Time & Sales) 1×1…2×2; funding and OI 2×1/2×2/4×1), ↑ ↓ and hide (×); hidden panels can be added
+  "Gerçekleşen işlemler" (Time & Sales) 1×1…2×2; funding and OI 2×1/2×2/4×1; scanner 2×1…4×2; big trades 1×1…2×2), ↑ ↓ and hide (×); hidden panels can be added
   back, and "Reset to default" restores the default. Holes stay holes (no automatic packing). The layout is kept in
-  `localStorage` `mlm-flow-layout-spot` / `-futures`. Defaults — spot: heatmap 4×1; CVD, volume profile 1×1, zone flow 2×1;
-  order book 1×2, trades 2×2, depth 1×2. Futures: heatmap 4×1; depth, CVD, volume profile, liquidations 1×1; order book
-  1×2, trades 2×2, zone flow 1×2; funding and OI 4×1. Tablets use 2 columns (wider panels clipped to 2), phones one
+  `localStorage` `mlm-flow-layout-spot` / `-futures`. Defaults — futures: heatmap 3×1 and volume profile 1×1; CVD, depth,
+  trades, order book 1×1; liquidations 1×1, zone flow 1×1, funding and OI 2×1; scanner 3×1 and big trades 1×1. Spot: the
+  same first two rows, then zone flow 2×1 and big trades 2×1, then the scanner 4×1. Tablets use 2 columns (wider panels clipped to 2), phones one
   column in the chosen order. The order book and the volume profile show as many rows as their card fits.
 - **Order book** — 12 buckets each side (grouping 0.5 bp of the price rounded to 1-2-5 and three larger steps),
   notional per bucket, walls (≥3× the median bucket and ≥half the largest) in bold, buckets inside a Critical
@@ -170,35 +170,34 @@ choice is kept). Read in the browser; nothing is stored.
 
 ## Zone scanner
 
-`scanner.html` (`/scanner`), members only (same gate as the live flow). Every asset with a Critical Zones report
-on the chosen timeframe (4H/1D/1W, as published; remembered per browser): live price (`assets/market-feed.js`),
-status (inside the support/resistance zone, within 1% of the nearest resistance/support, between zones), a
-position bar from the support zone below to the resistance zone above, and the nearest resistance and support
-with their distance. Rows are sorted by closeness; the asset links to its live flow.
+The scanner lives in the live flow page as two panels (`assets/scanner.js`): **Scanner** (`#c-scan`) and **Big trades**
+(`#c-big`). `/scanner` (`scanner.html`) only forwards to `/flow`, keeping `?market=futures`, so old links keep working;
+the menu no longer lists it. The panels follow the flow page's spot/futures mode, and a row or big trade opens the
+live flow of that asset in the same mode. **Hidden panels listen to nothing:** `flow.js` calls
+`MLMScanner.setActive(scannerShown, bigShown)` after every layout change; the price feed (`MarketFeed`, with `stop()`)
+and the futures sockets run only while the Scanner panel is shown, the trade stream while either panel is (it feeds both
+the big trades and the flow column). The page says so under the panels; zone alarms therefore ring only while the
+Scanner panel is shown. Saved alarms (`localStorage` `mlm-zone-alarms`) and the zone timeframe (`mlm-scanner-tf`) are
+kept from the old page.
 
-- **Alarms** — the bell on a row: ring when the price enters a zone and/or leaves one (per asset and timeframe).
-  They are kept in this browser only (`localStorage` `mlm-zone-alarms`) and ring while the page is open, also in a
-  background tab (the scanner starts the price feed with `background: true`, so it does not pause there): a card
-  on the page and, when allowed, a browser notification. Nothing is sent to our server.
+Scanner panel: every asset with a Critical Zones report on the chosen timeframe (4H/1D/1W, as published): live price
+(`assets/market-feed.js`), status (inside the support/resistance zone, within 1% of the nearest resistance/support,
+between zones), the 5-minute buy/sell share, then on spot a position bar and the nearest resistance and support, on
+futures funding, open interest, its 1-hour change and liquidations. Rows are sorted by closeness; a column title sorts
+by it.
+
+- **Alarms** — the bell on a row: ring when the price enters a zone and/or leaves one (per asset and timeframe); a
+  card on the page and, when allowed, a browser notification. Nothing is sent to our server.
 - **Big trades** — Binance `aggTrade` for every USDT asset in one public stream (`data-stream.binance.vision`, else
-  `stream.binance.com`). aggTrades of one taker order (same time and side) are added up first; a print is listed
-  when it is at least 5×/10×/20× (chosen) the asset's average print of the last 500 and at least $10K.
-
-- **Spot | Futures** — `?market=futures` swaps the zone columns (position bar, nearest zones) for Binance USD-M
-  figures: funding (annualised under it), open interest ($; `/fapi/v1/openInterest` every minute × mark price) and its
-  1-hour change (`/futures/data/openInterestHist`, 5-minute periods, every 5 min; when that does not answer, from the
-  page's own minute samples, marked "session"), and liquidations of the last 15 min since the page opened
-  (`<sym>@markPrice@1s` and `<sym>@forceOrder` per asset in one socket on `fstream.binance.com/market/ws`, the streams
-  the live flow uses; the all-market `!…@arr` streams delivered nothing there). Clicking a futures column title sorts by it
-  (again: back to the zone order). Big trades then come from futures `aggTrade`. **Rule:** when Binance futures sends
-  no funding within 10 s (it is restricted in some countries), the page switches to OKX USDT swaps and says so: one
-  socket with `funding-rate`, `mark-price` and `trades` per asset plus `liquidation-orders` (sizes × `ctVal` from the
-  instrument list), open interest from `/api/v5/public/open-interest` every minute and its 1-hour change from
-  `rubik/stat/contracts/open-interest-history` (else the page's samples). Assets without an OKX swap show "—". Status and alarms stay on spot prices.
-
-`assets/scanner.js` does all of it in the browser. The menu of every page (and the library template) links
-"Live flow" and "Scanner"; between 521 and 1180 px wide the menu takes its own row under the logo.
-
+  `stream.binance.com`; on futures the futures stream). aggTrades of one taker order (same time and side) are added up
+  first; a print is listed when it is at least 5×/10×/20× (chosen) the asset's average print of the last 500 and at
+  least $10K.
+- **Futures** — Binance USD-M figures: funding (annualised under it), open interest ($; `/fapi/v1/openInterest` every
+  minute × mark price) and its 1-hour change (`/futures/data/openInterestHist`, else the page's own minute samples,
+  marked "session"), liquidations of the last 15 min (`<sym>@markPrice@1s` and `<sym>@forceOrder` per asset in one
+  socket on `fstream.binance.com/market/ws`). **Rule:** when Binance futures sends no funding within 10 s, the panel
+  switches to OKX USDT swaps and says so (`funding-rate`, `mark-price`, `trades`, `liquidation-orders`,
+  `/api/v5/public/open-interest`, `rubik/stat/contracts/open-interest-history`). Assets without an OKX swap show "—".
 
 ## Weekly outlook
 
