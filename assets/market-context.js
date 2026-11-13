@@ -1,16 +1,25 @@
-/* Market context (README "Market context"): BTC and USDT dominance, total crypto market cap, ETH/BTC and DXY from
+/* Market context (README "Market context"): crypto (BTC, ETH and USDT dominance, total market cap, ETH/BTC), macro
+   (DXY, US 10-year yield, S&P 500 and Nasdaq 100 futures) and commodities (gold and silver spot) from
    /api/market-context, refreshed every 3 minutes while shown. Any element with data-mctx="card" (analysis page) or "panel"
    (live flow) is filled. The live flow turns its panel on and off with
    MLMContext.setActive(on): a hidden panel asks for nothing. Public; the data is general market information. */
 (function () {
   "use strict";
   var W = {
-    en: { btcDom: "BTC dominance", usdtDom: "USDT dominance", total: "Total crypto market cap", ethbtc: "ETH/BTC", dxy: "US dollar index (DXY)",
-      pts: "{v} pts", h24: "24 h", noData: "no data", delayed: "delayed ~15 min", src: "Dominance and market cap: {d}. ETH/BTC: {e}. DXY: Yahoo Finance (delayed about 15 minutes). Updated {t}.",
-      domNote: "Dominance: the coin's share of the total crypto market cap; the change is in percentage points over 24 h." },
-    tr: { btcDom: "BTC dominansı", usdtDom: "USDT dominansı", total: "Toplam kripto piyasa değeri", ethbtc: "ETH/BTC", dxy: "Dolar endeksi (DXY)",
-      pts: "{v} puan", h24: "24 sa", noData: "veri yok", delayed: "~15 dk gecikmeli", src: "Dominans ve piyasa değeri: {d}. ETH/BTC: {e}. DXY: Yahoo Finance (yaklaşık 15 dakika gecikmeli). Güncelleme {t}.",
-      domNote: "Dominans: varlığın toplam kripto piyasa değerindeki payı; değişim 24 saatte yüzde puan olarak." }
+    en: { gCrypto: "Crypto", gMacro: "Macro", gMetal: "Commodities", delayedG: "delayed ~15 min",
+      btcDom: "BTC dominance", ethDom: "ETH dominance", usdtDom: "USDT dominance", total: "Total crypto market cap", ethbtc: "ETH/BTC",
+      dxy: "US dollar index (DXY)", us10y: "US 10-year yield", spx: "S&P 500 futures", ndx: "Nasdaq 100 futures",
+      gold: "Gold (spot, ounce)", silver: "Silver (spot, ounce)",
+      pts: "pts", bp: "bp", noData: "no data",
+      src: "Dominance and market cap: {d}. ETH/BTC: {e}. DXY, yield and index futures: Yahoo Finance (delayed about 15 minutes; change against the previous close). Gold and silver spot: {m}; the day's change from the COMEX futures. Updated {t}.",
+      domNote: "Dominance: the coin's share of the total crypto market cap; its change is in percentage points over 24 h. Yield change in basis points (bp)." },
+    tr: { gCrypto: "Kripto", gMacro: "Makro", gMetal: "Emtia", delayedG: "~15 dk gecikmeli",
+      btcDom: "BTC dominansı", ethDom: "ETH dominansı", usdtDom: "USDT dominansı", total: "Toplam kripto piyasa değeri", ethbtc: "ETH/BTC",
+      dxy: "Dolar endeksi (DXY)", us10y: "ABD 10 yıllık tahvil faizi", spx: "S&P 500 vadeli", ndx: "Nasdaq 100 vadeli",
+      gold: "Altın (spot, ons)", silver: "Gümüş (spot, ons)",
+      pts: "puan", bp: "bp", noData: "veri yok",
+      src: "Dominans ve piyasa değeri: {d}. ETH/BTC: {e}. DXY, faiz ve endeks vadelileri: Yahoo Finance (yaklaşık 15 dakika gecikmeli; değişim önceki kapanışa göre). Altın ve gümüş spot: {m}; günlük değişim COMEX vadelisinden. Güncelleme {t}.",
+      domNote: "Dominans: varlığın toplam kripto piyasa değerindeki payı; değişimi 24 saatte yüzde puan olarak. Faiz değişimi baz puan (bp) olarak." }
   };
   var LIB = { dxy: ["dolar-endeksi", "dollar-index"] };
   function lang() { var s = document.getElementById("lang"); return s && s.value === "tr" ? "tr" : "en"; }
@@ -24,35 +33,41 @@
 
   function items() {
     var t = w(), d = data || {}, out = [];
-    var bd = d.btcDominance, ud = d.usdtDominance, tot = d.total, eb = d.ethbtc, dx = d.dxy;
-    out.push({ k: "btcDom", label: t.btcDom, value: bd && bd.value != null ? pct(bd.value, 2) : null, chg: bd && bd.change != null ? signed(bd.change, 2) + " " + t.pts.replace("{v}", "").trim() : "", dir: bd ? bd.change : null, ptsRaw: bd && bd.change });
-    out.push({ k: "ethbtc", label: t.ethbtc, value: eb && eb.price ? nf(eb.price, 5) : null, chg: eb && eb.change != null ? signed(eb.change, 2, true) : "", dir: eb ? eb.change : null });
-    out.push({ k: "usdtDom", label: t.usdtDom, value: ud && ud.value != null ? pct(ud.value, 2) : null, chg: ud && ud.change != null ? signed(ud.change, 2) + " " + t.pts.replace("{v}", "").trim() : "", dir: ud ? ud.change : null });
-    out.push({ k: "total", label: t.total, value: tot && tot.usd ? compact(tot.usd) : null, chg: tot && tot.change != null ? signed(tot.change, 2, true) : "", dir: tot ? tot.change : null });
-    out.push({ k: "dxy", label: t.dxy, value: dx && dx.price ? nf(dx.price, 2) : null, chg: dx && dx.change != null ? signed(dx.change, 2, true) : "", dir: dx ? dx.change : null, note: t.delayed });
+    function dom(k, x, g) { out.push({ g: g, k: k, label: t[k], value: x && x.value != null ? pct(x.value, 2) : null, chg: x && x.change != null ? signed(x.change, 2) + " " + t.pts : "", dir: x ? x.change : null }); }
+    function px(k, x, dec, g) { out.push({ g: g, k: k, label: t[k], value: x && x.price ? nf(x.price, dec) : null, chg: x && x.change != null ? signed(x.change, 2, true) : "", dir: x ? x.change : null }); }
+    dom("btcDom", d.btcDominance, "gCrypto"); dom("ethDom", d.ethDominance, "gCrypto"); dom("usdtDom", d.usdtDominance, "gCrypto");
+    out.push({ g: "gCrypto", k: "total", label: t.total, value: d.total && d.total.usd ? compact(d.total.usd) : null, chg: d.total && d.total.change != null ? signed(d.total.change, 2, true) : "", dir: d.total ? d.total.change : null });
+    px("ethbtc", d.ethbtc, 5, "gCrypto");
+    px("dxy", d.dxy, 2, "gMacro");
+    var y = d.us10y; out.push({ g: "gMacro", k: "us10y", label: t.us10y, value: y && y.value != null ? pct(y.value, 2) : null, chg: y && y.changeBp != null ? signed(y.changeBp, 1) + " " + t.bp : "", dir: y ? y.changeBp : null });
+    px("spx", d.spx, 2, "gMacro"); px("ndx", d.ndx, 2, "gMacro");
+    px("gold", d.gold, 2, "gMetal"); px("silver", d.silver, 2, "gMetal");
     return out;
   }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function render() {
     var t = w(), list = items();
     document.querySelectorAll("[data-mctx]").forEach(function (box) {
-      var mode = box.dataset.mctx; box.textContent = "";
+      box.textContent = "";
       if (!data) { box.appendChild(el("span", "mctx-wait", "…")); return; }
+      var group = null;
       list.forEach(function (it) {
-        var row = el(mode === "strip" ? "span" : "div", "mctx-item");
-        var lab = LIB[it.k] && mode !== "strip" ? el("a", "mctx-l", it.label) : el("span", "mctx-l", it.label);
+        if (it.g !== group) {
+          group = it.g; var h = el("p", "mctx-g", t[group]);
+          if (group === "gMacro") h.appendChild(el("small", "mctx-gn", " · " + t.delayedG));
+          box.appendChild(h);
+        }
+        var row = el("div", "mctx-item");
+        var lab = LIB[it.k] ? el("a", "mctx-l", it.label) : el("span", "mctx-l", it.label);
         if (lab.tagName === "A") lab.href = (lang() === "tr" ? "/tr/kutuphane/" : "/en/library/") + LIB[it.k][lang() === "tr" ? 0 : 1] + "/";
         row.appendChild(lab);
         row.appendChild(el("b", "mctx-v num", it.value == null ? t.noData : it.value));
         if (it.chg) row.appendChild(el("span", "mctx-c num " + (it.dir > 0 ? "up" : it.dir < 0 ? "down" : ""), it.chg));
-        if (it.note && mode !== "strip") row.appendChild(el("small", "mctx-n", it.note));
         box.appendChild(row);
       });
-      if (mode !== "strip") {
-        var at = data.at ? new Date(data.at) : null;
-        box.appendChild(el("p", "mctx-src", t.domNote));
-        box.appendChild(el("p", "mctx-src", t.src.replace("{d}", data.domSource || "—").replace("{e}", data.ethSource || "—").replace("{t}", at ? at.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) : "—")));
-      }
+      var at = data.at ? new Date(data.at) : null;
+      box.appendChild(el("p", "mctx-src", t.domNote));
+      box.appendChild(el("p", "mctx-src", t.src.replace("{d}", data.domSource || "—").replace("{e}", data.ethSource || "—").replace("{m}", data.metalSource || "—").replace("{t}", at ? at.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) : "—")));
     });
   }
   // The browser asks CoinGecko itself, from the visitor's own address (CoinGecko and CoinPaprika rate-limit shared server
@@ -61,7 +76,7 @@
   function fromBrowser(b) {
     return Promise.all([
       fetch("https://api.coingecko.com/api/v3/global").then(function (r) { return r.ok ? r.json() : null; }),
-      fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=usd&include_market_cap=true&include_24hr_change=true").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+      fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd&include_market_cap=true&include_24hr_change=true").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
     ]).then(function (res) {
       var d = res[0] && res[0].data, s2 = res[1]; if (!d || !d.total_market_cap) return b;
       var total = n(d.total_market_cap.usd), tc = n(d.market_cap_change_percentage_24h_usd), pc = d.market_cap_percentage || {};
@@ -70,7 +85,7 @@
         if (v != null && c != null && cap && total && tc != null) ch = v - (cap / (1 + c / 100)) / (total / (1 + tc / 100)) * 100;
         return { value: v, change: ch };
       }
-      b.total = { usd: total, change: tc }; b.btcDominance = dom("btc", "bitcoin"); b.usdtDominance = dom("usdt", "tether"); b.domSource = "CoinGecko";
+      b.total = { usd: total, change: tc }; b.btcDominance = dom("btc", "bitcoin"); b.ethDominance = dom("eth", "ethereum"); b.usdtDominance = dom("usdt", "tether"); b.domSource = "CoinGecko";
       return b;
     }).catch(function () { return b; }).then(function (b2) { return b2.btcDominance && b2.btcDominance.value != null ? b2 : fromCoinLore(b2); });
   }
@@ -78,7 +93,7 @@
   function fromCoinLore(b) {
     return Promise.all([
       fetch("https://api.coinlore.net/api/global/").then(function (r) { return r.ok ? r.json() : null; }),
-      fetch("https://api.coinlore.net/api/ticker/?id=90,518").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+      fetch("https://api.coinlore.net/api/ticker/?id=90,80,518").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
     ]).then(function (res) {
       var g = Array.isArray(res[0]) ? res[0][0] : res[0], total = n(g && g.total_mcap), tc = n(g && g.mcap_change); if (!total) return b;
       var by = {}; (Array.isArray(res[1]) ? res[1] : []).forEach(function (x) { by[x.symbol] = x; });
@@ -87,7 +102,7 @@
         if (!cap) return { value: sym === "BTC" ? n(g.btc_d) : null, change: null };
         var v = cap / total * 100; return { value: v, change: c != null && tc != null ? v - (cap / (1 + c / 100)) / (total / (1 + tc / 100)) * 100 : null };
       }
-      b.total = { usd: total, change: tc }; b.btcDominance = dom("BTC"); b.usdtDominance = dom("USDT"); b.btcDominance.change = null; b.usdtDominance.change = null; b.domSource = "CoinLore";
+      b.total = { usd: total, change: tc }; b.btcDominance = dom("BTC"); b.ethDominance = dom("ETH"); b.usdtDominance = dom("USDT"); b.btcDominance.change = null; b.ethDominance.change = null; b.usdtDominance.change = null; b.domSource = "CoinLore";
       return b;
     }).catch(function () { return b; });
   }
@@ -105,13 +120,19 @@
       }).catch(function () { return b; });
     });
   }
+  // Gold and silver spot when the endpoint has none: gold-api.com from the browser (no day's change then).
+  function metalsFromBrowser(b) {
+    if ((b.gold && b.gold.price) || (b.silver && b.silver.price)) return Promise.resolve(b);
+    function one(sym) { return fetch("https://api.gold-api.com/price/" + sym).then(function (r) { return r.ok ? r.json() : null; }).then(function (g) { var p = g && n(g.price); return p ? { price: p, change: null } : null; }).catch(function () { return null; }); }
+    return Promise.all([one("XAU"), one("XAG")]).then(function (r) { b.gold = r[0]; b.silver = r[1]; if (r[0] || r[1]) b.metalSource = "gold-api.com"; return b; });
+  }
   function load() {
     fetch("/api/market-context", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
       if (!b) return null;
       // The browser asks CoinGecko first (the visitor's own address is not rate-limited like the edge); the endpoint's
       // figures (CoinGecko, CoinPaprika or CoinLore) stay when it cannot.
-      var kept = { total: b.total, btcDominance: b.btcDominance, usdtDominance: b.usdtDominance, domSource: b.domSource };
-      return fromBrowser(b).then(function (r) { if (r.domSource !== "CoinGecko" && kept.btcDominance && kept.btcDominance.value != null) { r.total = kept.total; r.btcDominance = kept.btcDominance; r.usdtDominance = kept.usdtDominance; r.domSource = kept.domSource; } return r; }).then(ethFromBrowser);
+      var kept = { total: b.total, btcDominance: b.btcDominance, ethDominance: b.ethDominance, usdtDominance: b.usdtDominance, domSource: b.domSource };
+      return fromBrowser(b).then(function (r) { if (r.domSource !== "CoinGecko" && kept.btcDominance && kept.btcDominance.value != null) { for (var k in kept) r[k] = kept[k]; } return r; }).then(ethFromBrowser).then(metalsFromBrowser);
     }).then(function (b) { if (b) { data = b; render(); } }).catch(function () {});
   }
   function sync() {
