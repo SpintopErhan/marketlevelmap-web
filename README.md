@@ -312,6 +312,21 @@ file has no `keyLevels` yet, keep the report's levels (the report's `OATH`, the 
 in for ATH). The market table (YO, ATH, opens as fallback) and the weekly outlook (MO, YO, ATH) read the
 same file.
 
+## Market context
+
+General market figures, public: BTC dominance and USDT dominance (share of the total crypto market cap, with the change
+in percentage points over 24 h), ETH/BTC (24 h change), the total crypto market cap (24 h change) and the US dollar
+index DXY (change from the previous close; delayed about 15 minutes, closed at weekends).
+
+- `GET /api/market-context` (`functions/api/market-context.js`) collects them at the edge, cached 3 minutes (30 s when
+  every source failed): CoinGecko `/global` (total cap, its change, dominance) and `/simple/price` (BTC and USDT caps and
+  changes, to work out the dominance 24 h ago), Coinbase `ETH-BTC/stats` (Binance refuses Cloudflare), Yahoo Finance
+  `DX-Y.NYB` chart meta (query1, else query2). A failed source leaves its field `null` and is listed in `errors`.
+- `assets/market-context.js` fills `[data-mctx]`: the home page strip above the market table (`strip`), the analysis
+  page's "Piyasa geneli / Market context" card in the side column (`card`), and the live flow's "Market context" panel
+  (`panel`, 1×1/1×2/2×1; last in both default layouts). It refreshes every 3 minutes while shown; the live flow panel
+  asks for nothing while hidden (`MLMContext.setActive`). DXY links to the library's dollar index page.
+
 ## Indicator summary
 
 A "Göstergeler / Indicators" card in the analysis page's side column (above the key levels), shown when the chart is
