@@ -273,6 +273,9 @@
       }).catch(function () { self.d.hrs = 8; });
     }
     this.subs = [s + "@aggTrade", s + "@markPrice@1s", s + "@forceOrder"];
+    // Restricted from here (no book and no funding after 20 s): mark it unavailable, so the combined view runs on OKX
+    // and Bybit and the venue list says so.
+    if (!this.watch) { this.watch = true; this.later(function () { if (!self.ready && self.d.fr == null) self.unavailable(); }, 20000); }
   };
   BinanceF.prototype.onopen = function (ws) { ws.send(JSON.stringify({ method: "SUBSCRIBE", params: this.subs, id: 1 })); };
   BinanceF.prototype.openDepth = function () {

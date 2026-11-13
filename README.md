@@ -123,7 +123,8 @@ page in its own unminimised window.
 - **How to read** — a button next to the title and a "?" on every panel open one dialog (`HELP` in `flow.js`, TR/EN)
   with a section per panel (what it shows, how to read it); a panel's "?" opens it at that section. Futures-only
   sections show on futures, the Coinbase premium on spot.
-- **Spot | Futures** — the switch at the top reloads the page with `&market=futures` (a new session). Futures uses
+- **Spot | Futures** — the switch at the top reloads the page with `&market=futures` (a new session). On futures, a Binance
+  feed with no book and no funding after 20 s is marked unavailable, so the combined view runs on OKX and Bybit. Futures uses
   USDT perpetuals of Binance (USD-M: `aggTrade`, `markPrice@1s`, `forceOrder` on `fstream.binance.com/market/ws`,
   top-20 `depth20@100ms` on `/public/ws` plus a 1000-level REST snapshot every 5 s beyond it, open interest from
   `/fapi/v1/openInterest` every 5 s, funding interval from `/fapi/v1/fundingInfo`), OKX (`<BASE>-USDT-SWAP`; sizes
@@ -149,7 +150,8 @@ venue at a time, chosen on the card (Binance | OKX, remembered in `localStorage`
 old sockets and starts over). Binance: spot `aggTrade`, USD-M `<sym>@markPrice@1s` and `<sym>@forceOrder`,
 `openInterestHist` (else its own minute samples of `/fapi/v1/openInterest`). OKX: one socket with spot `trades`, swap `funding-rate`, `mark-price`, `index-tickers` and
 `liquidation-orders` (sizes × `ctVal`), and `rubik/stat/contracts/open-interest-volume` (5-minute periods) for the
-1-hour change. Read in the browser; nothing is stored.
+1-hour change. When Binance sends no funding within 10 s, the card switches to OKX for that visit (the saved
+choice is kept). Read in the browser; nothing is stored.
 
 ## Zone scanner
 
@@ -173,7 +175,11 @@ with their distance. Rows are sorted by closeness; the asset links to its live f
   page's own minute samples, marked "session"), and liquidations of the last 15 min since the page opened
   (`<sym>@markPrice@1s` and `<sym>@forceOrder` per asset in one socket on `fstream.binance.com/market/ws`, the streams
   the live flow uses; the all-market `!…@arr` streams delivered nothing there). Clicking a futures column title sorts by it
-  (again: back to the zone order). Big trades then come from futures `aggTrade`. Status and alarms stay on spot prices.
+  (again: back to the zone order). Big trades then come from futures `aggTrade`. **Rule:** when Binance futures sends
+  no funding within 10 s (it is restricted in some countries), the page switches to OKX USDT swaps and says so: one
+  socket with `funding-rate`, `mark-price` and `trades` per asset plus `liquidation-orders` (sizes × `ctVal` from the
+  instrument list), open interest from `/api/v5/public/open-interest` every minute and its 1-hour change from
+  `rubik/stat/contracts/open-interest-history` (else the page's samples). Assets without an OKX swap show "—". Status and alarms stay on spot prices.
 
 `assets/scanner.js` does all of it in the browser. The menu of every page (and the library template) links
 "Live flow" and "Scanner"; between 521 and 1180 px wide the menu takes its own row under the logo.

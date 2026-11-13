@@ -8,9 +8,9 @@
   "use strict";
   var W = {
     en: { title: "Flow summary", sub: "live · {venue} · since the page opened", open: "Open live flow →", bs5: "Last 5 min buy/sell", cvd: "CVD (session)",
-      fund: "Funding", basis: "Basis (perp − index)", oi1h: "Open interest 1 h", liq: "Liquidations 15 min", read: "Last 5 min: price {p}, CVD {c}", wait: "Collecting the first minutes…" },
+      fund: "Funding", basis: "Basis (perp − index)", oi1h: "Open interest 1 h", liq: "Liquidations 15 min", read: "Last 5 min: price {p}, CVD {c}", autoOkx: "OKX (Binance did not answer)", wait: "Collecting the first minutes…" },
     tr: { title: "Akış özeti", sub: "canlı · {venue} · sayfa açıldığından beri", open: "Canlı akışı aç →", bs5: "Son 5 dk alış/satış", cvd: "CVD (oturum)",
-      fund: "Fonlama", basis: "Baz (perp − endeks)", oi1h: "Açık pozisyon 1 sa", liq: "Likidasyon 15 dk", read: "Son 5 dk: fiyat {p}, CVD {c}", wait: "İlk dakikalar toplanıyor…" }
+      fund: "Fonlama", basis: "Baz (perp − endeks)", oi1h: "Açık pozisyon 1 sa", liq: "Likidasyon 15 dk", read: "Son 5 dk: fiyat {p}, CVD {c}", autoOkx: "OKX (Binance cevap vermedi)", wait: "İlk dakikalar toplanıyor…" }
   };
   function $(id) { return document.getElementById(id); }
   function lang() { var s = $("lang"); return s && s.value === "tr" ? "tr" : "en"; }
@@ -42,7 +42,13 @@
     socks.forEach(function (ws) { try { ws.close(); } catch (e) {} }); socks = [];
     trades = []; cvd = 0; f = {}; liqs = [];
   }
-  function start() { stop(); if (venue === "okx") startOkx(); else startBinance(); timers.push(setInterval(render, 1000)); render(); }
+  // The futures rule: when Binance sends no funding within 10 s (restricted from here), the card uses OKX for this
+  // visit (the saved choice stays Binance).
+  var auto = false;
+  function start() {
+    stop(); if (venue === "okx") startOkx(); else startBinance(); timers.push(setInterval(render, 1000)); render();
+    if (venue === "binance") { var my = run; timers.push(setTimeout(function () { if (my === run && f.fr == null) { auto = true; venue = "okx"; words(); start(); } }, 10000)); }
+  }
   function startOkx() {
     var spot = base + "-USDT", swap = base + "-USDT-SWAP", my = run, ct = 0;
     function go() {
@@ -122,7 +128,7 @@
   }
   function words() {
     if (!box) return; var t = w();
-    box.querySelectorAll("[data-fm]").forEach(function (e) { e.textContent = fill(t[e.dataset.fm], { venue: venue === "okx" ? "OKX" : "Binance" }); });
+    box.querySelectorAll("[data-fm]").forEach(function (e) { e.textContent = fill(t[e.dataset.fm], { venue: venue === "okx" ? (auto ? t.autoOkx : "OKX") : "Binance" }); });
     box.querySelectorAll("#fm-venue button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.v === venue)); });
     render();
   }
@@ -136,7 +142,7 @@
       box.hidden = false; words(); start();
       $("fm-venue").addEventListener("click", function (e) {
         var b = e.target.closest("button[data-v]"); if (!b || b.dataset.v === venue) return;
-        venue = b.dataset.v; try { localStorage.setItem("mlm-fm-venue", venue); } catch (_) {}
+        venue = b.dataset.v; auto = false; try { localStorage.setItem("mlm-fm-venue", venue); } catch (_) {}
         words(); start();
       });
       var l = $("lang"); if (l) l.addEventListener("change", function () { setTimeout(words, 0); });
