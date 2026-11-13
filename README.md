@@ -54,7 +54,8 @@ cache previews per link, so a link shared before a change keeps its old card for
   key levels and earlier analyses. A switch at the top chooses the discipline: Critical Zones (default) or
   Price Action (`&method=pa`, see "Price Action view").
 - Home page **"For members"** section (under the table): the live flow, scanner and flow summary with sample
-  screenshots (`assets/members/*.jpg`, made from the test feeds) and a call to action that follows the account:
+  screenshots in both languages (`assets/members/*.jpg` Turkish, `*-en.jpg` English, swapped with the page language; made
+  from the test feeds) and a call to action that follows the account:
   guests sign in to apply, applicants see their profile, members open the live flow.
 - `flow.html?asset=BTCUSDT` — members-only live order flow (see "Live order flow").
 - `scanner.html` — forwards to `/flow` (the scanner is a panel of the live flow; see "Zone scanner").

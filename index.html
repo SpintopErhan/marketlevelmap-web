@@ -272,9 +272,9 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <div class="page-head"><div><p class="kicker" data-i18n="mbKicker">For members</p><h2 id="members-title" data-i18n="mbTitle">Live tools</h2>
 <p data-i18n="mbText">Watch the analysis zones together with live market data. The data comes from the exchanges straight to your browser; nothing is recorded.</p></div></div>
 <div class="mb-grid">
-<a class="mb-card card big" href="/flow" data-mb="flow"><img src="assets/members/flow.jpg?v=84f47795" alt="" width="1440" height="860" loading="lazy"><div class="mb-body"><h3 data-i18n="mbFlow">Live flow</h3><p data-i18n="mbFlowText"></p></div></a>
-<a class="mb-card card" href="/flow" data-mb="scanner"><img src="assets/members/scanner.jpg?v=286acec1" alt="" width="1440" height="620" loading="lazy"><div class="mb-body"><h3 data-i18n="mbScan">Scanner</h3><p data-i18n="mbScanText"></p></div></a>
-<a class="mb-card card" href="/bulletin" data-mb="summary"><img src="assets/members/summary.jpg?v=9aff538a" alt="" width="1120" height="488" loading="lazy"><div class="mb-body"><h3 data-i18n="mbSum">Flow summary</h3><p data-i18n="mbSumText"></p></div></a>
+<a class="mb-card card big" href="/flow" data-mb="flow"><img src="assets/members/flow-en.jpg?v=4c7fac1f" data-src-tr="assets/members/flow.jpg?v=cbf525ca" alt="" width="1440" height="860" loading="lazy"><div class="mb-body"><h3 data-i18n="mbFlow">Live flow</h3><p data-i18n="mbFlowText"></p></div></a>
+<a class="mb-card card" href="/flow" data-mb="scanner"><img src="assets/members/scanner-en.jpg?v=a5dc97f6" data-src-tr="assets/members/scanner.jpg?v=58cc982b" alt="" width="1382" height="361" loading="lazy"><div class="mb-body"><h3 data-i18n="mbScan">Scanner</h3><p data-i18n="mbScanText"></p></div></a>
+<a class="mb-card card" href="/bulletin" data-mb="summary"><img src="assets/members/summary-en.jpg?v=0cfd5265" data-src-tr="assets/members/summary.jpg?v=23e59ab3" alt="" width="1120" height="510" loading="lazy"><div class="mb-body"><h3 data-i18n="mbSum">Flow summary</h3><p data-i18n="mbSumText"></p></div></a>
 </div>
 <div class="mb-cta"><a class="btn btn-primary" id="mb-cta" href="/account"></a><span class="mb-note" id="mb-cta-note"></span></div>
 <p class="mb-sample" data-i18n="mbSample">Images: sample data.</p>
@@ -302,6 +302,8 @@ function applyLanguage(value){
   document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
   document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
   try{localStorage.setItem("mlm-lang",value)}catch(e){}
+  /* "For members" screenshots exist in both languages. */
+  document.querySelectorAll("img[data-src-tr]").forEach(function(im){if(!im.dataset.srcEn)im.dataset.srcEn=im.getAttribute("src");var want=value==="tr"?im.dataset.srcTr:im.dataset.srcEn;if(im.getAttribute("src")!==want)im.setAttribute("src",want)});
   if(window.syncMembersCta)syncMembersCta();
 }
 /* "For members" call to action: guests sign in to apply, applicants see their profile, members open the tools. */
