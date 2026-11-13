@@ -90,10 +90,19 @@
     function oi() {
       fetch("https://fapi.binance.com/futures/data/openInterestHist?symbol=" + sym + "&period=5m&limit=13", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (l) {
         if (!Array.isArray(l) || l.length < 2) return; l.sort(function (a, b) { return a.timestamp - b.timestamp; });
-        f.oi1h = +l[0].sumOpenInterest > 0 ? +l[l.length - 1].sumOpenInterest / +l[0].sumOpenInterest - 1 : null;
+        if (+l[0].sumOpenInterest > 0) { f.oi1h = +l[l.length - 1].sumOpenInterest / +l[0].sumOpenInterest - 1; histOk = true; }
       }).catch(function () {});
     }
-    oi(); timers.push(setInterval(oi, 300000));
+    // Fallback when the history does not answer: this page's own minute samples of /fapi/v1/openInterest.
+    var histOk = false, smp = [], my = run;
+    function oiNow() {
+      fetch("https://fapi.binance.com/fapi/v1/openInterest?symbol=" + sym, { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
+        if (my !== run || histOk || !b || !(+b.openInterest > 0)) return;
+        var now = Date.now(); smp.push({ t: now, oi: +b.openInterest }); while (smp.length && smp[0].t < now - 3900000) smp.shift();
+        if (smp.length > 1) { var ref = smp.filter(function (x) { return x.t <= now - 3600000; }).pop() || smp[0]; f.oi1h = smp[smp.length - 1].oi / ref.oi - 1; }
+      }).catch(function () {});
+    }
+    oi(); oiNow(); timers.push(setInterval(oi, 300000)); timers.push(setInterval(oiNow, 60000));
   }
   function set(id, text, cls) { var e = $(id); if (!e) return; e.textContent = text; e.className = "num" + (cls ? " " + cls : ""); }
   function render() {

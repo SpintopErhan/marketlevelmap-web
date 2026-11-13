@@ -19,8 +19,8 @@
       gateMember: "The scanner is for members. It opens once your membership is approved.", profile: "Your profile",
       notifyOff: "Browser notifications are blocked; alarms show on the page only.",
       spot: "Spot", futures: "Futures", fFund: "Funding", fOi: "Open interest", fOi1h: "OI 1h", fLiq: "Liquidations 15 min", fYear: "annual {p}",
-      fNote: "Futures columns: Binance USDT perpetuals. Funding is the current rate (annualised under it); open interest and its 1-hour change come from Binance's 5-minute history; liquidations are summed since the page opened (at most the last 15 min; L = longs liquidated, S = shorts). Click a column title to sort.",
-      bigSubF: "all assets · futures · Binance", byCol: "by the chosen column", sortBy: "Sort by {c}"
+      fNote: "Futures columns: Binance USDT perpetuals. Funding is the current rate (annualised under it); open interest is read every minute and its 1-hour change comes from Binance's 5-minute history (marked “session” when it is taken from this page's own samples instead); liquidations are summed since the page opened (at most the last 15 min; L = longs liquidated, S = shorts). Click a column title to sort.",
+      bigSubF: "all assets · futures · Binance", byCol: "by the chosen column", sess: "session", sortBy: "Sort by {c}"
     },
     tr: {
       title: "Tarayıcı", sub: "canlı · Kritik Bölgeler", lead: "Her varlığın fiyatının analiz bölgelerine göre nerede durduğu.", tf: "Zaman dilimi",
@@ -36,8 +36,8 @@
       gateMember: "Tarayıcı üyelere özeldir. Üyeliğiniz onaylandığında açılır.", profile: "Profiliniz",
       notifyOff: "Tarayıcı bildirimleri engelli; alarmlar yalnızca sayfada görünür.",
       spot: "Spot", futures: "Vadeli", fFund: "Fonlama", fOi: "Açık pozisyon", fOi1h: "AP 1 sa", fLiq: "Likidasyon 15 dk", fYear: "yıllık {p}",
-      fNote: "Vadeli sütunlar: Binance USDT sürekli vadeli. Fonlama güncel orandır (altında yıllık karşılığı); açık pozisyon ve 1 saatlik değişimi Binance'in 5 dakikalık geçmişinden gelir; likidasyonlar sayfa açıldığından beri toplanır (en fazla son 15 dk; L = long likidasyonu, S = short). Sıralamak için sütun başlığına tıklayın.",
-      bigSubF: "tüm varlıklar · vadeli · Binance", byCol: "seçilen sütuna göre", sortBy: "{c} göre sırala"
+      fNote: "Vadeli sütunlar: Binance USDT sürekli vadeli. Fonlama güncel orandır (altında yıllık karşılığı); açık pozisyon dakikada bir okunur, 1 saatlik değişimi Binance'in 5 dakikalık geçmişinden gelir (bu sayfanın kendi örneklerinden hesaplanırsa “oturum” yazar); likidasyonlar sayfa açıldığından beri toplanır (en fazla son 15 dk; L = long likidasyonu, S = short). Sıralamak için sütun başlığına tıklayın.",
+      bigSubF: "tüm varlıklar · vadeli · Binance", byCol: "seçilen sütuna göre", sess: "oturum", sortBy: "{c} göre sırala"
     }
   };
   function lang() { var s = document.getElementById("lang"); return s && s.value === "tr" ? "tr" : "en"; }
@@ -53,32 +53,53 @@
   var MARKET = /[?&]market=futures(&|$)/.test(location.search) ? "futures" : "spot", FUT = MARKET === "futures";
   // ─── Futures data (Binance USD-M): all-market mark price/funding and liquidations in one socket, OI history by REST.
   var fut = {}, liqAll = [], sortKey = "";
+  // Per-symbol streams on /market (the same ones the live flow page uses): <sym>@markPrice@1s and <sym>@forceOrder.
+  // Open interest from /fapi/v1/openInterest every minute; its 1-hour change from Binance's 5-minute history when that
+  // answers, else from this page's own minute samples (marked "session").
   function futStart(list) {
     var syms = list.filter(function (a) { return /USDT$/.test(a); }); if (!syms.length) return;
-    var retry = 0;
+    var retry = 0, params = [];
+    syms.forEach(function (s) { params.push(s.toLowerCase() + "@markPrice@1s", s.toLowerCase() + "@forceOrder"); });
     (function open() {
       var ws; try { ws = new WebSocket("wss://fstream.binance.com/market/ws"); } catch (e) { return; }
-      ws.onopen = function () { retry = 0; ws.send(JSON.stringify({ method: "SUBSCRIBE", params: ["!markPrice@arr@1s", "!forceOrder@arr"], id: 1 })); };
+      ws.onopen = function () { retry = 0; ws.send(JSON.stringify({ method: "SUBSCRIBE", params: params, id: 1 })); };
       ws.onmessage = function (e) {
         var m; try { m = JSON.parse(e.data); } catch (_) { return; }
-        if (Array.isArray(m)) m.forEach(function (x) { if (x && x.e === "markPriceUpdate" && syms.indexOf(x.s) > -1) { var f = fut[x.s] || (fut[x.s] = {}); f.mark = +x.p; f.fr = +x.r; f.next = +x.T; dirty = true; } });
-        else if (m && m.e === "forceOrder" && m.o && syms.indexOf(m.o.s) > -1) { var o = m.o, pr = +o.ap || +o.p, q = +o.z || +o.q; if (pr > 0 && q > 0) { liqAll.push({ s: o.s, side: o.S === "SELL" ? "L" : "S", n: pr * q, t: Date.now() }); if (liqAll.length > 5000) liqAll.shift(); dirty = true; } }
+        var list2 = Array.isArray(m) ? m : [m.data || m];
+        list2.forEach(function (x) {
+          if (!x) return;
+          if (x.e === "markPriceUpdate" && syms.indexOf(x.s) > -1) { var f = fut[x.s] || (fut[x.s] = {}); f.mark = +x.p; f.fr = +x.r; f.next = +x.T; if (f.oi > 0) f.oiV = f.oi * f.mark; dirty = true; }
+          else if (x.e === "forceOrder" && x.o && syms.indexOf(x.o.s) > -1) { var o = x.o, pr = +o.ap || +o.p, q = +o.z || +o.q; if (pr > 0 && q > 0) { liqAll.push({ s: o.s, side: o.S === "SELL" ? "L" : "S", n: pr * q, t: Date.now() }); if (liqAll.length > 5000) liqAll.shift(); dirty = true; } }
+        });
       };
       ws.onclose = function () { setTimeout(open, Math.min(30000, 1000 * Math.pow(2, retry++))); };
     })();
-    function oi() {
+    var histOk = {};
+    function oiNow() {
       syms.forEach(function (sym, i) {
         setTimeout(function () {
-          fetch("https://fapi.binance.com/futures/data/openInterestHist?symbol=" + sym + "&period=5m&limit=13", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (list) {
-            if (!Array.isArray(list) || !list.length) return;
-            list.sort(function (a, b) { return a.timestamp - b.timestamp; });
-            var last = list[list.length - 1], first = list[0], f = fut[sym] || (fut[sym] = {});
-            f.oiV = +last.sumOpenInterestValue; f.oi1h = +first.sumOpenInterest > 0 ? +last.sumOpenInterest / +first.sumOpenInterest - 1 : null; dirty = true;
+          fetch("https://fapi.binance.com/fapi/v1/openInterest?symbol=" + sym, { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
+            if (!b || !(+b.openInterest > 0)) return;
+            var f = fut[sym] || (fut[sym] = {}), now = Date.now(); f.oi = +b.openInterest; if (f.mark > 0) f.oiV = f.oi * f.mark;
+            var smp = f.smp || (f.smp = []); smp.push({ t: now, oi: f.oi }); while (smp.length && smp[0].t < now - 3900000) smp.shift();
+            if (!histOk[sym] && smp.length > 1) { var ref = smp.filter(function (x) { return x.t <= now - 3600000; }).pop() || smp[0]; f.oi1h = f.oi / ref.oi - 1; f.oiSess = now - ref.t < 3500000; }
+            dirty = true;
+          }).catch(function () {});
+        }, i * 200);
+      });
+    }
+    function oiHist() {
+      syms.forEach(function (sym, i) {
+        setTimeout(function () {
+          fetch("https://fapi.binance.com/futures/data/openInterestHist?symbol=" + sym + "&period=5m&limit=13", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (l) {
+            if (!Array.isArray(l) || l.length < 2) return;
+            l.sort(function (a, b) { return a.timestamp - b.timestamp; });
+            var f = fut[sym] || (fut[sym] = {}); if (+l[0].sumOpenInterest > 0) { f.oi1h = +l[l.length - 1].sumOpenInterest / +l[0].sumOpenInterest - 1; f.oiSess = false; histOk[sym] = true; dirty = true; }
           }).catch(function () {});
         }, i * 250);
       });
     }
-    oi(); setInterval(oi, 300000);
+    oiNow(); oiHist(); setInterval(oiNow, 60000); setInterval(oiHist, 300000);
   }
   function liq15(sym) { var now = Date.now(), L = 0, S = 0; liqAll.forEach(function (x) { if (x.s === sym && x.t > now - 900000) { if (x.side === "L") L += x.n; else S += x.n; } }); return { L: L, S: S }; }
   function money(v) { return v > 0 ? v.toLocaleString(locale(), { notation: "compact", maximumFractionDigits: v >= 1e6 ? 2 : 0 }) + " $" : "0 $"; }
@@ -159,7 +180,7 @@
         if (f.fr != null) { cf.appendChild(el("small", "muted blk", fill(t.fYear, { p: signPct(f.fr * 24 / hrs * 365, 1) }))); }
         tr.appendChild(cf);
         tr.appendChild(el("td", "r num hide-m", f.oiV ? money(f.oiV) : "—"));
-        tr.appendChild(el("td", "r num " + (f.oi1h > 0 ? "up" : f.oi1h < 0 ? "down" : ""), f.oi1h != null ? signPct(f.oi1h, 1) : "—"));
+        var co = el("td", "r num " + (f.oi1h > 0 ? "up" : f.oi1h < 0 ? "down" : ""), f.oi1h != null ? signPct(f.oi1h, 1) : "—"); if (f.oi1h != null && f.oiSess) co.appendChild(el("small", "muted blk", t.sess)); tr.appendChild(co);
         var cl = el("td", "r num liqc"); cl.appendChild(el("span", "down", "L " + money(l.L))); cl.appendChild(el("span", "up", "S " + money(l.S))); tr.appendChild(cl);
       } else {
       var c3 = el("td", "hide-m"); c3.appendChild(meter(r.st, r.p)); tr.appendChild(c3);

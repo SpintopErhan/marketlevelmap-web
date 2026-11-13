@@ -147,7 +147,7 @@ top of the side column with the last 5 min buy/sell share and the session CVD, f
 last 15 min, the open-interest 1-hour change, a one-line "last 5 min: price, CVD" and a link to the live flow. One
 venue at a time, chosen on the card (Binance | OKX, remembered in `localStorage` `mlm-fm-venue`; switching closes the
 old sockets and starts over). Binance: spot `aggTrade`, USD-M `<sym>@markPrice@1s` and `<sym>@forceOrder`,
-`openInterestHist`. OKX: one socket with spot `trades`, swap `funding-rate`, `mark-price`, `index-tickers` and
+`openInterestHist` (else its own minute samples of `/fapi/v1/openInterest`). OKX: one socket with spot `trades`, swap `funding-rate`, `mark-price`, `index-tickers` and
 `liquidation-orders` (sizes × `ctVal`), and `rubik/stat/contracts/open-interest-volume` (5-minute periods) for the
 1-hour change. Read in the browser; nothing is stored.
 
@@ -168,9 +168,11 @@ with their distance. Rows are sorted by closeness; the asset links to its live f
   when it is at least 5×/10×/20× (chosen) the asset's average print of the last 500 and at least $10K.
 
 - **Spot | Futures** — `?market=futures` swaps the zone columns (position bar, nearest zones) for Binance USD-M
-  figures: funding (annualised under it), open interest ($) and its 1-hour change (`/futures/data/openInterestHist`,
-  5-minute periods, refreshed every 5 min), and liquidations of the last 15 min since the page opened (`!markPrice@arr@1s`
-  and `!forceOrder@arr` in one socket on `fstream.binance.com/market/ws`). Clicking a futures column title sorts by it
+  figures: funding (annualised under it), open interest ($; `/fapi/v1/openInterest` every minute × mark price) and its
+  1-hour change (`/futures/data/openInterestHist`, 5-minute periods, every 5 min; when that does not answer, from the
+  page's own minute samples, marked "session"), and liquidations of the last 15 min since the page opened
+  (`<sym>@markPrice@1s` and `<sym>@forceOrder` per asset in one socket on `fstream.binance.com/market/ws`, the streams
+  the live flow uses; the all-market `!…@arr` streams delivered nothing there). Clicking a futures column title sorts by it
   (again: back to the zone order). Big trades then come from futures `aggTrade`. Status and alarms stay on spot prices.
 
 `assets/scanner.js` does all of it in the browser. The menu of every page (and the library template) links
