@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <text class="t-label" x="24" y="26" font-size="12">{{price}}</text>
+  <polyline class="s-line" points="24,60 70,66 110,58 150,70 190,64 230,72 260,90 280,120 300,150 320,160 350,148 390,140 430,132 470,138 520,130" fill="none" stroke-width="2.2"/>
+  <line class="s-guide" x1="24" y1="200" x2="536" y2="200" stroke-width="1"/>
+  <g>
+    <rect class="f-down" x="230" y="282" width="12" height="8" rx="1"/>
+    <rect class="f-down" x="250" y="262" width="12" height="28" rx="1"/>
+    <rect class="f-down" x="270" y="226" width="12" height="64" rx="1"/>
+    <rect class="f-down" x="290" y="214" width="12" height="76" rx="1"/>
+    <rect class="f-down" x="310" y="246" width="12" height="44" rx="1"/>
+    <rect class="f-down" x="330" y="276" width="12" height="14" rx="1"/>
+    <rect class="f-up" x="110" y="282" width="12" height="8" rx="1"/>
+    <rect class="f-up" x="430" y="278" width="12" height="12" rx="1"/>
+  </g>
+  <line class="s-guide" x1="24" y1="290" x2="536" y2="290" stroke-width="1"/>
+  <rect class="f-accent" x="244" y="80" width="96" height="214" rx="6" opacity="0.10"/>
+  <text class="t-accent" x="350" y="104" font-size="12">{{cascade}}</text>
+  <text class="t-down" x="360" y="236" font-size="12">{{long_liq}}</text>
+  <text class="t-up" x="96" y="266" font-size="12">{{short_liq}}</text>
+</svg>

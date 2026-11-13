@@ -53,6 +53,9 @@ cache previews per link, so a link shared before a change keeps its old card for
 - `bulletin.html?asset=BTCUSDT&tf=4h` — analysis page: 1H/4H/1D chart, note, support/resistance zones,
   key levels and earlier analyses. A switch at the top chooses the discipline: Critical Zones (default) or
   Price Action (`&method=pa`, see "Price Action view").
+- Home page **"For members"** section (under the table): the live flow, scanner and flow summary with sample
+  screenshots (`assets/members/*.jpg`, made from the test feeds) and a call to action that follows the account:
+  guests sign in to apply, applicants see their profile, members open the live flow.
 - `flow.html?asset=BTCUSDT` — members-only live order flow (see "Live order flow").
 - `scanner.html` — members-only zone scanner, alarms and big trades (see "Zone scanner").
 - `weekly-events.html` — this/next week's events. `archive.html` — placeholder until archives are published.
@@ -95,8 +98,11 @@ page in its own unminimised window.
   bid/ask ratios within ±10 and ±25 bp (only books that reach that far count).
 - **Time & Sales** — newest 40 trades with venue, filters ≥2×/≥5×/≥10× the venue's average trade size
   (≥5× highlighted), buy/sell share of the last 200 trades.
-- **Zones** — the latest Critical Zones report of the asset (1D first, other timeframes selectable): whether the
-  price is inside a band, the nearest resistance above and support below.
+- **Zones** — the latest Critical Zones reports of the asset: all timeframes together by default ("All"), or one
+  (remembered in `localStorage` `mlm-flow-ztf`). Each zone carries its timeframe (a tag in the context bar, a label on
+  the heatmap band); where zones of different timeframes overlap the list is joined ("1D+1W"), the band is drawn
+  stronger and order-book/profile rows get an amber stripe. The context bar shows whether the price is inside a
+  band and the nearest resistance above and support below.
 - **Coinbase premium** — Coinbase USD mid over Binance USDT mid (OKX when Binance is not reachable), in the
   context bar, whatever venue is shown.
 - **Flow in the zone** — from the moment the price enters a band (the narrowest one it is in): buys, sells and CVD of
@@ -122,7 +128,9 @@ page in its own unminimised window.
   wall's size traded into it, yet it keeps ≥70% of its size. One mark per bucket and kind every 30 s.
 - **Save PNG** — a 1600×900 image in the page's theme: title (asset, spot/futures, venues, UTC time), the context
   line, the heatmap, CVD and depth as drawn, and the key figures (zone flow, buy/sell; futures: OI, liquidations).
-- **How to read** — a button next to the title and a "?" on every panel open one dialog (`HELP` in `flow.js`, TR/EN)
+- **How to read** — sections link to the library's **Order flow** pages (`content/library/concepts`: order-book,
+  cvd, liquidity-heatmap, funding-rate, open-interest, liquidations; and volume-profile). Otherwise:
+   a button next to the title and a "?" on every panel open one dialog (`HELP` in `flow.js`, TR/EN)
   with a section per panel (what it shows, how to read it); a panel's "?" opens it at that section. Futures-only
   sections show on futures, the Coinbase premium on spot.
 - **Spot | Futures** — the switch at the top reloads the page with `&market=futures` (a new session). On futures, a Binance

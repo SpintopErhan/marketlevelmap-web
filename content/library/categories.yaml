@@ -99,6 +99,20 @@
     name: Technical indicators
     singular: Technical indicator
     summary: Indicators calculated from price and volume; how they are calculated, which question they answer and where they can mislead.
+- kind: order-flow
+  section: movement
+  order: 30
+  cover: liquidity-heatmap
+  tr:
+    slug: emir-akisi
+    name: Emir akışı
+    singular: Emir akışı
+    summary: Emir defteri, işlemlerin yönü, bekleyen likidite ve vadeli piyasanın göstergeleri; fiyatın bir seviyede nasıl karşılandığını okumak için.
+  en:
+    slug: order-flow
+    name: Order flow
+    singular: Order flow
+    summary: The order book, the direction of trades, resting liquidity and the futures market's gauges; for reading how price is met at a level.
 - kind: macro
   section: markets
   order: 10

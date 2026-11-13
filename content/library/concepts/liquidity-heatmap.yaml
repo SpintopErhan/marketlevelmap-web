@@ -1,0 +1,197 @@
+id: liquidity-heatmap
+kind: order-flow
+order: 30
+related: [order-book, cvd, liquidity-sweep, support-and-resistance]
+example: null
+updated: 2026-11-13
+
+tr:
+  slug: likidite-isi-haritasi
+  name: Likidite ısı haritası
+  alt_name: Liquidity heatmap
+  summary: >-
+    Likidite ısı haritası, emir defterindeki bekleyen emirleri zaman içinde gösterir. Dikey eksen fiyat,
+    yatay eksen zamandır; renk ne kadar parlaksa o fiyatta o anda o kadar çok emir bekliyordur.
+  sections:
+    - type: text
+      id: definition
+      title: Likidite ısı haritası nedir?
+      paragraphs:
+        - >-
+          Emir defteri tek bir anı gösterir. Isı haritası aynı defteri saniye saniye kaydedip yan yana
+          dizer. Böylece büyük emirlerin ne zaman konduğu, ne kadar süre durduğu ve fiyat yaklaştığında
+          ne olduğu görülür.
+        - >-
+          Uzun, parlak yatay şeritler uzun süre bekleyen büyük emirlerdir (**duvar**). Fiyat çizgisi bu
+          şeritlerin arasından geçer; büyük işlemler ve likidasyonlar çoğu zaman üzerine işaretlenir.
+    - type: bullets
+      id: marks
+      title: Haritadaki işaretler
+      items:
+        - text: "**Duvar:** uzun süre aynı fiyatta duran parlak şerit."
+          marker: accent
+        - text: "**Emilim (◆):** fiyat bir duvara dayanmış, duvara çok işlem girmiş ama duvar küçülmemiş; yeniden dolduruluyor ya da göründüğünden büyük."
+          marker: accent
+        - text: "**Çekilen duvar (×):** fiyat yaklaşırken büyük bir emir işlem görmeden kaybolmuş; büyük olasılıkla iptal edilmiş."
+          marker: neutral
+        - text: "**Daireler ve kareler:** büyük işlemler (yeşil alış, kırmızı satış) ve vadelide likidasyonlar."
+          marker: neutral
+    - type: steps
+      id: how-to-read
+      title: Nasıl okunur?
+      items:
+        - title: Kalıcı duvarları ayır.
+          text: Uzun süre yerinde duran duvarlar, sürekli konup kalkan emirlerden daha anlamlıdır.
+        - title: Fiyat geldiğinde ne olduğuna bak.
+          text: Duvar eriyorsa işlem görüyor, kayboluyorsa çekiliyor, yerinde kalıyorsa emiliyor demektir.
+        - title: Bölgelerle karşılaştır.
+          text: Bir Kritik Bölgenin içinde kalıcı bir duvar varsa bölge defterde de destekleniyordur.
+    - type: scenarios
+      id: walls
+      title: Duvarın üç sonu
+      intro: Fiyat bir duvara ulaştığında haritada sık görülen üç durum.
+      items:
+        - title: Emilim
+          tone: neutral
+          text: Şerit yerinde kalır, üzerinde çok işlem görülür. Fiyat çoğu zaman o seviyede duraklar.
+        - title: Tüketilme
+          tone: up
+          text: Şerit işlemlerle incelir ve biter. Fiyat seviyenin öbür tarafına geçebilir.
+        - title: Çekilme
+          tone: down
+          text: Şerit fiyat gelmeden kaybolur. Seviyenin gücü yeniden değerlendirilir.
+    - type: limits
+      shows:
+        - Büyük emirlerin nerede, ne zamandan beri beklediğini
+        - Fiyat yaklaştığında duvarların nasıl davrandığını
+        - Emilim ve çekilme gibi olayların ne zaman ve hangi seviyede olduğunu
+      not_proves:
+        - Bir duvarın gerçek bir niyet taşıdığını; emirler her an iptal edilebilir
+        - Fiyatın duvardan döneceğini
+        - Görünmeyen emirleri; büyük emirlerin bir kısmı defterde parça parça ya da gizli bekler
+    - type: zones
+      paragraphs:
+        - >-
+          Canlı akış sayfasındaki ısı haritası, tüm zaman dilimlerinin Kritik Bölgelerini bant olarak
+          üzerine çizer ve her bandın zaman dilimini sol kenarına yazar. Birden çok zaman diliminin
+          bölgesinin üst üste geldiği yerler (örneğin 1D+1W) daha belirgin çizilir. Bir bölgenin içinde
+          kalıcı bir duvar ve emilim işaretleri görülüyorsa bölge hem geçmiş tepkilerle hem de bugünkü
+          defterle desteklenmektedir.
+    - type: box
+      title: Kayıt yok
+      text: >-
+        Canlı akış sayfasındaki harita sayfa açık kaldıkça dolar; geçmiş tutulmaz. Sayfayı yeni açtığınızda
+        harita boştur ve izledikçe uzar.
+  confusions:
+    - id: volume-profile
+      text: Hacim profili gerçekleşmiş işlemleri, ısı haritası henüz gerçekleşmemiş bekleyen emirleri gösterir.
+    - id: liquidity-sweep
+      text: Likidite süpürmesi fiyatın stop emirlerinin bulunduğu seviyeyi hızla geçip geri dönmesidir; ısı haritası ise defterde bekleyen emirleri gösterir.
+  key_points:
+    - Isı haritası emir defterinin zaman içindeki halidir.
+    - Parlak yatay şeritler uzun süre bekleyen büyük emirlerdir.
+    - Duvarın erimesi, kaybolması ve emilmesi farklı şeyler anlatır.
+    - Haritada görülen emirler iptal edilebilir; tek başına yön göstermez.
+  svg_labels:
+    wall: Duvar
+    pulled: "× Çekilen duvar"
+    absorption: "◆ Emilim"
+    time: Zaman →
+    now: Şimdi
+  svg_alt: "Likidite ısı haritası çizimi: yatay renkli şeritler bekleyen emirleri gösteriyor; fiyat çizgisi üstteki duvara yaklaşınca duvar kayboluyor ve çarpı işaretiyle işaretleniyor; alttaki duvarda fiyat durakladığında elmas işaretiyle emilim gösteriliyor"
+  svg_caption: Üstteki duvar fiyat yaklaşırken işlem görmeden kayboldu (×). Alttaki duvar fiyat geldiğinde yerinde kaldı ve işlemleri karşıladı (◆).
+
+en:
+  slug: liquidity-heatmap
+  name: Liquidity heatmap
+  summary: >-
+    A liquidity heatmap shows the resting orders of the order book over time. Price is on the vertical
+    axis, time on the horizontal; the brighter the colour, the more was resting at that price at that
+    moment.
+  sections:
+    - type: text
+      id: definition
+      title: What is a liquidity heatmap?
+      paragraphs:
+        - >-
+          The order book shows one moment. A heatmap records the same book second by second and lines the
+          moments up. You can see when large orders were placed, how long they stayed and what happened as
+          price came near.
+        - >-
+          Long bright horizontal lines are large orders resting for a long time (**walls**). The price line
+          runs between them; big trades and liquidations are often marked on top.
+    - type: bullets
+      id: marks
+      title: Marks on the map
+      items:
+        - text: "**Wall:** a bright line staying at the same price for a long time."
+          marker: accent
+        - text: "**Absorption (◆):** price leans on a wall, plenty trades into it, yet it does not shrink; it is being refilled or is bigger than it shows."
+          marker: accent
+        - text: "**Pulled wall (×):** a large order vanished without trading as price came near; most likely cancelled."
+          marker: neutral
+        - text: "**Circles and squares:** big trades (green buy, red sell) and, on futures, liquidations."
+          marker: neutral
+    - type: steps
+      id: how-to-read
+      title: How to read it
+      items:
+        - title: Pick out the lasting walls.
+          text: Walls that stay put for a long time mean more than orders that come and go.
+        - title: See what happens when price arrives.
+          text: If the wall melts it is trading, if it vanishes it was pulled, if it stays it is absorbing.
+        - title: Compare with the zones.
+          text: A lasting wall inside a Critical Zone means the zone is backed in the book too.
+    - type: scenarios
+      id: walls
+      title: Three ends of a wall
+      intro: Three common cases on the map when price reaches a wall.
+      items:
+        - title: Absorption
+          tone: neutral
+          text: The line stays and much trades on it. Price often pauses at that level.
+        - title: Used up
+          tone: up
+          text: The line thins as it trades and ends. Price may pass to the other side of the level.
+        - title: Pulled
+          tone: down
+          text: The line disappears before price gets there. The level's strength is reassessed.
+    - type: limits
+      shows:
+        - Where large orders rest and since when
+        - How walls behave as price comes near
+        - When and at which level events such as absorption or pulling happen
+      not_proves:
+        - That a wall is a real intention; orders can be cancelled at any moment
+        - That price will turn at the wall
+        - Orders you cannot see; part of large orders rest in pieces or hidden
+    - type: zones
+      paragraphs:
+        - >-
+          The heatmap on the live flow page draws the Critical Zones of every timeframe as bands and writes
+          each band's timeframe at its left edge. Where zones of several timeframes overlap (e.g. 1D+1W) the
+          band is drawn stronger. A lasting wall and absorption marks inside a zone mean the zone is backed
+          both by past reactions and by today's book.
+    - type: box
+      title: Nothing recorded
+      text: >-
+        The map on the live flow page fills while the page is open; no history is kept. When you open the
+        page it is empty and grows as you watch.
+  confusions:
+    - id: volume-profile
+      text: A volume profile shows trades that happened; the heatmap shows resting orders that have not traded yet.
+    - id: liquidity-sweep
+      text: A liquidity sweep is price running quickly through a level where stops rest and coming back; the heatmap shows orders resting in the book.
+  key_points:
+    - The heatmap is the order book over time.
+    - Bright horizontal lines are large orders resting for a long time.
+    - A wall melting, vanishing or absorbing tells different things.
+    - Orders on the map can be cancelled; it does not show direction on its own.
+  svg_labels:
+    wall: Wall
+    pulled: "× Pulled wall"
+    absorption: "◆ Absorption"
+    time: Time →
+    now: Now
+  svg_alt: "Liquidity heatmap drawing: coloured horizontal lines show resting orders; as the price line comes near the upper wall, the wall vanishes and is marked with a cross; at the lower wall price pauses and a diamond marks absorption"
+  svg_caption: The upper wall vanished without trading as price came near (×). The lower wall stayed when price arrived and absorbed the trades (◆).

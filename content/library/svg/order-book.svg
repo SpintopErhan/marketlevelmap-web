@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <g class="t-mono" font-size="11">
+    <text class="t-down" x="40" y="38">75.060</text><rect class="f-down" x="250" y="28" width="60" height="13" rx="2" opacity="0.35"/>
+    <text class="t-down" x="40" y="58">75.050</text><rect class="f-down" x="250" y="48" width="230" height="13" rx="2" opacity="0.8"/>
+    <text class="t-down" x="40" y="78">75.040</text><rect class="f-down" x="250" y="68" width="42" height="13" rx="2" opacity="0.35"/>
+    <text class="t-down" x="40" y="98">75.030</text><rect class="f-down" x="250" y="88" width="75" height="13" rx="2" opacity="0.35"/>
+    <text class="t-down" x="40" y="118">75.020</text><rect class="f-down" x="250" y="108" width="55" height="13" rx="2" opacity="0.35"/>
+    <text class="t-down" x="40" y="138">75.010</text><rect class="f-down" x="250" y="128" width="30" height="13" rx="2" opacity="0.35"/>
+    <text class="t-up" x="40" y="186">75.000</text><rect class="f-up" x="250" y="176" width="38" height="13" rx="2" opacity="0.35"/>
+    <text class="t-up" x="40" y="206">74.990</text><rect class="f-up" x="250" y="196" width="66" height="13" rx="2" opacity="0.35"/>
+    <text class="t-up" x="40" y="226">74.980</text><rect class="f-up" x="250" y="216" width="48" height="13" rx="2" opacity="0.35"/>
+    <text class="t-up" x="40" y="246">74.970</text><rect class="f-up" x="250" y="236" width="70" height="13" rx="2" opacity="0.35"/>
+    <text class="t-up" x="40" y="266">74.960</text><rect class="f-up" x="250" y="256" width="200" height="13" rx="2" opacity="0.8"/>
+    <text class="t-up" x="40" y="286">74.950</text><rect class="f-up" x="250" y="276" width="52" height="13" rx="2" opacity="0.35"/>
+  </g>
+  <line class="s-guide" x1="30" y1="160" x2="530" y2="160" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <rect class="f-accent" x="120" y="150" width="120" height="20" rx="4" opacity="0.18"/>
+  <text class="t-accent" x="128" y="164" font-size="12">{{spread}}</text>
+  <text class="t-label" x="120" y="38" font-size="12">{{asks}}</text>
+  <text class="t-label" x="120" y="286" font-size="12">{{bids}}</text>
+  <path class="s-accent" d="M486 54 L510 54 M486 262 L510 262" stroke-width="1.5" fill="none"/>
+  <text class="t-accent" x="490" y="80" font-size="12">{{wall}}</text>
+  <text class="t-accent" x="490" y="248" font-size="12">{{wall}}</text>
+</svg>

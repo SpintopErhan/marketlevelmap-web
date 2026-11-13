@@ -1,0 +1,153 @@
+id: open-interest
+kind: order-flow
+order: 50
+related: [funding-rate, liquidations, volume, cvd]
+example: null
+updated: 2026-11-13
+
+tr:
+  slug: acik-pozisyon
+  name: Açık pozisyon
+  alt_name: Open interest
+  summary: >-
+    Açık pozisyon, vadeli piyasada henüz kapanmamış sözleşmelerin toplamıdır. Fiyatla birlikte
+    okunduğunda bir hareketin yeni pozisyonlarla mı, kapanan pozisyonlarla mı yapıldığını anlatır.
+  sections:
+    - type: text
+      id: definition
+      title: Açık pozisyon nedir?
+      paragraphs:
+        - >-
+          Vadeli piyasada her sözleşmenin bir long ve bir short tarafı vardır. Yeni bir alıcı ile yeni bir
+          satıcı eşleştiğinde açık pozisyon artar; iki taraf da pozisyonunu kapattığında azalır. Biri
+          kapatıp yerine başkası geçtiğinde değişmez.
+        - >-
+          Hacim belirli bir sürede **ne kadar işlem yapıldığını**, açık pozisyon ise o anda **ne kadar
+          pozisyonun açık kaldığını** sayar. Coin miktarı ya da dolar olarak gösterilir.
+    - type: scenarios
+      id: four-cases
+      title: Açık pozisyon ve fiyatın dört birleşimi
+      intro: Belirli bir süredeki değişimler birlikte okunur. Her biri bir okumadır, sonuç değildir.
+      items:
+        - title: AP artıyor, fiyat yükseliyor
+          tone: up
+          text: Yükseliş yeni pozisyonlarla yapılıyor; yeni long'lar açılıyor.
+        - title: AP artıyor, fiyat düşüyor
+          tone: down
+          text: Düşüş yeni pozisyonlarla yapılıyor; yeni short'lar açılıyor.
+        - title: AP azalıyor, fiyat yükseliyor
+          tone: neutral
+          text: Short pozisyonlar kapanıyor. Yükseliş yeni alımdan çok short kapanışlarından geliyor olabilir.
+        - title: AP azalıyor, fiyat düşüyor
+          tone: neutral
+          text: Long pozisyonlar kapanıyor. Düşüş yeni satıştan çok long kapanışlarından geliyor olabilir.
+    - type: limits
+      shows:
+        - Vadeli piyasada ne kadar pozisyon açık olduğunu
+        - Bir hareketin yeni pozisyonlarla mı, kapanışlarla mı yapıldığını
+        - Pozisyonların birikip birikmediğini
+      not_proves:
+        - Hangi tarafın kazanacağını; her sözleşmenin bir long ve bir short tarafı vardır
+        - Kimin açtığını; dört birleşim olası açıklamalardır
+        - Tüm piyasayı; her borsanın açık pozisyonu ayrıdır
+    - type: zones
+      paragraphs:
+        - >-
+          Fiyat bir Kritik Bölgeye yaklaşırken açık pozisyonun hızla artması, bölgede bir kırılım ya da
+          dönüş olursa çok sayıda pozisyonun etkileneceğini gösterir. Canlı akış sayfasının vadeli
+          modunda açık pozisyon fiyatla birlikte çizilir ve son 5 dakikanın birleşimi tek satırla
+          tarif edilir; tarayıcının vadeli modunda tüm varlıkların 1 saatlik değişimi görünür.
+  confusions:
+    - id: volume
+      text: Hacim yapılan işlemleri, açık pozisyon açık kalan sözleşmeleri sayar.
+    - id: funding-rate
+      text: Açık pozisyon ne kadar pozisyon açık olduğunu, fonlama hangi tarafa yaslandığını gösterir.
+  key_points:
+    - Açık pozisyon kapanmamış vadeli sözleşmelerin toplamıdır.
+    - Fiyatla birlikte dört birleşim halinde okunur.
+    - Artan AP yeni pozisyonları, azalan AP kapanışları gösterir.
+    - Kimin kazanacağını söylemez.
+  svg_labels:
+    oi_up: AP ↑
+    oi_down: AP ↓
+    price_up: Fiyat ↑
+    price_down: Fiyat ↓
+    q_up_up: Yeni long'lar
+    q_up_down: Yeni short'lar
+    q_down_up: Short kapanışları
+    q_down_down: Long kapanışları
+  svg_alt: "Açık pozisyon çizimi: dört kutulu tablo; AP artarken fiyat yükseliyorsa yeni long'lar, fiyat düşüyorsa yeni short'lar; AP azalırken fiyat yükseliyorsa short kapanışları, fiyat düşüyorsa long kapanışları"
+  svg_caption: Dikey eksen açık pozisyonun, yatay eksen fiyatın yönü. Her kutu o birleşimin olası açıklamasıdır.
+
+en:
+  slug: open-interest
+  name: Open interest
+  summary: >-
+    Open interest is the total of futures contracts not yet closed. Read with price, it tells whether a
+    move is made by new positions or by positions closing.
+  sections:
+    - type: text
+      id: definition
+      title: What is open interest?
+      paragraphs:
+        - >-
+          Every futures contract has a long side and a short side. When a new buyer meets a new seller, open
+          interest rises; when both close, it falls. When one closes and another takes their place, it does
+          not change.
+        - >-
+          Volume counts **how much traded** over a period; open interest counts **how many positions stay
+          open** at a moment. It is shown in coins or in dollars.
+    - type: scenarios
+      id: four-cases
+      title: The four combinations with price
+      intro: Changes over a period are read together. Each is a reading, not an outcome.
+      items:
+        - title: OI rising, price rising
+          tone: up
+          text: The rise is made by new positions; new longs are opening.
+        - title: OI rising, price falling
+          tone: down
+          text: The fall is made by new positions; new shorts are opening.
+        - title: OI falling, price rising
+          tone: neutral
+          text: Shorts are closing. The rise may come from shorts covering rather than new buying.
+        - title: OI falling, price falling
+          tone: neutral
+          text: Longs are closing. The fall may come from longs exiting rather than new selling.
+    - type: limits
+      shows:
+        - How many positions are open in futures
+        - Whether a move is made by new positions or by closing
+        - Whether positions are building up
+      not_proves:
+        - Which side will win; every contract has a long and a short side
+        - Who opened them; the four combinations are possible explanations
+        - The whole market; each exchange has its own open interest
+    - type: zones
+      paragraphs:
+        - >-
+          Open interest rising fast as price nears a Critical Zone shows that many positions would be hit
+          if the zone breaks or turns price. In the live flow's futures mode open interest is drawn with
+          price and the last 5 minutes' combination is described in one line; the scanner's futures mode
+          shows every asset's 1-hour change.
+  confusions:
+    - id: volume
+      text: Volume counts trades made; open interest counts contracts left open.
+    - id: funding-rate
+      text: Open interest shows how many positions are open; funding shows which way they lean.
+  key_points:
+    - Open interest is the total of futures contracts not yet closed.
+    - It is read with price in four combinations.
+    - Rising OI means new positions, falling OI means closing.
+    - It does not say who will win.
+  svg_labels:
+    oi_up: OI ↑
+    oi_down: OI ↓
+    price_up: Price ↑
+    price_down: Price ↓
+    q_up_up: New longs
+    q_up_down: New shorts
+    q_down_up: Shorts closing
+    q_down_down: Longs closing
+  svg_alt: "Open interest drawing: a four-box table; OI rising with price rising means new longs, with price falling new shorts; OI falling with price rising means shorts closing, with price falling longs closing"
+  svg_caption: The vertical axis is the direction of open interest, the horizontal the direction of price. Each box is the likely explanation of that combination.

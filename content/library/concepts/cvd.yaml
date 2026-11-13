@@ -1,0 +1,175 @@
+id: cvd
+kind: order-flow
+order: 20
+related: [order-book, divergence, volume, liquidity-heatmap]
+example: null
+updated: 2026-11-13
+
+tr:
+  slug: cvd-kumulatif-hacim-farki
+  name: CVD (kümülatif hacim farkı)
+  alt_name: Cumulative volume delta
+  summary: >-
+    CVD, agresif alış hacminden agresif satış hacminin çıkarılıp zaman içinde toplanmasıdır. Fiyatı
+    hareket ettirenin piyasa emriyle alanlar mı, satanlar mı olduğunu gösterir.
+  sections:
+    - type: text
+      id: definition
+      title: CVD nedir?
+      paragraphs:
+        - >-
+          Her işlemde bir alıcı ve bir satıcı vardır. Fark, hangisinin **beklemeden** işlem yaptığıdır.
+          Piyasa emriyle alan taraf agresif alıcı, piyasa emriyle satan taraf agresif satıcıdır. Borsalar
+          her işlemi bu yönle birlikte yayınlar.
+        - >-
+          **Delta**, belirli bir süredeki agresif alış hacmi ile agresif satış hacmi arasındaki farktır.
+          **CVD**, bu farkların başlangıçtan itibaren toplamıdır. CVD yükseliyorsa agresif alışlar,
+          düşüyorsa agresif satışlar ağır basıyordur.
+    - type: steps
+      id: how-to-read
+      title: Nasıl okunur?
+      items:
+        - title: Yönü fiyatla karşılaştır.
+          text: Fiyat ve CVD aynı yöne gidiyorsa hareket agresif emirlerle destekleniyordur.
+        - title: Uyumsuzluğa bak.
+          text: Fiyat yeni bir tepe yaparken CVD yapmıyorsa, yükseliş agresif alışlardan çok pasif satıcıların çekilmesiyle oluyor olabilir.
+        - title: Seviyede ne olduğunu oku.
+          text: Bir destek ya da direnç bölgesinde CVD sert hareket ederken fiyat yerinde kalıyorsa, agresif emirler orada karşılanıyordur.
+    - type: scenarios
+      id: price-and-cvd
+      title: Fiyat ve CVD birlikte
+      intro: Fiyat ve CVD'nin dört birleşimi. Her biri bir okumadır, sonuç değildir.
+      items:
+        - title: İkisi birlikte yükseliyor
+          tone: up
+          text: Yükseliş agresif alışlarla destekleniyor.
+        - title: Fiyat yükseliyor, CVD düşüyor
+          tone: neutral
+          text: Yükseliş satışlara rağmen oluyor; pasif alıcılar satışları karşılıyor ya da satış emirleri çekiliyor olabilir.
+        - title: Fiyat düşüyor, CVD yükseliyor
+          tone: neutral
+          text: Agresif alışlar fiyatı yukarı taşıyamıyor; pasif satıcılar alışları karşılıyor olabilir.
+        - title: İkisi birlikte düşüyor
+          tone: down
+          text: Düşüş agresif satışlarla destekleniyor.
+    - type: limits
+      shows:
+        - Fiyatı hareket ettiren agresif emirlerin hangi yönde ağır bastığını
+        - Bir hareketin agresif emirlerle desteklenip desteklenmediğini
+        - Bir seviyede agresif emirlerin karşılanıp karşılanmadığını
+      not_proves:
+        - Fiyatın yönünü; uyumsuzluk tek başına bir dönüş işareti değildir
+        - Pasif emirlerin (limit emirlerin) niyetini; CVD yalnızca gerçekleşen işlemleri sayar
+        - Tüm piyasayı; CVD izlenen borsaların işlemlerinden hesaplanır
+    - type: zones
+      paragraphs:
+        - >-
+          Canlı akış sayfasındaki **Bölgede akış** paneli, fiyat bir Kritik Bölgeye girdiği andan
+          itibaren o bölgedeki alış, satış ve CVD'yi ayrıca sayar. Örneğin bir destek bandında CVD
+          düşerken fiyat düşmüyorsa satışlar bant içinde karşılanıyordur; bu, bölgenin tuttuğunu
+          düşündürür ama garanti değildir.
+    - type: box
+      title: Başlangıç noktası
+      text: >-
+        CVD'nin değeri, toplamanın başladığı ana göre değişir. Canlı akış sayfasında CVD sayfa açıldığı
+        anda sıfırdan başlar. Bu yüzden mutlak değerden çok yönüne ve fiyatla ilişkisine bakılır.
+  confusions:
+    - id: obv
+      text: OBV mumun yönüne göre hacmin tamamını ekler ya da çıkarır; CVD her işlemi agresif tarafına göre sayar.
+    - id: divergence
+      text: Gösterge uyumsuzluğu fiyatla bir osilatörü karşılaştırır; CVD uyumsuzluğu fiyatla gerçekleşen işlemlerin yönünü karşılaştırır.
+  key_points:
+    - CVD agresif alış ve satış hacmi arasındaki farkın toplamıdır.
+    - Fiyatla aynı yöne gitmesi hareketin agresif emirlerle desteklendiğini gösterir.
+    - Uyumsuzluk tek başına dönüş sinyali değildir.
+    - Mutlak değerinden çok yönüne bakılır.
+  svg_labels:
+    price: Fiyat
+    cvd: CVD
+    divergence: "Uyumsuzluk: fiyat yeni tepe, CVD daha düşük tepe"
+  svg_alt: "CVD çizimi: üstte yükselen tepeler yapan fiyat çizgisi, altta önce yükselip sonra düşen CVD çizgisi; son tepelerde fiyat yükselirken CVD düşüyor"
+  svg_caption: Fiyat daha yüksek tepeler yaparken CVD daha düşük tepeler yapıyor. Yükseliş agresif alışlarla desteklenmiyor; bu bir uyumsuzluktur, dönüş anlamına gelmez.
+
+en:
+  slug: cvd
+  name: CVD (cumulative volume delta)
+  summary: >-
+    CVD is aggressive buy volume minus aggressive sell volume, added up over time. It shows whether the
+    price is being moved by those buying with market orders or those selling with them.
+  sections:
+    - type: text
+      id: definition
+      title: What is CVD?
+      paragraphs:
+        - >-
+          Every trade has a buyer and a seller. The difference is which one traded **without waiting**.
+          The side that buys with a market order is the aggressive buyer; the side that sells with one is the
+          aggressive seller. Exchanges publish every trade with this side.
+        - >-
+          **Delta** is aggressive buy volume minus aggressive sell volume over a period. **CVD** is these
+          deltas added up from a starting point. When CVD rises, aggressive buying outweighs selling; when it
+          falls, the other way round.
+    - type: steps
+      id: how-to-read
+      title: How to read it
+      items:
+        - title: Compare its direction with price.
+          text: When price and CVD move the same way, the move is backed by aggressive orders.
+        - title: Look for divergence.
+          text: If price makes a new high but CVD does not, the rise may come from sellers stepping back rather than from aggressive buying.
+        - title: Read what happens at a level.
+          text: If CVD moves sharply at a support or resistance zone while price stays put, aggressive orders are being absorbed there.
+    - type: scenarios
+      id: price-and-cvd
+      title: Price and CVD together
+      intro: The four combinations of price and CVD. Each is a reading, not an outcome.
+      items:
+        - title: Both rise
+          tone: up
+          text: The rise is backed by aggressive buying.
+        - title: Price rises, CVD falls
+          tone: neutral
+          text: The rise happens despite selling; passive buyers may be absorbing it, or sell orders are being pulled.
+        - title: Price falls, CVD rises
+          tone: neutral
+          text: Aggressive buying cannot lift the price; passive sellers may be absorbing it.
+        - title: Both fall
+          tone: down
+          text: The fall is backed by aggressive selling.
+    - type: limits
+      shows:
+        - Which way the aggressive orders moving the price lean
+        - Whether a move is backed by aggressive orders
+        - Whether aggressive orders are being absorbed at a level
+      not_proves:
+        - The direction of price; a divergence alone is not a reversal sign
+        - The intent of passive (limit) orders; CVD counts executed trades only
+        - The whole market; CVD is worked out from the trades of the exchanges watched
+    - type: zones
+      paragraphs:
+        - >-
+          On the live flow page, the **Flow in the zone** panel counts buys, sells and CVD inside a
+          Critical Zone from the moment price enters it. For example, if CVD falls in a support band while
+          price does not, the selling is being absorbed inside the band; this suggests the zone holds, but
+          it is no guarantee.
+    - type: box
+      title: Starting point
+      text: >-
+        The value of CVD depends on when the adding up starts. On the live flow page CVD starts from zero
+        when the page opens. So its direction and its relation to price matter more than its level.
+  confusions:
+    - id: obv
+      text: OBV adds or subtracts a candle's whole volume by the candle's direction; CVD counts each trade by its aggressive side.
+    - id: divergence
+      text: An indicator divergence compares price with an oscillator; a CVD divergence compares price with the direction of executed trades.
+  key_points:
+    - CVD adds up the difference between aggressive buy and sell volume.
+    - Moving with price, it shows the move is backed by aggressive orders.
+    - A divergence alone is not a reversal signal.
+    - Its direction matters more than its level.
+  svg_labels:
+    price: Price
+    cvd: CVD
+    divergence: "Divergence: price new high, CVD lower high"
+  svg_alt: "CVD drawing: a price line making higher highs above, a CVD line that rises then falls below; at the last highs price rises while CVD falls"
+  svg_caption: Price makes higher highs while CVD makes lower highs. The rise is not backed by aggressive buying; this is a divergence, not a reversal.

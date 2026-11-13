@@ -122,7 +122,7 @@
     set("fm-basis", f.mark > 0 && f.index > 0 ? sp(f.mark / f.index - 1, 3) : "—");
     set("fm-oi", f.oi1h != null ? sp(f.oi1h, 1) : "—", f.oi1h > 0 ? "up" : f.oi1h < 0 ? "down" : "");
     var L = 0, S = 0; liqs.forEach(function (x) { if (x.t > now - 900000) { if (x.long) L += x.n; else S += x.n; } });
-    set("fm-liq", "L " + money(L) + " · S " + money(S));
+    set("fm-liq", "L " + money(L) + "\n" + "S " + money(S));
     var read = $("fm-read");
     read.textContent = first && last && now - trades[0].t > 60000 ? fill(t.read, { p: sp(last.p / first.p - 1, 2), c: cvd5 >= 0 ? "+" : "−" }) : t.wait;
   }
