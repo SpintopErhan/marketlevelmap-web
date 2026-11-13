@@ -1,5 +1,5 @@
 // Market context (README "Market context"): BTC and USDT dominance, total crypto market cap, ETH/BTC and the US dollar
-// index, for the home strip, the analysis page card and the live flow panel. One request per visitor every few
+// index, for the analysis page card and the live flow panel. One request per visitor every few
 // minutes; the sources are asked at most once per CACHE_SECONDS at each edge location.
 //   CoinGecko /global            total market cap (USD), its 24 h change, market-cap shares (dominance)
 //   CoinGecko /simple/price      BTC and USDT market caps and 24 h changes, to work out the dominance 24 h ago
@@ -78,7 +78,9 @@ async function coinlore() {
     const value = cap / total * 100;
     return { value, change: c != null && totalChg != null ? value - (cap / (1 + c / 100)) / (total / (1 + totalChg / 100)) * 100 : null };
   }
-  return { total: { usd: total, change: totalChg }, btc: dom("BTC"), usdt: dom("USDT") };
+  // CoinLore's market-cap change and the coins' 24 h changes do not line up, so its dominance change is left out.
+  const b = dom("BTC"), u = dom("USDT"); b.change = null; u.change = null;
+  return { total: { usd: total, change: totalChg }, btc: b, usdt: u };
 }
 async function ethbtc() {
   const s = await getJson("https://api.exchange.coinbase.com/products/ETH-BTC/stats");
@@ -105,13 +107,15 @@ export async function onRequestGet(context) {
   const errors = [];
   const settle = (p, name) => p.catch((e) => { errors.push(`${name}: ${e && e.message ? e.message : e}`); return null; });
   let [cg, eb, dx] = await Promise.all([settle(coingecko(), "coingecko"), settle(ethbtc(), "coinbase"), settle(dxy(), "yahoo")]);
-  if (!cg) cg = await settle(coinpaprika(), "coinpaprika");
-  if (!cg) cg = await settle(coinlore(), "coinlore");
+  let domSource = cg ? "CoinGecko" : null;
+  if (!cg) { cg = await settle(coinpaprika(), "coinpaprika"); if (cg) domSource = "CoinPaprika"; }
+  if (!cg) { cg = await settle(coinlore(), "coinlore"); if (cg) domSource = "CoinLore"; }
   const body = {
     at: new Date().toISOString(),
     total: cg ? cg.total : null,
     btcDominance: cg ? cg.btc : null,
     usdtDominance: cg ? cg.usdt : null,
+    domSource,
     ethbtc: eb,
     dxy: dx,
     ...(errors.length ? { errors } : {}),

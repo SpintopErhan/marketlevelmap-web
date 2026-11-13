@@ -6,10 +6,10 @@
   "use strict";
   var W = {
     en: { btcDom: "BTC dominance", usdtDom: "USDT dominance", total: "Total crypto market cap", ethbtc: "ETH/BTC", dxy: "US dollar index (DXY)",
-      pts: "{v} pts", h24: "24 h", noData: "no data", delayed: "delayed ~15 min", src: "Sources: CoinGecko, CoinPaprika or CoinLore, Coinbase, Yahoo Finance (DXY delayed about 15 minutes). Updated {t}.",
+      pts: "{v} pts", h24: "24 h", noData: "no data", delayed: "delayed ~15 min", src: "Dominance and market cap: {d}. ETH/BTC: Coinbase. DXY: Yahoo Finance (delayed about 15 minutes). Updated {t}.",
       domNote: "Dominance: the coin's share of the total crypto market cap; the change is in percentage points over 24 h." },
     tr: { btcDom: "BTC dominansı", usdtDom: "USDT dominansı", total: "Toplam kripto piyasa değeri", ethbtc: "ETH/BTC", dxy: "Dolar endeksi (DXY)",
-      pts: "{v} puan", h24: "24 sa", noData: "veri yok", delayed: "~15 dk gecikmeli", src: "Kaynaklar: CoinGecko, CoinPaprika ya da CoinLore, Coinbase, Yahoo Finance (DXY yaklaşık 15 dakika gecikmeli). Güncelleme {t}.",
+      pts: "{v} puan", h24: "24 sa", noData: "veri yok", delayed: "~15 dk gecikmeli", src: "Dominans ve piyasa değeri: {d}. ETH/BTC: Coinbase. DXY: Yahoo Finance (yaklaşık 15 dakika gecikmeli). Güncelleme {t}.",
       domNote: "Dominans: varlığın toplam kripto piyasa değerindeki payı; değişim 24 saatte yüzde puan olarak." }
   };
   var LIB = { dxy: ["dolar-endeksi", "dollar-index"] };
@@ -51,12 +51,12 @@
       if (mode !== "strip") {
         var at = data.at ? new Date(data.at) : null;
         box.appendChild(el("p", "mctx-src", t.domNote));
-        box.appendChild(el("p", "mctx-src", t.src.replace("{t}", at ? at.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) : "—")));
+        box.appendChild(el("p", "mctx-src", t.src.replace("{d}", data.domSource || "—").replace("{t}", at ? at.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) : "—")));
       }
     });
   }
-  // When the edge could not reach CoinGecko or CoinPaprika (both rate-limit shared server addresses), the browser asks
-  // CoinGecko itself, from the visitor's own address, and works out the same dominance figures.
+  // The browser asks CoinGecko itself, from the visitor's own address (CoinGecko and CoinPaprika rate-limit shared server
+  // addresses), and works out the same dominance figures as the endpoint.
   function n(x) { var v = Number(x); return isFinite(v) ? v : null; }
   function fromBrowser(b) {
     return Promise.all([
@@ -70,7 +70,7 @@
         if (v != null && c != null && cap && total && tc != null) ch = v - (cap / (1 + c / 100)) / (total / (1 + tc / 100)) * 100;
         return { value: v, change: ch };
       }
-      b.total = { usd: total, change: tc }; b.btcDominance = dom("btc", "bitcoin"); b.usdtDominance = dom("usdt", "tether");
+      b.total = { usd: total, change: tc }; b.btcDominance = dom("btc", "bitcoin"); b.usdtDominance = dom("usdt", "tether"); b.domSource = "CoinGecko";
       return b;
     }).catch(function () { return b; }).then(function (b2) { return b2.btcDominance && b2.btcDominance.value != null ? b2 : fromCoinLore(b2); });
   }
@@ -87,14 +87,17 @@
         if (!cap) return { value: sym === "BTC" ? n(g.btc_d) : null, change: null };
         var v = cap / total * 100; return { value: v, change: c != null && tc != null ? v - (cap / (1 + c / 100)) / (total / (1 + tc / 100)) * 100 : null };
       }
-      b.total = { usd: total, change: tc }; b.btcDominance = dom("BTC"); b.usdtDominance = dom("USDT");
+      b.total = { usd: total, change: tc }; b.btcDominance = dom("BTC"); b.usdtDominance = dom("USDT"); b.btcDominance.change = null; b.usdtDominance.change = null; b.domSource = "CoinLore";
       return b;
     }).catch(function () { return b; });
   }
   function load() {
     fetch("/api/market-context", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
       if (!b) return null;
-      return b.btcDominance && b.btcDominance.value != null ? b : fromBrowser(b);
+      // The browser asks CoinGecko first (the visitor's own address is not rate-limited like the edge); the endpoint's
+      // figures (CoinGecko, CoinPaprika or CoinLore) stay when it cannot.
+      var kept = { total: b.total, btcDominance: b.btcDominance, usdtDominance: b.usdtDominance, domSource: b.domSource };
+      return fromBrowser(b).then(function (r) { if (r.domSource !== "CoinGecko" && kept.btcDominance && kept.btcDominance.value != null) { r.total = kept.total; r.btcDominance = kept.btcDominance; r.usdtDominance = kept.usdtDominance; r.domSource = kept.domSource; } return r; });
     }).then(function (b) { if (b) { data = b; render(); } }).catch(function () {});
   }
   function sync() {
@@ -104,7 +107,7 @@
   }
   function boot() {
     var boxes = document.querySelectorAll("[data-mctx]");
-    // The home strip and the analysis card start at once; the live flow panel waits for setActive.
+    // The analysis card starts at once; the live flow panel waits for setActive.
     active.page = [].some.call(boxes, function (b) { return b.dataset.mctx !== "panel"; });
     var l = document.getElementById("lang"); if (l) l.addEventListener("change", function () { setTimeout(render, 0); });
     new MutationObserver(function () { render(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });

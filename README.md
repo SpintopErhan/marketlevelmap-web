@@ -327,8 +327,11 @@ index DXY (change from the previous close; delayed about 15 minutes, closed at w
 - `assets/market-context.js` fills `[data-mctx]`: the analysis
   page's "Piyasa geneli / Market context" card in the side column (`card`), and the live flow's "Market context" panel
   (`panel`, 1×1/1×2/2×1; last in both default layouts). It refreshes every 3 minutes while shown; the live flow panel
-  asks for nothing while hidden (`MLMContext.setActive`). When the endpoint has no dominance (both sources refused the
-  edge), the browser asks CoinGecko itself, else CoinLore, and works out the same figures. DXY links to the library's dollar index page.
+  asks for nothing while hidden (`MLMContext.setActive`). The browser asks CoinGecko itself first (the visitor's own
+  address is not rate-limited like the edge) and keeps the endpoint's figures only when it cannot; with neither, it asks
+  CoinLore. CoinLore's dominance change is left out (its market-cap
+  change and the coins' 24 h changes do not line up), and its total counts fewer coins, so its dominance reads higher.
+  The card names the dominance source (`domSource`). DXY links to the library's dollar index page.
 
 ## Indicator summary
 
