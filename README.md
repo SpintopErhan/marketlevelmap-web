@@ -324,6 +324,11 @@ the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/
   shrinking, which side of the zero line.
 - **EMA 20/50/200** — price above all, below all or between (which ones), the order of the three, the last EMA 50/200
   cross (last 30 candles).
+- **ATR 14** (Wilder) — value and share of the price; volatility rising or falling against 14 candles before; on the
+  Critical Zones view whether the price is inside a zone and the distance to the nearest resistance above and support
+  below in ATRs.
+- **ADX 14** (Wilder, with +DI/−DI) — below 20 weak trend / sideways, 20–25 forming, 25+ strong, 40+ very strong; which DI
+  leads; ADX rising or falling against 5 candles before.
 - **Bollinger 20/2** — above the upper band, below the lower band, or inside with %B (0 lower band, 1 upper band);
   bands widening or narrowing (against 5 candles before); a squeeze when the band width ((upper − lower) / middle) is
   within the narrowest 10% of the last 120 candles.
