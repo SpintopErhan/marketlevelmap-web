@@ -114,6 +114,12 @@ page in its own unminimised window.
   column for 15 s; a dark ramp on
   the light theme). A legend under the title explains the marks. On top: the price line, big trades (≥5× the venue's running average, circles), liquidations on futures
   (squares) and the Critical Zones bands. "Full screen" uses the Fullscreen API, else a fixed overlay.
+- **Wall marks** on the heatmap (`detectWalls`): a wall is a bucket with ≥5× the median resting size within ±0.5%.
+  Pulled (×): a wall within ±0.15% of the price shrinks by ≥70% in 3 s while <30% of the drop traded there and the
+  price has not reached it. Absorption (◆): the price is within 2 buckets of a wall; over 10 s at least half the
+  wall's size traded into it, yet it keeps ≥70% of its size. One mark per bucket and kind every 30 s.
+- **Save PNG** — a 1600×900 image in the page's theme: title (asset, spot/futures, venues, UTC time), the context
+  line, the heatmap, CVD and depth as drawn, and the key figures (zone flow, buy/sell; futures: OI, liquidations).
 - **How to read** — a button next to the title and a "?" on every panel open one dialog (`HELP` in `flow.js`, TR/EN)
   with a section per panel (what it shows, how to read it); a panel's "?" opens it at that section. Futures-only
   sections show on futures, the Coinbase premium on spot.
@@ -134,6 +140,17 @@ page in its own unminimised window.
     long/short totals of the last 15 min, ≥$100K highlighted. Exchanges publish only part of them (Binance at most one
     per second per symbol), so totals are a floor; the page says so.
 
+## Flow summary
+
+`assets/flow-mini.js`, on the analysis page of USDT assets for members (not in the admin desk embed): a card at the
+top of the side column with the last 5 min buy/sell share and the session CVD, funding and basis, liquidations of the
+last 15 min, the open-interest 1-hour change, a one-line "last 5 min: price, CVD" and a link to the live flow. One
+venue at a time, chosen on the card (Binance | OKX, remembered in `localStorage` `mlm-fm-venue`; switching closes the
+old sockets and starts over). Binance: spot `aggTrade`, USD-M `<sym>@markPrice@1s` and `<sym>@forceOrder`,
+`openInterestHist`. OKX: one socket with spot `trades`, swap `funding-rate`, `mark-price`, `index-tickers` and
+`liquidation-orders` (sizes × `ctVal`), and `rubik/stat/contracts/open-interest-volume` (5-minute periods) for the
+1-hour change. Read in the browser; nothing is stored.
+
 ## Zone scanner
 
 `scanner.html` (`/scanner`), members only (same gate as the live flow). Every asset with a Critical Zones report
@@ -149,6 +166,12 @@ with their distance. Rows are sorted by closeness; the asset links to its live f
 - **Big trades** — Binance `aggTrade` for every USDT asset in one public stream (`data-stream.binance.vision`, else
   `stream.binance.com`). aggTrades of one taker order (same time and side) are added up first; a print is listed
   when it is at least 5×/10×/20× (chosen) the asset's average print of the last 500 and at least $10K.
+
+- **Spot | Futures** — `?market=futures` swaps the zone columns (position bar, nearest zones) for Binance USD-M
+  figures: funding (annualised under it), open interest ($) and its 1-hour change (`/futures/data/openInterestHist`,
+  5-minute periods, refreshed every 5 min), and liquidations of the last 15 min since the page opened (`!markPrice@arr@1s`
+  and `!forceOrder@arr` in one socket on `fstream.binance.com/market/ws`). Clicking a futures column title sorts by it
+  (again: back to the zone order). Big trades then come from futures `aggTrade`. Status and alarms stay on spot prices.
 
 `assets/scanner.js` does all of it in the browser. The menu of every page (and the library template) links
 "Live flow" and "Scanner"; between 521 and 1180 px wide the menu takes its own row under the logo.

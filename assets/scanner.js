@@ -17,7 +17,10 @@
       buy: "BUY", sell: "SELL", bigWait: "Waiting for big trades…", bigOff: "Binance cannot be reached from here.",
       gateGuest: "The scanner is for members. Sign in with Google to apply for membership.", signIn: "Sign in with Google",
       gateMember: "The scanner is for members. It opens once your membership is approved.", profile: "Your profile",
-      notifyOff: "Browser notifications are blocked; alarms show on the page only."
+      notifyOff: "Browser notifications are blocked; alarms show on the page only.",
+      spot: "Spot", futures: "Futures", fFund: "Funding", fOi: "Open interest", fOi1h: "OI 1h", fLiq: "Liquidations 15 min", fYear: "annual {p}",
+      fNote: "Futures columns: Binance USDT perpetuals. Funding is the current rate (annualised under it); open interest and its 1-hour change come from Binance's 5-minute history; liquidations are summed since the page opened (at most the last 15 min; L = longs liquidated, S = shorts). Click a column title to sort.",
+      bigSubF: "all assets · futures · Binance", byCol: "by the chosen column", sortBy: "Sort by {c}"
     },
     tr: {
       title: "Tarayıcı", sub: "canlı · Kritik Bölgeler", lead: "Her varlığın fiyatının analiz bölgelerine göre nerede durduğu.", tf: "Zaman dilimi",
@@ -31,7 +34,10 @@
       buy: "ALIŞ", sell: "SATIŞ", bigWait: "Büyük işlem bekleniyor…", bigOff: "Buradan Binance'e ulaşılamıyor.",
       gateGuest: "Tarayıcı üyelere özeldir. Üyelik başvurusu için Google ile giriş yapın.", signIn: "Google ile giriş yap",
       gateMember: "Tarayıcı üyelere özeldir. Üyeliğiniz onaylandığında açılır.", profile: "Profiliniz",
-      notifyOff: "Tarayıcı bildirimleri engelli; alarmlar yalnızca sayfada görünür."
+      notifyOff: "Tarayıcı bildirimleri engelli; alarmlar yalnızca sayfada görünür.",
+      spot: "Spot", futures: "Vadeli", fFund: "Fonlama", fOi: "Açık pozisyon", fOi1h: "AP 1 sa", fLiq: "Likidasyon 15 dk", fYear: "yıllık {p}",
+      fNote: "Vadeli sütunlar: Binance USDT sürekli vadeli. Fonlama güncel orandır (altında yıllık karşılığı); açık pozisyon ve 1 saatlik değişimi Binance'in 5 dakikalık geçmişinden gelir; likidasyonlar sayfa açıldığından beri toplanır (en fazla son 15 dk; L = long likidasyonu, S = short). Sıralamak için sütun başlığına tıklayın.",
+      bigSubF: "tüm varlıklar · vadeli · Binance", byCol: "seçilen sütuna göre", sortBy: "{c} göre sırala"
     }
   };
   function lang() { var s = document.getElementById("lang"); return s && s.value === "tr" ? "tr" : "en"; }
@@ -44,6 +50,39 @@
   function pct(r, d) { var s = nf(Math.abs(r) * 100, d == null ? 1 : d); return lang() === "tr" ? "%" + s : s + "%"; }
   function price(p) { return MarketUI.price(p); }
   var TF_ORDER = ["1h", "4h", "1d", "1w"], NEAR = 0.01;
+  var MARKET = /[?&]market=futures(&|$)/.test(location.search) ? "futures" : "spot", FUT = MARKET === "futures";
+  // ─── Futures data (Binance USD-M): all-market mark price/funding and liquidations in one socket, OI history by REST.
+  var fut = {}, liqAll = [], sortKey = "";
+  function futStart(list) {
+    var syms = list.filter(function (a) { return /USDT$/.test(a); }); if (!syms.length) return;
+    var retry = 0;
+    (function open() {
+      var ws; try { ws = new WebSocket("wss://fstream.binance.com/market/ws"); } catch (e) { return; }
+      ws.onopen = function () { retry = 0; ws.send(JSON.stringify({ method: "SUBSCRIBE", params: ["!markPrice@arr@1s", "!forceOrder@arr"], id: 1 })); };
+      ws.onmessage = function (e) {
+        var m; try { m = JSON.parse(e.data); } catch (_) { return; }
+        if (Array.isArray(m)) m.forEach(function (x) { if (x && x.e === "markPriceUpdate" && syms.indexOf(x.s) > -1) { var f = fut[x.s] || (fut[x.s] = {}); f.mark = +x.p; f.fr = +x.r; f.next = +x.T; dirty = true; } });
+        else if (m && m.e === "forceOrder" && m.o && syms.indexOf(m.o.s) > -1) { var o = m.o, pr = +o.ap || +o.p, q = +o.z || +o.q; if (pr > 0 && q > 0) { liqAll.push({ s: o.s, side: o.S === "SELL" ? "L" : "S", n: pr * q, t: Date.now() }); if (liqAll.length > 5000) liqAll.shift(); dirty = true; } }
+      };
+      ws.onclose = function () { setTimeout(open, Math.min(30000, 1000 * Math.pow(2, retry++))); };
+    })();
+    function oi() {
+      syms.forEach(function (sym, i) {
+        setTimeout(function () {
+          fetch("https://fapi.binance.com/futures/data/openInterestHist?symbol=" + sym + "&period=5m&limit=13", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (list) {
+            if (!Array.isArray(list) || !list.length) return;
+            list.sort(function (a, b) { return a.timestamp - b.timestamp; });
+            var last = list[list.length - 1], first = list[0], f = fut[sym] || (fut[sym] = {});
+            f.oiV = +last.sumOpenInterestValue; f.oi1h = +first.sumOpenInterest > 0 ? +last.sumOpenInterest / +first.sumOpenInterest - 1 : null; dirty = true;
+          }).catch(function () {});
+        }, i * 250);
+      });
+    }
+    oi(); setInterval(oi, 300000);
+  }
+  function liq15(sym) { var now = Date.now(), L = 0, S = 0; liqAll.forEach(function (x) { if (x.s === sym && x.t > now - 900000) { if (x.side === "L") L += x.n; else S += x.n; } }); return { L: L, S: S }; }
+  function money(v) { return v > 0 ? v.toLocaleString(locale(), { notation: "compact", maximumFractionDigits: v >= 1e6 ? 2 : 0 }) + " $" : "0 $"; }
+  function signPct(r, d) { var z = Math.abs(r) * 100 < 0.5 * Math.pow(10, -d); return (z ? "" : r > 0 ? "+" : "−") + pct(r, d); }
 
   var entries = {}, assets = [], tf = "1d", zonesBy = {}, loads = {}, prices = {}, opens = {}, last = {}, alarms = {}, dirty = true;
   try { alarms = JSON.parse(localStorage.getItem("mlm-zone-alarms") || "{}") || {}; } catch (e) { alarms = {}; }
@@ -101,7 +140,12 @@
     var t = w(), body = $("sc-rows"), zones = zonesBy[tf] || {};
     var rows = assets.map(function (a) { return { a: a, p: prices[a], st: zones[a] === undefined ? undefined : state(prices[a], zones[a]), has: !!(entries[a] && entries[a][tf]) }; })
       .filter(function (r) { return r.has; })
-      .sort(function (x, y) { function k(r) { return !r.st ? 9 : r.st.inside ? -1 + 1e-6 * (r.st.inside.high - r.st.inside.low) / r.p : r.st.near; } return k(x) - k(y) || MarketUI.byPopularity(x.a, y.a); });
+      .sort(function (x, y) {
+        if (FUT && sortKey) {
+          function v(r) { var f = fut[r.a] || {}, l = liq15(r.a); return sortKey === "fr" ? Math.abs(f.fr || 0) : sortKey === "oi" ? f.oiV || 0 : sortKey === "oi1h" ? Math.abs(f.oi1h || 0) : l.L + l.S; }
+          return v(y) - v(x) || MarketUI.byPopularity(x.a, y.a);
+        }
+        function k(r) { return !r.st ? 9 : r.st.inside ? -1 + 1e-6 * (r.st.inside.high - r.st.inside.low) / r.p : r.st.near; } return k(x) - k(y) || MarketUI.byPopularity(x.a, y.a); });
     body.textContent = "";
     $("sc-empty").hidden = rows.length > 0;
     rows.forEach(function (r) {
@@ -109,9 +153,19 @@
       var c0 = el("td"); var link = el("a", "", MarketUI.baseOf(r.a)); link.href = "flow?asset=" + encodeURIComponent(r.a); c0.appendChild(el("b")).appendChild(link); tr.appendChild(c0);
       var c1 = el("td", "r num", r.p ? price(r.p) : "—"); if (isFinite(ch)) { c1.appendChild(document.createTextNode(" ")); c1.appendChild(el("small", MarketUI.signClass(ch), (ch >= 0 ? "+" : "−") + pct(ch))); } tr.appendChild(c1);
       var c2 = el("td"); c2.appendChild(zones[r.a] === null ? el("span", "pill far", t.noZones) : !r.st ? el("span", "pill far", t.loading) : statusPill(r.st)); tr.appendChild(c2);
+      if (FUT) {
+        var f = fut[r.a] || {}, l = liq15(r.a), hrs = 8;
+        var cf = el("td", "r num " + (f.fr > 0 ? "up" : f.fr < 0 ? "down" : ""), f.fr != null ? signPct(f.fr, 4) : "—");
+        if (f.fr != null) { cf.appendChild(el("small", "muted blk", fill(t.fYear, { p: signPct(f.fr * 24 / hrs * 365, 1) }))); }
+        tr.appendChild(cf);
+        tr.appendChild(el("td", "r num hide-m", f.oiV ? money(f.oiV) : "—"));
+        tr.appendChild(el("td", "r num " + (f.oi1h > 0 ? "up" : f.oi1h < 0 ? "down" : ""), f.oi1h != null ? signPct(f.oi1h, 1) : "—"));
+        var cl = el("td", "r num liqc"); cl.appendChild(el("span", "down", "L " + money(l.L))); cl.appendChild(el("span", "up", "S " + money(l.S))); tr.appendChild(cl);
+      } else {
       var c3 = el("td", "hide-m"); c3.appendChild(meter(r.st, r.p)); tr.appendChild(c3);
       tr.appendChild(el("td", "r num hide-m", r.st && r.st.res ? price(r.st.res.low) + " · +" + pct(r.st.dr) : r.st && r.st.inside && r.st.inside.type === "resistance" ? t.inside : "—"));
       tr.appendChild(el("td", "r num hide-m", r.st && r.st.sup ? price(r.st.sup.high) + " · −" + pct(r.st.ds) : r.st && r.st.inside && r.st.inside.type === "support" ? t.inside : "—"));
+      }
       var c6 = el("td", "r"), key = r.a + "|" + tf, al = alarms[key], bell = el("button", "bell" + (al && (al.enter || al.exit) ? " on" : ""));
       bell.type = "button"; bell.dataset.key = key; bell.setAttribute("aria-label", t.alarms + " · " + r.a); bell.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>';
       c6.appendChild(bell); tr.appendChild(c6);
@@ -186,10 +240,13 @@
   var big = [], bigMult = 10, stats = {}, pend = {}, bigWs = null, bigUrl = 0, bigRetry = 0, bigGot = false;
   function bigStart(list) {
     var syms = list.filter(function (a) { return /USDT$/.test(a); }); if (!syms.length) return;
-    var url = BIG_URLS[bigUrl % BIG_URLS.length] + syms.map(function (a) { return a.toLowerCase() + "@aggTrade"; }).join("/"), ws;
+    var streams = syms.map(function (a) { return a.toLowerCase() + "@aggTrade"; }), ws;
+    // Futures: Binance USD-M serves aggTrade on /market (subscribed after opening); spot: a combined-stream URL.
+    var url = FUT ? "wss://fstream.binance.com/market/ws" : BIG_URLS[bigUrl % BIG_URLS.length] + streams.join("/");
     try { ws = new WebSocket(url); } catch (e) { return; }
     bigWs = ws; var got = false;
-    ws.onmessage = function (e) { got = bigGot = true; bigRetry = 0; var m; try { m = JSON.parse(e.data); } catch (_) { return; } var d = m && m.data; if (d && d.e === "aggTrade") onAgg(d); };
+    if (FUT) ws.onopen = function () { ws.send(JSON.stringify({ method: "SUBSCRIBE", params: streams, id: 2 })); };
+    ws.onmessage = function (e) { var m; try { m = JSON.parse(e.data); } catch (_) { return; } var d = m && (m.data || m); if (d && d.e === "aggTrade") { got = bigGot = true; bigRetry = 0; onAgg(d); } };
     ws.onclose = function () { if (bigWs !== ws) return; bigWs = null; if (!got) bigUrl++; if (!bigGot && bigUrl >= BIG_URLS.length * 2) { $("sc-big-wait").textContent = w().bigOff; return; } setTimeout(function () { bigStart(list); }, Math.min(30000, 1000 * Math.pow(2, bigRetry++))); };
     ws.onerror = function () {};
   }
@@ -229,6 +286,8 @@
     var t = w();
     document.querySelectorAll("[data-sc]").forEach(function (e) { var v = t[e.dataset.sc]; if (typeof v === "string") e.textContent = v; });
     document.title = "MarketLevelMap — " + t.title;
+    var bs = document.querySelector('[data-sc="bigSub"]'); if (bs && FUT) bs.textContent = t.bigSubF;
+    buildHead();
     dirty = bigDirty = true; if (assets.length) { render(); renderBig(); }
   }
   function gate(user) {
@@ -244,12 +303,29 @@
     try { localStorage.setItem("mlm-scanner-tf", tf); } catch (e) {}
     loadTf(tf).then(function () { dirty = true; render(); }); render();
   }
+  // Table head: spot shows the position bar and nearest zones; futures shows funding, OI, OI 1h and liquidations
+  // (sortable by clicking; clicking again returns to the zone order).
+  function buildHead() {
+    var t = w(), tr = $("sc-head-row"); if (!tr) return; tr.textContent = "";
+    function th(text, cls, key) {
+      var c = el("th", cls || ""); if (!key) { c.textContent = text; tr.appendChild(c); return; }
+      var b = el("button", "sort" + (sortKey === key ? " on" : ""), text + (sortKey === key ? " ↓" : "")); b.type = "button"; b.title = fill(t.sortBy, { c: text });
+      b.addEventListener("click", function () { sortKey = sortKey === key ? "" : key; buildHead(); dirty = true; render(); }); c.appendChild(b); tr.appendChild(c);
+    }
+    var bn = document.querySelector('[data-sc="byNear"]'); if (bn) bn.textContent = sortKey ? t.byCol : t.byNear;
+    th(t.asset); th(t.price, "r"); th(t.status);
+    if (FUT) { th(t.fFund, "r", "fr"); th(t.fOi, "r hide-m", "oi"); th(t.fOi1h, "r", "oi1h"); th(t.fLiq, "r", "liq"); }
+    else { th(t.position, "hide-m"); th(t.res, "r hide-m"); th(t.sup, "r hide-m"); }
+    th("");
+  }
   function boot() {
     $("lang").addEventListener("change", function () { setTimeout(applyWords, 0); });
     applyWords();
     (window.MLMAccount ? MLMAccount.ready : Promise.resolve(null)).then(function (user) {
       if (!(user && (user.status === "approved" || user.isAdmin))) { gate(user); return; }
       $("sc-app").hidden = false;
+      $("sc-fnote").hidden = !FUT;
+      $("sc-market").querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.m === MARKET)); b.addEventListener("click", function () { if (b.dataset.m !== MARKET) location.search = b.dataset.m === "futures" ? "?market=futures" : ""; }); });
       fetch("/api/publication", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (body) {
         ((body && body.entries) || []).forEach(function (e) {
           if (MarketUI.methodOf(e) !== "cz" || !e.report) return;
@@ -265,7 +341,7 @@
         setTf(tfs.indexOf(saved) > -1 ? saved : tfs.indexOf("1d") > -1 ? "1d" : tfs[0] || "1d");
         Object.keys(alarms).forEach(function (k) { var f = k.split("|")[1]; if (TF_ORDER.indexOf(f) > -1) loadTf(f); });
         if (assets.length) MarketFeed.start(assets, { background: true, onData: function (sym, d) { var p = Number(d.c); if (!(p > 0)) return; prices[sym] = p; if (Number(d.o) > 0) opens[sym] = Number(d.o); dirty = true; checkAlarms(sym); } });
-        bigStart(assets);
+        bigStart(assets); if (FUT) futStart(assets);
         syncNotify();
       });
       $("sc-rows").addEventListener("click", function (e) { var b = e.target.closest("button.bell"); if (b) { e.stopPropagation(); openMenu(b); } });
@@ -275,6 +351,6 @@
       setInterval(function () { if (document.hidden) return; render(); renderBig(); }, 500);
     });
   }
-  window.MLMScanner = { _state: function () { return { assets: assets, prices: prices, zonesBy: zonesBy, alarms: alarms, big: big, stats: stats, tf: tf }; }, _check: checkAlarms };
+  window.MLMScanner = { _state: function () { return { fut: fut, liqAll: liqAll, market: MARKET, assets: assets, prices: prices, zonesBy: zonesBy, alarms: alarms, big: big, stats: stats, tf: tf }; }, _check: checkAlarms };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
