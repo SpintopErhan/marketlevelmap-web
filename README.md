@@ -333,9 +333,10 @@ General market figures, public, in three groups:
   chart meta for `DX-Y.NYB`, `^TNX`, `ES=F`, `NQ=F`, `GC=F`, `SI=F` (query1, else query2), Swissquote
   `public-quotes/bboquotes/instrument/XAU/USD` and `XAG/USD`, else gold-api.com `/price/XAU`, `/price/XAG`
   (`metalSource`). A failed source leaves its field `null` and is listed in `errors`.
-- `assets/market-context.js` fills `[data-mctx]`: the analysis
-  page's "Piyasa geneli / Market context" card in the side column (`card`), and the live flow's "Market context" panel
-  (`panel`, 1×1/1×2/2×1; last in both default layouts). It refreshes every 3 minutes while shown; the live flow panel
+- `assets/market-context.js` fills `[data-mctx]`: the home page's "Piyasa geneli / Market context" card in the side
+  column under the week's events and the analysis page's card in its side column (`card`), and the live flow's "Market
+  context" panel (`panel`, 1×1/1×2/2×1; last in both default layouts). The panel uses one-line rows and keeps the notes
+  behind a "Sources and notes" toggle, so every row fits a 1×1 panel. It refreshes every 3 minutes while shown; the live flow panel
   asks for nothing while hidden (`MLMContext.setActive`). The browser asks CoinGecko itself first (the visitor's own
   address is not rate-limited like the edge) and keeps the endpoint's figures only when it cannot; with neither, it asks
   CoinLore. CoinLore's dominance change is left out (its market-cap

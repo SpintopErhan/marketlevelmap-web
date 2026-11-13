@@ -10,14 +10,14 @@
       btcDom: "BTC dominance", ethDom: "ETH dominance", usdtDom: "USDT dominance", total: "Total crypto market cap", ethbtc: "ETH/BTC",
       dxy: "US dollar index (DXY)", us10y: "US 10-year yield", spx: "S&P 500 futures", ndx: "Nasdaq 100 futures",
       gold: "Gold (spot, ounce)", silver: "Silver (spot, ounce)",
-      pts: "pts", bp: "bp", noData: "no data",
+      pts: "pts", bp: "bp", noData: "no data", sources: "Sources and notes",
       src: "Dominance and market cap: {d}. ETH/BTC: {e}. DXY, yield and index futures: Yahoo Finance (delayed about 15 minutes; change against the previous close). Gold and silver spot: {m}; the day's change from the COMEX futures. Updated {t}.",
       domNote: "Dominance: the coin's share of the total crypto market cap; its change is in percentage points over 24 h. Yield change in basis points (bp)." },
     tr: { gCrypto: "Kripto", gMacro: "Makro", gMetal: "Emtia", delayedG: "~15 dk gecikmeli",
       btcDom: "BTC dominansı", ethDom: "ETH dominansı", usdtDom: "USDT dominansı", total: "Toplam kripto piyasa değeri", ethbtc: "ETH/BTC",
       dxy: "Dolar endeksi (DXY)", us10y: "ABD 10 yıllık tahvil faizi", spx: "S&P 500 vadeli", ndx: "Nasdaq 100 vadeli",
       gold: "Altın (spot, ons)", silver: "Gümüş (spot, ons)",
-      pts: "puan", bp: "bp", noData: "veri yok",
+      pts: "puan", bp: "bp", noData: "veri yok", sources: "Kaynaklar ve notlar",
       src: "Dominans ve piyasa değeri: {d}. ETH/BTC: {e}. DXY, faiz ve endeks vadelileri: Yahoo Finance (yaklaşık 15 dakika gecikmeli; değişim önceki kapanışa göre). Altın ve gümüş spot: {m}; günlük değişim COMEX vadelisinden. Güncelleme {t}.",
       domNote: "Dominans: varlığın toplam kripto piyasa değerindeki payı; değişimi 24 saatte yüzde puan olarak. Faiz değişimi baz puan (bp) olarak." }
   };
@@ -65,9 +65,11 @@
         if (it.chg) row.appendChild(el("span", "mctx-c num " + (it.dir > 0 ? "up" : it.dir < 0 ? "down" : ""), it.chg));
         box.appendChild(row);
       });
-      var at = data.at ? new Date(data.at) : null;
-      box.appendChild(el("p", "mctx-src", t.domNote));
-      box.appendChild(el("p", "mctx-src", t.src.replace("{d}", data.domSource || "—").replace("{e}", data.ethSource || "—").replace("{m}", data.metalSource || "—").replace("{t}", at ? at.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) : "—")));
+      // The live flow panel keeps the notes behind a "Sources" toggle so all rows fit a 1×1 panel.
+      var at = data.at ? new Date(data.at) : null, notes = box;
+      if (box.dataset.mctx === "panel") { notes = el("details"); notes.appendChild(el("summary", null, t.sources)); box.appendChild(notes); }
+      notes.appendChild(el("p", "mctx-src", t.domNote));
+      notes.appendChild(el("p", "mctx-src", t.src.replace("{d}", data.domSource || "—").replace("{e}", data.ethSource || "—").replace("{m}", data.metalSource || "—").replace("{t}", at ? at.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) : "—")));
     });
   }
   // The browser asks CoinGecko itself, from the visitor's own address (CoinGecko and CoinPaprika rate-limit shared server
