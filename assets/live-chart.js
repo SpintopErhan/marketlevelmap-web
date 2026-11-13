@@ -772,11 +772,11 @@ var LiveChart = (function () {
 
     return {
       setLevels: setLevels,
-      // Closed candles with RSI 14, MACD 12/26/9 and EMA 20/50/200, for the indicator summary.
+      // Closed candles with RSI 14, MACD 12/26/9, EMA 20/50/200 and Bollinger 20/2, for the indicator summary.
       indicatorData: function () {
         var rows = allRows(), v = indicators(rows.map(function (r) { return r[4]; }));
         return { time: rows.map(function (r) { return r[0]; }), high: rows.map(function (r) { return r[2]; }), low: rows.map(function (r) { return r[3]; }), close: rows.map(function (r) { return r[4]; }),
-          ema: [0, 1, 2].map(function (i) { return rows.map(function (r) { return r[6 + i]; }); }), rsi: v.rsi, macd: v.macd, signal: v.signal, hist: v.hist, warmup: IND_WARMUP };
+          ema: [0, 1, 2].map(function (i) { return rows.map(function (r) { return r[6 + i]; }); }), rsi: v.rsi, macd: v.macd, signal: v.signal, hist: v.hist, bbUpper: v.bbUpper, bbMid: v.bbMid, bbLower: v.bbLower, warmup: IND_WARMUP };
       },
       // [{ kind: "rsi"|"macd", type: "bull"|"bear", t1, t2, p1, p2, v1, v2 }] and whether to draw them.
       setDivergences: function (list, shown) { divList = list || []; divShown = shown !== false; drawDivergences(); },
