@@ -29,6 +29,9 @@
       zfMove: "price {p}, CVD {c}", zoneAll: "All", zfNote: "The count resets when the price leaves the zone and starts again in the next one.",
       vp: "Session volume profile", vpSub: "since the page opened", vpPoc: "Busiest level (POC) {p}", vpZone: "stripe: levels inside an analysis zone",
       prem: "Coinbase premium", premTitle: "Coinbase USD mid against Binance USDT mid (OKX when Binance is not reachable)",
+      edit: "Edit layout", editDone: "Done", editReset: "Reset to default", editHidden: "Hidden panels:", editNone: "none",
+      editHint: "Drag a panel by ⠿ (or use ↑ ↓), pick its size, or hide it (×). The layout is saved in this browser, separately for spot and futures.",
+      editSize: "Size", editUp: "Move earlier", editDown: "Move later", editHide: "Hide",
       spot: "Spot", futures: "Futures", subF: "Futures · members only", venueAllF: "Combined: Binance · OKX · Bybit",
       fFund: "Funding (avg.)", fNext: "Next funding", fOi: "Open interest", fOiCh: "OI change (session)", fBasis: "Basis (perp − index)",
       fPanel: "Funding and open interest", fPerVenue: "per venue", fVenue: "Venue", fRate: "Funding", fYear: "Annual", fOiS: "Open interest", fSess: "Session Δ",
@@ -52,7 +55,7 @@
       divNone: "Son 1 dk: fiyat ve CVD aynı yönde", divWait: "Uyumsuzluk kontrolü ilk dakikadan sonra başlar",
       cvdSession: "CVD (oturum)", bs5: "Son 5 dk alış/satış", bs15: "Son 15 dk alış/satış",
       depth: "Derinlik", depthSub: "±{r} · kümülatif", r10: "±10 bp alış/satış", r25: "±25 bp alış/satış",
-      tape: "Time & Sales", all: "Tümü", buys: "Alış {p}", sells: "Satış {p}", lastN: "son {n} işlem",
+      tape: "Gerçekleşen işlemler", all: "Tümü", buys: "Alış {p}", sells: "Satış {p}", lastN: "son {n} işlem",
       price: "Fiyat", inside: "{type} bölgesinin içinde", support: "Destek", resistance: "Direnç", nearestRes: "En yakın direnç", nearestSup: "En yakın destek",
       zonesFrom: "Bölgeler: Kritik Bölgeler · analiz {date}", noZones: "Bu varlık için henüz Kritik Bölgeler analizi yok.", zoneTf: "Bölge zaman dilimi",
       gateGuest: "Canlı akış üyelere özeldir. Üyelik başvurusu için Google ile giriş yapın.", signIn: "Google ile giriş yap",
@@ -67,6 +70,9 @@
       zfMove: "fiyat {p}, CVD {c}", zoneAll: "Tümü", zfNote: "Fiyat bölgeden çıkınca sayaç sıfırlanır; sonraki bölgede yeniden başlar.",
       vp: "Oturum hacim profili", vpSub: "sayfa açıldığından beri", vpPoc: "En yoğun seviye (POC) {p}", vpZone: "şerit: analiz bölgesinin içindeki seviyeler",
       prem: "Coinbase primi", premTitle: "Coinbase USD orta fiyatı ile Binance USDT orta fiyatı arasındaki fark (Binance'e ulaşılamazsa OKX)",
+      edit: "Düzeni düzenle", editDone: "Bitti", editReset: "Varsayılana dön", editHidden: "Gizli paneller:", editNone: "yok",
+      editHint: "Paneli ⠿ ile sürükleyin (ya da ↑ ↓), boyutunu seçin ya da gizleyin (×). Düzen bu tarayıcıda, spot ve vadeli için ayrı kaydedilir.",
+      editSize: "Boyut", editUp: "Öne al", editDown: "Geri al", editHide: "Gizle",
       spot: "Spot", futures: "Vadeli", subF: "Vadeli · üyelere özel", venueAllF: "Birleşik: Binance · OKX · Bybit",
       fFund: "Fonlama (ort.)", fNext: "Sonraki fonlama", fOi: "Açık pozisyon", fOiCh: "AP değişimi (oturum)", fBasis: "Baz (perp − endeks)",
       fPanel: "Fonlama ve açık pozisyon", fPerVenue: "borsa bazında", fVenue: "Borsa", fRate: "Fonlama", fYear: "Yıllık", fOiS: "Açık pozisyon", fSess: "Oturum Δ",
@@ -84,7 +90,7 @@
     }
   };
   // "How to read" texts, opened from the header button or a panel's "?" (section per panel).
-  var HELP = {"tr": {"title": "Canlı akış nasıl okunur?", "btn": "Nasıl okunur?", "close": "Kapat", "foot": "Bu paneller birlikte okunduğunda anlam kazanır. Tek bir göstergeye dayanarak karar vermeyin. İçerik bilgilendirme amaçlıdır; al-sat önerisi ya da yatırım tavsiyesi değildir.", "s": [["intro", "Bu sayfa nedir?", "Canlı akış, borsalardaki bekleyen emirleri ve gerçekleşen işlemleri anlık gösterir. Amaç, fiyatın analizdeki Kritik Bölgelere geldiğinde nasıl karşılandığını görmektir: alıcılar mı, satıcılar mı baskın; büyük emirler nerede bekliyor. Hiçbir veri kaydedilmez; her şey sayfayı açtığınız andan itibaren birikir."], ["heat", "Likidite ısı haritası", "Dikey eksen fiyat, yatay eksen zamandır. Her hücre, o anda o fiyatta bekleyen (henüz işlem görmemiş) emir miktarını gösterir: renk ne kadar parlaksa o kadar çok emir vardır. Uzun, parlak yatay şeritler büyük bekleyen emirlerdir (duvar). Fiyat bir duvara geldiğinde iki şey olabilir: duvar yavaş yavaş eriyorsa emirler işlem görüyordur; aniden kayboluyorsa emir geri çekilmiş olabilir. Haritadaki ◆ işareti emilimi gösterir: fiyat bir duvara dayanmış, duvara epey işlem girmiş ama duvar küçülmemiş, yani yeniden dolduruluyor ya da göründüğünden büyük. × işareti çekilen duvarı gösterir: fiyat yaklaşırken büyük bir emir işlem görmeden kaybolmuş, büyük olasılıkla iptal edilmiştir. Daireler büyük işlemleri (yeşil alış, kırmızı satış), kareler likidasyonları (vadeli) gösterir. Renkli bantlar analizdeki Kritik Bölgelerdir; sol kenarlarında zaman dilimi yazar. Birden çok zaman diliminin bölgesinin üst üste geldiği yerler (örneğin 1D+1W) daha belirgin, düz çizgiyle çizilir. Bir bölgenin içinde duvar varsa bölge defterde de destekleniyor demektir."], ["book", "Emir defteri", "Fiyatın üstünde satış (kırmızı), altında alış (yeşil) için bekleyen emirler, seçilen aralıklarla gruplanmış olarak gösterilir. Kalın satırlar büyük emirlerdir (duvar). Soldaki renkli şerit, o seviyenin bir analiz bölgesine denk geldiğini gösterir. Defter dengesi, orta fiyatın ±50 bp yakınındaki alış ve satış emirlerinin payıdır. Bekleyen emirler kolayca iptal edilebildiği için defter tek başına yön göstermez."], ["tape", "Time & Sales", "Gerçekleşen her işlemdir. Yeşil satır, alıcının piyasa emriyle aldığını (agresif alış); kırmızı satır, satıcının piyasa emriyle sattığını (agresif satış) gösterir. Vurgulu satırlar, o borsanın ortalama işleminin çok üstündeki büyük işlemlerdir. Üstteki çubuk son 200 işlemdeki alış ve satış payıdır."], ["cvd", "CVD (kümülatif hacim farkı)", "Agresif alış hacminden agresif satış hacminin çıkarılıp sayfa açıldığından beri toplanmasıdır. Fiyat ve CVD birlikte yükseliyorsa hareket agresif alışlarla destekleniyordur. Uyumsuzlukta ikisi ters yöne gider: fiyat yükselirken CVD düşüyorsa yükseliş satışlara rağmen oluyordur, yani pasif alıcılar satışları karşılıyordur; tersi de olabilir. Uyumsuzluk tek başına dönüş sinyali değildir."], ["depth", "Derinlik", "Orta fiyattan uzaklaştıkça biriken alış (sol, yeşil) ve satış (sağ, kırmızı) emirleridir. ±10 bp ve ±25 bp oranları, o mesafedeki alış emirlerinin satış emirlerine oranıdır: 1'den büyükse yakın mesafede alış tarafı daha kalındır."], ["vp", "Oturum hacim profili", "Sayfa açıldığından beri hangi fiyatta ne kadar işlem döndüğünü gösterir. POC en çok işlem gören seviyedir; fiyat sık sık bu seviyeye döner. Hacmin az olduğu fiyatlardan fiyat genellikle hızlı geçer."], ["zf", "Bölgede akış", "Fiyat bir Kritik Bölge bandına girdiği andan itibaren bant içindeki alış, satış, CVD ve bekleyen emirleri sayar. Örneğin bir destek bandında satışlar baskın olduğu halde fiyat düşmüyorsa, satışlar bant içinde karşılanıyordur. Bu, bölgenin tuttuğunu düşündürür ama garanti değildir. Fiyat banttan çıkınca sayaç sıfırlanır."], ["prem", "Coinbase primi (spot)", "ABD ağırlıklı Coinbase'deki fiyat ile Binance'teki fiyat arasındaki farktır. Pozitif prim, ABD tarafında talebin daha güçlü olduğuna işaret edebilir; negatif prim bunun tersine."], ["fund", "Fonlama, açık pozisyon ve baz (vadeli)", "Fonlama, sürekli vadelide long ve short pozisyonlar arasında belli aralıklarla yapılan ödemedir. Pozitifse long'lar short'lara öder (piyasa long ağırlıklıdır), negatifse tersi. Aşırı yüksek ya da düşük değerler pozisyonların bir tarafta kalabalıklaştığına işaret eder. Açık pozisyon (AP), açık kontratların toplamıdır. AP artarken fiyat yükseliyorsa yeni long'lar, AP artarken fiyat düşüyorsa yeni short'lar açılıyordur. AP azalırken fiyat yükseliyorsa short'lar kapanıyor, AP azalırken fiyat düşüyorsa long'lar kapanıyordur. Baz, vadeli fiyatın endeks (spot) fiyatından farkıdır; pozitif baz vadelinin primli işlem gördüğünü gösterir."], ["liq", "Likidasyonlar (vadeli)", "Teminatı yetmeyen pozisyonların borsa tarafından zorla kapatılmasıdır. Long likidasyonu zorla satış, short likidasyonu zorla alış demektir. Ardı ardına gelen likidasyonlar hareketi hızlandırabilir (zincirleme likidasyon). Borsalar likidasyonların yalnızca bir kısmını yayınladığı için toplamlar alt sınırdır."]]}, "en": {"title": "How to read the live flow", "btn": "How to read", "close": "Close", "foot": "These panels make sense together; do not decide on a single one. For information only; not a buy or sell recommendation or investment advice.", "s": [["intro", "What is this page?", "The live flow shows resting orders and executed trades on the exchanges as they happen. The aim is to see how the price is met when it reaches the Critical Zones of the analysis: whether buyers or sellers dominate and where large orders wait. Nothing is recorded; everything builds up from the moment you open the page."], ["heat", "Liquidity heatmap", "Price is on the vertical axis, time on the horizontal. Each cell shows how much is resting (not yet traded) at that price at that moment: the brighter, the more orders. Long bright horizontal lines are large resting orders (walls). When the price reaches a wall, either the wall melts away slowly (orders are being traded) or it vanishes at once (the order may have been pulled). A ◆ marks absorption: the price leans on a wall, plenty trades into it, yet it does not shrink — it is being refilled or is bigger than it shows. A × marks a pulled wall: a large order vanished without trading as the price came near, most likely cancelled. Circles are big trades (green buy, red sell), squares are liquidations (futures). The coloured bands are the analysis's Critical Zones, with their timeframe at the left edge. Where zones of several timeframes overlap (e.g. 1D+1W) the band is drawn stronger, with solid lines. A wall inside a zone means the book backs that zone too."], ["book", "Order book", "Resting sell orders above the price (red) and buy orders below it (green), grouped by the chosen step. Bold rows are large orders (walls). The coloured stripe on the left marks levels inside an analysis zone. Book balance is the share of bids and asks within ±50 bp of the mid. Resting orders are easy to cancel, so the book alone does not show direction."], ["tape", "Time & Sales", "Every executed trade. A green row means the buyer took the offer with a market order (aggressive buy); a red row means the seller hit the bid (aggressive sell). Highlighted rows are trades far above the venue's average size. The bar on top is the buy and sell share of the last 200 trades."], ["cvd", "CVD (cumulative volume delta)", "Aggressive buy volume minus aggressive sell volume, added up since the page opened. When price and CVD rise together, the move is backed by aggressive buying. In a divergence they go opposite ways: if the price rises while the CVD falls, the rise happens despite selling (passive buyers absorb it), or the other way round. A divergence alone is not a reversal signal."], ["depth", "Depth", "Bids (left, green) and asks (right, red) added up as you move away from the mid. The ±10 bp and ±25 bp figures are bids divided by asks within that distance: above 1, the bid side is thicker nearby."], ["vp", "Session volume profile", "How much traded at each price since the page opened. The POC is the busiest level; the price often returns to it. Prices with little volume tend to be crossed quickly."], ["zf", "Flow in the zone", "From the moment the price enters a Critical Zones band, it counts buys, sells, CVD and resting orders inside the band. For example, if selling dominates in a support band but the price does not fall, the selling is being absorbed inside the band: this suggests the zone holds, but it is no guarantee. The count resets when the price leaves the band."], ["prem", "Coinbase premium (spot)", "The difference between the price on US-heavy Coinbase and on Binance. A positive premium can point to stronger US demand; a negative one to the opposite."], ["fund", "Funding, open interest and basis (futures)", "Funding is a periodic payment between longs and shorts on perpetual futures. When positive, longs pay shorts (the market leans long); when negative, the other way. Extreme values point to crowded positioning. Open interest (OI) is the total of open contracts. OI rising with the price means new longs; OI rising while the price falls means new shorts. OI falling while the price rises means shorts closing; OI falling with the price means longs closing. Basis is the futures price minus the index (spot) price; a positive basis means futures trade at a premium."], ["liq", "Liquidations (futures)", "Positions closed by the exchange because their margin ran out. A long liquidation is a forced sell, a short liquidation a forced buy. Liquidations in a row can speed a move up (a cascade). Exchanges publish only part of them, so totals are a floor."]]}};
+  var HELP = {"tr": {"title": "Canlı akış nasıl okunur?", "btn": "Nasıl okunur?", "close": "Kapat", "foot": "Bu paneller birlikte okunduğunda anlam kazanır. Tek bir göstergeye dayanarak karar vermeyin. İçerik bilgilendirme amaçlıdır; al-sat önerisi ya da yatırım tavsiyesi değildir.", "s": [["intro", "Bu sayfa nedir?", "Canlı akış, borsalardaki bekleyen emirleri ve gerçekleşen işlemleri anlık gösterir. Amaç, fiyatın analizdeki Kritik Bölgelere geldiğinde nasıl karşılandığını görmektir: alıcılar mı, satıcılar mı baskın; büyük emirler nerede bekliyor. Hiçbir veri kaydedilmez; her şey sayfayı açtığınız andan itibaren birikir."], ["heat", "Likidite ısı haritası", "Dikey eksen fiyat, yatay eksen zamandır. Her hücre, o anda o fiyatta bekleyen (henüz işlem görmemiş) emir miktarını gösterir: renk ne kadar parlaksa o kadar çok emir vardır. Uzun, parlak yatay şeritler büyük bekleyen emirlerdir (duvar). Fiyat bir duvara geldiğinde iki şey olabilir: duvar yavaş yavaş eriyorsa emirler işlem görüyordur; aniden kayboluyorsa emir geri çekilmiş olabilir. Haritadaki ◆ işareti emilimi gösterir: fiyat bir duvara dayanmış, duvara epey işlem girmiş ama duvar küçülmemiş, yani yeniden dolduruluyor ya da göründüğünden büyük. × işareti çekilen duvarı gösterir: fiyat yaklaşırken büyük bir emir işlem görmeden kaybolmuş, büyük olasılıkla iptal edilmiştir. Daireler büyük işlemleri (yeşil alış, kırmızı satış), kareler likidasyonları (vadeli) gösterir. Renkli bantlar analizdeki Kritik Bölgelerdir; sol kenarlarında zaman dilimi yazar. Birden çok zaman diliminin bölgesinin üst üste geldiği yerler (örneğin 1D+1W) daha belirgin, düz çizgiyle çizilir. Bir bölgenin içinde duvar varsa bölge defterde de destekleniyor demektir."], ["book", "Emir defteri", "Fiyatın üstünde satış (kırmızı), altında alış (yeşil) için bekleyen emirler, seçilen aralıklarla gruplanmış olarak gösterilir. Kalın satırlar büyük emirlerdir (duvar). Soldaki renkli şerit, o seviyenin bir analiz bölgesine denk geldiğini gösterir. Defter dengesi, orta fiyatın ±50 bp yakınındaki alış ve satış emirlerinin payıdır. Bekleyen emirler kolayca iptal edilebildiği için defter tek başına yön göstermez."], ["tape", "Gerçekleşen işlemler (Time & Sales)", "Gerçekleşen her işlemdir. Yeşil satır, alıcının piyasa emriyle aldığını (agresif alış); kırmızı satır, satıcının piyasa emriyle sattığını (agresif satış) gösterir. Vurgulu satırlar, o borsanın ortalama işleminin çok üstündeki büyük işlemlerdir. Üstteki çubuk son 200 işlemdeki alış ve satış payıdır."], ["cvd", "CVD (kümülatif hacim farkı)", "Agresif alış hacminden agresif satış hacminin çıkarılıp sayfa açıldığından beri toplanmasıdır. Fiyat ve CVD birlikte yükseliyorsa hareket agresif alışlarla destekleniyordur. Uyumsuzlukta ikisi ters yöne gider: fiyat yükselirken CVD düşüyorsa yükseliş satışlara rağmen oluyordur, yani pasif alıcılar satışları karşılıyordur; tersi de olabilir. Uyumsuzluk tek başına dönüş sinyali değildir."], ["depth", "Derinlik", "Orta fiyattan uzaklaştıkça biriken alış (sol, yeşil) ve satış (sağ, kırmızı) emirleridir. ±10 bp ve ±25 bp oranları, o mesafedeki alış emirlerinin satış emirlerine oranıdır: 1'den büyükse yakın mesafede alış tarafı daha kalındır."], ["vp", "Oturum hacim profili", "Sayfa açıldığından beri hangi fiyatta ne kadar işlem döndüğünü gösterir. POC en çok işlem gören seviyedir; fiyat sık sık bu seviyeye döner. Hacmin az olduğu fiyatlardan fiyat genellikle hızlı geçer."], ["zf", "Bölgede akış", "Fiyat bir Kritik Bölge bandına girdiği andan itibaren bant içindeki alış, satış, CVD ve bekleyen emirleri sayar. Örneğin bir destek bandında satışlar baskın olduğu halde fiyat düşmüyorsa, satışlar bant içinde karşılanıyordur. Bu, bölgenin tuttuğunu düşündürür ama garanti değildir. Fiyat banttan çıkınca sayaç sıfırlanır."], ["prem", "Coinbase primi (spot)", "ABD ağırlıklı Coinbase'deki fiyat ile Binance'teki fiyat arasındaki farktır. Pozitif prim, ABD tarafında talebin daha güçlü olduğuna işaret edebilir; negatif prim bunun tersine."], ["fund", "Fonlama, açık pozisyon ve baz (vadeli)", "Fonlama, sürekli vadelide long ve short pozisyonlar arasında belli aralıklarla yapılan ödemedir. Pozitifse long'lar short'lara öder (piyasa long ağırlıklıdır), negatifse tersi. Aşırı yüksek ya da düşük değerler pozisyonların bir tarafta kalabalıklaştığına işaret eder. Açık pozisyon (AP), açık kontratların toplamıdır. AP artarken fiyat yükseliyorsa yeni long'lar, AP artarken fiyat düşüyorsa yeni short'lar açılıyordur. AP azalırken fiyat yükseliyorsa short'lar kapanıyor, AP azalırken fiyat düşüyorsa long'lar kapanıyordur. Baz, vadeli fiyatın endeks (spot) fiyatından farkıdır; pozitif baz vadelinin primli işlem gördüğünü gösterir."], ["liq", "Likidasyonlar (vadeli)", "Teminatı yetmeyen pozisyonların borsa tarafından zorla kapatılmasıdır. Long likidasyonu zorla satış, short likidasyonu zorla alış demektir. Ardı ardına gelen likidasyonlar hareketi hızlandırabilir (zincirleme likidasyon). Borsalar likidasyonların yalnızca bir kısmını yayınladığı için toplamlar alt sınırdır."]]}, "en": {"title": "How to read the live flow", "btn": "How to read", "close": "Close", "foot": "These panels make sense together; do not decide on a single one. For information only; not a buy or sell recommendation or investment advice.", "s": [["intro", "What is this page?", "The live flow shows resting orders and executed trades on the exchanges as they happen. The aim is to see how the price is met when it reaches the Critical Zones of the analysis: whether buyers or sellers dominate and where large orders wait. Nothing is recorded; everything builds up from the moment you open the page."], ["heat", "Liquidity heatmap", "Price is on the vertical axis, time on the horizontal. Each cell shows how much is resting (not yet traded) at that price at that moment: the brighter, the more orders. Long bright horizontal lines are large resting orders (walls). When the price reaches a wall, either the wall melts away slowly (orders are being traded) or it vanishes at once (the order may have been pulled). A ◆ marks absorption: the price leans on a wall, plenty trades into it, yet it does not shrink — it is being refilled or is bigger than it shows. A × marks a pulled wall: a large order vanished without trading as the price came near, most likely cancelled. Circles are big trades (green buy, red sell), squares are liquidations (futures). The coloured bands are the analysis's Critical Zones, with their timeframe at the left edge. Where zones of several timeframes overlap (e.g. 1D+1W) the band is drawn stronger, with solid lines. A wall inside a zone means the book backs that zone too."], ["book", "Order book", "Resting sell orders above the price (red) and buy orders below it (green), grouped by the chosen step. Bold rows are large orders (walls). The coloured stripe on the left marks levels inside an analysis zone. Book balance is the share of bids and asks within ±50 bp of the mid. Resting orders are easy to cancel, so the book alone does not show direction."], ["tape", "Time & Sales", "Every executed trade. A green row means the buyer took the offer with a market order (aggressive buy); a red row means the seller hit the bid (aggressive sell). Highlighted rows are trades far above the venue's average size. The bar on top is the buy and sell share of the last 200 trades."], ["cvd", "CVD (cumulative volume delta)", "Aggressive buy volume minus aggressive sell volume, added up since the page opened. When price and CVD rise together, the move is backed by aggressive buying. In a divergence they go opposite ways: if the price rises while the CVD falls, the rise happens despite selling (passive buyers absorb it), or the other way round. A divergence alone is not a reversal signal."], ["depth", "Depth", "Bids (left, green) and asks (right, red) added up as you move away from the mid. The ±10 bp and ±25 bp figures are bids divided by asks within that distance: above 1, the bid side is thicker nearby."], ["vp", "Session volume profile", "How much traded at each price since the page opened. The POC is the busiest level; the price often returns to it. Prices with little volume tend to be crossed quickly."], ["zf", "Flow in the zone", "From the moment the price enters a Critical Zones band, it counts buys, sells, CVD and resting orders inside the band. For example, if selling dominates in a support band but the price does not fall, the selling is being absorbed inside the band: this suggests the zone holds, but it is no guarantee. The count resets when the price leaves the band."], ["prem", "Coinbase premium (spot)", "The difference between the price on US-heavy Coinbase and on Binance. A positive premium can point to stronger US demand; a negative one to the opposite."], ["fund", "Funding, open interest and basis (futures)", "Funding is a periodic payment between longs and shorts on perpetual futures. When positive, longs pay shorts (the market leans long); when negative, the other way. Extreme values point to crowded positioning. Open interest (OI) is the total of open contracts. OI rising with the price means new longs; OI rising while the price falls means new shorts. OI falling while the price rises means shorts closing; OI falling with the price means longs closing. Basis is the futures price minus the index (spot) price; a positive basis means futures trade at a premium."], ["liq", "Liquidations (futures)", "Positions closed by the exchange because their margin ran out. A long liquidation is a forced sell, a short liquidation a forced buy. Liquidations in a row can speed a move up (a cascade). Exchanges publish only part of them, so totals are a floor."]]}};
   function lang() { var s = document.getElementById("lang"); return s && s.value === "tr" ? "tr" : "en"; }
   function w() { return W[lang()]; }
   function fill(t, o) { return String(t).replace(/\{(\w+)\}/g, function (_, k) { return o[k] == null ? "" : o[k]; }); }
@@ -479,6 +485,9 @@
       var ap = askLow + (ROWS - 1 - i) * step; paint(ladder[i], ap, askB[ROWS - 1 - i], ap - step, ap, "ask");
       var bp = bidTop - i * step; paint(ladder[ROWS + i], bp, bidB[i], bp, bp + step, "bid");
     }
+    // Rows per side that fit the card (its size is chosen by the visitor): the nearest ones stay.
+    var rowsBox = $("fl-book-rows"), board = $("fl-board"), fit = board && board.classList.contains("one") ? 8 : Math.max(2, Math.min(ROWS, Math.floor((rowsBox.clientHeight - 36) / 40)));
+    for (var j = 0; j < ROWS; j++) { if (j < ROWS - fit) ladder[j].el.hidden = true; if (j >= fit) ladder[ROWS + j].el.hidden = true; }
     var sp = bs.top.ask - bs.top.bid;
     $("fl-spread").textContent = fmtPrice(sp, Math.min(8, Math.max(digits || 0, decimals(sp)))) + " · " + nf(sp / bs.mid * 1e4, 2) + " bp";
     $("fl-midp").textContent = fmtPrice(bs.mid, digits);
@@ -927,7 +936,7 @@
     $("ff-lb").style.flex = String(L + S ? L / (L + S) : 0.5); $("ff-sb").style.flex = String(L + S ? S / (L + S) : 0.5);
     $("ff-lt").textContent = fill(t.liqLong, { v: compact(L) + " $" }); $("ff-st").textContent = fill(t.liqShort, { v: compact(S) + " $" });
     var box = $("ff-liq"); box.textContent = ""; $("ff-liq-wait").hidden = list.length > 0;
-    list.slice(0, 9).forEach(function (x) {
+    list.slice(0, 25).forEach(function (x) {
       var row = document.createElement("div"), d = new Date(x.t), n = x.p * x.q; row.className = n >= 100000 ? "big" : "";
       [[String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0") + ":" + String(d.getSeconds()).padStart(2, "0"), "num v"], [SHORT[x.v], "v"],
        [(x.side === "long" ? "LONG " : "SHORT ") + fmtPrice(x.p), "num " + (x.side === "long" ? "s" : "b")], [compact(n) + " $", "num r"]].forEach(function (c) { var sp = document.createElement("span"); sp.className = c[1]; sp.textContent = c[0]; row.appendChild(sp); });
@@ -987,8 +996,9 @@
     var box = $("fl-vp"), poc = $("fl-vp-poc");
     if (!pts.length) { box.textContent = ""; poc.textContent = t.waiting; return; }
     var lo = Infinity, hi = 0; pts.forEach(function (x) { if (x[0] < lo) lo = x[0]; if (x[0] > hi) hi = x[0]; });
-    var bucket = Math.max(step || 0, niceStep(Math.max((hi - lo) / 16, lo * 0.00001)));
-    var top = Math.ceil(hi / bucket) * bucket, n = Math.max(1, Math.min(16, Math.round((top - Math.floor(lo / bucket) * bucket) / bucket) + 1)), rows = new Array(n).fill(0);
+    var maxRows = $("fl-board") && $("fl-board").classList.contains("one") ? 16 : Math.max(4, Math.min(30, Math.floor(box.clientHeight / 14) || 16));
+    var bucket = Math.max(step || 0, niceStep(Math.max((hi - lo) / maxRows, lo * 0.00001)));
+    var top = Math.ceil(hi / bucket) * bucket, n = Math.max(1, Math.min(maxRows, Math.round((top - Math.floor(lo / bucket) * bucket) / bucket) + 1)), rows = new Array(n).fill(0);
     pts.forEach(function (x) { var i = Math.round((top - x[0]) / bucket); if (i >= 0 && i < n) rows[i] += x[1]; });
     var max = Math.max.apply(null, rows) || 1, pi = rows.indexOf(max), d = Math.max(digits || 0, decimals(bucket)), cur = bs ? bs.mid : 0;
     box.textContent = "";
@@ -1073,6 +1083,8 @@
     if (MARKET === "futures") { var sb = document.querySelector('[data-fl="sub"]'); if (sb) sb.textContent = t.subF; var nt = document.querySelector('.fl-foot'); if (nt) nt.textContent = t.noteF; }
     var pr = $("fl-prem"); if (pr) pr.title = t.premTitle;
     var hb = $("fl-help-btn"); if (hb) hb.textContent = HELP[lang()].btn;
+    document.querySelectorAll(".ed").forEach(function (ed) { ed.querySelector("select").title = t.editSize; ed.querySelector('[data-d="-1"]').title = t.editUp; ed.querySelector('[data-d="1"]').title = t.editDown; ed.querySelector("[data-x]").title = t.editHide; });
+    if (layout) renderEditBar();
     document.querySelectorAll(".heat-legend .fut").forEach(function (e) { e.hidden = MARKET !== "futures"; });
     var hn = $("fl-heat-note"); if (hn) hn.textContent = fill(t.heatNote, { liq: MARKET === "futures" ? t.heatLiq : "" });
     var hf = $("fl-heat-fs"), hc = $("c-heat"); if (hf) hf.textContent = hc && hc.classList.contains("fs") ? t.heatExit : t.heatFull;
@@ -1165,16 +1177,7 @@
     var sel = $("fl-venue"); sel.textContent = "";
     ["all"].concat(ORDER).forEach(function (id) { var o = document.createElement("option"); o.value = id; o.textContent = id === "all" ? (fut ? w().venueAllF : w().venueAll) : NAME[id]; sel.appendChild(o); });
     $("ff-ctx").hidden = !fut; $("ff-panels").hidden = !fut;
-    if (fut) {
-      // Rearrange the same cards for futures (see flow.html "Futures:" styles).
-      var grid = document.querySelector(".fl-grid"), top = document.createElement("div"), bot = document.createElement("div"), col = document.createElement("div");
-      top.className = "fx-top"; bot.className = "fx-bot"; col.className = "fx-col";
-      ["c-depth", "c-cvd", "c-vp", "c-liq"].forEach(function (id) { top.appendChild($(id)); });
-      ["c-zf", "c-fund"].forEach(function (id) { col.appendChild($(id)); });
-      bot.appendChild($("c-book")); bot.appendChild($("c-tape")); bot.appendChild(col);
-      grid.parentNode.insertBefore(top, grid); grid.parentNode.insertBefore(bot, grid);
-      grid.hidden = true; $("ff-panels").hidden = true; grid.style.display = "none";
-    }
+    setupBoard();
     applyWords();
   }
   // Library pages for each help section (content/library/concepts, category "Order flow").
@@ -1222,6 +1225,110 @@
     $("fl-help-close").addEventListener("click", function () { var d = $("fl-help"); if (d.close) d.close(); else d.removeAttribute("open"); });
     $("fl-help").addEventListener("click", function (e) { if (e.target === this && this.close) this.close(); });
   }
-  window.MLMFlow = { _state: function () { return { exportPng: exportPng, wallMarks: wallMarks, venues: venues, trades: trades, secs: secs, zones: zones, step: step, liqs: liqs, oiS: oiS, market: MARKET, heat: heat, bigs: bigs, heatStep: heatStep }; } };
+  // ─── Custom layout ───────────────────────────────────────────────────────
+  // Every panel is a card on a 4-column board (one unit = 360 px high). The visitor orders, sizes (within the sizes
+  // that suit the panel) and hides panels; the layout is kept in localStorage per market. Holes stay holes (no
+  // automatic packing), so the order is always the visitor's. Tablets use 2 columns, phones 1 (sizes ignored).
+  var PANELS = {
+    heat: { id: "c-heat", sizes: ["2x1", "3x1", "4x1", "2x2", "3x2", "4x2"] },
+    depth: { id: "c-depth", sizes: ["1x1", "1x2", "2x1", "2x2"] },
+    cvd: { id: "c-cvd", sizes: ["1x1", "1x2", "2x1", "2x2"] },
+    vp: { id: "c-vp", sizes: ["1x1", "1x2", "2x1"] },
+    liq: { id: "c-liq", sizes: ["1x1", "1x2", "2x1"], fut: true },
+    book: { id: "c-book", sizes: ["1x1", "1x2", "2x2"] },
+    tape: { id: "c-tape", sizes: ["1x1", "1x2", "2x1", "2x2"] },
+    zf: { id: "c-zf", sizes: ["1x1", "1x2", "2x1"] },
+    fund: { id: "c-fund", sizes: ["2x1", "2x2", "4x1"], fut: true }
+  };
+  var DEFAULTS = {
+    spot: [["heat", "4x1"], ["cvd", "1x1"], ["vp", "1x1"], ["zf", "2x1"], ["book", "1x2"], ["tape", "2x2"], ["depth", "1x2"]],
+    futures: [["heat", "4x1"], ["depth", "1x1"], ["cvd", "1x1"], ["vp", "1x1"], ["liq", "1x1"], ["book", "1x2"], ["tape", "2x2"], ["zf", "1x2"], ["fund", "4x1"]]
+  };
+  var layout = null, LKEY = "mlm-flow-layout-" + MARKET;
+  function panelKeys() { return Object.keys(PANELS).filter(function (k) { return !PANELS[k].fut || MARKET === "futures"; }); }
+  function defaultLayout() { return { items: DEFAULTS[MARKET].map(function (x) { return { k: x[0], s: x[1] }; }), hidden: [] }; }
+  function loadLayout() {
+    var l = null; try { l = JSON.parse(localStorage.getItem(LKEY) || "null"); } catch (e) {}
+    var keys = panelKeys(), seen = {}, out = { items: [], hidden: [] };
+    if (l && Array.isArray(l.items)) {
+      l.items.forEach(function (x) { if (x && keys.indexOf(x.k) > -1 && !seen[x.k]) { seen[x.k] = 1; out.items.push({ k: x.k, s: PANELS[x.k].sizes.indexOf(x.s) > -1 ? x.s : defSize(x.k) }); } });
+      (l.hidden || []).forEach(function (k) { if (keys.indexOf(k) > -1 && !seen[k]) { seen[k] = 1; out.hidden.push(k); } });
+    } else return defaultLayout();
+    keys.forEach(function (k) { if (!seen[k]) out.items.push({ k: k, s: defSize(k) }); }); // panels added in a later version
+    return out;
+  }
+  function defSize(k) { var d = DEFAULTS[MARKET].filter(function (x) { return x[0] === k; })[0]; return d ? d[1] : PANELS[k].sizes[0]; }
+  function saveLayout() { try { localStorage.setItem(LKEY, JSON.stringify(layout)); } catch (e) {} }
+  function boardCols() { return matchMedia("(min-width: 1101px)").matches ? 4 : matchMedia("(min-width: 641px)").matches ? 2 : 1; }
+  function applyLayout() {
+    var board = $("fl-board"), cols = boardCols();
+    board.classList.toggle("one", cols === 1);
+    layout.items.forEach(function (it) {
+      var c = $(PANELS[it.k].id), wh = it.s.split("x"), wv = +wh[0], hv = +wh[1];
+      board.appendChild(c); c.hidden = false;
+      c.style.gridColumn = "span " + Math.min(wv, cols); c.style.gridRow = cols === 1 ? "auto" : "span " + hv;
+      var sel = c.querySelector(".ed select"); if (sel) sel.value = it.s;
+    });
+    layout.hidden.forEach(function (k) { var c = $(PANELS[k].id); board.appendChild(c); c.hidden = true; });
+    renderEditBar(); dirty = true;
+    setTimeout(function () { render(); drawHeat(); if (MARKET === "futures") drawOi(); }, 30);
+  }
+  function move(k, dir) {
+    var i = layout.items.map(function (x) { return x.k; }).indexOf(k), j = i + dir; if (i < 0 || j < 0 || j >= layout.items.length) return;
+    var x = layout.items[i]; layout.items[i] = layout.items[j]; layout.items[j] = x; saveLayout(); applyLayout();
+  }
+  function renderEditBar() {
+    var t = w(), box = $("fl-hidden"); if (!box) return; box.textContent = "";
+    if (!layout.hidden.length) { var n = document.createElement("span"); n.className = "muted"; n.textContent = t.editNone; box.appendChild(n); }
+    layout.hidden.forEach(function (k) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "fs-btn"; b.textContent = "+ " + panelName(k);
+      b.addEventListener("click", function () { layout.hidden = layout.hidden.filter(function (x) { return x !== k; }); layout.items.push({ k: k, s: defSize(k) }); saveLayout(); applyLayout(); });
+      box.appendChild(b);
+    });
+  }
+  function panelName(k) { var c = $(PANELS[k].id), sp = c && c.querySelector("h2>span:first-child"); return sp ? sp.textContent.trim() : k; }
+  function setupBoard() {
+    var board = document.createElement("div"); board.id = "fl-board"; board.className = "board";
+    var anchor = $("c-heat"); anchor.parentNode.insertBefore(board, anchor);
+    panelKeys().forEach(function (k) {
+      var c = $(PANELS[k].id); c.dataset.panel = k;
+      // Edit tools (shown only in edit mode): drag handle, size, earlier/later, hide.
+      var ed = document.createElement("div"); ed.className = "ed";
+      ed.innerHTML = '<span class="grip" draggable="true" title="⠿">⠿</span><select></select><button type="button" data-d="-1">↑</button><button type="button" data-d="1">↓</button><button type="button" data-x="1">×</button>';
+      var sel = ed.querySelector("select");
+      PANELS[k].sizes.forEach(function (sz) { var o = document.createElement("option"); o.value = sz; o.textContent = sz.replace("x", "×"); sel.appendChild(o); });
+      sel.addEventListener("change", function () { layout.items.forEach(function (it) { if (it.k === k) it.s = sel.value; }); saveLayout(); applyLayout(); });
+      ed.addEventListener("click", function (e) {
+        var b = e.target.closest("button"); if (!b) return;
+        if (b.dataset.d) move(k, +b.dataset.d);
+        else if (b.dataset.x) { layout.items = layout.items.filter(function (x) { return x.k !== k; }); layout.hidden.push(k); saveLayout(); applyLayout(); }
+      });
+      var grip = ed.querySelector(".grip");
+      grip.addEventListener("dragstart", function (e) { e.dataTransfer.setData("text/plain", k); e.dataTransfer.effectAllowed = "move"; c.classList.add("dragging"); });
+      grip.addEventListener("dragend", function () { c.classList.remove("dragging"); });
+      c.addEventListener("dragover", function (e) { if (board.classList.contains("editing")) { e.preventDefault(); c.classList.add("drop"); } });
+      c.addEventListener("dragleave", function () { c.classList.remove("drop"); });
+      c.addEventListener("drop", function (e) {
+        e.preventDefault(); c.classList.remove("drop");
+        var from = e.dataTransfer.getData("text/plain"); if (!from || from === k) return;
+        var keys = layout.items.map(function (x) { return x.k; }), it = layout.items[keys.indexOf(from)]; if (!it) return;
+        layout.items.splice(keys.indexOf(from), 1); layout.items.splice(layout.items.map(function (x) { return x.k; }).indexOf(k), 0, it);
+        saveLayout(); applyLayout();
+      });
+      c.insertBefore(ed, c.firstChild);
+    });
+    layout = loadLayout(); applyLayout();
+    // Every card is on the board now; the old containers are empty. Spot-only or futures-only cards that are not
+    // panels of this market go with them.
+    [".fl-grid", "#ff-panels"].forEach(function (q) { var e = document.querySelector(q); if (e) e.remove(); });
+    var eb = $("fl-edit");
+    eb.hidden = false;
+    eb.addEventListener("click", function () { var on = !board.classList.contains("editing"); board.classList.toggle("editing", on); $("fl-editbar").hidden = !on; eb.setAttribute("aria-pressed", String(on)); });
+    $("fl-edit-done").addEventListener("click", function () { board.classList.remove("editing"); $("fl-editbar").hidden = true; eb.setAttribute("aria-pressed", "false"); });
+    $("fl-edit-reset").addEventListener("click", function () { try { localStorage.removeItem(LKEY); } catch (e) {} layout = defaultLayout(); applyLayout(); });
+    var lastCols = boardCols();
+    window.addEventListener("resize", function () { var c2 = boardCols(); if (c2 !== lastCols) { lastCols = c2; applyLayout(); } });
+  }
+  window.MLMFlow = { _state: function () { return { layout: layout, exportPng: exportPng, wallMarks: wallMarks, venues: venues, trades: trades, secs: secs, zones: zones, step: step, liqs: liqs, oiS: oiS, market: MARKET, heat: heat, bigs: bigs, heatStep: heatStep }; } };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
