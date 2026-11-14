@@ -536,7 +536,7 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
       return'<div style="background:'+fill(v==null?null:bp?v/25*8:v/2*8)+'"><b>'+MarketUI.escape(w[k[1]])+"</b><span>"+t+"</span></div>"}).join("");
   }
   var MACRO=[["dxy","wkDxy"],["us10y","wkUs10y"],["spx","wkSpx"],["ndx","wkNdx"],["gold","wkGold"],["silver","wkSilver"]];
-  fetch("/api/weekly").then(function(r){return r.ok?r.json():null}).then(function(d){
+  fetch("/api/weekly?v=2").then(function(r){return r.ok?r.json():null}).then(function(d){
     if(!d||!Array.isArray(d.assets)||!d.assets.some(function(a){return a.lastWeek}))return;
     data=d;card.hidden=false;card.parentNode.classList.add("has-wk");render();
   }).catch(function(){});

@@ -203,7 +203,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   window.MLMWeekly={svg:function(){return loadLogo().then(buildSvg)}};
   el("wk-download").addEventListener("click",download);
   new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
-  fetch("/api/weekly").then(function(r){return r.ok?r.json():null}).then(function(d){
+  fetch("/api/weekly?v=2").then(function(r){return r.ok?r.json():null}).then(function(d){
     if(!d||!Array.isArray(d.assets)||!d.assets.length)throw new Error("empty");
     data=d;el("wk-status").hidden=true;el("wk").hidden=false;el("wk-download").disabled=false;render();
   }).catch(function(){el("wk-status").textContent=words().failed;el("wk-status").dataset.i18n="failed"});
