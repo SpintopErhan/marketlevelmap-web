@@ -400,6 +400,12 @@ the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/
   before it, at least 5 candles apart, within the last 60 candles: price higher high with a lower RSI/MACD high
   (negative), or price lower low with a higher RSI/MACD low (positive).
 
+At the top of the card, **By timeframe**: RSI 14 (value), MACD against its signal, price against EMA 20/50/200, the
+Supertrend direction and price against the Ichimoku cloud, on the last closed candle of 1H, 4H, 1D and 1W (↑ / ↓,
+– in between). The candles come from the public candle files (`index.json`, the newest archive for 1H and 1D, the
+two newest for 4H, all for 1W, plus `latest.json`), once per asset and again after 15 minutes. Guests see the 1D
+column; the other timeframes show a lock, like the rest of the members-only timeframes.
+
 Each row links to its library page.
 The "Göstergeler / Indicators" menu above the chart draws them too: Supertrend (green under the candles, red above;
 a custom primitive, so a segment never joins two directions) and Parabolic SAR (dots sized to the candle spacing, each

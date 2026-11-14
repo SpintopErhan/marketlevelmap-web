@@ -1280,5 +1280,5 @@ var LiveChart = (function () {
     };
   }
 
-  return { show: show, indicators: indicators, _test: { extraIndicators: extraIndicators, mergeRows: mergeRows, zoneStart: zoneStart, palette: palette, klineRow: klineRow, withEma: withEma } };
+  return { show: show, indicators: indicators, extraIndicators: extraIndicators, _test: { extraIndicators: extraIndicators, mergeRows: mergeRows, zoneStart: zoneStart, palette: palette, klineRow: klineRow, withEma: withEma } };
 })();
