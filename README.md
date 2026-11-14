@@ -475,12 +475,18 @@ can be shown. "Economic events" in the Indicators menu turns them off (on by def
 
 ## Monthly returns
 
-`returns.html` (`/returns`, linked from the analysis chart's title and the weekly outlook page): every month's
+`returns.html` (`/returns`, linked from the analysis chart's title and the weekly outlook page; the asset list has
+"Crypto" and "Macro and commodities" groups): every month's
 change from its first daily open to its last daily close (UTC), one row per year, with the year's change, colour
 scaled (darkest at ±30 % a month, ±150 % a year).
 
-- **Data:** the public daily candles, `data.marketlevelmap.com/candles/<SYMBOL>/1d/<year>.json` from `index.json`
-  plus `latest.json`. Any pair with daily candles can be chosen (`?asset=`).
+- **Data, crypto:** the public daily candles, `data.marketlevelmap.com/candles/<SYMBOL>/1d/<year>.json` from
+  `index.json` plus `latest.json`. Any pair with daily candles can be chosen (`?asset=`).
+- **Data, macro and commodities:** `GET /api/monthly?symbol=spx|ndx|gold|silver|dxy` (`functions/api/monthly.js`,
+  cached 12 hours). It gives Yahoo Finance monthly closes over 11 years: S&P 500 (`^GSPC`) and Nasdaq 100 (`^NDX`)
+  cash indices, gold and silver COMEX futures (`GC=F`, `SI=F`; free sources have no long spot history), DXY. A month's
+  return there runs from the previous month's close to its close. The colour scale is ±8 % a month and ±30 % a year.
+- **Range:** the last 10 years (rows), for every asset.
 - **Edges:** the running month and year have a dashed frame. A first month whose data starts after the 1st, and a
   first year that does not start in January, are left out.
 - **Statistics:** average, median and positive months per calendar month use completed months only.
