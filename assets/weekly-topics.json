@@ -755,6 +755,22 @@
    }
   },
   {
+   "id": "stochastic-rsi",
+   "thumb": "/assets/weekly-topics/stochastic-rsi.svg",
+   "tr": {
+    "name": "Stokastik RSI",
+    "summary": "Stokastik RSI, RSI'ın kendi son değerleri içinde nerede durduğunu 0 ile 100 arasında gösterir.",
+    "url": "/tr/kutuphane/stokastik-rsi/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Stochastic RSI",
+    "summary": "Stochastic RSI shows where RSI sits within its own recent values, on a 0 to 100 scale.",
+    "url": "/en/library/stochastic-rsi/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
    "id": "bearish-engulfing",
    "thumb": "/assets/weekly-topics/bearish-engulfing.svg",
    "tr": {
@@ -1075,6 +1091,22 @@
    }
   },
   {
+   "id": "supertrend",
+   "thumb": "/assets/weekly-topics/supertrend.svg",
+   "tr": {
+    "name": "Supertrend",
+    "summary": "Supertrend, fiyatı belirli bir mesafeden izleyen tek bir çizgidir.",
+    "url": "/tr/kutuphane/supertrend/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Supertrend",
+    "summary": "Supertrend is a single line that trails price at a set distance.",
+    "url": "/en/library/supertrend/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
    "id": "triple-bottom",
    "thumb": "/assets/weekly-topics/triple-bottom.svg",
    "tr": {
@@ -1264,6 +1296,22 @@
     "summary": "A pattern in which both lines slope downwards and converge to the right.",
     "url": "/en/library/falling-wedge/",
     "track": "Patterns"
+   }
+  },
+  {
+   "id": "parabolic-sar",
+   "thumb": "/assets/weekly-topics/parabolic-sar.svg",
+   "tr": {
+    "name": "Parabolic SAR",
+    "summary": "Parabolic SAR, fiyatın altında ya da üstünde birer nokta olarak çizilen, trend sürdükçe fiyata giderek hızlanarak yaklaşan bir seviyedir.",
+    "url": "/tr/kutuphane/parabolic-sar/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Parabolic SAR",
+    "summary": "Parabolic SAR is a level drawn as one dot below or above price, which closes in on price faster and faster as a trend runs on.",
+    "url": "/en/library/parabolic-sar/",
+    "track": "Volume and indicators"
    }
   },
   {
