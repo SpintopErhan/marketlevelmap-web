@@ -470,6 +470,46 @@ var LiveChart = (function () {
     container.addEventListener("mouseleave", hideZoneTip);
     // A tapped tooltip must not outlive what it described: scrolling, zooming or new zones / candles clear it.
     chart.timeScale().subscribeVisibleLogicalRangeChange(function () { if (zoneTip.style.display !== "none") hideZoneTip(); });
+    // Candle legend (top left, like most charting tools): date, open, high, low, close, the change from the previous
+    // close and the volume of the candle under the pointer; the newest candle when the pointer is off the chart.
+    var legend = document.createElement("div");
+    legend.className = "lc-legend";
+    legend.style.cssText = "position:absolute;left:8px;top:6px;z-index:5;pointer-events:none;display:flex;flex-wrap:wrap;gap:2px 10px;max-width:calc(100% - 90px);" +
+      "font:500 11.5px " + WATERMARK_FONT + ";color:#8f9aab;font-variant-numeric:tabular-nums;text-shadow:0 0 3px #101820,0 0 3px #101820";
+    container.appendChild(legend);
+    var LEGEND_WORDS = { en: { o: "O", h: "H", l: "L", c: "C", v: "Vol" }, tr: { o: "A", h: "Y", l: "D", c: "K", v: "Hacim" } };
+    function legendDate(sec) {
+      var intraday = state.tf === "1h" || state.tf === "4h", o = { timeZone: "UTC", day: "numeric", month: "short", year: "numeric" };
+      if (intraday) { o.hour = "2-digit"; o.minute = "2-digit"; o.hourCycle = "h23"; }
+      return new Date(sec * 1000).toLocaleString(pageLocale(), o) + (intraday ? " UTC" : "");
+    }
+    var legendHover = false;
+    function refreshLegend() { if (!legendHover) showLegend(null); }
+    function showLegend(param) {
+      var bar = null, vol = null, idx = null;
+      if (param && param.time != null && param.seriesData && (param.paneIndex == null || param.paneIndex >= 0)) {
+        bar = param.seriesData.get(candles); var v = param.seriesData.get(volume); vol = v ? v.value : null; idx = param.logical;
+      }
+      legendHover = !!(bar && bar.open != null);
+      if (!bar || bar.open == null) {
+        var all = candles.data(); if (!all.length) { legend.textContent = ""; return; }
+        idx = all.length - 1; bar = all[idx]; var vs = volume.data(); vol = vs.length ? vs[vs.length - 1].value : null;
+      }
+      var prev = idx != null && idx > 0 && candles.dataByIndex ? candles.dataByIndex(Math.round(idx) - 1) : null;
+      var w = LEGEND_WORDS[document.documentElement.lang === "tr" ? "tr" : "en"], up = bar.close >= bar.open, col = up ? "#55d99c" : "#ef6e76";
+      var base = prev && prev.close != null ? prev.close : bar.open, chg = base ? (bar.close / base - 1) * 100 : null;
+      function item(k, v) { return '<span>' + k + ' <b style="color:' + col + ';font-weight:600">' + v + "</b></span>"; }
+      var html = '<span style="color:#c7cfde">' + legendDate(bar.time) + "</span>" + item(w.o, fmtPrice(bar.open)) + item(w.h, fmtPrice(bar.high)) +
+        item(w.l, fmtPrice(bar.low)) + item(w.c, fmtPrice(bar.close));
+      if (chg != null) {
+        var p = Math.abs(chg).toLocaleString(pageLocale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 }), sg = chg > 0 ? "+" : chg < 0 ? "−" : "";
+        html += '<b style="color:' + (chg >= 0 ? "#55d99c" : "#ef6e76") + ';font-weight:600">' + sg + (pageLocale() === "tr-TR" ? "%" + p : p + "%") + "</b>";
+      }
+      if (vol != null) html += "<span>" + w.v + ' <b style="color:#c7cfde;font-weight:600">' + Number(vol).toLocaleString(pageLocale(), { notation: "compact", maximumFractionDigits: 2 }) + "</b></span>";
+      legend.innerHTML = html;
+    }
+    chart.subscribeCrosshairMove(showLegend);
+    container.addEventListener("mouseleave", function () { showLegend(null); });
     var sweepMarkers = LC.createSeriesMarkers ? LC.createSeriesMarkers(candles, []) : null;
     var liveLine = null, loadingOlder = false, destroyed = false, generation = 0;
     var forming = null, liveStatus = "pending", socket = null, retryTimer = null, socketFailures = 0;
@@ -573,6 +613,7 @@ var LiveChart = (function () {
       var rows = allRows();
       candles.setData(rows.map(function (r) { return { time: r[0], open: r[1], high: r[2], low: r[3], close: r[4] }; }));
       volume.setData(rows.map(function (r) { return { time: r[0], value: r[5], color: r[4] >= r[1] ? "rgba(59,158,112,0.55)" : "rgba(169,83,91,0.55)" }; }));
+      refreshLegend();
       emas.forEach(function (series, i) {
         series.setData(rows.filter(function (r) { return r[6 + i] != null; }).map(function (r) { return { time: r[0], value: r[6 + i] }; }));
       });
@@ -588,6 +629,7 @@ var LiveChart = (function () {
       var up = forming[4] >= forming[1], tone = up ? "rgba(85,217,156,0.38)" : "rgba(239,110,118,0.38)";
       candles.update({ time: forming[0], open: forming[1], high: forming[2], low: forming[3], close: forming[4], color: tone, wickColor: tone, borderColor: tone });
       volume.update({ time: forming[0], value: forming[5], color: up ? "rgba(59,158,112,0.25)" : "rgba(169,83,91,0.25)" });
+      refreshLegend();
       drawIndicators();
     }
 
@@ -599,6 +641,7 @@ var LiveChart = (function () {
       state.tail.push(full);
       candles.update({ time: full[0], open: full[1], high: full[2], low: full[3], close: full[4] });
       volume.update({ time: full[0], value: full[5], color: full[4] >= full[1] ? "rgba(59,158,112,0.55)" : "rgba(169,83,91,0.55)" });
+      refreshLegend();
       emas.forEach(function (series, i) { if (full[6 + i] != null) series.update({ time: full[0], value: full[6 + i] }); });
       zones.set(zoneList, times());
       return true;
