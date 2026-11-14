@@ -50,12 +50,14 @@
     document.querySelectorAll("[data-mctx]").forEach(function (box) {
       box.textContent = "";
       if (!data) { box.appendChild(el("span", "mctx-wait", "…")); return; }
-      var group = null;
+      // data-mctx-cols (home page): two columns, crypto on the left, macro with commodities under it on the right.
+      var group = null, cols = !!box.dataset.mctxCols, into = box;
       list.forEach(function (it) {
         if (it.g !== group) {
           group = it.g; var h = el("p", "mctx-g", t[group]);
           if (group === "gMacro") h.appendChild(el("small", "mctx-gn", " · " + t.delayedG));
-          box.appendChild(h);
+          if (cols && group !== "gMetal") { into = el("div", "mctx-grp"); box.appendChild(into); }
+          into.appendChild(h);
         }
         var row = el("div", "mctx-item");
         var lab = LIB[it.k] ? el("a", "mctx-l", it.label) : el("span", "mctx-l", it.label);
@@ -63,7 +65,7 @@
         row.appendChild(lab);
         row.appendChild(el("b", "mctx-v num", it.value == null ? t.noData : it.value));
         if (it.chg) row.appendChild(el("span", "mctx-c num " + (it.dir > 0 ? "up" : it.dir < 0 ? "down" : ""), it.chg));
-        box.appendChild(row);
+        into.appendChild(row);
       });
       // The live flow panel keeps the notes behind a "Sources" toggle so all rows fit a 1×1 panel.
       var at = data.at ? new Date(data.at) : null, notes = box;

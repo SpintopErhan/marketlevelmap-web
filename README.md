@@ -45,8 +45,11 @@ cache previews per link, so a link shared before a change keeps its old card for
 
 ## Pages
 
-- `index.html` — market table (live price, 24h change and volume, daily/weekly/monthly/yearly opens, ATH)
-  and this week's events. Under the events a **Topic of the week** card links one library page: name, first
+- `index.html` — top: the title with a **Topic of the week** card under it, the weekly outlook card on the right;
+  then the market table at full width (live price, 24h change and volume, daily/weekly/monthly/yearly opens, ATH);
+  then this week's events (one third) beside the market context card (crypto on the left, macro with commodities
+  under it on the right); then the members' live tools. Phones stack them: title, weekly outlook, topic, table,
+  market context, events. The **Topic of the week** card links one library page: name, first
   summary sentence, track, "Next week: …". The list is `content/library/weekly-topics.json` (page ids in week
   order from a Monday 00:00 UTC anchor; it repeats); `scripts/build-library.mjs` checks it and writes
   `assets/weekly-topics.json`, and the page picks the week in the browser (before the anchor: the first topic).
@@ -341,8 +344,8 @@ General market figures, public, in three groups:
   chart meta for `DX-Y.NYB`, `^TNX`, `ES=F`, `NQ=F`, `GC=F`, `SI=F` (query1, else query2), Swissquote
   `public-quotes/bboquotes/instrument/XAU/USD` and `XAG/USD`, else gold-api.com `/price/XAU`, `/price/XAG`
   (`metalSource`). A failed source leaves its field `null` and is listed in `errors`.
-- `assets/market-context.js` fills `[data-mctx]`: the home page's "Piyasa geneli / Market context" card in the side
-  column under the week's events and the analysis page's card in its side column (`card`), and the live flow's "Market
+- `assets/market-context.js` fills `[data-mctx]`: the home page's "Piyasa geneli / Market context" card beside the
+  week's events (two columns, `data-mctx-cols`) and the analysis page's card in its side column (`card`), and the live flow's "Market
   context" panel (`panel`, 1×1/1×2/2×1; last in both default layouts). The panel uses one-line rows and keeps the notes
   behind a "Sources and notes" toggle, so every row fits a 1×1 panel; at 1×2 (the default) the rows are roomier and the
   notes start open. It refreshes every 3 minutes while shown; the live flow panel

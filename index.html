@@ -49,7 +49,9 @@ main{padding:0 0 72px}
 .hero h1{margin:0;max-width:none;font-size:clamp(26px,2.4vw,40px);line-height:1.12;font-weight:700;letter-spacing:-.9px;white-space:nowrap}
 .hero-text{margin:14px 0 0;max-width:none;color:var(--muted);font-size:16px;white-space:nowrap}
 .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
-.hero.has-wk{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:32px;align-items:start}.hero.has-wk h1,.hero.has-wk .hero-text{white-space:normal}
+.hero.has-wk{display:grid;grid-template-columns:minmax(0,1fr) 340px;grid-template-areas:"copy wk" "topic wk";column-gap:32px;row-gap:22px;align-items:start}
+.hero.has-wk .hero-copy{grid-area:copy}.hero.has-wk .wk-card{grid-area:wk}.hero.has-wk .topic-card{grid-area:topic;margin-top:0}
+.hero .topic-card{margin-top:22px;padding:16px 20px}.hero .topic-summary{margin:4px 0 8px}.hero .topic-next{margin:10px 0 0;padding-top:9px}.hero .topic-thumb svg{max-height:92px}.hero.has-wk h1,.hero.has-wk .hero-text{white-space:normal}
 .wk-card{padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}.wk-card[hidden]{display:none}
 .wk-card .wk-eyebrow{margin:0;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}
 .wk-card .wk-range{margin:4px 0 12px;color:var(--muted);font-size:13px}
@@ -143,9 +145,10 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .table-note{margin:10px 4px 0;color:var(--muted);font-size:12px}
 
 /* Market table on the left. This week's events beside it, topic of the week under the events. */
-.home-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(380px,34%);column-gap:28px;align-items:start}
-.home-split>.page-head,.home-split>.table-wrap{grid-column:1}
-.home-side{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:24px;min-width:0}
+.home-split{display:block}
+.home-pair{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,2.1fr);gap:24px;align-items:stretch;margin-top:28px}
+.mctx-card.mctx-cols{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px;align-items:start}.mctx-cols .mctx-grp{display:grid;gap:6px;min-width:0}.mctx-cols .mctx-grp .mctx-g:not(:first-child){margin-top:8px}.mctx-cols>.mctx-src{grid-column:1 / -1}
+.mctx-cols .mctx-item{padding:7px 9px;gap:4px 8px;font-size:12.5px}.mctx-cols .mctx-l{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mctx-cols .mctx-c{min-width:50px}
 .events-card{min-width:0;padding:22px 24px}
 .mctx-home{min-width:0;padding:22px 24px}.mctx-card{display:grid;gap:6px}.mctx-card .mctx-item{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:4px 10px;align-items:baseline;padding:7px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px}
 .mctx-card .mctx-l{color:var(--muted)}.mctx-card a.mctx-l{color:var(--muted);text-decoration:underline dotted;text-underline-offset:3px}.mctx-card .mctx-v{font-weight:700;font-variant-numeric:tabular-nums}.mctx-card .mctx-c{font-size:12px;min-width:70px;text-align:right}
@@ -214,8 +217,9 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
   .rise,.spark.first .spark-dot{opacity:1}
   .spark.first .spark-line{stroke-dashoffset:0}
 }
-@media(max-width:1100px){.home-split{grid-template-columns:1fr}.home-side{grid-column:1;grid-row:auto}.hero h1,.hero-text{white-space:normal}}
-@media(max-width:900px){.hero.has-wk{display:block}.wk-card{margin-top:22px}}
+@media(max-width:1100px){.home-pair{grid-template-columns:1fr}.home-pair .mctx-home{order:-1}.hero h1,.hero-text{white-space:normal}}
+@media(max-width:720px){.mctx-card.mctx-cols{grid-template-columns:1fr}}
+@media(max-width:900px){.hero.has-wk{display:flex;flex-direction:column}.hero.has-wk .wk-card{margin-top:22px}.hero.has-wk .topic-card{margin-top:22px;order:2}.hero.has-wk .wk-card{order:1}}
 @media(max-width:700px){
   .hero{padding:28px 0 24px}.hero h1{font-size:26px;white-space:normal}.hero-text{font-size:15px;white-space:normal}
   .filters{width:100%}.search{flex:1 1 100%}.search input{width:100%}
@@ -232,7 +236,7 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 <script>
 try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
 </script>
-<script src="assets/market-context.js?v=e990244c" defer></script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/event-links.js?v=39e55a33"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
+<script src="assets/market-context.js?v=b07736cb" defer></script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/event-links.js?v=39e55a33"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/sparkline.js?v=758ed273"></script></head>
 <body>
 <div class="page-bg" aria-hidden="true"><div class="page-bg-in"><svg class="page-bg-art" viewBox="0 0 720 460" fill="none">
 <line class="bg-guide" x1="20" y1="78" x2="700" y2="78"/><line class="bg-guide" x1="20" y1="168" x2="700" y2="168"/><line class="bg-guide" x1="20" y1="262" x2="700" y2="262"/><line class="bg-guide" x1="20" y1="348" x2="700" y2="348"/>
@@ -254,6 +258,9 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <p class="hero-text rise rise-3" data-i18n="heroText">Structural zones, key levels, price ranges and Price Action structure for every asset.</p>
 <div class="hero-actions rise rise-4"><a class="btn btn-primary" href="/en/guide/" data-href-tr="/tr/rehber/" data-i18n="heroGuide">How to read them</a></div>
 </div>
+<aside class="topic-card card rise rise-5" id="weekly-topic" aria-labelledby="topic-label" hidden><div class="topic-thumb" id="topic-thumb" aria-hidden="true"></div><div class="topic-body"><p class="topic-head"><span id="topic-label" data-i18n="topicLabel">Topic of the week</span><span class="topic-track" id="topic-track"></span></p>
+<a class="topic-title" id="topic-link" href="/en/library/"></a><p class="topic-summary" id="topic-summary"></p><a class="topic-more" id="topic-more" href="/en/library/" data-i18n="topicMore">Read the page →</a>
+<p class="topic-next"><span data-i18n="topicNext">Next week:</span> <span id="topic-next"></span></p></div></aside>
 <aside class="wk-card rise rise-4" id="wk-card" hidden aria-labelledby="wk-card-title"><p class="wk-eyebrow" id="wk-card-title" data-i18n="wkTitle">Weekly outlook</p><p class="wk-range"><span data-i18n="wkLast">Last week</span> <span id="wk-card-range"></span></p><div class="wk-mini" id="wk-mini"></div><p class="wk-sub" id="wk-macro-title" hidden data-i18n="wkMacro">Macro and commodities</p><div class="wk-mini wk-macro" id="wk-macro" hidden></div><a class="wk-go" href="weekly.html" data-i18n="wkGo">See the weekly outlook →</a></aside>
 </section>
 <section class="home-split" aria-labelledby="table-title">
@@ -263,17 +270,14 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <div class="table-wrap rise rise-6"><table class="market-table"><thead><tr>
 <th class="asset" data-i18n="colAsset">Asset</th><th data-i18n="colPrice">Price</th><th data-i18n="col24h">24h %</th><th data-i18n="colVolume">24h volume</th><th data-i18n="colDay">Daily open</th><th data-i18n="colWeek">Weekly open</th><th data-i18n="colMonth">Monthly open</th><th data-i18n="colYear">Yearly open</th><th>ATH</th><th class="analysis-col" data-i18n="colAnalysis">Analysis</th>
 </tr></thead><tbody id="market-rows"><tr class="status-row"><td colspan="10" data-i18n="loading">Loading live market…</td></tr></tbody></table></div>
-<aside class="home-side">
+</section>
+<section class="home-pair" aria-label="This week">
 <section class="events-card card rise rise-7" aria-labelledby="events-title">
 <div class="section-head"><div><h2 id="events-title" data-i18n="eventsTitle">This week's events</h2><p><span id="week-range"></span> · <span data-i18n="utc">times in UTC</span> <span class="demo-badge" id="events-demo" data-i18n="demo" hidden>Sample data</span></p></div><a href="weekly-events.html" data-i18n="fullWeek">Full week →</a></div>
 <div class="table-wrap"><table class="events-table"><thead><tr><th data-i18n="colDayName">Day</th><th data-i18n="colTime">Time</th><th data-i18n="colCountry">Country</th><th data-i18n="colEvent">Event</th><th><span class="sr-only" data-i18n="colLib">Library</span></th></tr></thead>
 <tbody id="event-rows"><tr class="status-row"><td colspan="5" data-i18n="eventsLoading">Loading events…</td></tr></tbody></table></div>
 </section>
-<section class="mctx-home card rise rise-8" aria-labelledby="mctx-title"><div class="section-head"><div><h2 id="mctx-title" data-i18n="mctxTitle">Market context</h2><p data-i18n="mctxSub">Crypto, macro and commodities</p></div></div><div class="mctx-card" data-mctx="card"></div></section>
-<aside class="topic-card card rise rise-8" id="weekly-topic" aria-labelledby="topic-label" hidden><div class="topic-thumb" id="topic-thumb" aria-hidden="true"></div><div class="topic-body"><p class="topic-head"><span id="topic-label" data-i18n="topicLabel">Topic of the week</span><span class="topic-track" id="topic-track"></span></p>
-<a class="topic-title" id="topic-link" href="/en/library/"></a><p class="topic-summary" id="topic-summary"></p><a class="topic-more" id="topic-more" href="/en/library/" data-i18n="topicMore">Read the page →</a>
-<p class="topic-next"><span data-i18n="topicNext">Next week:</span> <span id="topic-next"></span></p></div></aside>
-</aside>
+<section class="mctx-home card rise rise-8" aria-labelledby="mctx-title"><div class="section-head"><div><h2 id="mctx-title" data-i18n="mctxTitle">Market context</h2><p data-i18n="mctxSub">Crypto, macro and commodities</p></div></div><div class="mctx-card mctx-cols" data-mctx="card" data-mctx-cols="1"></div></section>
 </section>
 <section class="members" aria-labelledby="members-title">
 <div class="page-head"><div><p class="kicker" data-i18n="mbKicker">For members</p><h2 id="members-title" data-i18n="mbTitle">Live tools</h2>
