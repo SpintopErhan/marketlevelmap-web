@@ -1283,6 +1283,22 @@
    }
   },
   {
+   "id": "ichimoku",
+   "thumb": "/assets/weekly-topics/ichimoku.svg",
+   "tr": {
+    "name": "Ichimoku bulutu",
+    "summary": "Ichimoku, beş çizgiden oluşan ve trendin yönünü, hızını ve fiyatın geçmiş aralıklara göre yerini aynı grafikte gösteren bir göstergedir.",
+    "url": "/tr/kutuphane/ichimoku/",
+    "track": "Hacim ve göstergeler"
+   },
+   "en": {
+    "name": "Ichimoku cloud",
+    "summary": "Ichimoku is an indicator of five lines that shows the trend's direction, its pace and where price sits against past ranges on one chart.",
+    "url": "/en/library/ichimoku/",
+    "track": "Volume and indicators"
+   }
+  },
+  {
    "id": "falling-wedge",
    "thumb": "/assets/weekly-topics/falling-wedge.svg",
    "tr": {

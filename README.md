@@ -374,6 +374,12 @@ the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/
   them; direction up (line under the candles) or down, the last turn (last 30 candles), the line's price and distance.
 - **Parabolic SAR** (0.02 start and step, 0.2 cap) — dots below or above the price, the last switch (last 30
   candles) and the SAR level.
+- **Ichimoku 9/26/52** — Tenkan, Kijun and Senkou B are the middles of the 9, 26 and 52-candle high/low; Senkou A =
+  (Tenkan + Kijun) / 2; A and B are drawn 26 candles ahead (the cloud), Chikou (the close) 26 back. Price above, below
+  or inside the cloud under the last candle; Tenkan against Kijun; the colour of the cloud ahead; Chikou against the
+  close 26 candles before.
+- **VWAP** — cumulative (typical price × volume) ÷ cumulative volume, restarting each UTC day on 1H, week (Monday) on
+  4H, month on 1D and year on 1W; price above or below it and the distance.
 - **ATR 14** (Wilder) — value and share of the price; volatility rising or falling against 14 candles before; on the
   Critical Zones view whether the price is inside a zone and the distance to the nearest resistance above and support
   below in ATRs.
@@ -394,8 +400,9 @@ Each row links to its library page.
 The "Göstergeler / Indicators" menu above the chart draws them too: Supertrend (green under the candles, red above;
 a custom primitive, so a segment never joins two directions) and Parabolic SAR (dots sized to the candle spacing, each
 run joined by a faint curve so its acceleration shows, a larger dot where a run starts; also a custom primitive) on
-the price pane, Stochastic
-RSI (with 80/20 lines) and OBV in their own panes (order: RSI, Stochastic RSI, MACD, OBV). All four start off; the
+the price pane, Ichimoku (lines and a cloud running 26 candles past the last one, drawn by logical index) and VWAP
+(an orange line broken at each period start) there too, Stochastic
+RSI (with 80/20 lines) and OBV in their own panes (order: RSI, Stochastic RSI, MACD, OBV). All of them start off; the
 choice is kept in `localStorage` `mlm-indicators-v1`. Divergences are drawn on the chart as a dashed line between the two swings (green
 positive, red negative) and on the RSI/MACD pane when it is open (`liveChart.setDivergences`); the "Draw divergences"
 box turns this off (`localStorage` `mlm-sig-draw`). The card describes; it gives no buy or sell signal.

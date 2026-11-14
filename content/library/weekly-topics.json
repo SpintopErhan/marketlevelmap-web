@@ -341,6 +341,10 @@
    "track": "core"
   },
   {
+   "id": "ichimoku",
+   "track": "quality"
+  },
+  {
    "id": "falling-wedge",
    "track": "patterns"
   },
