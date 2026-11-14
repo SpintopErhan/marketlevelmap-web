@@ -344,6 +344,10 @@ General market figures, public, in three groups:
   chart meta for `DX-Y.NYB`, `^TNX`, `ES=F`, `NQ=F`, `GC=F`, `SI=F` (query1, else query2), Swissquote
   `public-quotes/bboquotes/instrument/XAU/USD` and `XAG/USD`, else gold-api.com `/price/XAU`, `/price/XAG`
   (`metalSource`). A failed source leaves its field `null` and is listed in `errors`.
+- `GET /api/correlation` (`functions/api/correlation.js`, cached 6 hours): the Pearson correlation of BTC's daily
+  log returns with Nasdaq 100 and S&P 500 futures, gold futures and DXY over the last 30 and 90 dates both series
+  have (Yahoo Finance daily closes, 6 months; at least 20 returns). The cards (not the live flow panel) show it as
+  a "BTC correlation · 30 d / 90 d" group, under crypto on the home page.
 - `assets/market-context.js` fills `[data-mctx]`: the home page's "Piyasa geneli / Market context" card beside the
   week's events (two columns, `data-mctx-cols`) and the analysis page's card in its side column (`card`), and the live flow's "Market
   context" panel (`panel`, 1×1/1×2/2×1; last in both default layouts). The panel uses one-line rows and keeps the notes
@@ -438,8 +442,11 @@ layer, so the downloaded and shared images leave it out.
 Members, on a desktop (a mouse or trackpad and a window at least 900 px wide), get a small toolbar at the left of the
 interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` through `liveChart.drawHost()`):
 
-- **Tools:** select and move (the default), trend line, horizontal line (its price at the right), box, arrow, text,
+- **Tools:** select and move (the default), measure, trend line, horizontal line (its price at the right), box, arrow, text,
   eraser. Two-point shapes are drawn by dragging or by two clicks. After a shape the tool returns to select.
+- **Measure:** drag (or click twice) to see the price change, the change in percent, the number of candles and the
+  time between two points, in a green (up) or red (down) box. It is not a drawing: it is not stored and goes away
+  with the next press or Escape.
 - **Editing:** drag a shape to move it, or a handle to reshape it. Double-click a text to edit it. Delete or Backspace
   removes the selected shape, Escape cancels, Ctrl+Z undoes.
 - **Toolbar buttons:** colour (five colours; also recolours the selected shape), hide or show the drawings, undo,
@@ -451,6 +458,28 @@ interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` 
   a series primitive on the price pane, so "Download" and "Share with image" carry them; hidden drawings are left out.
 - **Panning:** a press on empty chart space still pans the chart; a press on a shape, or with a drawing tool chosen,
   is taken by the drawing.
+
+## Economic events on the chart
+
+The site's event list (`/api/events?lang=…`, the same as the home page and the weekly events page) is drawn on the
+analysis chart: a small diamond at the bottom of the price pane under the candle each event falls in, or where that
+candle will be for events still ahead (orange very high impact, with a faint line up the pane; yellow high; grey
+medium). Hovering a diamond shows the event's title, date and time (UTC) and country. Only events still in the list
+can be shown. "Economic events" in the Indicators menu turns them off (on by default, `mlm-indicators-v1` `ev`).
+
+## Monthly returns
+
+`returns.html` (`/returns`, linked from the analysis chart's title and the weekly outlook page): every month's
+change from its first daily open to its last daily close (UTC), one row per year, with the year's change, colour
+scaled (darkest at ±30 % a month, ±150 % a year).
+
+- **Data:** the public daily candles, `data.marketlevelmap.com/candles/<SYMBOL>/1d/<year>.json` from `index.json`
+  plus `latest.json`. Any pair with daily candles can be chosen (`?asset=`).
+- **Edges:** the running month and year have a dashed frame. A first month whose data starts after the 1st, and a
+  first year that does not start in January, are left out.
+- **Statistics:** average, median and positive months per calendar month use completed months only.
+- **Image:** "Download image" draws the table as a 1600×900 PNG (dark look, page language) for X; the 12 latest
+  years fit.
 
 ## Chart watermark
 

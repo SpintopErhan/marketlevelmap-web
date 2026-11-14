@@ -299,6 +299,46 @@ var LiveChart = (function () {
     }];
   };
 
+  // Economic events (README "Economic events on the chart"): a small marker at the bottom of the price pane under the candle an
+  // event falls in (or where that candle will be, for events still ahead), with a faint line up the pane for the
+  // very high impact ones. Orange: very high, yellow: high, grey: medium.
+  function EventsPrimitive() { this.events = []; this.chart = null; this.series = null; this.requestUpdate = null; this.logical = null; }
+  EventsPrimitive.prototype.attached = TrendLinePrimitive.prototype.attached;
+  EventsPrimitive.prototype.detached = TrendLinePrimitive.prototype.detached;
+  EventsPrimitive.prototype.set = function (events) { this.events = events || []; if (this.requestUpdate) this.requestUpdate(); };
+  EventsPrimitive.prototype.updateAllViews = function () {};
+  EventsPrimitive.prototype.positions = function (height) {
+    var ts = this.chart.timeScale(), out = [], self = this;
+    this.events.forEach(function (e) {
+      var l = self.logical ? self.logical(e.time) : null, x = l == null ? null : ts.logicalToCoordinate(Math.floor(l));
+      if (x !== null) out.push({ x: x, y: height - 9, e: e });
+    });
+    return out;
+  };
+  EventsPrimitive.prototype.paneViews = function () {
+    var self = this;
+    return [{
+      zOrder: function () { return "top"; },
+      renderer: function () {
+        return { draw: function (target) {
+          if (!self.chart || !self.events.length) return;
+          target.useMediaCoordinateSpace(function (scope) {
+            var ctx = scope.context, h = scope.mediaSize.height;
+            self.positions(h).forEach(function (p) {
+              var c = p.e.impact === "VERY_HIGH" ? "255,159,67" : p.e.impact === "HIGH" ? "242,201,76" : "143,154,171";
+              if (p.e.impact === "VERY_HIGH") {
+                ctx.strokeStyle = "rgba(" + c + ",0.22)"; ctx.lineWidth = 1; ctx.setLineDash([2, 4]);
+                ctx.beginPath(); ctx.moveTo(p.x, 0); ctx.lineTo(p.x, p.y - 6); ctx.stroke(); ctx.setLineDash([]);
+              }
+              ctx.fillStyle = "rgb(" + c + ")"; ctx.strokeStyle = "#101820"; ctx.lineWidth = 1.2;
+              ctx.beginPath(); ctx.moveTo(p.x, p.y - 5); ctx.lineTo(p.x + 5, p.y); ctx.lineTo(p.x, p.y + 5); ctx.lineTo(p.x - 5, p.y); ctx.closePath(); ctx.fill(); ctx.stroke();
+            });
+          });
+        } };
+      }
+    }];
+  };
+
   // Parabolic SAR: dots, each run joined by a faint curve so its parabolic acceleration shows, and a larger dot where
   // a run starts (the switch of side).
   function SarPrimitive() { this.points = []; this.chart = null; this.series = null; this.requestUpdate = null; }
@@ -622,7 +662,18 @@ var LiveChart = (function () {
       lastValueVisible: true, title: "AVWAP", crosshairMarkerVisible: false, visible: false }), avwapPoints = [];
     var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [], lastValidZones = [], fibZones = [];
     candles.attachPrimitive(zones);
+    var eventMarks = new EventsPrimitive();
     var stLine = new TrendLinePrimitive(), sarDots = new SarPrimitive(), ichi = new IchimokuPrimitive(), vwapLine = new TrendLinePrimitive();
+    candles.attachPrimitive(eventMarks);
+    // Time (seconds) to logical index, interpolated between candles and run on in candle steps past the last one.
+    eventMarks.logical = function (t) {
+      var T = indicatorRows().map(function (r) { return r[0]; }), n = T.length, step = STEP[state.tf];
+      if (!n) return null;
+      if (t < T[0]) return null;
+      if (t >= T[n - 1]) return n - 1 + (t - T[n - 1]) / step;
+      var lo = 0, hi = n - 1; while (hi - lo > 1) { var m = (lo + hi) >> 1; if (T[m] <= t) lo = m; else hi = m; }
+      return lo + (t - T[lo]) / (T[hi] - T[lo]);
+    };
     candles.attachPrimitive(ichi); candles.attachPrimitive(stLine); candles.attachPrimitive(sarDots); candles.attachPrimitive(vwapLine);
     var structurePoints = new PointsPrimitive(function () { return times(); });
     candles.attachPrimitive(structurePoints);
@@ -646,8 +697,25 @@ var LiveChart = (function () {
       return ""; // Critical Zones: the range alone (the colour already says support or resistance)
     }
     function fmtPrice(v) { var d = decimals == null ? 2 : decimals; return Number(v).toLocaleString(pageLocale(), { minimumFractionDigits: d, maximumFractionDigits: d }); }
+    function showEventTip(param) {
+      var h = chart.panes()[0].getHeight();
+      if (!eventMarks.events.length || param.point.y < h - 22) return false;
+      var near = eventMarks.positions(h).filter(function (p) { return Math.abs(p.x - param.point.x) <= 7; });
+      if (!near.length) return false;
+      zoneTip.innerHTML = near.map(function (p) {
+        var e = p.e, d = new Date(e.time * 1000), when = d.toLocaleString(pageLocale(), Object.assign({ timeZone: "UTC", day: "numeric", month: "short" }, e.dateOnly ? {} : { hour: "2-digit", minute: "2-digit", hourCycle: "h23" }));
+        var esc = function (x) { return String(x).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+        return '<div style="font-weight:600">' + esc(e.title) + '</div><div style="font-weight:400;color:#9aa6b6">' + esc(when) + (e.dateOnly ? "" : " UTC") + (e.country ? " · " + esc(e.country) : "") + "</div>";
+      }).join('<div style="height:6px"></div>');
+      zoneTip.style.display = "block"; zoneTip.style.whiteSpace = "normal"; zoneTip.style.maxWidth = "260px";
+      var w = zoneTip.offsetWidth, th = zoneTip.offsetHeight, x = Math.max(4, Math.min(param.point.x - w / 2, container.clientWidth - w - 4));
+      zoneTip.style.left = x + "px"; zoneTip.style.top = Math.max(4, h - 22 - th - 6) + "px";
+      return true;
+    }
     function showZoneTip(param) {
       if (!param || !param.point || (param.paneIndex != null && param.paneIndex !== 0)) { zoneTip.style.display = "none"; return; }
+      if (showEventTip(param)) return;
+      zoneTip.style.whiteSpace = "nowrap"; zoneTip.style.maxWidth = "";
       // A tap can come without a time (touch); take it from the x position, and past the last candle use the last one.
       var price = candles.coordinateToPrice(param.point.y), t = times(), hit = null;
       var time = param.time != null ? param.time : chart.timeScale().coordinateToTime(param.point.x);
@@ -664,6 +732,7 @@ var LiveChart = (function () {
       if (!hit) { zoneTip.style.display = "none"; return; }
       var name = zoneName(hit.z);
       zoneTip.textContent = (name ? name + "  " : "") + fmtPrice(hit.lo) + " – " + fmtPrice(hit.hi);
+
       zoneTip.style.display = "block";
       var w = zoneTip.offsetWidth, h = zoneTip.offsetHeight, maxX = container.clientWidth - w - 4;
       var x = Math.max(4, Math.min(param.point.x + 14, maxX)), y = param.point.y - h - 10;
@@ -1071,6 +1140,8 @@ var LiveChart = (function () {
           step: function () { return STEP[state.tf]; }, key: function () { return state.pair + ":" + state.tf; },
           alive: function () { return !destroyed; } };
       },
+      // Economic events: [{ time (seconds), title, country, impact: VERY_HIGH|HIGH|MEDIUM, dateOnly }]; [] hides them.
+      setEvents: function (list) { eventMarks.set(list); },
       // The chart as drawn now (zones, levels, watermark; no crosshair), at device resolution.
       screenshot: function () { return chart.takeScreenshot(true, false); },
       lastClosedAt: function () { var rows = allRows(), last = rows[rows.length - 1]; return new Date((last[0] + STEP[state.tf]) * 1000).toISOString(); },

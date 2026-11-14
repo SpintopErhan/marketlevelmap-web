@@ -8,10 +8,10 @@
   "use strict";
   var COLORS = ["#f2c94c", "#6fb5ff", "#55d99c", "#ef6e76", "#e8ecf3"];
   var WORDS = {
-    en: { select: "Select and move", trend: "Trend line", hline: "Horizontal line", rect: "Box", arrow: "Arrow", text: "Text",
+    en: { measure: "Measure (price, %, candles, time)", d: "d", h: "h", m: "m", bars: "candles", select: "Select and move", trend: "Trend line", hline: "Horizontal line", rect: "Box", arrow: "Arrow", text: "Text",
       erase: "Eraser", color: "Colour", hide: "Hide drawings", show: "Show drawings", undo: "Undo (Ctrl+Z)", clear: "Delete all drawings",
       clearAsk: "Delete all drawings on this chart?", textPh: "Text, then Enter" },
-    tr: { select: "Seç ve taşı", trend: "Trend çizgisi", hline: "Yatay çizgi", rect: "Kutu", arrow: "Ok", text: "Yazı",
+    tr: { measure: "Ölç (fiyat, %, mum, süre)", d: "g", h: "sa", m: "dk", bars: "mum", select: "Seç ve taşı", trend: "Trend çizgisi", hline: "Yatay çizgi", rect: "Kutu", arrow: "Ok", text: "Yazı",
       erase: "Silgi", color: "Renk", hide: "Çizimleri gizle", show: "Çizimleri göster", undo: "Geri al (Ctrl+Z)", clear: "Tüm çizimleri sil",
       clearAsk: "Bu grafikteki tüm çizimler silinsin mi?", textPh: "Yazı, sonra Enter" }
   };
@@ -23,6 +23,7 @@
     arrow: '<path d="M5 19L19 5M19 5h-7M19 5v7"/>',
     text: '<path d="M5 6h14M12 6v13M9 19h6"/>',
     erase: '<path d="M8 20h12M5 15l8-9 6 6-8 8H8z"/>',
+    measure: '<path d="M4 16L16 4l4 4L8 20zM8 12l2 2M11 9l2 2M14 6l2 2"/>',
     hide: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
     undo: '<path d="M9 7L4 12l5 5M4 12h11a5 5 0 0 1 0 10h-2"/>',
     clear: '<path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/>'
@@ -31,7 +32,7 @@
   function w() { return WORDS[lang()]; }
 
   var host = null, prim = null, bar = null, input = null, list = [], key = null, hidden = false;
-  var tool = "select", color = COLORS[0], selected = null, pending = null, drag = null, undoStack = [], hover = null;
+  var measured = null, tool = "select", color = COLORS[0], selected = null, pending = null, drag = null, undoStack = [], hover = null;
 
   // ---- storage ----
   function store(k) { return "mlm-draw:" + k; }
@@ -48,13 +49,14 @@
   function changed() { save(); redraw(); }
 
   // ---- coordinates: time in seconds <-> x (through the logical index), price <-> y ----
-  function timeToX(t) {
+  function timeToX(t) { var l = timeToLogical(t); return l == null ? null : host.chart.timeScale().logicalToCoordinate(l); }
+  function timeToLogical(t) {
     var T = host.times(), n = T.length, step = host.step(), logical;
     if (!n) return null;
     if (t <= T[0]) logical = (t - T[0]) / step;
     else if (t >= T[n - 1]) logical = n - 1 + (t - T[n - 1]) / step;
     else { var lo = 0, hi = n - 1; while (hi - lo > 1) { var m = (lo + hi) >> 1; if (T[m] <= t) lo = m; else hi = m; } logical = lo + (t - T[lo]) / (T[hi] - T[lo]); }
-    return host.chart.timeScale().logicalToCoordinate(logical);
+    return logical;
   }
   function xToTime(x) {
     var T = host.times(), n = T.length, step = host.step(), logical = host.chart.timeScale().coordinateToLogical(x);
@@ -75,7 +77,39 @@
   // ---- drawing ----
   function fmt(p) { var d = p >= 1000 ? 1 : p >= 1 ? 2 : 5; return Number(p).toLocaleString(lang() === "tr" ? "tr-TR" : "en-US", { minimumFractionDigits: d, maximumFractionDigits: d }); }
   function rgba(hex, a) { var n = parseInt(hex.slice(1), 16); return "rgba(" + (n >> 16) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")"; }
+  // Measure (not stored): a shaded box from A to B with the price change, the change in percent, the number of
+  // candles and the time between them, green when B is above A and red when below.
+  function duration(sec) {
+    var t = w(), dd = Math.floor(sec / 86400), hh = Math.floor((sec % 86400) / 3600), mm = Math.round((sec % 3600) / 60);
+    return dd ? dd + t.d + (hh ? " " + hh + t.h : "") : hh ? hh + t.h + (mm ? " " + mm + t.m : "") : mm + t.m;
+  }
+  function paintMeasure(ctx, d) {
+    var a = toXY(d.a), b = toXY(d.b); if (!a || !b) return;
+    var up = d.b.p >= d.a.p, col = up ? "60,207,145" : "239,107,115";
+    var x0 = Math.min(a.x, b.x), y0 = Math.min(a.y, b.y), rw = Math.abs(b.x - a.x), rh = Math.abs(b.y - a.y);
+    ctx.fillStyle = "rgba(" + col + ",0.16)"; ctx.fillRect(x0, y0, rw, rh);
+    ctx.strokeStyle = "rgba(" + col + ",0.9)"; ctx.lineWidth = 1.2;
+    var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    ctx.beginPath(); ctx.moveTo(mx, a.y); ctx.lineTo(mx, b.y); ctx.moveTo(a.x, my); ctx.lineTo(b.x, my); ctx.stroke();
+    // arrow heads toward B
+    function head(x, y, dx, dy) { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - dx * 6 - dy * 4, y - dy * 6 + dx * 4); ctx.lineTo(x - dx * 6 + dy * 4, y - dy * 6 - dx * 4); ctx.closePath(); ctx.fillStyle = "rgba(" + col + ",0.95)"; ctx.fill(); }
+    if (rh > 10) head(mx, b.y, 0, b.y > a.y ? 1 : -1);
+    if (rw > 10) head(b.x, my, b.x > a.x ? 1 : -1, 0);
+    var la = timeToLogical(d.a.t), lb = timeToLogical(d.b.t), bars = la == null || lb == null ? null : Math.round(Math.abs(lb - la));
+    var diff = d.b.p - d.a.p, pct = d.a.p ? diff / d.a.p * 100 : 0, loc = lang() === "tr" ? "tr-TR" : "en-US";
+    var sg = diff > 0 ? "+" : diff < 0 ? "−" : "", pctTxt = Math.abs(pct).toLocaleString(loc, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    var line1 = sg + fmt(Math.abs(diff)) + "  (" + sg + (lang() === "tr" ? "%" + pctTxt : pctTxt + "%") + ")";
+    var line2 = (bars != null ? bars + " " + w().bars + " · " : "") + duration(Math.abs(d.b.t - d.a.t));
+    ctx.font = "600 12px Inter, system-ui, sans-serif";
+    var tw = Math.max(ctx.measureText(line1).width, ctx.measureText(line2).width) + 16, th = 38;
+    var lx = Math.max(2, mx - tw / 2), ly = b.y > a.y ? b.y + 8 : b.y - th - 8;
+    ctx.fillStyle = "rgba(" + col + ",0.92)"; ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(lx, ly, tw, th, 6); else ctx.rect(lx, ly, tw, th); ctx.fill();
+    ctx.fillStyle = "#0e131a"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(line1, lx + tw / 2, ly + 12); ctx.font = "500 11px Inter, system-ui, sans-serif"; ctx.fillText(line2, lx + tw / 2, ly + 27);
+  }
   function paint(ctx, d, width, sel) {
+    if (d.type === "measure") { paintMeasure(ctx, d); return; }
     var a = toXY(d.a), b = d.b ? toXY(d.b) : null;
     if (!a || (d.b && !b)) return;
     ctx.strokeStyle = d.color; ctx.fillStyle = d.color; ctx.lineWidth = sel ? 2.5 : 2; ctx.setLineDash([]);
@@ -130,6 +164,7 @@
             var ctx = scope.context, width = scope.mediaSize.width;
             ctx.save();
             list.forEach(function (d) { paint(ctx, d, width, d === selected || d === hover); });
+            if (measured) paintMeasure(ctx, measured);
             if (pending) paint(ctx, pending, width, true);
             ctx.restore();
           });
@@ -171,6 +206,7 @@
     if (ev.target.closest && ev.target.closest(".cd-bar, .cd-input")) return;
     var p = local(ev); if (!p) return;
     syncKey();
+    if (measured) { measured = null; redraw(); }
     if (tool === "select") {
       var which = pickHandle(p), d = which ? selected : pick(p);
       if (!d) { if (selected) { selected = null; redraw(); } return; } // empty space: the chart pans as usual
@@ -225,6 +261,8 @@
     var d = pending; pending = null; delete d._x; delete d._y;
     var a = toXY(d.a), b = toXY(d.b);
     if (a && b && Math.hypot(a.x - b.x, a.y - b.y) < 3) { redraw(); return; } // nothing drawn
+    // A measurement stays on screen until the next press or Escape; it is not a drawing and is not stored.
+    if (d.type === "measure") { measured = d; setTool("select"); redraw(); return; }
     remember(); list.push(d); selected = d; setTool("select"); changed();
   }
   function onDbl(ev) {
@@ -235,7 +273,7 @@
   }
   function onKey(ev) {
     if (!host || (ev.target && /^(INPUT|TEXTAREA|SELECT)$/.test(ev.target.tagName))) return;
-    if (ev.key === "Escape" && (pending || selected || tool !== "select")) { pending = null; selected = null; setTool("select"); redraw(); return; }
+    if (ev.key === "Escape" && (pending || selected || measured || tool !== "select")) { pending = null; selected = null; measured = null; setTool("select"); redraw(); return; }
     if ((ev.key === "Delete" || ev.key === "Backspace") && selected) { ev.preventDefault(); remember(); list.splice(list.indexOf(selected), 1); selected = null; changed(); return; }
     if ((ev.ctrlKey || ev.metaKey) && !ev.shiftKey && (ev.key === "z" || ev.key === "Z") && undoStack.length && overChart) { ev.preventDefault(); undo(); }
   }
@@ -274,7 +312,7 @@
   }
 
   // ---- toolbar ----
-  var TOOLS = ["select", "trend", "hline", "rect", "arrow", "text", "erase"];
+  var TOOLS = ["select", "measure", "trend", "hline", "rect", "arrow", "text", "erase"];
   function btn(name, title, onClick) {
     var b = document.createElement("button");
     b.type = "button"; b.className = "cd-btn"; b.dataset.cd = name; b.title = title; b.setAttribute("aria-label", title);
