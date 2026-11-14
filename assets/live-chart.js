@@ -243,11 +243,56 @@ var LiveChart = (function () {
               var x = ts.timeToCoordinate(p.time), y = self.series.priceToCoordinate(p.value);
               if (x === null || y === null) { prev = null; return; }
               if (prev && prev.dir === p.dir) {
-                ctx.strokeStyle = p.dir === 1 ? "#3ccf91" : "#ef6b73";
+                ctx.strokeStyle = p.color || (p.dir === 1 ? "#3ccf91" : "#ef6b73");
                 ctx.beginPath(); ctx.moveTo(prev.x, prev.y); ctx.lineTo(x, y); ctx.stroke();
               }
               prev = { x: x, y: y, dir: p.dir };
             });
+          });
+        } };
+      }
+    }];
+  };
+
+  // Ichimoku: lines and the cloud by logical index (row i of the chart is logical index i), so the cloud can run
+  // 26 candles past the last one, where there are no candles to hang a series on.
+  function IchimokuPrimitive() { this.data = null; this.chart = null; this.series = null; this.requestUpdate = null; }
+  IchimokuPrimitive.prototype.attached = TrendLinePrimitive.prototype.attached;
+  IchimokuPrimitive.prototype.detached = TrendLinePrimitive.prototype.detached;
+  IchimokuPrimitive.prototype.set = function (data) { this.data = data; if (this.requestUpdate) this.requestUpdate(); };
+  IchimokuPrimitive.prototype.updateAllViews = function () {};
+  IchimokuPrimitive.prototype.paneViews = function () {
+    var self = this;
+    return [{
+      zOrder: function () { return "bottom"; },
+      renderer: function () {
+        return { draw: function (target) {
+          var d = self.data; if (!self.chart || !self.series || !d) return;
+          var ts = self.chart.timeScale(), sr = self.series, from = d.from, n = d.close.length;
+          var X = function (i) { return ts.logicalToCoordinate(i); }, Y = function (v) { return v == null ? null : sr.priceToCoordinate(v); };
+          target.useMediaCoordinateSpace(function (scope) {
+            var ctx = scope.context;
+            // Cloud: Senkou A and B of candle i sit at i + 26.
+            for (var i = Math.max(from, 52); i < n - 1; i++) {
+              var a0 = Y(d.spanA[i]), a1 = Y(d.spanA[i + 1]), b0 = Y(d.spanB[i]), b1 = Y(d.spanB[i + 1]), x0 = X(i + 26), x1 = X(i + 27);
+              if (a0 === null || a1 === null || b0 === null || b1 === null || x0 === null || x1 === null) continue;
+              ctx.fillStyle = d.spanA[i] >= d.spanB[i] ? "rgba(60,207,145,0.13)" : "rgba(239,107,115,0.13)";
+              ctx.beginPath(); ctx.moveTo(x0, a0); ctx.lineTo(x1, a1); ctx.lineTo(x1, b1); ctx.lineTo(x0, b0); ctx.closePath(); ctx.fill();
+            }
+            function line(values, shift, color, width, dash) {
+              ctx.strokeStyle = color; ctx.lineWidth = width; ctx.setLineDash(dash || []); ctx.beginPath(); var open = false;
+              for (var j = from; j < n; j++) {
+                var x = X(j + shift), y = Y(values[j]);
+                if (x === null || y === null) { open = false; continue; }
+                if (!open) { ctx.moveTo(x, y); open = true; } else ctx.lineTo(x, y);
+              }
+              ctx.stroke(); ctx.setLineDash([]);
+            }
+            line(d.spanA, 26, "rgba(60,207,145,0.55)", 1);
+            line(d.spanB, 26, "rgba(239,107,115,0.55)", 1);
+            line(d.close, -26, "rgba(185,163,255,0.6)", 1, [3, 3]);
+            line(d.kijun, 0, "#c96a8a", 1.5);
+            line(d.tenkan, 0, "#3fb6d6", 1.5);
           });
         } };
       }
@@ -406,8 +451,20 @@ var LiveChart = (function () {
   //                    %D = 3-candle average of %K.
   //   OBV              volume added on a higher close, taken off on a lower one, from 0 at the first loaded candle
   //                    (its level depends on where the history starts; its direction is what counts).
-  function extraIndicators(rows, rsi) {
-    var n = rows.length, out = { st: new Array(n), stDir: new Array(n), psar: new Array(n), psarDir: new Array(n), srsiK: new Array(n), srsiD: new Array(n), obv: new Array(n) };
+  //   Ichimoku 9/26/52 Tenkan = middle of the 9-candle high/low, Kijun = the same over 26, Senkou A = (Tenkan +
+  //                    Kijun) / 2 and Senkou B = middle of 52, both drawn 26 candles ahead (the cloud), Chikou = the
+  //                    close drawn 26 candles back.
+  //   VWAP             cumulative (typical price x volume) / cumulative volume, restarting each UTC day on 1H, week
+  //                    (Monday) on 4H, month on 1D and year on 1W (vwapKey: the period a candle belongs to).
+  function vwapPeriod(sec, tf) {
+    var d = new Date(sec * 1000);
+    if (tf === "1h") return d.toISOString().slice(0, 10);
+    if (tf === "4h") return new Date((sec - ((d.getUTCDay() + 6) % 7) * 86400) * 1000).toISOString().slice(0, 10);
+    if (tf === "1d") return d.toISOString().slice(0, 7);
+    return d.toISOString().slice(0, 4);
+  }
+  function extraIndicators(rows, rsi, tf) {
+    var n = rows.length, out = { tenkan: new Array(n), kijun: new Array(n), spanA: new Array(n), spanB: new Array(n), vwap: new Array(n), vwapKey: new Array(n), st: new Array(n), stDir: new Array(n), psar: new Array(n), psarDir: new Array(n), srsiK: new Array(n), srsiD: new Array(n), obv: new Array(n) };
     var atr = null, fub = null, flb = null, dir = 1, obv = 0, stoch = new Array(n);
     for (var i = 0; i < n; i++) {
       var h = rows[i][2], l = rows[i][3], c = rows[i][4], v = Number(rows[i][5]) || 0;
@@ -433,6 +490,16 @@ var LiveChart = (function () {
       }
       if (stoch[i] != null && stoch[i - 1] != null && stoch[i - 2] != null) out.srsiK[i] = (stoch[i] + stoch[i - 1] + stoch[i - 2]) / 3;
       if (out.srsiK[i] != null && out.srsiK[i - 1] != null && out.srsiK[i - 2] != null) out.srsiD[i] = (out.srsiK[i] + out.srsiK[i - 1] + out.srsiK[i - 2]) / 3;
+    }
+    // Ichimoku: middle of the highest high and lowest low over the last `len` candles.
+    function midHL(i, len) { if (i < len - 1) return null; var hi = -Infinity, lo = Infinity; for (var k = i - len + 1; k <= i; k++) { hi = Math.max(hi, rows[k][2]); lo = Math.min(lo, rows[k][3]); } return (hi + lo) / 2; }
+    var pv = 0, vol = 0, key = null;
+    for (var q = 0; q < n; q++) {
+      out.tenkan[q] = midHL(q, 9); out.kijun[q] = midHL(q, 26);
+      out.spanA[q] = out.tenkan[q] != null && out.kijun[q] != null ? (out.tenkan[q] + out.kijun[q]) / 2 : null; out.spanB[q] = midHL(q, 52);
+      var k2 = vwapPeriod(rows[q][0], tf), vq = Number(rows[q][5]) || 0, typ = (rows[q][2] + rows[q][3] + rows[q][4]) / 3;
+      if (k2 !== key) { key = k2; pv = 0; vol = 0; }
+      pv += typ * vq; vol += vq; out.vwap[q] = vol > 0 ? pv / vol : typ; out.vwapKey[q] = k2;
     }
     // Parabolic SAR
     if (n > 1) {
@@ -523,7 +590,7 @@ var LiveChart = (function () {
         { text: "marketlevelmap.com", color: "rgba(199, 207, 222, 0.10)", fontSize: Math.round(big * 0.4), fontFamily: WATERMARK_FONT, fontStyle: "" }
       ] });
     }
-    var IND_PANE = 130, indPaneCount = 0, indPrefs = { bb: false, rsi: false, macd: false, st: false, psar: false, srsi: false, obv: false }, indSeries = {};
+    var IND_PANE = 130, indPaneCount = 0, indPrefs = { bb: false, rsi: false, macd: false, st: false, psar: false, srsi: false, obv: false, ichi: false, vwap: false }, indSeries = {};
     function sizePanes() {
       var panes = chart.panes(), height = container.clientHeight;
       // Stretch factors are relative, so each pane gets its height in pixels and the price pane the rest.
@@ -555,8 +622,8 @@ var LiveChart = (function () {
       lastValueVisible: true, title: "AVWAP", crosshairMarkerVisible: false, visible: false }), avwapPoints = [];
     var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [], lastValidZones = [], fibZones = [];
     candles.attachPrimitive(zones);
-    var stLine = new TrendLinePrimitive(), sarDots = new SarPrimitive();
-    candles.attachPrimitive(stLine); candles.attachPrimitive(sarDots);
+    var stLine = new TrendLinePrimitive(), sarDots = new SarPrimitive(), ichi = new IchimokuPrimitive(), vwapLine = new TrendLinePrimitive();
+    candles.attachPrimitive(ichi); candles.attachPrimitive(stLine); candles.attachPrimitive(sarDots); candles.attachPrimitive(vwapLine);
     var structurePoints = new PointsPrimitive(function () { return times(); });
     candles.attachPrimitive(structurePoints);
     // Zone tooltip: hovering (or tapping) a band shows its name and price range. The narrowest band under the
@@ -678,9 +745,10 @@ var LiveChart = (function () {
     // with the forming candle, whenever candles change.
     function indicatorRows() { var rows = allRows(); return forming ? rows.concat([forming]) : rows; }
     function drawIndicators() {
-      if (!Object.keys(indSeries).length && !indPrefs.st && !indPrefs.psar) { stLine.set([]); sarDots.set([]); return; }
+      var onPrice = indPrefs.st || indPrefs.psar || indPrefs.ichi || indPrefs.vwap;
+      if (!Object.keys(indSeries).length && !onPrice) { stLine.set([]); sarDots.set([]); ichi.set(null); vwapLine.set([]); return; }
       var rows = indicatorRows(), v = indicators(rows.map(function (r) { return r[4]; })), warm = Math.min(IND_WARMUP, Math.max(0, rows.length - 1));
-      var x = indPrefs.st || indPrefs.psar || indSeries.srsiK || indSeries.obv ? extraIndicators(rows, v.rsi) : null;
+      var x = onPrice || indSeries.srsiK || indSeries.obv ? extraIndicators(rows, v.rsi, state.tf) : null;
       var points = function (values, from) {
         var list = [];
         for (var i = from; i < rows.length; i++) if (values[i] != null && isFinite(values[i])) list.push({ time: rows[i][0], value: values[i] });
@@ -705,6 +773,10 @@ var LiveChart = (function () {
       var ps = [];
       if (indPrefs.psar && x) for (var s2 = Math.min(20, rows.length); s2 < rows.length; s2++) if (x.psar[s2] != null) ps.push({ time: rows[s2][0], value: x.psar[s2], dir: x.psarDir[s2], start: x.psarDir[s2 - 1] != null && x.psarDir[s2 - 1] !== x.psarDir[s2] });
       sarDots.set(ps);
+      ichi.set(indPrefs.ichi && x ? { from: Math.min(26, rows.length), tenkan: x.tenkan, kijun: x.kijun, spanA: x.spanA, spanB: x.spanB, close: rows.map(function (r) { return r[4]; }) } : null);
+      var vw = [];
+      if (indPrefs.vwap && x) for (var s3 = 0; s3 < rows.length; s3++) vw.push({ time: rows[s3][0], value: x.vwap[s3], dir: x.vwapKey[s3], color: "#ffb03a" });
+      vwapLine.set(vw);
       if (indSeries.srsiK) { indSeries.srsiK.setData(points(x.srsiK, warm)); indSeries.srsiD.setData(points(x.srsiD, warm)); }
       if (indSeries.obv) indSeries.obv.setData(points(x.obv, 1));
     }
@@ -975,14 +1047,14 @@ var LiveChart = (function () {
       setLevels: setLevels,
       // Closed candles with RSI 14, MACD 12/26/9, EMA 20/50/200 and Bollinger 20/2, for the indicator summary.
       indicatorData: function () {
-        var rows = allRows(), v = indicators(rows.map(function (r) { return r[4]; })), x = extraIndicators(rows, v.rsi);
-        return { volume: rows.map(function (r) { return r[5]; }), st: x.st, stDir: x.stDir, psar: x.psar, psarDir: x.psarDir, srsiK: x.srsiK, srsiD: x.srsiD, obv: x.obv, time: rows.map(function (r) { return r[0]; }), high: rows.map(function (r) { return r[2]; }), low: rows.map(function (r) { return r[3]; }), close: rows.map(function (r) { return r[4]; }),
+        var rows = allRows(), v = indicators(rows.map(function (r) { return r[4]; })), x = extraIndicators(rows, v.rsi, state.tf);
+        return { tf: state.tf, tenkan: x.tenkan, kijun: x.kijun, spanA: x.spanA, spanB: x.spanB, vwap: x.vwap, vwapKey: x.vwapKey, volume: rows.map(function (r) { return r[5]; }), st: x.st, stDir: x.stDir, psar: x.psar, psarDir: x.psarDir, srsiK: x.srsiK, srsiD: x.srsiD, obv: x.obv, time: rows.map(function (r) { return r[0]; }), high: rows.map(function (r) { return r[2]; }), low: rows.map(function (r) { return r[3]; }), close: rows.map(function (r) { return r[4]; }),
           ema: [0, 1, 2].map(function (i) { return rows.map(function (r) { return r[6 + i]; }); }), rsi: v.rsi, macd: v.macd, signal: v.signal, hist: v.hist, bbUpper: v.bbUpper, bbMid: v.bbMid, bbLower: v.bbLower, warmup: IND_WARMUP };
       },
       // [{ kind: "rsi"|"macd", type: "bull"|"bear", t1, t2, p1, p2, v1, v2 }] and whether to draw them.
       setDivergences: function (list, shown) { divList = list || []; divShown = shown !== false; drawDivergences(); },
-      // Bollinger, Supertrend and Parabolic SAR (price pane); RSI, Stochastic RSI, MACD and OBV (panes under the
-      // volume, in that order): { bb, st, psar, rsi, srsi, macd, obv } booleans.
+      // Bollinger, Supertrend, Parabolic SAR, Ichimoku and VWAP (price pane); RSI, Stochastic RSI, MACD and OBV
+      // (panes under the volume, in that order): { bb, st, psar, ichi, vwap, rsi, srsi, macd, obv } booleans.
       setIndicators: function (prefs) {
         // EMA 20/50/200 stay on unless turned off explicitly.
         var showEma = !(prefs && prefs.ema === false);

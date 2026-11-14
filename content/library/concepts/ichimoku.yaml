@@ -1,0 +1,235 @@
+id: ichimoku
+kind: indicators
+order: 68
+related: [moving-averages, trend, supertrend, support-and-resistance]
+example: null
+updated: 2026-11-14
+
+tr:
+  slug: ichimoku
+  name: Ichimoku bulutu
+  alt_name: Ichimoku Kinko Hyo
+  summary: >-
+    Ichimoku, beş çizgiden oluşan ve trendin yönünü, hızını ve fiyatın geçmiş aralıklara göre yerini aynı
+    grafikte gösteren bir göstergedir. En bilinen parçası, iki çizgi arasındaki dolgu olan buluttur;
+    bulut 26 mum ileriye çizilir. Yaygın ayar 9/26/52'dir. Çizgilerin hepsi ortalama değil, belirli
+    dönemlerin en yüksek ve en düşük fiyatlarının ortasıdır.
+  sections:
+    - type: text
+      id: definition
+      title: Ichimoku hangi soruya cevap verir?
+      paragraphs:
+        - >-
+          Ichimoku şu soruyu cevaplar: **fiyat, kısa, orta ve uzun dönemin aralıklarına göre nerede?**
+          Her çizgi bir dönemin en yüksek ve en düşük fiyatının ortasıdır: 9 mumluk, 26 mumluk ve 52
+          mumluk. Fiyatın bu ortaların üstünde ya da altında olması, o dönemin aralığının hangi yarısında
+          durduğunu gösterir.
+        - >-
+          Adındaki "bir bakışta denge grafiği" anlamı buradan gelir: birden fazla zaman ölçeğini tek bir
+          görünümde toplar. Bunun bedeli kalabalık bir grafiktir; bu yüzden çizgileri tek tek tanımak
+          önemlidir.
+    - type: steps
+      id: calculation
+      title: Beş çizgi nasıl hesaplanır?
+      items:
+        - title: Tenkan-sen (dönüş çizgisi).
+          text: "Son 9 mumun en yüksek ve en düşük fiyatının ortası: (en yüksek + en düşük) ÷ 2. Kısa dönemin dengesidir."
+        - title: Kijun-sen (temel çizgi).
+          text: Aynı hesap son 26 mum için yapılır. Orta dönemin dengesidir ve Tenkan'dan daha yavaş hareket eder.
+        - title: Senkou Span A.
+          text: (Tenkan + Kijun) ÷ 2. Hesaplandığı mumdan 26 mum ileriye çizilir.
+        - title: Senkou Span B.
+          text: Son 52 mumun en yüksek ve en düşük fiyatının ortası. O da 26 mum ileriye çizilir. Span A ile Span B arasındaki alan buluttur.
+        - title: Chikou Span (gecikmeli çizgi).
+          text: Mumun kapanış fiyatıdır, 26 mum geriye çizilir. Bugünkü kapanışı 26 mum önceki fiyatla aynı hizada gösterir.
+    - type: bullets
+      id: common-readings
+      title: Genellikle nasıl okunur?
+      items:
+        - text: "**Fiyat bulutun üstünde ya da altında:** fiyat, 26 mum önce hesaplanmış orta ve uzun dönem dengelerinin üstünde ya da altında. Bulutun içi, iki dengenin arasında kalan kararsız alan olarak okunur."
+          marker: neutral
+        - text: "**Bulutun rengi:** Span A, Span B'nin üstündeyse bulut yeşil, altındaysa kırmızı çizilir. Kısa ve orta dönemin ortalamasının uzun dönem ortasına göre yerini gösterir."
+          marker: up
+        - text: "**Tenkan ile Kijun:** Tenkan'ın Kijun'un üstünde olması, son 9 mumun aralığının son 26 mumunkinden yukarıda olduğunu anlatır. Kesişmeleri kısa vadeli dengenin değiştiğinin tarifidir."
+          marker: accent
+        - text: "**Chikou:** bugünkü kapanışın 26 mum önceki fiyatın üstünde ya da altında olması, o süre içinde fiyatın yükselip düştüğünü gösterir."
+          marker: neutral
+        - text: "**Bulutun kalınlığı:** Span A ile B'nin arası açıldıkça bulut kalınlaşır; dönemler arasındaki fark büyüktür. İnce bulut, dönemlerin dengelerinin birbirine yakın olduğunu gösterir."
+          marker: neutral
+      note: >-
+        Ichimoku ilk olarak haftada altı iş günü olan piyasalar için tasarlandı; 9, 26 ve 52 sayıları bu
+        takvimden gelir. Kripto 7/24 işlem gördüğü için bazı kullanıcılar farklı ayarlar seçer; burada
+        yaygın ayar kullanılır.
+    - type: scenarios
+      id: contexts
+      title: Aynı bulut, farklı piyasa
+      intro: Ichimoku'nun okunuşu piyasanın yapısına göre değişir.
+      items:
+        - title: Belirgin trend
+          tone: up
+          text: Fiyat uzun süre bulutun bir tarafında kalır, Tenkan ile Kijun aynı sırayı korur ve bulut aynı renkte kalınlaşır.
+        - title: Yatay piyasa
+          tone: neutral
+          text: Fiyat bulutun içine girip çıkar, Tenkan ile Kijun sık sık kesişir ve bulut incelir, renk değiştirir.
+        - title: Sert hareket
+          tone: down
+          text: Tek bir sert hareket Tenkan'ı hızla taşır ama Kijun ve Span B daha yavaş tepki verir; çizgiler bir süre birbirinden uzaklaşır.
+    - type: limits
+      shows:
+        - Fiyatın 9, 26 ve 52 mumluk aralıkların ortasına göre yerini
+        - Kısa, orta ve uzun dönem dengelerinin birbirine göre sırasını
+        - Bulutun 26 mum sonrası için, bugünkü verilerle çizilen yerini
+      not_proves:
+        - Fiyatın ileride bulutun neresinde olacağını; ileriye çizilen bulut bir tahmin değil, bugünkü verinin ötelenmesidir
+        - Bulutun destek ya da direnç olarak tutacağını
+        - Tek başına yönü; çizgilerin hepsi geçmiş fiyatlardan hesaplanır
+    - type: zones
+      paragraphs:
+        - >-
+          Bulutun kenarları geçmiş aralıkların ortalarından hesaplanır; piyasanın daha önce tepki verdiği
+          bölgelerle aynı şey değildir. Yine de fiyatın bir destek ya da direnç bölgesine bulutun hangi
+          tarafından yaklaştığı bağlam verir.
+        - >-
+          Bir bölgenin bulutun kenarıyla aynı fiyat aralığına denk gelmesi, iki ayrı hesabın aynı yeri
+          işaret ettiğini gösterir. Bu iki gözlem bağımsız değildir ve kesinlik vermez; birlikte okunması
+          yalnızca tarifi zenginleştirir.
+    - type: box
+      title: Kriptoda Ichimoku
+      text: >-
+        Kriptoda hafta sonu ve gece boşluğu olmadığı için 9/26/52 mum, geleneksel piyasalardaki
+        karşılığından farklı bir takvim süresine denk gelir. Örneğin günlük grafikte 26 mum, yaklaşık bir
+        aylık işlem günü değil, tam 26 takvim günüdür.
+  confusions:
+    - id: moving-averages
+      text: Hareketli ortalamalar kapanışların ortalamasıdır; Ichimoku çizgileri dönemin en yüksek ve en düşük fiyatının ortasıdır, bu yüzden yatay dönemlerde düz kalabilir.
+    - id: supertrend
+      text: İkisi de trendin yönünü tarif eder. Supertrend tek bir izleyen çizgidir; Ichimoku birden fazla dönemi ve ileriye çizilen bir bulutu birlikte gösterir.
+  key_points:
+    - "Ichimoku'nun çizgileri dönemlerin en yüksek ve en düşük fiyatının ortasıdır: 9 (Tenkan), 26 (Kijun), 52 (Span B)."
+    - Bulut, Span A ile Span B arasındaki alandır ve 26 mum ileriye çizilir.
+    - Chikou, kapanışın 26 mum geriye çizilmiş hâlidir.
+    - İleriye çizilen bulut bir tahmin değil, bugünkü verinin ötelenmesidir.
+  svg_labels:
+    tenkan: Tenkan
+    kijun: Kijun
+    cloud: Bulut
+    chikou: Chikou
+    ahead: 26 mum ileri
+  svg_alt: "Önce düşen, sonra yükselen mumlar; Tenkan ve Kijun çizgileri, 26 mum geriye çizilmiş kesikli Chikou çizgisi ve mumların arkasında, son mumdan sonra da devam eden yeşil ve kırmızı bulut"
+  svg_caption: >-
+    Turuncu çizgi Tenkan, kırmızı çizgi Kijun, kesikli çizgi Chikou'dur. Yeşil ve kırmızı dolgu bulut;
+    Span A, Span B'nin üstündeyken yeşil, altındayken kırmızıdır. Bulut 26 mum ileriye çizildiği için son
+    mumdan sonra da devam eder.
+
+en:
+  slug: ichimoku
+  name: Ichimoku cloud
+  summary: >-
+    Ichimoku is an indicator of five lines that shows the trend's direction, its pace and where price
+    sits against past ranges on one chart. Its best-known part is the cloud, the fill between two lines,
+    which is drawn 26 candles ahead. The common setting is 9/26/52. None of the lines is an average; each
+    is the middle of a period's highest and lowest price.
+  sections:
+    - type: text
+      id: definition
+      title: Which question does Ichimoku answer?
+      paragraphs:
+        - >-
+          Ichimoku answers this question: **where is price relative to the short, medium and long-term
+          ranges?** Each line is the middle of a period's highest and lowest price: over 9, 26 and 52
+          candles. Price above or below these middles shows which half of that period's range it is in.
+        - >-
+          That is where the name, "one-glance equilibrium chart", comes from: it gathers several time
+          scales in one view. The cost is a busy chart, so it matters to know each line on its own.
+    - type: steps
+      id: calculation
+      title: How the five lines are calculated
+      items:
+        - title: Tenkan-sen (conversion line).
+          text: "The middle of the last 9 candles' highest and lowest price: (highest + lowest) ÷ 2. The short-term balance."
+        - title: Kijun-sen (base line).
+          text: The same over the last 26 candles. The medium-term balance; it moves more slowly than Tenkan.
+        - title: Senkou Span A.
+          text: (Tenkan + Kijun) ÷ 2, drawn 26 candles ahead of the candle it is calculated on.
+        - title: Senkou Span B.
+          text: The middle of the last 52 candles' highest and lowest price, also drawn 26 candles ahead. The area between Span A and Span B is the cloud.
+        - title: Chikou Span (lagging line).
+          text: The candle's close, drawn 26 candles back. It lines today's close up with the price 26 candles ago.
+    - type: bullets
+      id: common-readings
+      title: How it is commonly read
+      items:
+        - text: "**Price above or below the cloud:** price is above or below the medium and long-term balances calculated 26 candles ago. Inside the cloud reads as the undecided area between the two balances."
+          marker: neutral
+        - text: "**The cloud's colour:** green while Span A is above Span B, red while it is below. It shows where the average of the short and medium-term balances sits against the long-term middle."
+          marker: up
+        - text: "**Tenkan and Kijun:** Tenkan above Kijun says the last 9 candles' range sits higher than the last 26 candles'. Their cross describes a change in the short-term balance."
+          marker: accent
+        - text: "**Chikou:** today's close above or below the price 26 candles ago shows whether price rose or fell over that span."
+          marker: neutral
+        - text: "**Cloud thickness:** as Span A and B move apart the cloud thickens; the periods differ a lot. A thin cloud shows the periods' balances are close together."
+          marker: neutral
+      note: >-
+        Ichimoku was first designed for markets with a six-day trading week; the numbers 9, 26 and 52 come
+        from that calendar. Crypto trades 24/7, so some users pick other settings; the common setting is
+        used here.
+    - type: scenarios
+      id: contexts
+      title: Same cloud, different market
+      intro: How Ichimoku reads depends on the structure of the market.
+      items:
+        - title: Clear trend
+          tone: up
+          text: Price stays on one side of the cloud for a long time, Tenkan and Kijun keep the same order, and the cloud thickens in one colour.
+        - title: Sideways market
+          tone: neutral
+          text: Price moves in and out of the cloud, Tenkan and Kijun cross often, and the cloud thins and changes colour.
+        - title: A sharp move
+          tone: down
+          text: One sharp move carries Tenkan quickly, but Kijun and Span B react more slowly; the lines drift apart for a while.
+    - type: limits
+      shows:
+        - Where price sits against the middles of the 9, 26 and 52-candle ranges
+        - The order of the short, medium and long-term balances
+        - Where the cloud sits 26 candles ahead, drawn from today's data
+      not_proves:
+        - Where price will be relative to the cloud; the cloud drawn ahead is not a forecast, it is today's data shifted forward
+        - That the cloud will hold as support or resistance
+        - Direction on its own; all the lines come from past prices
+    - type: zones
+      paragraphs:
+        - >-
+          The cloud's edges are calculated from the middles of past ranges; they are not the same as areas
+          where the market has reacted before. Still, from which side of the cloud price approaches a
+          support or resistance zone gives context.
+        - >-
+          A zone that falls in the same price range as a cloud edge shows two separate calculations
+          pointing at the same place. The two observations are not independent and give no certainty;
+          reading them together only enriches the description.
+    - type: box
+      title: Ichimoku in crypto
+      text: >-
+        Crypto has no weekend or overnight gaps, so 9/26/52 candles cover a different stretch of the
+        calendar than in traditional markets. On the daily chart, for example, 26 candles are exactly 26
+        calendar days, not about a month of trading days.
+  confusions:
+    - id: moving-averages
+      text: Moving averages are averages of closes; Ichimoku lines are the middle of a period's highest and lowest price, so they can stay flat in quiet periods.
+    - id: supertrend
+      text: Both describe the trend's direction. Supertrend is a single trailing line; Ichimoku shows several periods and a cloud drawn ahead together.
+  key_points:
+    - "Ichimoku lines are the middles of a period's highest and lowest price: 9 (Tenkan), 26 (Kijun), 52 (Span B)."
+    - The cloud is the area between Span A and Span B, drawn 26 candles ahead.
+    - Chikou is the close drawn 26 candles back.
+    - The cloud drawn ahead is not a forecast; it is today's data shifted forward.
+  svg_labels:
+    tenkan: Tenkan
+    kijun: Kijun
+    cloud: Cloud
+    chikou: Chikou
+    ahead: 26 candles ahead
+  svg_alt: "Candles that fall and then rise; Tenkan and Kijun lines, a dashed Chikou line drawn 26 candles back, and behind the candles a green and red cloud that runs on past the last candle"
+  svg_caption: >-
+    The orange line is Tenkan, the red line Kijun and the dashed line Chikou. The green and red fill is the
+    cloud: green while Span A is above Span B, red while it is below. The cloud is drawn 26 candles ahead,
+    so it runs on past the last candle.

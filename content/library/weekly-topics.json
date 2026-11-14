@@ -209,6 +209,10 @@
    "track": "core"
   },
   {
+   "id": "stochastic-rsi",
+   "track": "quality"
+  },
+  {
    "id": "bearish-engulfing",
    "track": "patterns"
   },
@@ -289,6 +293,10 @@
    "track": "markets"
   },
   {
+   "id": "supertrend",
+   "track": "quality"
+  },
+  {
    "id": "triple-bottom",
    "track": "patterns"
   },
@@ -333,8 +341,16 @@
    "track": "core"
   },
   {
+   "id": "ichimoku",
+   "track": "quality"
+  },
+  {
    "id": "falling-wedge",
    "track": "patterns"
+  },
+  {
+   "id": "parabolic-sar",
+   "track": "quality"
   },
   {
    "id": "gold-silver-ratio",
