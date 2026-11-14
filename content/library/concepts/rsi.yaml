@@ -1,7 +1,7 @@
 id: rsi
 kind: indicators
 order: 30
-related: [indicators-basics, divergence, macd, trend]
+related: [indicators-basics, stochastic-rsi, divergence, macd, trend]
 example: null
 updated: 2026-10-23
 

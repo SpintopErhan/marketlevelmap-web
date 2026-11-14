@@ -1,0 +1,221 @@
+id: parabolic-sar
+kind: indicators
+order: 67
+related: [supertrend, trend, atr, moving-averages]
+example: null
+updated: 2026-11-14
+
+tr:
+  slug: parabolic-sar
+  name: Parabolic SAR
+  alt_name: Parabolic Stop and Reverse
+  summary: >-
+    Parabolic SAR, fiyatın altında ya da üstünde birer nokta olarak çizilen, trend sürdükçe fiyata
+    giderek hızlanarak yaklaşan bir seviyedir. Noktalar fiyatın altındaysa yön yukarı, üstündeyse aşağı
+    sayılır; fiyat noktaya ulaştığında noktalar diğer tarafa geçer. Adındaki "parabolik", noktaların
+    trend boyunca çizdiği eğriden gelir.
+  sections:
+    - type: text
+      id: definition
+      title: Parabolic SAR hangi soruya cevap verir?
+      paragraphs:
+        - >-
+          Parabolic SAR şu soruyu cevaplar: **trend sürerken izleyen seviye nerede ve fiyat bu seviyeye
+          ne kadar yakın?** Her mum için bir nokta çizilir. Yükselişte noktalar mumların altında,
+          düşüşte üstünde yer alır.
+        - >-
+          Noktaların fiyata yaklaşma hızı sabit değildir. Trend yeni tepe ya da dip yaptıkça hızlanma
+          katsayısı artar ve noktalar fiyata giderek daha hızlı yaklaşır. Bu yüzden uzun bir trendde
+          noktalar eğri bir yol çizer; trend durakladığında fiyat noktalara kısa sürede ulaşır.
+    - type: steps
+      id: calculation
+      title: Nasıl hesaplanır?
+      items:
+        - title: Başlangıç seviyesini ve uç noktayı al.
+          text: Yükselişte SAR son dibin, uç nokta (EP) trendin en yüksek değerinin yanından başlar; düşüşte tersi geçerlidir.
+        - title: Her mumda seviyeyi uca doğru kaydır.
+          text: "Yeni SAR = önceki SAR + hızlanma katsayısı (AF) × (EP − önceki SAR). Varsayılan AF 0,02'den başlar."
+        - title: Trend uzadıkça hızlan.
+          text: Her yeni tepe (yükselişte) ya da yeni dip (düşüşte) AF'yi 0,02 artırır; AF en çok 0,20 olur. Katsayı büyüdükçe noktalar fiyata daha hızlı yaklaşır.
+        - title: Fiyat noktaya ulaşınca taraf değiştir.
+          text: Mumun fitili SAR seviyesine ulaşırsa yön döner; yeni SAR önceki trendin uç noktasından başlar ve AF yeniden 0,02 olur. SAR, önceki iki mumun aralığının içine giremez.
+    - type: bullets
+      id: common-readings
+      title: Genellikle nasıl okunur?
+      items:
+        - text: "**Noktalar fiyatın altında:** yön yukarı; seviye fiyatın altında onu izliyor."
+          marker: up
+        - text: "**Noktalar fiyatın üstünde:** yön aşağı; seviye fiyatın üstünde onu izliyor."
+          marker: down
+        - text: "**Noktaların hızlanması:** trend yeni uç noktalar yaptıkça noktalar fiyata daha hızlı yaklaşır. Noktaların fiyata çok yaklaşması, kısa bir duraklamanın bile taraf değişimine yetebileceğini gösterir."
+          marker: accent
+        - text: "**Taraf değişimi:** noktaların karşı tarafa geçmesi, fiyatın izleyen seviyeye ulaştığının tarifidir; yeni yönün süreceğini göstermez."
+          marker: neutral
+      note: >-
+        Varsayılan ayar 0,02 başlangıç, 0,02 adım ve 0,20 üst sınırdır. Adım büyüdükçe noktalar fiyata daha
+        hızlı yaklaşır ve taraf daha sık değişir.
+    - type: scenarios
+      id: contexts
+      title: Aynı noktalar, farklı piyasa
+      intro: Parabolic SAR'ın davranışı piyasanın yapısına göre çok değişir.
+      items:
+        - title: Uzun trend
+          tone: up
+          text: Noktalar fiyatın bir tarafında belirgin bir eğri çizer. Geri çekilmeler noktalara ulaşmadığı sürece taraf değişmez.
+        - title: Yatay piyasa
+          tone: neutral
+          text: Fiyat bir aralıkta gidip geldikçe noktalar sık sık taraf değiştirir; her değişim kısa ömürlü olabilir.
+        - title: Trendin yavaşlaması
+          tone: down
+          text: Hızlanmış noktalar fiyata çok yaklaştığı için trendin yavaşlaması bile taraf değişimine yol açabilir; bu, trendin döndüğünü değil durakladığını da anlatabilir.
+    - type: limits
+      shows:
+        - O anki yönü ve fiyatı izleyen seviyeyi
+        - Trendin yeni uç noktalar yaptıkça hızlandığını
+        - Fiyatın izleyen seviyeye ne kadar yakın olduğunu
+      not_proves:
+        - Taraf değişiminin kalıcı bir dönüş olduğunu; yatay piyasada sık sık yanılır
+        - Bir trendin ne kadar süreceğini
+        - Bir seviyenin destek ya da direnç olduğunu; nokta hesaplanmış bir seviyedir
+    - type: zones
+      paragraphs:
+        - >-
+          SAR noktaları piyasanın daha önce tepki verdiği bölgelerden değil, trendin uç noktasından ve
+          süresinden hesaplanır. Bu yüzden bir destek ya da direnç bölgesi gibi okunmamalıdır.
+        - >-
+          Bölgelerle birlikte bakmak yine de bağlam verir. Fiyat bir direnç bölgesine yaklaşırken
+          noktalar çok hızlanmışsa, bölgede kısa bir duraklama bile noktaların taraf değiştirmesine
+          yetebilir. Bu, bölgenin tuttuğunu değil, iki ayrı gözlemin aynı anda gerçekleştiğini anlatır.
+    - type: box
+      title: Kriptoda Parabolic SAR
+      text: >-
+        Kripto fiyatları kısa sürede uzun fitiller bırakabilir. SAR fitile tepki verdiği için tek bir
+        uzun fitil, kapanış eski tarafta kalsa bile noktaların taraf değiştirmesine yol açabilir. Bu
+        yüzden düşük zaman dilimlerinde taraf değişimleri daha sık görülür.
+  confusions:
+    - id: supertrend
+      text: İkisi de fiyatı izleyen bir seviye çizer. Parabolic SAR trend sürdükçe hızlanır ve fitille döner; Supertrend mesafeyi ATR ile ölçer ve kapanışla döner.
+    - id: trend
+      text: Trend tepe ve diplerin yapısıdır; Parabolic SAR bu yapıyı değil, son uç noktaya göre hızlanan bir seviyeyi gösterir.
+  key_points:
+    - Parabolic SAR, trend sürdükçe fiyata hızlanarak yaklaşan, noktalarla çizilen bir seviyedir.
+    - Noktalar altta ise yön yukarı, üstte ise aşağı sayılır.
+    - Varsayılan ayar 0,02 başlangıç, 0,02 adım, 0,20 üst sınırdır.
+    - Yatay piyasalarda noktalar sık sık taraf değiştirir.
+  svg_labels:
+    dots_below: "Noktalar altta: yön yukarı"
+    dots_above: "Noktalar üstte: yön aşağı"
+    speeds_up: Noktalar hızlanır
+    switch: Taraf değişti
+  svg_alt: "Yükselen, sonra düşen ve toparlanan mumlar; yükselişte mumların altında yeşil, düşüşte üstünde kırmızı noktalar, her trend boyunca hafif bir eğriyle birleşmiş"
+  svg_caption: >-
+    Yeşil noktalar yükselişte mumların altında, kırmızı noktalar düşüşte üstünde ilerler. Trend sürdükçe
+    noktalar fiyata giderek daha hızlı yaklaşır ve eğri bir yol çizer; büyük nokta, fiyatın seviyeye
+    ulaşıp noktaların taraf değiştirdiği yerdir.
+
+en:
+  slug: parabolic-sar
+  name: Parabolic SAR
+  summary: >-
+    Parabolic SAR is a level drawn as one dot below or above price, which closes in on price faster and
+    faster as a trend runs on. Dots below price count as direction up, dots above as down; when price
+    reaches the dot, the dots switch to the other side. The "parabolic" in its name comes from the curve
+    the dots trace along a trend.
+  sections:
+    - type: text
+      id: definition
+      title: Which question does Parabolic SAR answer?
+      paragraphs:
+        - >-
+          Parabolic SAR answers this question: **while the trend runs, where is the trailing level and
+          how close is price to it?** One dot is drawn for each candle. In a rise the dots sit below the
+          candles, in a fall above them.
+        - >-
+          The dots do not close in at a constant speed. Each time the trend makes a new high or low, the
+          acceleration factor grows and the dots approach price faster. So in a long trend the dots trace
+          a curve; when the trend pauses, price reaches the dots quickly.
+    - type: steps
+      id: calculation
+      title: How it is calculated
+      items:
+        - title: Take the starting level and the extreme point.
+          text: In a rise, SAR starts near the last low and the extreme point (EP) is the trend's highest value; in a fall it is the other way round.
+        - title: Move the level toward the extreme each candle.
+          text: "New SAR = previous SAR + acceleration factor (AF) × (EP − previous SAR). AF starts at 0.02 by default."
+        - title: Speed up as the trend extends.
+          text: Each new high (in a rise) or new low (in a fall) raises AF by 0.02, up to 0.20. The larger the factor, the faster the dots close in.
+        - title: Switch sides when price reaches the dot.
+          text: If the candle's wick reaches the SAR level, the direction turns; the new SAR starts at the previous trend's extreme point and AF resets to 0.02. SAR may not enter the range of the two previous candles.
+    - type: bullets
+      id: common-readings
+      title: How it is commonly read
+      items:
+        - text: "**Dots below price:** direction up; the level trails price from below."
+          marker: up
+        - text: "**Dots above price:** direction down; the level trails price from above."
+          marker: down
+        - text: "**Dots speeding up:** as the trend makes new extremes, the dots close in faster. Dots very close to price show that even a short pause may be enough to switch sides."
+          marker: accent
+        - text: "**A switch of side:** the dots moving to the other side describes that price reached the trailing level; it does not show that the new direction will last."
+          marker: neutral
+      note: >-
+        The default setting is 0.02 start, 0.02 step and a 0.20 cap. A larger step makes the dots close in
+        faster and switch sides more often.
+    - type: scenarios
+      id: contexts
+      title: Same dots, different market
+      intro: Parabolic SAR behaves very differently depending on the structure of the market.
+      items:
+        - title: Long trend
+          tone: up
+          text: The dots trace a clear curve on one side of price. As long as pullbacks do not reach the dots, the side does not change.
+        - title: Sideways market
+          tone: neutral
+          text: As price moves back and forth in a range, the dots switch sides often; each switch may be short-lived.
+        - title: A slowing trend
+          tone: down
+          text: Because the accelerated dots are very close to price, even a slowdown can cause a switch; that may describe a pause rather than a turn of the trend.
+    - type: limits
+      shows:
+        - The current direction and the level trailing price
+        - That the trend speeds up as it makes new extremes
+        - How close price is to the trailing level
+      not_proves:
+        - That a switch of side is a lasting turn; in a sideways market it is often wrong
+        - How long a trend will last
+        - That a level is support or resistance; the dot is a calculated level
+    - type: zones
+      paragraphs:
+        - >-
+          SAR dots are calculated from the trend's extreme point and its duration, not from areas where
+          the market reacted before. So they should not be read like a support or resistance zone.
+        - >-
+          Looking at them with zones still gives context. If the dots have sped up a lot as price
+          approaches a resistance zone, even a short pause at the zone may be enough for the dots to switch
+          sides. That says two separate observations happened at the same time, not that the zone held.
+    - type: box
+      title: Parabolic SAR in crypto
+      text: >-
+        Crypto prices can leave long wicks in a short time. Because SAR responds to wicks, a single long
+        wick can make the dots switch sides even if the close stays on the old side. That is why switches
+        are more frequent on lower timeframes.
+  confusions:
+    - id: supertrend
+      text: Both draw a level that trails price. Parabolic SAR speeds up as the trend runs on and turns on a wick; Supertrend measures the distance with ATR and turns on a close.
+    - id: trend
+      text: A trend is the structure of highs and lows; Parabolic SAR shows not that structure but a level that speeds up relative to the latest extreme.
+  key_points:
+    - Parabolic SAR is a level drawn as dots that closes in on price faster as a trend runs on.
+    - Dots below mean direction up; dots above mean direction down.
+    - "Default setting: 0.02 start, 0.02 step, 0.20 cap."
+    - In sideways markets the dots switch sides often.
+  svg_labels:
+    dots_below: "Dots below: direction up"
+    dots_above: "Dots above: direction down"
+    speeds_up: Dots speed up
+    switch: Side switched
+  svg_alt: "Candles that rise, then fall and recover; green dots below the candles in the rise and red dots above them in the fall, each run joined by a faint curve"
+  svg_caption: >-
+    Green dots run below the candles in the rise, red dots above them in the fall. As the trend runs on,
+    the dots close in on price faster and trace a curve; the large dot is where price reached the level
+    and the dots switched sides.

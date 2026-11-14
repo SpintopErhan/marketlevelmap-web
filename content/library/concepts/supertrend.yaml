@@ -1,0 +1,223 @@
+id: supertrend
+kind: indicators
+order: 65
+related: [atr, parabolic-sar, trend, moving-averages]
+example: null
+updated: 2026-11-14
+
+tr:
+  slug: supertrend
+  name: Supertrend
+  alt_name: Supertrend
+  summary: >-
+    Supertrend, fiyatı belirli bir mesafeden izleyen tek bir çizgidir. Mesafe ATR ile ölçülür; yaygın
+    ayar 10 periyot ve 3 ATR'dir. Çizgi fiyatın altındayken yön yukarı, üstündeyken aşağı sayılır;
+    kapanış çizgiyi geçtiğinde çizgi diğer tarafa geçer. Gösterge trendin yönünü ve bu yönün hangi
+    seviyede değişeceğini tarif eder, yeni yönü önceden söylemez.
+  sections:
+    - type: text
+      id: definition
+      title: Supertrend hangi soruya cevap verir?
+      paragraphs:
+        - >-
+          Supertrend şu soruyu cevaplar: **mevcut yön hangisi ve kapanış hangi seviyeyi geçerse bu yön
+          değişmiş sayılır?** Cevap grafikte tek bir çizgi olarak görünür. Yön yukarıyken çizgi
+          mumların altında yeşil, yön aşağıyken mumların üstünde kırmızı çizilir.
+        - >-
+          Çizgi fiyatın oynaklığına göre uzaklaşır ya da yaklaşır. Mumlar genişlediğinde ATR büyür ve
+          çizgi fiyattan uzaklaşır; sakin dönemlerde ATR küçülür ve çizgi fiyata yaklaşır. Bu yüzden
+          aynı ayar, hem sakin hem hareketli dönemlerde o dönemin oynaklığına göre çalışır.
+    - type: steps
+      id: calculation
+      title: Nasıl hesaplanır?
+      items:
+        - title: ATR'yi hesapla.
+          text: Mumların gerçek aralığının 10 periyotluk ortalaması alınır (Wilder yöntemi). ATR sayfasında ayrıntısıyla anlatılır.
+        - title: İki bant kur.
+          text: "Mumun ortası (en yüksek + en düşük) ÷ 2'dir. Üst bant = orta + 3 × ATR, alt bant = orta − 3 × ATR."
+        - title: Bantlar yalnızca daralır.
+          text: Önceki kapanış bandı geçmediği sürece alt bant aşağı inmez, üst bant yukarı çıkmaz. Böylece çizgi trend yönünde basamak basamak ilerler ve geri çekilmez.
+        - title: Yönü belirle.
+          text: Yön aşağıyken kapanış üst bandın üzerine çıkarsa yön yukarı döner; yön yukarıyken kapanış alt bandın altına inerse yön aşağı döner. Çizgi, yön yukarıyken alt bant, aşağıyken üst banttır.
+    - type: bullets
+      id: common-readings
+      title: Genellikle nasıl okunur?
+      items:
+        - text: "**Çizgi fiyatın altında (yeşil):** son yön değişiminden bu yana kapanışlar alt bandın üzerinde kaldı; yön yukarı."
+          marker: up
+        - text: "**Çizgi fiyatın üstünde (kırmızı):** kapanışlar üst bandın altında kaldı; yön aşağı."
+          marker: down
+        - text: "**Yön değişimi:** kapanış çizgiyi geçtiğinde çizgi diğer tarafa atlar. Bu, yönün değiştiğinin tarifidir; yeni yönün süreceğini göstermez."
+          marker: accent
+        - text: "**Çizgiye uzaklık:** fiyatın çizgiye ne kadar yakın olduğu, yönün değişmesi için ne kadar hareket gerektiğini gösterir."
+          marker: neutral
+      note: >-
+        Ayar değiştikçe davranış değişir. Çarpan küçüldükçe (örneğin 2) çizgi fiyata yaklaşır ve yön daha
+        sık döner; büyüdükçe (örneğin 4) daha az ama daha geç döner.
+    - type: scenarios
+      id: contexts
+      title: Aynı çizgi, farklı piyasa
+      intro: Supertrend'in ne kadar işe yaradığı, piyasanın yapısına bağlıdır.
+      items:
+        - title: Belirgin trend
+          tone: up
+          text: Fiyat bir yönde ilerlerken geri çekilmeler çoğu zaman çizgiye ulaşmadan biter. Çizgi uzun süre aynı tarafta kalır.
+        - title: Yatay piyasa
+          tone: neutral
+          text: Fiyat bir aralıkta gidip geldiğinde kapanışlar çizgiyi sık sık geçer; yön kısa aralıklarla birkaç kez döner.
+        - title: Sert tek mum
+          tone: down
+          text: Tek bir geniş mum hem ATR'yi büyütür hem de çizgiyi geçebilir. Yön değişimi tek bir olağan dışı kapanıştan gelebilir.
+    - type: limits
+      shows:
+        - O anki yönü, son kapanışların bantlara göre yerinden
+        - Yönün değişmesi için kapanışın geçmesi gereken seviyeyi
+        - Bu seviyenin o dönemin oynaklığına göre ne kadar uzakta olduğunu
+      not_proves:
+        - Yeni yönün süreceğini; yatay piyasada yön sık sık döner
+        - Dönüşün zamanını; çizgi kapanışlarla değiştiği için geriden gelir
+        - Bir seviyenin destek ya da direnç olduğunu; çizgi hesaplanmış bir mesafedir
+    - type: zones
+      paragraphs:
+        - >-
+          Supertrend çizgisi bir fiyat seviyesidir ama piyasanın daha önce tepki verdiği bir bölge
+          değildir; o anki oynaklıktan hesaplanmış bir mesafedir. Bu yüzden destek ve direnç
+          bölgeleriyle aynı şey olarak okunmamalıdır.
+        - >-
+          İkisini birlikte okumak bağlam katar. Çizginin bir destek bölgesinin hemen altında kalması,
+          yönün değişmesi için fiyatın önce o bölgeyi de aşağı geçmesi gerektiğini gösterir. Çizgi
+          bölgenin çok uzağındaysa, bölgedeki tepki ile Supertrend'in yönü birbirinden bağımsız
+          ilerleyebilir.
+    - type: box
+      title: Kriptoda Supertrend
+      text: >-
+        Kripto 7/24 işlem gördüğü için ATR seans boşluklarından etkilenmez, ama hafta sonu ve gece
+        saatlerinde mumlar daralır. Bu dönemlerde ATR küçülür ve çizgi fiyata yaklaşır; hafta başında
+        gelen geniş bir mum, çizgiyi daha kolay geçebilir.
+  confusions:
+    - id: parabolic-sar
+      text: İkisi de fiyatı izleyen bir seviye çizer. Supertrend mesafeyi ATR ile ölçer ve kapanışla döner; Parabolic SAR trend sürdükçe hızlanır ve fitil seviyeye değince döner.
+    - id: moving-averages
+      text: Hareketli ortalama fiyatın ortalamasıdır ve iki yönde de eğilebilir; Supertrend çizgisi yön değişene kadar yalnızca trend yönünde ilerler.
+  key_points:
+    - Supertrend, mumun ortasından 3 ATR uzakta, fiyatı izleyen bir çizgidir (yaygın ayar 10/3).
+    - Çizgi altta ve yeşilse yön yukarı, üstte ve kırmızıysa yön aşağı sayılır.
+    - Yön, kapanış çizgiyi geçince değişir; bu bir tariftir, yeni yönün süreceğini göstermez.
+    - Yatay piyasalarda yön sık sık döner.
+  svg_labels:
+    line_below: "Çizgi altta: yön yukarı"
+    line_above: "Çizgi üstte: yön aşağı"
+    turn: Kapanış çizgiyi geçti
+  svg_alt: "Önce yükselen, sonra düşen ve yeniden toparlanan mumlar; mumların altında yeşil, üstünde kırmızı basamaklı Supertrend çizgisi ve yönün döndüğü kapanışlarda turuncu noktalar"
+  svg_caption: >-
+    Yeşil çizgi yön yukarıyken mumların altında, kırmızı çizgi yön aşağıyken üstünde ilerler. Çizgi
+    yalnızca trend yönünde basamak basamak hareket eder; turuncu noktalar kapanışın çizgiyi geçtiği ve
+    yönün değiştiği mumlardır.
+
+en:
+  slug: supertrend
+  name: Supertrend
+  summary: >-
+    Supertrend is a single line that trails price at a set distance. The distance is measured in ATR; the
+    common setting is 10 periods and 3 ATR. While the line is below price the direction counts as up,
+    while it is above as down; when a close crosses the line, it flips to the other side. The indicator
+    describes the direction and the level at which it would change; it does not foretell the new
+    direction.
+  sections:
+    - type: text
+      id: definition
+      title: Which question does Supertrend answer?
+      paragraphs:
+        - >-
+          Supertrend answers this question: **which way is price going now, and which level must a close
+          cross for that direction to count as changed?** The answer shows on the chart as one line. While
+          the direction is up the line is drawn green under the candles; while it is down, red above them.
+        - >-
+          The line moves further away or closer depending on volatility. When candles widen, ATR grows
+          and the line moves away from price; in quiet periods ATR shrinks and the line comes closer. So
+          the same setting works relative to the volatility of each period.
+    - type: steps
+      id: calculation
+      title: How it is calculated
+      items:
+        - title: Calculate ATR.
+          text: The 10-period average of the candles' true range (Wilder's method). The ATR page explains it in detail.
+        - title: Build two bands.
+          text: "The candle's middle is (high + low) ÷ 2. Upper band = middle + 3 × ATR, lower band = middle − 3 × ATR."
+        - title: The bands only tighten.
+          text: Unless the previous close crossed it, the lower band does not move down and the upper band does not move up. So the line steps along in the direction of the trend and never pulls back.
+        - title: Set the direction.
+          text: While the direction is down, a close above the upper band turns it up; while it is up, a close below the lower band turns it down. The line is the lower band while the direction is up and the upper band while it is down.
+    - type: bullets
+      id: common-readings
+      title: How it is commonly read
+      items:
+        - text: "**Line below price (green):** since the last turn, closes have stayed above the lower band; the direction is up."
+          marker: up
+        - text: "**Line above price (red):** closes have stayed below the upper band; the direction is down."
+          marker: down
+        - text: "**A turn:** when a close crosses the line, the line jumps to the other side. This describes that the direction changed; it does not show that the new direction will last."
+          marker: accent
+        - text: "**Distance to the line:** how close price is to the line shows how much movement a change of direction would take."
+          marker: neutral
+      note: >-
+        The behaviour changes with the setting. A smaller multiplier (for example 2) brings the line closer
+        to price and turns it more often; a larger one (for example 4) turns it less often but later.
+    - type: scenarios
+      id: contexts
+      title: Same line, different market
+      intro: How useful Supertrend is depends on the structure of the market.
+      items:
+        - title: Clear trend
+          tone: up
+          text: While price moves one way, pullbacks often end before reaching the line. The line stays on the same side for a long time.
+        - title: Sideways market
+          tone: neutral
+          text: When price moves back and forth in a range, closes cross the line often; the direction turns several times at short intervals.
+        - title: One sharp candle
+          tone: down
+          text: A single wide candle both enlarges ATR and may cross the line. A change of direction can come from one unusual close.
+    - type: limits
+      shows:
+        - The current direction, from where recent closes sit against the bands
+        - The level a close must cross for the direction to change
+        - How far that level is relative to the volatility of the period
+      not_proves:
+        - That the new direction will last; in a sideways market it turns often
+        - The timing of a turn; the line changes with closes, so it lags
+        - That a level is support or resistance; the line is a calculated distance
+    - type: zones
+      paragraphs:
+        - >-
+          The Supertrend line is a price level, but it is not an area where the market has reacted before;
+          it is a distance calculated from current volatility. So it should not be read as the same thing
+          as support and resistance zones.
+        - >-
+          Reading the two together adds context. A line sitting just below a support zone shows that, for
+          the direction to change, price would first have to cross that zone downward as well. If the line
+          is far from the zone, the reaction at the zone and Supertrend's direction can run independently.
+    - type: box
+      title: Supertrend in crypto
+      text: >-
+        Crypto trades 24/7, so ATR is not affected by session gaps, but candles narrow at weekends and at
+        night. In those periods ATR shrinks and the line comes closer to price; a wide candle at the start
+        of the week can then cross it more easily.
+  confusions:
+    - id: parabolic-sar
+      text: Both draw a level that trails price. Supertrend measures the distance with ATR and turns on a close; Parabolic SAR speeds up as the trend runs on and turns when a wick reaches the level.
+    - id: moving-averages
+      text: A moving average is the average of price and can bend either way; the Supertrend line only moves in the direction of the trend until the direction changes.
+  key_points:
+    - Supertrend is a line trailing price 3 ATR from the candle's middle (common setting 10/3).
+    - Line below and green means direction up; above and red means direction down.
+    - The direction changes when a close crosses the line; this describes, it does not show that the new direction will last.
+    - In sideways markets the direction turns often.
+  svg_labels:
+    line_below: "Line below: direction up"
+    line_above: "Line above: direction down"
+    turn: Close crossed the line
+  svg_alt: "Candles that rise, then fall and recover; a stepped Supertrend line, green below the candles and red above them, with orange dots at the closes where the direction turned"
+  svg_caption: >-
+    The green line runs below the candles while the direction is up, the red line above them while it is
+    down. The line only steps in the direction of the trend; the orange dots mark the candles whose close
+    crossed the line and turned the direction.

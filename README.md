@@ -390,9 +390,11 @@ the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/
   before it, at least 5 candles apart, within the last 60 candles: price higher high with a lower RSI/MACD high
   (negative), or price lower low with a higher RSI/MACD low (positive).
 
-Each row links to its library page where one exists (not yet for Stochastic RSI, Supertrend, Parabolic SAR and OBV).
+Each row links to its library page.
 The "Göstergeler / Indicators" menu above the chart draws them too: Supertrend (green under the candles, red above;
-a custom primitive, so a segment never joins two directions) and Parabolic SAR dots on the price pane, Stochastic
+a custom primitive, so a segment never joins two directions) and Parabolic SAR (dots sized to the candle spacing, each
+run joined by a faint curve so its acceleration shows, a larger dot where a run starts; also a custom primitive) on
+the price pane, Stochastic
 RSI (with 80/20 lines) and OBV in their own panes (order: RSI, Stochastic RSI, MACD, OBV). All four start off; the
 choice is kept in `localStorage` `mlm-indicators-v1`. Divergences are drawn on the chart as a dashed line between the two swings (green
 positive, red negative) and on the RSI/MACD pane when it is open (`liveChart.setDivergences`); the "Draw divergences"

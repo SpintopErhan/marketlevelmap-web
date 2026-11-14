@@ -1,7 +1,7 @@
 id: atr
 kind: indicators
 order: 60
-related: [volatility, bollinger-bands, price-gaps, after-sharp-moves]
+related: [volatility, supertrend, bollinger-bands, price-gaps, after-sharp-moves]
 example: null
 updated: 2026-10-23
 

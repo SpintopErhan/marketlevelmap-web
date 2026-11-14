@@ -334,7 +334,7 @@ table{font-size:14px}
 .ind-menu input{width:16px;height:16px;margin:0;accent-color:var(--accent);cursor:pointer}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}html.embed .flow-link{display:none!important}html.embed .chart .live-chart{height:500px}</style>
-<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=2ab0a564"></script><script src="assets/chart-draw.js?v=b0b1460e" defer></script><script src="assets/flow-mini.js?v=c37af0f2" defer></script><script src="assets/market-context.js?v=b07736cb" defer></script><script src="assets/features.js?v=5b5669df"></script></head>
+<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=d341fb45"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=11f0feef"></script><script src="assets/chart-draw.js?v=b0b1460e" defer></script><script src="assets/flow-mini.js?v=c37af0f2" defer></script><script src="assets/market-context.js?v=b07736cb" defer></script><script src="assets/features.js?v=5b5669df"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -932,7 +932,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   var sigDraw=true;try{sigDraw=localStorage.getItem("mlm-sig-draw")!=="0"}catch(e){}
   document.getElementById("sig-draw").checked=sigDraw;
   document.getElementById("sig-draw").addEventListener("change",function(){sigDraw=this.checked;try{localStorage.setItem("mlm-sig-draw",sigDraw?"1":"0")}catch(e){}renderSignals(true)});
-  var SIG_LIB={atr:["atr","atr"],adx:["adx","adx"],bb:["bollinger-bantlari","bollinger-bands"],rsi:["rsi","rsi"],macd:["macd","macd"],ema:["hareketli-ortalamalar","moving-averages"],div:["uyumsuzluk","divergence"]};
+  var SIG_LIB={srsi:["stokastik-rsi","stochastic-rsi"],st:["supertrend","supertrend"],psar:["parabolic-sar","parabolic-sar"],obv:["obv","obv"],atr:["atr","atr"],adx:["adx","adx"],bb:["bollinger-bantlari","bollinger-bands"],rsi:["rsi","rsi"],macd:["macd","macd"],ema:["hareketli-ortalamalar","moving-averages"],div:["uyumsuzluk","divergence"]};
   function sigLib(k){var tr=document.getElementById("lang").value==="tr";return(tr?"/tr/kutuphane/":"/en/library/")+SIG_LIB[k][tr?0:1]+"/"}
   function swings(arr,isHigh,from,to){var out=[];for(var i=Math.max(from,3);i<=to-3;i++){var v=arr[i],ok=true;for(var k=1;k<=3&&ok;k++){if(isHigh?(arr[i-k]>v||arr[i+k]>=v):(arr[i-k]<v||arr[i+k]<=v))ok=false}if(ok)out.push(i)}return out}
   function divergence(d,osc,kind){
@@ -966,7 +966,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       var sk=d.srsiK[last],sd=d.srsiD[last],sp=[sk>=sd?w.sigSrsiAbove:w.sigSrsiBelow];
       for(var y=last;y>last-10&&y>0;y--){if(d.srsiK[y-1]==null||d.srsiD[y-1]==null)break;var c1=d.srsiK[y-1]-d.srsiD[y-1],c2=d.srsiK[y]-d.srsiD[y];if(c1<0&&c2>=0){sp[0]=fill(w.sigSrsiCrossUp,{n:last-y});break}if(c1>0&&c2<=0){sp[0]=fill(w.sigSrsiCrossDown,{n:last-y});break}}
       sp.push(w.sigSrsiNote);
-      rows.push({t:w.sigSrsi,v:(sk>80?w.sigSrsiHigh:sk<20?w.sigSrsiLow:w.sigSrsiMid)+" · %K "+f1(sk)+" · %D "+f1(sd),cls:sk>80||sk<20?"warn":"",p:sp.join(" · ")});
+      rows.push({t:w.sigSrsi,v:(sk>80?w.sigSrsiHigh:sk<20?w.sigSrsiLow:w.sigSrsiMid)+" · %K "+f1(sk)+" · %D "+f1(sd),cls:sk>80||sk<20?"warn":"",p:sp.join(" · "),lib:"srsi"});
     }
     // MACD
     var m=d.macd[last],sg=d.signal[last],h=d.hist[last],hp=d.hist[last-1],parts=[Math.abs(h)>=Math.abs(hp)?w.sigHistUp:w.sigHistDown,m>=0?w.sigZeroAbove:w.sigZeroBelow];
@@ -987,11 +987,11 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     function pctOf(v){var t=Number(Math.abs(v-px)/px*100).toLocaleString(MarketUI.locale(),{minimumFractionDigits:2,maximumFractionDigits:2});return document.getElementById("lang").value==="tr"?"%"+t:t+"%"}
     if(d.st&&d.st[last]!=null){
       var stUp=d.stDir[last]===1,sn=since(d.stDir),stp=[sn!=null?fill(w.sigStFlip,{n:sn}):w.sigStSince,fill(w.sigStLevel,{v:fmt(d.st[last]),p:pctOf(d.st[last])}),w.sigStNote];
-      rows.push({t:w.sigSt,v:stUp?w.sigStUp:w.sigStDown,cls:stUp?"up":"down",p:stp.join(" · ")});
+      rows.push({t:w.sigSt,v:stUp?w.sigStUp:w.sigStDown,cls:stUp?"up":"down",p:stp.join(" · "),lib:"st"});
     }
     if(d.psar&&d.psar[last]!=null){
       var psUp=d.psarDir[last]===1,pn=since(d.psarDir),pp2=[];if(pn!=null)pp2.push(fill(w.sigPsarFlip,{n:pn}));pp2.push(fill(w.sigPsarLevel,{v:fmt(d.psar[last])}));pp2.push(w.sigPsarNote);
-      rows.push({t:w.sigPsar,v:psUp?w.sigPsarBelow:w.sigPsarAbove,cls:psUp?"up":"down",p:pp2.join(" · ")});
+      rows.push({t:w.sigPsar,v:psUp?w.sigPsarBelow:w.sigPsarAbove,cls:psUp?"up":"down",p:pp2.join(" · "),lib:"psar"});
     }
     // ATR 14 and ADX 14 (Wilder: true range, +DM/−DM, DX smoothed with alpha 1/14 from the first value).
     var atr=new Array(n),adx=new Array(n),pdi=new Array(n),mdi=new Array(n),sTr=null,sP=null,sM=null,sDx=null;
@@ -1034,7 +1034,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       var od=d.obv[last]-d.obv[last-20],ov=0;for(var o2=last-19;o2<=last;o2++)ov+=Number(d.volume[o2])||0;
       var oflat=Math.abs(od)<ov*0.1,odir=oflat?0:od>0?1:-1,pdir=d.close[last]>d.close[last-20]?1:d.close[last]<d.close[last-20]?-1:0,op=[];
       if(odir&&pdir)op.push(odir===pdir?w.sigObvSame:w.sigObvApart);op.push(w.sigObvNote);
-      rows.push({t:w.sigObv,v:oflat?w.sigObvFlat:odir>0?w.sigObvUp:w.sigObvDown,cls:oflat?"":odir>0?"up":"down",p:op.join(" · ")});
+      rows.push({t:w.sigObv,v:oflat?w.sigObvFlat:odir>0?w.sigObvUp:w.sigObvDown,cls:oflat?"":odir>0?"up":"down",p:op.join(" · "),lib:"obv"});
     }
     // Divergences
     var divs=[];

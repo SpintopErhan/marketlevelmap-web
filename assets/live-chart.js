@@ -254,6 +254,51 @@ var LiveChart = (function () {
     }];
   };
 
+  // Parabolic SAR: dots, each run joined by a faint curve so its parabolic acceleration shows, and a larger dot where
+  // a run starts (the switch of side).
+  function SarPrimitive() { this.points = []; this.chart = null; this.series = null; this.requestUpdate = null; }
+  SarPrimitive.prototype.attached = TrendLinePrimitive.prototype.attached;
+  SarPrimitive.prototype.detached = TrendLinePrimitive.prototype.detached;
+  SarPrimitive.prototype.set = TrendLinePrimitive.prototype.set;
+  SarPrimitive.prototype.updateAllViews = function () {};
+  SarPrimitive.prototype.paneViews = function () {
+    var self = this;
+    return [{
+      zOrder: function () { return "top"; },
+      renderer: function () {
+        return { draw: function (target) {
+          if (!self.chart || !self.series || !self.points.length) return;
+          var ts = self.chart.timeScale(), spacing = ts.options().barSpacing || 6;
+          target.useMediaCoordinateSpace(function (scope) {
+            var ctx = scope.context, runs = [], run = null;
+            self.points.forEach(function (p) {
+              var x = ts.timeToCoordinate(p.time), y = self.series.priceToCoordinate(p.value);
+              if (x === null || y === null) { run = null; return; }
+              if (!run || run.dir !== p.dir) { run = { dir: p.dir, pts: [], start: p.start }; runs.push(run); }
+              run.pts.push({ x: x, y: y });
+            });
+            var r = Math.max(1.6, Math.min(3.2, spacing * 0.28));
+            runs.forEach(function (rn) {
+              var col = rn.dir === 1 ? "85,217,156" : "239,110,118";
+              if (rn.pts.length > 1) {
+                ctx.strokeStyle = "rgba(" + col + ",0.35)"; ctx.lineWidth = 1.2; ctx.lineJoin = "round";
+                ctx.beginPath(); ctx.moveTo(rn.pts[0].x, rn.pts[0].y);
+                for (var i = 1; i < rn.pts.length; i++) ctx.lineTo(rn.pts[i].x, rn.pts[i].y);
+                ctx.stroke();
+              }
+              rn.pts.forEach(function (pt, i) {
+                var first = i === 0 && rn.start;
+                ctx.fillStyle = "rgb(" + col + ")";
+                ctx.beginPath(); ctx.arc(pt.x, pt.y, first ? r + 1.4 : r, 0, Math.PI * 2); ctx.fill();
+                if (first) { ctx.strokeStyle = "#101820"; ctx.lineWidth = 1; ctx.stroke(); }
+              });
+            });
+          });
+        } };
+      }
+    }];
+  };
+
   function ZonesPrimitive() { this.zones = []; this.reveal = 1; this.times = []; this.chart = null; this.series = null; this.requestUpdate = null; }
   ZonesPrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
   ZonesPrimitive.prototype.detached = function () { this.chart = this.series = this.requestUpdate = null; };
@@ -510,8 +555,8 @@ var LiveChart = (function () {
       lastValueVisible: true, title: "AVWAP", crosshairMarkerVisible: false, visible: false }), avwapPoints = [];
     var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [], lastValidZones = [], fibZones = [];
     candles.attachPrimitive(zones);
-    var stLine = new TrendLinePrimitive();
-    candles.attachPrimitive(stLine);
+    var stLine = new TrendLinePrimitive(), sarDots = new SarPrimitive();
+    candles.attachPrimitive(stLine); candles.attachPrimitive(sarDots);
     var structurePoints = new PointsPrimitive(function () { return times(); });
     candles.attachPrimitive(structurePoints);
     // Zone tooltip: hovering (or tapping) a band shows its name and price range. The narrowest band under the
@@ -633,9 +678,9 @@ var LiveChart = (function () {
     // with the forming candle, whenever candles change.
     function indicatorRows() { var rows = allRows(); return forming ? rows.concat([forming]) : rows; }
     function drawIndicators() {
-      if (!Object.keys(indSeries).length && !indPrefs.st) { stLine.set([]); return; }
+      if (!Object.keys(indSeries).length && !indPrefs.st && !indPrefs.psar) { stLine.set([]); sarDots.set([]); return; }
       var rows = indicatorRows(), v = indicators(rows.map(function (r) { return r[4]; })), warm = Math.min(IND_WARMUP, Math.max(0, rows.length - 1));
-      var x = indPrefs.st || indSeries.psar || indSeries.srsiK || indSeries.obv ? extraIndicators(rows, v.rsi) : null;
+      var x = indPrefs.st || indPrefs.psar || indSeries.srsiK || indSeries.obv ? extraIndicators(rows, v.rsi) : null;
       var points = function (values, from) {
         var list = [];
         for (var i = from; i < rows.length; i++) if (values[i] != null && isFinite(values[i])) list.push({ time: rows[i][0], value: values[i] });
@@ -657,11 +702,9 @@ var LiveChart = (function () {
       var stPoints = [];
       if (indPrefs.st && x) for (var s1 = Math.min(20, rows.length); s1 < rows.length; s1++) if (x.st[s1] != null) stPoints.push({ time: rows[s1][0], value: x.st[s1], dir: x.stDir[s1] });
       stLine.set(stPoints);
-      if (indSeries.psar) {
-        var ps = [];
-        for (var s2 = Math.min(20, rows.length); s2 < rows.length; s2++) if (x.psar[s2] != null) ps.push({ time: rows[s2][0], value: x.psar[s2], color: x.psarDir[s2] === 1 ? "#55d99c" : "#ef6e76" });
-        indSeries.psar.setData(ps);
-      }
+      var ps = [];
+      if (indPrefs.psar && x) for (var s2 = Math.min(20, rows.length); s2 < rows.length; s2++) if (x.psar[s2] != null) ps.push({ time: rows[s2][0], value: x.psar[s2], dir: x.psarDir[s2], start: x.psarDir[s2 - 1] != null && x.psarDir[s2 - 1] !== x.psarDir[s2] });
+      sarDots.set(ps);
       if (indSeries.srsiK) { indSeries.srsiK.setData(points(x.srsiK, warm)); indSeries.srsiD.setData(points(x.srsiD, warm)); }
       if (indSeries.obv) indSeries.obv.setData(points(x.obv, 1));
     }
@@ -678,7 +721,6 @@ var LiveChart = (function () {
         indSeries.bbMid = chart.addSeries(LC.LineSeries, bb("#e8549a"), 0);
         indSeries.bbLower = chart.addSeries(LC.LineSeries, bb("#9575e0"), 0);
       }
-      if (indPrefs.psar) indSeries.psar = chart.addSeries(LC.LineSeries, line("#e8ecf3", Object.assign({ lineVisible: false, pointMarkersVisible: true, pointMarkersRadius: 1.6 }, priceFormat ? { priceFormat: priceFormat } : {})), 0);
       var pane = 2;
       if (indPrefs.rsi) {
         indSeries.rsi = chart.addSeries(LC.LineSeries, line("#b892ff", { lineWidth: 1.5, lastValueVisible: true, title: "RSI 14", priceFormat: { type: "price", precision: 1, minMove: 0.1 },
