@@ -112,6 +112,13 @@ async function db(env) {
         approved_at TEXT
       )`),
       d.prepare(`CREATE TABLE IF NOT EXISTS x_locks (x_handle_lc TEXT PRIMARY KEY, until TEXT NOT NULL)`),
+      d.prepare(`CREATE TABLE IF NOT EXISTS drawings (
+        user_id INTEGER NOT NULL,
+        key TEXT NOT NULL,
+        data TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        PRIMARY KEY (user_id, key)
+      )`),
     ]);
     schemaReady = true;
   }
@@ -289,10 +296,53 @@ async function remove(request, env) {
   const row = await sessionUser(request, env);
   if (!row) return json({ error: "signed_out" }, 401);
   const d = await db(env);
-  const statements = [d.prepare("DELETE FROM users WHERE id = ?").bind(row.id)];
+  const statements = [d.prepare("DELETE FROM users WHERE id = ?").bind(row.id), d.prepare("DELETE FROM drawings WHERE user_id = ?").bind(row.id)];
   if (row.x_handle_lc) statements.push(d.prepare("INSERT OR REPLACE INTO x_locks (x_handle_lc, until) VALUES (?, ?)").bind(row.x_handle_lc, iso(now() + X_LOCK_DAYS * 86400)));
   await d.batch(statements);
   return json({ ok: true }, 200, { "Set-Cookie": [clear(COOKIE.session), clear(COOKIE.hint, "/", false)] });
+}
+
+// ---------- chart drawings (README "Chart drawing tools"): members keep their drawings with the account ----------
+// One row per member and chart (pair:timeframe): the drawing list as JSON and when it was saved. GET /drawings?key=
+// answers { key, list, updatedAt } (list null when nothing is stored); POST /drawings { key, list, updatedAt }
+// stores the list unless the stored one is newer (then it answers 409 with the stored one); an empty list deletes.
+const DRAW_KEY = /^[A-Z0-9]{2,20}:(1h|4h|1d|1w)$/, DRAW_MAX_BYTES = 64 * 1024, DRAW_MAX_ITEMS = 200, DRAW_MAX_CHARTS = 300;
+async function drawingsMember(request, env) {
+  const row = await sessionUser(request, env);
+  return row && row.status === "approved" ? row : null;
+}
+async function drawingsGet(request, env) {
+  const row = await drawingsMember(request, env);
+  if (!row) return json({ error: "members_only" }, 403);
+  const key = new URL(request.url).searchParams.get("key") || "";
+  if (!DRAW_KEY.test(key)) return json({ error: "key" }, 400);
+  const hit = await (await db(env)).prepare("SELECT data, updated_at FROM drawings WHERE user_id = ? AND key = ?").bind(row.id, key).first();
+  let list = null;
+  try { list = hit ? JSON.parse(hit.data) : null; } catch (_) { list = null; }
+  return json({ key, list, updatedAt: hit ? hit.updated_at : null });
+}
+async function drawingsPost(request, env, body) {
+  const row = await drawingsMember(request, env);
+  if (!row) return json({ error: "members_only" }, 403);
+  const key = String(body.key || ""), list = body.list, at = Date.parse(body.updatedAt || "") ? new Date(Date.parse(body.updatedAt)).toISOString() : iso(now());
+  if (!DRAW_KEY.test(key) || !Array.isArray(list)) return json({ error: "input" }, 400);
+  if (list.length > DRAW_MAX_ITEMS) return json({ error: "too_many" }, 413);
+  const data = JSON.stringify(list);
+  if (data.length > DRAW_MAX_BYTES) return json({ error: "too_large" }, 413);
+  const d = await db(env);
+  const current = await d.prepare("SELECT data, updated_at FROM drawings WHERE user_id = ? AND key = ?").bind(row.id, key).first();
+  if (current && current.updated_at > at) {
+    let stored = null; try { stored = JSON.parse(current.data); } catch (_) { stored = null; }
+    return json({ error: "stale", key, list: stored, updatedAt: current.updated_at }, 409);
+  }
+  if (!list.length) { await d.prepare("DELETE FROM drawings WHERE user_id = ? AND key = ?").bind(row.id, key).run(); return json({ ok: true, key, updatedAt: at }); }
+  if (!current) {
+    const n = Number(((await d.prepare("SELECT COUNT(*) AS n FROM drawings WHERE user_id = ?").bind(row.id).first()) || {}).n) || 0;
+    if (n >= DRAW_MAX_CHARTS) return json({ error: "too_many_charts" }, 413);
+  }
+  await d.prepare("INSERT INTO drawings (user_id, key, data, updated_at) VALUES (?, ?, ?, ?) ON CONFLICT (user_id, key) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at")
+    .bind(row.id, key, data, at).run();
+  return json({ ok: true, key, updatedAt: at });
 }
 
 // ---------- membership, for other routes (README "Accounts": guest / member split) ----------
@@ -534,6 +584,7 @@ export async function onRequest(context) {
       if (route === "me") return await me(request, env);
       if (route === "admin/users") return await adminUsers(request, env);
       if (route === "admin/social") return await adminSocial(request, env);
+      if (route === "drawings") return await drawingsGet(request, env);
       return json({ error: "not_found" }, 404);
     }
     if (request.method !== "POST") return json({ error: "method" }, 405);
@@ -546,6 +597,7 @@ export async function onRequest(context) {
     if (route === "register") return await register(request, env, body);
     if (route === "profile") return await profile(request, env, body);
     if (route === "delete") return await remove(request, env);
+    if (route === "drawings") return await drawingsPost(request, env, body);
     if (route === "admin/action") return await adminAction(request, env, body);
     if (route === "admin/social/plan") return await adminSocialPlan(request, env, body);
     if (route === "admin/social/post") return await adminSocialPost(request, env, body);

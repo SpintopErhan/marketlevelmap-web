@@ -39,12 +39,56 @@
   function load(k) { try { var v = JSON.parse(localStorage.getItem(store(k)) || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
   // Fields starting with "_" are drawing-time scratch (text width, the first click) and are not stored.
   function plain(v) { return JSON.stringify(v, function (k, x) { return k.charAt(0) === "_" ? undefined : x; }); }
-  function save() { if (!key) return; try { if (list.length) localStorage.setItem(store(key), plain(list)); else localStorage.removeItem(store(key)); } catch (e) {} }
+  // When the browser copy last changed ("mlm-draw-at:<key>", ISO); compared with the account copy's time.
+  function localAt(k) { try { return localStorage.getItem("mlm-draw-at:" + k) || null; } catch (e) { return null; } }
+  function keepLocal(k, items, at) {
+    try {
+      if (items.length) localStorage.setItem(store(k), plain(items)); else localStorage.removeItem(store(k));
+      localStorage.setItem("mlm-draw-at:" + k, at);
+    } catch (e) {}
+  }
+  function save() { if (!key) return; var at = new Date().toISOString(); keepLocal(key, list, at); edits++; schedulePush(key); }
+
+  // ---- account copy (README "Chart drawing tools"): /api/auth/drawings, members only ----
+  // On opening a chart the browser copy shows at once; the account copy then replaces it when it is newer, or the
+  // browser copy is sent when it is newer (or the account has none yet: drawings made before this existed move up).
+  // Changes are sent 1.5 s after the last one. A failed send leaves the browser copy newer, so it goes up next time.
+  var edits = 0, pushTimer = null, pushKey = null;
+  function schedulePush(k) { if (pushKey && pushKey !== k) flush(); clearTimeout(pushTimer); pushKey = k; pushTimer = setTimeout(flush, 1500); }
+  // Send a waiting change now (switching charts, leaving the page).
+  function flush() { if (!pushKey) return; clearTimeout(pushTimer); var k = pushKey; pushTimer = null; pushKey = null; push(k); }
+  function push(k) {
+    var items = k === key ? JSON.parse(plain(list)) : load(k), at = localAt(k) || new Date().toISOString();
+    return fetch("/api/auth/drawings", { method: "POST", credentials: "same-origin", keepalive: true, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: k, list: items, updatedAt: at }) })
+      .then(function (r) { return r.json().then(function (b) { return { status: r.status, body: b }; }); })
+      .then(function (res) { if (res.status === 409 && res.body && Array.isArray(res.body.list)) adopt(k, res.body.list, res.body.updatedAt); })
+      .catch(function () {});
+  }
+  function adopt(k, items, at) {
+    keepLocal(k, items, at);
+    if (k === key) { list = items; selected = null; pending = null; undoStack = []; redraw(); }
+  }
+  function pull(k) {
+    var seen = edits;
+    fetch("/api/auth/drawings?key=" + encodeURIComponent(k), { credentials: "same-origin", cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (b) {
+        if (!b || k !== key) return;
+        var mine = localAt(k), local = load(k);
+        if (!b.list) { if (local.length) push(k); return; }
+        if (edits !== seen) return; // edited while asking: the next send settles it
+        if (!mine || b.updatedAt > mine) adopt(k, b.list, b.updatedAt);
+        else if (mine > b.updatedAt) push(k);
+      })
+      .catch(function () {});
+  }
   function remember() { undoStack.push(plain(list)); if (undoStack.length > 60) undoStack.shift(); }
   function syncKey() {
     var k = host ? host.key() : null;
     if (k === key) return;
+    flush();
     key = k; list = k ? load(k) : []; undoStack = []; selected = null; pending = null; drag = null; closeInput(false);
+    if (k) pull(k);
   }
   function changed() { save(); redraw(); }
 
@@ -397,6 +441,7 @@
   }
   function detach() {
     if (!host) return;
+    flush();
     closeInput(false);
     try { host.series.detachPrimitive(prim); } catch (e) {}
     EVENTS.forEach(function (e) { host.container.removeEventListener(e[0], e[1], true); });
@@ -409,6 +454,8 @@
   }
   // Desktop: a mouse or trackpad (fine pointer that can hover) and room for the toolbar.
   function desktop() { return window.matchMedia && matchMedia("(hover: hover) and (pointer: fine) and (min-width: 900px)").matches; }
+  window.addEventListener("pagehide", flush);
+  document.addEventListener("visibilitychange", function () { if (document.hidden) flush(); });
   new MutationObserver(function () { sync(); redraw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
   window.MLMDraw = { attach: attach, detach: detach, desktop: desktop, _state: function () { return { key: key, list: list, tool: tool, hidden: hidden }; } };
 })();

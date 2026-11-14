@@ -457,8 +457,19 @@ interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` 
   removes the selected shape, Escape cancels, Ctrl+Z undoes.
 - **Toolbar buttons:** colour (five colours; also recolours the selected shape), hide or show the drawings, undo,
   delete all (asks first).
-- **Storage:** drawings are kept per pair and timeframe in this browser only (`localStorage` `mlm-draw:<PAIR>:<tf>`).
-  Nothing goes to the server, so they do not follow the member to another device.
+- **Storage:** drawings are kept per pair and timeframe with the member's account, so they follow them to other
+  devices, and in the browser for an instant start (`localStorage` `mlm-draw:<PAIR>:<tf>`, last change time in
+  `mlm-draw-at:<PAIR>:<tf>`).
+  - **Server:** `GET /api/auth/drawings?key=<PAIR>:<tf>` → `{ key, list, updatedAt }`; `POST /api/auth/drawings
+    { key, list, updatedAt }` stores the list unless the stored one is newer (409 with the stored one); an empty
+    list deletes. Approved members only.
+  - **Table:** `drawings (user_id, key, data, updated_at)` in `USERS_DB`, created by the code like the others.
+  - **Limits:** 200 drawings and 64 KB per chart, 300 charts per member.
+  - **Account deletion** removes the member's drawings.
+  - **Sync:** on opening a chart the browser copy shows at once, then the newer of the two copies wins; changes are
+    sent 1.5 s after the last one, and at once when switching charts or leaving the page. A failed send leaves the
+    browser copy newer, so it goes up next time. Drawings made before the account copy existed move up on first
+    open. Two devices editing the same chart at once: the later save wins (lists are not merged).
 - **Placement:** points are stored as candle time and price, so drawings stay on their candles when the chart scrolls,
   zooms, loads older candles or gets new ones (past the last candle, time runs on in candle steps). They are drawn by
   a series primitive on the price pane, so "Download" and "Share with image" carry them; hidden drawings are left out.
