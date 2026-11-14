@@ -382,6 +382,14 @@ Each row links to its library page. Divergences are drawn on the chart as a dash
 positive, red negative) and on the RSI/MACD pane when it is open (`liveChart.setDivergences`); the "Draw divergences"
 box turns this off (`localStorage` `mlm-sig-draw`). The card describes; it gives no buy or sell signal.
 
+## Candle legend
+
+The interactive analysis chart shows a one-line legend at the top left of the price pane, as most charting tools do:
+the candle's date (with the hour, in UTC, on 1H and 4H), open, high, low and close (TR: A / Y / D / K), the change from
+the previous candle's close and the volume. It follows the pointer (or the finger on a phone) and shows the newest
+candle, forming one included, when the pointer is off the chart (`assets/live-chart.js`, `.lc-legend`). It is an HTML
+layer, so the downloaded and shared images leave it out.
+
 ## Chart watermark
 
 The interactive analysis chart carries a faint "MarketLevelMap / marketlevelmap.com" text watermark in the
