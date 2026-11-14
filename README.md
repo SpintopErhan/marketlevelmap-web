@@ -494,7 +494,9 @@ scaled (darkest at ±30 % a month, ±150 % a year).
 - **Data, crypto:** the public daily candles, `data.marketlevelmap.com/candles/<SYMBOL>/1d/<year>.json` from
   `index.json` plus `latest.json`. Any pair with daily candles can be chosen (`?asset=`).
 - **Data, macro and commodities:** `GET /api/monthly?symbol=spx|ndx|gold|silver|dxy` (`functions/api/monthly.js`,
-  cached 12 hours). It gives Yahoo Finance monthly closes over 11 years: S&P 500 (`^GSPC`) and Nasdaq 100 (`^NDX`)
+  cached 12 hours). It gives each month's last daily close from Yahoo Finance over 11 years (Yahoo's own monthly
+  bars have irregular dates for futures and left months empty; dates are taken half a day past the bar time, so a
+  summer-time bar is not counted on the day before): S&P 500 (`^GSPC`) and Nasdaq 100 (`^NDX`)
   cash indices, gold and silver COMEX futures (`GC=F`, `SI=F`; free sources have no long spot history), DXY. A month's
   return there runs from the previous month's close to its close. The colour scale is ±8 % a month and ±30 % a year.
 - **Range:** the last 10 years (rows), for every asset.

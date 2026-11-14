@@ -21,7 +21,9 @@ export function dailyCloses(body) {
   const t = r && r.timestamp, q = r && r.indicators && r.indicators.quote && r.indicators.quote[0];
   if (!Array.isArray(t) || !q || !Array.isArray(q.close)) return null;
   const off = Number(r.meta && r.meta.gmtoffset) || 0, out = {};
-  t.forEach((sec, i) => { const c = Number(q.close[i]); if (c > 0) out[new Date((sec + off) * 1000).toISOString().slice(0, 10)] = c; });
+  // Half a day added: a summer-time bar at local midnight, shifted by today's (winter) offset, would land on the day
+  // before (see monthly.js).
+  t.forEach((sec, i) => { const c = Number(q.close[i]); if (c > 0) out[new Date((sec + off + 43200) * 1000).toISOString().slice(0, 10)] = c; });
   return out;
 }
 
@@ -50,7 +52,7 @@ async function yahoo(symbol) {
 export async function onRequestGet(context) {
   const url = new URL(context.request.url);
   const cache = typeof caches !== "undefined" ? caches.default : null;
-  const key = new Request(`${url.origin}/api/correlation`);
+  const key = new Request(`${url.origin}/api/correlation?v=2`);
   if (cache) { const hit = await cache.match(key); if (hit) return hit; }
   const [btc, ...others] = await Promise.all([yahoo("BTC-USD"), ...PAIRS.map((p) => yahoo(p[1]))]);
   const pairs = {};
