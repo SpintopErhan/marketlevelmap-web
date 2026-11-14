@@ -110,7 +110,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   function load(sym){
     el("rt-status").hidden=false;el("rt-status").textContent=words().loading;el("rt-wrap").hidden=true;el("rt-download").disabled=true;
     if(MACRO.indexOf(sym)>-1){
-      getJson("/api/monthly?symbol="+sym+"&v=2").then(function(d){if(!d||!d.rows||d.rows.length<13)throw new Error("few");done(sym,fromMonthly(d.rows))}).catch(function(){el("rt-status").textContent=words().failed});
+      getJson("/api/monthly?symbol="+sym+"&v=3").then(function(d){if(!d||!d.rows||d.rows.length<13)throw new Error("few");done(sym,fromMonthly(d.rows))}).catch(function(){el("rt-status").textContent=words().failed});
       return;
     }
     var entry=index&&index.pairs&&index.pairs[sym]&&index.pairs[sym]["1d"],names=((entry&&entry.archives)||[]).slice(-(YEARS+1)).concat(["latest"]);
