@@ -221,6 +221,84 @@ var LiveChart = (function () {
     }];
   };
 
+  // Supertrend line: drawn here rather than as line series, so a segment joins only two candles of the same direction
+  // (line series join across whitespace, which drew the line through the turns).
+  function TrendLinePrimitive() { this.points = []; this.chart = null; this.series = null; this.requestUpdate = null; }
+  TrendLinePrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
+  TrendLinePrimitive.prototype.detached = function () { this.chart = this.series = this.requestUpdate = null; };
+  TrendLinePrimitive.prototype.set = function (points) { this.points = points || []; if (this.requestUpdate) this.requestUpdate(); };
+  TrendLinePrimitive.prototype.updateAllViews = function () {};
+  TrendLinePrimitive.prototype.paneViews = function () {
+    var self = this;
+    return [{
+      zOrder: function () { return "normal"; },
+      renderer: function () {
+        return { draw: function (target) {
+          if (!self.chart || !self.series || self.points.length < 2) return;
+          var ts = self.chart.timeScale();
+          target.useMediaCoordinateSpace(function (scope) {
+            var ctx = scope.context, prev = null;
+            ctx.lineWidth = 2; ctx.lineJoin = "round";
+            self.points.forEach(function (p) {
+              var x = ts.timeToCoordinate(p.time), y = self.series.priceToCoordinate(p.value);
+              if (x === null || y === null) { prev = null; return; }
+              if (prev && prev.dir === p.dir) {
+                ctx.strokeStyle = p.dir === 1 ? "#3ccf91" : "#ef6b73";
+                ctx.beginPath(); ctx.moveTo(prev.x, prev.y); ctx.lineTo(x, y); ctx.stroke();
+              }
+              prev = { x: x, y: y, dir: p.dir };
+            });
+          });
+        } };
+      }
+    }];
+  };
+
+  // Parabolic SAR: dots, each run joined by a faint curve so its parabolic acceleration shows, and a larger dot where
+  // a run starts (the switch of side).
+  function SarPrimitive() { this.points = []; this.chart = null; this.series = null; this.requestUpdate = null; }
+  SarPrimitive.prototype.attached = TrendLinePrimitive.prototype.attached;
+  SarPrimitive.prototype.detached = TrendLinePrimitive.prototype.detached;
+  SarPrimitive.prototype.set = TrendLinePrimitive.prototype.set;
+  SarPrimitive.prototype.updateAllViews = function () {};
+  SarPrimitive.prototype.paneViews = function () {
+    var self = this;
+    return [{
+      zOrder: function () { return "top"; },
+      renderer: function () {
+        return { draw: function (target) {
+          if (!self.chart || !self.series || !self.points.length) return;
+          var ts = self.chart.timeScale(), spacing = ts.options().barSpacing || 6;
+          target.useMediaCoordinateSpace(function (scope) {
+            var ctx = scope.context, runs = [], run = null;
+            self.points.forEach(function (p) {
+              var x = ts.timeToCoordinate(p.time), y = self.series.priceToCoordinate(p.value);
+              if (x === null || y === null) { run = null; return; }
+              if (!run || run.dir !== p.dir) { run = { dir: p.dir, pts: [], start: p.start }; runs.push(run); }
+              run.pts.push({ x: x, y: y });
+            });
+            var r = Math.max(1.6, Math.min(3.2, spacing * 0.28));
+            runs.forEach(function (rn) {
+              var col = rn.dir === 1 ? "85,217,156" : "239,110,118";
+              if (rn.pts.length > 1) {
+                ctx.strokeStyle = "rgba(" + col + ",0.35)"; ctx.lineWidth = 1.2; ctx.lineJoin = "round";
+                ctx.beginPath(); ctx.moveTo(rn.pts[0].x, rn.pts[0].y);
+                for (var i = 1; i < rn.pts.length; i++) ctx.lineTo(rn.pts[i].x, rn.pts[i].y);
+                ctx.stroke();
+              }
+              rn.pts.forEach(function (pt, i) {
+                var first = i === 0 && rn.start;
+                ctx.fillStyle = "rgb(" + col + ")";
+                ctx.beginPath(); ctx.arc(pt.x, pt.y, first ? r + 1.4 : r, 0, Math.PI * 2); ctx.fill();
+                if (first) { ctx.strokeStyle = "#101820"; ctx.lineWidth = 1; ctx.stroke(); }
+              });
+            });
+          });
+        } };
+      }
+    }];
+  };
+
   function ZonesPrimitive() { this.zones = []; this.reveal = 1; this.times = []; this.chart = null; this.series = null; this.requestUpdate = null; }
   ZonesPrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
   ZonesPrimitive.prototype.detached = function () { this.chart = this.series = this.requestUpdate = null; };
@@ -319,6 +397,65 @@ var LiveChart = (function () {
   }
   var IND_WARMUP = 100;
 
+  // From [time, open, high, low, close, volume] rows and the RSI above:
+  //   Supertrend 10/3  ATR 10 (Wilder, alpha = 1/10 from the first true range); bands (high+low)/2 +/- 3 ATR, each
+  //                    band only tightens until the close crosses it; the line is the lower band while the
+  //                    direction is up and the upper band while it is down (dir 1 / -1).
+  //   Parabolic SAR    0.02 start and step, 0.2 cap; the SAR never enters the two previous candles' range.
+  //   Stochastic RSI   14/14/3/3: where RSI 14 sits in its last 14 values (0-100), %K = 3-candle average of that,
+  //                    %D = 3-candle average of %K.
+  //   OBV              volume added on a higher close, taken off on a lower one, from 0 at the first loaded candle
+  //                    (its level depends on where the history starts; its direction is what counts).
+  function extraIndicators(rows, rsi) {
+    var n = rows.length, out = { st: new Array(n), stDir: new Array(n), psar: new Array(n), psarDir: new Array(n), srsiK: new Array(n), srsiD: new Array(n), obv: new Array(n) };
+    var atr = null, fub = null, flb = null, dir = 1, obv = 0, stoch = new Array(n);
+    for (var i = 0; i < n; i++) {
+      var h = rows[i][2], l = rows[i][3], c = rows[i][4], v = Number(rows[i][5]) || 0;
+      if (i > 0) {
+        var pc = rows[i - 1][4], tr = Math.max(h - l, Math.abs(h - pc), Math.abs(l - pc));
+        atr = atr === null ? tr : atr + (tr - atr) / 10;
+        var mid = (h + l) / 2, ub = mid + 3 * atr, lb = mid - 3 * atr;
+        if (fub === null) { fub = ub; flb = lb; dir = c >= mid ? 1 : -1; }
+        else {
+          fub = ub < fub || pc > fub ? ub : fub;
+          flb = lb > flb || pc < flb ? lb : flb;
+          dir = dir === -1 ? (c > fub ? 1 : -1) : (c < flb ? -1 : 1);
+        }
+        out.st[i] = dir === 1 ? flb : fub; out.stDir[i] = dir;
+        obv += c > pc ? v : c < pc ? -v : 0;
+      }
+      out.obv[i] = obv;
+      // Stochastic RSI
+      if (i >= 14 && rsi[i] != null) {
+        var lo = Infinity, hi = -Infinity, ok = true;
+        for (var k = i - 13; k <= i; k++) { if (rsi[k] == null) { ok = false; break; } lo = Math.min(lo, rsi[k]); hi = Math.max(hi, rsi[k]); }
+        if (ok) stoch[i] = hi > lo ? (rsi[i] - lo) / (hi - lo) * 100 : (i > 0 && stoch[i - 1] != null ? stoch[i - 1] : 50);
+      }
+      if (stoch[i] != null && stoch[i - 1] != null && stoch[i - 2] != null) out.srsiK[i] = (stoch[i] + stoch[i - 1] + stoch[i - 2]) / 3;
+      if (out.srsiK[i] != null && out.srsiK[i - 1] != null && out.srsiK[i - 2] != null) out.srsiD[i] = (out.srsiK[i] + out.srsiK[i - 1] + out.srsiK[i - 2]) / 3;
+    }
+    // Parabolic SAR
+    if (n > 1) {
+      var up = rows[1][4] >= rows[0][4], sar = up ? rows[0][3] : rows[0][2], ep = up ? rows[1][2] : rows[1][3], af = 0.02;
+      out.psar[1] = sar; out.psarDir[1] = up ? 1 : -1;
+      for (var j = 2; j < n; j++) {
+        var hj = rows[j][2], lj = rows[j][3];
+        sar = sar + af * (ep - sar);
+        if (up) {
+          sar = Math.min(sar, rows[j - 1][3], rows[j - 2][3]);
+          if (lj < sar) { up = false; sar = ep; ep = lj; af = 0.02; }
+          else if (hj > ep) { ep = hj; af = Math.min(af + 0.02, 0.2); }
+        } else {
+          sar = Math.max(sar, rows[j - 1][2], rows[j - 2][2]);
+          if (hj > sar) { up = true; sar = ep; ep = hj; af = 0.02; }
+          else if (lj < ep) { ep = lj; af = Math.min(af + 0.02, 0.2); }
+        }
+        out.psar[j] = sar; out.psarDir[j] = up ? 1 : -1;
+      }
+    }
+    return out;
+  }
+
   // ---- Chart -------------------------------------------------------------------------------
   function show(container, options) {
     var pair = String(options.pair || "").toUpperCase(), tf = String(options.timeframe || "").toLowerCase();
@@ -386,7 +523,7 @@ var LiveChart = (function () {
         { text: "marketlevelmap.com", color: "rgba(199, 207, 222, 0.10)", fontSize: Math.round(big * 0.4), fontFamily: WATERMARK_FONT, fontStyle: "" }
       ] });
     }
-    var IND_PANE = 130, indPaneCount = 0, indPrefs = { bb: false, rsi: false, macd: false }, indSeries = {};
+    var IND_PANE = 130, indPaneCount = 0, indPrefs = { bb: false, rsi: false, macd: false, st: false, psar: false, srsi: false, obv: false }, indSeries = {};
     function sizePanes() {
       var panes = chart.panes(), height = container.clientHeight;
       // Stretch factors are relative, so each pane gets its height in pixels and the price pane the rest.
@@ -418,6 +555,8 @@ var LiveChart = (function () {
       lastValueVisible: true, title: "AVWAP", crosshairMarkerVisible: false, visible: false }), avwapPoints = [];
     var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [], lastValidZones = [], fibZones = [];
     candles.attachPrimitive(zones);
+    var stLine = new TrendLinePrimitive(), sarDots = new SarPrimitive();
+    candles.attachPrimitive(stLine); candles.attachPrimitive(sarDots);
     var structurePoints = new PointsPrimitive(function () { return times(); });
     candles.attachPrimitive(structurePoints);
     // Zone tooltip: hovering (or tapping) a band shows its name and price range. The narrowest band under the
@@ -539,8 +678,9 @@ var LiveChart = (function () {
     // with the forming candle, whenever candles change.
     function indicatorRows() { var rows = allRows(); return forming ? rows.concat([forming]) : rows; }
     function drawIndicators() {
-      if (!indSeries.bbUpper && !indSeries.rsi && !indSeries.macd) return;
+      if (!Object.keys(indSeries).length && !indPrefs.st && !indPrefs.psar) { stLine.set([]); sarDots.set([]); return; }
       var rows = indicatorRows(), v = indicators(rows.map(function (r) { return r[4]; })), warm = Math.min(IND_WARMUP, Math.max(0, rows.length - 1));
+      var x = indPrefs.st || indPrefs.psar || indSeries.srsiK || indSeries.obv ? extraIndicators(rows, v.rsi) : null;
       var points = function (values, from) {
         var list = [];
         for (var i = from; i < rows.length; i++) if (values[i] != null && isFinite(values[i])) list.push({ time: rows[i][0], value: values[i] });
@@ -557,6 +697,16 @@ var LiveChart = (function () {
         }
         indSeries.hist.setData(hist);
       }
+      // Supertrend: green under the candles while the direction is up, red above them while it is down; a gap
+      // (whitespace point) where the direction turns, so the two lines never join.
+      var stPoints = [];
+      if (indPrefs.st && x) for (var s1 = Math.min(20, rows.length); s1 < rows.length; s1++) if (x.st[s1] != null) stPoints.push({ time: rows[s1][0], value: x.st[s1], dir: x.stDir[s1] });
+      stLine.set(stPoints);
+      var ps = [];
+      if (indPrefs.psar && x) for (var s2 = Math.min(20, rows.length); s2 < rows.length; s2++) if (x.psar[s2] != null) ps.push({ time: rows[s2][0], value: x.psar[s2], dir: x.psarDir[s2], start: x.psarDir[s2 - 1] != null && x.psarDir[s2 - 1] !== x.psarDir[s2] });
+      sarDots.set(ps);
+      if (indSeries.srsiK) { indSeries.srsiK.setData(points(x.srsiK, warm)); indSeries.srsiD.setData(points(x.srsiD, warm)); }
+      if (indSeries.obv) indSeries.obv.setData(points(x.obv, 1));
     }
     function layoutIndicators() {
       Object.keys(indSeries).forEach(function (key) { chart.removeSeries(indSeries[key]); });
@@ -577,6 +727,13 @@ var LiveChart = (function () {
           autoscaleInfoProvider: function () { return { priceRange: { minValue: 0, maxValue: 100 } }; } }), pane++);
         [70, 30].forEach(function (level) { indSeries.rsi.createPriceLine({ price: level, color: "rgba(154,170,181,0.55)", lineWidth: 1, lineStyle: LC.LineStyle.Dashed, axisLabelVisible: true, title: "" }); });
       }
+      if (indPrefs.srsi) {
+        var pct = { type: "price", precision: 1, minMove: 0.1 }, range = function () { return { priceRange: { minValue: 0, maxValue: 100 } }; };
+        indSeries.srsiK = chart.addSeries(LC.LineSeries, line("#6fb5ff", { lineWidth: 1.5, lastValueVisible: true, title: "Stoch RSI", priceFormat: pct, autoscaleInfoProvider: range }), pane);
+        indSeries.srsiD = chart.addSeries(LC.LineSeries, line("#ff9f43", { priceFormat: pct, autoscaleInfoProvider: range }), pane);
+        [80, 20].forEach(function (level) { indSeries.srsiK.createPriceLine({ price: level, color: "rgba(154,170,181,0.55)", lineWidth: 1, lineStyle: LC.LineStyle.Dashed, axisLabelVisible: true, title: "" }); });
+        pane++;
+      }
       if (indPrefs.macd) {
         var macdFormat = { type: "price", precision: Math.max(2, decimals == null ? 2 : decimals), minMove: Math.pow(10, -Math.max(2, decimals == null ? 2 : decimals)) };
         indSeries.hist = chart.addSeries(LC.HistogramSeries, { priceLineVisible: false, lastValueVisible: false, priceFormat: macdFormat }, pane);
@@ -584,6 +741,7 @@ var LiveChart = (function () {
         indSeries.signal = chart.addSeries(LC.LineSeries, line("#ff9f43", { priceFormat: macdFormat }), pane);
         pane++;
       }
+      if (indPrefs.obv) indSeries.obv = chart.addSeries(LC.LineSeries, line("#e7d98c", { lineWidth: 1.5, lastValueVisible: true, title: "OBV", priceFormat: { type: "volume" } }), pane++);
       // The chart grows by one pane height for each indicator pane, so the candles keep their room.
       indPaneCount = pane - 2;
       fitHeight();
@@ -817,19 +975,21 @@ var LiveChart = (function () {
       setLevels: setLevels,
       // Closed candles with RSI 14, MACD 12/26/9, EMA 20/50/200 and Bollinger 20/2, for the indicator summary.
       indicatorData: function () {
-        var rows = allRows(), v = indicators(rows.map(function (r) { return r[4]; }));
-        return { time: rows.map(function (r) { return r[0]; }), high: rows.map(function (r) { return r[2]; }), low: rows.map(function (r) { return r[3]; }), close: rows.map(function (r) { return r[4]; }),
+        var rows = allRows(), v = indicators(rows.map(function (r) { return r[4]; })), x = extraIndicators(rows, v.rsi);
+        return { volume: rows.map(function (r) { return r[5]; }), st: x.st, stDir: x.stDir, psar: x.psar, psarDir: x.psarDir, srsiK: x.srsiK, srsiD: x.srsiD, obv: x.obv, time: rows.map(function (r) { return r[0]; }), high: rows.map(function (r) { return r[2]; }), low: rows.map(function (r) { return r[3]; }), close: rows.map(function (r) { return r[4]; }),
           ema: [0, 1, 2].map(function (i) { return rows.map(function (r) { return r[6 + i]; }); }), rsi: v.rsi, macd: v.macd, signal: v.signal, hist: v.hist, bbUpper: v.bbUpper, bbMid: v.bbMid, bbLower: v.bbLower, warmup: IND_WARMUP };
       },
       // [{ kind: "rsi"|"macd", type: "bull"|"bear", t1, t2, p1, p2, v1, v2 }] and whether to draw them.
       setDivergences: function (list, shown) { divList = list || []; divShown = shown !== false; drawDivergences(); },
-      // Bollinger (price pane), RSI and MACD (panes under the volume): { bb, rsi, macd } booleans.
+      // Bollinger, Supertrend and Parabolic SAR (price pane); RSI, Stochastic RSI, MACD and OBV (panes under the
+      // volume, in that order): { bb, st, psar, rsi, srsi, macd, obv } booleans.
       setIndicators: function (prefs) {
         // EMA 20/50/200 stay on unless turned off explicitly.
         var showEma = !(prefs && prefs.ema === false);
         emas.forEach(function (s) { s.applyOptions({ visible: showEma }); });
-        var next = { bb: !!(prefs && prefs.bb), rsi: !!(prefs && prefs.rsi), macd: !!(prefs && prefs.macd) };
-        if (destroyed || (next.bb === indPrefs.bb && next.rsi === indPrefs.rsi && next.macd === indPrefs.macd)) return;
+        var next = {};
+        Object.keys(indPrefs).forEach(function (k) { next[k] = !!(prefs && prefs[k]); });
+        if (destroyed || Object.keys(next).every(function (k) { return next[k] === indPrefs[k]; })) return;
         indPrefs = next; layoutIndicators();
       },
       // What the drawing tools (assets/chart-draw.js) need: the chart, the candle series (drawings sit on the price
@@ -977,5 +1137,5 @@ var LiveChart = (function () {
     };
   }
 
-  return { show: show, indicators: indicators, _test: { mergeRows: mergeRows, zoneStart: zoneStart, palette: palette, klineRow: klineRow, withEma: withEma } };
+  return { show: show, indicators: indicators, _test: { extraIndicators: extraIndicators, mergeRows: mergeRows, zoneStart: zoneStart, palette: palette, klineRow: klineRow, withEma: withEma } };
 })();

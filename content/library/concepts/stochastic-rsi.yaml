@@ -1,0 +1,223 @@
+id: stochastic-rsi
+kind: indicators
+order: 35
+related: [rsi, indicators-basics, divergence, macd]
+example: null
+updated: 2026-11-14
+
+tr:
+  slug: stokastik-rsi
+  name: Stokastik RSI
+  alt_name: Stochastic RSI (StochRSI)
+  summary: >-
+    Stokastik RSI, RSI'ın kendi son değerleri içinde nerede durduğunu 0 ile 100 arasında gösterir. Fiyatı
+    değil RSI'ı ölçtüğü için RSI'dan çok daha hızlı hareket eder ve uç değerlere çok daha sık ulaşır.
+    Yaygın ayar 14/14/3/3'tür; %K ve %D adlı iki çizgiyle çizilir.
+  sections:
+    - type: text
+      id: definition
+      title: Stokastik RSI hangi soruya cevap verir?
+      paragraphs:
+        - >-
+          Stokastik RSI şu soruyu cevaplar: **RSI, son 14 değerinin en düşüğü ile en yükseği arasında
+          nerede?** RSI son 14 değerinin en yükseğindeyse sonuç 100, en düşüğündeyse 0'dır.
+        - >-
+          Bu, "göstergenin göstergesi" demektir. RSI 45 ile 55 arasında küçük salınımlar yapıyorsa bile
+          Stokastik RSI bu dar aralığı 0–100'e yayar; bu yüzden çok daha oynaktır. Hızlı tepki vermesi
+          kısa vadeli değişimleri erken gösterir ama aynı nedenle sık sık uç değerlere gidip gelir.
+    - type: steps
+      id: calculation
+      title: Nasıl hesaplanır?
+      items:
+        - title: RSI'ı hesapla.
+          text: 14 periyotluk RSI, RSI sayfasında anlatıldığı gibi hesaplanır.
+        - title: RSI'ın son 14 değerindeki yerini bul.
+          text: "Stokastik = (RSI − son 14 RSI'ın en düşüğü) ÷ (en yükseği − en düşüğü) × 100."
+        - title: "%K: 3 mumluk ortalama."
+          text: Bu değerin son 3 mumdaki basit ortalaması %K çizgisidir; ham değerin sıçramalarını biraz yumuşatır.
+        - title: "%D: %K'nin ortalaması."
+          text: "%K'nin son 3 mumdaki basit ortalaması %D çizgisidir. %D, %K'den biraz geriden gelir."
+    - type: bullets
+      id: common-readings
+      title: Genellikle nasıl okunur?
+      items:
+        - text: "**80'in üzeri (üst bölge):** RSI son 14 değerinin üst kısmında; son mumlarda momentum yukarı ağır basıyor."
+          marker: up
+        - text: "**20'nin altı (alt bölge):** RSI son 14 değerinin alt kısmında; son mumlarda momentum aşağı ağır basıyor."
+          marker: down
+        - text: "**%K ile %D'nin kesişmesi:** %K'nin %D'yi yukarı ya da aşağı kesmesi, kısa vadeli momentumun yön değiştirdiğinin tarifidir."
+          marker: accent
+        - text: "**Uzun süre uçta kalma:** güçlü bir trendde Stokastik RSI günlerce 80'in üzerinde ya da 20'nin altında kalabilir."
+          marker: neutral
+      note: >-
+        Stokastik RSI RSI'ın kendisinden hesaplandığı için ondan bağımsız yeni bir bilgi vermez; aynı
+        bilgiyi daha hızlı ve daha oynak bir ölçekte gösterir.
+    - type: scenarios
+      id: contexts
+      title: Aynı ölçek, farklı bağlam
+      intro: Stokastik RSI'ın uç değerleri, piyasanın yapısına göre farklı anlamlar taşır.
+      items:
+        - title: Güçlü yükselen trend
+          tone: up
+          text: RSI yüksek bir aralıkta dalgalandıkça Stokastik RSI sık sık 100'e değer. Bu, hareketin güçlü olduğunu anlatır; düşüşün başlayacağını söylemez.
+        - title: Güçlü düşen trend
+          tone: down
+          text: Stokastik RSI uzun süre 20'nin altında kalabilir; alt bölgede olmak düşüşün bittiğini göstermez.
+        - title: Yatay piyasa
+          tone: neutral
+          text: Fiyat bir aralıkta gidip geldiğinde Stokastik RSI da üst ve alt bölge arasında hızlıca salınır; uçlar aralığın kenarlarıyla daha çok örtüşebilir.
+    - type: limits
+      shows:
+        - RSI'ın son 14 değeri içindeki yerini
+        - Kısa vadeli momentumun yönünü ve değişimini, RSI'dan daha hızlı
+        - "%K ile %D'nin birbirine göre konumunu"
+      not_proves:
+        - 80'in üzerinde fiyatın düşeceğini ya da 20'nin altında yükseleceğini
+        - RSI'dan bağımsız bir bilgiyi; RSI'dan türetilir
+        - Bir hareketin süresini; çok hızlı olduğu için sık sık yön değiştirir
+    - type: zones
+      paragraphs:
+        - >-
+          Stokastik RSI fiyat seviyesi vermez; bir bölgeye hangi kısa vadeli momentumla gelindiğini
+          anlatır. Bir destek bölgesine yaklaşırken Stokastik RSI'ın alt bölgede olması, son mumlarda
+          düşüşün ağır bastığını gösterir; bölgenin tutup tutmayacağını yine bölgedeki kapanışlar belirler.
+        - >-
+          Hızlı bir gösterge olduğu için bölgede gelen tepkiyle birlikte %K'nin %D'yi kesmesi sık
+          görülür. Bu iki gözlem aynı fiyatlardan türediği için birbirini doğrulamaz; birlikte okunması
+          yalnızca tarifi zenginleştirir.
+    - type: box
+      title: Kriptoda Stokastik RSI
+      text: >-
+        Kripto 7/24 işlem gördüğü için Stokastik RSI kesintisiz hesaplanır. Düşük zaman dilimlerinde
+        (1H gibi) çok sık uç değerlere gider; daha yüksek zaman dilimlerinde (1D gibi) daha az ama daha
+        anlamlı salınımlar yapar.
+  confusions:
+    - id: rsi
+      text: RSI fiyatın kapanış değişimlerini ölçer; Stokastik RSI RSI'ın son değerleri içindeki yerini ölçer. Bu yüzden Stokastik RSI çok daha hızlı ve oynaktır.
+    - id: macd
+      text: İkisi de momentum göstergesidir. Stokastik RSI 0–100 arasında sınırlıdır ve çok hızlıdır; MACD iki ortalamanın farkıdır, sınırı yoktur ve daha yavaştır.
+  key_points:
+    - Stokastik RSI, RSI'ın son 14 değeri içindeki yeridir (0–100).
+    - "%K bu değerin 3 mumluk ortalaması, %D %K'nin 3 mumluk ortalamasıdır."
+    - RSI'dan çok daha hızlıdır ve uç değerlere çok daha sık ulaşır.
+    - 80'in üzeri ya da 20'nin altı bir dönüş zorunluluğu anlamına gelmez.
+  svg_labels:
+    rsi_label: RSI 14
+    k_label: "%K"
+    d_label: "%D"
+    upper: Üst bölge (80+)
+    lower: Alt bölge (20 altı)
+  svg_alt: "Üstte önce düşen, sonra yükselen bir RSI çizgisi; altta aynı dönemin Stokastik RSI'ı, %K ve kesikli %D çizgileriyle, alt bölgeden üst bölgeye geçiyor ve yeniden aşağı iniyor"
+  svg_caption: >-
+    RSI yavaşça düşüp yükselirken Stokastik RSI aynı hareketi 0–100 ölçeğine yayar: RSI dibe inerken
+    uzun süre alt bölgede, RSI yükselirken uzun süre üst bölgede kalır ve RSI'daki küçük bir gerilemeyle
+    hızla aşağı döner. Turuncu çizgi %K, kesikli çizgi %D'dir.
+
+en:
+  slug: stochastic-rsi
+  name: Stochastic RSI
+  summary: >-
+    Stochastic RSI shows where RSI sits within its own recent values, on a 0 to 100 scale. Because it
+    measures RSI rather than price, it moves much faster than RSI and reaches extreme values far more
+    often. The common setting is 14/14/3/3; it is drawn as two lines called %K and %D.
+  sections:
+    - type: text
+      id: definition
+      title: Which question does Stochastic RSI answer?
+      paragraphs:
+        - >-
+          Stochastic RSI answers this question: **where is RSI between the lowest and highest of its last
+          14 values?** If RSI is at the highest of its last 14 values the result is 100; at the lowest, 0.
+        - >-
+          It is an "indicator of an indicator". Even if RSI makes small swings between 45 and 55,
+          Stochastic RSI stretches that narrow range over 0–100, so it is far more volatile. Its quick
+          response shows short-term changes early, but for the same reason it often swings between the
+          extremes.
+    - type: steps
+      id: calculation
+      title: How it is calculated
+      items:
+        - title: Calculate RSI.
+          text: The 14-period RSI is calculated as described on the RSI page.
+        - title: Find RSI's place in its last 14 values.
+          text: "Stochastic = (RSI − lowest of the last 14 RSI values) ÷ (highest − lowest) × 100."
+        - title: "%K: a 3-candle average."
+          text: The simple average of that value over the last 3 candles is the %K line; it smooths the raw value's jumps a little.
+        - title: "%D: the average of %K."
+          text: "The simple average of %K over the last 3 candles is the %D line. %D trails %K slightly."
+    - type: bullets
+      id: common-readings
+      title: How it is commonly read
+      items:
+        - text: "**Above 80 (upper zone):** RSI is in the upper part of its last 14 values; momentum has leaned up over the last candles."
+          marker: up
+        - text: "**Below 20 (lower zone):** RSI is in the lower part of its last 14 values; momentum has leaned down over the last candles."
+          marker: down
+        - text: "**%K crossing %D:** %K crossing %D upward or downward describes that short-term momentum changed direction."
+          marker: accent
+        - text: "**Staying at an extreme:** in a strong trend Stochastic RSI can stay above 80 or below 20 for days."
+          marker: neutral
+      note: >-
+        Because Stochastic RSI is calculated from RSI itself, it gives no information independent of it;
+        it shows the same information on a faster, more volatile scale.
+    - type: scenarios
+      id: contexts
+      title: Same scale, different context
+      intro: The extremes of Stochastic RSI mean different things depending on the structure of the market.
+      items:
+        - title: Strong uptrend
+          tone: up
+          text: As RSI fluctuates in a high range, Stochastic RSI often touches 100. That describes a strong move; it does not say a fall is about to start.
+        - title: Strong downtrend
+          tone: down
+          text: Stochastic RSI can stay below 20 for a long time; being in the lower zone does not show that the fall is over.
+        - title: Sideways market
+          tone: neutral
+          text: When price moves back and forth in a range, Stochastic RSI swings quickly between the upper and lower zones; the extremes may line up more with the edges of the range.
+    - type: limits
+      shows:
+        - Where RSI sits within its last 14 values
+        - The direction of short-term momentum and its changes, faster than RSI
+        - "Where %K and %D stand relative to each other"
+      not_proves:
+        - That price will fall above 80 or rise below 20
+        - Information independent of RSI; it is derived from RSI
+        - How long a move will last; being very fast, it changes direction often
+    - type: zones
+      paragraphs:
+        - >-
+          Stochastic RSI gives no price level; it describes with what short-term momentum price arrives
+          at a zone. Stochastic RSI in the lower zone as price approaches a support zone shows that
+          declines have leaned over the last candles; whether the zone holds is still decided by the
+          closes at the zone.
+        - >-
+          Because it is a fast indicator, %K crossing %D together with a reaction at a zone is common.
+          Both observations come from the same prices, so they do not confirm each other; reading them
+          together only enriches the description.
+    - type: box
+      title: Stochastic RSI in crypto
+      text: >-
+        Crypto trades 24/7, so Stochastic RSI is calculated without interruption. On lower timeframes
+        (such as 1H) it reaches the extremes very often; on higher timeframes (such as 1D) it swings less
+        often but more meaningfully.
+  confusions:
+    - id: rsi
+      text: RSI measures changes in closing prices; Stochastic RSI measures where RSI sits within its recent values. That is why Stochastic RSI is much faster and more volatile.
+    - id: macd
+      text: Both are momentum indicators. Stochastic RSI is bounded between 0 and 100 and very fast; MACD is the difference of two averages, unbounded and slower.
+  key_points:
+    - Stochastic RSI is where RSI sits within its last 14 values (0–100).
+    - "%K is the 3-candle average of that value; %D is the 3-candle average of %K."
+    - It is much faster than RSI and reaches the extremes far more often.
+    - Above 80 or below 20 does not mean a turn has to come.
+  svg_labels:
+    rsi_label: RSI 14
+    k_label: "%K"
+    d_label: "%D"
+    upper: Upper zone (80+)
+    lower: Lower zone (below 20)
+  svg_alt: "Above, an RSI line that falls and then rises; below, the Stochastic RSI of the same period, with %K and a dashed %D line, moving from the lower zone to the upper zone and back down"
+  svg_caption: >-
+    As RSI slowly falls and rises, Stochastic RSI stretches the same movement over 0–100: it stays in the
+    lower zone for a long time while RSI bottoms, in the upper zone while RSI rises, and turns down quickly
+    on a small dip in RSI. The orange line is %K, the dashed line %D.
