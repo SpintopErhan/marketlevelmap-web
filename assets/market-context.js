@@ -162,7 +162,7 @@
     // BTC correlation: once per page, for the cards (it changes slowly; the endpoint keeps it 6 hours).
     if (!corrAsked && active.page) {
       corrAsked = true;
-      fetch("/api/correlation").then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && c.pairs) { corr = c; render(); } }).catch(function () {});
+      fetch("/api/correlation?v=2").then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && c.pairs) { corr = c; render(); } }).catch(function () {});
     }
   }
   function sync() {

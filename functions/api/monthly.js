@@ -20,7 +20,9 @@ export function monthlyRows(body) {
   const t = r && r.timestamp, q = r && r.indicators && r.indicators.quote && r.indicators.quote[0];
   if (!Array.isArray(t) || !q || !Array.isArray(q.close)) return null;
   const off = Number(r.meta && r.meta.gmtoffset) || 0, by = {};
-  t.forEach((sec, i) => { const c = Number(q.close[i]); if (c > 0) by[new Date((sec + off) * 1000).toISOString().slice(0, 7)] = c; });
+  // Yahoo's gmtoffset is today's offset; a summer-time bar at local midnight shifted by winter time lands an hour
+  // into the previous day (and month). Adding half a day puts every bar safely inside its own day.
+  t.forEach((sec, i) => { const c = Number(q.close[i]); if (c > 0) by[new Date((sec + off + 43200) * 1000).toISOString().slice(0, 7)] = c; });
   // Yahoo sometimes adds the latest price as a last bar of its own: keep one value per month (the last one wins).
   const last = Number(r.meta && r.meta.regularMarketPrice), lastT = Number(r.meta && r.meta.regularMarketTime);
   if (last > 0 && lastT > 0) by[new Date((lastT + off) * 1000).toISOString().slice(0, 7)] = last;
@@ -32,7 +34,8 @@ export async function onRequestGet(context) {
   const symbol = SYMBOLS[key];
   if (!symbol) return json({ error: "unknown symbol" }, 0, 400);
   const cache = typeof caches !== "undefined" ? caches.default : null;
-  const cacheKey = new Request(`${url.origin}/api/monthly?symbol=${key}`);
+  // v: raised when the rows change meaning (v2: the summer-time month fix), so old cached answers are not served.
+  const cacheKey = new Request(`${url.origin}/api/monthly?symbol=${key}&v=2`);
   if (cache) { const hit = await cache.match(cacheKey); if (hit) return hit; }
   let rows = null;
   for (const host of ["query1", "query2"]) {
