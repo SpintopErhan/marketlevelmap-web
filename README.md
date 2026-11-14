@@ -390,6 +390,25 @@ the previous candle's close and the volume. It follows the pointer (or the finge
 candle, forming one included, when the pointer is off the chart (`assets/live-chart.js`, `.lc-legend`). It is an HTML
 layer, so the downloaded and shared images leave it out.
 
+## Chart drawing tools
+
+Members, on a desktop (a mouse or trackpad and a window at least 900 px wide), get a small toolbar at the left of the
+interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` through `liveChart.drawHost()`):
+
+- **Tools:** select and move (the default), trend line, horizontal line (its price at the right), box, arrow, text,
+  eraser. Two-point shapes are drawn by dragging or by two clicks. After a shape the tool returns to select.
+- **Editing:** drag a shape to move it, or a handle to reshape it. Double-click a text to edit it. Delete or Backspace
+  removes the selected shape, Escape cancels, Ctrl+Z undoes.
+- **Toolbar buttons:** colour (five colours; also recolours the selected shape), hide or show the drawings, undo,
+  delete all (asks first).
+- **Storage:** drawings are kept per pair and timeframe in this browser only (`localStorage` `mlm-draw:<PAIR>:<tf>`).
+  Nothing goes to the server, so they do not follow the member to another device.
+- **Placement:** points are stored as candle time and price, so drawings stay on their candles when the chart scrolls,
+  zooms, loads older candles or gets new ones (past the last candle, time runs on in candle steps). They are drawn by
+  a series primitive on the price pane, so "Download" and "Share with image" carry them; hidden drawings are left out.
+- **Panning:** a press on empty chart space still pans the chart; a press on a shape, or with a drawing tool chosen,
+  is taken by the drawing.
+
 ## Chart watermark
 
 The interactive analysis chart carries a faint "MarketLevelMap / marketlevelmap.com" text watermark in the

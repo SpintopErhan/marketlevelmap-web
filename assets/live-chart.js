@@ -832,6 +832,13 @@ var LiveChart = (function () {
         if (destroyed || (next.bb === indPrefs.bb && next.rsi === indPrefs.rsi && next.macd === indPrefs.macd)) return;
         indPrefs = next; layoutIndicators();
       },
+      // What the drawing tools (assets/chart-draw.js) need: the chart, the candle series (drawings sit on the price
+      // pane), the container, the candle times, the candle length and a key for the pair and timeframe shown.
+      drawHost: function () {
+        return { chart: chart, series: candles, container: container, times: times,
+          step: function () { return STEP[state.tf]; }, key: function () { return state.pair + ":" + state.tf; },
+          alive: function () { return !destroyed; } };
+      },
       // The chart as drawn now (zones, levels, watermark; no crosshair), at device resolution.
       screenshot: function () { return chart.takeScreenshot(true, false); },
       lastClosedAt: function () { var rows = allRows(), last = rows[rows.length - 1]; return new Date((last[0] + STEP[state.tf]) * 1000).toISOString(); },
