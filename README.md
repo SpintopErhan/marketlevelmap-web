@@ -364,10 +364,16 @@ the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/
 `assets/live-chart.js`) and refreshes every 5 s:
 
 - **RSI 14** — value; overbought above 70, oversold below 30; "left the oversold/overbought zone n candles ago" (last 5).
+- **Stochastic RSI 14/14/3/3** — where RSI 14 sits in its last 14 values (0–100); %K is its 3-candle average, %D the
+  3-candle average of %K. Upper zone above 80, lower below 20; %K above or below %D and their last cross (last 10).
 - **MACD 12/26/9** — above/below the signal line, the last signal cross (last 10 candles), histogram growing or
   shrinking, which side of the zero line.
 - **EMA 20/50/200** — price above all, below all or between (which ones), the order of the three, the last EMA 50/200
   cross (last 30 candles).
+- **Supertrend 10/3** — ATR 10 (Wilder); bands (high + low) / 2 ± 3 ATR that only tighten until the close crosses
+  them; direction up (line under the candles) or down, the last turn (last 30 candles), the line's price and distance.
+- **Parabolic SAR** (0.02 start and step, 0.2 cap) — dots below or above the price, the last switch (last 30
+  candles) and the SAR level.
 - **ATR 14** (Wilder) — value and share of the price; volatility rising or falling against 14 candles before; on the
   Critical Zones view whether the price is inside a zone and the distance to the nearest resistance above and support
   below in ATRs.
@@ -376,12 +382,19 @@ the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/
 - **Bollinger 20/2** — above the upper band, below the lower band, or inside with %B (0 lower band, 1 upper band);
   bands widening or narrowing (against 5 candles before); a squeeze when the band width ((upper − lower) / middle) is
   within the narrowest 10% of the last 120 candles.
+- **OBV** — volume added on a higher close and taken off on a lower one, from 0 at the first loaded candle, so only
+  its direction is read: rising, falling or flat over 20 candles (flat when the change is under a tenth of those
+  candles' volume), and whether it moves with the price or against it.
 - **RSI and MACD divergence** — classic only. Swing highs/lows: a candle whose high (low) is the highest (lowest) of the
   3 candles on each side. The latest swing (at most 10 candles before the last closed one) is compared with the swing
   before it, at least 5 candles apart, within the last 60 candles: price higher high with a lower RSI/MACD high
   (negative), or price lower low with a higher RSI/MACD low (positive).
 
-Each row links to its library page. Divergences are drawn on the chart as a dashed line between the two swings (green
+Each row links to its library page where one exists (not yet for Stochastic RSI, Supertrend, Parabolic SAR and OBV).
+The "Göstergeler / Indicators" menu above the chart draws them too: Supertrend (green under the candles, red above;
+a custom primitive, so a segment never joins two directions) and Parabolic SAR dots on the price pane, Stochastic
+RSI (with 80/20 lines) and OBV in their own panes (order: RSI, Stochastic RSI, MACD, OBV). All four start off; the
+choice is kept in `localStorage` `mlm-indicators-v1`. Divergences are drawn on the chart as a dashed line between the two swings (green
 positive, red negative) and on the RSI/MACD pane when it is open (`liveChart.setDivergences`); the "Draw divergences"
 box turns this off (`localStorage` `mlm-sig-draw`). The card describes; it gives no buy or sell signal.
 
