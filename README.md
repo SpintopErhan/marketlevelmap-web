@@ -407,6 +407,24 @@ choice is kept in `localStorage` `mlm-indicators-v1`. Divergences are drawn on t
 positive, red negative) and on the RSI/MACD pane when it is open (`liveChart.setDivergences`); the "Draw divergences"
 box turns this off (`localStorage` `mlm-sig-draw`). The card describes; it gives no buy or sell signal.
 
+## Analysis page card order
+
+Anyone can rearrange the cards of the analysis page's side column (under the chart on phones):
+flow summary, price range, FVG, structure, zones, indicators, market context, key levels, volume profile
+(`assets/side-order.js`).
+
+- **Editing:** "Edit cards" at the top of the column shows a bar on each card: a drag handle (desktop), ↑ / ↓ and
+  "Hide". The arrows skip cards the current view does not show.
+- **Hidden cards:** listed under the edit bar ("+ name" brings one back).
+- **Reset:** "Reset order" restores the page's order.
+- **Storage:** the order and hidden cards are kept in this browser (`localStorage` `mlm-side-layout-v1`
+  `{ order, hidden }`) and apply to both views; a card added later keeps its default place after its default
+  neighbour.
+- **Hiding:** user-hidden cards get the class `user-hidden`; the page's own `hidden` attribute (a card with nothing
+  to show) is untouched.
+- **Fixed cards:** the members-only lock card is not part of it and stays on top. The earlier-analyses list sits
+  outside the column and keeps its place.
+
 ## Candle legend
 
 The interactive analysis chart shows a one-line legend at the top left of the price pane, as most charting tools do:
