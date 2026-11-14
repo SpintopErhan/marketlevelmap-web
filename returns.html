@@ -38,13 +38,13 @@ main{padding:0 0 70px}
 <div class="rt-actions"><label class="sr-only" for="rt-asset" data-i18n="asset">Asset</label><select id="rt-asset"></select><button class="filter-btn" type="button" id="rt-download" disabled data-i18n="download">Download image</button></div></div>
 <div id="rt-status" class="rt-status" data-i18n="loading">Loading the monthly returns…</div>
 <div class="rt-wrap" id="rt-wrap" hidden><table class="rt" id="rt-table"></table></div>
-<p class="table-note" data-i18n="note">Monthly return: the month's first daily open to its last daily close (UTC). Year: the year's first open to its last close. The current month and year are still running (dashed). A first month whose data starts after the 1st is left out. Average, median and positive months use the completed months only. Past returns describe what happened; they say nothing about what comes next.</p>
+<p class="table-note" data-i18n="note">Monthly return: the month's first daily open to its last daily close (UTC). Year: the year's first open to its last close. The current month and year are still running (dashed). A first month whose data starts after the 1st is left out. Average, median and positive months use the completed months only. Macro and commodities (Yahoo Finance): the previous month's close to the month's close; S&P 500 and Nasdaq 100 are the cash indices, gold and silver the COMEX futures (free sources have no long spot history; the monthly change is close to spot's). The last 10 years are shown. Past returns describe what happened; they say nothing about what comes next.</p>
 </main>
 <div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 <script>
 var copy={
-  en:{title:"Monthly returns",heading:"Monthly returns",sub:"Every month's change from its first open to its last close, year by year.",asset:"Asset",download:"Download image",loading:"Loading the monthly returns…",failed:"The monthly returns could not be loaded. Please try again later.",year:"Year",total:"Year",avg:"Average",median:"Median",positive:"Positive",months:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],imgTitle:"{asset} · monthly returns",imgSub:"First open to last close of each month (UTC), {from}–{to}",imgFoot:"marketlevelmap.com · Charts, not signals",running:"still running",note:"Monthly return: the month's first daily open to its last daily close (UTC). Year: the year's first open to its last close. The current month and year are still running (dashed). A first month whose data starts after the 1st is left out. Average, median and positive months use the completed months only. Past returns describe what happened; they say nothing about what comes next."},
-  tr:{title:"Aylık getiriler",heading:"Aylık getiriler",sub:"Her ayın ilk açılışından son kapanışına değişim, yıl yıl.",asset:"Varlık",download:"Görseli indir",loading:"Aylık getiriler yükleniyor…",failed:"Aylık getiriler yüklenemedi. Lütfen daha sonra tekrar deneyin.",year:"Yıl",total:"Yıl",avg:"Ortalama",median:"Medyan",positive:"Pozitif",months:["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"],imgTitle:"{asset} · aylık getiriler",imgSub:"Her ayın ilk açılışından son kapanışına (UTC), {from}–{to}",imgFoot:"marketlevelmap.com · Sinyal değil, harita",running:"sürüyor",note:"Aylık getiri: ayın ilk günlük açılışından son günlük kapanışına değişim (UTC). Yıl: yılın ilk açılışından son kapanışına. İçinde bulunulan ay ve yıl henüz sürüyor (kesikli çerçeve). Verisi ayın 1'inden sonra başlayan ilk ay gösterilmez. Ortalama, medyan ve pozitif ay sayısı yalnızca tamamlanmış ayları kullanır. Geçmiş getiriler olanı tarif eder; bundan sonrası hakkında bir şey söylemez."}
+  en:{gCrypto:"Crypto",gMacro:"Macro and commodities",m_spx:"S&P 500",m_ndx:"Nasdaq 100",m_gold:"Gold (COMEX futures)",m_silver:"Silver (COMEX futures)",m_dxy:"US dollar index (DXY)",title:"Monthly returns",heading:"Monthly returns",sub:"Every month's change from its first open to its last close, year by year.",asset:"Asset",download:"Download image",loading:"Loading the monthly returns…",failed:"The monthly returns could not be loaded. Please try again later.",year:"Year",total:"Year",avg:"Average",median:"Median",positive:"Positive",months:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],imgTitle:"{asset} · monthly returns",imgSub:"First open to last close of each month (UTC), {from}–{to}",imgSubM:"Previous month's close to the month's close, {from}–{to} · Yahoo Finance",imgFoot:"marketlevelmap.com · Charts, not signals",running:"still running",note:"Monthly return: the month's first daily open to its last daily close (UTC). Year: the year's first open to its last close. The current month and year are still running (dashed). A first month whose data starts after the 1st is left out. Average, median and positive months use the completed months only. Macro and commodities (Yahoo Finance): the previous month's close to the month's close; S&P 500 and Nasdaq 100 are the cash indices, gold and silver the COMEX futures (free sources have no long spot history; the monthly change is close to spot's). The last 10 years are shown. Past returns describe what happened; they say nothing about what comes next."},
+  tr:{gCrypto:"Kripto",gMacro:"Makro ve emtia",m_spx:"S&P 500",m_ndx:"Nasdaq 100",m_gold:"Altın (COMEX vadeli)",m_silver:"Gümüş (COMEX vadeli)",m_dxy:"Dolar endeksi (DXY)",title:"Aylık getiriler",heading:"Aylık getiriler",sub:"Her ayın ilk açılışından son kapanışına değişim, yıl yıl.",asset:"Varlık",download:"Görseli indir",loading:"Aylık getiriler yükleniyor…",failed:"Aylık getiriler yüklenemedi. Lütfen daha sonra tekrar deneyin.",year:"Yıl",total:"Yıl",avg:"Ortalama",median:"Medyan",positive:"Pozitif",months:["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"],imgTitle:"{asset} · aylık getiriler",imgSub:"Her ayın ilk açılışından son kapanışına (UTC), {from}–{to}",imgSubM:"Önceki ayın kapanışından ayın kapanışına, {from}–{to} · Yahoo Finance",imgFoot:"marketlevelmap.com · Sinyal değil, harita",running:"sürüyor",note:"Aylık getiri: ayın ilk günlük açılışından son günlük kapanışına değişim (UTC). Yıl: yılın ilk açılışından son kapanışına. İçinde bulunulan ay ve yıl henüz sürüyor (kesikli çerçeve). Verisi ayın 1'inden sonra başlayan ilk ay gösterilmez. Ortalama, medyan ve pozitif ay sayısı yalnızca tamamlanmış ayları kullanır. Makro ve emtia (Yahoo Finance): bir önceki ayın kapanışından ayın kapanışına; S&P 500 ve Nasdaq 100 nakit endekslerdir, altın ve gümüş COMEX vadelileridir (ücretsiz kaynaklarda uzun spot geçmişi yok; aylık değişim spota çok yakındır). Son 10 yıl gösterilir. Geçmiş getiriler olanı tarif eder; bundan sonrası hakkında bir şey söylemez."}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 function applyLanguage(value){
@@ -69,24 +69,27 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   var index=null,state=null,sel=el("rt-asset");
   function sign(v){return v>0?"+":v<0?"−":""}
   function pct(v,d){if(v==null)return"–";var n=Math.abs(v).toLocaleString(MarketUI.locale(),{minimumFractionDigits:d==null?1:d,maximumFractionDigits:d==null?1:d});return MarketUI.lang()==="tr"?sign(v)+"%"+n:sign(v)+n+"%"}
-  // Colour: darkest at ±30 % for a month, ±150 % for a year (crypto months move a lot).
+  // Colour: darkest at ±30 % for a month and ±150 % for a year for crypto, ±8 % and ±30 % for macro and commodities.
+  function caps(){return state&&MACRO.indexOf(state.sym)>-1?[8,30]:[30,150]}
   function fill(v,cap){if(v==null)return"";var a=(0.12+0.6*Math.min(Math.abs(v)/cap,1)).toFixed(2);return v>=0?"rgba(60,207,145,"+a+")":"rgba(239,107,115,"+a+")"}
   function getJson(u){return fetch(u).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
-  function build(rows){
-    var months={},years={},now=new Date(),curM=now.toISOString().slice(0,7),curY=curM.slice(0,4),first=rows.length?new Date(rows[0][0]*1000):null;
-    rows.forEach(function(r){var d=new Date(r[0]*1000),m=d.toISOString().slice(0,7),y=m.slice(0,4);
-      if(!months[m])months[m]={open:r[1],close:r[4],firstDay:d.getUTCDate()};else months[m].close=r[4];
-      if(!years[y])years[y]={open:r[1],close:r[4],firstMonth:d.getUTCMonth(),firstDay:d.getUTCDate()};else years[y].close=r[4];});
-    var out={years:[],cur:curM,from:null,to:null};
-    Object.keys(years).sort().reverse().forEach(function(y){
-      var cells=[];for(var i=0;i<12;i++){var k=y+"-"+String(i+1).padStart(2,"0"),m=months[k];
-        var partial=m&&first&&k===first.toISOString().slice(0,7)&&m.firstDay>1;
-        cells.push(m&&!partial?{v:(m.close/m.open-1)*100,running:k===curM}:null)}
-      var Y=years[y],yPartial=Y.firstMonth>0||Y.firstDay>1;
-      out.years.push({y:y,cells:cells,total:yPartial?null:{v:(Y.close/Y.open-1)*100,running:y===curY}});
+  // Months → { "YYYY-MM": { open, close, partial } }: from daily candles (first open to last close; a first month whose
+  // data starts after the 1st is partial) or from monthly closes (previous month's close to this month's close).
+  function fromDaily(rows){var m={},first=null;rows.forEach(function(r){var d=new Date(r[0]*1000),k=d.toISOString().slice(0,7);
+    if(!m[k]){m[k]={open:r[1],close:r[4],partial:first===null&&d.getUTCDate()>1};if(first===null)first=k}else m[k].close=r[4]});return m}
+  function fromMonthly(list){var m={};list.forEach(function(r,i){if(i>0)m[r.m]={open:list[i-1].close,close:r.close,partial:false}});return m}
+  var YEARS=10;
+  function build(months){
+    var now=new Date(),curM=now.toISOString().slice(0,7),curY=curM.slice(0,4),keys=Object.keys(months).sort();
+    var ys={};keys.forEach(function(k){(ys[k.slice(0,4)]=ys[k.slice(0,4)]||[]).push(k)});
+    var out={years:[],cur:curM};
+    Object.keys(ys).sort().reverse().slice(0,YEARS).forEach(function(y){
+      var cells=[];for(var i=0;i<12;i++){var k=y+"-"+String(i+1).padStart(2,"0"),m=months[k];cells.push(m&&!m.partial?{v:(m.close/m.open-1)*100,running:k===curM}:null)}
+      var jan=months[y+"-01"],lastK=ys[y][ys[y].length-1];
+      out.years.push({y:y,cells:cells,total:jan&&!jan.partial?{v:(months[lastK].close/jan.open-1)*100,running:y===curY}:null});
     });
-    var done=Object.keys(months).sort().filter(function(k){return k!==curM&&!(first&&k===first.toISOString().slice(0,7)&&months[k].firstDay>1)});
-    out.from=done[0]||null;out.to=done[done.length-1]||null;
+    var shown=[];out.years.forEach(function(r){r.cells.forEach(function(c,i){if(c&&!c.running)shown.push(r.y+"-"+String(i+1).padStart(2,"0"))})});shown.sort();
+    out.from=shown[0]||null;out.to=shown[shown.length-1]||null;
     out.stats=[];for(var i=0;i<12;i++){var vals=out.years.map(function(r){return r.cells[i]}).filter(function(c){return c&&!c.running}).map(function(c){return c.v});
       var s=vals.slice().sort(function(a,b){return a-b}),n=s.length;
       out.stats.push({avg:n?vals.reduce(function(a,b){return a+b},0)/n:null,med:n?(n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2):null,pos:vals.filter(function(v){return v>0}).length,n:n})}
@@ -94,21 +97,28 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   }
   function render(){
     var w=words();if(!state)return;var t=state.table,h='<thead><tr><th class="y">'+w.year+"</th>"+w.months.map(function(m){return"<th>"+m+"</th>"}).join("")+"<th>"+w.total+"</th></tr></thead><tbody>";
-    t.years.forEach(function(r){h+='<tr><td class="y">'+r.y+"</td>"+r.cells.map(function(c){return c?'<td class="'+(c.running?"now":"")+'" style="background:'+fill(c.v,30)+'"'+(c.running?' title="'+esc(w.running)+'"':"")+">"+pct(c.v)+"</td>":'<td class="na">–</td>'}).join("")+
-      (r.total?'<td class="tot'+(r.total.running?" now":"")+'" style="background:'+fill(r.total.v,150)+'">'+pct(r.total.v,0)+"</td>":'<td class="na">–</td>')+"</tr>"});
+    t.years.forEach(function(r){h+='<tr><td class="y">'+r.y+"</td>"+r.cells.map(function(c){return c?'<td class="'+(c.running?"now":"")+'" style="background:'+fill(c.v,caps()[0])+'"'+(c.running?' title="'+esc(w.running)+'"':"")+">"+pct(c.v)+"</td>":'<td class="na">–</td>'}).join("")+
+      (r.total?'<td class="tot'+(r.total.running?" now":"")+'" style="background:'+fill(r.total.v,caps()[1])+'">'+pct(r.total.v,0)+"</td>":'<td class="na">–</td>')+"</tr>"});
     h+='<tr class="stat"><td class="y">'+w.avg+"</td>"+t.stats.map(function(s){return'<td class="'+(s.avg==null?"":s.avg>=0?"up":"down")+'">'+pct(s.avg)+"</td>"}).join("")+"<td></td></tr>";
     h+='<tr class="stat"><td class="y">'+w.median+"</td>"+t.stats.map(function(s){return'<td class="'+(s.med==null?"":s.med>=0?"up":"down")+'">'+pct(s.med)+"</td>"}).join("")+"<td></td></tr>";
     h+='<tr class="stat"><td class="y">'+w.positive+"</td>"+t.stats.map(function(s){return"<td>"+(s.n?s.pos+"/"+s.n:"–")+"</td>"}).join("")+"<td></td></tr></tbody>";
     el("rt-table").innerHTML=h;
   }
+  var MACRO=["spx","ndx","gold","silver","dxy"];
+  function label(sym){var w=words();return MACRO.indexOf(sym)>-1?w["m_"+sym]:MarketUI.baseOf(sym)}
+  function done(sym,months){var t=build(months);if(!t.years.length)throw new Error("empty");state={sym:sym,table:t};render();el("rt-status").hidden=true;el("rt-wrap").hidden=false;el("rt-download").disabled=false}
   function load(sym){
     el("rt-status").hidden=false;el("rt-status").textContent=words().loading;el("rt-wrap").hidden=true;el("rt-download").disabled=true;
-    var entry=index&&index.pairs&&index.pairs[sym]&&index.pairs[sym]["1d"],names=((entry&&entry.archives)||[]).concat(["latest"]);
+    if(MACRO.indexOf(sym)>-1){
+      getJson("/api/monthly?symbol="+sym).then(function(d){if(!d||!d.rows||d.rows.length<13)throw new Error("few");done(sym,fromMonthly(d.rows))}).catch(function(){el("rt-status").textContent=words().failed});
+      return;
+    }
+    var entry=index&&index.pairs&&index.pairs[sym]&&index.pairs[sym]["1d"],names=((entry&&entry.archives)||[]).slice(-(YEARS+1)).concat(["latest"]);
     Promise.all(names.map(function(n){return getJson(DATA+encodeURIComponent(sym)+"/1d/"+encodeURIComponent(n)+".json").catch(function(){return{candles:[]}})})).then(function(files){
       var by={};files.forEach(function(f){(f.candles||[]).forEach(function(r){by[r[0]]=r})});
       var rows=Object.keys(by).map(Number).sort(function(a,b){return a-b}).map(function(k){return by[k]});
       if(rows.length<40)throw new Error("few");
-      state={sym:sym,table:build(rows)};render();el("rt-status").hidden=true;el("rt-wrap").hidden=false;el("rt-download").disabled=false;
+      done(sym,fromDaily(rows));
     }).catch(function(){el("rt-status").textContent=words().failed});
   }
   // ---- 1600×900 image for X (dark look, page language) ----
@@ -116,16 +126,16 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   function loadLogo(){if(logoUri)return Promise.resolve(logoUri);return fetch("/assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca").then(function(r){return r.text()}).then(function(t){logoUri="data:image/svg+xml;base64,"+btoa(unescape(encodeURIComponent(t)));return logoUri})}
   function tx(x,y,s,size,fill,weight,anchor){return'<text x="'+x+'" y="'+y+'" font-size="'+size+'" fill="'+fill+'"'+(weight?' font-weight="'+weight+'"':"")+(anchor?' text-anchor="'+anchor+'"':"")+">"+esc(s)+"</text>"}
   function buildSvg(logo){
-    var w=words(),t=state.table,C={bg:"#10161d",fg:"#edf2f4",muted:"#9aaab5",panel:"#151e27"},rows=t.years.slice(0,12),o=['<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="Inter,Segoe UI,Arial,sans-serif">','<rect width="1600" height="900" fill="'+C.bg+'"/>'];
+    var w=words(),t=state.table,C={bg:"#10161d",fg:"#edf2f4",muted:"#9aaab5",panel:"#151e27"},rows=t.years.slice(0,YEARS),o=['<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="Inter,Segoe UI,Arial,sans-serif">','<rect width="1600" height="900" fill="'+C.bg+'"/>'];
     var mn=function(k){if(!k)return"";var d=new Date(k+"-01T00:00:00Z");return d.toLocaleDateString(MarketUI.locale(),{month:"short",year:"numeric",timeZone:"UTC"})};
-    o.push(tx(64,94,w.imgTitle.replace("{asset}",MarketUI.baseOf(state.sym)),42,C.fg,700));
-    o.push(tx(64,128,w.imgSub.replace("{from}",mn(t.from)).replace("{to}",mn(t.to)),19,C.muted));
+    o.push(tx(64,94,w.imgTitle.replace("{asset}",label(state.sym)),42,C.fg,700));
+    o.push(tx(64,128,(MACRO.indexOf(state.sym)>-1?w.imgSubM:w.imgSub).replace("{from}",mn(t.from)).replace("{to}",mn(t.to)),19,C.muted));
     var x0=64,y0=168,cw=(1536-x0-110)/13,rh=Math.min(46,(780-y0-3*40)/(rows.length+1));
     o.push(tx(x0,y0+rh*0.65,w.year,16,C.muted,600));
     w.months.forEach(function(m,i){o.push(tx(x0+110+cw*i+cw/2,y0+rh*0.65,m,16,C.muted,600,"middle"))});o.push(tx(x0+110+cw*12+cw/2,y0+rh*0.65,w.total,16,C.muted,600,"middle"));
     var col=function(v,cap){if(v==null)return{f:C.panel,o:1};return{f:v>=0?"#3ccf91":"#ef6b73",o:(0.12+0.6*Math.min(Math.abs(v)/cap,1)).toFixed(2)}};
     rows.forEach(function(r,j){var y=y0+rh*(j+1);o.push(tx(x0,y+rh*0.65,r.y,18,C.fg,700));
-      r.cells.concat([r.total]).forEach(function(c,i){var cc=col(c&&c.v,i===12?150:30),x=x0+110+cw*i;
+      r.cells.concat([r.total]).forEach(function(c,i){var cc=col(c&&c.v,caps()[i===12?1:0]),x=x0+110+cw*i;
         o.push('<rect x="'+(x+2)+'" y="'+(y+2)+'" width="'+(cw-4)+'" height="'+(rh-4)+'" rx="6" fill="'+cc.f+'" fill-opacity="'+cc.o+'"'+(c&&c.running?' stroke="'+C.muted+'" stroke-dasharray="4 3"':"")+"/>");
         o.push(tx(x+cw/2,y+rh*0.64,c?pct(c.v,i===12?0:1):"–",16,c?C.fg:C.muted,600,"middle"))})});
     var ys=y0+rh*(rows.length+1)+14;
@@ -146,8 +156,11 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   getJson(DATA+"index.json").then(function(idx){
     index=idx;var syms=Object.keys(idx.pairs||{}).filter(function(s){return idx.pairs[s]["1d"]}).sort(MarketUI.byPopularity);
     if(!syms.length)throw new Error("none");
-    var want=(new URLSearchParams(location.search).get("asset")||"BTCUSDT").toUpperCase();if(syms.indexOf(want)<0)want=syms[0];
-    sel.innerHTML=syms.map(function(s){return'<option value="'+esc(s)+'">'+esc(MarketUI.baseOf(s))+"</option>"}).join("");sel.value=want;load(want);
+    var want=(new URLSearchParams(location.search).get("asset")||"BTCUSDT").toUpperCase();
+    var w=words();
+    sel.innerHTML='<optgroup label="'+esc(w.gCrypto)+'">'+syms.map(function(s){return'<option value="'+esc(s)+'">'+esc(MarketUI.baseOf(s))+"</option>"}).join("")+'</optgroup><optgroup label="'+esc(w.gMacro)+'">'+MACRO.map(function(s){return'<option value="'+s+'">'+esc(w["m_"+s])+"</option>"}).join("")+"</optgroup>";
+    if(MACRO.indexOf(want.toLowerCase())>-1)want=want.toLowerCase();else if(syms.indexOf(want)<0)want=syms[0];
+    sel.value=want;load(want);
   }).catch(function(){el("rt-status").textContent=words().failed});
 })();
 </script>
