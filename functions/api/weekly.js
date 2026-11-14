@@ -10,6 +10,9 @@
 //   keyLevels, its 1D Critical Zones report's levels are used (MO, YO, ATH, else OATH).
 // - Alignment: `structure.state` of the 1W, 1D and 4H Price Action reports. Only the three states leave the
 //   server; the reports themselves stay members-only (README "Accounts").
+// - Macro and commodities: last week's weekly candle (open → close) of the US dollar index, S&P 500 and Nasdaq 100
+//   futures and COMEX gold and silver futures from Yahoo Finance; the US 10-year yield's change in basis points.
+//   Their week runs Monday to Friday (futures open Sunday evening UTC). A source that fails leaves its item null.
 // One snapshot per week: cached at the edge for an hour, so a request is cheap and the numbers stay put.
 const ACTIVE_POINTER_KEY = "site-publication/active.json";
 const CANDLES = "https://data.marketlevelmap.com/candles/";
@@ -88,6 +91,44 @@ async function weeklyCandles(symbol, start, index) {
   return last ? rows.concat(await getCandles(base + encodeURIComponent(last) + ".json")) : rows;
 }
 
+// Yahoo weekly candles: the bar of the week before `start` (its time is that Monday, or the Sunday evening before
+// for futures), never the current week's.
+export const MACRO = [["dxy", "DX-Y.NYB"], ["us10y", "^TNX"], ["spx", "ES=F"], ["ndx", "NQ=F"], ["gold", "GC=F"], ["silver", "SI=F"]];
+export function yahooWeek(body, start) {
+  const r = body && body.chart && body.chart.result && body.chart.result[0];
+  const t = r && r.timestamp, q = r && r.indicators && r.indicators.quote && r.indicators.quote[0];
+  if (!Array.isArray(t) || !q) return null;
+  for (let i = 0; i < t.length; i++) {
+    const open = Number(q.open && q.open[i]), close = Number(q.close && q.close[i]);
+    if (t[i] >= start - WEEK - 2 * 86400 && t[i] < start - 2 * 86400 && open > 0 && close > 0) return { open, close };
+  }
+  return null;
+}
+const YAHOO_HEADERS = { "User-Agent": "Mozilla/5.0 (compatible; MarketLevelMap/1.0)", Accept: "application/json" };
+async function macroWeek(symbol, start) {
+  for (const host of ["query1", "query2"]) {
+    let body = null;
+    try {
+      const r = await fetch(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=1mo&interval=1wk`, { headers: YAHOO_HEADERS });
+      body = r.ok ? await r.json() : null;
+    } catch (_) { body = null; }
+    const w = yahooWeek(body, start);
+    if (w) return w;
+  }
+  return null;
+}
+export async function buildMacro(start) {
+  const out = {};
+  await Promise.all(MACRO.map(async ([key, symbol]) => {
+    const w = await macroWeek(symbol, start);
+    if (!w) { out[key] = null; return; }
+    // ^TNX is the yield in percent (older feeds quoted it times ten): the change in basis points.
+    const k = key === "us10y" && w.close > 20 ? 10 : 1;
+    out[key] = key === "us10y" ? { close: w.close / k, changeBp: Math.round((w.close - w.open) / k * 1000) / 10 } : { close: w.close, change: pct(w.close, w.open) };
+  }));
+  return out;
+}
+
 export async function buildWeekly(env, nowMs) {
   const bucket = env.MARKETLEVELMAP_PUBLIC;
   const active = await readJson(bucket, ACTIVE_POINTER_KEY);
@@ -106,6 +147,7 @@ export async function buildWeekly(env, nowMs) {
   const start = weekStart(nowMs);
   let indexPromise = null;
   const index = () => (indexPromise ||= fetch(CANDLES + "index.json", { cf: { cacheTtl: 300 } }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+  const macroPromise = buildMacro(start).catch(() => null);
   const assets = await Promise.all(Object.keys(bySymbol).map(async (symbol) => {
     const s = bySymbol[symbol];
     const [rows, file, cz, ...pa] = await Promise.all([
@@ -139,7 +181,7 @@ export async function buildWeekly(env, nowMs) {
       alignment,
     };
   }));
-  return { schemaVersion: "marketlevelmap-weekly-v1", weekStart: new Date(start * 1000).toISOString(), generatedAt: new Date(nowMs).toISOString(), assets };
+  return { schemaVersion: "marketlevelmap-weekly-v1", weekStart: new Date(start * 1000).toISOString(), generatedAt: new Date(nowMs).toISOString(), assets, macro: await macroPromise };
 }
 
 export async function onRequestGet({ request, env, waitUntil }) {

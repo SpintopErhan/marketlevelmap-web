@@ -217,8 +217,16 @@ every asset has last week's candle. Every analysed asset except PAXG:
   page's rule (aligned / main trend with 4H against / conflict). Only these three states are public; the 4H
   and 1W reports stay members-only.
 
-The page shows a heat map (BTC on top, then the usual market order) and one row per asset; "Download image"
-draws the same as a 1600×900 PNG (dark look, page language) for X.
+- **Macro and commodities** — last week's weekly candle (open → close) from Yahoo Finance: DXY, S&P 500 and Nasdaq
+  100 futures (`ES=F`, `NQ=F`), COMEX gold and silver futures (`GC=F`, `SI=F`), and the US 10-year yield (`^TNX`,
+  change in basis points). Their week is the Monday-to-Friday session (futures open on Sunday evening UTC); the bar
+  of the week before `weekStart` is used, never the current one. A symbol Yahoo does not answer for is `null` ("–").
+  `macro` in the response: `{dxy, us10y, spx, ndx, gold, silver}`.
+
+The page shows a heat map (BTC on top, then the usual market order) and one row per asset; under the heat map a
+"Macro and commodities" row of six tiles with its own colour scale (darkest at a 2 % week, 25 bp for the yield).
+"Download image" draws the same as a 1600×900 PNG (dark look, page language) for X. The home page's weekly card shows
+the same six tiles under the crypto ones.
 
 ## Price Action view
 
