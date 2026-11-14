@@ -6,14 +6,18 @@
 (function () {
   "use strict";
   var W = {
-    en: { gCrypto: "Crypto", gMacro: "Macro", gMetal: "Commodities", delayedG: "delayed ~15 min",
+    en: { gCorr: "BTC correlation", corrSub: "30 d / 90 d", cNdx: "Nasdaq 100", cSpx: "S&P 500", cGold: "Gold", cDxy: "DXY",
+      corrNote: "Correlation of daily returns with BTC, from −1 (opposite) to +1 (together); 30 and 90 shared days (Yahoo Finance).",
+      gCrypto: "Crypto", gMacro: "Macro", gMetal: "Commodities", delayedG: "delayed ~15 min",
       btcDom: "BTC dominance", ethDom: "ETH dominance", usdtDom: "USDT dominance", total: "Total crypto market cap", ethbtc: "ETH/BTC",
       dxy: "US dollar index (DXY)", us10y: "US 10-year yield", spx: "S&P 500 futures", ndx: "Nasdaq 100 futures",
       gold: "Gold (spot, ounce)", silver: "Silver (spot, ounce)",
       pts: "pts", bp: "bp", noData: "no data", sources: "Sources and notes",
       src: "Dominance and market cap: {d}. ETH/BTC: {e}. DXY, yield and index futures: Yahoo Finance (delayed about 15 minutes; change against the previous close). Gold and silver spot: {m}; the day's change from the COMEX futures. Updated {t}.",
       domNote: "Dominance: the coin's share of the total crypto market cap; its change is in percentage points over 24 h. Yield change in basis points (bp)." },
-    tr: { gCrypto: "Kripto", gMacro: "Makro", gMetal: "Emtia", delayedG: "~15 dk gecikmeli",
+    tr: { gCorr: "BTC ile korelasyon", corrSub: "30 g / 90 g", cNdx: "Nasdaq 100", cSpx: "S&P 500", cGold: "Altın", cDxy: "DXY",
+      corrNote: "Günlük getirilerin BTC ile korelasyonu, −1 (ters yönde) ile +1 (aynı yönde) arası; ortak 30 ve 90 gün (Yahoo Finance).",
+      gCrypto: "Kripto", gMacro: "Makro", gMetal: "Emtia", delayedG: "~15 dk gecikmeli",
       btcDom: "BTC dominansı", ethDom: "ETH dominansı", usdtDom: "USDT dominansı", total: "Toplam kripto piyasa değeri", ethbtc: "ETH/BTC",
       dxy: "Dolar endeksi (DXY)", us10y: "ABD 10 yıllık tahvil faizi", spx: "S&P 500 vadeli", ndx: "Nasdaq 100 vadeli",
       gold: "Altın (spot, ons)", silver: "Gümüş (spot, ons)",
@@ -29,7 +33,7 @@
   function pct(v, d) { var s = nf(Math.abs(v), d); return lang() === "tr" ? "%" + s : s + "%"; }
   function signed(v, d, asPct) { if (v == null || !isFinite(v)) return ""; var z = Math.abs(v) < 0.5 * Math.pow(10, -d); return (z ? "" : v > 0 ? "+" : "−") + (asPct ? pct(v, d) : nf(Math.abs(v), d)); }
   function compact(v) { return Number(v).toLocaleString(loc(), { notation: "compact", maximumFractionDigits: 2 }) + " $"; }
-  var notesOpen = null, data = null, timer = null, active = { page: false, panel: false };
+  var corr = null, corrAsked = false, notesOpen = null, data = null, timer = null, active = { page: false, panel: false };
 
   function items() {
     var t = w(), d = data || {}, out = [];
@@ -42,6 +46,11 @@
     var y = d.us10y; out.push({ g: "gMacro", k: "us10y", label: t.us10y, value: y && y.value != null ? pct(y.value, 2) : null, chg: y && y.changeBp != null ? signed(y.changeBp, 1) + " " + t.bp : "", dir: y ? y.changeBp : null });
     px("spx", d.spx, 2, "gMacro"); px("ndx", d.ndx, 2, "gMacro");
     px("gold", d.gold, 2, "gMetal"); px("silver", d.silver, 2, "gMetal");
+    // BTC correlation (cards only, not the live flow panel): 30-day value, 90-day value beside it.
+    if (corr && corr.pairs) [["ndx", "cNdx"], ["spx", "cSpx"], ["gold", "cGold"], ["dxy", "cDxy"]].forEach(function (k) {
+      var c = corr.pairs[k[0]], f = function (v) { return v == null ? "–" : (v > 0 ? "+" : v < 0 ? "−" : "") + nf(Math.abs(v), 2); };
+      out.push({ g: "gCorr", k: "corr-" + k[0], label: t[k[1]], value: c && c.c30 != null ? f(c.c30) : null, chg: c ? f(c.c90) : "", dir: 0, cardOnly: true });
+    });
     return out;
   }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -52,11 +61,16 @@
       if (!data) { box.appendChild(el("span", "mctx-wait", "…")); return; }
       // data-mctx-cols (home page): two columns, crypto on the left, macro with commodities under it on the right.
       var group = null, cols = !!box.dataset.mctxCols, into = box;
+      var first = null;
       list.forEach(function (it) {
+        if (it.cardOnly && box.dataset.mctx === "panel") return;
         if (it.g !== group) {
           group = it.g; var h = el("p", "mctx-g", t[group]);
           if (group === "gMacro") h.appendChild(el("small", "mctx-gn", " · " + t.delayedG));
-          if (cols && group !== "gMetal") { into = el("div", "mctx-grp"); box.appendChild(into); }
+          if (group === "gCorr") h.appendChild(el("small", "mctx-gn", " · " + t.corrSub));
+          // Home columns: correlation goes under crypto in the left column, commodities under macro on the right.
+          if (cols && group === "gCorr" && first) into = first;
+          else if (cols && group !== "gMetal") { into = el("div", "mctx-grp"); box.appendChild(into); if (!first) first = into; }
           into.appendChild(h);
         }
         var row = el("div", "mctx-item");
@@ -77,6 +91,7 @@
         sum.addEventListener("click", function () { notesOpen = !d.open; });
       }
       notes.appendChild(el("p", "mctx-src", t.domNote));
+      if (corr && box.dataset.mctx !== "panel") notes.appendChild(el("p", "mctx-src", t.corrNote));
       notes.appendChild(el("p", "mctx-src", t.src.replace("{d}", data.domSource || "—").replace("{e}", data.ethSource || "—").replace("{m}", data.metalSource || "—").replace("{t}", at ? at.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) : "—")));
     });
   }
@@ -144,6 +159,11 @@
       var kept = { total: b.total, btcDominance: b.btcDominance, ethDominance: b.ethDominance, usdtDominance: b.usdtDominance, domSource: b.domSource };
       return fromBrowser(b).then(function (r) { if (r.domSource !== "CoinGecko" && kept.btcDominance && kept.btcDominance.value != null) { for (var k in kept) r[k] = kept[k]; } return r; }).then(ethFromBrowser).then(metalsFromBrowser);
     }).then(function (b) { if (b) { data = b; render(); } }).catch(function () {});
+    // BTC correlation: once per page, for the cards (it changes slowly; the endpoint keeps it 6 hours).
+    if (!corrAsked && active.page) {
+      corrAsked = true;
+      fetch("/api/correlation").then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && c.pairs) { corr = c; render(); } }).catch(function () {});
+    }
   }
   function sync() {
     var on = active.page || active.panel;

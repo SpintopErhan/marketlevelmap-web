@@ -1,0 +1,155 @@
+<!doctype html>
+<!-- Monthly returns (README "Monthly returns"). Data: public daily candles. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap"><script src="/assets/pwa.js?v=b0dd56f5" defer></script><meta name="color-scheme" content="dark light"><title>MarketLevelMap — Monthly returns</title><link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png"><link rel="stylesheet" href="assets/site.css?v=40714428"><style>
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.45}
+button,select,input{font:inherit}button{color:inherit}
+main{padding:0 0 70px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:34px 0 18px}
+.page-head h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.5px}
+.meta{margin:8px 0 0;color:var(--muted);font-size:13px;max-width:760px}
+.rt-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rt-actions select{min-height:36px;padding:6px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--fg);font-size:13px;font-weight:600}
+.filter-btn{min-height:36px;padding:7px 16px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:13px;font-weight:600;cursor:pointer}
+.filter-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}.filter-btn:disabled{opacity:.5;cursor:default}
+.rt-status{padding:40px 0;color:var(--muted);text-align:center}.rt-status[hidden]{display:none}
+.rt-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}.rt-wrap[hidden]{display:none}
+.rt{width:100%;min-width:880px;border-collapse:separate;border-spacing:3px;font-variant-numeric:tabular-nums;font-size:13px}
+.rt th{padding:8px 6px;color:var(--muted);font-size:12px;font-weight:600;text-align:center}
+.rt th.y,.rt td.y{text-align:left;padding-left:12px;color:var(--fg);font-weight:700;white-space:nowrap}
+.rt td{padding:8px 4px;border-radius:6px;text-align:center;font-weight:600;white-space:nowrap}
+.rt td.na{color:var(--muted);font-weight:400}
+.rt td.now{outline:1px dashed var(--muted);outline-offset:-2px}
+.rt td.tot{font-weight:700}
+.rt tr.stat td{background:none;color:var(--muted);font-weight:600}.rt tr.stat td.y{color:var(--muted)}
+.rt tr.stat:first-of-type td{border-top:1px solid var(--line)}
+.rt .up,.rt tr.stat td.up{color:var(--up)}.rt .down,.rt tr.stat td.down{color:var(--down)}
+.table-note{margin:14px 2px 0;color:var(--muted);font-size:12px;max-width:860px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:640px){.page-head h1{font-size:24px}.rt{font-size:12px}}
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}</style><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-ui.js?v=d341fb45"></script></head><body><div class="shell"><header>
+<a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<script>/* Keep the header in the saved language before the first paint. */
+(function(){var lang;try{lang=localStorage.getItem("mlm-lang")}catch(e){}if(lang!=="tr")return;document.documentElement.lang="tr";document.querySelectorAll("header [data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=el.dataset.tr});document.querySelectorAll("header [data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",el.dataset.hrefTr)});var sel=document.getElementById("lang");if(sel)sel.value="tr"})();
+</script>
+<main class="shell">
+<div class="page-head"><div><h1 data-i18n="heading">Monthly returns</h1><p class="meta" id="rt-meta" data-i18n="sub">Every month's change from its first open to its last close, year by year.</p></div>
+<div class="rt-actions"><label class="sr-only" for="rt-asset" data-i18n="asset">Asset</label><select id="rt-asset"></select><button class="filter-btn" type="button" id="rt-download" disabled data-i18n="download">Download image</button></div></div>
+<div id="rt-status" class="rt-status" data-i18n="loading">Loading the monthly returns…</div>
+<div class="rt-wrap" id="rt-wrap" hidden><table class="rt" id="rt-table"></table></div>
+<p class="table-note" data-i18n="note">Monthly return: the month's first daily open to its last daily close (UTC). Year: the year's first open to its last close. The current month and year are still running (dashed). A first month whose data starts after the 1st is left out. Average, median and positive months use the completed months only. Past returns describe what happened; they say nothing about what comes next.</p>
+</main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+<script>
+var copy={
+  en:{title:"Monthly returns",heading:"Monthly returns",sub:"Every month's change from its first open to its last close, year by year.",asset:"Asset",download:"Download image",loading:"Loading the monthly returns…",failed:"The monthly returns could not be loaded. Please try again later.",year:"Year",total:"Year",avg:"Average",median:"Median",positive:"Positive",months:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],imgTitle:"{asset} · monthly returns",imgSub:"First open to last close of each month (UTC), {from}–{to}",imgFoot:"marketlevelmap.com · Charts, not signals",running:"still running",note:"Monthly return: the month's first daily open to its last daily close (UTC). Year: the year's first open to its last close. The current month and year are still running (dashed). A first month whose data starts after the 1st is left out. Average, median and positive months use the completed months only. Past returns describe what happened; they say nothing about what comes next."},
+  tr:{title:"Aylık getiriler",heading:"Aylık getiriler",sub:"Her ayın ilk açılışından son kapanışına değişim, yıl yıl.",asset:"Varlık",download:"Görseli indir",loading:"Aylık getiriler yükleniyor…",failed:"Aylık getiriler yüklenemedi. Lütfen daha sonra tekrar deneyin.",year:"Yıl",total:"Yıl",avg:"Ortalama",median:"Medyan",positive:"Pozitif",months:["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"],imgTitle:"{asset} · aylık getiriler",imgSub:"Her ayın ilk açılışından son kapanışına (UTC), {from}–{to}",imgFoot:"marketlevelmap.com · Sinyal değil, harita",running:"sürüyor",note:"Aylık getiri: ayın ilk günlük açılışından son günlük kapanışına değişim (UTC). Yıl: yılın ilk açılışından son kapanışına. İçinde bulunulan ay ve yıl henüz sürüyor (kesikli çerçeve). Verisi ayın 1'inden sonra başlayan ilk ay gösterilmez. Ortalama, medyan ve pozitif ay sayısı yalnızca tamamlanmış ayları kullanır. Geçmiş getiriler olanı tarif eder; bundan sonrası hakkında bir şey söylemez."}
+};
+function words(){return copy[document.getElementById("lang").value]||copy.en}
+function applyLanguage(value){
+  var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){if(t[el.dataset.i18n])el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+  document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
+  try{localStorage.setItem("mlm-lang",value)}catch(e){}
+}
+var lang=document.getElementById("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
+lang.value=savedLang==="tr"?"tr":"en";applyLanguage(lang.value);lang.addEventListener("change",function(){applyLanguage(this.value)});
+var toggle=document.getElementById("theme-toggle");
+function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+</script>
+<script>
+/* Monthly returns (README "Monthly returns"): daily candles from the public candle data
+   (data.marketlevelmap.com/candles/<SYMBOL>/1d/<year>.json and latest.json), grouped by UTC month. */
+(function(){
+  var DATA="https://data.marketlevelmap.com/candles/",el=function(id){return document.getElementById(id)},esc=MarketUI.escape;
+  var index=null,state=null,sel=el("rt-asset");
+  function sign(v){return v>0?"+":v<0?"−":""}
+  function pct(v,d){if(v==null)return"–";var n=Math.abs(v).toLocaleString(MarketUI.locale(),{minimumFractionDigits:d==null?1:d,maximumFractionDigits:d==null?1:d});return MarketUI.lang()==="tr"?sign(v)+"%"+n:sign(v)+n+"%"}
+  // Colour: darkest at ±30 % for a month, ±150 % for a year (crypto months move a lot).
+  function fill(v,cap){if(v==null)return"";var a=(0.12+0.6*Math.min(Math.abs(v)/cap,1)).toFixed(2);return v>=0?"rgba(60,207,145,"+a+")":"rgba(239,107,115,"+a+")"}
+  function getJson(u){return fetch(u).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+  function build(rows){
+    var months={},years={},now=new Date(),curM=now.toISOString().slice(0,7),curY=curM.slice(0,4),first=rows.length?new Date(rows[0][0]*1000):null;
+    rows.forEach(function(r){var d=new Date(r[0]*1000),m=d.toISOString().slice(0,7),y=m.slice(0,4);
+      if(!months[m])months[m]={open:r[1],close:r[4],firstDay:d.getUTCDate()};else months[m].close=r[4];
+      if(!years[y])years[y]={open:r[1],close:r[4],firstMonth:d.getUTCMonth(),firstDay:d.getUTCDate()};else years[y].close=r[4];});
+    var out={years:[],cur:curM,from:null,to:null};
+    Object.keys(years).sort().reverse().forEach(function(y){
+      var cells=[];for(var i=0;i<12;i++){var k=y+"-"+String(i+1).padStart(2,"0"),m=months[k];
+        var partial=m&&first&&k===first.toISOString().slice(0,7)&&m.firstDay>1;
+        cells.push(m&&!partial?{v:(m.close/m.open-1)*100,running:k===curM}:null)}
+      var Y=years[y],yPartial=Y.firstMonth>0||Y.firstDay>1;
+      out.years.push({y:y,cells:cells,total:yPartial?null:{v:(Y.close/Y.open-1)*100,running:y===curY}});
+    });
+    var done=Object.keys(months).sort().filter(function(k){return k!==curM&&!(first&&k===first.toISOString().slice(0,7)&&months[k].firstDay>1)});
+    out.from=done[0]||null;out.to=done[done.length-1]||null;
+    out.stats=[];for(var i=0;i<12;i++){var vals=out.years.map(function(r){return r.cells[i]}).filter(function(c){return c&&!c.running}).map(function(c){return c.v});
+      var s=vals.slice().sort(function(a,b){return a-b}),n=s.length;
+      out.stats.push({avg:n?vals.reduce(function(a,b){return a+b},0)/n:null,med:n?(n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2):null,pos:vals.filter(function(v){return v>0}).length,n:n})}
+    return out;
+  }
+  function render(){
+    var w=words();if(!state)return;var t=state.table,h='<thead><tr><th class="y">'+w.year+"</th>"+w.months.map(function(m){return"<th>"+m+"</th>"}).join("")+"<th>"+w.total+"</th></tr></thead><tbody>";
+    t.years.forEach(function(r){h+='<tr><td class="y">'+r.y+"</td>"+r.cells.map(function(c){return c?'<td class="'+(c.running?"now":"")+'" style="background:'+fill(c.v,30)+'"'+(c.running?' title="'+esc(w.running)+'"':"")+">"+pct(c.v)+"</td>":'<td class="na">–</td>'}).join("")+
+      (r.total?'<td class="tot'+(r.total.running?" now":"")+'" style="background:'+fill(r.total.v,150)+'">'+pct(r.total.v,0)+"</td>":'<td class="na">–</td>')+"</tr>"});
+    h+='<tr class="stat"><td class="y">'+w.avg+"</td>"+t.stats.map(function(s){return'<td class="'+(s.avg==null?"":s.avg>=0?"up":"down")+'">'+pct(s.avg)+"</td>"}).join("")+"<td></td></tr>";
+    h+='<tr class="stat"><td class="y">'+w.median+"</td>"+t.stats.map(function(s){return'<td class="'+(s.med==null?"":s.med>=0?"up":"down")+'">'+pct(s.med)+"</td>"}).join("")+"<td></td></tr>";
+    h+='<tr class="stat"><td class="y">'+w.positive+"</td>"+t.stats.map(function(s){return"<td>"+(s.n?s.pos+"/"+s.n:"–")+"</td>"}).join("")+"<td></td></tr></tbody>";
+    el("rt-table").innerHTML=h;
+  }
+  function load(sym){
+    el("rt-status").hidden=false;el("rt-status").textContent=words().loading;el("rt-wrap").hidden=true;el("rt-download").disabled=true;
+    var entry=index&&index.pairs&&index.pairs[sym]&&index.pairs[sym]["1d"],names=((entry&&entry.archives)||[]).concat(["latest"]);
+    Promise.all(names.map(function(n){return getJson(DATA+encodeURIComponent(sym)+"/1d/"+encodeURIComponent(n)+".json").catch(function(){return{candles:[]}})})).then(function(files){
+      var by={};files.forEach(function(f){(f.candles||[]).forEach(function(r){by[r[0]]=r})});
+      var rows=Object.keys(by).map(Number).sort(function(a,b){return a-b}).map(function(k){return by[k]});
+      if(rows.length<40)throw new Error("few");
+      state={sym:sym,table:build(rows)};render();el("rt-status").hidden=true;el("rt-wrap").hidden=false;el("rt-download").disabled=false;
+    }).catch(function(){el("rt-status").textContent=words().failed});
+  }
+  // ---- 1600×900 image for X (dark look, page language) ----
+  var logoUri=null;
+  function loadLogo(){if(logoUri)return Promise.resolve(logoUri);return fetch("/assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca").then(function(r){return r.text()}).then(function(t){logoUri="data:image/svg+xml;base64,"+btoa(unescape(encodeURIComponent(t)));return logoUri})}
+  function tx(x,y,s,size,fill,weight,anchor){return'<text x="'+x+'" y="'+y+'" font-size="'+size+'" fill="'+fill+'"'+(weight?' font-weight="'+weight+'"':"")+(anchor?' text-anchor="'+anchor+'"':"")+">"+esc(s)+"</text>"}
+  function buildSvg(logo){
+    var w=words(),t=state.table,C={bg:"#10161d",fg:"#edf2f4",muted:"#9aaab5",panel:"#151e27"},rows=t.years.slice(0,12),o=['<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="Inter,Segoe UI,Arial,sans-serif">','<rect width="1600" height="900" fill="'+C.bg+'"/>'];
+    var mn=function(k){if(!k)return"";var d=new Date(k+"-01T00:00:00Z");return d.toLocaleDateString(MarketUI.locale(),{month:"short",year:"numeric",timeZone:"UTC"})};
+    o.push(tx(64,94,w.imgTitle.replace("{asset}",MarketUI.baseOf(state.sym)),42,C.fg,700));
+    o.push(tx(64,128,w.imgSub.replace("{from}",mn(t.from)).replace("{to}",mn(t.to)),19,C.muted));
+    var x0=64,y0=168,cw=(1536-x0-110)/13,rh=Math.min(46,(780-y0-3*40)/(rows.length+1));
+    o.push(tx(x0,y0+rh*0.65,w.year,16,C.muted,600));
+    w.months.forEach(function(m,i){o.push(tx(x0+110+cw*i+cw/2,y0+rh*0.65,m,16,C.muted,600,"middle"))});o.push(tx(x0+110+cw*12+cw/2,y0+rh*0.65,w.total,16,C.muted,600,"middle"));
+    var col=function(v,cap){if(v==null)return{f:C.panel,o:1};return{f:v>=0?"#3ccf91":"#ef6b73",o:(0.12+0.6*Math.min(Math.abs(v)/cap,1)).toFixed(2)}};
+    rows.forEach(function(r,j){var y=y0+rh*(j+1);o.push(tx(x0,y+rh*0.65,r.y,18,C.fg,700));
+      r.cells.concat([r.total]).forEach(function(c,i){var cc=col(c&&c.v,i===12?150:30),x=x0+110+cw*i;
+        o.push('<rect x="'+(x+2)+'" y="'+(y+2)+'" width="'+(cw-4)+'" height="'+(rh-4)+'" rx="6" fill="'+cc.f+'" fill-opacity="'+cc.o+'"'+(c&&c.running?' stroke="'+C.muted+'" stroke-dasharray="4 3"':"")+"/>");
+        o.push(tx(x+cw/2,y+rh*0.64,c?pct(c.v,i===12?0:1):"–",16,c?C.fg:C.muted,600,"middle"))})});
+    var ys=y0+rh*(rows.length+1)+14;
+    [[w.avg,"avg"],[w.median,"med"]].forEach(function(s,k){var y=ys+k*34;o.push(tx(x0,y+22,s[0],16,C.muted,600));
+      t.stats.forEach(function(st,i){var v=st[s[1]];o.push(tx(x0+110+cw*i+cw/2,y+22,pct(v),15,v==null?C.muted:v>=0?"#3ccf91":"#ef6b73",600,"middle"))})});
+    o.push('<image href="'+logo+'" x="64" y="818" height="44" width="300" preserveAspectRatio="xMinYMid meet"/>');
+    o.push(tx(1536,846,w.imgFoot,17,C.muted,null,"end"));o.push("</svg>");return o.join("");
+  }
+  el("rt-download").addEventListener("click",function(){
+    if(!state)return;var btn=el("rt-download");btn.disabled=true;
+    loadLogo().then(function(logo){return new Promise(function(res,rej){var img=new Image(),url=URL.createObjectURL(new Blob([buildSvg(logo)],{type:"image/svg+xml"}));
+      img.onload=function(){var c=document.createElement("canvas");c.width=1600;c.height=900;c.getContext("2d").drawImage(img,0,0);URL.revokeObjectURL(url);c.toBlob(function(b){b?res(b):rej()},"image/png")};img.onerror=function(){URL.revokeObjectURL(url);rej()};img.src=url})})
+    .then(function(b){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="marketlevelmap-monthly-"+state.sym.toLowerCase()+".png";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000)}).catch(function(){}).then(function(){btn.disabled=false});
+  });
+  window.MLMReturns={svg:function(){return loadLogo().then(buildSvg)},_state:function(){return state}};
+  sel.addEventListener("change",function(){var u=new URL(location.href);u.searchParams.set("asset",sel.value);history.replaceState(null,"",u.toString());load(sel.value)});
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  getJson(DATA+"index.json").then(function(idx){
+    index=idx;var syms=Object.keys(idx.pairs||{}).filter(function(s){return idx.pairs[s]["1d"]}).sort(MarketUI.byPopularity);
+    if(!syms.length)throw new Error("none");
+    var want=(new URLSearchParams(location.search).get("asset")||"BTCUSDT").toUpperCase();if(syms.indexOf(want)<0)want=syms[0];
+    sel.innerHTML=syms.map(function(s){return'<option value="'+esc(s)+'">'+esc(MarketUI.baseOf(s))+"</option>"}).join("");sel.value=want;load(want);
+  }).catch(function(){el("rt-status").textContent=words().failed});
+})();
+</script>
+
+</body></html>
