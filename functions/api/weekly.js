@@ -187,7 +187,8 @@ export async function buildWeekly(env, nowMs) {
 export async function onRequestGet({ request, env, waitUntil }) {
   if (!env.MARKETLEVELMAP_PUBLIC) return json({ error: "not_configured" });
   const now = Date.now();
-  const cacheKey = new Request(`${new URL(request.url).origin}/api/weekly?w=${weekStart(now)}`);
+  // v: raised when the response gains fields, so a snapshot cached before the change is not served for the rest of the week.
+  const cacheKey = new Request(`${new URL(request.url).origin}/api/weekly?w=${weekStart(now)}&v=2`);
   const cache = typeof caches !== "undefined" ? caches.default : null;
   if (cache) {
     const hit = await cache.match(cacheKey);
