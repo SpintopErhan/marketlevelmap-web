@@ -348,6 +348,10 @@ General market figures, public, in three groups:
   log returns with Nasdaq 100 and S&P 500 futures, gold futures and DXY over the last 30 and 90 dates both series
   have (Yahoo Finance daily closes, 6 months; at least 20 returns). The cards (not the live flow panel) show it as
   a "BTC correlation · 30 d / 90 d" group, under crypto on the home page.
+- **One snapshot per browser:** the figures are kept in `localStorage` (`mlm-mctx-v1`, correlation in
+  `mlm-mctx-corr-v1`). A page uses a snapshot younger than about 3 minutes instead of asking again and saves the one
+  it fetches; open tabs pick a new one up through the `storage` event. So the home page, the analysis page and the
+  live flow show the same moment from the same source. A change that rounds to zero is shown neutral (no colour).
 - `assets/market-context.js` fills `[data-mctx]`: the home page's "Piyasa geneli / Market context" card beside the
   week's events (two columns, `data-mctx-cols`) and the analysis page's card in its side column (`card`), and the live flow's "Market
   context" panel (`panel`, 1×1/1×2/2×1; last in both default layouts). The panel uses one-line rows and keeps the notes
