@@ -35,15 +35,17 @@
   function compact(v) { return Number(v).toLocaleString(loc(), { notation: "compact", maximumFractionDigits: 2 }) + " $"; }
   var corr = null, corrAsked = false, notesOpen = null, data = null, timer = null, active = { page: false, panel: false };
 
+  // The colour follows the value as shown: a change that rounds to zero is neutral, not red or green.
+  function shownDir(v, d) { return v == null || !isFinite(v) || Math.abs(v) < 0.5 * Math.pow(10, -d) ? 0 : v; }
   function items() {
     var t = w(), d = data || {}, out = [];
-    function dom(k, x, g) { out.push({ g: g, k: k, label: t[k], value: x && x.value != null ? pct(x.value, 2) : null, chg: x && x.change != null ? signed(x.change, 2) + " " + t.pts : "", dir: x ? x.change : null }); }
-    function px(k, x, dec, g) { out.push({ g: g, k: k, label: t[k], value: x && x.price ? nf(x.price, dec) : null, chg: x && x.change != null ? signed(x.change, 2, true) : "", dir: x ? x.change : null }); }
+    function dom(k, x, g) { out.push({ g: g, k: k, label: t[k], value: x && x.value != null ? pct(x.value, 2) : null, chg: x && x.change != null ? signed(x.change, 2) + " " + t.pts : "", dir: x ? shownDir(x.change, 2) : null }); }
+    function px(k, x, dec, g) { out.push({ g: g, k: k, label: t[k], value: x && x.price ? nf(x.price, dec) : null, chg: x && x.change != null ? signed(x.change, 2, true) : "", dir: x ? shownDir(x.change, 2) : null }); }
     dom("btcDom", d.btcDominance, "gCrypto"); dom("ethDom", d.ethDominance, "gCrypto"); dom("usdtDom", d.usdtDominance, "gCrypto");
-    out.push({ g: "gCrypto", k: "total", label: t.total, value: d.total && d.total.usd ? compact(d.total.usd) : null, chg: d.total && d.total.change != null ? signed(d.total.change, 2, true) : "", dir: d.total ? d.total.change : null });
+    out.push({ g: "gCrypto", k: "total", label: t.total, value: d.total && d.total.usd ? compact(d.total.usd) : null, chg: d.total && d.total.change != null ? signed(d.total.change, 2, true) : "", dir: d.total ? shownDir(d.total.change, 2) : null });
     px("ethbtc", d.ethbtc, 5, "gCrypto");
     px("dxy", d.dxy, 2, "gMacro");
-    var y = d.us10y; out.push({ g: "gMacro", k: "us10y", label: t.us10y, value: y && y.value != null ? pct(y.value, 2) : null, chg: y && y.changeBp != null ? signed(y.changeBp, 1) + " " + t.bp : "", dir: y ? y.changeBp : null });
+    var y = d.us10y; out.push({ g: "gMacro", k: "us10y", label: t.us10y, value: y && y.value != null ? pct(y.value, 2) : null, chg: y && y.changeBp != null ? signed(y.changeBp, 1) + " " + t.bp : "", dir: y ? shownDir(y.changeBp, 1) : null });
     px("spx", d.spx, 2, "gMacro"); px("ndx", d.ndx, 2, "gMacro");
     px("gold", d.gold, 2, "gMetal"); px("silver", d.silver, 2, "gMetal");
     // BTC correlation (cards only, not the live flow panel): 30-day value, 90-day value beside it.
@@ -151,19 +153,35 @@
     function one(sym) { return fetch("https://api.gold-api.com/price/" + sym).then(function (r) { return r.ok ? r.json() : null; }).then(function (g) { var p = g && n(g.price); return p ? { price: p, change: null } : null; }).catch(function () { return null; }); }
     return Promise.all([one("XAU"), one("XAG")]).then(function (r) { b.gold = r[0]; b.silver = r[1]; if (r[0] || r[1]) b.metalSource = "gold-api.com"; return b; });
   }
+  // One snapshot per browser (localStorage "mlm-mctx-v1"): every page and tab shows the same moment from the same
+  // source. A page uses a snapshot younger than FRESH_MS instead of asking again, saves the one it fetches, and other
+  // open tabs pick it up through the storage event. The correlation is shared the same way (it changes slowly).
+  var SNAP = "mlm-mctx-v1", CORR = "mlm-mctx-corr-v1", FRESH_MS = 170000, CORR_MS = 3 * 3600000;
+  function readSnap(k, maxAge) { try { var v = JSON.parse(localStorage.getItem(k) || "null"); return v && v.data && Date.now() - v.savedAt < maxAge ? v.data : null; } catch (e) { return null; } }
+  function writeSnap(k, d) { try { localStorage.setItem(k, JSON.stringify({ savedAt: Date.now(), data: d })); } catch (e) {} }
   function load() {
+    var snap = readSnap(SNAP, FRESH_MS);
+    if (snap) { data = snap; render(); loadCorr(); return; }
     fetch("/api/market-context", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (b) {
       if (!b) return null;
       // The browser asks CoinGecko first (the visitor's own address is not rate-limited like the edge); the endpoint's
       // figures (CoinGecko, CoinPaprika or CoinLore) stay when it cannot.
       var kept = { total: b.total, btcDominance: b.btcDominance, ethDominance: b.ethDominance, usdtDominance: b.usdtDominance, domSource: b.domSource };
       return fromBrowser(b).then(function (r) { if (r.domSource !== "CoinGecko" && kept.btcDominance && kept.btcDominance.value != null) { for (var k in kept) r[k] = kept[k]; } return r; }).then(ethFromBrowser).then(metalsFromBrowser);
-    }).then(function (b) { if (b) { data = b; render(); } }).catch(function () {});
-    // BTC correlation: once per page, for the cards (it changes slowly; the endpoint keeps it 6 hours).
-    if (!corrAsked && active.page) {
-      corrAsked = true;
-      fetch("/api/correlation?v=2").then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && c.pairs) { corr = c; render(); } }).catch(function () {});
-    }
+    }).then(function (b) {
+      if (!b) return;
+      // Another tab may have saved a snapshot while this one was asking: use that one, so all tabs stay the same.
+      var other = readSnap(SNAP, FRESH_MS);
+      data = other || b; if (!other) writeSnap(SNAP, b); render();
+    }).catch(function () {});
+    loadCorr();
+  }
+  // BTC correlation: once per page, for the cards (the endpoint keeps it 6 hours).
+  function loadCorr() {
+    if (corrAsked || !active.page) return;
+    corrAsked = true;
+    var c0 = readSnap(CORR, CORR_MS); if (c0) { corr = c0; render(); return; }
+    fetch("/api/correlation?v=2").then(function (r) { return r.ok ? r.json() : null; }).then(function (c) { if (c && c.pairs) { corr = c; writeSnap(CORR, c); render(); } }).catch(function () {});
   }
   function sync() {
     var on = active.page || active.panel;
@@ -175,6 +193,10 @@
     // The analysis card starts at once; the live flow panel waits for setActive.
     active.page = [].some.call(boxes, function (b) { return b.dataset.mctx !== "panel"; });
     var l = document.getElementById("lang"); if (l) l.addEventListener("change", function () { setTimeout(render, 0); });
+    window.addEventListener("storage", function (e) {
+      if (e.key === SNAP) { var d = readSnap(SNAP, FRESH_MS); if (d) { data = d; render(); } }
+      if (e.key === CORR) { var c = readSnap(CORR, CORR_MS); if (c) { corr = c; render(); } }
+    });
     new MutationObserver(function () { render(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
     render(); sync();
   }
