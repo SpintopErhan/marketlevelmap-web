@@ -529,7 +529,11 @@ PNG-only publications offer no download.
 
 The downloaded image also carries this view's tables beside the chart, the same as the admin desk's "PNG with
 tables" (`fullImage()`): Price Action → at a glance, price range, FVG, structure; Critical Zones → support and
-resistance zones. Titles, column heads and values only. The tables get at least ~440 CSS px, so a phone-sized
+resistance zones; then the indicator card (its by-timeframe table and each indicator's name and state, without the
+explanations) when the card is shown. Titles, column heads and values only. The chart itself carries whatever is
+on it: the indicators turned on in the menu (lines, Supertrend, SAR, Ichimoku, VWAP, the RSI / Stochastic RSI /
+MACD / OBV panes), divergences, event markers and the member's drawings; the title bar lists the indicators turned
+on (or their count when the list does not fit). The tables get at least ~440 CSS px, so a phone-sized
 chart still yields readable columns. The share sheet's image ("Share with image…") stays the chart alone.
 
 ## Chart sharing

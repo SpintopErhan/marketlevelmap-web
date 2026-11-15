@@ -1220,7 +1220,10 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     g.fillStyle="#26303c";g.fillRect(0,head-Math.max(1,Math.round(k)),out.width,Math.max(1,Math.round(k)));g.fillRect(0,head+shot.height,out.width,Math.max(1,Math.round(k)));
     g.textBaseline="middle";
     g.fillStyle="#e6ebf2";g.font="700 "+Math.round(17*k)+"px"+font;g.textAlign="left";g.fillText(chartName.textContent,pad,Math.round(20*k));
-    g.fillStyle="#9aa6b8";g.font="500 "+Math.round(11*k)+"px"+font;g.fillText((method==="pa"?w.methodPa:w.methodCz)+" · "+MarketUI.nameOf(asset),pad,Math.round(39*k));
+    g.fillStyle="#9aa6b8";g.font="500 "+Math.round(11*k)+"px"+font;var sub=(method==="pa"?w.methodPa:w.methodCz)+" · "+MarketUI.nameOf(asset),on=activeIndicatorNames();
+    // The indicators drawn on the chart, so the coloured lines in the image can be told apart.
+    if(on.length){var full=sub+" · "+on.join(" · ");sub=g.measureText(full).width<=out.width*0.62?full:sub+" · "+on.length+" "+w.indicators.toLocaleLowerCase(MarketUI.locale())}
+    g.fillText(sub,pad,Math.round(39*k));
     // The brand sits top right; with the tables beside the chart it moves to the far right of the whole image.
     if(!(opts&&opts.noBrand))brandMark(g,out.width-pad,k,font);
     var y=head+shot.height+Math.round(foot/2);
@@ -1256,17 +1259,34 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   function glanceData(){var g=document.getElementById("glance");if(!g||g.hidden)return null;
     var items=[].map.call(g.children,function(d){var s=d.querySelector("span"),b=d.querySelector("b");return s&&b?{label:s.textContent.trim(),value:b.textContent.replace(/\s+/g," ").trim(),cls:b.classList.contains("up")?"up":b.classList.contains("down")?"down":""}:null}).filter(Boolean);
     return items.length?items:null}
+  // The indicator card for the image (README "Chart download"): the by-timeframe table and each row's name and state
+  // (the explanations are left out). Null when the card is not shown on this timeframe.
+  function sigData(){
+    var blk=document.getElementById("sig-block");if(!blk||blk.hidden)return null;
+    var title=(blk.querySelector(".block-head h2")||{}).textContent||"",mt=blk.querySelector(".mtf table"),mtf=null;
+    if(mt){var cell=function(td){var sp=td.querySelector("span");return{text:td.textContent.trim(),cls:sp?sp.className:td.className}};
+      mtf={title:((blk.querySelector(".mtf-h")||{}).textContent||""),head:[].map.call(mt.querySelectorAll("thead th"),function(th){return th.textContent.trim()}),
+        rows:[].map.call(mt.querySelectorAll("tbody tr"),function(tr){return{label:tr.querySelector("th").textContent.trim(),cells:[].map.call(tr.querySelectorAll("td"),cell)}})}}
+    var rows=[].map.call(blk.querySelectorAll(".sig-row"),function(r){var v=r.querySelector(".sig-v");return{t:(r.querySelector("b")||{}).textContent||"",v:v?v.textContent:"",cls:v?v.className:""}});
+    return rows.length?{title:title,mtf:mtf,rows:rows}:null;
+  }
+  // Names of the indicators shown on the chart now (menu order).
+  function activeIndicatorNames(){
+    var names={ema:"EMA 20/50/200",bb:"Bollinger 20/2",st:"Supertrend 10/3",psar:"Parabolic SAR",ichi:"Ichimoku",vwap:"VWAP",rsi:"RSI 14",srsi:words().srsiMenu,macd:"MACD 12/26/9",obv:"OBV"};
+    return ["ema","bb","st","psar","ichi","vwap","rsi","srsi","macd","obv"].filter(function(k){return k==="ema"?indPrefs.ema!==false:!!indPrefs[k]}).map(function(k){return names[k]});
+  }
   function fullImage(){
     var chartCanvas=chartImage({noBrand:true}),k=chartCanvas.width/((liveBox.clientWidth||chartCanvas.width)),font=" Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
     var C={bg:"#101820",line:"#26303c",panel:"#151e27",fg:"#e6ebf2",muted:"#9aa6b8",up:"#3ccf91",down:"#ef6b73",cz:"#e8a765",pa:"#4fd6c3",bos:"#a99cf0",choch:"#e27bd0"};
     var badge={"b-resistance":C.down,"b-support":C.up,"b-equilibrium":C.muted,"b-fvg":C.pa,"b-bos":C.bos,"b-choch":C.choch,"b-sweep":C.cz,"b-avwap":C.fg};
     var parts=method==="pa"?["range-block","fvg-block","structure-block"].map(tableData).filter(Boolean):[tableData("zones-block")].filter(Boolean);
-    var glance=method==="pa"?glanceData():null;
+    var glance=method==="pa"?glanceData():null,sig=sigData();
     // At least ~440 CSS px for the tables, so a phone-sized chart still gets readable columns.
     var pw=Math.max(Math.round(chartCanvas.width*0.62),Math.round(440*(chartCanvas.width/((liveBox.clientWidth||chartCanvas.width))))),pad=Math.round(18*k),rowH=Math.round(26*k),y0=Math.round(54*k);
     // Measure first, so the canvas is as tall as the longer of the two sides.
     var m=document.createElement("canvas").getContext("2d");
-    function h(){var y=y0+pad;if(glance)y+=Math.ceil(glance.length/2)*Math.round(52*k)+pad;parts.forEach(function(p){y+=Math.round(30*k)+(p.summary?Math.round(20*k):0)+rowH*(p.rows.length+1)+pad});return y+pad}
+    function h(){var y=y0+pad;if(glance)y+=Math.ceil(glance.length/2)*Math.round(52*k)+pad;parts.forEach(function(p){y+=Math.round(30*k)+(p.summary?Math.round(20*k):0)+rowH*(p.rows.length+1)+pad});
+      if(sig){y+=Math.round(30*k);if(sig.mtf)y+=Math.round(22*k)+rowH*(sig.mtf.rows.length+1)+pad;y+=rowH*sig.rows.length+pad}return y+pad}
     var W=chartCanvas.width+pw,H=Math.max(chartCanvas.height,h());
     var out=document.createElement("canvas");out.width=W;out.height=H;var g=out.getContext("2d");
     g.fillStyle=C.bg;g.fillRect(0,0,W,H);g.drawImage(chartCanvas,0,0);
@@ -1303,6 +1323,27 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       });
       y+=pad;
     });
+    // Indicators: the by-timeframe table, then one line per indicator (name left, state right).
+    if(sig){
+      var colour=function(cls){return /\bup\b/.test(cls)?C.up:/\bdown\b/.test(cls)?C.down:/\bwarn\b/.test(cls)?C.cz:/\b(mid|lock|na)\b/.test(cls)?C.muted:C.fg};
+      text(sig.title,x0,y+Math.round(12*k),14,700,C.fg);y+=Math.round(30*k);
+      if(sig.mtf){
+        text(sig.mtf.title,x0,y+Math.round(6*k),11,600,C.muted);y+=Math.round(22*k);
+        var cw=Math.round(52*k),lx=x0,cx=function(i){return x0+w-cw*(sig.mtf.head.length-1-i)-cw/2};
+        sig.mtf.head.forEach(function(t,i){if(i)text(t,cx(i),y+rowH/2,10.5,600,C.muted,"center")});
+        y+=rowH;g.fillStyle=C.line;g.fillRect(x0,y-1,w,Math.max(1,Math.round(k)));
+        sig.mtf.rows.forEach(function(r){text(fitText(r.label,11.5,500,w-cw*4),lx,y+rowH/2,11.5,500,C.muted);
+          r.cells.forEach(function(c,i){text(c.text,cx(i+1),y+rowH/2,c.text.length>2?10:13,700,colour(c.cls),"center")});
+          y+=rowH;g.fillStyle=C.line;g.fillRect(x0,y-1,w,Math.max(1,Math.round(k*0.6)))});
+        y+=pad;
+      }
+      sig.rows.forEach(function(r){
+        g.font="700 "+Math.round(11.5*k)+"px"+font;var vw=Math.min(g.measureText(r.v).width,w*0.62);
+        text(fitText(r.t,11.5,600,w-vw-Math.round(12*k)),x0,y+rowH/2,11.5,600,C.fg);
+        text(fitText(r.v,11.5,700,w*0.62),x0+w,y+rowH/2,11.5,700,colour(r.cls),"right");
+        y+=rowH;g.fillStyle=C.line;g.fillRect(x0,y-1,w,Math.max(1,Math.round(k*0.6)));
+      });
+    }
     return out;
   }
   // For the admin desk (same origin): chart only, or chart + tables.
