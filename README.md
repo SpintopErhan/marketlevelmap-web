@@ -535,8 +535,9 @@ resistance zones; then the indicator card (its by-timeframe table and each indic
 explanations) when the card is shown. Titles, column heads and values only. The chart itself carries whatever is
 on it: the indicators turned on in the menu (lines, Supertrend, SAR, Ichimoku, VWAP, the RSI / Stochastic RSI /
 MACD / OBV panes), divergences, event markers and the member's drawings; the title bar lists the indicators turned
-on (or their count when the list does not fit). The tables get at least ~440 CSS px, so a phone-sized
-chart still yields readable columns. The share sheet's image ("Share with image…") stays the chart alone.
+on (or their count when the list does not fit). The tables get 62 % of the chart's width, but at least ~440
+and at most ~540 CSS px: readable columns for a phone-sized chart, no wide empty gap (and wider image) on a large
+screen. The share sheet's image ("Share with image…") stays the chart alone.
 
 ## Chart sharing
 

@@ -1284,8 +1284,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     var badge={"b-resistance":C.down,"b-support":C.up,"b-equilibrium":C.muted,"b-fvg":C.pa,"b-bos":C.bos,"b-choch":C.choch,"b-sweep":C.cz,"b-avwap":C.fg};
     var parts=method==="pa"?["range-block","fvg-block","structure-block"].map(tableData).filter(Boolean):[tableData("zones-block")].filter(Boolean);
     var glance=method==="pa"?glanceData():null,sig=sigData();
-    // At least ~440 CSS px for the tables, so a phone-sized chart still gets readable columns.
-    var pw=Math.max(Math.round(chartCanvas.width*0.62),Math.round(440*(chartCanvas.width/((liveBox.clientWidth||chartCanvas.width))))),pad=Math.round(18*k),rowH=Math.round(26*k),y0=Math.round(54*k);
+    // The tables get 62 % of the chart's width, but at least ~440 and at most ~540 CSS px: enough for readable
+    // columns on a phone-sized chart, without a wide empty gap (and a wider image) on a large screen.
+    var pw=Math.min(Math.max(Math.round(chartCanvas.width*0.62),Math.round(440*k)),Math.round(540*k)),pad=Math.round(18*k),rowH=Math.round(26*k),y0=Math.round(54*k);
     // Measure first, so the canvas is as tall as the longer of the two sides.
     var m=document.createElement("canvas").getContext("2d");
     function h(){var y=y0+pad;if(glance)y+=Math.ceil(glance.length/2)*Math.round(52*k)+pad;parts.forEach(function(p){y+=Math.round(30*k)+(p.summary?Math.round(20*k):0)+rowH*(p.rows.length+1)+pad});
