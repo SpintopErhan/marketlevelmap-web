@@ -1009,9 +1009,12 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   var sigKey="";
   function renderSignals(force){
     var block=document.getElementById("sig-block"),list=document.getElementById("sig-list"),w=words();
-    if(!liveChart||!liveChart.indicatorData||isLocked()){block.hidden=true;if(liveChart&&liveChart.setDivergences)liveChart.setDivergences([],false);return}
+    if(isLocked()){block.hidden=true;if(liveChart&&liveChart.setDivergences)liveChart.setDivergences([],false);return}
+    // While the chart is being swapped (another timeframe loading) the card keeps its place and last content, so the
+    // cards under it do not jump up and back (README "Analysis page card order"); it is refreshed once the data is in.
+    if(!liveChart||!liveChart.indicatorData)return;
     var d;try{d=liveChart.indicatorData()}catch(e){return}
-    var n=d.close.length;if(n<40){block.hidden=true;return}
+    var n=d.close.length;if(n<40)return;
     var last=n-1,key=d.time[last]+"|"+document.getElementById("lang").value+"|"+sigDraw;if(key===sigKey&&!force)return;sigKey=key;
     var dg=digits==null?MarketUI.digitsFor(d.close[last]):digits,fmt=function(v){return MarketUI.price(v,dg)},f1=function(v){return Number(v).toLocaleString(MarketUI.locale(),{maximumFractionDigits:1,minimumFractionDigits:1})};
     var fm=function(v){var a=Math.abs(v),k=a>=100?1:a>=1?2:a>=0.01?4:6;return Number(v).toLocaleString(MarketUI.locale(),{maximumFractionDigits:k,minimumFractionDigits:k})};
@@ -1165,7 +1168,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
         if(request!==pending||!liveChart)return;
         chartReady=true;
         applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
-        chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();syncDraw();
+        chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();syncDraw();renderSignals(true);
       }).catch(function(){if(request===pending&&!liveChart)showPng(chosen)});
       return;
     }
