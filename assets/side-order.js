@@ -10,9 +10,9 @@
   var KEY = "mlm-side-layout-v1", FIXED = "lock-block";
   var WORDS = {
     en: { edit: "Edit cards", done: "Done", reset: "Reset order", up: "Move up", down: "Move down", hide: "Hide", drag: "Drag to move",
-      hiddenList: "Hidden cards:", note: "Move or hide the cards; the order is kept in this browser." },
+      hiddenList: "Hidden cards:", note: "Move or hide the cards; the order is kept in this browser.", fold: "Collapse card", unfold: "Expand card" },
     tr: { edit: "Kartları düzenle", done: "Bitti", reset: "Varsayılan sıra", up: "Yukarı taşı", down: "Aşağı taşı", hide: "Gizle", drag: "Sürükleyerek taşı",
-      hiddenList: "Gizli kartlar:", note: "Kartları taşıyabilir ya da gizleyebilirsin; sıra bu tarayıcıda saklanır." }
+      hiddenList: "Gizli kartlar:", note: "Kartları taşıyabilir ya da gizleyebilirsin; sıra bu tarayıcıda saklanır.", fold: "Kartı daralt", unfold: "Kartı aç" }
   };
   function w() { return WORDS[document.documentElement.lang === "tr" ? "tr" : "en"]; }
   var col = null, bar = null, editing = false, defaults = [], state = { order: [], hidden: [] };
@@ -25,6 +25,29 @@
   function save() {
     state.order = cards().map(function (c) { return c.id; });
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  // Collapsed cards (localStorage "mlm-side-collapsed-v1"): only the title band stays; the arrow at the top right of
+  // every card folds and unfolds it. Independent of the order and of "Reset order".
+  var FOLD = "mlm-side-collapsed-v1", folded = [];
+  function loadFold() { try { var v = JSON.parse(localStorage.getItem(FOLD) || "[]"); return Array.isArray(v) ? v.filter(String) : []; } catch (e) { return []; } }
+  function saveFold() { try { localStorage.setItem(FOLD, JSON.stringify(folded)); } catch (e) {} }
+  function folds() {
+    var t = w();
+    cards().forEach(function (card) {
+      var b = card.querySelector(":scope > .so-fold");
+      if (!b) {
+        b = document.createElement("button"); b.type = "button"; b.className = "so-fold";
+        b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+        b.addEventListener("click", function () {
+          var i = folded.indexOf(card.id); if (i > -1) folded.splice(i, 1); else folded.push(card.id);
+          saveFold(); folds();
+        });
+        card.appendChild(b); card.classList.add("so-has-fold");
+      }
+      var shut = folded.indexOf(card.id) > -1;
+      card.classList.toggle("so-collapsed", shut);
+      b.setAttribute("aria-expanded", String(!shut)); b.title = shut ? t.unfold : t.fold; b.setAttribute("aria-label", b.title);
+    });
   }
   function title(card) { var h = card.querySelector(".block-head h2"); return h ? h.textContent.trim() : card.id; }
 
@@ -43,6 +66,7 @@
     col.insertBefore(bar, col.firstChild);
     if (anchor) col.insertBefore(anchor, bar.nextSibling);
     list.forEach(function (c) { c.classList.toggle("user-hidden", state.hidden.indexOf(c.id) > -1); });
+    folds();
   }
 
   // ---- edit bar and card controls ----
@@ -95,7 +119,7 @@
     col.insertBefore(dragging, after ? card.nextSibling : card);
   }
   function render() {
-    renderBar();
+    renderBar(); folds();
     col.classList.toggle("so-editing", editing);
     cards().forEach(function (card) {
       var old = card.querySelector(":scope > .so-ctl"); if (old) old.remove();
@@ -104,6 +128,12 @@
   }
 
   var CSS = ".side-col>.block.user-hidden{display:none!important}" +
+    ".side-col>.block.so-has-fold{position:relative}.side-col>.block.so-has-fold>.block-head{padding-right:34px}" +
+    ".so-fold{position:absolute;top:13px;right:12px;display:grid;place-items:center;width:28px;height:28px;padding:0;border:1px solid transparent;border-radius:8px;background:none;color:var(--muted);cursor:pointer}" +
+    ".so-fold:hover{border-color:var(--line);color:var(--fg)}.so-fold svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s ease}" +
+    ".so-collapsed .so-fold svg{transform:rotate(-90deg)}" +
+    ".so-collapsed>:not(.block-head):not(.so-ctl):not(.so-fold){display:none!important}.side-col>.block.so-collapsed>.block-head{margin-bottom:0!important}" +
+    ".so-collapsed>.block-head>:not(:first-child){display:none!important}.so-collapsed>.block-head>:first-child>:not(h2){display:none!important}" +
     ".so-bar{margin:0 0 14px}.so-row{display:flex;align-items:center;gap:12px;justify-content:flex-end}" +
     ".so-main{padding:6px 12px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--fg);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer}" +
     ".so-main:hover{border-color:var(--accent);color:var(--accent)}" +
@@ -121,7 +151,7 @@
   function boot() {
     col = document.querySelector(".side-col"); if (!col) return;
     defaults = cards().map(function (c) { return c.id; });
-    state = load();
+    state = load(); folded = loadFold();
     var s = document.createElement("style"); s.textContent = CSS; document.head.appendChild(s);
     bar = document.createElement("div"); bar.className = "so-bar"; col.insertBefore(bar, col.firstChild);
     apply(); render();

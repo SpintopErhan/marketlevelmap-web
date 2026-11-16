@@ -436,6 +436,10 @@ flow summary, price range, FVG, structure, zones, indicators, market context, ke
   neighbour.
 - **Hiding:** user-hidden cards get the class `user-hidden`; the page's own `hidden` attribute (a card with nothing
   to show) is untouched.
+- **Collapse:** an arrow at the top right of every card folds it to its title band (the subtitle, controls and
+  content are hidden) and the cards under it move up; another click opens it. Kept in this browser
+  (`localStorage` `mlm-side-collapsed-v1`, a list of card ids), independent of the order and of "Reset order". A
+  collapsed card still goes into the downloaded image.
 - **Timeframe switch:** the indicator card keeps its place and last content while the next timeframe's chart
   loads and is refreshed as soon as it is in, so the cards under it do not jump up and back.
 - **Fixed cards:** the members-only lock card is not part of it and stays on top. The earlier-analyses list sits
@@ -535,8 +539,9 @@ resistance zones; then the indicator card (its by-timeframe table and each indic
 explanations) when the card is shown. Titles, column heads and values only. The chart itself carries whatever is
 on it: the indicators turned on in the menu (lines, Supertrend, SAR, Ichimoku, VWAP, the RSI / Stochastic RSI /
 MACD / OBV panes), divergences, event markers and the member's drawings; the title bar lists the indicators turned
-on (or their count when the list does not fit). The tables get at least ~440 CSS px, so a phone-sized
-chart still yields readable columns. The share sheet's image ("Share with image…") stays the chart alone.
+on (or their count when the list does not fit). The tables get 62 % of the chart's width, but at least ~440
+and at most ~540 CSS px: readable columns for a phone-sized chart, no wide empty gap (and wider image) on a large
+screen. The share sheet's image ("Share with image…") stays the chart alone.
 
 ## Chart sharing
 
