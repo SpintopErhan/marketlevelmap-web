@@ -436,6 +436,10 @@ flow summary, price range, FVG, structure, zones, indicators, market context, ke
   neighbour.
 - **Hiding:** user-hidden cards get the class `user-hidden`; the page's own `hidden` attribute (a card with nothing
   to show) is untouched.
+- **Collapse:** an arrow at the top right of every card folds it to its title band (the subtitle, controls and
+  content are hidden) and the cards under it move up; another click opens it. Kept in this browser
+  (`localStorage` `mlm-side-collapsed-v1`, a list of card ids), independent of the order and of "Reset order". A
+  collapsed card still goes into the downloaded image.
 - **Timeframe switch:** the indicator card keeps its place and last content while the next timeframe's chart
   loads and is refreshed as soon as it is in, so the cards under it do not jump up and back.
 - **Fixed cards:** the members-only lock card is not part of it and stays on top. The earlier-analyses list sits
