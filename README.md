@@ -436,6 +436,8 @@ flow summary, price range, FVG, structure, zones, indicators, market context, ke
   neighbour.
 - **Hiding:** user-hidden cards get the class `user-hidden`; the page's own `hidden` attribute (a card with nothing
   to show) is untouched.
+- **Timeframe switch:** the indicator card keeps its place and last content while the next timeframe's chart
+  loads and is refreshed as soon as it is in, so the cards under it do not jump up and back.
 - **Fixed cards:** the members-only lock card is not part of it and stays on top. The earlier-analyses list sits
   outside the column and keeps its place.
 
