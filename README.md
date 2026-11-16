@@ -421,6 +421,24 @@ choice is kept in `localStorage` `mlm-indicators-v1`. Divergences are drawn on t
 positive, red negative) and on the RSI/MACD pane when it is open (`liveChart.setDivergences`); the "Draw divergences"
 box turns this off (`localStorage` `mlm-sig-draw`). The card describes; it gives no buy or sell signal.
 
+## Asset search and watchlist
+
+On the analysis page anyone can switch assets without going back to the market table (`assets/asset-picker.js`,
+fed by the price band: the analysed assets and their live prices).
+
+- **Search:** clicking the asset name or icon, the arrow next to the name, or typing a letter or digit anywhere on
+  the page (not in a field) opens a window listing every analysed asset. Each row shows the asset's name, its live
+  price and 24 h change. Typing filters the list; ↑ ↓ and Enter choose; Escape closes. Favourites (the home page's
+  stars, `localStorage` `mlm-favorites`) come first. On phones it fills the screen.
+- **Watchlist:** the list icon next to the arrow opens the same list in a panel at the right.
+  - **Wide screens (≥ 1480 px):** the panel is docked beside the page (the page makes room) and stays open across
+    pages (`localStorage` `mlm-watchlist-open`).
+  - **Narrower screens:** it slides over the page and closes when an asset is picked or on Escape.
+- **Switching:** opens the chosen asset's analysis page with the same timeframe and view (Critical Zones / Price
+  Action); the page reloads.
+- **Chart header:** the links and buttons wrap onto a second line instead of overlapping when the page is narrow,
+  e.g. with the watchlist docked.
+
 ## Analysis page card order
 
 Anyone can rearrange the cards of the analysis page's side column (under the chart on phones):
