@@ -132,6 +132,7 @@
     ".so-fold{position:absolute;top:13px;right:12px;display:grid;place-items:center;width:28px;height:28px;padding:0;border:1px solid transparent;border-radius:8px;background:none;color:var(--muted);cursor:pointer}" +
     ".so-fold:hover{border-color:var(--line);color:var(--fg)}.so-fold svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s ease}" +
     ".so-collapsed .so-fold svg{transform:rotate(-90deg)}" +
+    ".side-col>.block.so-collapsed{min-height:0!important}" +
     ".so-collapsed>:not(.block-head):not(.so-ctl):not(.so-fold){display:none!important}.side-col>.block.so-collapsed>.block-head{margin-bottom:0!important}" +
     ".so-collapsed>.block-head>:not(:first-child){display:none!important}.so-collapsed>.block-head>:first-child>:not(h2){display:none!important}" +
     ".so-bar{margin:0 0 14px}.so-row{display:flex;align-items:center;gap:12px;justify-content:flex-end}" +

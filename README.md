@@ -472,6 +472,12 @@ flow summary, price range, FVG, structure, zones, indicators, market context, ke
 - **Fixed cards:** the members-only lock card is not part of it and stays on top. The earlier-analyses list sits
   outside the column and keeps its place.
 
+The indicator card is filled only once the chart is built, so it used to appear late between the other cards and push
+the ones under it down on every page open. When it was shown on the last visit it now takes its place from the start
+(an empty card with its title), at the height it had then (localStorage `mlm-sig-h-v1`: `{ w, h }`, page width in
+40 px steps and the card's height; a folded card is just its title band), until it is filled. It is removed if the
+timeframe turns out to be locked, the chart cannot load, or nothing fills it within 20 s.
+
 ## Candle legend
 
 The interactive analysis chart shows a one-line legend at the top left of the price pane, as most charting tools do:
