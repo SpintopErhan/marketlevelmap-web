@@ -223,6 +223,16 @@ var LiveChart = (function () {
 
   // Supertrend line: drawn here rather than as line series, so a segment joins only two candles of the same direction
   // (line series join across whitespace, which drew the line through the turns).
+  // Index range of time-sorted points inside the visible time range, with one point of margin on each side so lines
+  // still run to the chart's edges. Drawing only these keeps a frame's work to what is on screen.
+  function visibleSpan(points, ts) {
+    var n = points.length, vr = ts.getVisibleRange();
+    if (!vr || typeof vr.from !== "number") return [0, n];
+    var lo = 0, hi = n; while (lo < hi) { var m = (lo + hi) >> 1; if (points[m].time < vr.from) lo = m + 1; else hi = m; }
+    var a = Math.max(0, lo - 1); lo = a; hi = n;
+    while (lo < hi) { var k = (lo + hi) >> 1; if (points[k].time <= vr.to) lo = k + 1; else hi = k; }
+    return [a, Math.min(n, lo + 1)];
+  }
   function TrendLinePrimitive() { this.points = []; this.chart = null; this.series = null; this.requestUpdate = null; }
   TrendLinePrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
   TrendLinePrimitive.prototype.detached = function () { this.chart = this.series = this.requestUpdate = null; };
@@ -236,18 +246,23 @@ var LiveChart = (function () {
         return { draw: function (target) {
           if (!self.chart || !self.series || self.points.length < 2) return;
           var ts = self.chart.timeScale();
+          var span = visibleSpan(self.points, ts);
           target.useMediaCoordinateSpace(function (scope) {
-            var ctx = scope.context, prev = null;
+            // One path per run of the same side and colour (a segment takes the colour of its end point).
+            var ctx = scope.context, prev = null, open = null;
             ctx.lineWidth = 2; ctx.lineJoin = "round";
-            self.points.forEach(function (p) {
-              var x = ts.timeToCoordinate(p.time), y = self.series.priceToCoordinate(p.value);
-              if (x === null || y === null) { prev = null; return; }
+            function flush() { if (open) { ctx.stroke(); open = null; } }
+            for (var i = span[0]; i < span[1]; i++) {
+              var p = self.points[i], x = ts.timeToCoordinate(p.time), y = self.series.priceToCoordinate(p.value);
+              if (x === null || y === null) { flush(); prev = null; continue; }
               if (prev && prev.dir === p.dir) {
-                ctx.strokeStyle = p.color || (p.dir === 1 ? "#3ccf91" : "#ef6b73");
-                ctx.beginPath(); ctx.moveTo(prev.x, prev.y); ctx.lineTo(x, y); ctx.stroke();
-              }
+                var col = p.color || (p.dir === 1 ? "#3ccf91" : "#ef6b73");
+                if (open !== col) { flush(); ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(prev.x, prev.y); open = col; }
+                ctx.lineTo(x, y);
+              } else flush();
               prev = { x: x, y: y, dir: p.dir };
-            });
+            }
+            flush();
           });
         } };
       }
@@ -270,10 +285,12 @@ var LiveChart = (function () {
           var d = self.data; if (!self.chart || !self.series || !d) return;
           var ts = self.chart.timeScale(), sr = self.series, from = d.from, n = d.close.length;
           var X = function (i) { return ts.logicalToCoordinate(i); }, Y = function (v) { return v == null ? null : sr.priceToCoordinate(v); };
+          // Only the indexes on screen (plus one each side), shifted by each line's offset.
+          var vl = ts.getVisibleLogicalRange(), lf = vl ? Math.floor(vl.from) - 1 : -Infinity, lt = vl ? Math.ceil(vl.to) + 1 : Infinity;
           target.useMediaCoordinateSpace(function (scope) {
             var ctx = scope.context;
             // Cloud: Senkou A and B of candle i sit at i + 26.
-            for (var i = Math.max(from, 52); i < n - 1; i++) {
+            for (var i = Math.max(from, 52, lf - 27); i < Math.min(n - 1, lt - 25); i++) {
               var a0 = Y(d.spanA[i]), a1 = Y(d.spanA[i + 1]), b0 = Y(d.spanB[i]), b1 = Y(d.spanB[i + 1]), x0 = X(i + 26), x1 = X(i + 27);
               if (a0 === null || a1 === null || b0 === null || b1 === null || x0 === null || x1 === null) continue;
               ctx.fillStyle = d.spanA[i] >= d.spanB[i] ? "rgba(60,207,145,0.13)" : "rgba(239,107,115,0.13)";
@@ -281,7 +298,9 @@ var LiveChart = (function () {
             }
             function line(values, shift, color, width, dash) {
               ctx.strokeStyle = color; ctx.lineWidth = width; ctx.setLineDash(dash || []); ctx.beginPath(); var open = false;
-              for (var j = from; j < n; j++) {
+              // A dashed line keeps its full length so the dash pattern stays fixed to the candles while panning.
+              var j0 = dash ? from : Math.max(from, lf - shift), j1 = dash ? n : Math.min(n, lt - shift + 1);
+              for (var j = j0; j < j1; j++) {
                 var x = X(j + shift), y = Y(values[j]);
                 if (x === null || y === null) { open = false; continue; }
                 if (!open) { ctx.moveTo(x, y); open = true; } else ctx.lineTo(x, y);
@@ -355,13 +374,13 @@ var LiveChart = (function () {
           if (!self.chart || !self.series || !self.points.length) return;
           var ts = self.chart.timeScale(), spacing = ts.options().barSpacing || 6;
           target.useMediaCoordinateSpace(function (scope) {
-            var ctx = scope.context, runs = [], run = null;
-            self.points.forEach(function (p) {
-              var x = ts.timeToCoordinate(p.time), y = self.series.priceToCoordinate(p.value);
-              if (x === null || y === null) { run = null; return; }
+            var ctx = scope.context, runs = [], run = null, span = visibleSpan(self.points, ts);
+            for (var j = span[0]; j < span[1]; j++) {
+              var p = self.points[j], x = ts.timeToCoordinate(p.time), y = self.series.priceToCoordinate(p.value);
+              if (x === null || y === null) { run = null; continue; }
               if (!run || run.dir !== p.dir) { run = { dir: p.dir, pts: [], start: p.start }; runs.push(run); }
               run.pts.push({ x: x, y: y });
-            });
+            }
             var r = Math.max(1.6, Math.min(3.2, spacing * 0.28));
             runs.forEach(function (rn) {
               var col = rn.dir === 1 ? "85,217,156" : "239,110,118";
@@ -587,6 +606,17 @@ var LiveChart = (function () {
   // Axis, crosshair and price-line labels use the page language's number format (tr-TR: 82.424,0),
   // matching the tables.
   function pageLocale() { return document.documentElement.lang === "tr" ? "tr-TR" : "en-US"; }
+  // Number and date formats are built once per locale and option set: the chart asks for a price label for every
+  // axis tick on every frame, and building a new format each time was the biggest cost while panning and zooming.
+  var fmtCache = {};
+  function numFormat(locale, d) {
+    var k = "n|" + locale + "|" + d;
+    return fmtCache[k] || (fmtCache[k] = new Intl.NumberFormat(locale, { minimumFractionDigits: d, maximumFractionDigits: d }));
+  }
+  function cachedFormat(kind, locale, options) {
+    var k = kind + "|" + locale + "|" + JSON.stringify(options);
+    return fmtCache[k] || (fmtCache[k] = kind === "date" ? new Intl.DateTimeFormat(locale, options) : new Intl.NumberFormat(locale, options));
+  }
 
   function build(LC, container, state) {
     container.textContent = "";
@@ -597,7 +627,7 @@ var LiveChart = (function () {
         locale: locale,
         priceFormatter: function (price) {
           var d = decimals == null ? 2 : decimals;
-          return Number(price).toLocaleString(locale, { minimumFractionDigits: d, maximumFractionDigits: d });
+          return numFormat(locale, d).format(Number(price));
         }
       };
     }
@@ -667,7 +697,7 @@ var LiveChart = (function () {
     candles.attachPrimitive(eventMarks);
     // Time (seconds) to logical index, interpolated between candles and run on in candle steps past the last one.
     eventMarks.logical = function (t) {
-      var T = indicatorRows().map(function (r) { return r[0]; }), n = T.length, step = STEP[state.tf];
+      var T = indicatorTimes(), n = T.length, step = STEP[state.tf];
       if (!n) return null;
       if (t < T[0]) return null;
       if (t >= T[n - 1]) return n - 1 + (t - T[n - 1]) / step;
@@ -696,14 +726,14 @@ var LiveChart = (function () {
       if (rangeView) return zone.type === "resistance" ? n.rh : zone.type === "support" ? n.rl : n.eq;
       return ""; // Critical Zones: the range alone (the colour already says support or resistance)
     }
-    function fmtPrice(v) { var d = decimals == null ? 2 : decimals; return Number(v).toLocaleString(pageLocale(), { minimumFractionDigits: d, maximumFractionDigits: d }); }
+    function fmtPrice(v) { var d = decimals == null ? 2 : decimals; return numFormat(pageLocale(), d).format(Number(v)); }
     function showEventTip(param) {
       var h = chart.panes()[0].getHeight();
       if (!eventMarks.events.length || param.point.y < h - 22) return false;
       var near = eventMarks.positions(h).filter(function (p) { return Math.abs(p.x - param.point.x) <= 7; });
       if (!near.length) return false;
       zoneTip.innerHTML = near.map(function (p) {
-        var e = p.e, d = new Date(e.time * 1000), when = d.toLocaleString(pageLocale(), Object.assign({ timeZone: "UTC", day: "numeric", month: "short" }, e.dateOnly ? {} : { hour: "2-digit", minute: "2-digit", hourCycle: "h23" }));
+        var e = p.e, d = new Date(e.time * 1000), when = cachedFormat("date", pageLocale(), Object.assign({ timeZone: "UTC", day: "numeric", month: "short" }, e.dateOnly ? {} : { hour: "2-digit", minute: "2-digit", hourCycle: "h23" })).format(d);
         var esc = function (x) { return String(x).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
         return '<div style="font-weight:600">' + esc(e.title) + '</div><div style="font-weight:400;color:#9aa6b6">' + esc(when) + (e.dateOnly ? "" : " UTC") + (e.country ? " · " + esc(e.country) : "") + "</div>";
       }).join('<div style="height:6px"></div>');
@@ -756,7 +786,7 @@ var LiveChart = (function () {
     function legendDate(sec) {
       var intraday = state.tf === "1h" || state.tf === "4h", o = { timeZone: "UTC", day: "numeric", month: "short", year: "numeric" };
       if (intraday) { o.hour = "2-digit"; o.minute = "2-digit"; o.hourCycle = "h23"; }
-      return new Date(sec * 1000).toLocaleString(pageLocale(), o) + (intraday ? " UTC" : "");
+      return cachedFormat("date", pageLocale(), o).format(new Date(sec * 1000)) + (intraday ? " UTC" : "");
     }
     var legendHover = false;
     function refreshLegend() { if (!legendHover) showLegend(null); }
@@ -777,10 +807,10 @@ var LiveChart = (function () {
       var html = '<span style="color:#c7cfde">' + legendDate(bar.time) + "</span>" + item(w.o, fmtPrice(bar.open)) + item(w.h, fmtPrice(bar.high)) +
         item(w.l, fmtPrice(bar.low)) + item(w.c, fmtPrice(bar.close));
       if (chg != null) {
-        var p = Math.abs(chg).toLocaleString(pageLocale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 }), sg = chg > 0 ? "+" : chg < 0 ? "−" : "";
+        var p = numFormat(pageLocale(), 2).format(Math.abs(chg)), sg = chg > 0 ? "+" : chg < 0 ? "−" : "";
         html += '<b style="color:' + (chg >= 0 ? "#55d99c" : "#ef6e76") + ';font-weight:600">' + sg + (pageLocale() === "tr-TR" ? "%" + p : p + "%") + "</b>";
       }
-      if (vol != null) html += "<span>" + w.v + ' <b style="color:#c7cfde;font-weight:600">' + Number(vol).toLocaleString(pageLocale(), { notation: "compact", maximumFractionDigits: 2 }) + "</b></span>";
+      if (vol != null) html += "<span>" + w.v + ' <b style="color:#c7cfde;font-weight:600">' + cachedFormat("num", pageLocale(), { notation: "compact", maximumFractionDigits: 2 }).format(Number(vol)) + "</b></span>";
       legend.innerHTML = html;
     }
     chart.subscribeCrosshairMove(showLegend);
@@ -789,7 +819,22 @@ var LiveChart = (function () {
     var liveLine = null, loadingOlder = false, destroyed = false, generation = 0;
     var forming = null, liveStatus = "pending", socket = null, retryTimer = null, socketFailures = 0;
     function allRows() { return state.rows.concat(state.tail); }
-    function times() { return allRows().map(function (r) { return r[0]; }); }
+    // Candle times, rebuilt only when the candle list changes (they are read on every frame by the event marks,
+    // the zones and the drawing tools). Callers must not change the returned array.
+    var timesCache = { rows: null, rl: -1, tail: null, tl: -1, list: [] }, indTimesCache = { base: null, forming: null, list: [] };
+    function times() {
+      var c = timesCache;
+      if (c.rows !== state.rows || c.rl !== state.rows.length || c.tail !== state.tail || c.tl !== state.tail.length) {
+        c.rows = state.rows; c.rl = state.rows.length; c.tail = state.tail; c.tl = state.tail.length;
+        c.list = allRows().map(function (r) { return r[0]; });
+      }
+      return c.list;
+    }
+    function indicatorTimes() {
+      var base = times(), c = indTimesCache, ft = forming ? forming[0] : null;
+      if (c.base !== base || c.forming !== ft) { c.base = base; c.forming = ft; c.list = ft == null ? base : base.concat([ft]); }
+      return c.list;
+    }
     function notify() { if (state.onChange) try { state.onChange(); } catch (error) { /* page re-render only */ } }
 
     function applyPrecision() {
@@ -929,7 +974,15 @@ var LiveChart = (function () {
       candles.update({ time: forming[0], open: forming[1], high: forming[2], low: forming[3], close: forming[4], color: tone, wickColor: tone, borderColor: tone });
       volume.update({ time: forming[0], value: forming[5], color: up ? "rgba(59,158,112,0.25)" : "rgba(169,83,91,0.25)" });
       refreshLegend();
-      drawIndicators();
+      drawIndicatorsSoon();
+    }
+    // Live ticks of the forming candle come several times a second; recomputing every indicator over thousands of
+    // candles on each one is wasted work, so they are redrawn at most once a second (and once more after the last tick).
+    var indLast = 0, indTimer = null;
+    function drawIndicatorsSoon() {
+      var wait = 1000 - (Date.now() - indLast);
+      if (wait <= 0) { clearTimeout(indTimer); indTimer = null; indLast = Date.now(); drawIndicators(); return; }
+      if (!indTimer) indTimer = setTimeout(function () { indTimer = null; if (destroyed) return; indLast = Date.now(); drawIndicators(); }, wait);
     }
 
     // A closed candle from Binance after the last known one: extend EMAs and draw it normally.
@@ -1072,14 +1125,19 @@ var LiveChart = (function () {
     pulse.className = "lc-pulse"; pulse.hidden = true; pulse.setAttribute("aria-hidden", "true"); container.appendChild(pulse);
     function placePulse() {
       if (destroyed) return;
-      var rows = allRows(), last = forming || rows[rows.length - 1];
-      if (!last) { pulse.hidden = true; return; }
+      var count = state.rows.length + state.tail.length, last = forming || state.tail[state.tail.length - 1] || state.rows[state.rows.length - 1];
+      if (!last) { if (!pulse.hidden) pulse.hidden = true; return; }
       var price = liveLine && liveStatus !== "live" ? liveLine.options().price : last[4];
-      var x = chart.timeScale().logicalToCoordinate(rows.length - 1 + (forming ? 1 : 0)), y = candles.priceToCoordinate(price);
-      if (x === null || y === null || x < 0 || x > chart.timeScale().width() || y < 0) { pulse.hidden = true; return; }
-      pulse.hidden = false; pulse.style.transform = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px)";
+      var x = chart.timeScale().logicalToCoordinate(count - 1 + (forming ? 1 : 0)), y = candles.priceToCoordinate(price);
+      if (x === null || y === null || x < 0 || x > chart.timeScale().width() || y < 0) { if (!pulse.hidden) pulse.hidden = true; return; }
+      var t = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px)";
+      if (pulse.hidden) pulse.hidden = false;
+      if (pulse.style.transform !== t) pulse.style.transform = t;
     }
-    chart.timeScale().subscribeVisibleLogicalRangeChange(placePulse);
+    // Placed from the chart's own paint, when the price axis has already rescaled for the new view: placed from the
+    // range-change event it read the old scale, sat off the candle after a zoom and jumped there up to half a second
+    // later (seen as a flicker after pinch-zooming on phones).
+    candles.attachPrimitive({ paneViews: function () { return [{ renderer: function () { return { draw: function () { placePulse(); } }; } }]; } });
     pulseTimer = setInterval(placePulse, 500);
     var sized = 0, waitForSize = function () {
       if (touched || destroyed || sized++ > 20) return;
