@@ -13,7 +13,9 @@
 // - Macro and commodities: last week's weekly candle (open → close) of the US dollar index, S&P 500 and Nasdaq 100
 //   futures and COMEX gold and silver futures from Yahoo Finance; the US 10-year yield's change in basis points.
 //   Their week runs Monday to Friday (futures open Sunday evening UTC). A source that fails leaves its item null.
-// One snapshot per week: cached at the edge for an hour, so a request is cheap and the numbers stay put.
+// Snapshot: kept in D1 (USERS_DB, table `snapshots`) and at the edge. A visitor always gets the stored snapshot at
+// once; when it is older than an hour (two minutes while some asset still lacks last week's candle) it is rebuilt in
+// the background for the next visitor. Only the very first request of a week waits for the build.
 const ACTIVE_POINTER_KEY = "site-publication/active.json";
 const CANDLES = "https://data.marketlevelmap.com/candles/";
 const LEFT_OUT = new Set(["PAXGUSDT"]);
@@ -25,6 +27,9 @@ function json(value, maxAge) {
     headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": maxAge ? `public, max-age=${maxAge}` : "no-store" },
   });
 }
+
+// A slow source must not hold the whole snapshot: its request is given up after `ms` (the item is left empty).
+const timeout = (ms) => (typeof AbortSignal !== "undefined" && AbortSignal.timeout ? AbortSignal.timeout(ms) : undefined);
 
 async function readJson(bucket, key) {
   if (!key) return null;
@@ -55,7 +60,7 @@ const parts = (entry) => String(entry && entry.graphicKey || "").split(":");
 
 async function getJson(url) {
   try {
-    const r = await fetch(url, { headers: { Accept: "application/json" }, cf: { cacheTtl: 300 } });
+    const r = await fetch(url, { headers: { Accept: "application/json" }, cf: { cacheTtl: 300 }, signal: timeout(8000) });
     return r.ok ? await r.json() : null;
   } catch (_) {
     return null;
@@ -73,7 +78,7 @@ export function keyLevelMap(file, symbol) {
 
 async function getCandles(url) {
   try {
-    const r = await fetch(url, { headers: { Accept: "application/json" }, cf: { cacheTtl: 300 } });
+    const r = await fetch(url, { headers: { Accept: "application/json" }, cf: { cacheTtl: 300 }, signal: timeout(8000) });
     return r.ok ? ((await r.json()).candles || []) : [];
   } catch (_) {
     return [];
@@ -109,7 +114,7 @@ async function macroWeek(symbol, start) {
   for (const host of ["query1", "query2"]) {
     let body = null;
     try {
-      const r = await fetch(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=1mo&interval=1wk`, { headers: YAHOO_HEADERS });
+      const r = await fetch(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=1mo&interval=1wk`, { headers: YAHOO_HEADERS, signal: timeout(3000) });
       body = r.ok ? await r.json() : null;
     } catch (_) { body = null; }
     const w = yahooWeek(body, start);
@@ -184,24 +189,67 @@ export async function buildWeekly(env, nowMs) {
   return { schemaVersion: "marketlevelmap-weekly-v1", weekStart: new Date(start * 1000).toISOString(), generatedAt: new Date(nowMs).toISOString(), assets, macro: await macroPromise };
 }
 
+// Complete: every asset has last week's candle and the macro sources answered (a snapshot missing either is
+// rebuilt every two minutes until they are in, and is not kept at the edge).
+export const isComplete = (data) => !!(data && data.assets && data.assets.length > 0 && data.assets.every((a) => a.lastWeek) &&
+  data.macro && Object.values(data.macro).some((v) => v));
+const FRESH_MS = 3600 * 1000, FRESH_INCOMPLETE_MS = 120 * 1000;
+
+// ---- stored snapshot (D1). Any failure here falls back to building the answer, as before. ----
+let tableReady = false;
+async function snapshotTable(db) {
+  if (!tableReady) {
+    await db.prepare("CREATE TABLE IF NOT EXISTS snapshots (key TEXT PRIMARY KEY, body TEXT NOT NULL, updated_at INTEGER NOT NULL)").run();
+    tableReady = true;
+  }
+  return db;
+}
+export async function readSnapshot(db, key) {
+  if (!db) return null;
+  try {
+    const row = await (await snapshotTable(db)).prepare("SELECT body, updated_at FROM snapshots WHERE key = ?").bind(key).first();
+    return row ? { data: JSON.parse(row.body), at: Number(row.updated_at) } : null;
+  } catch (_) { return null; }
+}
+export async function writeSnapshot(db, key, data, at) {
+  if (!db) return;
+  try {
+    await (await snapshotTable(db)).prepare("INSERT INTO snapshots (key, body, updated_at) VALUES (?, ?, ?) ON CONFLICT(key) DO UPDATE SET body = excluded.body, updated_at = excluded.updated_at")
+      .bind(key, JSON.stringify(data), at).run();
+  } catch (_) { /* the answer is still served */ }
+}
+// Snapshot age at which it is rebuilt in the background.
+export const isStale = (snap, nowMs) => nowMs - snap.at > (isComplete(snap.data) ? FRESH_MS : FRESH_INCOMPLETE_MS);
+
 export async function onRequestGet({ request, env, waitUntil }) {
   if (!env.MARKETLEVELMAP_PUBLIC) return json({ error: "not_configured" });
-  const now = Date.now();
-  // v: raised when the response gains fields, so a snapshot cached before the change is not served for the rest of the week.
-  const cacheKey = new Request(`${new URL(request.url).origin}/api/weekly?w=${weekStart(now)}&v=2`);
+  const now = Date.now(), start = weekStart(now);
+  // v: raised when the response gains fields, so a snapshot made before the change is not served for the rest of the week.
+  const cacheKey = new Request(`${new URL(request.url).origin}/api/weekly?w=${start}&v=2`);
+  const storeKey = `weekly:${start}:v2`;
   const cache = typeof caches !== "undefined" ? caches.default : null;
   if (cache) {
     const hit = await cache.match(cacheKey);
     if (hit) return hit;
   }
-  const data = await buildWeekly(env, now);
-  // Kept for the hour only once every asset has last week's candle; until the upload is complete, ask again soon.
-  const complete = data.assets.length > 0 && data.assets.every((a) => a.lastWeek);
-  const response = json(data, complete ? 600 : 120);
-  if (cache && complete) {
-    const stored = new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=3600" } });
-    const put = cache.put(cacheKey, stored);
-    if (waitUntil) waitUntil(put); else await put;
+  const later = (p) => { if (p && waitUntil) waitUntil(p); };
+  const edge = (data) => {
+    if (!cache || !isComplete(data)) return null;
+    return cache.put(cacheKey, new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=3600" } }));
+  };
+  const rebuild = async () => {
+    const data = await buildWeekly(env, Date.now());
+    await writeSnapshot(env.USERS_DB, storeKey, data, Date.now());
+    await edge(data);
+    return data;
+  };
+  const stored = await readSnapshot(env.USERS_DB, storeKey);
+  if (stored) {
+    if (isStale(stored, now)) later(rebuild().catch(() => null));
+    else if (isComplete(stored.data)) later(edge(stored.data));
+    return json(stored.data, isComplete(stored.data) ? 600 : 120);
   }
-  return response;
+  const data = await buildWeekly(env, now);
+  later(Promise.all([writeSnapshot(env.USERS_DB, storeKey, data, now), edge(data)]).catch(() => null));
+  return json(data, isComplete(data) ? 600 : 120);
 }

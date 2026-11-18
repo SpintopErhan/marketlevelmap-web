@@ -9,11 +9,15 @@ var MarketUI=(function(){
   // Decimals by price size: >= $100 → 1, $1–100 → 2, below $1 → 3.
   // Decimals by price size: 100+ → 1, 1+ → 2, below 1 (e.g. DOGE 0,1834) → 4, below 0,01 → 6.
   function digitsFor(value){var n=Number(value);return n>=100?1:n>=1?2:n>=0.01?4:6}
-  function price(value,digits){var n=Number(value);if(!(n>0))return"—";var d=digits==null?digitsFor(n):digits;return n.toLocaleString(locale(),{minimumFractionDigits:d,maximumFractionDigits:d})}
+  // Number formats are built once per locale and option set and reused: toLocaleString builds a new one on every
+  // call, and these run for every price on every live tick.
+  var formats={};
+  function nf(kind,d){var loc=locale(),k=loc+"|"+kind+"|"+d;return formats[k]||(formats[k]=new Intl.NumberFormat(loc,kind==="compact"?{notation:"compact",maximumFractionDigits:2}:{minimumFractionDigits:d,maximumFractionDigits:d}))}
+  function price(value,digits){var n=Number(value);if(!(n>0))return"—";var d=digits==null?digitsFor(n):digits;return nf("fixed",d).format(n)}
   // Ratio → "+1,23%" / "−4,01%" (same layout in both languages, like the design).
-  function pct(ratio){if(!isFinite(ratio))return"—";var v=Math.abs(ratio*100).toLocaleString(locale(),{minimumFractionDigits:2,maximumFractionDigits:2});return(ratio>0?"+":ratio<0?"−":"")+v+"%"}
+  function pct(ratio){if(!isFinite(ratio))return"—";var v=nf("fixed",2).format(Math.abs(ratio*100));return(ratio>0?"+":ratio<0?"−":"")+v+"%"}
   function signClass(ratio){return ratio>0?"up":ratio<0?"down":""}
-  function compact(value){var n=Number(value);return n>0?n.toLocaleString(locale(),{notation:"compact",maximumFractionDigits:2}):"—"}
+  function compact(value){var n=Number(value);return n>0?nf("compact",0).format(n):"—"}
   function baseOf(symbol){return String(symbol).replace(/USDT$/,"")}
   function nameOf(symbol){var b=baseOf(symbol);return NAMES[b]||b}
   function dateTime(iso,withYear){var d=new Date(iso);if(isNaN(d))return"";return d.toLocaleString(locale(),{day:"numeric",month:"short",year:withYear===false?undefined:"numeric",hour:"2-digit",minute:"2-digit",hour12:false,timeZone:"UTC"})+" UTC"}

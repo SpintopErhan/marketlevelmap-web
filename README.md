@@ -207,8 +207,12 @@ by it.
 ## Weekly outlook
 
 `weekly.html` (`/weekly`) and a card at the top right of the home page. Data: `GET /api/weekly`
-(`functions/api/weekly.js`), one snapshot per week (Monday 00:00 UTC), cached at the edge for an hour once
-every asset has last week's candle. Every analysed asset except PAXG:
+(`functions/api/weekly.js`), one snapshot per week (Monday 00:00 UTC). The snapshot is stored in D1 (`USERS_DB`,
+table `snapshots`, key `weekly:<weekStart>:v2`) and kept at the edge for an hour once complete (every asset has
+last week's candle and Yahoo answered). A visitor always gets the stored snapshot at once; when it is older than an
+hour (two minutes while incomplete) it is rebuilt in the background for the next visitor, so only the first request
+of a week waits for the build. Each source request gives up after a few seconds (Yahoo 3 s per host, candles 8 s);
+a source that does not answer leaves its item empty. Every analysed asset except PAXG:
 
 - **Last week** — open → close of the weekly candle that opened the Monday before (public candles,
   `data.marketlevelmap.com/candles/<SYMBOL>/1w/latest.json`, else the newest 1W archive). If that candle is not
@@ -552,6 +556,13 @@ The chart repaints on every frame while it is panned or zoomed, so the code it c
   the dashed lagging line keeps its full length so its dashes do not move while panning.
 - The live price dot is placed during the chart's own paint, after the price axis has rescaled.
 - Live ticks of the forming candle redraw the indicators at most once a second.
+- `indicatorData()` (the indicator card) is computed once per candle list.
+
+On the analysis page a live price tick updates the header price at once; the tables and cards measured from the
+price are redrawn at most once a second, and the indicator card only when a candle closes (or the language, the
+timeframe or the report changes). The price flash restarts its animation without reading the layout. `MarketUI`
+reuses one `Intl.NumberFormat` per locale and option set. Under four ticks a second (CPU slowed 4×) long tasks
+fell from 5.8 s to 1.7 s in 10 s.
 
 Measured on a 1H chart with 2,900 candles, most indicators, four drawings and twelve events, CPU slowed 4×:
 average frame while panning 81 → 36 ms, wheel zoom 119 → 58 ms, phone pinch-zoom p95 117 → 33 ms.
