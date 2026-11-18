@@ -1,4 +1,5 @@
 import { viewerAccess, isOpenEntry, guestReport } from "../auth/[[path]].js";
+import { readSnapshot, writeSnapshot } from "../weekly.js";
 
 const ACTIVE_POINTER_KEY = "site-publication/active.json";
 
@@ -75,6 +76,33 @@ async function chartTime(bucket, entry) {
   return null;
 }
 
+// Chart times of every entry. Without a declared time each one costs an R2 HEAD request (63 of them on every page
+// load took 1–3 s), yet they only change with the published files. So they are computed once per set of files
+// (the key is a hash of every entry's object keys and checksums) and kept in this worker's memory and in D1.
+const timesMemory = new Map();
+async function timesKey(pointer) {
+  const parts = pointer.entries.map((e) => [e.publicationId, e.image?.objectKey, e.image?.sha256, e.report?.objectKey, e.report?.sha256].join("|"));
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(parts.join("\n")));
+  return "pubtimes:" + [...new Uint8Array(digest)].slice(0, 16).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+export async function entryTimes(bucket, pointer, db, waitUntil) {
+  const key = await timesKey(pointer);
+  if (timesMemory.has(key)) return timesMemory.get(key);
+  const stored = await readSnapshot(db, key);
+  if (stored && stored.data) { timesMemory.set(key, stored.data); return stored.data; }
+  const list = await Promise.all(pointer.entries.map((entry) => chartTime(bucket, entry)));
+  const times = {};
+  pointer.entries.forEach((entry, i) => { times[entry.publicationId] = list[i]; });
+  // Kept only when every time was found, so a failed lookup is tried again on the next request.
+  if (list.every((t, i) => t || !(pointer.entries[i].image?.objectKey || pointer.entries[i].report?.objectKey))) {
+    if (timesMemory.size > 20) timesMemory.clear();
+    timesMemory.set(key, times);
+    const put = writeSnapshot(db, key, times, Date.now());
+    if (waitUntil) waitUntil(put); else await put;
+  }
+  return times;
+}
+
 async function activePointer(bucket) {
   const object = await bucket.get(ACTIVE_POINTER_KEY);
   if (!object) return null;
@@ -107,16 +135,19 @@ export async function onRequestGet(context) {
 
   const path = context.params.path || [];
   if (!path.length) {
-    const access = pointer.entries.some((entry) => !isOpenEntry(entry)) ? await viewerAccess(context.request, context.env) : { member: false, status: "guest" };
+    const [access, times] = await Promise.all([
+      pointer.entries.some((entry) => !isOpenEntry(entry)) ? viewerAccess(context.request, context.env) : { member: false, status: "guest" },
+      entryTimes(bucket, pointer, context.env.USERS_DB, context.waitUntil && context.waitUntil.bind(context)),
+    ]);
     return json({
       viewer: { member: access.member, status: access.status },
       schemaVersion: pointer.schemaVersion,
       sitePublicationId: pointer.sitePublicationId,
       activatedAt: pointer.activatedAt,
-      entries: await Promise.all(pointer.entries.map(async (entry) => ({
+      entries: pointer.entries.map((entry) => ({
         ...publicEntry(entry, access.member),
-        chartTime: await chartTime(bucket, entry),
-      }))),
+        chartTime: times[entry.publicationId] || null,
+      })),
     });
   }
   if (path.length !== 2 || !["image", "comment", "report"].includes(path[0])) {

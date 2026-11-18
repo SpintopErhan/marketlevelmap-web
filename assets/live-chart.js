@@ -857,6 +857,12 @@ var LiveChart = (function () {
 
     // RSI / MACD panes and Bollinger bands (shown on request: setIndicators). Recomputed from the closes,
     // with the forming candle, whenever candles change.
+    var indDataCache = { key: null, data: null };
+    function indicatorDataNow() {
+      var rows = allRows(), v = indicators(rows.map(function (r) { return r[4]; })), x = extraIndicators(rows, v.rsi, state.tf);
+      return { tf: state.tf, tenkan: x.tenkan, kijun: x.kijun, spanA: x.spanA, spanB: x.spanB, vwap: x.vwap, vwapKey: x.vwapKey, volume: rows.map(function (r) { return r[5]; }), st: x.st, stDir: x.stDir, psar: x.psar, psarDir: x.psarDir, srsiK: x.srsiK, srsiD: x.srsiD, obv: x.obv, time: rows.map(function (r) { return r[0]; }), high: rows.map(function (r) { return r[2]; }), low: rows.map(function (r) { return r[3]; }), close: rows.map(function (r) { return r[4]; }),
+        ema: [0, 1, 2].map(function (i) { return rows.map(function (r) { return r[6 + i]; }); }), rsi: v.rsi, macd: v.macd, signal: v.signal, hist: v.hist, bbUpper: v.bbUpper, bbMid: v.bbMid, bbLower: v.bbLower, warmup: IND_WARMUP };
+    }
     function indicatorRows() { var rows = allRows(); return forming ? rows.concat([forming]) : rows; }
     function drawIndicators() {
       var onPrice = indPrefs.st || indPrefs.psar || indPrefs.ichi || indPrefs.vwap;
@@ -1173,10 +1179,13 @@ var LiveChart = (function () {
     return {
       setLevels: setLevels,
       // Closed candles with RSI 14, MACD 12/26/9, EMA 20/50/200 and Bollinger 20/2, for the indicator summary.
+      // Indicator values over the closed candles; the page asks for them on every live tick and every few seconds, so
+      // they are computed once per candle list (times() is rebuilt only when the candles change).
       indicatorData: function () {
-        var rows = allRows(), v = indicators(rows.map(function (r) { return r[4]; })), x = extraIndicators(rows, v.rsi, state.tf);
-        return { tf: state.tf, tenkan: x.tenkan, kijun: x.kijun, spanA: x.spanA, spanB: x.spanB, vwap: x.vwap, vwapKey: x.vwapKey, volume: rows.map(function (r) { return r[5]; }), st: x.st, stDir: x.stDir, psar: x.psar, psarDir: x.psarDir, srsiK: x.srsiK, srsiD: x.srsiD, obv: x.obv, time: rows.map(function (r) { return r[0]; }), high: rows.map(function (r) { return r[2]; }), low: rows.map(function (r) { return r[3]; }), close: rows.map(function (r) { return r[4]; }),
-          ema: [0, 1, 2].map(function (i) { return rows.map(function (r) { return r[6 + i]; }); }), rsi: v.rsi, macd: v.macd, signal: v.signal, hist: v.hist, bbUpper: v.bbUpper, bbMid: v.bbMid, bbLower: v.bbLower, warmup: IND_WARMUP };
+        var key = times();
+        if (indDataCache.key === key) return indDataCache.data;
+        indDataCache = { key: key, data: indicatorDataNow() };
+        return indDataCache.data;
       },
       // [{ kind: "rsi"|"macd", type: "bull"|"bear", t1, t2, p1, p2, v1, v2 }] and whether to draw them.
       setDivergences: function (list, shown) { divList = list || []; divShown = shown !== false; drawDivergences(); },
