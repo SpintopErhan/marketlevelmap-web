@@ -32,6 +32,11 @@ the bulletin page:
 - `source: "metadata"` — the same field names in the image object's R2 custom metadata.
 - `source: "upload"` — fallback: when the image was uploaded to R2. Shown as "Chart uploaded".
 
+The metadata and upload times need an R2 `HEAD` request per entry (63 entries took 1–3 s on every page load), so
+they are worked out once per set of published files: the key is a hash of every entry's object keys and checksums
+(`pubtimes:<hash>`), kept in the worker's memory and in D1 (`USERS_DB`, table `snapshots`). A new publication or a
+re-uploaded file gives a new key; a lookup that failed is not kept and is tried again on the next request.
+
 ## Link previews
 
 `functions/_middleware.js` adds description, Open Graph and Twitter tags to every HTML page. Every page,
