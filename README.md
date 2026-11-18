@@ -541,6 +541,21 @@ middle of the price pane (Lightweight Charts `createTextWatermark`, behind the c
 follows the chart width (22–56 px). It is drawn on the chart canvas itself, so chart screenshots used for
 downloads and sharing include it.
 
+## Chart drawing performance
+
+The chart repaints on every frame while it is panned or zoomed, so the code it calls per frame stays cheap:
+
+- Price, legend and tooltip numbers and dates use `Intl.NumberFormat` / `Intl.DateTimeFormat` objects built
+  once per locale and option set (`toLocaleString` built a new one per label; it was the largest cost).
+- The candle times list is rebuilt only when the candles change; event marks, zones and drawing tools reuse it.
+- Supertrend, VWAP, Parabolic SAR and Ichimoku draw only the points on screen (one point of margin each side);
+  the dashed lagging line keeps its full length so its dashes do not move while panning.
+- The live price dot is placed during the chart's own paint, after the price axis has rescaled.
+- Live ticks of the forming candle redraw the indicators at most once a second.
+
+Measured on a 1H chart with 2,900 candles, most indicators, four drawings and twelve events, CPU slowed 4×:
+average frame while panning 81 → 36 ms, wheel zoom 119 → 58 ms, phone pinch-zoom p95 117 → 33 ms.
+
 ## Chart download
 
 The analysis chart header has a Download button (next to Expand). It saves the interactive chart as drawn

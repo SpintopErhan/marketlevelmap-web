@@ -119,7 +119,9 @@
   }
 
   // ---- drawing ----
-  function fmt(p) { var d = p >= 1000 ? 1 : p >= 1 ? 2 : 5; return Number(p).toLocaleString(lang() === "tr" ? "tr-TR" : "en-US", { minimumFractionDigits: d, maximumFractionDigits: d }); }
+  var nfCache = {};
+  function numFormat(loc, d) { var k = loc + "|" + d; return nfCache[k] || (nfCache[k] = new Intl.NumberFormat(loc, { minimumFractionDigits: d, maximumFractionDigits: d })); }
+  function fmt(p) { var d = p >= 1000 ? 1 : p >= 1 ? 2 : 5; return numFormat(lang() === "tr" ? "tr-TR" : "en-US", d).format(Number(p)); }
   function rgba(hex, a) { var n = parseInt(hex.slice(1), 16); return "rgba(" + (n >> 16) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")"; }
   // Measure (not stored): a shaded box from A to B with the price change, the change in percent, the number of
   // candles and the time between them, green when B is above A and red when below.
@@ -141,7 +143,7 @@
     if (rw > 10) head(b.x, my, b.x > a.x ? 1 : -1, 0);
     var la = timeToLogical(d.a.t), lb = timeToLogical(d.b.t), bars = la == null || lb == null ? null : Math.round(Math.abs(lb - la));
     var diff = d.b.p - d.a.p, pct = d.a.p ? diff / d.a.p * 100 : 0, loc = lang() === "tr" ? "tr-TR" : "en-US";
-    var sg = diff > 0 ? "+" : diff < 0 ? "−" : "", pctTxt = Math.abs(pct).toLocaleString(loc, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    var sg = diff > 0 ? "+" : diff < 0 ? "−" : "", pctTxt = numFormat(loc, 2).format(Math.abs(pct));
     var line1 = sg + fmt(Math.abs(diff)) + "  (" + sg + (lang() === "tr" ? "%" + pctTxt : pctTxt + "%") + ")";
     var line2 = (bars != null ? bars + " " + w().bars + " · " : "") + duration(Math.abs(d.b.t - d.a.t));
     ctx.font = "600 12px Inter, system-ui, sans-serif";
