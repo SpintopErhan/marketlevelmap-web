@@ -326,6 +326,8 @@ table{font-size:14px}
 #archive-block>.archive-list{grid-column:1/-1;grid-row:2}
 /* After the first appearance (see "settled" in the script) cards no longer replay their entrance. */
 #analysis.settled .side-col>.block,#analysis.settled .glance div{animation:none}
+/* The side cards wait, out of sight, until the report and the levels are in, then appear together in the saved order. */
+.side-col.so-wait>.block{visibility:hidden;animation:none}
 /* Indicators menu (Price Action charts). */
 .ind-wrap{position:relative}.ind-wrap[hidden]{display:none}
 .ind-menu label[hidden]{display:none}
@@ -353,7 +355,7 @@ table{font-size:14px}
 <section class="panel chart-panel"><div class="chart-head"><div class="chart-title"><strong id="chart-name"></strong><a class="howto-link" href="/en/guide/" data-href-tr="/tr/rehber/" data-i18n="howTo">How to read</a><a class="howto-link" id="returns-link" href="returns.html" data-i18n="returnsLink">Monthly returns</a></div><div class="chart-actions"><a class="ghost-btn flow-link" id="flow-link" href="flow" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M4 12h16M4 17h7"/><circle cx="18" cy="7" r="2"/><circle cx="15" cy="17" r="2"/></svg><span data-i18n="flowLink">Live flow</span></a><div class="ind-wrap" id="ind-wrap" hidden><button class="ghost-btn" id="ind-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="ind-menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg><span data-i18n="indicators">Indicators</span></button><div class="share-menu ind-menu" id="ind-menu" hidden><label><input type="checkbox" data-ind="ema"><span>EMA 20/50/200</span></label><label><input type="checkbox" data-ind="bb"><span>Bollinger 20/2</span></label><label><input type="checkbox" data-ind="st"><span>Supertrend 10/3</span></label><label><input type="checkbox" data-ind="psar"><span>Parabolic SAR</span></label><label><input type="checkbox" data-ind="ichi"><span>Ichimoku 9/26/52</span></label><label><input type="checkbox" data-ind="vwap"><span>VWAP</span></label><label><input type="checkbox" data-ind="rsi"><span>RSI 14</span></label><label><input type="checkbox" data-ind="srsi"><span data-i18n="srsiMenu">Stochastic RSI</span></label><label><input type="checkbox" data-ind="macd"><span>MACD 12/26/9</span></label><label><input type="checkbox" data-ind="obv"><span>OBV</span></label><label><input type="checkbox" data-ind="ev"><span data-i18n="evMenu">Economic events</span></label><label id="ind-fib"><input type="checkbox" data-fib><span data-i18n="fibMenu">Fibonacci (current leg)</span></label></div></div><div class="share-wrap" id="share-wrap" hidden><button class="ghost-btn" id="share" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="share-menu" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg><span data-i18n="share">Share</span></button><div class="share-menu" id="share-menu" role="menu" hidden><button type="button" role="menuitem" data-share="image" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4"/><circle cx="15.5" cy="8.5" r="1.5"/></svg><span data-i18n="shareImage">Share with image…</span></button><a role="menuitem" data-share="x" target="_blank" rel="noopener noreferrer"><svg class="brand" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg><span>X (Twitter)</span></a><a role="menuitem" data-share="telegram" target="_blank" rel="noopener noreferrer"><svg class="brand" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.47l-.38 5.33c.54 0 .78-.23 1.06-.51l2.55-2.43 5.28 3.86c.97.53 1.66.25 1.92-.89l3.48-16.3c.31-1.44-.52-2-1.47-1.65L1.3 10.85c-1.4.55-1.38 1.33-.24 1.68l5.21 1.63L18.37 6.6c.57-.38 1.09-.17.66.21z"/></svg><span>Telegram</span></a><button type="button" role="menuitem" data-share="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span data-i18n="copyLink">Copy link</span></button></div></div><button class="ghost-btn" id="download" type="button" hidden disabled><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6z"/></svg><span data-i18n="download">Download</span></button><button class="ghost-btn" id="expand" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg><span data-i18n="expand">Expand</span></button></div></div>
 <div class="chart" id="chart" data-state="loading"><div class="live-chart" id="live-chart" hidden></div><img id="chart-img" alt=""><div class="lock-band" id="lock-band" hidden><div class="lock-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6z"/></svg><b data-i18n="lockTitle">Members only</b><p class="lock-text"></p><a class="lock-cta" href="/account"></a></div></div></div><div class="chart-foot" id="chart-time"></div></section>
 <section class="panel note" id="note" hidden><div class="note-head"><h2 data-i18n="notes">Analysis note</h2><span class="note-by" id="note-by"></span></div><p id="note-text"></p></section>
-<aside class="side-col">
+<aside class="side-col so-wait">
 <section class="block flowmini" id="flowmini-block" hidden><div class="block-head"><div><h2 data-fm="title">Flow summary</h2><p data-fm="sub"></p></div><div class="fm-right"><span class="fm-seg" id="fm-venue" role="group" aria-label="Venue"><button type="button" data-v="binance" aria-pressed="true">Binance</button><button type="button" data-v="okx" aria-pressed="false">OKX</button></span><a class="fm-open" id="fm-link" href="flow" data-fm="open">Open live flow →</a></div></div>
 <div class="fm-grid"><div><span data-fm="bs5"></span><b class="num" id="fm-bs">—</b></div><div><span data-fm="cvd"></span><b class="num" id="fm-cvd">—</b></div><div><span data-fm="fund"></span><b class="num" id="fm-fund">—</b></div><div><span data-fm="basis"></span><b class="num" id="fm-basis">—</b></div><div><span data-fm="oi1h"></span><b class="num" id="fm-oi">—</b></div><div><span data-fm="liq"></span><b class="num" id="fm-liq">—</b></div></div>
 <p class="fm-read" id="fm-read"></p></section>
@@ -515,7 +517,14 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   (function(){var base=asset.replace(/(USDT|USDC|FDUSD|BUSD|USD|TRY|EUR)$/,"")||asset,hue=0,icon=document.getElementById("asset-icon");for(var i=0;i<base.length;i++)hue=(hue*31+base.charCodeAt(i))%360;icon.textContent=base;icon.style.background="hsl("+hue+" 62% 64%)"})();
   document.getElementById("archive-title").textContent=words().archiveTitle.replace("{asset}",asset);
 
-  function fail(key){page.dataset.state="unavailable";status.dataset.i18n=key;status.textContent=words()[key]}
+  // Side cards (README "Analysis page card order"): they fill as their data arrives (levels file, report, chart), and a
+  // card that arrived late used to drop in above the others. The column now opens once the report and the levels file
+  // are in (or failed), so every card appears at once in the saved order; at most 3 s after the page starts.
+  var sideCol=document.querySelector(".side-col"),sideWait={report:false,levels:!!at};
+  function sideOpen(){if(sideCol)sideCol.classList.remove("so-wait")}
+  function sidePart(k){sideWait[k]=true;if(sideWait.report&&sideWait.levels)sideOpen()}
+  setTimeout(sideOpen,3000);
+  function fail(key){sideOpen();page.dataset.state="unavailable";status.dataset.i18n=key;status.textContent=words()[key]}
   function badge(block,on){block.querySelector(".demo-badge").hidden=!on}
   var lastHeadPrice=null;
   function priceNow(){return live&&Number(live.c)>0?Number(live.c):null}
@@ -775,7 +784,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   var vpFile=null;
   if(!at)fetch("https://data.marketlevelmap.com/candles/"+encodeURIComponent(asset)+"/levels.json").then(function(r){return r.ok?r.json():null}).then(function(d){
     if(d&&d.pair===asset&&(Array.isArray(d.volumeProfile)||Array.isArray(d.periodExtremes)||d.keyLevels)){vpFile=d;renderVolumeProfile();renderLevels()}
-  }).catch(function(){});
+  }).catch(function(){}).then(function(){sidePart("levels")});
   function renderVolumeProfile(){
     var block=document.getElementById("vp-block"),body=document.getElementById("vp-rows"),map={};
     if(isLocked()){vpMap={};applyLevelsToChart();block.hidden=true;return}
@@ -1191,9 +1200,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       if(shown&&chartReady){applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow())}
       if(shown)renderChartTime();
     };
-    if(chosen.report)loadReport(chosen).then(function(rep){if(rep)paint(rep,false)}).catch(function(){});
-    else if(window.DemoData&&DemoData.enabled)paint(DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow()),true);
-    else{report=null;reportDemo=false;commentText=null;renderAll()}
+    if(chosen.report)loadReport(chosen).then(function(rep){if(rep)paint(rep,false)}).catch(function(){}).then(function(){sidePart("report")});
+    else if(window.DemoData&&DemoData.enabled){paint(DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow()),true);sidePart("report")}
+    else{report=null;reportDemo=false;commentText=null;renderAll();sidePart("report")}
     if(!chosen.report&&chosen.analysisComment)fetch(chosen.analysisComment.url,{cache:"no-store"}).then(function(r){return r.ok?r.text():""}).then(function(text){if(request===pending&&text){commentText=text;renderAll()}}).catch(function(){});
     if(!window.LiveChart){showPng(chosen);return}
     // A chart is already on screen: swap its candles in place. Building a second one (1H is large)

@@ -472,6 +472,11 @@ flow summary, price range, FVG, structure, zones, indicators, market context, ke
 - **Fixed cards:** the members-only lock card is not part of it and stays on top. The earlier-analyses list sits
   outside the column and keeps its place.
 
+The cards fill as their data arrives (levels file, report, chart), so a card that came in late used to drop in above
+the others and the saved order seemed to apply only after a moment. The column (`.side-col.so-wait`) now stays out of
+sight until the report and the levels file are in, or failed, at most 3 s, and then every card appears at once in the
+saved order.
+
 The indicator card is filled only once the chart is built, so it used to appear late between the other cards and push
 the ones under it down on every page open. When it was shown on the last visit it now takes its place from the start
 (an empty card with its title), at the height it had then (localStorage `mlm-sig-h-v1`: `{ w, h }`, page width in
