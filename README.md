@@ -448,6 +448,21 @@ fed by the price band: the analysed assets and their live prices).
 - **Chart header:** the links and buttons wrap onto a second line instead of overlapping when the page is narrow,
   e.g. with the watchlist docked.
 
+## Asset switch
+
+Moving to another asset on the analysis page still loads the page (band, watchlist, search window), with three aids:
+
+- **Cross-fade** — `@view-transition { navigation: auto }` in `bulletin.html` (off for reduced motion): Chrome, Edge
+  and Safari 18.2+ cross-fade (0.2 s) from the old page to the new one instead of flashing white.
+  `<link rel="expect" href="#chart" blocking="render">` holds the new page's first paint until the top of the page
+  (up to the chart box) is parsed, so the fade never lands on a blank page. Other browsers navigate as before.
+- **Click feedback** — following a link to another asset (or choosing one in the search window / watchlist) calls
+  `MLMLeaving(el)`: a thin accent bar runs along the top, the analysis dims and the chosen item is outlined, so the
+  click is acknowledged while the next page loads. Cleared when the page comes back from the browser's cache.
+- **Prerender on hover** — speculation rules prerender `/bulletin*` links on hover (`eagerness: moderate`; Chrome and
+  Edge only). The prerendered page loads hidden; the price stream and chart stream connect when it is shown, as they
+  already do after a hidden tab comes back. Not verified in the test browser, which turns prerendering off.
+
 ## Analysis page loading
 
 An inline script at the top of `bulletin.html` starts, before the page's scripts have loaded, the requests the page
