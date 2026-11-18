@@ -20,7 +20,12 @@
   function ordered() { var f = favs(); return assets.filter(function (s) { return f.indexOf(s) > -1; }).concat(assets.filter(function (s) { return f.indexOf(s) < 0; })); }
   function hue(sym) { var base = sym.replace(/(USDT|USDC|FDUSD|BUSD|USD|TRY|EUR)$/, "") || sym, h = 0; for (var i = 0; i < base.length; i++) h = (h * 31 + base.charCodeAt(i)) % 360; return h; }
   function href(sym) { var u = new URL(location.href); u.searchParams.set("asset", sym); u.hash = ""; return u.pathname + u.search; }
-  function go(sym) { if (sym === current) { closeAll(); return; } location.href = href(sym); }
+  function go(sym) {
+    if (sym === current) { closeAll(); return; }
+    // The page answers at once (bulletin.html "Asset switch"): the chosen row is marked while the next page loads.
+    if (window.MLMLeaving) window.MLMLeaving(document.querySelector('.ap-row[data-sym="' + sym + '"]'));
+    location.href = href(sym);
+  }
 
   // ---- one row (used by both lists) ----
   function row(sym, isFav) {

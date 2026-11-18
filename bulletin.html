@@ -22,6 +22,26 @@
   var levels=fetch("https://data.marketlevelmap.com/candles/"+encodeURIComponent(a)+"/levels.json").then(json);
   window.MLMEarly={asset:a,pub:pub,reports:reports,levels:levels};
 }catch(e){}})();
+</script><link rel="expect" href="#chart" blocking="render"><script type="speculationrules">
+{"prerender":[{"where":{"and":[{"href_matches":"/bulletin*"},{"not":{"href_matches":"/bulletin*\\?*(^|&)embed=*"}}]},"eagerness":"moderate"}]}
+</script><script>
+/* Asset switch feedback (README "Asset switch"): MLMLeaving(el) marks the page as on its way to another asset. */
+(function(){
+  var root=document.documentElement;
+  window.MLMLeaving=function(el){root.classList.add("mlm-leaving");if(el&&el.classList)el.classList.add("mlm-going")};
+  function clear(){root.classList.remove("mlm-leaving");[].forEach.call(document.querySelectorAll(".mlm-going"),function(x){x.classList.remove("mlm-going")})}
+  // Back to this page from the browser's cache: it must not stay dimmed.
+  addEventListener("pageshow",function(e){if(e.persisted)clear()});
+  document.addEventListener("click",function(e){
+    if(e.defaultPrevented||e.button||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+    var a=e.target.closest&&e.target.closest("a[href]");if(!a||(a.target&&a.target!=="_self")||a.hasAttribute("download"))return;
+    var u;try{u=new URL(a.href,location.href)}catch(x){return}
+    if(u.origin!==location.origin||!/^\/bulletin(\.html)?$/.test(u.pathname))return;
+    var cur=new URLSearchParams(location.search),next=u.searchParams;
+    if((next.get("asset")||"BTCUSDT").toUpperCase()===(cur.get("asset")||"BTCUSDT").toUpperCase()&&next.get("at")===cur.get("at"))return;
+    window.MLMLeaving(a);
+  });
+})();
 </script><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap"><script src="/assets/pwa.js?v=b0dd56f5" defer></script><meta name="color-scheme" content="dark light">
 <title>MarketLevelMap — Analysis</title><link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
 <link rel="stylesheet" href="assets/site.css?v=40714428"><style>
@@ -356,9 +376,22 @@ table{font-size:14px}
 .ind-menu label{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:13px;cursor:pointer}
 .ind-menu label:hover{background:var(--panel-2)}
 .ind-menu input{width:16px;height:16px;margin:0;accent-color:var(--accent);cursor:pointer}
+
+/* Asset switch (README "Asset switch"). Moving to another asset still loads the page, but supporting browsers
+   (Chrome, Edge, Safari 18.2+) cross-fade from the old page to the new one instead of flashing white; the old page
+   stays only until the new page's top (up to the chart box) is parsed. The moment a link to another asset is
+   followed, the page answers: a thin bar runs along the top, the analysis dims and the chosen asset is marked. */
+@view-transition{navigation:auto}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+::view-transition-group(root){animation-duration:.2s}
+html.mlm-leaving #analysis{opacity:.5;transition:opacity .15s ease;pointer-events:none}
+html.mlm-leaving body::before{content:"";position:fixed;top:0;left:0;z-index:2147483647;width:100%;height:3px;background:var(--accent);transform-origin:left;animation:mlmLeave 2s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes mlmLeave{from{transform:scaleX(.04)}to{transform:scaleX(.9)}}
+@media (prefers-reduced-motion:reduce){html.mlm-leaving body::before{animation:none;transform:scaleX(.6)}}
+.mlm-going{box-shadow:inset 0 0 0 2px var(--accent);border-radius:8px}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}html.embed .flow-link{display:none!important}html.embed .chart .live-chart{height:500px}</style>
-<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=b3d12b8a"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=b4b525d9"></script><script src="assets/chart-draw.js?v=0d3b99f6" defer></script><script src="assets/asset-picker.js?v=98987dd5"></script><script src="assets/side-order.js?v=1fc34a79" defer></script><script src="assets/flow-mini.js?v=c37af0f2" defer></script><script src="assets/market-context.js?v=7ae56172" defer></script><script src="assets/features.js?v=5b5669df"></script></head>
+<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=b3d12b8a"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=b4b525d9"></script><script src="assets/chart-draw.js?v=0d3b99f6" defer></script><script src="assets/asset-picker.js?v=1914f521"></script><script src="assets/side-order.js?v=1fc34a79" defer></script><script src="assets/flow-mini.js?v=c37af0f2" defer></script><script src="assets/market-context.js?v=7ae56172" defer></script><script src="assets/features.js?v=5b5669df"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
