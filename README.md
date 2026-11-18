@@ -448,6 +448,16 @@ fed by the price band: the analysed assets and their live prices).
 - **Chart header:** the links and buttons wrap onto a second line instead of overlapping when the page is narrow,
   e.g. with the watchlist docked.
 
+## Analysis page loading
+
+An inline script at the top of `bulletin.html` starts, before the page's scripts have loaded, the requests the page
+used to make one after another once they had run: `/api/publication`, every report of the asset in the address
+(as soon as the list is in) and the asset's `levels.json`. The page script takes the answers from `window.MLMEarly`.
+The report addresses seen last time for each asset are kept in localStorage (`mlm-early-reports-v1`) and requested
+at once, alongside the list (an address a newer publication replaced is simply not used). Archived analyses
+(`?at=`) load as before. With live-like delays (list 0.5 s, report 0.35 s, scripts 0.4 s) the side cards showed
+after 1.32 s before, 0.90 s on a first visit and 0.52 s on the next visits.
+
 ## Analysis page card order
 
 Anyone can rearrange the cards of the analysis page's side column (under the chart on phones):
