@@ -75,6 +75,58 @@ Setting up (once, in Cloudflare):
    same three variables to the Worker (Settings → Variables and secrets).
 5. Check: Account page → "Turn on notifications" → "Send a test notification"; then an alarm just above the price.
 
+## Background Worker plan (December 2026)
+
+Agreed on 19 Nov 2026, to be done when Workers Paid is taken (early December). The paid plan is for more than
+alarms: the same Worker (one minute cron, `workers/alarms`, possibly renamed to `workers/background`) also takes
+the jobs below. Nothing here is built yet.
+
+**Decisions already made**
+- Candles stay with the local program on the owner's computer (Binance spot, uploaded now and then). Cloudflare
+  cannot read Binance: `api.binance.com` answers 451 and `data-api.binance.vision` 403 (tested 19 Nov 2026 from a US
+  location). The chart already completes missing candles from Binance in the visitor's browser (`fillTail`, up to
+  2000 candles), so the chart stays current while the computer is off. 15m and charts for assets without analysis
+  are not planned now (if wanted later: from Binance in the browser, no Worker).
+- **Fallback rule for every job:** the site reads what the Worker prepared; when it is missing or too old, it does
+  what it does today (asks the source itself). A stopped Worker must never break anything that works now.
+- Storage: D1 `USERS_DB`, the `snapshots` table `/api/weekly` already uses (one row per key, JSON + time).
+
+**Jobs, in this order**
+1. **Health watch** (with the alarms). Every few minutes: the homepage, the analysis page, `/api/publication`,
+   `/api/prices`, `/api/market-context` answer; the candle files' age (`candles/index.json` `generatedAt` and
+   `latest.json` Last-Modified; warn after about 2 days); the active publication's age; the sources (CoinGecko,
+   Yahoo, OKX). A push notification to the admins' devices when something breaks and once when it recovers (no
+   repeat every minute).
+2. **Market context** (with the alarms): CoinGecko + Yahoo every 2–3 minutes into a snapshot; `/api/market-context`
+   reads it. Today each Cloudflare location asks the sources itself every 3 minutes (first visitor waits: 1.7 s
+   against 0.6 s cached, measured 19 Nov), and CoinGecko's free tier refuses frequent requests.
+3. **BTC correlation and monthly returns** (right after): Yahoo every few hours into snapshots; `/api/correlation`
+   and `/api/monthly` read them (the monthly page downloads 11 years of closes per location today).
+4. **Weekly outlook** (right after): rebuild the `/api/weekly` snapshot after each weekly close and after a candle
+   upload is noticed, so no visitor triggers the rebuild.
+5. **Publication data** (measure first): notice a new `site-publication/active.json` within a minute and prepare
+   the chart times; `/api/publication` took 0.8–1 s per call (19 Nov). Part of its answer depends on the viewer
+   (member or guest), so not all of it can be prepared. Decide after measuring.
+
+Not for the Worker: the price strip (refreshed every 3 s; a cron runs at most once a minute), anything that needs
+Binance, the events list (already fast).
+
+**Kurulum listesi (TR, Aralık başı)**
+1. Cloudflare → Workers planını **Workers Paid** yap (aylık 5 $).
+2. Bilgisayarda `npx web-push generate-vapid-keys` çalıştır; çıkan genel (public) ve gizli (private) anahtarı not
+   al. Gizli anahtar sohbete ya da repoya yazılmaz.
+3. Pages projesi → Settings → Variables and secrets (Production): `VAPID_PUBLIC_KEY` (metin), `VAPID_PRIVATE_KEY`
+   (secret), `VAPID_SUBJECT` (`mailto:` + sitenin iletişim adresi). Ardından yeniden yayınla (redeploy).
+4. Storage & Databases → D1 → kullanıcı veritabanının **adını ve kimliğini (id)** Claude'a ver;
+   `workers/alarms/wrangler.toml` doldurulur, main'e alınır. (Bunlar gizli bilgi değildir.)
+5. Workers & Pages → Create → Import a repository → bu repo, root directory `workers/alarms`. Worker'a da 3. adımdaki
+   üç değişkeni ekle.
+6. Kontrol: Hesabım → "Bildirimleri aç" → "Test bildirimi gönder"; sonra fiyatın hemen üstüne bir alarm.
+7. Claude yukarıdaki 1–4 numaralı işleri ekler (sağlık bekçisi için yöneticinin cihazında bildirimlerin açık olması
+   gerekir), sonra 5'i ölçer.
+8. Bildirimler çalışınca: Play Store uygulaması (TWA). Kişisel geliştirici hesabı eski olduğu için 12 test
+   kullanıcısı kuralı geçerli değil.
+
 ## Search results
 
 Structured data (schema.org JSON-LD) for Google:
