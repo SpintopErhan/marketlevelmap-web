@@ -22,9 +22,19 @@
   function href(sym) { var u = new URL(location.href); u.searchParams.set("asset", sym); u.hash = ""; return u.pathname + u.search; }
   function go(sym) {
     if (sym === current) { closeAll(); return; }
-    // The page answers at once (bulletin.html "Asset switch"): the chosen row is marked while the next page loads.
+    // The analysis page switches in place when it can (bulletin.html "Asset switch"); otherwise the next page loads,
+    // with the chosen row marked meanwhile.
+    if (window.MLMSwitchAsset && window.MLMSwitchAsset(sym)) { closeAll(); return; }
     if (window.MLMLeaving) window.MLMLeaving(document.querySelector('.ap-row[data-sym="' + sym + '"]'));
     location.href = href(sym);
+  }
+  // The page changed its asset in place: mark the new one and point the rows at the new address.
+  function setCurrent(sym) {
+    current = sym;
+    [].forEach.call(document.querySelectorAll(".ap-row[data-sym]"), function (a) {
+      var on = a.dataset.sym === sym; if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+      a.href = href(a.dataset.sym);
+    });
   }
 
   // ---- one row (used by both lists) ----
@@ -174,5 +184,5 @@
     var t = w(), o = document.querySelector(".ap-open"); if (o) { o.title = t.choose; o.setAttribute("aria-label", t.choose); }
     if (toggleBtn) { toggleBtn.title = t.watch; toggleBtn.setAttribute("aria-label", t.watch); }
   }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
-  window.MLMPicker = { init: init, quote: function (sym, d) { quotes[sym] = d; paint(sym); }, open: openSearch, togglePanel: togglePanel };
+  window.MLMPicker = { init: init, quote: function (sym, d) { quotes[sym] = d; paint(sym); }, open: openSearch, togglePanel: togglePanel, setCurrent: setCurrent };
 })();

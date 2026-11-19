@@ -22,14 +22,16 @@
   var levels=fetch("https://data.marketlevelmap.com/candles/"+encodeURIComponent(a)+"/levels.json").then(json);
   window.MLMEarly={asset:a,pub:pub,reports:reports,levels:levels};
 }catch(e){}})();
-</script><link rel="expect" href="#chart" blocking="render"><script type="speculationrules">
-{"prerender":[{"where":{"and":[{"href_matches":"/bulletin*"},{"not":{"href_matches":"/bulletin*\\?*(^|&)embed=*"}}]},"eagerness":"moderate"}]}
-</script><script>
+</script><link rel="expect" href="#chart" blocking="render"><script>
 /* Asset switch feedback (README "Asset switch"): MLMLeaving(el) marks the page as on its way to another asset. */
 (function(){
   var root=document.documentElement;
   window.MLMLeaving=function(el){root.classList.add("mlm-leaving");if(el&&el.classList)el.classList.add("mlm-going")};
   function clear(){root.classList.remove("mlm-leaving");[].forEach.call(document.querySelectorAll(".mlm-going"),function(x){x.classList.remove("mlm-going")})}
+  // A page-to-page fade the browser skips (e.g. the viewport changed meanwhile) rejects its promises; nobody waits on
+  // them, so they are caught here instead of being reported as errors.
+  function quiet(e){var t=e.viewTransition;if(t){t.ready.catch(function(){});t.finished.catch(function(){});if(t.updateCallbackDone)t.updateCallbackDone.catch(function(){})}}
+  addEventListener("pagereveal",quiet);addEventListener("pageswap",quiet);
   // Back to this page from the browser's cache: it must not stay dimmed.
   addEventListener("pageshow",function(e){if(e.persisted)clear()});
   document.addEventListener("click",function(e){
@@ -391,7 +393,7 @@ html.mlm-leaving body::before{content:"";position:fixed;top:0;left:0;z-index:214
 .mlm-going{box-shadow:inset 0 0 0 2px var(--accent);border-radius:8px}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}html.embed .flow-link{display:none!important}html.embed .chart .live-chart{height:500px}</style>
-<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=b3d12b8a"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=b4b525d9"></script><script src="assets/chart-draw.js?v=0d3b99f6" defer></script><script src="assets/asset-picker.js?v=1914f521"></script><script src="assets/side-order.js?v=1fc34a79" defer></script><script src="assets/flow-mini.js?v=c37af0f2" defer></script><script src="assets/market-context.js?v=7ae56172" defer></script><script src="assets/features.js?v=5b5669df"></script></head>
+<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=b3d12b8a"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=b4b525d9"></script><script src="assets/chart-draw.js?v=0d3b99f6" defer></script><script src="assets/asset-picker.js?v=f55acff4"></script><script src="assets/side-order.js?v=1fc34a79" defer></script><script src="assets/flow-mini.js?v=119f7b0b" defer></script><script src="assets/market-context.js?v=7ae56172" defer></script><script src="assets/features.js?v=5b5669df"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -547,6 +549,10 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     var back=document.getElementById("archive-strip-back");back.textContent=w.archiveBack;back.href=analysisUrl(archived,false);
   }
   var publication=null,entry=null,report=null,reportDemo=false,commentText=null,live=null,digits=null,showAll=false,pending=0;
+  // Asset switch in place (README "Asset switch"): assetGen counts the assets shown, so an answer that arrives for an
+  // earlier one is dropped; staleChart is the previous asset's chart, left on screen (dimmed) until the next is drawn;
+  // awaitingReport holds the tables (only the header follows the live price) until the new report is in.
+  var assetGen=0,staleChart=null,awaitingReport=false,switchTimer=null,feedCtl=null;
   // Interactive chart (assets/live-chart.js): closed candles from R2 + report zones + live price line.
   // The published PNG is only loaded if the interactive chart cannot be built.
   var liveBox=document.getElementById("live-chart"),liveChart=null,chartWhen=null,chartKey="published";
@@ -569,9 +575,14 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     try{localStorage.setItem(LEVELS_KEY,JSON.stringify(chartLevels))}catch(e){}
     applyLevelsToChart();
   }
-  document.getElementById("title").textContent=MarketUI.nameOf(asset);
-  (function(){var base=asset.replace(/(USDT|USDC|FDUSD|BUSD|USD|TRY|EUR)$/,"")||asset,hue=0,icon=document.getElementById("asset-icon");for(var i=0;i<base.length;i++)hue=(hue*31+base.charCodeAt(i))%360;icon.textContent=base;icon.style.background="hsl("+hue+" 62% 64%)"})();
-  document.getElementById("archive-title").textContent=words().archiveTitle.replace("{asset}",asset);
+  function paintAssetHead(){
+    document.getElementById("title").textContent=MarketUI.nameOf(asset);
+    var base=asset.replace(/(USDT|USDC|FDUSD|BUSD|USD|TRY|EUR)$/,"")||asset,hue=0,icon=document.getElementById("asset-icon");for(var i=0;i<base.length;i++)hue=(hue*31+base.charCodeAt(i))%360;icon.textContent=base;icon.style.background="hsl("+hue+" 62% 64%)";
+    document.getElementById("archive-title").textContent=words().archiveTitle.replace("{asset}",asset);
+    document.title=asset+" · "+(copy[document.getElementById("lang").value]||copy.en).title;
+    var f=document.getElementById("flow-link");if(f){f.hidden=!/USDT$/.test(asset);if(!f.hidden)f.href="flow?asset="+encodeURIComponent(asset)}
+  }
+  paintAssetHead();
 
   // Side cards (README "Analysis page card order"): they fill as their data arrives (levels file, report, chart), and a
   // card that arrived late used to drop in above the others. The column now opens once the report and the levels file
@@ -744,7 +755,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   function renderTfSummary(){
     var box=document.getElementById("tf-summary"),body=document.getElementById("tf-summary-rows");
     if(method!=="pa"||at||!paEntries.length){box.hidden=true;tfStates=null;return}
+    var gen=assetGen;
     Promise.all(paEntries.map(function(e){return loadReport(e).catch(function(){return null})})).then(function(reps){
+      if(gen!==assetGen)return;
       var w=words(),rows=document.createDocumentFragment(),current=MarketUI.timeframeOf(entry||{});
       ["1h","4h","1d","1w"].forEach(function(tf){
         var i=paEntries.findIndex(function(e){return MarketUI.timeframeOf(e)===tf}),rep=i>-1?reps[i]:null,st=rep&&rep.structure;
@@ -838,9 +851,14 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   // Volume profile (PUBLIC_CHART_CANDLE_DATA_CONTRACT_V1 §9): the current page reads candles/<PAIR>/levels.json,
   // refreshed with the chart candles; an archived analysis keeps the levels its own report carried.
   var vpFile=null;
-  if(!at)(early&&early.levels||fetch("https://data.marketlevelmap.com/candles/"+encodeURIComponent(asset)+"/levels.json").then(function(r){return r.ok?r.json():null})).then(function(d){
-    if(d&&d.pair===asset&&(Array.isArray(d.volumeProfile)||Array.isArray(d.periodExtremes)||d.keyLevels)){vpFile=d;renderVolumeProfile();renderLevels()}
-  }).catch(function(){}).then(function(){sidePart("levels")});
+  function loadLevels(first){
+    var sym=asset,src=first&&early&&early.levels||fetch("https://data.marketlevelmap.com/candles/"+encodeURIComponent(sym)+"/levels.json").then(function(r){return r.ok?r.json():null});
+    src.then(function(d){
+      if(sym!==asset)return;
+      if(d&&d.pair===asset&&(Array.isArray(d.volumeProfile)||Array.isArray(d.periodExtremes)||d.keyLevels)){vpFile=d;if(!awaitingReport){renderVolumeProfile();renderLevels()}}
+    }).catch(function(){}).then(function(){if(sym===asset)sidePart("levels")});
+  }
+  if(!at)loadLevels(true);
   function renderVolumeProfile(){
     var block=document.getElementById("vp-block"),body=document.getElementById("vp-rows"),map={};
     if(isLocked()){vpMap={};applyLevelsToChart();block.hidden=true;return}
@@ -1231,6 +1249,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   var tickTimer=null,tickLast=0;
   function renderTick(){
     header();
+    if(awaitingReport)return;
     var wait=1000-(Date.now()-tickLast);
     if(wait<=0){clearTimeout(tickTimer);tickTimer=null;tickLast=Date.now();renderAll(true)}
     else if(!tickTimer)tickTimer=setTimeout(function(){tickTimer=null;tickLast=Date.now();renderAll(true)},wait);
@@ -1247,20 +1266,24 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     chartWhen=chosen.chartTime&&chosen.chartTime.at;chartKey=!chartWhen?"published":chosen.chartTime.source==="upload"?"chartUploaded":"chartAsOf";
     // Keep the boxes on screen and only replace their text once the next report is in.
     // The chart stays up too: the next timeframe is drawn out of sight, then swapped in.
-    var chartReady=false;
+    var chartReady=false,reportIn=false,chartIn=false;
+    var done=function(){if(request===pending&&reportIn&&chartIn)endSwitch()};
     var paint=function(rep,demo){
       if(request!==pending)return;
+      awaitingReport=false;
       var shown=liveChart;liveChart=null;
       report=rep;reportDemo=!!demo;commentText=null;renderAll();
       liveChart=shown;
       if(shown&&chartReady){applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow())}
       if(shown)renderChartTime();
     };
-    if(chosen.report)loadReport(chosen).then(function(rep){if(rep)paint(rep,false)}).catch(function(){}).then(function(){sidePart("report")});
-    else if(window.DemoData&&DemoData.enabled){paint(DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow()),true);sidePart("report")}
-    else{report=null;reportDemo=false;commentText=null;renderAll();sidePart("report")}
+    // After an asset switch with no report to show, the tables are redrawn empty rather than left on the old asset.
+    var reportDone=function(){if(request!==pending)return;if(awaitingReport){awaitingReport=false;renderAll()}reportIn=true;done()};
+    if(chosen.report)loadReport(chosen).then(function(rep){if(rep)paint(rep,false)}).catch(function(){}).then(function(){sidePart("report");reportDone()});
+    else if(window.DemoData&&DemoData.enabled){paint(DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow()),true);sidePart("report");reportDone()}
+    else{awaitingReport=false;report=null;reportDemo=false;commentText=null;renderAll();sidePart("report");reportDone()}
     if(!chosen.report&&chosen.analysisComment)fetch(chosen.analysisComment.url,{cache:"no-store"}).then(function(r){return r.ok?r.text():""}).then(function(text){if(request===pending&&text){commentText=text;renderAll()}}).catch(function(){});
-    if(!window.LiveChart){showPng(chosen);return}
+    if(!window.LiveChart){showPng(chosen);chartIn=true;done();return}
     // A chart is already on screen: swap its candles in place. Building a second one (1H is large)
     // blanked the panel and played the opening animation again.
     if(liveChart&&liveChart.reload){
@@ -1269,19 +1292,22 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
         chartReady=true;
         applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
         chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();syncDraw();renderSignals(true);
-      }).catch(function(){if(request===pending&&!liveChart)showPng(chosen)});
+        chartIn=true;done();
+      }).catch(function(){if(request===pending&&!liveChart){showPng(chosen);chartIn=true;done()}});
       return;
     }
     var slot=document.createElement("div");slot.className="live-chart";
-    chart.appendChild(slot);chart.dataset.mode="live";chart.dataset.state="loading";
+    chart.appendChild(slot);chart.dataset.mode="live";if(!staleChart)chart.dataset.state="loading";
     LiveChart.show(slot,{pair:asset,timeframe:MarketUI.timeframeOf(chosen),decimalsFor:MarketUI.digitsFor,onChange:function(){if(request===pending)renderChartTime()}}).then(function(ctl){
       if(request!==pending){ctl.destroy();slot.remove();return}
+      if(staleChart){try{staleChart.destroy()}catch(e){}staleChart=null}
       if(liveBox&&liveBox!==slot)liveBox.remove();
       slot.id="live-chart";slot.hidden=false;
       // chartReady here too: when the report arrives after the first chart is built, paint() must draw its zones.
       liveBox=slot;liveChart=ctl;chartReady=true;applyReportToChart();setTimeout(function(){renderSignals(true)},300);applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
       chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();syncDraw();
-    }).catch(function(){if(request!==pending)return;slot.remove();if(!liveChart)showPng(chosen)});
+      chartIn=true;done();
+    }).catch(function(){if(request!==pending)return;slot.remove();if(!liveChart)showPng(chosen);chartIn=true;done()});
   }
   // Fallback when the interactive chart cannot load: the published PNG (older publications);
   // newer publications carry no image, so the chart area shows a short note instead.
@@ -1289,6 +1315,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   function syncDraw(){if(!window.MLMDraw||!liveChart)return;if(liveChart.drawHost&&isMember()&&!isLocked()&&MLMDraw.desktop())MLMDraw.attach(liveChart.drawHost());else MLMDraw.detach()}
   function showPng(chosen){
     if(window.MLMDraw)MLMDraw.detach();
+    if(staleChart){try{staleChart.destroy()}catch(e){}staleChart=null}
     var sb=document.getElementById("sig-block");if(sb&&sb.classList.contains("sig-loading"))sigGone(sb);
     liveBox.hidden=true;
     if(!chosen.image){chart.dataset.mode="none";img.removeAttribute("src");chart.dataset.state="unavailable";expand.disabled=true;renderChartTime();return}
@@ -1546,8 +1573,11 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       });
       block.hidden=false;badge(block,demo);
     }
+    var gen=assetGen;
     loadArchive().then(function(items){
+      if(gen!==assetGen)return;
       if(items.length)show(items,false);else if(window.DemoData&&DemoData.enabled)show(DemoData.archive(asset).items,true);
+      else block.hidden=true;
     });
   }
 
@@ -1558,10 +1588,12 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     if(!czEntries.length&&!paEntries.length){fail("notListed");return}
     // PA timeframes are listed with a confirmed range or with a "no confirmed range" notice (README "Price Action
     // view"), so their reports are read first; an empty report without the notice stays hidden.
+    var gen=assetGen;
     var paLoaded=Promise.all(paEntries.map(function(e){return loadReport(e).catch(function(){return null})})).then(function(reps){
+      if(gen!==assetGen)return null;
       paReady=paEntries.filter(function(e,i){return paRange(reps[i])||noRangeOf(reps[i])||(reps[i]&&reps[i].locked)});syncSwitch();return paReady;
     });
-    if(method==="pa"||!czEntries.length)paLoaded.then(function(ready){showMethod(ready.length||!czEntries.length?"pa":"cz")});
+    if(method==="pa"||!czEntries.length)paLoaded.then(function(ready){if(ready)showMethod(ready.length||!czEntries.length?"pa":"cz")});
     else showMethod("cz");
     archive();
   }
@@ -1629,11 +1661,81 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     var watch=rest.indexOf(asset)<0?rest.concat([asset]):rest;
     // Asset search and watchlist (README "Asset search and watchlist"): the same assets and live prices.
     if(window.MLMPicker)MLMPicker.init({assets:list.indexOf(asset)<0?list.concat([asset]):list,current:asset});
-    MarketFeed.start(watch,{
+    feedCtl=MarketFeed.start(watch,{
       onData:function(sym,d){paintBand(sym,d);if(window.MLMPicker)MLMPicker.quote(sym,d);if(sym!==asset)return;live=d;if(digits==null&&Number(d.c)>0)digits=MarketUI.digitsFor(d.c);if(reportDemo&&report&&!report._anchored){report=DemoData.report(asset,MarketUI.timeframeOf(entry),d.c);report._anchored=true;applyReportToChart()}if(liveChart)liveChart.setLivePrice(d.c);renderTick()}
     });
   }
   if(at)fetch("/api/publication",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(bootFeed).catch(function(){bootFeed()});
+
+  // ---- Asset switch in place (README "Asset switch") ----
+  // Another asset from the band, the watchlist or the search window is shown without loading the page again: the
+  // publication list and the live prices are already here, so only its report, levels and chart are fetched. The
+  // address changes (back / forward move between assets). Anything unexpected falls back to loading the page.
+  function rowsOf(sym){return((publication&&publication.entries)||[]).filter(function(e){return(e.image||e.report)&&MarketUI.assetOf(e)===sym})}
+  function endSwitch(){
+    clearTimeout(switchTimer);switchTimer=null;
+    document.documentElement.classList.remove("mlm-leaving");
+    [].forEach.call(document.querySelectorAll(".mlm-going"),function(x){x.classList.remove("mlm-going")});
+  }
+  function switchAsset(sym,push,from){
+    sym=String(sym||"").toUpperCase();
+    if(sym===asset)return true;
+    if(at||!publication||!/^[A-Z0-9]{2,20}$/.test(sym)||!rowsOf(sym).length)return false;
+    try{
+      var url=new URL(location.href);url.searchParams.set("asset",sym);url.searchParams.delete("at");url.hash="";
+      if(push!==false)history.pushState({asset:sym},"",url.toString());
+      q=new URLSearchParams(url.search);
+      assetGen++;asset=sym;early=null;
+      // Feedback until the new asset is drawn: the bar along the top, the analysis dimmed, the chosen item marked.
+      if(window.MLMLeaving)MLMLeaving(from||null);
+      clearTimeout(switchTimer);switchTimer=setTimeout(endSwitch,15000);
+      // The chart on screen stays (dimmed) until the next one is drawn, but stops following the price.
+      if(window.MLMDraw)MLMDraw.detach();
+      if(liveChart){if(staleChart){try{staleChart.destroy()}catch(e){}}staleChart=liveChart;liveChart=null}
+      // Per-asset state: the tables keep the previous report on screen until the new one is in.
+      awaitingReport=true;entry=null;report=null;reportDemo=false;commentText=null;
+      live=feedCtl&&feedCtl.get?feedCtl.get(sym):null;digits=live&&Number(live.c)>0?MarketUI.digitsFor(live.c):null;lastHeadPrice=null;
+      vpFile=null;levelMap={};vpMap={};tfStates=null;archiveList=null;archived=null;shareFile=null;paReady=null;
+      sigKey="";
+      paintAssetHead();header();
+      [].forEach.call(band.querySelectorAll(".band-item"),function(a){if(a.firstChild&&a.firstChild.textContent===sym)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+      if(window.MLMPicker&&MLMPicker.setCurrent)MLMPicker.setCurrent(sym);
+      if(window.MLMFlowMini&&MLMFlowMini.setAsset)MLMFlowMini.setAsset(sym);
+      loadLevels(false);
+      start(rowsOf(sym));
+      return true;
+    }catch(e){
+      // Something went wrong half way: load the asset's page the usual way.
+      try{var u=new URL(location.href);u.searchParams.set("asset",sym);location.href=u.toString()}catch(x){location.reload()}
+      return true;
+    }
+  }
+  window.MLMSwitchAsset=function(sym){return switchAsset(sym,true)};
+  // Links to another asset (band, tables, archive) switch in place; a new tab, an archived analysis or another page
+  // load as usual. Capture phase: before the page's other click handlers.
+  document.addEventListener("click",function(e){
+    if(e.defaultPrevented||e.button||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+    var a=e.target.closest&&e.target.closest("a[href]");if(!a||(a.target&&a.target!=="_self")||a.hasAttribute("download"))return;
+    var u;try{u=new URL(a.href,location.href)}catch(x){return}
+    if(u.origin!==location.origin||!/^\/bulletin(\.html)?$/.test(u.pathname)||u.searchParams.get("at")||u.searchParams.get("embed"))return;
+    var sym=(u.searchParams.get("asset")||"BTCUSDT").toUpperCase();if(sym===asset)return;
+    if(switchAsset(sym,true,a))e.preventDefault();
+  },true);
+  // Back / forward between assets.
+  addEventListener("popstate",function(){
+    var p=new URLSearchParams(location.search),sym=(p.get("asset")||"BTCUSDT").toUpperCase();
+    if(p.get("at")){location.reload();return}
+    if(sym!==asset&&!switchAsset(sym,false))location.reload();
+  });
+  // A pointer resting on another asset's link fetches its reports ahead of the click.
+  var hoverTimer=null;
+  document.addEventListener("pointerover",function(e){
+    var a=e.target.closest&&e.target.closest("a.band-item[href],a.ap-row[href]");clearTimeout(hoverTimer);if(!a||!publication)return;
+    hoverTimer=setTimeout(function(){
+      var sym;try{sym=(new URL(a.href,location.href).searchParams.get("asset")||"").toUpperCase()}catch(x){return}
+      if(sym&&sym!==asset)rowsOf(sym).forEach(function(e){if(e.report)loadReport(e).catch(function(){})});
+    },150);
+  });
 })();
 </script>
 </body></html>
