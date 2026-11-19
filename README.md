@@ -500,8 +500,9 @@ fed by the price band: the analysed assets and their live prices).
 
 ## Multi view
 
-`multi.html` (`/multi`): two or four analysis charts side by side (one under the other on phones), from "Multi view"
-under the analysis chart's title (that asset and the compared one, else BTC, on the same timeframe).
+`multi.html` (`/multi`): two or four analysis charts side by side (one under the other on phones), Turkish name "Çoklu izleme".
+Reached from the site header (next to "Live flow") and from the "Multi view" button beside "Live flow" above the analysis
+chart (that asset and the compared one, else BTC, on the same timeframe).
 
 - Each chart has its own asset (the analysed ones) and timeframe (zones from the asset's "CZ" report for 1D / 1W and
   "CZ_SHORT" for 1H / 4H, as on the analysis page); changing either reloads that chart in place
