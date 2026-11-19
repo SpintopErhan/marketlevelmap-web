@@ -650,7 +650,12 @@ var LiveChart = (function () {
     });
     // Volume lives in its own pane below the price pane, so zone bands (drawn on the price pane)
     // and volume bars can never overlap, whatever the zoom.
-    var volume = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceLineVisible: false, lastValueVisible: false }, 1);
+    // Volume in US dollars (README "Chart volume"): the candle files carry the coin volume, so each bar is that times the
+    // candle's close, an approximation of the dollar volume. Only the bars and the legend use it; VWAP, OBV and the
+    // indicator card keep the coin volume, as their definitions use.
+    function usdVolume(r) { return (Number(r[5]) || 0) * (Number(r[4]) || 0); }
+    var volume = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "custom", minMove: 1, formatter: function (v) { return cachedFormat("num", pageLocale(), { notation: "compact", maximumFractionDigits: 1 }).format(Number(v)); } },
+      priceLineVisible: false, lastValueVisible: false }, 1);
     volume.priceScale().applyOptions({ scaleMargins: { top: 0.15, bottom: 0 } });
     candles.priceScale().applyOptions({ scaleMargins: { top: 0.08, bottom: 0.06 } });
     // Faint site name in the middle of the price pane. It is drawn on the chart canvas, so chart
@@ -823,7 +828,10 @@ var LiveChart = (function () {
         var p = numFormat(pageLocale(), 2).format(Math.abs(chg)), sg = chg > 0 ? "+" : chg < 0 ? "−" : "";
         html += '<b style="color:' + (chg >= 0 ? "#55d99c" : "#ef6e76") + ';font-weight:600">' + sg + (pageLocale() === "tr-TR" ? "%" + p : p + "%") + "</b>";
       }
-      if (vol != null) html += "<span>" + w.v + ' <b style="color:#c7cfde;font-weight:600">' + cachedFormat("num", pageLocale(), { notation: "compact", maximumFractionDigits: 2 }).format(Number(vol)) + "</b></span>";
+      if (vol != null) {
+        var vtxt = cachedFormat("num", pageLocale(), { notation: "compact", maximumFractionDigits: 2 }).format(Number(vol));
+        html += "<span>" + w.v + ' <b style="color:#c7cfde;font-weight:600">' + (pageLocale() === "tr-TR" ? vtxt + " $" : "$" + vtxt) + "</b></span>";
+      }
       legend.innerHTML = html;
     }
     chart.subscribeCrosshairMove(showLegend);
@@ -1076,7 +1084,7 @@ var LiveChart = (function () {
     function setData() {
       var rows = allRows();
       candles.setData(rows.map(function (r) { return { time: r[0], open: r[1], high: r[2], low: r[3], close: r[4] }; }));
-      volume.setData(rows.map(function (r) { return { time: r[0], value: r[5], color: r[4] >= r[1] ? "rgba(59,158,112,0.55)" : "rgba(169,83,91,0.55)" }; }));
+      volume.setData(rows.map(function (r) { return { time: r[0], value: usdVolume(r), color: r[4] >= r[1] ? "rgba(59,158,112,0.55)" : "rgba(169,83,91,0.55)" }; }));
       refreshLegend();
       emas.forEach(function (series, i) {
         series.setData(rows.filter(function (r) { return r[6 + i] != null; }).map(function (r) { return { time: r[0], value: r[6 + i] }; }));
@@ -1092,7 +1100,7 @@ var LiveChart = (function () {
       if (!forming) return;
       var up = forming[4] >= forming[1], tone = up ? "rgba(85,217,156,0.38)" : "rgba(239,110,118,0.38)";
       candles.update({ time: forming[0], open: forming[1], high: forming[2], low: forming[3], close: forming[4], color: tone, wickColor: tone, borderColor: tone });
-      volume.update({ time: forming[0], value: forming[5], color: up ? "rgba(59,158,112,0.25)" : "rgba(169,83,91,0.25)" });
+      volume.update({ time: forming[0], value: usdVolume(forming), color: up ? "rgba(59,158,112,0.25)" : "rgba(169,83,91,0.25)" });
       refreshLegend();
       drawIndicatorsSoon();
     }
@@ -1112,7 +1120,7 @@ var LiveChart = (function () {
       var full = withEma(last, row);
       state.tail.push(full);
       candles.update({ time: full[0], open: full[1], high: full[2], low: full[3], close: full[4] });
-      volume.update({ time: full[0], value: full[5], color: full[4] >= full[1] ? "rgba(59,158,112,0.55)" : "rgba(169,83,91,0.55)" });
+      volume.update({ time: full[0], value: usdVolume(full), color: full[4] >= full[1] ? "rgba(59,158,112,0.55)" : "rgba(169,83,91,0.55)" });
       refreshLegend();
       emas.forEach(function (series, i) { if (full[6 + i] != null) series.update({ time: full[0], value: full[6 + i] }); });
       zones.set(zoneList, times());
@@ -1423,7 +1431,7 @@ var LiveChart = (function () {
         if (!liveLine) liveLine = candles.createPriceLine({ price: p, color: "#f0c040", lineWidth: 1, lineStyle: LC.LineStyle.Dashed, axisLabelVisible: true, title: "" });
         else liveLine.applyOptions({ price: p });
       },
-      setLocale: function () { if (!destroyed) { chart.applyOptions({ localization: localization() }); if (cmp) drawIndicators(); } },
+      setLocale: function () { if (!destroyed) { chart.applyOptions({ localization: localization() }); refreshLegend(); if (cmp) drawIndicators(); } },
       // Change timeframe without tearing the chart down. 1H in particular is a lot of candles;
       // rebuilding the widget blanked the panel and redrew it.
       // Also another asset in the same chart (opts.pair, with opts.decimalsFor for its price-axis decimals): the analysis

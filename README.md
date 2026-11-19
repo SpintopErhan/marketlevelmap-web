@@ -645,6 +645,15 @@ middle of the price pane (Lightweight Charts `createTextWatermark`, behind the c
 follows the chart width (22–56 px). It is drawn on the chart canvas itself, so chart screenshots used for
 downloads and sharing include it.
 
+## Chart volume
+
+The volume bars under the charts (analysis page and multi view) and the legend's "Vol" are in **US dollars**: the
+candle files (and the live Binance candle) carry the coin volume, so each bar is that volume times the candle's
+close, an approximation of the dollar volume of Binance's USDT pair (one exchange, not the whole market). Legend:
+"$2.52M" in English, "2,52 Mn $" in Turkish; the volume axis is compact ("2 Mn"). VWAP, OBV and the indicator card
+keep the coin volume, as their definitions use. When the candle files carry Binance's quote volume, the bars can use
+it directly (`usdVolume` in `assets/live-chart.js`).
+
 ## Chart drawing performance
 
 The chart repaints on every frame while it is panned or zoomed, so the code it calls per frame stays cheap:
