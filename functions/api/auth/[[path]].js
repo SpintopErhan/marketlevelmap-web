@@ -16,9 +16,17 @@
 //   POST admin/social/plan { week, posts }          → admin only: save the plan's assets
 //   POST admin/social/post { week, day, status, text, xUrl } → admin only: draft text, status, link to the X post
 //   POST admin/social/settings { mode }             → admin only: "auto" | "manual"
+//   GET  alarms                                     → members: their alarms, the push public key, devices registered
+//   POST alarms { kind, cond, asset, price | zone, tf, lang } → members: a new alarm (README "Alarms")
+//   POST alarms/remove { id } · alarms/rearm { id } → members: delete, or switch a fired alarm on again
+//   POST push/subscribe { subscription } · push/unsubscribe { endpoint } · push/test → members: this device's web push
 //
 // Bindings and variables (Cloudflare Pages settings): USERS_DB (D1), GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
-// SESSION_SECRET, ADMIN_EMAILS (comma separated). Secrets are never sent to the browser.
+// SESSION_SECRET, ADMIN_EMAILS (comma separated). Secrets are never sent to the browser. Alarms: VAPID_PUBLIC_KEY,
+// VAPID_PRIVATE_KEY (secret) and VAPID_SUBJECT, the same as the alarm Worker's (workers/alarms), for the test push.
+
+import { SCHEMA as ALARM_SCHEMA, cleanAlarm, MAX_ACTIVE } from "../../../workers/alarms/src/alarms.js";
+import { sendPush } from "../../../workers/alarms/src/webpush.js";
 
 const GOOGLE_AUTH = "https://accounts.google.com/o/oauth2/v2/auth";
 const GOOGLE_TOKEN = "https://oauth2.googleapis.com/token";
@@ -119,6 +127,7 @@ async function db(env) {
         updated_at TEXT NOT NULL,
         PRIMARY KEY (user_id, key)
       )`),
+      ...ALARM_SCHEMA.map((sql) => d.prepare(sql)),
     ]);
     schemaReady = true;
   }
@@ -296,7 +305,8 @@ async function remove(request, env) {
   const row = await sessionUser(request, env);
   if (!row) return json({ error: "signed_out" }, 401);
   const d = await db(env);
-  const statements = [d.prepare("DELETE FROM users WHERE id = ?").bind(row.id), d.prepare("DELETE FROM drawings WHERE user_id = ?").bind(row.id)];
+  const statements = [d.prepare("DELETE FROM users WHERE id = ?").bind(row.id), d.prepare("DELETE FROM drawings WHERE user_id = ?").bind(row.id),
+    d.prepare("DELETE FROM alarms WHERE user_id = ?").bind(row.id), d.prepare("DELETE FROM push_subs WHERE user_id = ?").bind(row.id)];
   if (row.x_handle_lc) statements.push(d.prepare("INSERT OR REPLACE INTO x_locks (x_handle_lc, until) VALUES (?, ?)").bind(row.x_handle_lc, iso(now() + X_LOCK_DAYS * 86400)));
   await d.batch(statements);
   return json({ ok: true }, 200, { "Set-Cookie": [clear(COOKIE.session), clear(COOKIE.hint, "/", false)] });
@@ -343,6 +353,94 @@ async function drawingsPost(request, env, body) {
   await d.prepare("INSERT INTO drawings (user_id, key, data, updated_at) VALUES (?, ?, ?, ?) ON CONFLICT (user_id, key) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at")
     .bind(row.id, key, data, at).run();
   return json({ ok: true, key, updatedAt: at });
+}
+
+// ---------- alarms and web push (README "Alarms"): members set price and zone alarms; the alarm Worker checks them ----------
+const PUSH_MAX_DEVICES = 10;
+async function alarmsMember(request, env) {
+  const row = await sessionUser(request, env);
+  if (!row) return null;
+  return row.status === "approved" || adminEmails(env).includes(String(row.email).toLowerCase()) ? row : null;
+}
+function alarmRow(a) {
+  return { id: a.id, kind: a.kind, cond: a.cond, asset: a.asset, price: a.price, zone: a.kind === "zone" ? { low: a.zone_low, high: a.zone_high, type: a.zone_type } : null,
+    tf: a.tf, lang: a.lang, active: !!a.active, createdAt: a.created_at, triggeredAt: a.triggered_at, triggeredPrice: a.triggered_price };
+}
+async function alarmsGet(request, env) {
+  const row = await alarmsMember(request, env);
+  if (!row) return json({ error: "members_only" }, 403);
+  const d = await db(env);
+  const list = (await d.prepare("SELECT * FROM alarms WHERE user_id = ? ORDER BY active DESC, created_at DESC").bind(row.id).all()).results || [];
+  const devices = Number(((await d.prepare("SELECT COUNT(*) AS n FROM push_subs WHERE user_id = ?").bind(row.id).first()) || {}).n) || 0;
+  return json({ alarms: list.map(alarmRow), max: MAX_ACTIVE, push: { publicKey: env.VAPID_PUBLIC_KEY || null, devices } });
+}
+async function activeCount(d, userId) {
+  return Number(((await d.prepare("SELECT COUNT(*) AS n FROM alarms WHERE user_id = ? AND active = 1").bind(userId).first()) || {}).n) || 0;
+}
+async function alarmsCreate(request, env, body) {
+  const row = await alarmsMember(request, env);
+  if (!row) return json({ error: "members_only" }, 403);
+  const a = cleanAlarm(body);
+  if (a.error) return json({ error: a.error }, 400);
+  const d = await db(env);
+  if ((await activeCount(d, row.id)) >= MAX_ACTIVE) return json({ error: "too_many", max: MAX_ACTIVE }, 409);
+  const res = await d.prepare("INSERT INTO alarms (user_id, kind, asset, cond, price, zone_low, zone_high, zone_type, tf, lang, active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)")
+    .bind(row.id, a.kind, a.asset, a.cond, a.price ?? null, a.zone_low ?? null, a.zone_high ?? null, a.zone_type ?? null, a.tf ?? null, a.lang, iso(now())).run();
+  const created = await d.prepare("SELECT * FROM alarms WHERE id = ?").bind(res.meta.last_row_id).first();
+  return json({ ok: true, alarm: alarmRow(created) });
+}
+async function alarmsRemove(request, env, body) {
+  const row = await alarmsMember(request, env);
+  if (!row) return json({ error: "members_only" }, 403);
+  await (await db(env)).prepare("DELETE FROM alarms WHERE id = ? AND user_id = ?").bind(Number(body.id) || 0, row.id).run();
+  return json({ ok: true });
+}
+async function alarmsRearm(request, env, body) {
+  const row = await alarmsMember(request, env);
+  if (!row) return json({ error: "members_only" }, 403);
+  const d = await db(env);
+  if ((await activeCount(d, row.id)) >= MAX_ACTIVE) return json({ error: "too_many", max: MAX_ACTIVE }, 409);
+  // Counted from now: a zone break needs a candle that closes after this.
+  await d.prepare("UPDATE alarms SET active = 1, triggered_at = NULL, triggered_price = NULL, created_at = ? WHERE id = ? AND user_id = ?").bind(iso(now()), Number(body.id) || 0, row.id).run();
+  return json({ ok: true });
+}
+const B64URL = /^[A-Za-z0-9_-]+$/;
+async function pushSubscribe(request, env, body) {
+  const row = await alarmsMember(request, env);
+  if (!row) return json({ error: "members_only" }, 403);
+  const sub = body.subscription || {}, keys = sub.keys || {};
+  let endpoint = null;
+  try { endpoint = new URL(String(sub.endpoint || "")); } catch (_) { endpoint = null; }
+  if (!endpoint || endpoint.protocol !== "https:" || String(sub.endpoint).length > 1000 || !B64URL.test(keys.p256dh || "") || !B64URL.test(keys.auth || "") || keys.p256dh.length > 120 || keys.auth.length > 40)
+    return json({ error: "subscription" }, 400);
+  const d = await db(env), ua = String(request.headers.get("User-Agent") || "").slice(0, 200);
+  await d.prepare("INSERT INTO push_subs (user_id, endpoint, p256dh, auth, ua, created_at) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (endpoint) DO UPDATE SET user_id = excluded.user_id, p256dh = excluded.p256dh, auth = excluded.auth, ua = excluded.ua")
+    .bind(row.id, String(sub.endpoint), keys.p256dh, keys.auth, ua, iso(now())).run();
+  // Keep the newest few devices.
+  await d.prepare("DELETE FROM push_subs WHERE user_id = ? AND id NOT IN (SELECT id FROM push_subs WHERE user_id = ? ORDER BY id DESC LIMIT ?)").bind(row.id, row.id, PUSH_MAX_DEVICES).run();
+  return json({ ok: true });
+}
+async function pushUnsubscribe(request, env, body) {
+  const row = await alarmsMember(request, env);
+  if (!row) return json({ error: "members_only" }, 403);
+  await (await db(env)).prepare("DELETE FROM push_subs WHERE user_id = ? AND endpoint = ?").bind(row.id, String(body.endpoint || "")).run();
+  return json({ ok: true });
+}
+async function pushTest(request, env, body) {
+  const row = await alarmsMember(request, env);
+  if (!row) return json({ error: "members_only" }, 403);
+  if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY || !env.VAPID_SUBJECT) return json({ error: "push_not_configured" }, 503);
+  const d = await db(env), subs = (await d.prepare("SELECT * FROM push_subs WHERE user_id = ?").bind(row.id).all()).results || [];
+  const en = body.lang === "en", vapid = { publicKey: env.VAPID_PUBLIC_KEY, privateKey: env.VAPID_PRIVATE_KEY, subject: env.VAPID_SUBJECT };
+  const note = { title: "MarketLevelMap", body: en ? "Test notification: alarms will reach this device." : "Test bildirimi: alarmlar bu cihaza gelecek.", url: "/account", tag: "alarm-test" };
+  let sent = 0;
+  for (const s of subs) {
+    try {
+      const r = await sendPush({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, note, vapid, { ttl: 600 });
+      if (r.ok) sent++; else if (r.gone) await d.prepare("DELETE FROM push_subs WHERE id = ?").bind(s.id).run();
+    } catch (_) { /* next device */ }
+  }
+  return json({ ok: sent > 0, sent, devices: subs.length });
 }
 
 // ---------- membership, for other routes (README "Accounts": guest / member split) ----------
@@ -585,6 +683,7 @@ export async function onRequest(context) {
       if (route === "admin/users") return await adminUsers(request, env);
       if (route === "admin/social") return await adminSocial(request, env);
       if (route === "drawings") return await drawingsGet(request, env);
+      if (route === "alarms") return await alarmsGet(request, env);
       return json({ error: "not_found" }, 404);
     }
     if (request.method !== "POST") return json({ error: "method" }, 405);
@@ -598,6 +697,12 @@ export async function onRequest(context) {
     if (route === "profile") return await profile(request, env, body);
     if (route === "delete") return await remove(request, env);
     if (route === "drawings") return await drawingsPost(request, env, body);
+    if (route === "alarms") return await alarmsCreate(request, env, body);
+    if (route === "alarms/remove") return await alarmsRemove(request, env, body);
+    if (route === "alarms/rearm") return await alarmsRearm(request, env, body);
+    if (route === "push/subscribe") return await pushSubscribe(request, env, body);
+    if (route === "push/unsubscribe") return await pushUnsubscribe(request, env, body);
+    if (route === "push/test") return await pushTest(request, env, body);
     if (route === "admin/action") return await adminAction(request, env, body);
     if (route === "admin/social/plan") return await adminSocialPlan(request, env, body);
     if (route === "admin/social/post") return await adminSocialPost(request, env, body);

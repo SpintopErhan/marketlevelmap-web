@@ -37,6 +37,44 @@ they are worked out once per set of published files: the key is a hash of every 
 (`pubtimes:<hash>`), kept in the worker's memory and in D1 (`USERS_DB`, table `snapshots`). A new publication or a
 re-uploaded file gives a new key; a lookup that failed is not kept and is tried again on the next request.
 
+## Alarms
+
+Members set their own alarms; nothing is sent that a member did not ask for.
+
+- **Kinds** (`workers/alarms/src/alarms.js`): a price **above / below** a level; a zone **entered** (the price inside
+  it); a zone **broken** (a candle of the chosen timeframe closed under a support zone / over a resistance zone; closed
+  candles only, so a wick does not fire it; only candles that close after the alarm was set). An alarm fires once
+  and is then switched off ("Turn on again" re-arms it, counted from that moment). At most 20 active per member. Zone
+  alarms keep the zone's bounds from when they were set.
+- **Where**: analysis page — "Alarm" above the chart (price alarm, prefilled with the live price; "above" a price the
+  market is already above is refused) and a bell on each zone of the Support and Resistance table (enter / break on
+  the open timeframe). Account page — the list (state, when it fired and at what price, delete, turn on again), this
+  device's notifications ("Turn on notifications", "Send a test notification").
+- **Checking**: the alarm Worker (`workers/alarms`, Cloudflare Cron Trigger every minute) reads the active alarms from
+  D1, prices from OKX (`/api/v5/market/tickers`; Coinbase, then Kraken, for a price OKX does not give) and the last
+  closed candle per asset and timeframe from OKX (UTC candles: 1H, 4H, 1Dutc, 1Wutc). Binance and Bybit refuse
+  Cloudflare's servers; OKX, Coinbase and Kraken answered (tested from a US location). The notification names the
+  source. Texts are descriptive only (e.g. "BTC 4H mumu kurduğun destek bölgesinin altında kapandı (61.410,5–63.386,9 $)
+  · kapanış 61.200,0 $ (OKX)"), in the language the alarm was set in; a click opens that analysis.
+- **Delivery**: Web Push (VAPID, aes128gcm; `workers/alarms/src/webpush.js`, Web Crypto only, checked against the
+  `web-push` / `http_ece` libraries). Works in Chrome, Edge, Firefox and Android, and on iPhone only for the site
+  added to the Home Screen from Safari (iOS 16.4+). A device that no longer exists (404/410) is deleted.
+- **Data** (D1 `USERS_DB`): `alarms` and `push_subs` (endpoint and keys of each device, at most 10 per member), both
+  deleted with the account. API: `/api/auth/alarms`, `alarms/remove`, `alarms/rearm`, `push/subscribe`,
+  `push/unsubscribe`, `push/test` (members only).
+- **Until set up**: without `VAPID_PUBLIC_KEY` on the site, members see no alarm button, bells or account card.
+
+Setting up (once, in Cloudflare):
+1. Push keys: on a computer with Node, `npx web-push generate-vapid-keys` prints a public and a private key. Keep the
+   private key out of chats and the repository.
+2. Pages project → Settings → Variables and secrets (Production): `VAPID_PUBLIC_KEY` (text), `VAPID_PRIVATE_KEY`
+   (secret), `VAPID_SUBJECT` (`mailto:` + the site's contact address). Redeploy so the site picks them up.
+3. Workers plan: Workers Paid ($5 a month; a minute cron's work does not fit the free plan's 10 ms).
+4. The Worker: fill in the D1 database name and id in `workers/alarms/wrangler.toml` (Storage & Databases → D1),
+   then Workers & Pages → Create → Import a repository → this repository, root directory `workers/alarms`. Add the
+   same three variables to the Worker (Settings → Variables and secrets).
+5. Check: Account page → "Turn on notifications" → "Send a test notification"; then an alarm just above the price.
+
 ## Search results
 
 Structured data (schema.org JSON-LD) for Google:
@@ -476,8 +514,10 @@ under the analysis chart's title (that asset and the compared one, else BTC, on 
 
 ## Quick comparison
 
-"Compare" next to "Indicators" on the analysis chart puts another analysed asset on the chart (the choice is kept in
-this browser, `mlm-compare-v1`, and applies to every asset but itself; "None" removes it). The menu is a searchable
+"Compare" next to "Indicators" on the analysis chart puts another analysed asset on the chart. The choice belongs to
+the asset it was made on (kept in this browser, `mlm-compare-v2`: `{ BTCUSDT: "ETHUSDT", … }`): BTC compared with
+ETH stays so whenever BTC is shown, and another asset (e.g. AVAX) shows no comparison until one is chosen there;
+"None" removes it for that asset. The menu is a searchable
 list (search box on top; Enter takes the first match; arrow keys move in the list), so it holds any number of assets.
 
 - **Zones** are off while comparing (the two price paths read more easily); "Show zones" in the menu turns them on;

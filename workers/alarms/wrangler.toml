@@ -1,0 +1,18 @@
+# Alarm Worker (README "Alarms"). Deployed from this folder by Cloudflare Workers Builds (root directory:
+# workers/alarms). The D1 database is the site's own (Pages binding USERS_DB); its name and id are filled in below.
+# Secrets and the contact address are set in the Cloudflare dashboard, never here.
+name = "marketlevelmap-alarms"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+workers_dev = false
+
+[triggers]
+crons = ["* * * * *"]
+
+[[d1_databases]]
+binding = "USERS_DB"
+database_name = "FILL_IN_DATABASE_NAME"
+database_id = "FILL_IN_DATABASE_ID"
+
+[observability]
+enabled = true
