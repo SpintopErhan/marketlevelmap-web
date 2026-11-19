@@ -342,7 +342,21 @@ function findBox(lang, where) {
   return `<div class="lib-find lib-find-${where}" data-index="${esc(searchIndex[lang].url)}" data-empty="${esc(w.findEmpty)}"><input class="lib-find-input" type="search" placeholder="${esc(w.find)}" aria-label="${esc(w.find)}" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="find-${where}"><ul class="lib-find-results" id="find-${where}" role="listbox" aria-label="${esc(w.find)}" hidden></ul></div>`;
 }
 
-function page({ lang, path, alternates, title, description, body, jsonLd }) {
+// Breadcrumb trail for search results (schema.org BreadcrumbList): Library › category › page.
+function breadcrumbs(items) {
+  return {
+    "@context": "https://schema.org", "@type": "BreadcrumbList",
+    itemListElement: items.map((x, i) => ({ "@type": "ListItem", position: i + 1, name: x.name, item: ORIGIN + x.path })),
+  };
+}
+function crumbsFor(lang, category, last) {
+  const w = WORDS[lang], list = [{ name: w.libraryTitle, path: urls.home(lang) }];
+  if (category) list.push({ name: category[lang].name, path: urls.category(category, lang) });
+  if (last) list.push(last);
+  return list;
+}
+
+function page({ lang, path, alternates, title, description, body, jsonLd, crumbs }) {
   const w = WORDS[lang];
   const canonical = ORIGIN + path;
   const other = lang === "tr" ? "en" : "tr";
@@ -363,6 +377,7 @@ function page({ lang, path, alternates, title, description, body, jsonLd }) {
     `<script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>`,
     `<script src="${asset("assets/disclaimer.js")}" defer></script><script src="${asset("assets/account.js")}" defer></script><script src="${asset("assets/library.js")}" defer></script><script src="${asset("assets/pwa.js")}" defer></script>`,
     jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>` : "",
+    crumbs && crumbs.length > 1 ? `<script type="application/ld+json">${JSON.stringify(breadcrumbs(crumbs)).replace(/</g, "\\u003c")}</script>` : "",
   ].join("\n");
   const header = `<div class="shell"><header>
 <a href="/" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="${asset("assets/MarketLevelMap-mark-color.svg")}"><img class="logo logo-header" src="${asset("assets/MarketLevelMap-full-color.svg")}" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="${asset("assets/MarketLevelMap-mark-reverse.svg")}"><img class="logo logo-header" src="${asset("assets/MarketLevelMap-full-reverse.svg")}" alt="MarketLevelMap"></picture></a>
@@ -466,6 +481,7 @@ ${aside}</div>`;
       description: plain(t.summary), url: ORIGIN + urls.pattern(p, lang), inLanguage: lang, dateModified: p.updated,
       inDefinedTermSet: { "@type": "DefinedTermSet", name: w.libraryTitle, url: ORIGIN + urls.home(lang) },
     },
+    crumbs: crumbsFor(lang, categoryOf(p), { name: t.name, path: urls.pattern(p, lang) }),
   });
 }
 
@@ -531,6 +547,7 @@ ${aside}</div>`;
       description: plain(t.summary), url: ORIGIN + urls.pattern(p, lang), inLanguage: lang, dateModified: p.updated,
       inDefinedTermSet: { "@type": "DefinedTermSet", name: w.libraryTitle, url: ORIGIN + urls.home(lang) },
     },
+    crumbs: crumbsFor(lang, categoryOf(p), { name: t.name, path: urls.pattern(p, lang) }),
   });
 }
 
@@ -579,6 +596,7 @@ function listPage(lang, category) {
         ? list.map((p) => ({ "@type": "DefinedTerm", name: p[lang].name, url: ORIGIN + urls.pattern(p, lang) }))
         : activeCategories.map((c) => ({ "@type": "CollectionPage", name: c[lang].name, url: ORIGIN + urls.category(c, lang) })),
     },
+    crumbs: category ? crumbsFor(lang, category) : null,
   });
 }
 
