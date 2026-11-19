@@ -458,9 +458,12 @@ asset) is shown **in place**, without loading the page again (`switchAsset` in `
   and its chart are fetched. The header (name, icon, price), the address, the tab title, the band, the watchlist and
   the flow summary (`MLMFlowMini.setAsset`) change at once; the timeframe and the method are kept (ETH 4H → SOL 4H)
   when the asset has them.
-- Until the new asset is drawn, the previous chart stays on screen dimmed and no longer follows the price, the tables
-  keep the previous report (only the header follows the new price), a thin bar runs along the top and the chosen item
-  is outlined. The new chart replaces the old one when ready; the old one is then destroyed. At most 15 s.
+- Like a timeframe change: the same chart loads the new asset's candles in place (`reload(tf, { pair, decimalsFor })`
+  in `assets/live-chart.js`; the previous asset's price line, key-level lines, divergences and sweeps are removed and
+  the price-axis decimals follow the new asset). Nothing is dimmed or rebuilt: until the new report and levels file
+  are both in, the cards keep the previous content (only the header follows the new price) and a thin bar runs along
+  the top; then every card changes at once, none disappears in between (`whenLevels`, at most 2.5 s for the levels
+  file; the indicator card is refreshed once candles and report are both the new asset's). At most 15 s in all.
 - Answers that arrive for an earlier asset are dropped (`assetGen`), so a quick ETH → BTC → SOL ends on SOL.
 - The address changes with `history.pushState`: back / forward move between assets in place; a shared link opens the
   same page. An archived analysis (`?at=`), a new tab or another page load as usual, and anything unexpected during
@@ -472,7 +475,8 @@ asset) is shown **in place**, without loading the page again (`switchAsset` in `
 Checked against a fresh load: after every switch (band, back, forward, search window, two quick switches) the title,
 price, chart name, glance boxes, every side table, the indicator card, tabs, archive and note match what loading that
 asset's address shows, with one chart on the page; for members and guests (locked timeframes), in Critical Zones
-and Price Action, on desktop and phone, and with the live site's data.
+and Price Action, on desktop and phone, and with the live site's data, where frame-by-frame no side card left the
+screen during a switch.
 
 ## Analysis page loading
 

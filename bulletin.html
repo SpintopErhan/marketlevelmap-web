@@ -387,13 +387,13 @@ table{font-size:14px}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 ::view-transition-group(root){animation-duration:.2s}
 html.mlm-leaving #analysis{opacity:.5;transition:opacity .15s ease;pointer-events:none}
-html.mlm-leaving body::before{content:"";position:fixed;top:0;left:0;z-index:2147483647;width:100%;height:3px;background:var(--accent);transform-origin:left;animation:mlmLeave 2s cubic-bezier(.2,.7,.3,1) forwards}
+html.mlm-leaving body::before,html.mlm-switching body::before{content:"";position:fixed;top:0;left:0;z-index:2147483647;width:100%;height:3px;background:var(--accent);transform-origin:left;animation:mlmLeave 2s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes mlmLeave{from{transform:scaleX(.04)}to{transform:scaleX(.9)}}
-@media (prefers-reduced-motion:reduce){html.mlm-leaving body::before{animation:none;transform:scaleX(.6)}}
+@media (prefers-reduced-motion:reduce){html.mlm-leaving body::before,html.mlm-switching body::before{animation:none;transform:scaleX(.6)}}
 .mlm-going{box-shadow:inset 0 0 0 2px var(--accent);border-radius:8px}
 </style>
 <script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}html.embed .flow-link{display:none!important}html.embed .chart .live-chart{height:500px}</style>
-<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=b3d12b8a"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=b4b525d9"></script><script src="assets/chart-draw.js?v=0d3b99f6" defer></script><script src="assets/asset-picker.js?v=f55acff4"></script><script src="assets/side-order.js?v=1fc34a79" defer></script><script src="assets/flow-mini.js?v=119f7b0b" defer></script><script src="assets/market-context.js?v=7ae56172" defer></script><script src="assets/features.js?v=5b5669df"></script></head>
+<script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=b3d12b8a"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/live-chart.js?v=f34aba6b"></script><script src="assets/chart-draw.js?v=0d3b99f6" defer></script><script src="assets/asset-picker.js?v=f55acff4"></script><script src="assets/side-order.js?v=1fc34a79" defer></script><script src="assets/flow-mini.js?v=119f7b0b" defer></script><script src="assets/market-context.js?v=7ae56172" defer></script><script src="assets/features.js?v=5b5669df"></script></head>
 <body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa" aria-current="page">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -550,9 +550,15 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   }
   var publication=null,entry=null,report=null,reportDemo=false,commentText=null,live=null,digits=null,showAll=false,pending=0;
   // Asset switch in place (README "Asset switch"): assetGen counts the assets shown, so an answer that arrives for an
-  // earlier one is dropped; staleChart is the previous asset's chart, left on screen (dimmed) until the next is drawn;
+  // earlier one is dropped; heldChart is the chart on screen, kept out of the page's hands while it loads the next asset's
+  // candles in place (like a timeframe change);
   // awaitingReport holds the tables (only the header follows the live price) until the new report is in.
-  var assetGen=0,staleChart=null,awaitingReport=false,switchTimer=null,feedCtl=null;
+  var assetGen=0,heldChart=null,awaitingReport=false,switchTimer=null,feedCtl=null;
+  // levelsIn: the asset's levels file is in (or failed). During a switch the new report is drawn only together with it,
+  // so the key-level and volume-profile cards do not disappear for a moment and come back.
+  var levelsIn=true,levelsWaiting=null,levelsTimer=null;
+  function whenLevels(fn){if(levelsIn)fn();else levelsWaiting=fn}
+  function levelsReady(){if(levelsIn)return;levelsIn=true;clearTimeout(levelsTimer);var fn=levelsWaiting;levelsWaiting=null;if(fn)fn()}
   // Interactive chart (assets/live-chart.js): closed candles from R2 + report zones + live price line.
   // The published PNG is only loaded if the interactive chart cannot be built.
   var liveBox=document.getElementById("live-chart"),liveChart=null,chartWhen=null,chartKey="published";
@@ -856,7 +862,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     src.then(function(d){
       if(sym!==asset)return;
       if(d&&d.pair===asset&&(Array.isArray(d.volumeProfile)||Array.isArray(d.periodExtremes)||d.keyLevels)){vpFile=d;if(!awaitingReport){renderVolumeProfile();renderLevels()}}
-    }).catch(function(){}).then(function(){if(sym===asset)sidePart("levels")});
+    }).catch(function(){}).then(function(){if(sym===asset){sidePart("levels");levelsReady()}});
   }
   if(!at)loadLevels(true);
   function renderVolumeProfile(){
@@ -1097,6 +1103,8 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   var sigKey="";
   function renderSignals(force){
     var block=document.getElementById("sig-block"),list=document.getElementById("sig-list"),w=words();
+    // Asset switch: the card waits for the new report (a locked timeframe hides it) before it is filled again.
+    if(awaitingReport)return;
     if(isLocked()){sigGone(block);if(liveChart&&liveChart.setDivergences)liveChart.setDivergences([],false);return}
     // While the chart is being swapped (another timeframe loading) the card keeps its place and last content, so the
     // cards under it do not jump up and back (README "Analysis page card order"); it is refreshed once the data is in.
@@ -1279,16 +1287,18 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
     };
     // After an asset switch with no report to show, the tables are redrawn empty rather than left on the old asset.
     var reportDone=function(){if(request!==pending)return;if(awaitingReport){awaitingReport=false;renderAll()}reportIn=true;done()};
-    if(chosen.report)loadReport(chosen).then(function(rep){if(rep)paint(rep,false)}).catch(function(){}).then(function(){sidePart("report");reportDone()});
-    else if(window.DemoData&&DemoData.enabled){paint(DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow()),true);sidePart("report");reportDone()}
-    else{awaitingReport=false;report=null;reportDemo=false;commentText=null;renderAll();sidePart("report");reportDone()}
+    if(chosen.report)loadReport(chosen).catch(function(){return null}).then(function(rep){whenLevels(function(){if(rep)paint(rep,false);sidePart("report");reportDone()})});
+    else if(window.DemoData&&DemoData.enabled)whenLevels(function(){paint(DemoData.report(asset,MarketUI.timeframeOf(chosen),priceNow()),true);sidePart("report");reportDone()});
+    else whenLevels(function(){awaitingReport=false;report=null;reportDemo=false;commentText=null;renderAll();sidePart("report");reportDone()});
     if(!chosen.report&&chosen.analysisComment)fetch(chosen.analysisComment.url,{cache:"no-store"}).then(function(r){return r.ok?r.text():""}).then(function(text){if(request===pending&&text){commentText=text;renderAll()}}).catch(function(){});
     if(!window.LiveChart){showPng(chosen);chartIn=true;done();return}
     // A chart is already on screen: swap its candles in place. Building a second one (1H is large)
     // blanked the panel and played the opening animation again.
-    if(liveChart&&liveChart.reload){
-      liveChart.reload(MarketUI.timeframeOf(chosen)).then(function(){
-        if(request!==pending||!liveChart)return;
+    var reuse=liveChart||heldChart;
+    if(reuse&&reuse.reload){
+      reuse.reload(MarketUI.timeframeOf(chosen),{pair:asset,decimalsFor:MarketUI.digitsFor}).then(function(){
+        if(request!==pending)return;
+        liveChart=reuse;heldChart=null;
         chartReady=true;
         applyReportToChart();applyLevelsToChart();if(priceNow())liveChart.setLivePrice(priceNow());
         chart.dataset.state="live";expand.disabled=false;syncDownload();renderChartTime();syncDraw();renderSignals(true);
@@ -1297,10 +1307,10 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       return;
     }
     var slot=document.createElement("div");slot.className="live-chart";
-    chart.appendChild(slot);chart.dataset.mode="live";if(!staleChart)chart.dataset.state="loading";
+    chart.appendChild(slot);chart.dataset.mode="live";if(!heldChart)chart.dataset.state="loading";
     LiveChart.show(slot,{pair:asset,timeframe:MarketUI.timeframeOf(chosen),decimalsFor:MarketUI.digitsFor,onChange:function(){if(request===pending)renderChartTime()}}).then(function(ctl){
       if(request!==pending){ctl.destroy();slot.remove();return}
-      if(staleChart){try{staleChart.destroy()}catch(e){}staleChart=null}
+      if(heldChart){try{heldChart.destroy()}catch(e){}heldChart=null}
       if(liveBox&&liveBox!==slot)liveBox.remove();
       slot.id="live-chart";slot.hidden=false;
       // chartReady here too: when the report arrives after the first chart is built, paint() must draw its zones.
@@ -1315,7 +1325,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   function syncDraw(){if(!window.MLMDraw||!liveChart)return;if(liveChart.drawHost&&isMember()&&!isLocked()&&MLMDraw.desktop())MLMDraw.attach(liveChart.drawHost());else MLMDraw.detach()}
   function showPng(chosen){
     if(window.MLMDraw)MLMDraw.detach();
-    if(staleChart){try{staleChart.destroy()}catch(e){}staleChart=null}
+    if(heldChart){try{heldChart.destroy()}catch(e){}heldChart=null}
     var sb=document.getElementById("sig-block");if(sb&&sb.classList.contains("sig-loading"))sigGone(sb);
     liveBox.hidden=true;
     if(!chosen.image){chart.dataset.mode="none";img.removeAttribute("src");chart.dataset.state="unavailable";expand.disabled=true;renderChartTime();return}
@@ -1674,7 +1684,9 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
   function rowsOf(sym){return((publication&&publication.entries)||[]).filter(function(e){return(e.image||e.report)&&MarketUI.assetOf(e)===sym})}
   function endSwitch(){
     clearTimeout(switchTimer);switchTimer=null;
-    document.documentElement.classList.remove("mlm-leaving");
+    // The indicator card waited for the report; now both the report and the candles are the new asset's.
+    if(liveChart&&!awaitingReport)renderSignals(true);
+    document.documentElement.classList.remove("mlm-leaving","mlm-switching");
     [].forEach.call(document.querySelectorAll(".mlm-going"),function(x){x.classList.remove("mlm-going")});
   }
   function switchAsset(sym,push,from){
@@ -1686,12 +1698,14 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       if(push!==false)history.pushState({asset:sym},"",url.toString());
       q=new URLSearchParams(url.search);
       assetGen++;asset=sym;early=null;
-      // Feedback until the new asset is drawn: the bar along the top, the analysis dimmed, the chosen item marked.
-      if(window.MLMLeaving)MLMLeaving(from||null);
+      // Feedback until the new asset is drawn: a thin bar along the top (the page itself is not dimmed: the tables and
+      // the chart change in place, as on a timeframe change).
+      document.documentElement.classList.add("mlm-switching");
       clearTimeout(switchTimer);switchTimer=setTimeout(endSwitch,15000);
-      // The chart on screen stays (dimmed) until the next one is drawn, but stops following the price.
+      // The chart on screen loads the next asset's candles in place (select → reload); until then the page leaves it
+      // alone, so the new price, levels or indicators never land on the previous asset's candles.
       if(window.MLMDraw)MLMDraw.detach();
-      if(liveChart){if(staleChart){try{staleChart.destroy()}catch(e){}}staleChart=liveChart;liveChart=null}
+      if(liveChart){heldChart=liveChart;liveChart=null}
       // Per-asset state: the tables keep the previous report on screen until the new one is in.
       awaitingReport=true;entry=null;report=null;reportDemo=false;commentText=null;
       live=feedCtl&&feedCtl.get?feedCtl.get(sym):null;digits=live&&Number(live.c)>0?MarketUI.digitsFor(live.c):null;lastHeadPrice=null;
@@ -1701,6 +1715,7 @@ zoomDialog.addEventListener("close",function(){zoomGesture=null;zoomImage.remove
       [].forEach.call(band.querySelectorAll(".band-item"),function(a){if(a.firstChild&&a.firstChild.textContent===sym)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
       if(window.MLMPicker&&MLMPicker.setCurrent)MLMPicker.setCurrent(sym);
       if(window.MLMFlowMini&&MLMFlowMini.setAsset)MLMFlowMini.setAsset(sym);
+      levelsIn=false;levelsWaiting=null;clearTimeout(levelsTimer);levelsTimer=setTimeout(levelsReady,2500);
       loadLevels(false);
       start(rowsOf(sym));
       return true;
