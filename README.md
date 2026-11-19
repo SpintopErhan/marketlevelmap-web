@@ -448,6 +448,19 @@ fed by the price band: the analysed assets and their live prices).
 - **Chart header:** the links and buttons wrap onto a second line instead of overlapping when the page is narrow,
   e.g. with the watchlist docked.
 
+## Multi view
+
+`multi.html` (`/multi`): two or four analysis charts side by side (one under the other on phones), from "Multi view"
+under the analysis chart's title (that asset and the compared one, else BTC, on the same timeframe).
+
+- Each chart has its own asset (the analysed ones) and timeframe; changing either reloads that chart in place
+  (`LiveChart.reload(tf, { pair })`). Candles, the zones of the asset's Critical Zones report for that timeframe, the
+  live price (dashed line and the price at the top, from the shared price stream) and "Analysis →" to that analysis.
+  No indicators, to keep the small charts readable.
+- Same access rule as the analysis page: guests see 1D; other timeframes show "for members" with a sign-in link.
+- The layout (2 or 4, and each chart's asset and timeframe) is kept in this browser (`mlm-multi-v1`);
+  `?assets=ETHUSDT,BTCUSDT&tf=4h` opens with those charts.
+
 ## Quick comparison
 
 "Compare" next to "Indicators" on the analysis chart puts another analysed asset on the chart (the choice is kept in

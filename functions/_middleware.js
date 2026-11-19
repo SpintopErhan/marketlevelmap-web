@@ -11,6 +11,7 @@ const PAGES = {
   "/flow": { title: "Live flow · MarketLevelMap", description: "Members-only live order flow for crypto spot: combined order book, CVD, depth and Time & Sales from Binance, OKX and Coinbase." },
   "/archive": { title: "Archive · MarketLevelMap", description: "Earlier MarketLevelMap analyses by date." },
   "/bulletin": { title: "Analysis · MarketLevelMap", description: DEFAULT_DESCRIPTION },
+  "/multi": { title: "Multi view · MarketLevelMap", description: "Two or four analysis charts side by side: candles, Critical Zones and live prices for the analysed assets." },
 };
 
 function escapeAttr(value) {
