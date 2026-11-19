@@ -1300,26 +1300,42 @@ var LiveChart = (function () {
       setLocale: function () { if (!destroyed) chart.applyOptions({ localization: localization() }); },
       // Change timeframe without tearing the chart down. 1H in particular is a lot of candles;
       // rebuilding the widget blanked the panel and redrew it.
-      reload: function (nextTf) {
+      // Also another asset in the same chart (opts.pair, with opts.decimalsFor for its price-axis decimals): the analysis
+      // page switches assets in place like it switches timeframes (README "Asset switch").
+      reload: function (nextTf, opts) {
         hideZoneTip();
+        opts = opts || {};
         nextTf = String(nextTf || "").toLowerCase();
+        var nextPair = opts.pair ? String(opts.pair).toUpperCase() : state.pair, newPair = nextPair !== state.pair;
         if (destroyed || !STEP[nextTf]) return Promise.reject(new Error("unsupported timeframe " + nextTf));
-        if (nextTf === state.tf) return Promise.resolve();
+        if (nextTf === state.tf && !newPair) return Promise.resolve();
         var epoch = ++generation;
         closeStream();
         forming = null;
         setLiveStatus("pending");
         return loadIndex().then(function (index) {
           if (destroyed || epoch !== generation) return;
-          var entry = index.pairs && index.pairs[state.pair] && index.pairs[state.pair][nextTf];
-          if (!entry) throw new Error("no candles for " + state.pair + " " + nextTf);
+          var entry = index.pairs && index.pairs[nextPair] && index.pairs[nextPair][nextTf];
+          if (!entry) throw new Error("no candles for " + nextPair + " " + nextTf);
           var archives = (entry.archives || []).slice();
           var initial = MONTHLY[nextTf] ? archives.slice(-PAGE) : archives.slice();
           var remaining = MONTHLY[nextTf] ? archives.slice(0, Math.max(0, archives.length - PAGE)) : [];
-          return loadPeriods(state.pair, nextTf, initial.concat(["latest"])).then(function (files) {
+          return loadPeriods(nextPair, nextTf, initial.concat(["latest"])).then(function (files) {
             if (destroyed || epoch !== generation) return;
             var rows = mergeRows([], files);
-            if (!rows.length) throw new Error("no closed candles for " + state.pair + " " + nextTf);
+            if (!rows.length) throw new Error("no closed candles for " + nextPair + " " + nextTf);
+            if (newPair) {
+              // Nothing of the previous asset stays: its live price line, key-level lines, divergences and sweeps go;
+              // the page sets the new asset's ones once the candles are in.
+              state.pair = nextPair;
+              if (liveLine) { candles.removePriceLine(liveLine); liveLine = null; }
+              Object.keys(levelLines).forEach(function (code) { candles.removePriceLine(levelLines[code]); delete levelLines[code]; });
+              divList = []; drawDivergences();
+              structurePoints.points = null; structurePoints.update();
+              if (sweepMarkers) sweepMarkers.setMarkers([]);
+              var d = opts.decimalsFor ? opts.decimalsFor(rows[rows.length - 1][4]) : null;
+              if (d != null && d !== decimals) { decimals = d; applyPrecision(); }
+            }
             state.tf = nextTf;
             state.rows = rows;
             state.tail = [];

@@ -132,22 +132,36 @@
     box.querySelectorAll("#fm-venue button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.v === venue)); });
     render();
   }
+  // The analysis page can change its asset in place (bulletin.html "Asset switch"): setAsset() reconnects to it.
+  var active = false;
+  function setAsset(a) {
+    if (!box) return;
+    var m = /^([A-Z0-9]{2,15})USDT$/.exec(String(a || "").toUpperCase());
+    if (!m) { stop(); sym = ""; base = ""; box.hidden = true; return; }
+    if (m[0] === sym && socks.length) return;
+    sym = m[0]; base = m[1];
+    if (!active) return;
+    $("fm-link").href = "flow?asset=" + encodeURIComponent(sym);
+    box.hidden = false; words(); start();
+  }
   function boot() {
     box = $("flowmini-block"); if (!box || document.documentElement.classList.contains("embed")) return;
     var q = new URLSearchParams(location.search), a = String(q.get("asset") || "BTCUSDT").toUpperCase(), m = /^([A-Z0-9]{2,15})USDT$/.exec(a);
-    if (!m) return; sym = a; base = m[1];
+    if (m) { sym = a; base = m[1]; }
     (window.MLMAccount ? MLMAccount.ready : Promise.resolve(null)).then(function (user) {
       if (!(user && (user.status === "approved" || user.isAdmin))) return;
-      $("fm-link").href = "flow?asset=" + encodeURIComponent(sym);
-      box.hidden = false; words(); start();
+      active = true;
       $("fm-venue").addEventListener("click", function (e) {
         var b = e.target.closest("button[data-v]"); if (!b || b.dataset.v === venue) return;
         venue = b.dataset.v; auto = false; try { localStorage.setItem("mlm-fm-venue", venue); } catch (_) {}
         words(); start();
       });
       var l = $("lang"); if (l) l.addEventListener("change", function () { setTimeout(words, 0); });
+      if (!sym) return;
+      $("fm-link").href = "flow?asset=" + encodeURIComponent(sym);
+      box.hidden = false; words(); start();
     });
   }
-  window.MLMFlowMini = { _state: function () { return { venue: venue, trades: trades.length, f: f, liqs: liqs.length, socks: socks.filter(function (x) { return x.readyState < 2; }).map(function (x) { return x.url; }) }; } };
+  window.MLMFlowMini = { setAsset: function (a) { setAsset(a); }, _state: function () { return { venue: venue, trades: trades.length, f: f, liqs: liqs.length, socks: socks.filter(function (x) { return x.readyState < 2; }).map(function (x) { return x.url; }) }; } };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();

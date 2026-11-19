@@ -450,18 +450,33 @@ fed by the price band: the analysed assets and their live prices).
 
 ## Asset switch
 
-Moving to another asset on the analysis page still loads the page (band, watchlist, search window), with three aids:
+Another asset chosen on the analysis page (price band, watchlist, search window, a link in the page to another
+asset) is shown **in place**, without loading the page again (`switchAsset` in `bulletin.html`, also
+`window.MLMSwitchAsset(sym)`):
 
-- **Cross-fade** — `@view-transition { navigation: auto }` in `bulletin.html` (off for reduced motion): Chrome, Edge
-  and Safari 18.2+ cross-fade (0.2 s) from the old page to the new one instead of flashing white.
-  `<link rel="expect" href="#chart" blocking="render">` holds the new page's first paint until the top of the page
-  (up to the chart box) is parsed, so the fade never lands on a blank page. Other browsers navigate as before.
-- **Click feedback** — following a link to another asset (or choosing one in the search window / watchlist) calls
-  `MLMLeaving(el)`: a thin accent bar runs along the top, the analysis dims and the chosen item is outlined, so the
-  click is acknowledged while the next page loads. Cleared when the page comes back from the browser's cache.
-- **Prerender on hover** — speculation rules prerender `/bulletin*` links on hover (`eagerness: moderate`; Chrome and
-  Edge only). The prerendered page loads hidden; the price stream and chart stream connect when it is shown, as they
-  already do after a hidden tab comes back. Not verified in the test browser, which turns prerendering off.
+- The publication list and the live prices are already on the page, so only the asset's reports, its `levels.json`
+  and its chart are fetched. The header (name, icon, price), the address, the tab title, the band, the watchlist and
+  the flow summary (`MLMFlowMini.setAsset`) change at once; the timeframe and the method are kept (ETH 4H → SOL 4H)
+  when the asset has them.
+- Like a timeframe change: the same chart loads the new asset's candles in place (`reload(tf, { pair, decimalsFor })`
+  in `assets/live-chart.js`; the previous asset's price line, key-level lines, divergences and sweeps are removed and
+  the price-axis decimals follow the new asset). Nothing is dimmed or rebuilt: until the new report and levels file
+  are both in, the cards keep the previous content (only the header follows the new price) and a thin bar runs along
+  the top; then every card changes at once, none disappears in between (`whenLevels`, at most 2.5 s for the levels
+  file; the indicator card is refreshed once candles and report are both the new asset's). At most 15 s in all.
+- Answers that arrive for an earlier asset are dropped (`assetGen`), so a quick ETH → BTC → SOL ends on SOL.
+- The address changes with `history.pushState`: back / forward move between assets in place; a shared link opens the
+  same page. An archived analysis (`?at=`), a new tab or another page load as usual, and anything unexpected during
+  a switch falls back to loading the asset's page.
+- A pointer resting on another asset's link (band, watchlist) for 150 ms fetches its reports ahead of the click.
+- Page-to-page navigations (e.g. to an archived analysis) still cross-fade in Chrome, Edge and Safari 18.2+
+  (`@view-transition`, off for reduced motion), with the same click feedback (`MLMLeaving`).
+
+Checked against a fresh load: after every switch (band, back, forward, search window, two quick switches) the title,
+price, chart name, glance boxes, every side table, the indicator card, tabs, archive and note match what loading that
+asset's address shows, with one chart on the page; for members and guests (locked timeframes), in Critical Zones
+and Price Action, on desktop and phone, and with the live site's data, where frame-by-frame no side card left the
+screen during a switch.
 
 ## Analysis page loading
 
