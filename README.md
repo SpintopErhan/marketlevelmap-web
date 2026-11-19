@@ -448,6 +448,50 @@ fed by the price band: the analysed assets and their live prices).
 - **Chart header:** the links and buttons wrap onto a second line instead of overlapping when the page is narrow,
   e.g. with the watchlist docked.
 
+## Multi view
+
+`multi.html` (`/multi`): two or four analysis charts side by side (one under the other on phones), from "Multi view"
+under the analysis chart's title (that asset and the compared one, else BTC, on the same timeframe).
+
+- Each chart has its own asset (the analysed ones) and timeframe (zones from the asset's "CZ" report for 1D / 1W and
+  "CZ_SHORT" for 1H / 4H, as on the analysis page); changing either reloads that chart in place
+  (`LiveChart.reload(tf, { pair })`). Candles, the zones of the asset's Critical Zones report for that timeframe, the
+  live price (dashed line and the price at the top, from the shared price stream) and "Analysis →" to that analysis.
+  No indicators, to keep the small charts readable.
+- Same access rule as the analysis page: guests see 1D; other timeframes show "for members" with a sign-in link.
+- The layout (2 or 4, and each chart's asset and timeframe) is kept in this browser (`mlm-multi-v1`);
+  `?assets=ETHUSDT,BTCUSDT&tf=4h` opens with those charts.
+
+## Quick comparison
+
+"Compare" next to "Indicators" on the analysis chart puts another analysed asset on the chart (the choice is kept in
+this browser, `mlm-compare-v1`, and applies to every asset but itself; "None" removes it). The menu is a searchable
+list (search box on top; Enter takes the first match; arrow keys move in the list), so it holds any number of assets.
+
+- **Zones** are off while comparing (the two price paths read more easily); "Show zones" in the menu turns them on;
+  choosing another asset turns them off again, and without a comparison they are always shown
+  (`setZonesVisible` in `assets/live-chart.js`: report zones, FVG, structure and Fibonacci bands, and their tooltip).
+
+- **Line** (light green) on the price pane: the other asset's closes on the same timeframe, scaled so that the line
+  meets this asset's price at the last common candle; going back, the gap shows how differently the two moved. It
+  does not take part in the price axis's autoscale, so the candles keep their scale (a line that ran far apart can
+  leave the view). Under the legend: how much each moved over the visible range.
+- **Ratio pane** under the chart, close to close, with its own decimals, quoted the usual way: in BTC when one of the
+  two is BTC, else in ETH, else this asset in the other (BTC chart compared with BNB → BNB/BTC; ETH with SOL →
+  SOL/ETH; SOL with XRP → SOL/XRP).
+- **Correlation** on the ratio pane: Pearson correlation of the two assets' candle-to-candle log returns over the last
+  30 and 90 common candles of the timeframe shown.
+- Only candles both assets have are used (the other asset's files cover the same period as the chart's first load);
+  its live price (from the page's price stream) extends the line and the ratio to the forming candle.
+- Follows timeframe and asset switches; on a locked timeframe (guests) the control is hidden. The downloaded image
+  lists it with the indicators.
+- Only the analysed assets have candles (BTC, ETH, SOL, XRP, BNB, AVAX, DOGE); others would need their candles first.
+
+Chart number formatting: each series gets a formatter of its own (`addSeries` wrapper in `assets/live-chart.js`,
+page-language decimals as before) instead of one chart-wide `priceFormatter`, which forced the asset's decimals onto
+every pane. Checked pixel for pixel: without a comparison the chart (price, volume, RSI, Stochastic RSI, MACD, OBV,
+Bollinger) looks exactly as before.
+
 ## Asset switch
 
 Another asset chosen on the analysis page (price band, watchlist, search window, a link in the page to another

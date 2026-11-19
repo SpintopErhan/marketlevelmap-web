@@ -1,0 +1,167 @@
+<!doctype html>
+<!-- Multi view (README "Multi view"): two or four analysis charts side by side. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap"><script src="/assets/pwa.js?v=b0dd56f5" defer></script><meta name="color-scheme" content="dark light"><title>MarketLevelMap — Multi view</title><link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png"><link rel="stylesheet" href="assets/site.css?v=40714428"><style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.45}
+button,select,input{font:inherit}button{color:inherit}
+main{padding:0 0 70px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:34px 0 18px}
+.page-head h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.5px}
+.meta{margin:8px 0 0;color:var(--muted);font-size:13px;max-width:760px}
+.mv-layout{display:inline-flex;padding:3px;border:1px solid var(--line);border-radius:11px;background:var(--panel)}
+.mv-layout button{min-height:32px;padding:5px 14px;border:0;border-radius:8px;background:none;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)}
+.mv-layout button[aria-pressed=true]{background:var(--panel-2);color:var(--fg)}
+.mv-status{padding:40px 0;color:var(--muted);text-align:center}.mv-status[hidden]{display:none}
+.mv-grid{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.mv-cell{min-width:0;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+.mv-head{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;padding:10px 12px}
+.mv-head select{min-height:32px;padding:4px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--fg);font-size:13px;font-weight:700}
+.mv-tfs{display:inline-flex;gap:2px}
+.mv-tfs button{min-width:38px;min-height:30px;padding:3px 8px;border:1px solid transparent;border-radius:8px;background:none;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer}
+.mv-tfs button[aria-pressed=true]{border-color:var(--line);background:var(--bg);color:var(--fg)}
+.mv-tfs button.locked{opacity:.55}
+.mv-price{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;white-space:nowrap}
+.mv-price small{margin-left:6px;font-size:12px;font-weight:600}
+.mv-price .up{color:var(--up)}.mv-price .down{color:var(--down)}
+.mv-open{font-size:12.5px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap}.mv-open:hover{text-decoration:underline}
+.mv-chart{position:relative;height:440px;background:#101820}
+.mv-grid.n4 .mv-chart{height:340px}
+.mv-msg{position:absolute;inset:0;display:grid;place-items:center;padding:0 20px;color:#9aaab5;font-size:13px;text-align:center}.mv-msg[hidden]{display:none}
+.mv-msg a{color:#7fd8c7}
+.mv-chart .live-chart{position:absolute;inset:0}
+.live-chart.lc-reveal>div:first-child{animation:lcReveal .75s cubic-bezier(.3,.7,.2,1) both}
+.lc-pulse{position:absolute;left:-4px;top:-4px;z-index:3;width:8px;height:8px;border-radius:50%;background:#f0c040;pointer-events:none}
+.lc-pulse[hidden]{display:none}
+.lc-pulse:after{content:"";position:absolute;inset:0;border-radius:50%;background:#f0c040;animation:lcPulse 1.8s ease-out infinite}
+@keyframes lcReveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes lcPulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(3.2);opacity:0}}
+@media (prefers-reduced-motion:reduce){.live-chart.lc-reveal>div:first-child,.lc-pulse:after{animation:none!important}}
+.table-note{margin:14px 2px 0;color:var(--muted);font-size:12px;max-width:860px}
+@media(max-width:900px){.mv-grid{grid-template-columns:minmax(0,1fr)}.mv-chart,.mv-grid.n4 .mv-chart{height:min(380px,62vh)}}
+@media(max-width:640px){.page-head h1{font-size:24px}.mv-head{padding:8px 10px}.mv-price{font-size:13px}}
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}</style><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=de29f1c2" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/live-chart.js?v=92e15a72"></script><script src="assets/market-ui.js?v=b3d12b8a"></script></head><body><div class="shell"><header>
+<a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<script>/* Keep the header in the saved language before the first paint. */
+(function(){var lang;try{lang=localStorage.getItem("mlm-lang")}catch(e){}if(lang!=="tr")return;document.documentElement.lang="tr";document.querySelectorAll("header [data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=el.dataset.tr});document.querySelectorAll("header [data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",el.dataset.hrefTr)});var sel=document.getElementById("lang");if(sel)sel.value="tr"})();
+</script>
+<main class="shell">
+<div class="page-head"><div><h1 data-i18n="heading">Multi view</h1><p class="meta" data-i18n="sub">Two or four analysis charts side by side, with their zones and live prices. Choose the asset and the timeframe of each chart.</p></div>
+<div class="mv-layout" role="group" aria-label="Layout" id="mv-layout"><button type="button" data-n="2" aria-pressed="true" data-i18n="two">2 charts</button><button type="button" data-n="4" aria-pressed="false" data-i18n="four">4 charts</button></div></div>
+<div id="mv-status" class="mv-status" data-i18n="loading">Loading…</div>
+<div class="mv-grid" id="mv-grid"></div>
+<p class="table-note" data-i18n="note">Candles and the zones of each asset's Critical Zones analysis; the dashed line is the live price. Guests see the 1D timeframe; the others are for members. Your layout is kept in this browser.</p>
+</main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+<script>
+var copy={
+  en:{title:"Multi view",heading:"Multi view",sub:"Two or four analysis charts side by side, with their zones and live prices. Choose the asset and the timeframe of each chart.",two:"2 charts",four:"4 charts",loading:"Loading…",unavailable:"The analyses could not be loaded. Please try again later.",note:"Candles and the zones of each asset's Critical Zones analysis; the dashed line is the live price. Guests see the 1D timeframe; the others are for members. Your layout is kept in this browser.",asset:"Asset",open:"Analysis →",members:"This timeframe is for members.",signIn:"Sign in",chartFail:"The chart could not be loaded.",chartLoading:"Loading the chart…",tf:"Timeframe"},
+  tr:{title:"Çoklu görünüm",heading:"Çoklu görünüm",sub:"İki ya da dört analiz grafiği yan yana; bölgeleri ve canlı fiyatlarıyla. Her grafiğin varlığını ve zaman dilimini seç.",two:"2 grafik",four:"4 grafik",loading:"Yükleniyor…",unavailable:"Analizler yüklenemedi. Lütfen daha sonra tekrar deneyin.",note:"Mumlar ve her varlığın Kritik Bölgeler analizindeki bölgeler; kesikli çizgi canlı fiyat. Üye olmayanlar 1D zaman dilimini görür; diğerleri üyelere. Düzenin bu tarayıcıda saklanır.",asset:"Varlık",open:"Analiz →",members:"Bu zaman dilimi üyelere özel.",signIn:"Giriş yap",chartFail:"Grafik yüklenemedi.",chartLoading:"Grafik yükleniyor…",tf:"Zaman dilimi"}
+};
+function words(){return copy[document.getElementById("lang").value]||copy.en}
+function applyLanguage(value){
+  var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){if(t[el.dataset.i18n])el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+  document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
+  try{localStorage.setItem("mlm-lang",value)}catch(e){}
+}
+var lang=document.getElementById("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
+lang.value=savedLang==="tr"?"tr":"en";applyLanguage(lang.value);lang.addEventListener("change",function(){applyLanguage(this.value)});
+var toggle=document.getElementById("theme-toggle");
+function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+</script>
+<script>
+/* Multi view (README "Multi view"): 2 or 4 analysis charts (assets/live-chart.js), each with its own asset and
+   timeframe, the zones of that asset's Critical Zones report and the live price. Layout kept in localStorage
+   ("mlm-multi-v1": { n, cells: [{ asset, tf }] }); ?assets=ETHUSDT,BTCUSDT&tf=4h opens with those. Guests: 1D only. */
+(function(){
+  var KEY="mlm-multi-v1",TFS=["1h","4h","1d","1w"],el=function(id){return document.getElementById(id)};
+  var grid=el("mv-grid"),status=el("mv-status"),pub=null,member=false,assets=[],cells=[],quotes={},reports={};
+  function words(){return copy[el("lang").value]||copy.en}
+  var state=(function(){try{var v=JSON.parse(localStorage.getItem(KEY)||"null");if(v&&(v.n===2||v.n===4)&&Array.isArray(v.cells))return v}catch(e){}return{n:2,cells:[]}})();
+  function save(){try{localStorage.setItem(KEY,JSON.stringify({n:state.n,cells:state.cells.slice(0,4)}))}catch(e){}}
+  // The asset's Critical Zones entry for this timeframe: "CZ" (1D, 1W) or "CZ_SHORT" (1H, 4H), as on the analysis page.
+  function entryOf(sym,tf){return(pub.entries||[]).filter(function(e){return e.report&&MarketUI.methodOf(e)==="cz"&&MarketUI.assetOf(e)===sym&&MarketUI.timeframeOf(e).toLowerCase()===tf})[0]||null}
+  function allowed(tf){return member||tf==="1d"}
+  function reportOf(e){if(!e||!e.report)return Promise.resolve(null);var u=e.report.url;if(!reports[u])reports[u]=fetch(u,{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null});return reports[u]}
+  function analysisHref(c){return"bulletin?asset="+encodeURIComponent(c.asset)+"&tf="+encodeURIComponent(c.tf)}
+  function paintPrice(c){
+    var d=quotes[c.asset],box=c.price;if(!d||!(Number(d.c)>0)){box.textContent="";return}
+    var p=Number(d.c),ch=Number(d.o)>0?p/Number(d.o)-1:NaN;if(c.digits==null)c.digits=MarketUI.digitsFor(p);
+    box.textContent=MarketUI.price(p,c.digits);var s=document.createElement("small");s.className=MarketUI.signClass(ch);s.textContent=isFinite(ch)?MarketUI.pct(ch):"";box.appendChild(s);
+  }
+  function message(c,text,link){c.msg.textContent=text;if(link){c.msg.appendChild(document.createElement("br"));var a=document.createElement("a");a.href="account.html";a.textContent=link;c.msg.appendChild(a)}c.msg.hidden=false}
+  // Zones of the asset's Critical Zones report for this timeframe (none when there is no report or it is locked).
+  function applyZones(c,gen){
+    reportOf(entryOf(c.asset,c.tf)).then(function(rep){
+      if(gen!==c.gen||!c.ctl)return;
+      c.ctl.setZones(rep&&!rep.locked&&Array.isArray(rep.zones)?rep.zones:[]);
+    });
+  }
+  function draw(c){
+    var gen=++c.gen,w=words();
+    c.open.href=analysisHref(c);
+    c.tfs.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.tf===c.tf));b.classList.toggle("locked",!allowed(b.dataset.tf))});
+    c.digits=null;paintPrice(c);
+    if(!allowed(c.tf)){if(c.ctl){c.ctl.destroy();c.ctl=null}c.box.querySelectorAll(".live-chart").forEach(function(x){x.remove()});message(c,w.members,w.signIn);return}
+    if(c.ctl&&c.ctl.reload){
+      c.ctl.reload(c.tf,{pair:c.asset,decimalsFor:MarketUI.digitsFor}).then(function(){if(gen!==c.gen)return;c.msg.hidden=true;applyZones(c,gen);var d=quotes[c.asset];if(d)c.ctl.setLivePrice(d.c)})
+        .catch(function(){if(gen===c.gen)message(c,w.chartFail)});
+      return;
+    }
+    message(c,w.chartLoading);
+    var slot=document.createElement("div");slot.className="live-chart";c.box.appendChild(slot);
+    LiveChart.show(slot,{pair:c.asset,timeframe:c.tf,decimalsFor:MarketUI.digitsFor}).then(function(ctl){
+      if(gen!==c.gen){ctl.destroy();slot.remove();return}
+      c.ctl=ctl;c.msg.hidden=true;if(ctl.setIndicators)ctl.setIndicators({ema:false});applyZones(c,gen);var d=quotes[c.asset];if(d)ctl.setLivePrice(d.c);
+    }).catch(function(){if(gen===c.gen){slot.remove();message(c,w.chartFail)}});
+  }
+  function makeCell(i){
+    var w=words(),c={i:i,gen:0,ctl:null,digits:null},s=state.cells[i];
+    c.asset=s&&assets.indexOf(s.asset)>-1?s.asset:assets[i%assets.length];c.tf=s&&TFS.indexOf(s.tf)>-1?s.tf:(member?"4h":"1d");
+    var root=document.createElement("section");root.className="mv-cell";
+    var head=document.createElement("div");head.className="mv-head";
+    var sel=document.createElement("select");sel.setAttribute("aria-label",w.asset);
+    assets.forEach(function(a){var o=document.createElement("option");o.value=a;o.textContent=MarketUI.baseOf(a)+" · "+MarketUI.nameOf(a);sel.appendChild(o)});sel.value=c.asset;
+    sel.addEventListener("change",function(){c.asset=sel.value;state.cells[i]={asset:c.asset,tf:c.tf};save();draw(c)});
+    var tfs=document.createElement("div");tfs.className="mv-tfs";tfs.setAttribute("role","group");tfs.setAttribute("aria-label",w.tf);
+    TFS.forEach(function(tf){var b=document.createElement("button");b.type="button";b.dataset.tf=tf;b.textContent=tf.toUpperCase();
+      b.addEventListener("click",function(){if(c.tf===tf)return;c.tf=tf;state.cells[i]={asset:c.asset,tf:c.tf};save();draw(c)});tfs.appendChild(b)});
+    var price=document.createElement("span");price.className="mv-price num";
+    var open=document.createElement("a");open.className="mv-open";open.textContent=w.open;
+    head.appendChild(sel);head.appendChild(tfs);head.appendChild(price);head.appendChild(open);
+    var box=document.createElement("div");box.className="mv-chart";var msg=document.createElement("div");msg.className="mv-msg";box.appendChild(msg);
+    root.appendChild(head);root.appendChild(box);
+    c.root=root;c.sel=sel;c.tfs=tfs;c.price=price;c.open=open;c.box=box;c.msg=msg;
+    state.cells[i]={asset:c.asset,tf:c.tf};
+    return c;
+  }
+  function layout(n){
+    state.n=n;save();
+    el("mv-layout").querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(Number(b.dataset.n)===n))});
+    grid.className="mv-grid n"+n;
+    while(cells.length>n){var c=cells.pop();c.gen++;if(c.ctl)c.ctl.destroy();c.root.remove()}
+    while(cells.length<n){var nc=makeCell(cells.length);cells.push(nc);grid.appendChild(nc.root);draw(nc)}
+    // a new layout height: charts follow their boxes (autoSize)
+  }
+  el("mv-layout").addEventListener("click",function(e){var b=e.target.closest("button[data-n]");if(b)layout(Number(b.dataset.n))});
+  new MutationObserver(function(){var w=words();cells.forEach(function(c){c.open.textContent=w.open;if(c.ctl)c.ctl.setLocale();paintPrice(c);if(!c.msg.hidden&&!allowed(c.tf))message(c,w.members,w.signIn)})}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  fetch("/api/publication",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){
+    if(!body){status.textContent=words().unavailable;status.dataset.i18n="unavailable";return}
+    pub=body;member=!!(body.viewer&&body.viewer.member);
+    var seen={};(body.entries||[]).forEach(function(e){var a=MarketUI.assetOf(e);if(MarketUI.methodOf(e)==="cz"&&/^[A-Z0-9]{2,20}$/.test(a)&&e.report)seen[a]=1});
+    assets=Object.keys(seen).sort(MarketUI.byPopularity);
+    if(!assets.length){status.textContent=words().unavailable;status.dataset.i18n="unavailable";return}
+    // ?assets=A,B[,C,D]&tf=4h (e.g. from the analysis page) opens with those charts.
+    var q=new URLSearchParams(location.search),list=String(q.get("assets")||"").toUpperCase().split(",").filter(function(a){return assets.indexOf(a)>-1}),qtf=String(q.get("tf")||"").toLowerCase();
+    if(list.length){state.n=list.length>2?4:2;state.cells=list.slice(0,state.n).map(function(a){return{asset:a,tf:TFS.indexOf(qtf)>-1?qtf:"1d"}})}
+    status.hidden=true;layout(state.n);
+    MarketFeed.start(assets,{onData:function(sym,d){quotes[sym]=d;cells.forEach(function(c){if(c.asset!==sym)return;paintPrice(c);if(c.ctl)c.ctl.setLivePrice(d.c)})}});
+  }).catch(function(){status.textContent=words().unavailable;status.dataset.i18n="unavailable"});
+})();
+</script>
+</body></html>
