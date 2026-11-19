@@ -453,7 +453,8 @@ fed by the price band: the analysed assets and their live prices).
 `multi.html` (`/multi`): two or four analysis charts side by side (one under the other on phones), from "Multi view"
 under the analysis chart's title (that asset and the compared one, else BTC, on the same timeframe).
 
-- Each chart has its own asset (the analysed ones) and timeframe; changing either reloads that chart in place
+- Each chart has its own asset (the analysed ones) and timeframe (zones from the asset's "CZ" report for 1D / 1W and
+  "CZ_SHORT" for 1H / 4H, as on the analysis page); changing either reloads that chart in place
   (`LiveChart.reload(tf, { pair })`). Candles, the zones of the asset's Critical Zones report for that timeframe, the
   live price (dashed line and the price at the top, from the shared price stream) and "Analysis →" to that analysis.
   No indicators, to keep the small charts readable.
@@ -464,13 +465,20 @@ under the analysis chart's title (that asset and the compared one, else BTC, on 
 ## Quick comparison
 
 "Compare" next to "Indicators" on the analysis chart puts another analysed asset on the chart (the choice is kept in
-this browser, `mlm-compare-v1`, and applies to every asset but itself; "None" removes it):
+this browser, `mlm-compare-v1`, and applies to every asset but itself; "None" removes it). The menu is a searchable
+list (search box on top; Enter takes the first match; arrow keys move in the list), so it holds any number of assets.
+
+- **Zones** are off while comparing (the two price paths read more easily); "Show zones" in the menu turns them on;
+  choosing another asset turns them off again, and without a comparison they are always shown
+  (`setZonesVisible` in `assets/live-chart.js`: report zones, FVG, structure and Fibonacci bands, and their tooltip).
 
 - **Line** (light green) on the price pane: the other asset's closes on the same timeframe, scaled so that the line
   meets this asset's price at the last common candle; going back, the gap shows how differently the two moved. It
   does not take part in the price axis's autoscale, so the candles keep their scale (a line that ran far apart can
   leave the view). Under the legend: how much each moved over the visible range.
-- **Ratio pane** under the chart: this asset ÷ the other (e.g. ETH/BTC), close to close, with its own decimals.
+- **Ratio pane** under the chart, close to close, with its own decimals, quoted the usual way: in BTC when one of the
+  two is BTC, else in ETH, else this asset in the other (BTC chart compared with BNB → BNB/BTC; ETH with SOL →
+  SOL/ETH; SOL with XRP → SOL/XRP).
 - **Correlation** on the ratio pane: Pearson correlation of the two assets' candle-to-candle log returns over the last
   30 and 90 common candles of the timeframe shown.
 - Only candles both assets have are used (the other asset's files cover the same period as the chart's first load);

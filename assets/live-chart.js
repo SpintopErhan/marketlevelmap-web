@@ -415,7 +415,7 @@ var LiveChart = (function () {
       renderer: function () {
         return {
           draw: function (target) {
-            if (!self.chart || !self.series || !self.times.length) return;
+            if (!self.chart || !self.series || !self.times.length || self.hidden) return;
             var timeScale = self.chart.timeScale();
             target.useMediaCoordinateSpace(function (scope) {
               // Zones stop a few bars after the last closed candle instead of running to the price axis.
@@ -749,6 +749,7 @@ var LiveChart = (function () {
     }
     function showZoneTip(param) {
       if (!param || !param.point || (param.paneIndex != null && param.paneIndex !== 0)) { zoneTip.style.display = "none"; return; }
+      if (zones.hidden) { if (showEventTip(param)) return; zoneTip.style.display = "none"; return; }
       if (showEventTip(param)) return;
       zoneTip.style.whiteSpace = "nowrap"; zoneTip.style.maxWidth = "";
       // A tap can come without a time (touch); take it from the x position, and past the last candle use the last one.
@@ -967,7 +968,7 @@ var LiveChart = (function () {
     // pane of its own, and the correlation of their candle-to-candle returns over the last 30 and 90 candles.
     // Only candles both have are used. The line does not take part in the price axis's autoscale, so the candles keep
     // their scale. The page passes the other asset's live price (setCompareLive) for the forming candle.
-    var CMP_COLOR = "#c6f36b", cmp = null, cmpGen = 0;
+    var CMP_COLOR = "#c6f36b", QUOTES = ["BTC", "ETH"], cmp = null, cmpGen = 0;
     function cmpWords() {
       return document.documentElement.lang === "tr"
         ? { vs: "Karşılaştırma", range: "görünür aralıkta", corr: "Korelasyon", candles: "mum", wait: "yükleniyor…" }
@@ -1015,14 +1016,17 @@ var LiveChart = (function () {
       });
       cmpAligned = { t: t, a: a, b: b };
       if (!t.length) { indSeries.cmpLine.setData([]); indSeries.ratio.setData([]); cmpLabel.style.display = ratioLabel.style.display = "none"; return; }
+      // The ratio is quoted the usual way: in BTC when one of the two is BTC, else in ETH, else this asset in the other
+      // (BTC chart compared with BNB → BNB/BTC; ETH with SOL → SOL/ETH; SOL with XRP → SOL/XRP).
+      var rank = function (pair) { var i = QUOTES.indexOf(baseOf(pair)); return i < 0 ? 99 : i; }, flip = rank(state.pair) < rank(cmp.pair);
       var f = a[a.length - 1] / b[b.length - 1], line = [], ratio = [];
-      for (var i = 0; i < t.length; i++) { line.push({ time: t[i], value: b[i] * f }); ratio.push({ time: t[i], value: a[i] / b[i] }); }
+      for (var i = 0; i < t.length; i++) { line.push({ time: t[i], value: b[i] * f }); ratio.push({ time: t[i], value: flip ? b[i] / a[i] : a[i] / b[i] }); }
       indSeries.cmpLine.setData(line); indSeries.ratio.setData(ratio);
-      var last = a[a.length - 1] / b[b.length - 1], d = last >= 100 ? 2 : last >= 1 ? 4 : Math.min(8, Math.ceil(-Math.log10(last)) + 3);
+      var last = ratio[ratio.length - 1].value, d = last >= 100 ? 2 : last >= 1 ? 4 : Math.min(8, Math.ceil(-Math.log10(last)) + 3);
       // A formatter of its own: the chart-wide price formatter would print the ratio with this asset's few decimals.
       if (indSeries.ratio.__d !== d) { indSeries.ratio.__d = d; indSeries.ratio.applyOptions({ priceFormat: { type: "custom", minMove: Math.pow(10, -d), formatter: function (v) { return numFormat(pageLocale(), d).format(v); } } }); }
       var r30 = corrOf(a, b, 30), r90 = corrOf(a, b, 90), c2 = function (v) { return v == null ? "–" : numFormat(pageLocale(), 2).format(v); };
-      ratioLabel.textContent = baseOf(state.pair) + "/" + name + " " + numFormat(pageLocale(), d).format(last) + "  ·  " + w.corr + " (30 / 90 " + w.candles + "): " + c2(r30) + " / " + c2(r90);
+      ratioLabel.textContent = (flip ? name + "/" + baseOf(state.pair) : baseOf(state.pair) + "/" + name) + " " + numFormat(pageLocale(), d).format(last) + "  ·  " + w.corr + " (30 / 90 " + w.candles + "): " + c2(r30) + " / " + c2(r90);
       ratioLabel.style.display = "block";
       cmpVisible(); placeCmpLabels();
     }
@@ -1309,6 +1313,9 @@ var LiveChart = (function () {
         return loadCompare();
       },
       setCompareLive: function (price) { if (cmp && Number(price) > 0) { cmp.live = Number(price); if (forming) drawIndicatorsSoon(); } },
+      // Zone bands (report zones, FVG, structure, Fibonacci) shown or not; the page turns them off while comparing.
+      setZonesVisible: function (on) { zones.hidden = on === false; if (zones.hidden) hideZoneTip(); if (zones.requestUpdate) zones.requestUpdate(); },
+      zonesVisible: function () { return !zones.hidden; },
       compareInfo: function () { return cmp ? { pair: cmp.pair, loaded: !!cmp.map } : null; },
       setIndicators: function (prefs) {
         // EMA 20/50/200 stay on unless turned off explicitly.
