@@ -514,8 +514,10 @@ under the analysis chart's title (that asset and the compared one, else BTC, on 
 
 ## Quick comparison
 
-"Compare" next to "Indicators" on the analysis chart puts another analysed asset on the chart (the choice is kept in
-this browser, `mlm-compare-v1`, and applies to every asset but itself; "None" removes it). The menu is a searchable
+"Compare" next to "Indicators" on the analysis chart puts another analysed asset on the chart. The choice belongs to
+the asset it was made on (kept in this browser, `mlm-compare-v2`: `{ BTCUSDT: "ETHUSDT", … }`): BTC compared with
+ETH stays so whenever BTC is shown, and another asset (e.g. AVAX) shows no comparison until one is chosen there;
+"None" removes it for that asset. The menu is a searchable
 list (search box on top; Enter takes the first match; arrow keys move in the list), so it holds any number of assets.
 
 - **Zones** are off while comparing (the two price paths read more easily); "Show zones" in the menu turns them on;
