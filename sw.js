@@ -92,3 +92,21 @@ self.addEventListener("fetch", (event) => {
   if (request.mode === "navigate") return event.respondWith(networkFirst(event, CACHES.pages, OFFLINE));
   if (path.startsWith("/assets/") || path === "/manifest.webmanifest") return event.respondWith(staleWhileRevalidate(event, CACHES.assets));
 });
+
+// Alarm notifications (README "Alarms"): the alarm Worker sends { title, body, url, tag }; a click opens (or
+// focuses) that analysis.
+self.addEventListener("push", (event) => {
+  let d = {};
+  try { d = event.data ? event.data.json() : {}; } catch (error) { d = { body: event.data ? event.data.text() : "" }; }
+  event.waitUntil(self.registration.showNotification(d.title || "MarketLevelMap", {
+    body: d.body || "", icon: "/assets/icons/icon-192.png", tag: d.tag || undefined, renotify: !!d.tag, data: { url: d.url || "/" },
+  }));
+});
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = new URL((event.notification.data && event.notification.data.url) || "/", self.location.origin).href;
+  event.waitUntil(self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
+    for (const client of list) if (client.url === url && "focus" in client) return client.focus();
+    return self.clients.openWindow(url);
+  }));
+});
