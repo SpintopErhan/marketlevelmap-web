@@ -621,15 +621,13 @@ var LiveChart = (function () {
   function build(LC, container, state) {
     container.textContent = "";
     var decimals = state.decimals;
-    function localization() {
-      var locale = pageLocale();
-      return {
-        locale: locale,
-        priceFormatter: function (price) {
-          var d = decimals == null ? 2 : decimals;
-          return numFormat(locale, d).format(Number(price));
-        }
-      };
+    // Numbers on the price axes follow the page language. A chart-wide priceFormatter would also force the asset's
+    // decimals onto every pane (the comparison ratio needs its own), so each series gets a formatter of its own
+    // instead (addSeries below): the asset's decimals, as before, unless the series brings a custom one.
+    function localization() { return { locale: pageLocale() }; }
+    function localFormat(pf) {
+      var minMove = pf && pf.minMove != null ? pf.minMove : pf && pf.precision != null ? Math.pow(10, -pf.precision) : pf && pf.type === "volume" ? 1 : 0.01;
+      return { type: "custom", minMove: minMove, formatter: function (price) { return numFormat(pageLocale(), decimals == null ? 2 : decimals).format(Number(price)); } };
     }
     var chart = LC.createChart(container, {
       autoSize: true,
@@ -640,6 +638,12 @@ var LiveChart = (function () {
       crosshair: { mode: LC.CrosshairMode.Normal },
       localization: localization()
     });
+    var addSeriesRaw = chart.addSeries.bind(chart);
+    chart.addSeries = function (type, options, pane) {
+      options = Object.assign({}, options || {});
+      if (!options.priceFormat || options.priceFormat.type !== "custom") options.priceFormat = localFormat(options.priceFormat);
+      return addSeriesRaw(type, options, pane);
+    };
     var candles = chart.addSeries(LC.CandlestickSeries, {
       upColor: "#55d99c", downColor: "#ef6e76", borderVisible: false, wickUpColor: "#55d99c", wickDownColor: "#ef6e76",
       priceLineVisible: false
@@ -671,6 +675,7 @@ var LiveChart = (function () {
         for (var p = 2; p < panes.length; p++) panes[p].setStretchFactor(IND_PANE);
       }
       sizeWatermark();
+      if (typeof placeCmpLabels === "function" && cmp) requestAnimationFrame(placeCmpLabels);
     }
     sizePanes();
     // The stylesheet sets the chart's height; indicator panes are added below it, so it is measured again
@@ -782,6 +787,13 @@ var LiveChart = (function () {
     legend.style.cssText = "position:absolute;left:8px;top:6px;z-index:5;pointer-events:none;display:flex;flex-wrap:wrap;gap:2px 10px;max-width:calc(100% - 90px);" +
       "font:500 11.5px " + WATERMARK_FONT + ";color:#8f9aab;font-variant-numeric:tabular-nums;text-shadow:0 0 3px #101820,0 0 3px #101820";
     container.appendChild(legend);
+    // Quick comparison labels (README "Quick comparison"): under the legend on the price pane, and on the ratio pane.
+    var cmpLabel = document.createElement("div"), ratioLabel = document.createElement("div");
+    [cmpLabel, ratioLabel].forEach(function (el) {
+      el.style.cssText = "position:absolute;left:8px;z-index:5;pointer-events:none;display:none;max-width:calc(100% - 90px);font:500 11.5px " + WATERMARK_FONT +
+        ";color:#8f9aab;font-variant-numeric:tabular-nums;text-shadow:0 0 3px #101820,0 0 3px #101820";
+      container.appendChild(el);
+    });
     var LEGEND_WORDS = { en: { o: "O", h: "H", l: "L", c: "C", v: "Vol" }, tr: { o: "A", h: "Y", l: "D", c: "K", v: "Hacim" } };
     function legendDate(sec) {
       var intraday = state.tf === "1h" || state.tf === "4h", o = { timeZone: "UTC", day: "numeric", month: "short", year: "numeric" };
@@ -839,7 +851,7 @@ var LiveChart = (function () {
 
     function applyPrecision() {
       if (decimals == null) return;
-      var format = { type: "price", precision: decimals, minMove: Math.pow(10, -decimals) };
+      var format = localFormat({ minMove: Math.pow(10, -decimals) });
       chart.applyOptions({ localization: localization() });
       candles.applyOptions({ priceFormat: format });
       emas.forEach(function (s) { s.applyOptions({ priceFormat: format }); });
@@ -899,6 +911,7 @@ var LiveChart = (function () {
       vwapLine.set(vw);
       if (indSeries.srsiK) { indSeries.srsiK.setData(points(x.srsiK, warm)); indSeries.srsiD.setData(points(x.srsiD, warm)); }
       if (indSeries.obv) indSeries.obv.setData(points(x.obv, 1));
+      drawCompare(rows);
     }
     function layoutIndicators() {
       Object.keys(indSeries).forEach(function (key) { chart.removeSeries(indSeries[key]); });
@@ -934,15 +947,112 @@ var LiveChart = (function () {
         pane++;
       }
       if (indPrefs.obv) indSeries.obv = chart.addSeries(LC.LineSeries, line("#e7d98c", { lineWidth: 1.5, lastValueVisible: true, title: "OBV", priceFormat: { type: "volume" } }), pane++);
+      if (cmp) {
+        indSeries.cmpLine = chart.addSeries(LC.LineSeries, line(CMP_COLOR, Object.assign({ lineWidth: 1.5, autoscaleInfoProvider: function () { return null; } }, priceFormat ? { priceFormat: priceFormat } : {})), 0);
+        indSeries.ratio = chart.addSeries(LC.LineSeries, line(CMP_COLOR, { lineWidth: 1.5, lastValueVisible: true }), pane++);
+      }
       // The chart grows by one pane height for each indicator pane, so the candles keep their room.
       indPaneCount = pane - 2;
       fitHeight();
       drawIndicators();
       drawDivergences();
+      requestAnimationFrame(placeCmpLabels);
     }
 
     // Divergences (README "Indicator summary"): a dashed line between the two swing points on the candles and, when
     // that pane is open, between the same two points on the RSI or MACD line. Green: positive, red: negative.
+    // ---- Quick comparison (README "Quick comparison") ----
+    // Another analysed asset on the same timeframe: its closes as a line on the price pane, scaled so that it meets this
+    // asset's price at the last common candle (how far apart they ran shows going back), its ratio (this / other) in a
+    // pane of its own, and the correlation of their candle-to-candle returns over the last 30 and 90 candles.
+    // Only candles both have are used. The line does not take part in the price axis's autoscale, so the candles keep
+    // their scale. The page passes the other asset's live price (setCompareLive) for the forming candle.
+    var CMP_COLOR = "#c6f36b", cmp = null, cmpGen = 0;
+    function cmpWords() {
+      return document.documentElement.lang === "tr"
+        ? { vs: "Karşılaştırma", range: "görünür aralıkta", corr: "Korelasyon", candles: "mum", wait: "yükleniyor…" }
+        : { vs: "Comparison", range: "over the visible range", corr: "Correlation", candles: "candles", wait: "loading…" };
+    }
+    function baseOf(pair) { return String(pair).replace(/(USDT|USDC|FDUSD|BUSD|USD|TRY|EUR)$/, "") || pair; }
+    function loadCompare() {
+      var my = ++cmpGen;
+      if (!cmp || cmp.pair === state.pair) { cmp = null; layoutIndicators(); return Promise.resolve(); }
+      var pair = cmp.pair, tf = state.tf;
+      cmp.map = null; cmp.tf = tf; layoutIndicators();
+      return loadIndex().then(function (index) {
+        var entry = index.pairs && index.pairs[pair] && index.pairs[pair][tf];
+        if (!entry) throw new Error("no candles for " + pair + " " + tf);
+        var archives = (entry.archives || []).slice(), names = (MONTHLY[tf] ? archives.slice(-PAGE) : archives).concat(["latest"]);
+        return loadPeriods(pair, tf, names);
+      }).then(function (files) {
+        if (destroyed || my !== cmpGen || !cmp || cmp.pair !== pair || state.tf !== tf) return;
+        var map = {}; mergeRows([], files).forEach(function (r) { map[r[0]] = Number(r[4]); });
+        cmp.map = map; layoutIndicators();
+      }).catch(function () { if (!destroyed && my === cmpGen && cmp && cmp.pair === pair) { cmp.map = {}; layoutIndicators(); } });
+    }
+    function pctText(r) {
+      var v = numFormat(pageLocale(), 2).format(Math.abs(r * 100)), sg = r > 0 ? "+" : r < 0 ? "−" : "";
+      return sg + (pageLocale() === "tr-TR" ? "%" + v : v + "%");
+    }
+    function corrOf(a, b, n) {
+      var x = [], y = [];
+      for (var i = Math.max(1, a.length - n); i < a.length; i++) { x.push(Math.log(a[i] / a[i - 1])); y.push(Math.log(b[i] / b[i - 1])); }
+      if (x.length < n) return null;
+      var mx = 0, my = 0; x.forEach(function (v, i) { mx += v; my += y[i]; }); mx /= x.length; my /= y.length;
+      var sxy = 0, sxx = 0, syy = 0; x.forEach(function (v, i) { var dx = v - mx, dy = y[i] - my; sxy += dx * dy; sxx += dx * dx; syy += dy * dy; });
+      return sxx > 0 && syy > 0 ? sxy / Math.sqrt(sxx * syy) : null;
+    }
+    var cmpAligned = null;
+    function drawCompare(rows) {
+      if (!cmp || !indSeries.cmpLine) { cmpAligned = null; cmpLabel.style.display = ratioLabel.style.display = "none"; return; }
+      var w = cmpWords(), name = baseOf(cmp.pair);
+      if (!cmp.map) { cmpLabel.textContent = w.vs + ": " + name + " · " + w.wait; cmpLabel.style.display = "block"; ratioLabel.style.display = "none"; return; }
+      var t = [], a = [], b = [];
+      rows.forEach(function (r, i) {
+        var other = cmp.map[r[0]];
+        if (other == null && forming && i === rows.length - 1 && r === forming && cmp.live > 0) other = cmp.live;
+        if (other > 0 && r[4] > 0) { t.push(r[0]); a.push(r[4]); b.push(other); }
+      });
+      cmpAligned = { t: t, a: a, b: b };
+      if (!t.length) { indSeries.cmpLine.setData([]); indSeries.ratio.setData([]); cmpLabel.style.display = ratioLabel.style.display = "none"; return; }
+      var f = a[a.length - 1] / b[b.length - 1], line = [], ratio = [];
+      for (var i = 0; i < t.length; i++) { line.push({ time: t[i], value: b[i] * f }); ratio.push({ time: t[i], value: a[i] / b[i] }); }
+      indSeries.cmpLine.setData(line); indSeries.ratio.setData(ratio);
+      var last = a[a.length - 1] / b[b.length - 1], d = last >= 100 ? 2 : last >= 1 ? 4 : Math.min(8, Math.ceil(-Math.log10(last)) + 3);
+      // A formatter of its own: the chart-wide price formatter would print the ratio with this asset's few decimals.
+      if (indSeries.ratio.__d !== d) { indSeries.ratio.__d = d; indSeries.ratio.applyOptions({ priceFormat: { type: "custom", minMove: Math.pow(10, -d), formatter: function (v) { return numFormat(pageLocale(), d).format(v); } } }); }
+      var r30 = corrOf(a, b, 30), r90 = corrOf(a, b, 90), c2 = function (v) { return v == null ? "–" : numFormat(pageLocale(), 2).format(v); };
+      ratioLabel.textContent = baseOf(state.pair) + "/" + name + " " + numFormat(pageLocale(), d).format(last) + "  ·  " + w.corr + " (30 / 90 " + w.candles + "): " + c2(r30) + " / " + c2(r90);
+      ratioLabel.style.display = "block";
+      cmpVisible(); placeCmpLabels();
+    }
+    // The comparison label: how each asset moved over the visible range (first visible common candle → last one).
+    function cmpVisible() {
+      if (!cmp || !cmpAligned || !cmpAligned.t.length) return;
+      var r = chart.timeScale().getVisibleRange(), t = cmpAligned.t, i0 = 0, i1 = t.length - 1;
+      if (r && typeof r.from === "number") { while (i0 < t.length - 1 && t[i0] < r.from) i0++; while (i1 > i0 && t[i1] > r.to) i1--; }
+      var A = cmpAligned.a, B = cmpAligned.b, w = cmpWords();
+      cmpLabel.innerHTML = "";
+      var head = document.createElement("span"); head.textContent = w.vs + ": "; cmpLabel.appendChild(head);
+      var nm = document.createElement("b"); nm.style.color = CMP_COLOR; nm.style.fontWeight = "600"; nm.textContent = baseOf(cmp.pair); cmpLabel.appendChild(nm);
+      var add = function (sep, label, ratio) { var s = document.createElement("span"); s.textContent = sep + label + " "; var v = document.createElement("b"); v.style.fontWeight = "600"; v.style.color = ratio >= 0 ? "#55d99c" : "#ef6e76"; v.textContent = pctText(ratio); s.appendChild(v); cmpLabel.appendChild(s); };
+      var tail = document.createElement("span"); tail.textContent = " · " + w.range + ":"; cmpLabel.appendChild(tail);
+      add(" ", baseOf(state.pair), A[i1] / A[i0] - 1); add(" · ", baseOf(cmp.pair), B[i1] / B[i0] - 1);
+      cmpLabel.style.display = "block";
+      placeCmpLabels();
+    }
+    function placeCmpLabels() {
+      // Under the legend, right of the drawing toolbar when there is one.
+      var bar = container.querySelector(".cd-bar");
+      cmpLabel.style.top = (legend.offsetHeight + 8) + "px";
+      cmpLabel.style.left = (bar && bar.offsetParent ? bar.offsetLeft + bar.offsetWidth + 8 : 8) + "px";
+      if (!indSeries.ratio) return;
+      var panes = chart.panes(), idx = indSeries.ratio.getPane().paneIndex(), top = 0;
+      for (var p = 0; p < idx; p++) top += panes[p].getHeight() + 1;
+      ratioLabel.style.top = (top + 4) + "px";
+    }
+    chart.timeScale().subscribeVisibleLogicalRangeChange(function () { if (cmp && cmpAligned) cmpVisible(); });
+
     var divList = [], divShown = true, divSeries = [];
     function drawDivergences() {
       divSeries.forEach(function (sr) { try { chart.removeSeries(sr); } catch (e) {} }); divSeries = [];
@@ -1191,6 +1301,15 @@ var LiveChart = (function () {
       setDivergences: function (list, shown) { divList = list || []; divShown = shown !== false; drawDivergences(); },
       // Bollinger, Supertrend, Parabolic SAR, Ichimoku and VWAP (price pane); RSI, Stochastic RSI, MACD and OBV
       // (panes under the volume, in that order): { bb, st, psar, ichi, vwap, rsi, srsi, macd, obv } booleans.
+      // Quick comparison: another pair (null to remove), its live price for the forming candle, and what is shown.
+      setCompare: function (pair) {
+        pair = pair ? String(pair).toUpperCase() : null;
+        if (destroyed || (cmp ? cmp.pair : null) === pair) return Promise.resolve();
+        cmp = pair && pair !== state.pair ? { pair: pair, map: null, live: null } : null;
+        return loadCompare();
+      },
+      setCompareLive: function (price) { if (cmp && Number(price) > 0) { cmp.live = Number(price); if (forming) drawIndicatorsSoon(); } },
+      compareInfo: function () { return cmp ? { pair: cmp.pair, loaded: !!cmp.map } : null; },
       setIndicators: function (prefs) {
         // EMA 20/50/200 stay on unless turned off explicitly.
         var showEma = !(prefs && prefs.ema === false);
@@ -1297,7 +1416,7 @@ var LiveChart = (function () {
         if (!liveLine) liveLine = candles.createPriceLine({ price: p, color: "#f0c040", lineWidth: 1, lineStyle: LC.LineStyle.Dashed, axisLabelVisible: true, title: "" });
         else liveLine.applyOptions({ price: p });
       },
-      setLocale: function () { if (!destroyed) chart.applyOptions({ localization: localization() }); },
+      setLocale: function () { if (!destroyed) { chart.applyOptions({ localization: localization() }); if (cmp) drawIndicators(); } },
       // Change timeframe without tearing the chart down. 1H in particular is a lot of candles;
       // rebuilding the widget blanked the panel and redrew it.
       // Also another asset in the same chart (opts.pair, with opts.decimalsFor for its price-axis decimals): the analysis
@@ -1345,6 +1464,7 @@ var LiveChart = (function () {
             touched = false;
             setData();
             initialView();
+            if (cmp) loadCompare();
             fillTail().then(function () {
               if (destroyed || epoch !== generation) return;
               initialView();
