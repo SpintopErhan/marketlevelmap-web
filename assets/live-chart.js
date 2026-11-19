@@ -971,8 +971,8 @@ var LiveChart = (function () {
     // Divergences (README "Indicator summary"): a dashed line between the two swing points on the candles and, when
     // that pane is open, between the same two points on the RSI or MACD line. Green: positive, red: negative.
     // ---- Quick comparison (README "Quick comparison") ----
-    // Another analysed asset on the same timeframe: its closes as a line on the price pane, scaled so that it meets this
-    // asset's price at the last common candle (how far apart they ran shows going back), its ratio (this / other) in a
+    // Another analysed asset on the same timeframe: its closes as a line on the price pane that starts on this asset's
+    // close at the left edge of the view and follows the other asset's moves from there (see cmpRescale), its ratio in a
     // pane of its own, and the correlation of their candle-to-candle returns over the last 30 and 90 candles.
     // Only candles both have are used. The line does not take part in the price axis's autoscale, so the candles keep
     // their scale. The page passes the other asset's live price (setCompareLive) for the forming candle.
@@ -1011,7 +1011,31 @@ var LiveChart = (function () {
       var sxy = 0, sxx = 0, syy = 0; x.forEach(function (v, i) { var dx = v - mx, dy = y[i] - my; sxy += dx * dy; sxx += dx * dx; syy += dy * dy; });
       return sxx > 0 && syy > 0 ? sxy / Math.sqrt(sxx * syy) : null;
     }
-    var cmpAligned = null;
+    var cmpAligned = null, cmpAnchor = "", cmpFrame = 0;
+    // The line starts where the visible range starts (TradingView's "same % scale", on this chart's price axis): at
+    // the first visible common candle it equals this asset's close, and from there it moves by the other asset's
+    // percentage changes. Above the candles: the other asset did better since the left edge; below: worse. Scrolling
+    // or zooming moves the starting point to the new left edge (redrawn once per frame at most).
+    // Index range of the common candles on screen: [first visible, last visible].
+    function cmpSpan() {
+      var t = cmpAligned.t, r = chart.timeScale().getVisibleRange(), n = t.length;
+      if (!r || typeof r.from !== "number") return [0, n - 1];
+      var lo = 0, hi = n; while (lo < hi) { var m = (lo + hi) >> 1; if (t[m] < r.from) lo = m + 1; else hi = m; }
+      var i0 = Math.min(lo, n - 1); lo = i0; hi = n;
+      while (lo < hi) { var k = (lo + hi) >> 1; if (t[k] <= r.to) lo = k + 1; else hi = k; }
+      return [i0, Math.max(i0, lo - 1)];
+    }
+    // Only the candles on screen are drawn (a frame stays cheap while scrolling); redrawn when the view's first or last
+    // common candle changes.
+    function cmpRescale() {
+      if (!cmp || !cmpAligned || !cmpAligned.t.length || !indSeries.cmpLine) return;
+      var span = cmpSpan(), key = span[0] + ":" + span[1];
+      if (key === cmpAnchor) return;
+      cmpAnchor = key;
+      var t = cmpAligned.t, a = cmpAligned.a, b = cmpAligned.b, i0 = span[0], f = a[i0] / b[i0], line = [];
+      for (var i = i0; i <= span[1]; i++) line.push({ time: t[i], value: b[i] * f });
+      indSeries.cmpLine.setData(line);
+    }
     function drawCompare(rows) {
       if (!cmp || !indSeries.cmpLine) { cmpAligned = null; cmpLabel.style.display = ratioLabel.style.display = "none"; return; }
       var w = cmpWords(), name = baseOf(cmp.pair);
@@ -1027,9 +1051,10 @@ var LiveChart = (function () {
       // The ratio is quoted the usual way: in BTC when one of the two is BTC, else in ETH, else this asset in the other
       // (BTC chart compared with BNB → BNB/BTC; ETH with SOL → SOL/ETH; SOL with XRP → SOL/XRP).
       var rank = function (pair) { var i = QUOTES.indexOf(baseOf(pair)); return i < 0 ? 99 : i; }, flip = rank(state.pair) < rank(cmp.pair);
-      var f = a[a.length - 1] / b[b.length - 1], line = [], ratio = [];
-      for (var i = 0; i < t.length; i++) { line.push({ time: t[i], value: b[i] * f }); ratio.push({ time: t[i], value: flip ? b[i] / a[i] : a[i] / b[i] }); }
-      indSeries.cmpLine.setData(line); indSeries.ratio.setData(ratio);
+      var ratio = [];
+      for (var i = 0; i < t.length; i++) ratio.push({ time: t[i], value: flip ? b[i] / a[i] : a[i] / b[i] });
+      indSeries.ratio.setData(ratio);
+      cmpAnchor = ""; cmpRescale();
       var last = ratio[ratio.length - 1].value, d = last >= 100 ? 2 : last >= 1 ? 4 : Math.min(8, Math.ceil(-Math.log10(last)) + 3);
       // A formatter of its own: the chart-wide price formatter would print the ratio with this asset's few decimals.
       if (indSeries.ratio.__d !== d) { indSeries.ratio.__d = d; indSeries.ratio.applyOptions({ priceFormat: { type: "custom", minMove: Math.pow(10, -d), formatter: function (v) { return numFormat(pageLocale(), d).format(v); } } }); }
@@ -1063,7 +1088,10 @@ var LiveChart = (function () {
       for (var p = 0; p < idx; p++) top += panes[p].getHeight() + 1;
       ratioLabel.style.top = (top + 4) + "px";
     }
-    chart.timeScale().subscribeVisibleLogicalRangeChange(function () { if (cmp && cmpAligned) cmpVisible(); });
+    chart.timeScale().subscribeVisibleLogicalRangeChange(function () {
+      if (!cmp || !cmpAligned || cmpFrame) return;
+      cmpFrame = requestAnimationFrame(function () { cmpFrame = 0; if (destroyed || !cmp || !cmpAligned) return; cmpRescale(); cmpVisible(); });
+    });
 
     var divList = [], divShown = true, divSeries = [];
     function drawDivergences() {

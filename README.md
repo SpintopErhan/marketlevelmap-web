@@ -524,10 +524,14 @@ list (search box on top; Enter takes the first match; arrow keys move in the lis
   choosing another asset turns them off again, and without a comparison they are always shown
   (`setZonesVisible` in `assets/live-chart.js`: report zones, FVG, structure and Fibonacci bands, and their tooltip).
 
-- **Line** (light green) on the price pane: the other asset's closes on the same timeframe, scaled so that the line
-  meets this asset's price at the last common candle; going back, the gap shows how differently the two moved. It
-  does not take part in the price axis's autoscale, so the candles keep their scale (a line that ran far apart can
-  leave the view). Under the legend: how much each moved over the visible range.
+- **Line** (light green) on the price pane, as TradingView's "same % scale" but on this chart's price axis: at the first
+  visible common candle (the left edge of the view) it equals this asset's close, and from there it moves by the other
+  asset's percentage changes. Reading left to right: the line above the candles means the other asset did better
+  since the left edge, below means worse; at the right edge the gap is the two moves over the visible range, the same
+  numbers as the label under the legend ("over the visible range: ETH +37.19% · BTC +14.52%"). Scrolling or zooming
+  moves the start to the new left edge (redrawn at most once a frame, only the candles on screen, so scrolling stays
+  smooth). The line does not take part in the price axis's autoscale, so the candles keep their scale (a line that ran
+  far apart can leave the view).
 - **Ratio pane** under the chart, close to close, with its own decimals, quoted the usual way: in BTC when one of the
   two is BTC, else in ETH, else this asset in the other (BTC chart compared with BNB → BNB/BTC; ETH with SOL →
   SOL/ETH; SOL with XRP → SOL/XRP).
