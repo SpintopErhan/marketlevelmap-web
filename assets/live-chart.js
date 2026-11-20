@@ -1367,6 +1367,7 @@ var LiveChart = (function () {
       drawHost: function () {
         return { chart: chart, series: candles, container: container, times: times,
           step: function () { return STEP[state.tf]; }, key: function () { return state.pair + ":" + state.tf; },
+          pair: function () { return state.pair; }, rows: allRows,
           alive: function () { return !destroyed; } };
       },
       // Economic events: [{ time (seconds), title, country, impact: VERY_HIGH|HIGH|MEDIUM, dateOnly }]; [] hides them.

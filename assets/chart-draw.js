@@ -1,17 +1,19 @@
-/* Drawing tools on the analysis chart (README "Chart drawing tools"): trend line, horizontal line, box, arrow and
-   text, with select / move, eraser, colour, hide, undo and clear. Members only and desktop only (the page decides and
-   calls MLMDraw.attach / detach). Drawings are kept in this browser only (localStorage "mlm-draw:<PAIR>:<tf>"); nothing
-   goes to the server. Points are stored as (time in seconds, price), so they stay on their candles when the chart
+/* Drawing tools on the analysis chart (README "Chart drawing tools"): trend line, horizontal line, box, arrow, text
+   and the fixed range volume profile, with select / move, eraser, colour, hide, undo and clear. Members only and
+   desktop only (the page decides and calls MLMDraw.attach / detach). Drawings are kept in this browser
+   (localStorage "mlm-draw:<PAIR>:<tf>") and with the member's account (/api/auth/drawings). Points are stored as (time in seconds, price), so they stay on their candles when the chart
    scrolls, zooms, loads older candles or gets new ones; past the last candle the time runs on in candle steps.
    They are drawn by a series primitive on the price pane, so the chart's own screenshot (download, share) carries them. */
 (function () {
   "use strict";
   var COLORS = ["#f2c94c", "#6fb5ff", "#55d99c", "#ef6e76", "#e8ecf3"];
   var WORDS = {
-    en: { measure: "Measure (price, %, candles, time)", d: "d", h: "h", m: "m", bars: "candles", select: "Select and move", trend: "Trend line", hline: "Horizontal line", rect: "Box", arrow: "Arrow", text: "Text",
+    en: { measure: "Measure (price, %, candles, time)", d: "d", h: "h", m: "m", bars: "candles", select: "Select and move",
+      vp: "Volume profile of a range", vpTotal: "Volume", vpBuy: "buy", vpLoading: "Volume profile loading…", vpFail: "Volume data could not be loaded", vpApprox: "approx.", trend: "Trend line", hline: "Horizontal line", rect: "Box", arrow: "Arrow", text: "Text",
       erase: "Eraser", color: "Colour", hide: "Hide drawings", show: "Show drawings", undo: "Undo (Ctrl+Z)", clear: "Delete all drawings",
       clearAsk: "Delete all drawings on this chart?", textPh: "Text, then Enter" },
-    tr: { measure: "Ölç (fiyat, %, mum, süre)", d: "g", h: "sa", m: "dk", bars: "mum", select: "Seç ve taşı", trend: "Trend çizgisi", hline: "Yatay çizgi", rect: "Kutu", arrow: "Ok", text: "Yazı",
+    tr: { measure: "Ölç (fiyat, %, mum, süre)", d: "g", h: "sa", m: "dk", bars: "mum", select: "Seç ve taşı",
+      vp: "Aralığın hacim profili", vpTotal: "Hacim", vpBuy: "alış", vpLoading: "Hacim profili yükleniyor…", vpFail: "Hacim verisi alınamadı", vpApprox: "yaklaşık", trend: "Trend çizgisi", hline: "Yatay çizgi", rect: "Kutu", arrow: "Ok", text: "Yazı",
       erase: "Silgi", color: "Renk", hide: "Çizimleri gizle", show: "Çizimleri göster", undo: "Geri al (Ctrl+Z)", clear: "Tüm çizimleri sil",
       clearAsk: "Bu grafikteki tüm çizimler silinsin mi?", textPh: "Yazı, sonra Enter" }
   };
@@ -24,6 +26,7 @@
     text: '<path d="M5 6h14M12 6v13M9 19h6"/>',
     erase: '<path d="M8 20h12M5 15l8-9 6 6-8 8H8z"/>',
     measure: '<path d="M4 16L16 4l4 4L8 20zM8 12l2 2M11 9l2 2M14 6l2 2"/>',
+    vp: '<path d="M4 3v18M4 6h7M4 9.5h11M4 13h16M4 16.5h9M4 20h5"/>',
     hide: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
     undo: '<path d="M9 7L4 12l5 5M4 12h11a5 5 0 0 1 0 10h-2"/>',
     clear: '<path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/>'
@@ -156,6 +159,7 @@
   }
   function paint(ctx, d, width, sel) {
     if (d.type === "measure") { paintMeasure(ctx, d); return; }
+    if (d.type === "vp") { paintProfile(ctx, d, width, sel); return; }
     var a = toXY(d.a), b = d.b ? toXY(d.b) : null;
     if (!a || (d.b && !b)) return;
     ctx.strokeStyle = d.color; ctx.fillStyle = d.color; ctx.lineWidth = sel ? 2.5 : 2; ctx.setLineDash([]);
@@ -188,6 +192,7 @@
     });
   }
   function handles(d) {
+    if (d.type === "vp") return profileHandles(d);
     var a = toXY(d.a), b = d.b ? toXY(d.b) : null;
     if (!a) return [];
     if (d.type === "hline") return [{ x: Math.max(30, Math.min(a.x, host.chart.timeScale().width() - 30)), y: a.y, which: "a" }];
@@ -220,12 +225,185 @@
   };
   function redraw() { if (prim && prim.requestUpdate) prim.requestUpdate(); }
 
+  // ---- fixed range volume profile (README "Chart drawing tools") ----
+  // A "vp" drawing keeps two points like a box, but only their times count: the range runs from the candle under A
+  // to the candle under B. Its volume per price comes from smaller Binance candles of that range (1m for short ranges,
+  // up to 1w for long ones, at most PROFILE_PAGES requests of 1000), fetched in this browser and kept in memory; each
+  // candle's dollar volume (quote volume) is spread evenly over its low–high span, and its taker buy share splits every
+  // row into buy and sell. If Binance cannot be reached, the chart's own candles are used (no buy/sell split; marked
+  // "approx."). Nothing is stored except the two points.
+  var PROFILE_ROWS = 40, PROFILE_PAGES = 3, PROFILE_REST = "https://data-api.binance.vision/api/v3/klines";
+  var INTERVALS = [["1m", 60], ["3m", 180], ["5m", 300], ["15m", 900], ["30m", 1800], ["1h", 3600], ["2h", 7200], ["4h", 14400],
+    ["6h", 21600], ["12h", 43200], ["1d", 86400], ["1w", 604800]];
+  var profileCache = {};
+  // The range in candle open times: [start, end) from the chart candle under the earlier point to the end of the
+  // candle under the later one (logical indices are rounded, so a point between candles takes the nearer one).
+  function profileRange(d) {
+    var T = host.times(), n = T.length, step = host.step();
+    if (!n) return null;
+    var la = timeToLogical(Math.min(d.a.t, d.b.t)), lb = timeToLogical(Math.max(d.a.t, d.b.t));
+    if (la == null || lb == null) return null;
+    var i0 = Math.round(la), i1 = Math.round(lb);
+    if (i1 < 0 || i0 > n - 1) return { i0: i0, i1: i1, empty: true };
+    i0 = Math.max(0, i0); i1 = Math.min(n - 1, i1);
+    return { i0: i0, i1: i1, start: T[i0], end: T[i1] + step };
+  }
+  function pickInterval(span) {
+    for (var i = 0; i < INTERVALS.length; i++) if (span / INTERVALS[i][1] <= PROFILE_PAGES * 1000) return INTERVALS[i];
+    return INTERVALS[INTERVALS.length - 1];
+  }
+  // Candles of the range as [low, high, dollar volume, taker buy dollar volume or null].
+  function fetchCandles(pair, iv, start, end) {
+    var out = [], pages = 0;
+    function next(from) {
+      pages++;
+      var url = PROFILE_REST + "?symbol=" + pair + "&interval=" + iv[0] + "&startTime=" + from * 1000 + "&endTime=" + (end * 1000 - 1) + "&limit=1000";
+      return fetch(url, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (k) {
+        if (!Array.isArray(k)) throw new Error("bad answer");
+        k.forEach(function (c) { var t = c[0] / 1000; if (t >= start && t < end) out.push([+c[3], +c[2], +c[7], +c[10]]); });
+        if (k.length === 1000 && pages < PROFILE_PAGES) return next(k[k.length - 1][0] / 1000 + iv[1]);
+        return out;
+      });
+    }
+    return next(start);
+  }
+  // The chart's own candles of the range (when Binance cannot be reached): dollar volume = coin volume × close.
+  // Candle list indices match host.times() (the forming candle, if any, comes after them).
+  function chartCandles(range) {
+    var rows = host.rows ? host.rows() : [], out = [];
+    for (var j = range.i0; j <= Math.min(range.i1, rows.length - 1); j++) { var r = rows[j]; out.push([r[3], r[2], r[5] * r[4], null]); }
+    return out;
+  }
+  function binProfile(cs, approx) {
+    if (!cs.length) return null;
+    var lo = Infinity, hi = -Infinity;
+    cs.forEach(function (c) { if (c[0] < lo) lo = c[0]; if (c[1] > hi) hi = c[1]; });
+    var n = hi > lo ? PROFILE_ROWS : 1, size = hi > lo ? (hi - lo) / n : 1, vol = [], buy = [], total = 0, buyTotal = 0, split = cs.every(function (c) { return c[3] != null; });
+    for (var i = 0; i < n; i++) { vol.push(0); buy.push(0); }
+    cs.forEach(function (c) {
+      var v = c[2], b = c[3] || 0; if (!(v > 0)) return;
+      total += v; buyTotal += b;
+      var r0 = Math.min(n - 1, Math.floor((c[0] - lo) / size)), r1 = Math.min(n - 1, Math.floor((c[1] - lo) / size));
+      if (c[1] <= c[0] || r0 === r1) { vol[r0] += v; buy[r0] += b; return; }
+      for (var r = r0; r <= r1; r++) {
+        var a = Math.max(c[0], lo + r * size), z = Math.min(c[1], lo + (r + 1) * size), f = Math.max(0, z - a) / (c[1] - c[0]);
+        vol[r] += v * f; buy[r] += b * f;
+      }
+    });
+    if (!(total > 0)) return null;
+    var poc = 0; for (i = 1; i < n; i++) if (vol[i] > vol[poc]) poc = i;
+    // Value area: from the busiest row outwards, the larger neighbour first, until 70% of the volume.
+    var vaLo = poc, vaHi = poc, inVa = vol[poc];
+    while (inVa < total * 0.7 && (vaLo > 0 || vaHi < n - 1)) {
+      var down = vaLo > 0 ? vol[vaLo - 1] : -1, up = vaHi < n - 1 ? vol[vaHi + 1] : -1;
+      if (up >= down) { vaHi++; inVa += vol[vaHi]; } else { vaLo--; inVa += vol[vaLo]; }
+    }
+    return { lo: lo, size: size, n: n, vol: vol, buy: split ? buy : null, total: total, buyShare: split ? buyTotal / total : null,
+      poc: poc, vaLo: vaLo, vaHi: vaHi, approx: !!approx };
+  }
+  // The profile of a drawing: from memory, or starts loading it (not while the drawing is being dragged).
+  function profileOf(d, range) {
+    var pair = host.pair ? host.pair() : null; if (!pair) return { state: "fail" };
+    var iv = pickInterval(range.end - range.start), k = pair + "|" + iv[0] + "|" + range.start + "|" + range.end, c = profileCache[k];
+    // A range that reaches the forming candle is refreshed after a minute.
+    var live = range.end * 1000 > Date.now() - iv[1] * 1000;
+    if (c && (c.state === "loading" || !live || Date.now() - c.at < 60000)) return c.prof ? c : (c.stale || c);
+    if (drag && drag.d === d) return c || { state: "loading" };
+    var keep = c && c.prof ? c : null;
+    c = profileCache[k] = { state: "loading", at: Date.now(), stale: keep };
+    var approx = false;
+    fetchCandles(pair, iv, range.start, range.end)
+      .then(function (cs) { return cs; }, function () { return []; })
+      .then(function (cs) {
+        if (!cs.length) { approx = true; cs = chartCandles(range); }
+        var prof = binProfile(cs, approx);
+        profileCache[k] = { state: prof ? "ok" : "fail", at: Date.now(), prof: prof }; redraw();
+      });
+    return keep || c;
+  }
+  function compactUsd(v) {
+    var tr = lang() === "tr", units = tr ? [[1e9, " Mr"], [1e6, " Mn"], [1e3, " B"]] : [[1e9, "B"], [1e6, "M"], [1e3, "K"]];
+    for (var i = 0; i < units.length; i++) if (v >= units[i][0]) { var s = numFormat(tr ? "tr-TR" : "en-US", v / units[i][0] >= 100 ? 0 : 1).format(v / units[i][0]) + units[i][1]; return tr ? s + " $" : "$" + s; }
+    return tr ? numFormat("tr-TR", 0).format(v) + " $" : "$" + numFormat("en-US", 0).format(v);
+  }
+  // Screen box of a profile: range edges x0–x1, bars up to x2, rows from yTop to yBot (null when off the data).
+  function profileBox(d) {
+    var range = profileRange(d); if (!range || range.empty) return null;
+    // Candle edges: the centre of the first and last candle, half a candle out (logicalToCoordinate takes whole
+    // indices only; a half index came back as 0).
+    var ts = host.chart.timeScale(), c0 = ts.logicalToCoordinate(range.i0), c1 = ts.logicalToCoordinate(range.i1);
+    if (c0 == null || c1 == null) return null;
+    var half = (ts.options().barSpacing || 6) / 2, x0 = c0 - half, x1 = c1 + half;
+    var c = d === pending ? null : profileOf(d, range), prof = c && c.prof;
+    var maxW = Math.max(70, Math.min(x1 - x0, 360)), yTop, yBot;
+    if (prof) { yTop = host.series.priceToCoordinate(prof.lo + prof.n * prof.size); yBot = host.series.priceToCoordinate(prof.lo); }
+    else {
+      var rows = host.rows ? host.rows() : [], lo = Infinity, hi = -Infinity;
+      for (var j = range.i0; j <= Math.min(range.i1, rows.length - 1); j++) { if (rows[j][3] < lo) lo = rows[j][3]; if (rows[j][2] > hi) hi = rows[j][2]; }
+      if (hi < lo) return null;
+      yTop = host.series.priceToCoordinate(hi); yBot = host.series.priceToCoordinate(lo);
+    }
+    if (yTop == null || yBot == null) return null;
+    return { x0: x0, x1: x1, x2: Math.max(x1, x0 + maxW), maxW: maxW, yTop: Math.min(yTop, yBot), yBot: Math.max(yTop, yBot), entry: c, prof: prof };
+  }
+  function profileHandles(d) {
+    var box = profileBox(d); if (!box) return [];
+    var aLeft = d.a.t <= d.b.t;
+    return [{ x: aLeft ? box.x0 : box.x1, y: aLeft ? box.yTop : box.yBot, which: "a" }, { x: aLeft ? box.x1 : box.x0, y: aLeft ? box.yBot : box.yTop, which: "b" }];
+  }
+  function paintProfile(ctx, d, width, sel) {
+    var box = profileBox(d); if (!box) return;
+    var x0 = box.x0, x1 = box.x1, prof = box.prof, t = w();
+    ctx.fillStyle = rgba(d.color, sel ? 0.1 : 0.06); ctx.fillRect(x0, box.yTop, x1 - x0, box.yBot - box.yTop);
+    ctx.font = "600 11px Inter, system-ui, sans-serif"; ctx.textBaseline = "top"; ctx.textAlign = "left";
+    if (!prof) {
+      var st = box.entry && box.entry.state;
+      if (d !== pending) { ctx.fillStyle = "rgba(214,219,227,.8)"; ctx.fillText(st === "fail" ? t.vpFail : t.vpLoading, x0 + 4, box.yBot + 20 <= host.chart.panes()[0].getHeight() ? box.yBot + 4 : box.yTop - 18); }
+    } else {
+      var max = 0, i; for (i = 0; i < prof.n; i++) if (prof.vol[i] > max) max = prof.vol[i];
+      for (i = 0; i < prof.n; i++) {
+        var v = prof.vol[i]; if (!(v > 0)) continue;
+        var yA = host.series.priceToCoordinate(prof.lo + (i + 1) * prof.size), yB = host.series.priceToCoordinate(prof.lo + i * prof.size);
+        if (yA == null || yB == null) continue;
+        var top = Math.min(yA, yB), h = Math.max(1, Math.abs(yB - yA) - 1), len = v / max * box.maxW, inVa = i >= prof.vaLo && i <= prof.vaHi, al = inVa ? 0.62 : 0.28;
+        if (prof.buy) {
+          var bl = len * Math.min(1, prof.buy[i] / v);
+          ctx.fillStyle = "rgba(46,189,133," + al + ")"; ctx.fillRect(x0, top, bl, h);
+          ctx.fillStyle = "rgba(239,107,115," + al + ")"; ctx.fillRect(x0 + bl, top, len - bl, h);
+        } else { ctx.fillStyle = rgba(d.color, al); ctx.fillRect(x0, top, len, h); }
+      }
+      // Busiest price (POC), carried to the right edge with its price; value area edges as dotted lines over the range.
+      var pocP = prof.lo + (prof.poc + 0.5) * prof.size, py = host.series.priceToCoordinate(pocP);
+      if (py != null) {
+        ctx.strokeStyle = d.color; ctx.lineWidth = sel ? 2 : 1.5; ctx.beginPath(); ctx.moveTo(x0, py); ctx.lineTo(width, py); ctx.stroke();
+        ctx.fillStyle = d.color; ctx.textAlign = "right"; ctx.textBaseline = "bottom"; ctx.fillText("POC " + fmt(pocP), width - 6, py - 3);
+      }
+      ctx.setLineDash([2, 3]); ctx.lineWidth = 1; ctx.strokeStyle = rgba(d.color, 0.8);
+      [prof.lo + (prof.vaHi + 1) * prof.size, prof.lo + prof.vaLo * prof.size].forEach(function (p) {
+        var y = host.series.priceToCoordinate(p); if (y != null) { ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(box.x2, y); ctx.stroke(); }
+      });
+      ctx.setLineDash([]);
+      var label = t.vpTotal + " " + compactUsd(prof.total) + (prof.buyShare != null ? " · " + t.vpBuy + " " + (lang() === "tr" ? "%" + Math.round(prof.buyShare * 100) : Math.round(prof.buyShare * 100) + "%") : "") + (prof.approx ? " · " + t.vpApprox : "");
+      ctx.font = "600 11px Inter, system-ui, sans-serif"; ctx.textAlign = "left"; ctx.textBaseline = "top";
+      // Under the profile, or above it when the price pane ends below.
+      var lw = ctx.measureText(label).width, ly = box.yBot + 20 <= host.chart.panes()[0].getHeight() ? box.yBot + 3 : box.yTop - 20;
+      var lx = Math.max(0, Math.min(x0, width - lw - 10));
+      ctx.fillStyle = "rgba(16,24,32,.78)"; ctx.fillRect(lx, ly, lw + 8, 17);
+      ctx.fillStyle = "#e8ecf3"; ctx.fillText(label, lx + 4, ly + 3);
+    }
+    if (sel) profileHandles(d).forEach(function (hd) {
+      ctx.fillStyle = "#101820"; ctx.strokeStyle = d.color; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(hd.x, hd.y, 4.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    });
+  }
+
   // ---- hit testing (pixels) ----
   function segDist(p, a, b) {
     var dx = b.x - a.x, dy = b.y - a.y, l = dx * dx + dy * dy, t = l ? Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / l)) : 0;
     return Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy));
   }
   function hits(d, p) {
+    if (d.type === "vp") { var box = profileBox(d); return !!box && p.x >= box.x0 - 5 && p.x <= box.x2 + 5 && p.y >= box.yTop - 5 && p.y <= box.yBot + 5; }
     var a = toXY(d.a), b = d.b ? toXY(d.b) : null;
     if (!a) return false;
     if (d.type === "hline") return Math.abs(p.y - a.y) <= 6;
@@ -306,7 +484,7 @@
   function finish() {
     var d = pending; pending = null; delete d._x; delete d._y;
     var a = toXY(d.a), b = toXY(d.b);
-    if (a && b && Math.hypot(a.x - b.x, a.y - b.y) < 3) { redraw(); return; } // nothing drawn
+    if (a && b && (d.type === "vp" ? Math.abs(a.x - b.x) : Math.hypot(a.x - b.x, a.y - b.y)) < 3) { redraw(); return; } // nothing drawn
     // A measurement stays on screen until the next press or Escape; it is not a drawing and is not stored.
     if (d.type === "measure") { measured = d; setTool("select"); redraw(); return; }
     remember(); list.push(d); selected = d; setTool("select"); changed();
@@ -358,7 +536,7 @@
   }
 
   // ---- toolbar ----
-  var TOOLS = ["select", "measure", "trend", "hline", "rect", "arrow", "text", "erase"];
+  var TOOLS = ["select", "measure", "trend", "hline", "rect", "arrow", "text", "vp", "erase"];
   function btn(name, title, onClick) {
     var b = document.createElement("button");
     b.type = "button"; b.className = "cd-btn"; b.dataset.cd = name; b.title = title; b.setAttribute("aria-label", title);
@@ -459,5 +637,5 @@
   window.addEventListener("pagehide", flush);
   document.addEventListener("visibilitychange", function () { if (document.hidden) flush(); });
   new MutationObserver(function () { sync(); redraw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
-  window.MLMDraw = { attach: attach, detach: detach, desktop: desktop, _state: function () { return { key: key, list: list, tool: tool, hidden: hidden }; } };
+  window.MLMDraw = { attach: attach, detach: detach, desktop: desktop, _state: function () { return { key: key, list: list, tool: tool, hidden: hidden, profiles: profileCache }; } };
 })();

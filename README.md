@@ -75,6 +75,91 @@ Setting up (once, in Cloudflare):
    same three variables to the Worker (Settings → Variables and secrets).
 5. Check: Account page → "Turn on notifications" → "Send a test notification"; then an alarm just above the price.
 
+## Background Worker plan (December 2026)
+
+Agreed on 19 Nov 2026, to be done when Workers Paid is taken (early December). The paid plan is for more than
+alarms: the same Worker (one minute cron, `workers/alarms`, possibly renamed to `workers/background`) also takes
+the jobs below. Nothing here is built yet.
+
+**Decisions already made**
+- Candles stay with the local program on the owner's computer (Binance spot, uploaded now and then). Cloudflare
+  cannot read Binance: `api.binance.com` answers 451 and `data-api.binance.vision` 403 (tested 19 Nov 2026 from a US
+  location). The chart already completes missing candles from Binance in the visitor's browser (`fillTail`, up to
+  2000 candles), so the chart stays current while the computer is off. 15m and charts for assets without analysis
+  are not planned now (if wanted later: from Binance in the browser, no Worker).
+- **Fallback rule for every job:** the site reads what the Worker prepared; when it is missing or too old, it does
+  what it does today (asks the source itself). A stopped Worker must never break anything that works now.
+- Storage: D1 `USERS_DB`, the `snapshots` table `/api/weekly` already uses (one row per key, JSON + time).
+
+**Jobs, in this order**
+1. **Health watch** (with the alarms). Every few minutes: the homepage, the analysis page, `/api/publication`,
+   `/api/prices`, `/api/market-context` answer; the candle files' age (`candles/index.json` `generatedAt` and
+   `latest.json` Last-Modified; warn after about 2 days); the active publication's age; the sources (CoinGecko,
+   Yahoo, OKX). A push notification to the admins' devices when something breaks and once when it recovers (no
+   repeat every minute).
+2. **Market context** (with the alarms): CoinGecko + Yahoo every 2–3 minutes into a snapshot; `/api/market-context`
+   reads it. Today each Cloudflare location asks the sources itself every 3 minutes (first visitor waits: 1.7 s
+   against 0.6 s cached, measured 19 Nov), and CoinGecko's free tier refuses frequent requests.
+3. **BTC correlation and monthly returns** (right after): Yahoo every few hours into snapshots; `/api/correlation`
+   and `/api/monthly` read them (the monthly page downloads 11 years of closes per location today).
+4. **Weekly outlook** (right after): rebuild the `/api/weekly` snapshot after each weekly close and after a candle
+   upload is noticed, so no visitor triggers the rebuild.
+5. **Publication data** (measure first): notice a new `site-publication/active.json` within a minute and prepare
+   the chart times; `/api/publication` took 0.8–1 s per call (19 Nov). Part of its answer depends on the viewer
+   (member or guest), so not all of it can be prepared. Decide after measuring.
+
+Not for the Worker: the price strip (refreshed every 3 s; a cron runs at most once a minute), anything that needs
+Binance, the events list (already fast).
+
+**Kurulum listesi (TR, Aralık başı)**
+1. Cloudflare → Workers planını **Workers Paid** yap (aylık 5 $).
+2. Bilgisayarda `npx web-push generate-vapid-keys` çalıştır; çıkan genel (public) ve gizli (private) anahtarı not
+   al. Gizli anahtar sohbete ya da repoya yazılmaz.
+3. Pages projesi → Settings → Variables and secrets (Production): `VAPID_PUBLIC_KEY` (metin), `VAPID_PRIVATE_KEY`
+   (secret), `VAPID_SUBJECT` (`mailto:` + sitenin iletişim adresi). Ardından yeniden yayınla (redeploy).
+4. Storage & Databases → D1 → kullanıcı veritabanının **adını ve kimliğini (id)** Claude'a ver;
+   `workers/alarms/wrangler.toml` doldurulur, main'e alınır. (Bunlar gizli bilgi değildir.)
+5. Workers & Pages → Create → Import a repository → bu repo, root directory `workers/alarms`. Worker'a da 3. adımdaki
+   üç değişkeni ekle.
+6. Kontrol: Hesabım → "Bildirimleri aç" → "Test bildirimi gönder"; sonra fiyatın hemen üstüne bir alarm.
+7. Claude yukarıdaki 1–4 numaralı işleri ekler (sağlık bekçisi için yöneticinin cihazında bildirimlerin açık olması
+   gerekir), sonra 5'i ölçer.
+8. Bildirimler çalışınca: Play Store uygulaması (TWA). Kişisel geliştirici hesabı eski olduğu için 12 test
+   kullanıcısı kuralı geçerli değil.
+
+## Roadmap (agreed 20 Nov 2026)
+
+One list, in this order (priority set on 20 Nov 2026). Nothing here is built yet unless marked.
+
+1. **Close the public repository files** — done on the branch (README, scripts, Worker source, library sources and
+   research answer 404); goes live with the next merge.
+2. **Fixed range volume profile on the analysis chart** — built on the branch (see "Chart drawing tools").
+   Two handles pick a time range; bars per price for that range, the busiest price (POC) as a line carried to the
+   right, the value area (~70% of the volume) in a separate colour, the total volume; each bar split into buy and sell
+   volume (Binance klines carry the taker buy volume, field 9). Volume is spread over each candle's range from
+   smaller candles of the same range fetched from Binance in the browser (1m for short ranges, 15m/1H for long ones);
+   nothing is stored. Example: GoCharting's "Fixed Range Volume Profile" (free there, without the buy/sell split).
+   Read next to the Critical Zones: does a zone sit on a busy price?
+3. **December Worker work** (fixed date, see "Background Worker plan"): alarms, health watch, market context,
+   correlation and monthly returns, weekly outlook, then measure the publication data.
+4. **Candle delta and CVD on the analysis chart** — buy minus sell volume per candle and its running sum, under the
+   chart, for the whole history. Uses the same taker buy volume as 2. Candles the chart completes itself already have
+   it; for older candles the local program (owner's repository) adds the field to the uploaded candle files — a small
+   change the owner makes there, best together with the tokenized-stock work.
+5. **Play Store app (TWA)** — once notifications work (after 3).
+6. **Replay** — wind the analysis chart back to a date and step the candles forward one by one, to see how a zone
+   worked. Entirely in the browser.
+7. **Footprint on the live flow page** (maybe) — per-candle buy/sell volume at each price, only since the page
+   opened (nothing is stored). Decide after 2 and 4 are in use.
+
+Parallel track, on the owner's work computer from Monday 23 Nov 2026: **tokenized stocks (Base)** with our own
+on-chain candle system. Measurement and scripts: `research/onchain-candles/` (accuracy, pool merging, outlier rule,
+the history depth of free RPCs). Not GeckoTerminal/CoinGecko (attribution and redistribution terms unclear).
+
+Not planned: a paid GoCharting-style stored tick history; company financial statements (SEC reports). For
+comparison: GoCharting's free plan caps a chart at 9,000 candles (15,000 paid); our chart loads the whole history
+from the candle files, two months at a time as the chart is scrolled left.
+
 ## Search results
 
 Structured data (schema.org JSON-LD) for Google:
@@ -638,7 +723,22 @@ Members, on a desktop (a mouse or trackpad and a window at least 900 px wide), g
 interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` through `liveChart.drawHost()`):
 
 - **Tools:** select and move (the default), measure, trend line, horizontal line (its price at the right), box, arrow, text,
-  eraser. Two-point shapes are drawn by dragging or by two clicks. After a shape the tool returns to select.
+  volume profile of a range, eraser. Two-point shapes are drawn by dragging or by two clicks. After a shape the tool
+  returns to select.
+- **Volume profile of a range** ("Aralığın hacim profili"; GoCharting calls it Fixed Range Volume Profile): drag
+  across the candles to profile; only the two times count, rounded to whole candles. Several can sit on one chart.
+  - **Drawn:** 40 price rows over the range's low–high, bars from the left edge (longest = the range's width, at
+    least 70 px, at most 360 px), each split into buy (green) and sell (red) volume; rows inside the value area
+    (70% of the volume, grown from the busiest row towards the larger neighbour) stronger, the others faint; the
+    busiest price (POC) as a line to the right edge with its price; the value area's edges dotted; under the profile
+    (above it when the pane ends) "Volume $1.5B · buy 60%".
+  - **Data:** smaller Binance candles of the range, fetched in the browser (`data-api.binance.vision` klines; the
+    smallest of 1m…1w that covers the range in at most 3 requests of 1000), kept in memory per range; a range that
+    reaches the forming candle is fetched again after a minute. Each candle's dollar volume (quote volume) is spread
+    evenly over its low–high; its taker buy share gives the split. Nothing is stored apart from the two points.
+  - **Binance unreachable** (e.g. visitors in the US) or no Binance pair: the chart's own candles (coin volume ×
+    close), no buy/sell split, the label says "approx.".
+  - Moving or reshaping a profile loads its new range when the mouse is let go.
 - **Measure:** drag (or click twice) to see the price change, the change in percent, the number of candles and the
   time between two points, in a green (up) or red (down) box. It is not a drawing: it is not stored and goes away
   with the next press or Escape.
