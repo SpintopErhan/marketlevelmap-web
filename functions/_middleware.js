@@ -70,7 +70,19 @@ async function activeTimeframes(env, asset, priceAction = false) {
   }
 }
 
+// Repository files that are not part of the site (documentation, build scripts, the Worker's source, library sources,
+// research notes, repository settings). Cloudflare Pages publishes the whole repository, so they are refused here.
+const PRIVATE_PATH = /^\/(readme\.md$|\.git|scripts(\/|$)|workers(\/|$)|content(\/|$)|research(\/|$)|functions(\/|$))/;
+export function isPrivatePath(pathname) {
+  let path = pathname;
+  try { path = decodeURIComponent(pathname); } catch (_) { /* keep it as sent */ }
+  return PRIVATE_PATH.test(path.replace(/\/{2,}/g, "/").toLowerCase());
+}
+
 export async function onRequest(context) {
+  if (isPrivatePath(new URL(context.request.url).pathname)) {
+    return new Response("Not found", { status: 404, headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex" } });
+  }
   const response = await context.next();
   if (!(response.headers.get("content-type") || "").includes("text/html")) return response;
 
