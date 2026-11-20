@@ -720,7 +720,10 @@ layer, so the downloaded and shared images leave it out.
 ## Chart drawing tools
 
 Members, on a desktop (a mouse or trackpad and a window at least 900 px wide), get a small toolbar at the left of the
-interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` through `liveChart.drawHost()`):
+interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` through `liveChart.drawHost()`). On
+phones and tablets members see their drawings (texts and volume profiles included) without the toolbar: read only,
+nothing can be selected or changed there, and the chart pans and zooms as usual (`MLMDraw.attach(host, { readOnly })`;
+the page switches between the two when the screen type changes). Guests see no drawings.
 
 - **Tools:** select and move (the default), measure, trend line, horizontal line (its price at the right), box, arrow, text,
   volume profile of a range, eraser. Two-point shapes are drawn by dragging or by two clicks. After a shape the tool

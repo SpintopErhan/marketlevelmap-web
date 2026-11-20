@@ -644,12 +644,16 @@
     var p = local(ev); if (!p) return;
     if (tool !== "select" || pickHandle(p) || pick(p)) { ev.stopPropagation(); }
   }
-  function attach(h) {
+  // options.readOnly: the drawings are shown but there are no tools and no editing (phones and tablets).
+  var readOnly = false;
+  function attach(h, options) {
     if (!h) return detach();
-    if (host && host.container === h.container && host.series === h.series) { syncKey(); redraw(); return; }
+    var ro = !!(options && options.readOnly);
+    if (host && host.container === h.container && host.series === h.series && ro === readOnly) { syncKey(); redraw(); return; }
     detach(); css();
-    host = h; key = null; syncKey(); tool = "select"; hidden = false;
+    host = h; readOnly = ro; key = null; syncKey(); tool = "select"; hidden = false;
     prim = new Primitive(); host.series.attachPrimitive(prim);
+    if (readOnly) return;
     buildBar();
     EVENTS.forEach(function (e) { host.container.addEventListener(e[0], e[1], true); });
     window.addEventListener("mousemove", onMove, true);
@@ -668,12 +672,12 @@
     if (bar) bar.remove();
     if (float) float.remove();
     host.container.style.cursor = "";
-    host = prim = bar = float = null; key = null; list = []; selected = pending = drag = hover = null;
+    host = prim = bar = float = null; key = null; readOnly = false; list = []; selected = pending = drag = hover = null;
   }
   // Desktop: a mouse or trackpad (fine pointer that can hover) and room for the toolbar.
   function desktop() { return window.matchMedia && matchMedia("(hover: hover) and (pointer: fine) and (min-width: 900px)").matches; }
   window.addEventListener("pagehide", flush);
   document.addEventListener("visibilitychange", function () { if (document.hidden) flush(); });
   new MutationObserver(function () { sync(); redraw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
-  window.MLMDraw = { attach: attach, detach: detach, desktop: desktop, _state: function () { return { key: key, list: list, tool: tool, hidden: hidden, profiles: profileCache }; } };
+  window.MLMDraw = { attach: attach, detach: detach, desktop: desktop, _state: function () { return { key: key, list: list, tool: tool, hidden: hidden, readOnly: readOnly, profiles: profileCache }; } };
 })();
