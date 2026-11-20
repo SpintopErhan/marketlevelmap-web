@@ -744,6 +744,9 @@ interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` 
   with the next press or Escape.
 - **Editing:** drag a shape to move it, or a handle to reshape it. Double-click a text to edit it. Delete or Backspace
   removes the selected shape, Escape cancels, Ctrl+Z undoes.
+- **Selected shape's bar:** a click on a shape (or a new shape) shows a small bar beside its top-right corner, kept
+  on the price pane: the five colours (the shape's own one ringed) and a bin that deletes just that shape (Ctrl+Z
+  brings it back). It hides while the shape is dragged, when nothing is selected and while drawings are hidden.
 - **Toolbar buttons:** colour (five colours; also recolours the selected shape), hide or show the drawings, undo,
   delete all (asks first).
 - **Storage:** drawings are kept per pair and timeframe with the member's account, so they follow them to other
@@ -832,6 +835,12 @@ fell from 5.8 s to 1.7 s in 10 s.
 
 Measured on a 1H chart with 2,900 candles, most indicators, four drawings and twelve events, CPU slowed 4×:
 average frame while panning 81 → 36 ms, wheel zoom 119 → 58 ms, phone pinch-zoom p95 117 → 33 ms.
+
+## Expanded chart
+
+"Expand" puts the analysis chart's panel in full screen (the image view opens a zoom instead). While it is full
+screen, the method switch (Critical Zones / Price Action) and the timeframe tabs move into the panel above the chart
+and work as on the page (the chart stays expanded through a switch); leaving full screen puts them back in place.
 
 ## Chart download
 
