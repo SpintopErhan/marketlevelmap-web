@@ -80,7 +80,9 @@
     head.appendChild(input); head.appendChild(x);
     var list = document.createElement("div"); list.className = "ap-list"; list.setAttribute("role", "listbox");
     var hint = document.createElement("p"); hint.className = "ap-hint"; hint.textContent = t.hint;
-    box.appendChild(head); box.appendChild(list); box.appendChild(hint); back.appendChild(box); document.body.appendChild(back);
+    box.appendChild(head); box.appendChild(list); box.appendChild(hint); back.appendChild(box);
+    // Inside a full-screen element (the expanded chart) only that element is shown, so the window goes there.
+    (document.fullscreenElement || document.body).appendChild(back);
     modal = { back: back, input: input, list: list };
     function refresh() { fill(list, input.value); sel = 0; mark(); }
     input.addEventListener("input", refresh);

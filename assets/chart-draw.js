@@ -11,11 +11,11 @@
     en: { measure: "Measure (price, %, candles, time)", d: "d", h: "h", m: "m", bars: "candles", select: "Select and move",
       vp: "Volume profile of a range", vpTotal: "Volume", vpBuy: "buy", vpLoading: "Volume profile loading…", vpFail: "Volume data could not be loaded", vpApprox: "approx.", trend: "Trend line", hline: "Horizontal line", rect: "Box", arrow: "Arrow", text: "Text",
       erase: "Eraser", color: "Colour", hide: "Hide drawings", show: "Show drawings", undo: "Undo (Ctrl+Z)", clear: "Delete all drawings",
-      clearAsk: "Delete all drawings on this chart?", textPh: "Text, then Enter" },
+      clearAsk: "Delete all drawings on this chart?", textPh: "Text, then Enter", del: "Delete this drawing (Delete)" },
     tr: { measure: "Ölç (fiyat, %, mum, süre)", d: "g", h: "sa", m: "dk", bars: "mum", select: "Seç ve taşı",
       vp: "Aralığın hacim profili", vpTotal: "Hacim", vpBuy: "alış", vpLoading: "Hacim profili yükleniyor…", vpFail: "Hacim verisi alınamadı", vpApprox: "yaklaşık", trend: "Trend çizgisi", hline: "Yatay çizgi", rect: "Kutu", arrow: "Ok", text: "Yazı",
       erase: "Silgi", color: "Renk", hide: "Çizimleri gizle", show: "Çizimleri göster", undo: "Geri al (Ctrl+Z)", clear: "Tüm çizimleri sil",
-      clearAsk: "Bu grafikteki tüm çizimler silinsin mi?", textPh: "Yazı, sonra Enter" }
+      clearAsk: "Bu grafikteki tüm çizimler silinsin mi?", textPh: "Yazı, sonra Enter", del: "Bu çizimi sil (Delete)" }
   };
   var ICONS = {
     select: '<path d="M6 3l12 9-5 1 3 6-2.5 1-3-6-4.5 3z"/>',
@@ -34,7 +34,7 @@
   function lang() { return document.documentElement.lang === "tr" ? "tr" : "en"; }
   function w() { return WORDS[lang()]; }
 
-  var host = null, prim = null, bar = null, input = null, list = [], key = null, hidden = false;
+  var host = null, prim = null, bar = null, float = null, input = null, list = [], key = null, hidden = false;
   var measured = null, tool = "select", color = COLORS[0], selected = null, pending = null, drag = null, undoStack = [], hover = null;
 
   // ---- storage ----
@@ -210,7 +210,7 @@
         return { draw: function (target) {
           if (!host || !host.alive()) return;
           syncKey();
-          if (hidden) return;
+          if (hidden) { placeFloat(0); return; }
           target.useMediaCoordinateSpace(function (scope) {
             var ctx = scope.context, width = scope.mediaSize.width;
             ctx.save();
@@ -218,6 +218,7 @@
             if (measured) paintMeasure(ctx, measured);
             if (pending) paint(ctx, pending, width, true);
             ctx.restore();
+            placeFloat(width);
           });
         } };
       }
@@ -427,7 +428,7 @@
   function swallow(ev) { ev.preventDefault(); ev.stopPropagation(); if (ev.stopImmediatePropagation) ev.stopImmediatePropagation(); }
   function onDown(ev) {
     if (!host || ev.button !== 0 || hidden) return;
-    if (ev.target.closest && ev.target.closest(".cd-bar, .cd-input")) return;
+    if (ev.target.closest && ev.target.closest(".cd-bar, .cd-input, .cd-float")) return;
     var p = local(ev); if (!p) return;
     syncKey();
     if (measured) { measured = null; redraw(); }
@@ -535,6 +536,38 @@
     el.remove();
   }
 
+  // ---- the selected drawing's own bar: colours and delete, next to its top-right corner ----
+  function deleteSelected() { if (!selected) return; remember(); list.splice(list.indexOf(selected), 1); selected = null; changed(); }
+  function buildFloat() {
+    float = document.createElement("div"); float.className = "cd-float"; float.hidden = true;
+    COLORS.forEach(function (c) {
+      var s = document.createElement("button"); s.type = "button"; s.className = "cd-sw"; s.style.background = c; s.title = c; s.dataset.color = c;
+      s.addEventListener("click", function () { if (!selected) return; remember(); selected.color = c; color = c; changed(); sync(); });
+      float.appendChild(s);
+    });
+    var del = btn("clear", w().del, deleteSelected); del.dataset.cd = "del"; float.appendChild(del);
+    ["mousedown", "pointerdown", "dblclick", "wheel"].forEach(function (t) { float.addEventListener(t, function (ev) { ev.stopPropagation(); }); });
+    host.container.appendChild(float);
+  }
+  // Called after every paint: shows the bar beside the selected drawing (not while it is dragged), kept on the pane.
+  function placeFloat(width) {
+    if (!float) return;
+    var d = selected, show = !!d && !drag && !hidden && list.indexOf(d) > -1, xs = [], ys = [];
+    if (show) {
+      if (d.type === "text") { var a = toXY(d.a); if (a) { xs.push(a.x + (d._w || 40) + 4); ys.push(a.y - 11); } }
+      else if (d.type === "vp") { var bx = profileBox(d); if (bx) { xs.push(bx.x2); ys.push(bx.yTop); } }
+      else handles(d).forEach(function (h) { xs.push(h.x); ys.push(h.y); });
+      show = xs.length > 0;
+    }
+    if (!show) { if (!float.hidden) float.hidden = true; return; }
+    var paneH = host.chart.panes()[0].getHeight(), fw = float.offsetWidth || 150;
+    var x = Math.max(4, Math.min(Math.max.apply(null, xs) + 10, width - fw - 4)), y = Math.max(4, Math.min(Math.min.apply(null, ys) - 38, paneH - 34));
+    float.style.left = x + "px"; float.style.top = y + "px";
+    float.querySelectorAll(".cd-sw").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.color === d.color)); });
+    var del = float.querySelector('[data-cd="del"]'); del.title = w().del; del.setAttribute("aria-label", w().del);
+    if (float.hidden) float.hidden = false;
+  }
+
   // ---- toolbar ----
   var TOOLS = ["select", "measure", "trend", "hline", "rect", "arrow", "text", "vp", "erase"];
   function btn(name, title, onClick) {
@@ -570,6 +603,7 @@
     }));
     ["mousedown", "pointerdown", "dblclick", "wheel"].forEach(function (t) { bar.addEventListener(t, function (ev) { ev.stopPropagation(); }); });
     host.container.appendChild(bar);
+    buildFloat();
     sync();
   }
   function sync() {
@@ -598,21 +632,28 @@
     ".cd-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}" +
     ".cd-dot{width:14px;height:14px;border-radius:50%;border:1px solid rgba(255,255,255,.35)}.cd-sep{height:1px;margin:3px 2px;background:#2a3442}" +
     ".cd-pal{position:absolute;left:40px;top:0;display:flex;gap:6px;padding:6px;border:1px solid #2a3442;border-radius:8px;background:#0e131a}.cd-pal[hidden]{display:none}" +
-    ".cd-pal button{width:18px;height:18px;padding:0;border:1px solid rgba(255,255,255,.3);border-radius:50%;cursor:pointer}";
+    ".cd-pal button{width:18px;height:18px;padding:0;border:1px solid rgba(255,255,255,.3);border-radius:50%;cursor:pointer}" +
+    ".cd-float{position:absolute;z-index:7;display:flex;align-items:center;gap:5px;padding:4px 5px 4px 7px;border:1px solid #2a3442;border-radius:9px;background:rgba(14,19,26,.94)}.cd-float[hidden]{display:none}" +
+    ".cd-sw{width:15px;height:15px;padding:0;border:1px solid rgba(255,255,255,.3);border-radius:50%;cursor:pointer}.cd-sw[aria-pressed=true]{box-shadow:0 0 0 2px #0e131a,0 0 0 3px #eef1f7}" +
+    ".cd-float .cd-btn{width:26px;height:26px;margin-left:2px}.cd-float .cd-btn:hover{color:#ef6e76}";
   function css() { if (document.getElementById("cd-css")) return; var s = document.createElement("style"); s.id = "cd-css"; s.textContent = CSS; document.head.appendChild(s); }
   var EVENTS = [["mousedown", onDown], ["pointerdown", function (ev) { if (ev.pointerType === "mouse") onDownGuard(ev); }], ["dblclick", onDbl], ["mouseenter", onEnter], ["mouseleave", onLeave]];
   // pointerdown comes before mousedown: stop it too when a drawing takes the press, so the chart does not start a pan.
   function onDownGuard(ev) {
-    if (!host || ev.button !== 0 || hidden || (ev.target.closest && ev.target.closest(".cd-bar, .cd-input"))) return;
+    if (!host || ev.button !== 0 || hidden || (ev.target.closest && ev.target.closest(".cd-bar, .cd-input, .cd-float"))) return;
     var p = local(ev); if (!p) return;
     if (tool !== "select" || pickHandle(p) || pick(p)) { ev.stopPropagation(); }
   }
-  function attach(h) {
+  // options.readOnly: the drawings are shown but there are no tools and no editing (phones and tablets).
+  var readOnly = false;
+  function attach(h, options) {
     if (!h) return detach();
-    if (host && host.container === h.container && host.series === h.series) { syncKey(); redraw(); return; }
+    var ro = !!(options && options.readOnly);
+    if (host && host.container === h.container && host.series === h.series && ro === readOnly) { syncKey(); redraw(); return; }
     detach(); css();
-    host = h; key = null; syncKey(); tool = "select"; hidden = false;
+    host = h; readOnly = ro; key = null; syncKey(); tool = "select"; hidden = false;
     prim = new Primitive(); host.series.attachPrimitive(prim);
+    if (readOnly) return;
     buildBar();
     EVENTS.forEach(function (e) { host.container.addEventListener(e[0], e[1], true); });
     window.addEventListener("mousemove", onMove, true);
@@ -629,13 +670,14 @@
     window.removeEventListener("mouseup", onUp, true);
     document.removeEventListener("keydown", onKey);
     if (bar) bar.remove();
+    if (float) float.remove();
     host.container.style.cursor = "";
-    host = prim = bar = null; key = null; list = []; selected = pending = drag = hover = null;
+    host = prim = bar = float = null; key = null; readOnly = false; list = []; selected = pending = drag = hover = null;
   }
   // Desktop: a mouse or trackpad (fine pointer that can hover) and room for the toolbar.
   function desktop() { return window.matchMedia && matchMedia("(hover: hover) and (pointer: fine) and (min-width: 900px)").matches; }
   window.addEventListener("pagehide", flush);
   document.addEventListener("visibilitychange", function () { if (document.hidden) flush(); });
   new MutationObserver(function () { sync(); redraw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
-  window.MLMDraw = { attach: attach, detach: detach, desktop: desktop, _state: function () { return { key: key, list: list, tool: tool, hidden: hidden, profiles: profileCache }; } };
+  window.MLMDraw = { attach: attach, detach: detach, desktop: desktop, _state: function () { return { key: key, list: list, tool: tool, hidden: hidden, readOnly: readOnly, profiles: profileCache }; } };
 })();

@@ -720,7 +720,10 @@ layer, so the downloaded and shared images leave it out.
 ## Chart drawing tools
 
 Members, on a desktop (a mouse or trackpad and a window at least 900 px wide), get a small toolbar at the left of the
-interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` through `liveChart.drawHost()`):
+interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` through `liveChart.drawHost()`). On
+phones and tablets members see their drawings (texts and volume profiles included) without the toolbar: read only,
+nothing can be selected or changed there, and the chart pans and zooms as usual (`MLMDraw.attach(host, { readOnly })`;
+the page switches between the two when the screen type changes). Guests see no drawings.
 
 - **Tools:** select and move (the default), measure, trend line, horizontal line (its price at the right), box, arrow, text,
   volume profile of a range, eraser. Two-point shapes are drawn by dragging or by two clicks. After a shape the tool
@@ -744,6 +747,9 @@ interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` 
   with the next press or Escape.
 - **Editing:** drag a shape to move it, or a handle to reshape it. Double-click a text to edit it. Delete or Backspace
   removes the selected shape, Escape cancels, Ctrl+Z undoes.
+- **Selected shape's bar:** a click on a shape (or a new shape) shows a small bar beside its top-right corner, kept
+  on the price pane: the five colours (the shape's own one ringed) and a bin that deletes just that shape (Ctrl+Z
+  brings it back). It hides while the shape is dragged, when nothing is selected and while drawings are hidden.
 - **Toolbar buttons:** colour (five colours; also recolours the selected shape), hide or show the drawings, undo,
   delete all (asks first).
 - **Storage:** drawings are kept per pair and timeframe with the member's account, so they follow them to other
@@ -832,6 +838,14 @@ fell from 5.8 s to 1.7 s in 10 s.
 
 Measured on a 1H chart with 2,900 candles, most indicators, four drawings and twelve events, CPU slowed 4×:
 average frame while panning 81 → 36 ms, wheel zoom 119 → 58 ms, phone pinch-zoom p95 117 → 33 ms.
+
+## Expanded chart
+
+"Expand" puts the analysis chart's panel in full screen (the image view opens a zoom instead). While it is full
+screen, a row above the chart holds an asset button (the asset's symbol; it opens the asset search, which switches the
+asset in place), the method switch (Critical Zones / Price Action) and the timeframe tabs. They work as on the page
+and the chart stays expanded through a switch; leaving full screen puts the controls back in place. The asset search
+window opens inside the full-screen element when there is one (only that element is shown in full screen).
 
 ## Chart download
 
