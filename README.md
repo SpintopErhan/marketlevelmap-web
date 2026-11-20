@@ -127,6 +127,27 @@ Binance, the events list (already fast).
 8. Bildirimler çalışınca: Play Store uygulaması (TWA). Kişisel geliştirici hesabı eski olduğu için 12 test
    kullanıcısı kuralı geçerli değil.
 
+## Roadmap (agreed 20 Nov 2026)
+
+After the December Worker work above, in this order. Nothing here is built yet.
+
+1. **Candle delta on the analysis chart** — buy minus sell volume per candle and its running sum (CVD), drawn under
+   the chart for the whole history. Binance klines carry the taker buy volume (field 9), so nothing is stored: the
+   candles the chart completes itself already have it; for older candles the local program adds the field to the
+   uploaded candle files.
+2. **Replay** — wind the analysis chart back to a date and step the candles forward one by one, to see how a zone
+   worked. Entirely in the browser.
+3. **Volume profile of a chosen range on the chart** — traded volume per price for the visible or selected range,
+   next to the Critical Zones.
+4. **Footprint on the live flow page** (maybe) — per-candle buy/sell volume at each price, only for the time since the
+   page opened (nothing is stored). Undecided whether it is useful enough.
+
+Not planned: a paid GoCharting-style stored tick history; company financial statements (SEC reports).
+
+**Tokenized stocks (Base)** — our own on-chain candle system, built on the owner's work computer (starts Monday
+23 Nov 2026). Measurement and scripts: `research/onchain-candles/` (accuracy, pool merging, outlier rule, the
+history depth of free RPCs). Not GeckoTerminal/CoinGecko (attribution and redistribution terms unclear).
+
 ## Search results
 
 Structured data (schema.org JSON-LD) for Google:
