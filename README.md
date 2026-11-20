@@ -133,7 +133,7 @@ One list, in this order (priority set on 20 Nov 2026). Nothing here is built yet
 
 1. **Close the public repository files** — done on the branch (README, scripts, Worker source, library sources and
    research answer 404); goes live with the next merge.
-2. **Fixed range volume profile on the analysis chart** (can start now; needs no money and no other repository).
+2. **Fixed range volume profile on the analysis chart** — built on the branch (see "Chart drawing tools").
    Two handles pick a time range; bars per price for that range, the busiest price (POC) as a line carried to the
    right, the value area (~70% of the volume) in a separate colour, the total volume; each bar split into buy and sell
    volume (Binance klines carry the taker buy volume, field 9). Volume is spread over each candle's range from
@@ -723,7 +723,22 @@ Members, on a desktop (a mouse or trackpad and a window at least 900 px wide), g
 interactive analysis chart (`assets/chart-draw.js`, attached by `bulletin.html` through `liveChart.drawHost()`):
 
 - **Tools:** select and move (the default), measure, trend line, horizontal line (its price at the right), box, arrow, text,
-  eraser. Two-point shapes are drawn by dragging or by two clicks. After a shape the tool returns to select.
+  volume profile of a range, eraser. Two-point shapes are drawn by dragging or by two clicks. After a shape the tool
+  returns to select.
+- **Volume profile of a range** ("Aralığın hacim profili"; GoCharting calls it Fixed Range Volume Profile): drag
+  across the candles to profile; only the two times count, rounded to whole candles. Several can sit on one chart.
+  - **Drawn:** 40 price rows over the range's low–high, bars from the left edge (longest = the range's width, at
+    least 70 px, at most 360 px), each split into buy (green) and sell (red) volume; rows inside the value area
+    (70% of the volume, grown from the busiest row towards the larger neighbour) stronger, the others faint; the
+    busiest price (POC) as a line to the right edge with its price; the value area's edges dotted; under the profile
+    (above it when the pane ends) "Volume $1.5B · buy 60%".
+  - **Data:** smaller Binance candles of the range, fetched in the browser (`data-api.binance.vision` klines; the
+    smallest of 1m…1w that covers the range in at most 3 requests of 1000), kept in memory per range; a range that
+    reaches the forming candle is fetched again after a minute. Each candle's dollar volume (quote volume) is spread
+    evenly over its low–high; its taker buy share gives the split. Nothing is stored apart from the two points.
+  - **Binance unreachable** (e.g. visitors in the US) or no Binance pair: the chart's own candles (coin volume ×
+    close), no buy/sell split, the label says "approx.".
+  - Moving or reshaping a profile loads its new range when the mouse is let go.
 - **Measure:** drag (or click twice) to see the price change, the change in percent, the number of candles and the
   time between two points, in a green (up) or red (down) box. It is not a drawing: it is not stored and goes away
   with the next press or Escape.
