@@ -129,24 +129,36 @@ Binance, the events list (already fast).
 
 ## Roadmap (agreed 20 Nov 2026)
 
-After the December Worker work above, in this order. Nothing here is built yet.
+One list, in this order (priority set on 20 Nov 2026). Nothing here is built yet unless marked.
 
-1. **Candle delta on the analysis chart** — buy minus sell volume per candle and its running sum (CVD), drawn under
-   the chart for the whole history. Binance klines carry the taker buy volume (field 9), so nothing is stored: the
-   candles the chart completes itself already have it; for older candles the local program adds the field to the
-   uploaded candle files.
-2. **Replay** — wind the analysis chart back to a date and step the candles forward one by one, to see how a zone
+1. **Close the public repository files** — done on the branch (README, scripts, Worker source, library sources and
+   research answer 404); goes live with the next merge.
+2. **Fixed range volume profile on the analysis chart** (can start now; needs no money and no other repository).
+   Two handles pick a time range; bars per price for that range, the busiest price (POC) as a line carried to the
+   right, the value area (~70% of the volume) in a separate colour, the total volume; each bar split into buy and sell
+   volume (Binance klines carry the taker buy volume, field 9). Volume is spread over each candle's range from
+   smaller candles of the same range fetched from Binance in the browser (1m for short ranges, 15m/1H for long ones);
+   nothing is stored. Example: GoCharting's "Fixed Range Volume Profile" (free there, without the buy/sell split).
+   Read next to the Critical Zones: does a zone sit on a busy price?
+3. **December Worker work** (fixed date, see "Background Worker plan"): alarms, health watch, market context,
+   correlation and monthly returns, weekly outlook, then measure the publication data.
+4. **Candle delta and CVD on the analysis chart** — buy minus sell volume per candle and its running sum, under the
+   chart, for the whole history. Uses the same taker buy volume as 2. Candles the chart completes itself already have
+   it; for older candles the local program (owner's repository) adds the field to the uploaded candle files — a small
+   change the owner makes there, best together with the tokenized-stock work.
+5. **Play Store app (TWA)** — once notifications work (after 3).
+6. **Replay** — wind the analysis chart back to a date and step the candles forward one by one, to see how a zone
    worked. Entirely in the browser.
-3. **Volume profile of a chosen range on the chart** — traded volume per price for the visible or selected range,
-   next to the Critical Zones.
-4. **Footprint on the live flow page** (maybe) — per-candle buy/sell volume at each price, only for the time since the
-   page opened (nothing is stored). Undecided whether it is useful enough.
+7. **Footprint on the live flow page** (maybe) — per-candle buy/sell volume at each price, only since the page
+   opened (nothing is stored). Decide after 2 and 4 are in use.
 
-Not planned: a paid GoCharting-style stored tick history; company financial statements (SEC reports).
+Parallel track, on the owner's work computer from Monday 23 Nov 2026: **tokenized stocks (Base)** with our own
+on-chain candle system. Measurement and scripts: `research/onchain-candles/` (accuracy, pool merging, outlier rule,
+the history depth of free RPCs). Not GeckoTerminal/CoinGecko (attribution and redistribution terms unclear).
 
-**Tokenized stocks (Base)** — our own on-chain candle system, built on the owner's work computer (starts Monday
-23 Nov 2026). Measurement and scripts: `research/onchain-candles/` (accuracy, pool merging, outlier rule, the
-history depth of free RPCs). Not GeckoTerminal/CoinGecko (attribution and redistribution terms unclear).
+Not planned: a paid GoCharting-style stored tick history; company financial statements (SEC reports). For
+comparison: GoCharting's free plan caps a chart at 9,000 candles (15,000 paid); our chart loads the whole history
+from the candle files, two months at a time as the chart is scrolled left.
 
 ## Search results
 
