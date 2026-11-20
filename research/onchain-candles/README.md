@@ -35,8 +35,12 @@ NVDAc tek başına ~10 dakika, ~600 bin işlem (~150 MB).
   ortanca fiyatından %1,5'ten fazla uzaksa mumun en yüksek/en düşüğünü belirlemez. Gerçek bir hareket ortancayı da
   kaydırdığı için silinmez. Bu kuralla saatlik mum boyu (yüksek−düşük, ortanca / p90): borsa açık %0,89 / %1,90,
   kapalı %0,61 / %1,58, hafta sonu %0,34 / %0,96.
-- **Fiyat yolu:** 11 Eylül 218,6 $ → 18 Kasım 151,9 $; tek seferlik bir sıçrama (bölünme vb.) yok. Gerçek NVIDIA
-  hissesiyle karşılaştırılamadı (bu ortamdan hisse verisine erişim yok) — ayrıca bakılmalı.
+- **Fiyat yolu:** 11 Eylül 218,6 $ → 18 Kasım 151,9 $; tek seferlik bir sıçrama (bölünme vb.) yok.
+- **Gerçek hisseyle karşılaştırma** (NVDA kapanışları kullanıcının Google Finance ekranından): tokenın ABD kapanışından
+  önceki 15 dakikalık hacim ağırlıklı fiyatı 11 Eylül 218,56 $ (NVDA 218,29 $, +%0,12), 18 Kasım 151,08 $ (NVDA 150,96 $,
+  +%0,08). 20 Kasım borsa açılmadan önce (09:00–09:15 UTC) token 144,04 $, NVDA açılışı 143,52 $. Token hisseyi borsa
+  açıkken yakından izliyor; kapalıyken kendi fiyatını buluyor ve açılışa yakın bir yerde duruyor. İki gün ve bir açılış:
+  ipucu, kapsamlı ölçüm değil.
 
 ## Kısıtlar ve kararlar için notlar
 
