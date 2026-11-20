@@ -857,6 +857,15 @@ asset in place), the method switch (Critical Zones / Price Action) and the timef
 and the chart stays expanded through a switch; leaving full screen puts the controls back in place. The asset search
 window opens inside the full-screen element when there is one (only that element is shown in full screen).
 
+On short screens (at most 560 px high: a phone on its side) full screen is compact: the chart header and the footer
+line are hidden, the controls shrink to one row ending in an exit button ("Tam ekrandan çık"), and the chart takes all
+the height left. Indicator panes keep 130 px each but together never more than 40% of a chart whose height is fixed,
+so the price pane stays readable there.
+
+Chart size: autoSize follows the container, but some phone browsers miss the change when the screen turns (the chart
+stayed at its upright width). After a turn, a window resize or a full-screen change the chart is compared with its
+container (60, 300 and 800 ms later) and resized when they differ.
+
 ## Chart download
 
 The analysis chart header has a Download button (next to Expand). It saves the interactive chart as drawn

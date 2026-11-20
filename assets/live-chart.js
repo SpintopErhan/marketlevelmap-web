@@ -674,10 +674,13 @@ var LiveChart = (function () {
       var panes = chart.panes(), height = container.clientHeight;
       // Stretch factors are relative, so each pane gets its height in pixels and the price pane the rest.
       if (panes.length > 1 && height > 0) {
-        var ind = (panes.length - 2) * IND_PANE, vol = Math.max(48, Math.round((height - ind) * 0.16));
+        // Indicator panes keep IND_PANE px, but together never more than 40% of a chart whose height is fixed (full
+        // screen on a phone on its side), so the price pane stays readable.
+        var n = panes.length - 2, each = n > 0 ? Math.min(IND_PANE, Math.max(36, Math.floor(height * 0.4 / n))) : 0;
+        var ind = n * each, vol = Math.max(48, Math.round((height - ind) * 0.16));
         panes[0].setStretchFactor(Math.max(1, height - ind - vol));
         panes[1].setStretchFactor(vol);
-        for (var p = 2; p < panes.length; p++) panes[p].setStretchFactor(IND_PANE);
+        for (var p = 2; p < panes.length; p++) panes[p].setStretchFactor(each);
       }
       sizeWatermark();
       if (typeof placeCmpLabels === "function" && cmp) requestAnimationFrame(placeCmpLabels);
@@ -690,8 +693,26 @@ var LiveChart = (function () {
       if (indPaneCount > 0) container.style.height = (container.clientHeight + indPaneCount * IND_PANE) + "px";
       sizePanes();
     }
-    function onWindowResize() { if (indPaneCount > 0) fitHeight(); }
+    // autoSize follows the container through a ResizeObserver, but some phone browsers miss the change when the
+    // screen turns (the chart stayed at its upright width). After a turn, a window resize or a full-screen change the
+    // chart is checked against its container a few times and resized when they differ.
+    var fitTimers = [];
+    function fitNow() {
+      if (destroyed) return;
+      // The drawn size is the chart's table (its element stretches with the container whatever is drawn).
+      var el = chart.chartElement(), t = el && el.querySelector("table"), w = container.clientWidth, h = container.clientHeight;
+      if (!t || !w || !h || (Math.abs(t.offsetWidth - w) <= 1 && Math.abs(t.offsetHeight - h) <= 1)) return;
+      chart.applyOptions({ autoSize: false }); chart.resize(w, h, true); chart.applyOptions({ autoSize: true });
+      sizePanes();
+    }
+    function scheduleFit() {
+      fitTimers.forEach(clearTimeout);
+      fitTimers = [60, 300, 800].map(function (ms) { return setTimeout(fitNow, ms); });
+    }
+    function onWindowResize() { if (indPaneCount > 0) fitHeight(); scheduleFit(); }
     window.addEventListener("resize", onWindowResize);
+    window.addEventListener("orientationchange", scheduleFit);
+    document.addEventListener("fullscreenchange", scheduleFit);
     var paneObserver = window.ResizeObserver ? new ResizeObserver(sizePanes) : null;
     if (paneObserver) paneObserver.observe(container);
     var emaColors = ["#ff6975", "#6fb5ff", "#e7d98c"], emas = emaColors.map(function (color) {
@@ -1531,6 +1552,9 @@ var LiveChart = (function () {
         destroyed = true; clearInterval(pulseTimer); closeStream(); document.removeEventListener("visibilitychange", onVisibility);
         if (paneObserver) paneObserver.disconnect();
         window.removeEventListener("resize", onWindowResize);
+        window.removeEventListener("orientationchange", scheduleFit);
+        document.removeEventListener("fullscreenchange", scheduleFit);
+        fitTimers.forEach(clearTimeout);
         chart.remove(); container.textContent = ""; container.style.height = "";
       }
     };
