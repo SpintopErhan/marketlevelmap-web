@@ -154,7 +154,17 @@ One list, in this order (priority set on 20 Nov 2026). Nothing here is built yet
 
 Parallel track, on the owner's work computer from Monday 23 Nov 2026: **tokenized stocks (Base)** with our own
 on-chain candle system. Measurement and scripts: `research/onchain-candles/` (accuracy, pool merging, outlier rule,
-the history depth of free RPCs). Not GeckoTerminal/CoinGecko (attribution and redistribution terms unclear).
+the history depth of free RPCs, the token against the share). Not GeckoTerminal/CoinGecko (attribution and
+redistribution terms unclear).
+
+**Base vision** (agreed 20 Nov 2026; each step only after the one before works — measure first):
+1. On-chain candles and Critical Zones analyses for tokenized stocks, on the site like the crypto assets.
+2. Wallet connection, read only: sign-in with a wallet next to Google, and a "my tokens" view (the tokenized stocks in
+   the connected wallet, each with its analysis). No transactions.
+3. A data service (API) for builders on Base: the cleaned candles and the zones, once the site has shown they hold up.
+4. Swaps by referral only, not a priority: a neutral link ("View on Aerodrome") to the venue; the site never holds funds
+   or executes trades, no "buy"/"sell" buttons beside the analyses, the analysis stays the main content. Fees or
+   commissions on referrals only after legal advice.
 
 Not planned: a paid GoCharting-style stored tick history; company financial statements (SEC reports). For
 comparison: GoCharting's free plan caps a chart at 9,000 candles (15,000 paid); our chart loads the whole history
