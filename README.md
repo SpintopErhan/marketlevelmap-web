@@ -857,6 +857,12 @@ analysis and last-candle times, "Not investment advice."; on narrow charts the t
 left out). File name: `MarketLevelMap_<SYMBOL>_<TF>_<YYYYMMDD-HHMM>UTC.png` (download time, UTC). Older
 PNG-only publications offer no download.
 
+A chart narrower than 720 CSS px (phones, upright tablets) is drawn 960 px wide (and at least 560 px high) for the
+image — download and "Share with image…" — so a phone gives the same wide picture as a computer
+(`LiveChart` `screenshot({ w, h })`: resized, captured and put back in one task, so the chart on screen does not
+move; the right edge and the candle width are kept, so the image shows more candles to the left). Wider charts are
+captured as they are.
+
 The downloaded image also carries this view's tables beside the chart, the same as the admin desk's "PNG with
 tables" (`fullImage()`): Price Action → at a glance, price range, FVG, structure; Critical Zones → support and
 resistance zones; then the indicator card (its by-timeframe table and each indicator's name and state, without the

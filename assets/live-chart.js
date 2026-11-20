@@ -1373,7 +1373,16 @@ var LiveChart = (function () {
       // Economic events: [{ time (seconds), title, country, impact: VERY_HIGH|HIGH|MEDIUM, dateOnly }]; [] hides them.
       setEvents: function (list) { eventMarks.set(list); },
       // The chart as drawn now (zones, levels, watermark; no crosshair), at device resolution.
-      screenshot: function () { return chart.takeScreenshot(true, false); },
+      // size { w, h } (CSS px): drawn at that size instead of the container's (a narrow phone chart gives a standard
+      // image). Resized, captured and put back in the same task, so nothing changes on screen; the right edge and
+      // the candle width are kept, so a wider image shows more candles to the left.
+      screenshot: function (size) {
+        if (!size || !(size.w > 0) || !(size.h > 0)) return chart.takeScreenshot(true, false);
+        var w0 = container.clientWidth, h0 = container.clientHeight;
+        chart.applyOptions({ autoSize: false }); chart.resize(size.w, size.h, true);
+        try { return chart.takeScreenshot(true, false); }
+        finally { chart.resize(w0, h0, true); chart.applyOptions({ autoSize: true }); }
+      },
       lastClosedAt: function () { var rows = allRows(), last = rows[rows.length - 1]; return new Date((last[0] + STEP[state.tf]) * 1000).toISOString(); },
       // The last closed candle as drawn (R2 or browser tail): open time (the chart's label) and close time.
       lastClosedCandle: function () {
