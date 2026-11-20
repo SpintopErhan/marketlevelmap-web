@@ -839,8 +839,10 @@ average frame while panning 81 → 36 ms, wheel zoom 119 → 58 ms, phone pinch-
 ## Expanded chart
 
 "Expand" puts the analysis chart's panel in full screen (the image view opens a zoom instead). While it is full
-screen, the method switch (Critical Zones / Price Action) and the timeframe tabs move into the panel above the chart
-and work as on the page (the chart stays expanded through a switch); leaving full screen puts them back in place.
+screen, a row above the chart holds an asset button (the asset's symbol; it opens the asset search, which switches the
+asset in place), the method switch (Critical Zones / Price Action) and the timeframe tabs. They work as on the page
+and the chart stays expanded through a switch; leaving full screen puts the controls back in place. The asset search
+window opens inside the full-screen element when there is one (only that element is shown in full screen).
 
 ## Chart download
 
