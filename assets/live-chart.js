@@ -1537,6 +1537,9 @@ var LiveChart = (function () {
             chart.applyOptions({ timeScale: { timeVisible: nextTf === "1h" || nextTf === "4h", secondsVisible: false, rightOffset: 12 } });
             touched = false;
             setData();
+            // A price scale the viewer dragged or pinched is manual and would keep the previous range (the old asset's
+            // prices after an asset switch); every load starts with all price scales fitting their data again.
+            chart.panes().forEach(function (pane, i) { try { chart.priceScale("right", i).applyOptions({ autoScale: true }); } catch (e) {} });
             initialView();
             if (cmp) loadCompare();
             fillTail().then(function () {

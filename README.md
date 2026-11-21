@@ -674,6 +674,10 @@ asset's address shows, with one chart on the page; for members and guests (locke
 and Price Action, on desktop and phone, and with the live site's data, where frame-by-frame no side card left the
 screen during a switch.
 
+Price scales: a scale the viewer dragged or pinched (easily done by touch on a phone) is manual and kept its range, so
+after a switch the axis stayed at the previous asset's prices and the new candles were off screen. Every reload (asset
+or timeframe) now sets all price scales back to fitting their data (`autoScale`).
+
 ## Analysis page loading
 
 An inline script at the top of `bulletin.html` starts, before the page's scripts have loaded, the requests the page
