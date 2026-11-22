@@ -1,0 +1,130 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap"><script src="/assets/pwa.js?v=b0dd56f5" defer></script><meta name="color-scheme" content="dark light"><meta name="color-scheme" content="dark light"><meta name="robots" content="noindex"><title>MarketLevelMap — Messages</title><link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png"><link rel="stylesheet" href="assets/site.css?v=22a8f464"><style>*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.5}
+button,select,input{font:inherit}button{color:inherit}
+main{padding:0 0 70px}
+.page-head{margin:34px 0 18px}.page-head h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.5px}
+.page-head p{margin:6px 0 0;color:var(--muted);font-size:14px;max-width:640px}
+[hidden]{display:none!important}
+.card{max-width:720px;padding:22px 24px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.card+.card{margin-top:16px}
+.card h2{margin:0 0 10px;font-size:17px}
+.muted{color:var(--muted)}.small{font-size:13px}
+.notice{max-width:720px;margin:0 0 16px;padding:12px 16px;border:1px solid var(--down);border-radius:12px;color:var(--down);font-size:14px}
+.google-btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font-weight:600;text-decoration:none}
+.google-btn:hover{border-color:var(--accent)}
+.google-btn svg{width:18px;height:18px}
+.who{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.who img,.who .initial{width:48px;height:48px;border-radius:50%;object-fit:cover;background:var(--raise);display:flex;align-items:center;justify-content:center;font-weight:700}
+.who b{display:block;font-size:16px}.who span{color:var(--muted);font-size:13px}
+.privacy{max-height:340px;overflow:auto;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);font-size:13px}
+.privacy h3{margin:14px 0 4px;font-size:13px}.privacy h3:first-child{margin-top:0}.privacy p,.privacy ul{margin:0 0 6px}.privacy ul{padding-left:18px}
+.consent{display:flex;align-items:flex-start;gap:10px;margin:16px 0;font-size:14px;cursor:pointer}
+.consent input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px;border:0;border-radius:10px;background:var(--accent);color:var(--bg);font-weight:700;cursor:pointer;text-decoration:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{border:1px solid var(--line);background:none;color:var(--fg)}
+.btn.danger{border:1px solid var(--down);background:none;color:var(--down)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.status{display:inline-block;padding:2px 10px;border-radius:999px;background:var(--raise);font-size:13px;font-weight:700}
+.status.approved{color:var(--up)}.status.rejected,.status.suspended{color:var(--down)}.status.pending{color:var(--cz)}
+.code{display:inline-flex;align-items:center;gap:10px;margin:6px 0 4px;padding:10px 14px;border:1px dashed var(--accent);border-radius:10px;font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-size:20px;font-weight:700;letter-spacing:1px}
+.copy{height:30px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0;cursor:pointer}
+ol.steps{margin:10px 0 0;padding-left:20px;font-size:14px}ol.steps li{margin:4px 0}
+.msgs{list-style:none;margin:10px 0 0;padding:0}.msgs li{padding:12px 0;border-top:1px solid var(--line)}.msgs li:first-child{border-top:0;padding-top:4px}.msgs .meta{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}.msgs .new{padding:1px 7px;border-radius:999px;background:var(--accent);color:#fff;font-size:11px;font-weight:700}.msgs p{margin:5px 0 0;font-size:14px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+ol.vsteps{margin:14px 0 0;padding-left:22px;font-size:14px}ol.vsteps>li{margin:0 0 18px}ol.vsteps>li::marker{font-weight:700}ol.vsteps .lead{display:block;font-weight:700}ol.vsteps .note{display:block;margin:3px 0 8px;color:var(--muted);font-size:13px}ol.vsteps .field{margin:8px 0 8px}.after{margin:4px 0 0}
+.field{display:block;margin:0 0 14px}.field span{display:block;margin-bottom:5px;font-size:13px;font-weight:600}
+.field input{width:100%;max-width:340px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)}
+.field input:disabled{opacity:.7}
+.field small{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+.msg{margin-left:6px;font-size:13px}.msg.ok{color:var(--up)}.msg.err{color:var(--down)}
+details.priv{margin-top:6px}details.priv summary{cursor:pointer;color:var(--accent);font-size:13px;font-weight:600}
+details.priv .privacy{margin-top:10px}
+dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-size:14px}dl.facts dt{color:var(--muted)}dl.facts dd{margin:0}
+.mtools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;max-width:720px;margin:0 0 12px}
+.mtabs{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.mtabs button{height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer}.mtabs button[aria-pressed="true"]{background:var(--raise);color:var(--fg)}.mtabs b{margin-left:4px;font-weight:600}
+.mlist{list-style:none;margin:0;padding:0;display:grid;gap:10px;max-width:720px}
+.m{padding:14px 16px 14px 18px;border:1px solid var(--line);border-left:4px solid var(--line);border-radius:12px;background:var(--panel)}
+.m .meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--muted);font-size:12px}
+.m .state{padding:1px 8px;border-radius:999px;border:1px solid var(--line);font-size:11px;font-weight:600}
+.m p{margin:6px 0 0;font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted)}
+.m.unread{border-left-color:var(--accent);cursor:pointer}.m.unread p{color:var(--fg);font-weight:600}.m.unread .state{border-color:var(--accent);background:var(--accent);color:#fff}
+.m .mark{margin-top:10px;height:30px;padding:0 12px;border:1px solid var(--accent);border-radius:8px;background:none;color:var(--accent);font-size:12px;font-weight:700;cursor:pointer}
+#empty{max-width:720px}
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=8157cd7b" defer></script></head><body><div class="shell"><header>
+<a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="multi" data-tr="Çoklu izleme">Multi view</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<script>/* Keep the header in the saved language before the first paint. */
+(function(){var lang;try{lang=localStorage.getItem("mlm-lang")}catch(e){}if(lang!=="tr")return;document.documentElement.lang="tr";document.querySelectorAll("header [data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=el.dataset.tr});document.querySelectorAll("header [data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",el.dataset.hrefTr)});var sel=document.getElementById("lang");if(sel)sel.value="tr"})();
+</script>
+<main class="shell">
+<div class="page-head"><h1 data-i18n="heading">Messages</h1><p data-i18n="lead">Messages from MarketLevelMap about your account.</p></div>
+<section id="v-loading" class="card"><p class="muted" data-i18n="loading">Loading…</p></section>
+<section id="v-out" class="card" hidden><h2 data-i18n="outTitle">Sign in</h2><p class="small muted" data-i18n="outText">Sign in to see your messages.</p><p><a class="btn" id="google-in" href="/api/auth/google/start?return=%2Fmessages" data-i18n="signIn">Sign in with Google</a></p></section>
+<section id="v-list" hidden>
+<div class="mtools"><div class="mtabs" role="tablist"><button type="button" data-f="all" aria-pressed="true"><span data-i18n="all">All</span> <b id="n-all">0</b></button><button type="button" data-f="unread" aria-pressed="false"><span data-i18n="unread">Unread</span> <b id="n-unread">0</b></button></div><button class="btn ghost" type="button" id="read-all" data-i18n="readAll">Mark all as read</button></div>
+<ul class="mlist" id="mlist"></ul>
+<p class="card muted" id="empty" hidden></p>
+</section>
+</main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+<script>
+var copy={
+en:{title:"Messages",heading:"Messages",lead:"Messages from MarketLevelMap about your account.",loading:"Loading…",outTitle:"Sign in",outText:"Sign in to see your messages.",signIn:"Sign in with Google",all:"All",unread:"Unread",readAll:"Mark all as read",isUnread:"Unread",isRead:"Read",markRead:"Mark as read",none:"You have no messages yet.",noneUnread:"No unread messages.",from:"MarketLevelMap"},
+tr:{title:"Mesajlar",heading:"Mesajlar",lead:"Hesabınızla ilgili MarketLevelMap mesajları.",loading:"Yükleniyor…",outTitle:"Giriş yap",outText:"Mesajlarınızı görmek için giriş yapın.",signIn:"Google ile giriş yap",all:"Tümü",unread:"Okunmamış",readAll:"Tümünü okundu işaretle",isUnread:"Okunmamış",isRead:"Okundu",markRead:"Okundu işaretle",none:"Henüz mesajınız yok.",noneUnread:"Okunmamış mesajınız yok.",from:"MarketLevelMap"}
+};
+/* Messages from the admins (README "Accounts", messages). A message stays unread until the reader opens it here (a click
+   on it, or "Mark as read"); "Mark all as read" marks the rest. The header badge follows. */
+var list=[],filter="all";
+function lang(){return document.getElementById("lang").value==="tr"?"tr":"en"}
+function words(){return copy[lang()]}
+function $(id){return document.getElementById(id)}
+function show(v){["v-loading","v-out","v-list"].forEach(function(x){$(x).hidden=x!==v})}
+function post(path,body){return fetch(path,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})}).then(function(r){return r.json().catch(function(){return{error:"server"}}).then(function(d){d._status=r.status;return d})})}
+function unreadCount(){return list.filter(function(m){return !m.readAt}).length}
+function syncBadge(){if(window.MLMAccount&&MLMAccount.setUnread)MLMAccount.setUnread(unreadCount())}
+function markRead(ids){
+  var at=new Date().toISOString();list.forEach(function(m){if(!m.readAt&&(!ids||ids.indexOf(m.id)>-1))m.readAt=at});render();syncBadge();
+  post("/api/auth/messages/read",ids?{ids:ids}:{});
+}
+function render(){
+  var w=words(),ul=$("mlist"),shown=list.filter(function(m){return filter==="all"||!m.readAt}),n=unreadCount();
+  $("n-all").textContent=list.length;$("n-unread").textContent=n;$("read-all").hidden=!n;
+  document.querySelectorAll(".mtabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.f===filter))});
+  ul.textContent="";
+  shown.forEach(function(m){
+    var li=document.createElement("li");li.className="m"+(m.readAt?"":" unread");li.tabIndex=0;
+    var meta=document.createElement("div");meta.className="meta";
+    var when=document.createElement("span");when.textContent=w.from+" · "+new Date(m.createdAt).toLocaleString(lang()==="tr"?"tr-TR":"en-GB",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"});
+    var st=document.createElement("span");st.className="state";st.textContent=m.readAt?w.isRead:w.isUnread;meta.appendChild(when);meta.appendChild(st);
+    var p=document.createElement("p");p.textContent=m.body;li.appendChild(meta);li.appendChild(p);
+    if(!m.readAt){var b=document.createElement("button");b.type="button";b.className="mark";b.textContent=w.markRead;li.appendChild(b);
+      li.addEventListener("click",function(){markRead([m.id])});li.addEventListener("keydown",function(e){if(e.key==="Enter")markRead([m.id])})}
+    ul.appendChild(li);
+  });
+  var empty=$("empty");empty.hidden=shown.length>0;empty.textContent=filter==="unread"&&list.length?w.noneUnread:w.none;
+}
+function applyLanguage(value){
+  var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){if(typeof t[el.dataset.i18n]==="string")el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+  document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
+  if(!$("v-list").hidden)render();
+  try{localStorage.setItem("mlm-lang",value)}catch(e){}
+}
+var langSel=$("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
+langSel.value=savedLang==="tr"?"tr":"en";applyLanguage(langSel.value);langSel.addEventListener("change",function(){applyLanguage(this.value)});
+var toggle=$("theme-toggle");
+function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+
+
+document.querySelectorAll(".mtabs button").forEach(function(b){b.addEventListener("click",function(){filter=b.dataset.f;render()})});
+$("read-all").addEventListener("click",function(){markRead(null)});
+fetch("/api/auth/messages",{credentials:"same-origin",cache:"no-store"}).then(function(r){if(r.status===401){show("v-out");return null}return r.json()}).then(function(d){
+  if(!d)return;list=d.messages||[];show("v-list");render();
+}).catch(function(){show("v-out")});
+</script>
+</body></html>

@@ -11,7 +11,7 @@
   var hinted = /(?:^|;\s*)mlm_li=1/.test(document.cookie);
   var user = null, box = null, resolveReady, drawn = "";
   var ready = new Promise(function (r) { resolveReady = r; });
-  // setUnread: the account page marks the messages read and clears the badge without asking the server again.
+  // setUnread: the messages page updates the badge as messages are read, without asking the server again.
   window.MLMAccount = { ready: ready, user: function () { return user; }, setUnread: function (n) { if (user) { user.unread = n; render(); } } };
 
   function lang() {
@@ -75,9 +75,11 @@
       who.appendChild(n); who.appendChild(e); who.appendChild(st); menu.appendChild(who);
     }
     var prof = document.createElement("a"); prof.href = "/account"; prof.textContent = t.profile; menu.appendChild(prof);
+    // Messages page: always in the menu for a signed-in user, with the unread count when there is one.
     var unread = user ? Number(user.unread) || 0 : 0;
-    if (unread) { var msgs = document.createElement("a"); msgs.href = "/account#messages"; msgs.textContent = t.messages;
-      var mc = document.createElement("span"); mc.className = "acct-count"; mc.textContent = String(unread); msgs.appendChild(mc); menu.appendChild(msgs); }
+    if (user) { var msgs = document.createElement("a"); msgs.href = "/messages"; msgs.textContent = t.messages;
+      if (unread) { var mc = document.createElement("span"); mc.className = "acct-count"; mc.textContent = String(unread); msgs.appendChild(mc); }
+      menu.appendChild(msgs); }
     var pending = user && user.isAdmin ? Number(user.pendingCount) || 0 : 0;
     if (user && user.isAdmin) { var adm = document.createElement("a"); adm.href = "/admin"; adm.textContent = t.admin;
       if (pending) { var cnt = document.createElement("span"); cnt.className = "acct-count"; cnt.textContent = String(pending); adm.appendChild(cnt); }

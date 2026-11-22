@@ -1143,13 +1143,16 @@ Sign-in with Google, the profile, membership verification, the admin panel and t
   code by DM from that X account (code with Copy). Under them: approval after a manual check, usually within 24 hours.
   After approval the X username field moves to the "Usernames" card (locked) and the steps go away.
 - **Messages** (admins → one user): the admin panel's "Message" button on a user opens their earlier messages (date,
-  read or not, delete) and a box to write a new one (at most 2000 characters, 200 per user). The user sees them on the
-  account page in a "Messages" card right under the status card (newest first; the ones not read before are marked
-  "New" on that visit, then all are marked read). The account button in the header shows the unread count (added to
-  the admins' waiting-applications count) and its menu a "Messages" link to `/account#messages`. Table `messages`
-  (`id, user_id, body, created_at, read_at`), deleted with the account; API `GET messages`, `POST messages/read`,
-  `GET admin/messages?userId=`, `POST admin/message`, `POST admin/message/remove`; `me` carries `unread`. No e-mail or
-  push yet (planned: e-mail second, push in December).
+  read or not, delete) and a box to write a new one (at most 2000 characters, 200 per user). The user reads them on
+  their own page, `messages.html` (`/messages`, noindex): "All" / "Unread" tabs with counts; unread messages have an
+  accent edge, bold text, an "Unread" tag and a "Mark as read" button; a message stays unread until the user clicks it
+  (or that button), and "Mark all as read" marks the rest; read ones are muted and tagged "Read". Opening the page
+  marks nothing. The header account button shows the unread count as a badge (added to the admins'
+  waiting-applications count), its menu always has "Messages" (with the count); the account page shows "You have n
+  unread message(s) → Messages" under the status. Table `messages` (`id, user_id, body, created_at, read_at`),
+  deleted with the account; API `GET messages`, `POST messages/read { ids? }` (the user's own only; all without ids),
+  `GET admin/messages?userId=`, `POST admin/message`, `POST admin/message/remove`; `me` carries `unread`. No e-mail
+  or push yet (planned: e-mail second, push in December).
 - **Deletion:** removes the account; the X username stays reserved for 30 days (`x_locks`).
 - **Header:** `assets/account.js` (on every page, library pages included) shows "Sign in" or the profile menu;
   admins also get an "Admin panel" link.

@@ -9,6 +9,7 @@ const PAGES = {
   "/weekly": { title: "Weekly outlook · MarketLevelMap", description: "How the analysed assets closed last week and where they start this one: weekly change, monthly and yearly open, all-time high and timeframe alignment." },
   "/weekly-events": { title: "Weekly events · MarketLevelMap", description: "Market-moving events of the week: macro data releases and central-bank decisions." },
   "/flow": { title: "Live flow · MarketLevelMap", description: "Members-only live order flow for crypto spot: combined order book, CVD, depth and Time & Sales from Binance, OKX and Coinbase." },
+  "/messages": { title: "Messages · MarketLevelMap", description: "Messages from MarketLevelMap about your account." },
   "/archive": { title: "Archive · MarketLevelMap", description: "Earlier MarketLevelMap analyses by date." },
   "/bulletin": { title: "Analysis · MarketLevelMap", description: DEFAULT_DESCRIPTION },
   "/multi": { title: "Multi view · MarketLevelMap", description: "Two or four analysis charts side by side: candles, Critical Zones and live prices for the analysed assets." },
