@@ -62,7 +62,7 @@ dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-
 .msearch{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:720px;margin:0 0 12px}.msearch input{flex:1 1 260px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--fg)}
 .m.sent .to{color:var(--fg);font-weight:700}.m.sent p{color:var(--fg)}.m.sent .state.pending{border-color:var(--cz,#e8a765);color:var(--cz,#e8a765)}
 .m .del{margin-left:auto;height:26px;padding:0 10px;border:1px solid var(--line);border-radius:7px;background:none;color:var(--down);font-size:12px;cursor:pointer}
-</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=984c708e" defer></script></head><body><div class="shell"><header>
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c70364fc" defer></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="multi" data-tr="Çoklu izleme">Multi view</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
@@ -164,7 +164,7 @@ function renderSent(){
     meta.appendChild(el("span","state"+(t.readAt?"":" pending"),t.readAt?w.isRead:w.notRead));
     if(t.newReplies)meta.appendChild(el("span","state newr",w.newReplies.replace("{n}",t.newReplies)));
     var del=el("button","del",w.del);del.type="button";
-    del.addEventListener("click",function(e){e.stopPropagation();if(!confirm(w.delAsk))return;post("/api/auth/admin/message/remove",{id:t.id}).then(loadSent)});
+    del.addEventListener("click",function(e){e.stopPropagation();if(!confirm(w.delAsk))return;post("/api/auth/admin/message/remove",{id:t.id}).then(reloadAll)});
     meta.appendChild(del);li.appendChild(meta);li.appendChild(el("p","body",t.body));
     if(t.replies.length)li.appendChild(thread(t,t.user.name||t.user.xHandle||t.user.email));
     if(t.newReplies){li.addEventListener("click",function(){post("/api/auth/admin/messages/read",{ids:[t.id]});t.replies.forEach(function(r){if(r.fromUser)r.readAt=r.readAt||new Date().toISOString()});t.newReplies=0;renderSent();syncReplyBadge()})}
@@ -181,6 +181,17 @@ function loadSent(){
   fetch("/api/auth/admin/messages/sent"+(q?"?q="+encodeURIComponent(q):""),{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(d){
     if(!d||filter!=="sent")return;sent=(d.messages||[]).map(function(t){t.replies=t.replies||[];return t});renderSent();
   }).catch(function(){});
+}
+// Everything again after a change (a deleted thread): the user's own threads, the Sent list when it is open, and the
+// header badge; the open tab, the search text and the scroll position stay.
+function loadInbox(){
+  return fetch("/api/auth/messages",{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(d){
+    if(d){list=(d.messages||[]).map(function(t){t.replies=t.replies||[];return t});if(d.replyMax)replyMax=d.replyMax}
+  }).catch(function(){});
+}
+function reloadAll(){
+  openReply=null;
+  return loadInbox().then(function(){render();if(filter==="sent")loadSent();if(window.MLMAccount&&MLMAccount.refresh)MLMAccount.refresh()});
 }
 function render(){
   var n=list.filter(isUnread).length;

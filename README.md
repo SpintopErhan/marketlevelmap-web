@@ -1154,7 +1154,9 @@ Sign-in with Google, the profile, membership verification, the admin panel and t
   - **Admins** get a third tab, "Sent": every thread with any user (at most 200), the ones with replies no admin has
     read first ("n new replies", the reply tagged "New", "Seen" once read), then by the latest message; recipient
     (name · X username · e-mail), date, read state, Delete (the thread with its replies), and "Answer" to write in the
-    thread. A click on a thread with new replies marks them read; answering does too. Search covers the messages,
+    thread. A click on a thread with new replies marks them read; answering does too. After a delete the page loads
+    everything again in place (both lists, the tab counts and the header badge via `MLMAccount.refresh()`), keeping
+    the open tab and the search text; the admin panel's per-user history refreshes the badge the same way. Search covers the messages,
     replies included, and the recipient's name, e-mail, X username or code.
   - **Badges:** the header account button counts the user's unread admin messages, plus for admins the unread replies
     and the waiting applications; its menu always has "Messages" (with the count). The account page shows "You have n
