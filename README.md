@@ -1137,6 +1137,11 @@ Sign-in with Google, the profile, membership verification, the admin panel and t
   for verification); Telegram username (typed by hand); a permanent verification code `MLM-XXXX-XXXX`; status
   `registered` → `pending` → `approved` / `rejected` / `suspended`. A rejected user re-applies by saving the X
   username again with the same code.
+- **Verification steps** (account page, until approval): one card, three numbered steps — 1. the X username field
+  and its Save button; 2. follow @marketlevelmap on X (required; a button opens the profile; the note says accounts
+  that do not follow are not approved and that our replies would otherwise land in X "Message requests"); 3. send the
+  code by DM from that X account (code with Copy). Under them: approval after a manual check, usually within 24 hours.
+  After approval the X username field moves to the "Usernames" card (locked) and the steps go away.
 - **Deletion:** removes the account; the X username stays reserved for 30 days (`x_locks`).
 - **Header:** `assets/account.js` (on every page, library pages included) shows "Sign in" or the profile menu;
   admins also get an "Admin panel" link.
