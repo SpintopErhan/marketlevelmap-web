@@ -20,6 +20,8 @@
 //   POST alarms { kind, cond, asset, price | zone, tf, lang } → members: a new alarm (README "Alarms")
 //   POST alarms/remove { id } · alarms/rearm { id } → members: delete, or switch a fired alarm on again
 //   POST push/subscribe { subscription } · push/unsubscribe { endpoint } · push/test → members: this device's web push
+//   GET  messages · POST messages/read              → signed in: messages from the admins (newest 50), mark all read
+//   GET  admin/messages?userId= · POST admin/message { userId, body } · admin/message/remove { id } → admin only
 //
 // Bindings and variables (Cloudflare Pages settings): USERS_DB (D1), GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
 // SESSION_SECRET, ADMIN_EMAILS (comma separated). Secrets are never sent to the browser. Alarms: VAPID_PUBLIC_KEY,
@@ -128,11 +130,25 @@ async function db(env) {
         PRIMARY KEY (user_id, key)
       )`),
       ...ALARM_SCHEMA.map((sql) => d.prepare(sql)),
+      ...MESSAGE_SCHEMA.map((sql) => d.prepare(sql)),
     ]);
     schemaReady = true;
   }
   return d;
 }
+// Messages from the admins to one user (README "Accounts", messages). Shown on the account page; read_at is set
+// when the user opens that page.
+const MESSAGE_SCHEMA = [
+  `CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    body TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    read_at TEXT
+  )`,
+  `CREATE INDEX IF NOT EXISTS messages_user ON messages (user_id, created_at)`,
+];
+const MESSAGE_MAX_CHARS = 2000, MESSAGE_MAX_PER_USER = 200;
 function newCode() {
   const bytes = crypto.getRandomValues(new Uint8Array(8));
   const chars = Array.from(bytes, (b) => CODE_ALPHABET[b % CODE_ALPHABET.length]).join("");
@@ -226,6 +242,8 @@ async function me(request, env) {
   const row = await sessionUser(request, env);
   if (row) {
     const user = publicUser(row, env);
+    // Unread messages from the admins (the badge on the account button).
+    try { user.unread = Number(((await (await db(env)).prepare("SELECT COUNT(*) AS n FROM messages WHERE user_id = ? AND read_at IS NULL").bind(row.id).first()) || {}).n) || 0; } catch (_) { user.unread = 0; }
     // Admins: how many applications wait for a decision (the badge on the account button).
     if (user.isAdmin) {
       try { user.pendingCount = Number(((await (await db(env)).prepare("SELECT COUNT(*) AS n FROM users WHERE status = 'pending'").first()) || {}).n) || 0; } catch (_) { user.pendingCount = 0; }
@@ -306,7 +324,8 @@ async function remove(request, env) {
   if (!row) return json({ error: "signed_out" }, 401);
   const d = await db(env);
   const statements = [d.prepare("DELETE FROM users WHERE id = ?").bind(row.id), d.prepare("DELETE FROM drawings WHERE user_id = ?").bind(row.id),
-    d.prepare("DELETE FROM alarms WHERE user_id = ?").bind(row.id), d.prepare("DELETE FROM push_subs WHERE user_id = ?").bind(row.id)];
+    d.prepare("DELETE FROM alarms WHERE user_id = ?").bind(row.id), d.prepare("DELETE FROM push_subs WHERE user_id = ?").bind(row.id),
+    d.prepare("DELETE FROM messages WHERE user_id = ?").bind(row.id)];
   if (row.x_handle_lc) statements.push(d.prepare("INSERT OR REPLACE INTO x_locks (x_handle_lc, until) VALUES (?, ?)").bind(row.x_handle_lc, iso(now() + X_LOCK_DAYS * 86400)));
   await d.batch(statements);
   return json({ ok: true }, 200, { "Set-Cookie": [clear(COOKIE.session), clear(COOKIE.hint, "/", false)] });
@@ -526,6 +545,43 @@ async function adminAction(request, env, body) {
   return json({ user: adminRow(await d.prepare("SELECT * FROM users WHERE id = ?").bind(row.id).first()) });
 }
 
+// ---------- messages (README "Accounts", messages): admins write to one user; the user reads them on /account ----------
+const messageRow = (r) => ({ id: r.id, body: r.body, createdAt: r.created_at, readAt: r.read_at || null });
+async function messagesGet(request, env) {
+  const row = await sessionUser(request, env);
+  if (!row) return json({ error: "signed_out" }, 401);
+  const list = (await (await db(env)).prepare("SELECT * FROM messages WHERE user_id = ? ORDER BY created_at DESC, id DESC LIMIT 50").bind(row.id).all()).results || [];
+  return json({ messages: list.map(messageRow) });
+}
+async function messagesRead(request, env) {
+  const row = await sessionUser(request, env);
+  if (!row) return json({ error: "signed_out" }, 401);
+  await (await db(env)).prepare("UPDATE messages SET read_at = ? WHERE user_id = ? AND read_at IS NULL").bind(iso(now()), row.id).run();
+  return json({ ok: true });
+}
+async function adminMessages(request, env) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  const id = Number(new URL(request.url).searchParams.get("userId")) || 0;
+  const list = (await (await db(env)).prepare("SELECT * FROM messages WHERE user_id = ? ORDER BY created_at DESC, id DESC LIMIT 50").bind(id).all()).results || [];
+  return json({ messages: list.map(messageRow) });
+}
+async function adminMessageSend(request, env, body) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  const d = await db(env), id = Number(body.userId) || 0, text = String(body.body || "").trim();
+  if (!text) return json({ error: "empty" }, 400);
+  if (text.length > MESSAGE_MAX_CHARS) return json({ error: "too_long" }, 400);
+  if (!(await d.prepare("SELECT id FROM users WHERE id = ?").bind(id).first())) return json({ error: "not_found" }, 404);
+  const n = Number(((await d.prepare("SELECT COUNT(*) AS n FROM messages WHERE user_id = ?").bind(id).first()) || {}).n) || 0;
+  if (n >= MESSAGE_MAX_PER_USER) return json({ error: "too_many" }, 409);
+  const at = iso(now()), r = await d.prepare("INSERT INTO messages (user_id, body, created_at) VALUES (?, ?, ?)").bind(id, text, at).run();
+  return json({ message: { id: r.meta.last_row_id, body: text, createdAt: at, readAt: null } });
+}
+async function adminMessageRemove(request, env, body) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  await (await db(env)).prepare("DELETE FROM messages WHERE id = ?").bind(Number(body.id) || 0).run();
+  return json({ ok: true });
+}
+
 // ---------- social media planner (admin only; README "Social media planner") ----------
 // One plan per week (Monday, UTC): Mon weekly outlook · Tue/Thu/Sat a 1D chart · Wed/Fri a 4H chart · Sun the
 // week's review, plus the library's topic of the week as an extra Wednesday post. Mode "auto" stores the suggested plan the first time a week is opened; mode "manual" only
@@ -684,6 +740,8 @@ export async function onRequest(context) {
       if (route === "admin/social") return await adminSocial(request, env);
       if (route === "drawings") return await drawingsGet(request, env);
       if (route === "alarms") return await alarmsGet(request, env);
+      if (route === "messages") return await messagesGet(request, env);
+      if (route === "admin/messages") return await adminMessages(request, env);
       return json({ error: "not_found" }, 404);
     }
     if (request.method !== "POST") return json({ error: "method" }, 405);
@@ -704,6 +762,9 @@ export async function onRequest(context) {
     if (route === "push/unsubscribe") return await pushUnsubscribe(request, env, body);
     if (route === "push/test") return await pushTest(request, env, body);
     if (route === "admin/action") return await adminAction(request, env, body);
+    if (route === "messages/read") return await messagesRead(request, env);
+    if (route === "admin/message") return await adminMessageSend(request, env, body);
+    if (route === "admin/message/remove") return await adminMessageRemove(request, env, body);
     if (route === "admin/social/plan") return await adminSocialPlan(request, env, body);
     if (route === "admin/social/post") return await adminSocialPost(request, env, body);
     if (route === "admin/social/settings") return await adminSocialSettings(request, env, body);
