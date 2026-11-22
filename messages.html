@@ -51,6 +51,9 @@ dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-
 .m.unread{border-left-color:var(--accent);cursor:pointer}.m.unread p{color:var(--fg);font-weight:600}.m.unread .state{border-color:var(--accent);background:var(--accent);color:#fff}
 .m .mark{margin-top:10px;height:30px;padding:0 12px;border:1px solid var(--accent);border-radius:8px;background:none;color:var(--accent);font-size:12px;font-weight:700;cursor:pointer}
 #empty{max-width:720px}
+.msearch{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:720px;margin:0 0 12px}.msearch input{flex:1 1 260px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--fg)}
+.m.sent .to{color:var(--fg);font-weight:700}.m.sent p{color:var(--fg)}.m.sent .state.pending{border-color:var(--cz,#e8a765);color:var(--cz,#e8a765)}
+.m .del{margin-left:auto;height:26px;padding:0 10px;border:1px solid var(--line);border-radius:7px;background:none;color:var(--down);font-size:12px;cursor:pointer}
 </style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=8157cd7b" defer></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="multi" data-tr="Çoklu izleme">Multi view</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
@@ -63,20 +66,23 @@ dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-
 <section id="v-loading" class="card"><p class="muted" data-i18n="loading">Loading…</p></section>
 <section id="v-out" class="card" hidden><h2 data-i18n="outTitle">Sign in</h2><p class="small muted" data-i18n="outText">Sign in to see your messages.</p><p><a class="btn" id="google-in" href="/api/auth/google/start?return=%2Fmessages" data-i18n="signIn">Sign in with Google</a></p></section>
 <section id="v-list" hidden>
-<div class="mtools"><div class="mtabs" role="tablist"><button type="button" data-f="all" aria-pressed="true"><span data-i18n="all">All</span> <b id="n-all">0</b></button><button type="button" data-f="unread" aria-pressed="false"><span data-i18n="unread">Unread</span> <b id="n-unread">0</b></button></div><button class="btn ghost" type="button" id="read-all" data-i18n="readAll">Mark all as read</button></div>
+<div class="mtools"><div class="mtabs" role="tablist"><button type="button" data-f="unread" aria-pressed="true"><span data-i18n="unread">Unread</span> <b id="n-unread">0</b></button><button type="button" data-f="all" aria-pressed="false"><span data-i18n="all">All</span> <b id="n-all">0</b></button><button type="button" data-f="sent" aria-pressed="false" id="tab-sent" hidden><span data-i18n="sent">Sent</span></button></div><button class="btn ghost" type="button" id="read-all" data-i18n="readAll">Mark all as read</button></div>
+<div class="msearch" id="sent-tools" hidden><input type="search" id="sent-q" autocomplete="off" spellcheck="false" data-i18n-ph="sentSearch" placeholder="Search text, name, e-mail, X username or code"><span class="muted small" id="sent-count"></span></div>
 <ul class="mlist" id="mlist"></ul>
 <p class="card muted" id="empty" hidden></p>
+<p class="small" id="to-all" hidden><a href="#" id="to-all-link" data-i18n="showAll">Show all messages</a></p>
 </section>
 </main>
 <div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 <script>
 var copy={
-en:{title:"Messages",heading:"Messages",lead:"Messages from MarketLevelMap about your account.",loading:"Loading…",outTitle:"Sign in",outText:"Sign in to see your messages.",signIn:"Sign in with Google",all:"All",unread:"Unread",readAll:"Mark all as read",isUnread:"Unread",isRead:"Read",markRead:"Mark as read",none:"You have no messages yet.",noneUnread:"No unread messages.",from:"MarketLevelMap"},
-tr:{title:"Mesajlar",heading:"Mesajlar",lead:"Hesabınızla ilgili MarketLevelMap mesajları.",loading:"Yükleniyor…",outTitle:"Giriş yap",outText:"Mesajlarınızı görmek için giriş yapın.",signIn:"Google ile giriş yap",all:"Tümü",unread:"Okunmamış",readAll:"Tümünü okundu işaretle",isUnread:"Okunmamış",isRead:"Okundu",markRead:"Okundu işaretle",none:"Henüz mesajınız yok.",noneUnread:"Okunmamış mesajınız yok.",from:"MarketLevelMap"}
+en:{title:"Messages",heading:"Messages",lead:"Messages from MarketLevelMap about your account.",loading:"Loading…",outTitle:"Sign in",outText:"Sign in to see your messages.",signIn:"Sign in with Google",all:"All",unread:"Unread",sent:"Sent",sentSearch:"Search text, name, e-mail, X username or code",sentCount:"{n} messages",sentNone:"No sent messages found.",to:"To",del:"Delete",delAsk:"Delete this message?",notRead:"Not read yet",showAll:"Show all messages",readAll:"Mark all as read",isUnread:"Unread",isRead:"Read",markRead:"Mark as read",none:"You have no messages yet.",noneUnread:"No unread messages.",from:"MarketLevelMap"},
+tr:{title:"Mesajlar",heading:"Mesajlar",lead:"Hesabınızla ilgili MarketLevelMap mesajları.",loading:"Yükleniyor…",outTitle:"Giriş yap",outText:"Mesajlarınızı görmek için giriş yapın.",signIn:"Google ile giriş yap",all:"Tümü",unread:"Okunmamış",sent:"Gönderilenler",sentSearch:"Metin, ad, e-posta, X kullanıcı adı ya da kod ara",sentCount:"{n} mesaj",sentNone:"Gönderilen mesaj bulunamadı.",to:"Alıcı",del:"Sil",delAsk:"Bu mesaj silinsin mi?",notRead:"Henüz okunmadı",showAll:"Tüm mesajları göster",readAll:"Tümünü okundu işaretle",isUnread:"Okunmamış",isRead:"Okundu",markRead:"Okundu işaretle",none:"Henüz mesajınız yok.",noneUnread:"Okunmamış mesajınız yok.",from:"MarketLevelMap"}
 };
 /* Messages from the admins (README "Accounts", messages). A message stays unread until the reader opens it here (a click
    on it, or "Mark as read"); "Mark all as read" marks the rest. The header badge follows. */
-var list=[],filter="all";
+// The page opens on "Unread"; "All" on request. Admins also get "Sent": every message sent to any user, searchable.
+var list=[],filter="unread",sent=[],sentTimer=null;
 function lang(){return document.getElementById("lang").value==="tr"?"tr":"en"}
 function words(){return copy[lang()]}
 function $(id){return document.getElementById(id)}
@@ -88,9 +94,34 @@ function markRead(ids){
   var at=new Date().toISOString();list.forEach(function(m){if(!m.readAt&&(!ids||ids.indexOf(m.id)>-1))m.readAt=at});render();syncBadge();
   post("/api/auth/messages/read",ids?{ids:ids}:{});
 }
+function fmtDate(iso){return new Date(iso).toLocaleString(lang()==="tr"?"tr-TR":"en-GB",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"})}
+function renderSent(){
+  var w=words(),ul=$("mlist");ul.textContent="";$("sent-count").textContent=w.sentCount.replace("{n}",sent.length);
+  sent.forEach(function(m){
+    var li=document.createElement("li");li.className="m sent";var meta=document.createElement("div");meta.className="meta";
+    var to=document.createElement("span");to.className="to";to.textContent=w.to+": "+[m.user.name,m.user.xHandle,m.user.email].filter(Boolean).join(" · ");
+    var when=document.createElement("span");when.textContent=fmtDate(m.createdAt);
+    var st=document.createElement("span");st.className="state"+(m.readAt?"":" pending");st.textContent=m.readAt?w.isRead:w.notRead;
+    var del=document.createElement("button");del.type="button";del.className="del";del.textContent=w.del;
+    del.addEventListener("click",function(){if(!confirm(w.delAsk))return;post("/api/auth/admin/message/remove",{id:m.id}).then(loadSent)});
+    meta.appendChild(to);meta.appendChild(when);meta.appendChild(st);meta.appendChild(del);
+    var p=document.createElement("p");p.textContent=m.body;li.appendChild(meta);li.appendChild(p);ul.appendChild(li);
+  });
+  var empty=$("empty");empty.hidden=sent.length>0;empty.textContent=w.sentNone;
+}
+function loadSent(){
+  var q=$("sent-q").value.trim();
+  fetch("/api/auth/admin/messages/sent"+(q?"?q="+encodeURIComponent(q):""),{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(d){
+    if(!d||filter!=="sent")return;sent=d.messages||[];renderSent();
+  }).catch(function(){});
+}
 function render(){
-  var w=words(),ul=$("mlist"),shown=list.filter(function(m){return filter==="all"||!m.readAt}),n=unreadCount();
-  $("n-all").textContent=list.length;$("n-unread").textContent=n;$("read-all").hidden=!n;
+  var w=words(),ul=$("mlist"),n=unreadCount();
+  $("n-all").textContent=list.length;$("n-unread").textContent=n;
+  document.querySelectorAll(".mtabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.f===filter))});
+  $("sent-tools").hidden=filter!=="sent";$("read-all").hidden=filter==="sent"||!n;$("to-all").hidden=true;
+  if(filter==="sent"){renderSent();return}
+  var shown=list.filter(function(m){return filter==="all"||!m.readAt});
   document.querySelectorAll(".mtabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.f===filter))});
   ul.textContent="";
   shown.forEach(function(m){
@@ -104,10 +135,12 @@ function render(){
     ul.appendChild(li);
   });
   var empty=$("empty");empty.hidden=shown.length>0;empty.textContent=filter==="unread"&&list.length?w.noneUnread:w.none;
+  $("to-all").hidden=!(filter==="unread"&&!shown.length&&list.length);
 }
 function applyLanguage(value){
   var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
   document.querySelectorAll("[data-i18n]").forEach(function(el){if(typeof t[el.dataset.i18n]==="string")el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-i18n-ph]").forEach(function(el){el.placeholder=t[el.dataset.i18nPh]});
   document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
   document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
   if(!$("v-list").hidden)render();
@@ -121,7 +154,12 @@ function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));
 toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
 
 
-document.querySelectorAll(".mtabs button").forEach(function(b){b.addEventListener("click",function(){filter=b.dataset.f;render()})});
+document.querySelectorAll(".mtabs button").forEach(function(b){b.addEventListener("click",function(){filter=b.dataset.f;render();if(filter==="sent")loadSent()})});
+$("to-all-link").addEventListener("click",function(e){e.preventDefault();filter="all";render()});
+$("sent-q").addEventListener("input",function(){clearTimeout(sentTimer);sentTimer=setTimeout(loadSent,300)});
+// account.js is deferred, so it is ready only after this inline script; admins get the "Sent" tab.
+function adminTab(){if(window.MLMAccount)MLMAccount.ready.then(function(u){if(u&&u.isAdmin)$("tab-sent").hidden=false})}
+if(window.MLMAccount)adminTab();else document.addEventListener("DOMContentLoaded",adminTab);
 $("read-all").addEventListener("click",function(){markRead(null)});
 fetch("/api/auth/messages",{credentials:"same-origin",cache:"no-store"}).then(function(r){if(r.status===401){show("v-out");return null}return r.json()}).then(function(d){
   if(!d)return;list=d.messages||[];show("v-list");render();
