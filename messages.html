@@ -51,10 +51,18 @@ dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-
 .m.unread{border-left-color:var(--accent);cursor:pointer}.m.unread p{color:var(--fg);font-weight:600}.m.unread .state{border-color:var(--accent);background:var(--accent);color:#fff}
 .m .mark{margin-top:10px;height:30px;padding:0 12px;border:1px solid var(--accent);border-radius:8px;background:none;color:var(--accent);font-size:12px;font-weight:700;cursor:pointer}
 #empty{max-width:720px}
+.thread{display:grid;gap:8px;margin:10px 0 0;padding:0 0 0 12px;border-left:2px solid var(--line)}
+.reply{padding:8px 10px;border-radius:10px;background:var(--bg)}.reply .meta b{color:var(--fg)}.reply p{margin:3px 0 0!important;font-weight:400!important;color:var(--fg)!important}
+.reply.from-user{background:color-mix(in srgb,var(--accent) 8%,var(--bg))}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;margin-top:10px}.acts .mark{margin-top:0}
+.rbtn,.rcancel{height:30px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--fg);font-size:12px;font-weight:700;cursor:pointer}
+.rbox{flex:1 1 100%}.rbox:has(.rbtn){flex:0 0 auto}.rbox textarea{width:100%;min-height:72px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:14px;resize:vertical}
+.rrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}.rsend{height:30px;padding:0 14px;border:1px solid var(--accent);border-radius:8px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;cursor:pointer}.rmsg{color:var(--down);font-size:12px}
+.m.sent.has-new{border-left-color:var(--accent)}.m .state.newr{border-color:var(--accent);background:var(--accent);color:#fff}
 .msearch{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:720px;margin:0 0 12px}.msearch input{flex:1 1 260px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--fg)}
 .m.sent .to{color:var(--fg);font-weight:700}.m.sent p{color:var(--fg)}.m.sent .state.pending{border-color:var(--cz,#e8a765);color:var(--cz,#e8a765)}
 .m .del{margin-left:auto;height:26px;padding:0 10px;border:1px solid var(--line);border-radius:7px;background:none;color:var(--down);font-size:12px;cursor:pointer}
-</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=8157cd7b" defer></script></head><body><div class="shell"><header>
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=984c708e" defer></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="multi" data-tr="Çoklu izleme">Multi view</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
@@ -76,66 +84,110 @@ dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-
 <div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 <script>
 var copy={
-en:{title:"Messages",heading:"Messages",lead:"Messages from MarketLevelMap about your account.",loading:"Loading…",outTitle:"Sign in",outText:"Sign in to see your messages.",signIn:"Sign in with Google",all:"All",unread:"Unread",sent:"Sent",sentSearch:"Search text, name, e-mail, X username or code",sentCount:"{n} messages",sentNone:"No sent messages found.",to:"To",del:"Delete",delAsk:"Delete this message?",notRead:"Not read yet",showAll:"Show all messages",readAll:"Mark all as read",isUnread:"Unread",isRead:"Read",markRead:"Mark as read",none:"You have no messages yet.",noneUnread:"No unread messages.",from:"MarketLevelMap"},
-tr:{title:"Mesajlar",heading:"Mesajlar",lead:"Hesabınızla ilgili MarketLevelMap mesajları.",loading:"Yükleniyor…",outTitle:"Giriş yap",outText:"Mesajlarınızı görmek için giriş yapın.",signIn:"Google ile giriş yap",all:"Tümü",unread:"Okunmamış",sent:"Gönderilenler",sentSearch:"Metin, ad, e-posta, X kullanıcı adı ya da kod ara",sentCount:"{n} mesaj",sentNone:"Gönderilen mesaj bulunamadı.",to:"Alıcı",del:"Sil",delAsk:"Bu mesaj silinsin mi?",notRead:"Henüz okunmadı",showAll:"Tüm mesajları göster",readAll:"Tümünü okundu işaretle",isUnread:"Okunmamış",isRead:"Okundu",markRead:"Okundu işaretle",none:"Henüz mesajınız yok.",noneUnread:"Okunmamış mesajınız yok.",from:"MarketLevelMap"}
+en:{title:"Messages",heading:"Messages",lead:"Messages from MarketLevelMap about your account.",loading:"Loading…",outTitle:"Sign in",outText:"Sign in to see your messages.",signIn:"Sign in with Google",all:"All",unread:"Unread",sent:"Sent",sentSearch:"Search text, name, e-mail, X username or code",sentCount:"{n} messages",sentNone:"No sent messages found.",to:"To",del:"Delete",delAsk:"Delete this message and its replies?",notRead:"Not read yet",you:"You",reply:"Reply",answer:"Answer",replyPh:"Your reply",send:"Send",cancel:"Cancel",seen:"Seen",newReply:"New",newReplies:"{n} new replies",errors:{empty:"Write something first.",too_long:"The reply is too long.",too_many_today:"You can send at most 10 replies a day.",too_many:"This conversation is full.",not_found:"This message no longer exists.",server:"Something went wrong. Please try again."},showAll:"Show all messages",readAll:"Mark all as read",isUnread:"Unread",isRead:"Read",markRead:"Mark as read",none:"You have no messages yet.",noneUnread:"No unread messages.",from:"MarketLevelMap"},
+tr:{title:"Mesajlar",heading:"Mesajlar",lead:"Hesabınızla ilgili MarketLevelMap mesajları.",loading:"Yükleniyor…",outTitle:"Giriş yap",outText:"Mesajlarınızı görmek için giriş yapın.",signIn:"Google ile giriş yap",all:"Tümü",unread:"Okunmamış",sent:"Gönderilenler",sentSearch:"Metin, ad, e-posta, X kullanıcı adı ya da kod ara",sentCount:"{n} mesaj",sentNone:"Gönderilen mesaj bulunamadı.",to:"Alıcı",del:"Sil",delAsk:"Bu mesaj ve cevapları silinsin mi?",notRead:"Henüz okunmadı",you:"Siz",reply:"Cevap yaz",answer:"Yanıtla",replyPh:"Cevabınız",send:"Gönder",cancel:"Vazgeç",seen:"Görüldü",newReply:"Yeni",newReplies:"{n} yeni cevap",errors:{empty:"Önce bir şey yazın.",too_long:"Cevap çok uzun.",too_many_today:"Günde en fazla 10 cevap gönderebilirsiniz.",too_many:"Bu konuşma doldu.",not_found:"Bu mesaj artık yok.",server:"Bir sorun oluştu. Lütfen yeniden deneyin."},showAll:"Tüm mesajları göster",readAll:"Tümünü okundu işaretle",isUnread:"Okunmamış",isRead:"Okundu",markRead:"Okundu işaretle",none:"Henüz mesajınız yok.",noneUnread:"Okunmamış mesajınız yok.",from:"MarketLevelMap"}
 };
-/* Messages from the admins (README "Accounts", messages). A message stays unread until the reader opens it here (a click
-   on it, or "Mark as read"); "Mark all as read" marks the rest. The header badge follows. */
-// The page opens on "Unread"; "All" on request. Admins also get "Sent": every message sent to any user, searchable.
-var list=[],filter="unread",sent=[],sentTimer=null;
+/* Messages from the admins (README "Accounts", messages), as threads: an admin message and the replies under it. A
+   thread stays unread until the reader opens it here (a click on it, or "Mark as read"); "Mark all as read" marks the
+   rest. The user can answer an admin message (no new threads). The page opens on "Unread"; "All" on request. Admins
+   also get "Sent": every thread with any user, the ones with new replies first, searchable, answerable. */
+var list=[],filter="unread",sent=[],sentTimer=null,replyMax=1000,openReply=null;
 function lang(){return document.getElementById("lang").value==="tr"?"tr":"en"}
 function words(){return copy[lang()]}
 function $(id){return document.getElementById(id)}
 function show(v){["v-loading","v-out","v-list"].forEach(function(x){$(x).hidden=x!==v})}
 function post(path,body){return fetch(path,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})}).then(function(r){return r.json().catch(function(){return{error:"server"}}).then(function(d){d._status=r.status;return d})})}
-function unreadCount(){return list.filter(function(m){return !m.readAt}).length}
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function fmtDate(iso){return new Date(iso).toLocaleString(lang()==="tr"?"tr-TR":"en-GB",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"})}
+function lastAt(t){return t.replies.length?t.replies[t.replies.length-1].createdAt:t.createdAt}
+function isUnread(t){return !t.readAt||t.replies.some(function(r){return !r.fromUser&&!r.readAt})}
+// Unread admin rows (the header count): each thread's first message and the admins' answers in it.
+function unreadCount(){return list.reduce(function(n,t){return n+(t.readAt?0:1)+t.replies.filter(function(r){return !r.fromUser&&!r.readAt}).length},0)}
 function syncBadge(){if(window.MLMAccount&&MLMAccount.setUnread)MLMAccount.setUnread(unreadCount())}
 function markRead(ids){
-  var at=new Date().toISOString();list.forEach(function(m){if(!m.readAt&&(!ids||ids.indexOf(m.id)>-1))m.readAt=at});render();syncBadge();
-  post("/api/auth/messages/read",ids?{ids:ids}:{});
+  var at=new Date().toISOString();
+  list.forEach(function(t){if(ids&&ids.indexOf(t.id)<0)return;if(!t.readAt)t.readAt=at;t.replies.forEach(function(r){if(!r.fromUser&&!r.readAt)r.readAt=at})});
+  render();syncBadge();post("/api/auth/messages/read",ids?{ids:ids}:{});
 }
-function fmtDate(iso){return new Date(iso).toLocaleString(lang()==="tr"?"tr-TR":"en-GB",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"})}
+// The replies of a thread, oldest first: "You" / the recipient's name, or "MarketLevelMap".
+function thread(t,mine){
+  var w=words(),box=el("div","thread");
+  t.replies.forEach(function(r){
+    var item=el("div","reply"+(r.fromUser?" from-user":" from-admin")),meta=el("div","meta");
+    meta.appendChild(el("b",null,r.fromUser?mine:w.from));meta.appendChild(el("span",null,fmtDate(r.createdAt)));
+    if(r.fromUser&&mine!==w.you)meta.appendChild(el("span","state"+(r.readAt?"":" pending"),r.readAt?w.seen:w.newReply));
+    item.appendChild(meta);item.appendChild(el("p",null,r.body));box.appendChild(item);
+  });
+  return box;
+}
+// A reply box under a thread; send(text) returns a promise of { message } or { error }.
+function replyBox(t,label,send){
+  var w=words(),wrap=el("div","rbox");
+  if(openReply!==t.id){var b=el("button","rbtn",label);b.type="button";b.addEventListener("click",function(e){e.stopPropagation();openReply=t.id;render();var ta=document.querySelector('.rbox[data-t="'+t.id+'"] textarea');if(ta)ta.focus()});wrap.appendChild(b);return wrap}
+  wrap.dataset.t=t.id;
+  var ta=el("textarea");ta.maxLength=replyMax;ta.placeholder=w.replyPh;var row=el("div","rrow"),go=el("button","rsend",w.send),no=el("button","rcancel",w.cancel),cnt=el("small","muted","0 / "+replyMax),msg=el("span","rmsg");
+  go.type=no.type="button";ta.addEventListener("input",function(){cnt.textContent=ta.value.length+" / "+replyMax});
+  no.addEventListener("click",function(e){e.stopPropagation();openReply=null;render()});
+  go.addEventListener("click",function(e){e.stopPropagation();var text=ta.value.trim();if(!text)return;go.disabled=true;
+    send(text).then(function(d){go.disabled=false;if(d&&d.message){openReply=null;render()}else{msg.textContent=w.errors[d&&d.error]||w.errors.server}})});
+  row.appendChild(go);row.appendChild(no);row.appendChild(cnt);row.appendChild(msg);wrap.appendChild(ta);wrap.appendChild(row);
+  ["click","keydown"].forEach(function(ev){wrap.addEventListener(ev,function(e){e.stopPropagation()})});
+  return wrap;
+}
+function renderInbox(){
+  var w=words(),ul=$("mlist"),shown=list.filter(function(t){return filter==="all"||isUnread(t)}).sort(function(a,b){return lastAt(b).localeCompare(lastAt(a))});
+  ul.textContent="";
+  shown.forEach(function(t){
+    var un=isUnread(t),li=el("li","m"+(un?" unread":""));li.tabIndex=0;
+    var meta=el("div","meta");meta.appendChild(el("span",null,w.from+" · "+fmtDate(t.createdAt)));meta.appendChild(el("span","state",un?w.isUnread:w.isRead));
+    li.appendChild(meta);li.appendChild(el("p","body",t.body));
+    if(t.replies.length)li.appendChild(thread(t,w.you));
+    var acts=el("div","acts");
+    if(un){var b=el("button","mark",w.markRead);b.type="button";acts.appendChild(b);
+      li.addEventListener("click",function(){markRead([t.id])});li.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target===li)markRead([t.id])})}
+    acts.appendChild(replyBox(t,w.reply,function(text){
+      return post("/api/auth/messages/reply",{id:t.id,body:text}).then(function(d){
+        if(d.message){t.replies.push(d.message);var at=d.message.createdAt;if(!t.readAt)t.readAt=at;t.replies.forEach(function(r){if(!r.fromUser&&!r.readAt)r.readAt=at});syncBadge()}return d})}));
+    li.appendChild(acts);ul.appendChild(li);
+  });
+  var empty=$("empty");empty.hidden=shown.length>0;empty.textContent=filter==="unread"&&list.length?w.noneUnread:w.none;
+  $("to-all").hidden=!(filter==="unread"&&!shown.length&&list.length);
+}
+function newReplies(){return sent.reduce(function(n,t){return n+(t.newReplies||0)},0)}
+function syncReplyBadge(){if(window.MLMAccount&&MLMAccount.setReplies)MLMAccount.setReplies(newReplies())}
 function renderSent(){
   var w=words(),ul=$("mlist");ul.textContent="";$("sent-count").textContent=w.sentCount.replace("{n}",sent.length);
-  sent.forEach(function(m){
-    var li=document.createElement("li");li.className="m sent";var meta=document.createElement("div");meta.className="meta";
-    var to=document.createElement("span");to.className="to";to.textContent=w.to+": "+[m.user.name,m.user.xHandle,m.user.email].filter(Boolean).join(" · ");
-    var when=document.createElement("span");when.textContent=fmtDate(m.createdAt);
-    var st=document.createElement("span");st.className="state"+(m.readAt?"":" pending");st.textContent=m.readAt?w.isRead:w.notRead;
-    var del=document.createElement("button");del.type="button";del.className="del";del.textContent=w.del;
-    del.addEventListener("click",function(){if(!confirm(w.delAsk))return;post("/api/auth/admin/message/remove",{id:m.id}).then(loadSent)});
-    meta.appendChild(to);meta.appendChild(when);meta.appendChild(st);meta.appendChild(del);
-    var p=document.createElement("p");p.textContent=m.body;li.appendChild(meta);li.appendChild(p);ul.appendChild(li);
+  sent.forEach(function(t){
+    var li=el("li","m sent"+(t.newReplies?" has-new":"")),meta=el("div","meta");
+    meta.appendChild(el("span","to",w.to+": "+[t.user.name,t.user.xHandle,t.user.email].filter(Boolean).join(" · ")));
+    meta.appendChild(el("span",null,fmtDate(t.createdAt)));
+    meta.appendChild(el("span","state"+(t.readAt?"":" pending"),t.readAt?w.isRead:w.notRead));
+    if(t.newReplies)meta.appendChild(el("span","state newr",w.newReplies.replace("{n}",t.newReplies)));
+    var del=el("button","del",w.del);del.type="button";
+    del.addEventListener("click",function(e){e.stopPropagation();if(!confirm(w.delAsk))return;post("/api/auth/admin/message/remove",{id:t.id}).then(loadSent)});
+    meta.appendChild(del);li.appendChild(meta);li.appendChild(el("p","body",t.body));
+    if(t.replies.length)li.appendChild(thread(t,t.user.name||t.user.xHandle||t.user.email));
+    if(t.newReplies){li.addEventListener("click",function(){post("/api/auth/admin/messages/read",{ids:[t.id]});t.replies.forEach(function(r){if(r.fromUser)r.readAt=r.readAt||new Date().toISOString()});t.newReplies=0;renderSent();syncReplyBadge()})}
+    var acts=el("div","acts");
+    acts.appendChild(replyBox(t,w.answer,function(text){
+      return post("/api/auth/admin/message",{userId:t.user.id,body:text,replyTo:t.id}).then(function(d){
+        if(d.message){t.replies.push(d.message);t.replies.forEach(function(r){if(r.fromUser&&!r.readAt)r.readAt=d.message.createdAt});t.newReplies=0;syncReplyBadge()}return d})}));
+    li.appendChild(acts);ul.appendChild(li);
   });
   var empty=$("empty");empty.hidden=sent.length>0;empty.textContent=w.sentNone;
 }
 function loadSent(){
   var q=$("sent-q").value.trim();
   fetch("/api/auth/admin/messages/sent"+(q?"?q="+encodeURIComponent(q):""),{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(d){
-    if(!d||filter!=="sent")return;sent=d.messages||[];renderSent();
+    if(!d||filter!=="sent")return;sent=(d.messages||[]).map(function(t){t.replies=t.replies||[];return t});renderSent();
   }).catch(function(){});
 }
 function render(){
-  var w=words(),ul=$("mlist"),n=unreadCount();
+  var n=list.filter(isUnread).length;
   $("n-all").textContent=list.length;$("n-unread").textContent=n;
   document.querySelectorAll(".mtabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.f===filter))});
   $("sent-tools").hidden=filter!=="sent";$("read-all").hidden=filter==="sent"||!n;$("to-all").hidden=true;
-  if(filter==="sent"){renderSent();return}
-  var shown=list.filter(function(m){return filter==="all"||!m.readAt});
-  document.querySelectorAll(".mtabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.f===filter))});
-  ul.textContent="";
-  shown.forEach(function(m){
-    var li=document.createElement("li");li.className="m"+(m.readAt?"":" unread");li.tabIndex=0;
-    var meta=document.createElement("div");meta.className="meta";
-    var when=document.createElement("span");when.textContent=w.from+" · "+new Date(m.createdAt).toLocaleString(lang()==="tr"?"tr-TR":"en-GB",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"});
-    var st=document.createElement("span");st.className="state";st.textContent=m.readAt?w.isRead:w.isUnread;meta.appendChild(when);meta.appendChild(st);
-    var p=document.createElement("p");p.textContent=m.body;li.appendChild(meta);li.appendChild(p);
-    if(!m.readAt){var b=document.createElement("button");b.type="button";b.className="mark";b.textContent=w.markRead;li.appendChild(b);
-      li.addEventListener("click",function(){markRead([m.id])});li.addEventListener("keydown",function(e){if(e.key==="Enter")markRead([m.id])})}
-    ul.appendChild(li);
-  });
-  var empty=$("empty");empty.hidden=shown.length>0;empty.textContent=filter==="unread"&&list.length?w.noneUnread:w.none;
-  $("to-all").hidden=!(filter==="unread"&&!shown.length&&list.length);
+  if(filter==="sent")renderSent();else renderInbox();
 }
 function applyLanguage(value){
   var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
@@ -157,12 +209,13 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
 document.querySelectorAll(".mtabs button").forEach(function(b){b.addEventListener("click",function(){filter=b.dataset.f;render();if(filter==="sent")loadSent()})});
 $("to-all-link").addEventListener("click",function(e){e.preventDefault();filter="all";render()});
 $("sent-q").addEventListener("input",function(){clearTimeout(sentTimer);sentTimer=setTimeout(loadSent,300)});
+document.querySelectorAll(".mtabs button").forEach(function(b){b.addEventListener("click",function(){openReply=null})});
 // account.js is deferred, so it is ready only after this inline script; admins get the "Sent" tab.
 function adminTab(){if(window.MLMAccount)MLMAccount.ready.then(function(u){if(u&&u.isAdmin)$("tab-sent").hidden=false})}
 if(window.MLMAccount)adminTab();else document.addEventListener("DOMContentLoaded",adminTab);
 $("read-all").addEventListener("click",function(){markRead(null)});
 fetch("/api/auth/messages",{credentials:"same-origin",cache:"no-store"}).then(function(r){if(r.status===401){show("v-out");return null}return r.json()}).then(function(d){
-  if(!d)return;list=d.messages||[];show("v-list");render();
+  if(!d)return;list=(d.messages||[]).map(function(t){t.replies=t.replies||[];return t});if(d.replyMax)replyMax=d.replyMax;show("v-list");render();
 }).catch(function(){show("v-out")});
 </script>
 </body></html>

@@ -20,8 +20,10 @@
 //   POST alarms { kind, cond, asset, price | zone, tf, lang } → members: a new alarm (README "Alarms")
 //   POST alarms/remove { id } · alarms/rearm { id } → members: delete, or switch a fired alarm on again
 //   POST push/subscribe { subscription } · push/unsubscribe { endpoint } · push/test → members: this device's web push
-//   GET  messages · POST messages/read { ids? }     → signed in: messages from the admins (newest 50); mark read (all without ids)
-//   GET  admin/messages?userId= · admin/messages/sent?q= · POST admin/message { userId, body } · admin/message/remove { id } → admin only
+//   GET  messages · POST messages/read { ids? } · messages/reply { id, body } → signed in: threads from the admins
+//        (newest 50, with replies); mark read (all without ids); answer one (no new threads)
+//   GET  admin/messages?userId= · admin/messages/sent?q= · POST admin/message { userId, body, replyTo? } ·
+//        admin/messages/read { ids } · admin/message/remove { id } → admin only
 //
 // Bindings and variables (Cloudflare Pages settings): USERS_DB (D1), GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
 // SESSION_SECRET, ADMIN_EMAILS (comma separated). Secrets are never sent to the browser. Alarms: VAPID_PUBLIC_KEY,
@@ -132,6 +134,9 @@ async function db(env) {
       ...ALARM_SCHEMA.map((sql) => d.prepare(sql)),
       ...MESSAGE_SCHEMA.map((sql) => d.prepare(sql)),
     ]);
+    // Columns added after the messages table first shipped (replies). ALTER fails once the column exists, so each
+    // runs on its own and its error is ignored.
+    for (const sql of MESSAGE_COLUMNS) { try { await d.prepare(sql).run(); } catch (_) { /* already there */ } }
     schemaReady = true;
   }
   return d;
@@ -148,7 +153,15 @@ const MESSAGE_SCHEMA = [
   )`,
   `CREATE INDEX IF NOT EXISTS messages_user ON messages (user_id, created_at)`,
 ];
-const MESSAGE_MAX_CHARS = 2000, MESSAGE_MAX_PER_USER = 200;
+// from_user: 0 = written by an admin, 1 = the user's reply. reply_to: the admin message a row answers (a thread is
+// one admin message and the rows answering it). read_at: when the other side read it (the user for admin rows, an
+// admin for the user's replies).
+const MESSAGE_COLUMNS = [
+  "ALTER TABLE messages ADD COLUMN from_user INTEGER NOT NULL DEFAULT 0",
+  "ALTER TABLE messages ADD COLUMN reply_to INTEGER",
+  "CREATE INDEX IF NOT EXISTS messages_reply ON messages (reply_to)",
+];
+const MESSAGE_MAX_CHARS = 2000, MESSAGE_MAX_PER_USER = 200, REPLY_MAX_CHARS = 1000, REPLIES_PER_DAY = 10;
 function newCode() {
   const bytes = crypto.getRandomValues(new Uint8Array(8));
   const chars = Array.from(bytes, (b) => CODE_ALPHABET[b % CODE_ALPHABET.length]).join("");
@@ -243,10 +256,12 @@ async function me(request, env) {
   if (row) {
     const user = publicUser(row, env);
     // Unread messages from the admins (the badge on the account button).
-    try { user.unread = Number(((await (await db(env)).prepare("SELECT COUNT(*) AS n FROM messages WHERE user_id = ? AND read_at IS NULL").bind(row.id).first()) || {}).n) || 0; } catch (_) { user.unread = 0; }
+    try { user.unread = Number(((await (await db(env)).prepare("SELECT COUNT(*) AS n FROM messages WHERE user_id = ? AND from_user = 0 AND read_at IS NULL").bind(row.id).first()) || {}).n) || 0; } catch (_) { user.unread = 0; }
     // Admins: how many applications wait for a decision (the badge on the account button).
     if (user.isAdmin) {
       try { user.pendingCount = Number(((await (await db(env)).prepare("SELECT COUNT(*) AS n FROM users WHERE status = 'pending'").first()) || {}).n) || 0; } catch (_) { user.pendingCount = 0; }
+      // Users' replies no admin has read yet.
+      try { user.replyCount = Number(((await (await db(env)).prepare("SELECT COUNT(*) AS n FROM messages WHERE from_user = 1 AND read_at IS NULL").first()) || {}).n) || 0; } catch (_) { user.replyCount = 0; }
     }
     return json({ user });
   }
@@ -546,57 +561,105 @@ async function adminAction(request, env, body) {
 }
 
 // ---------- messages (README "Accounts", messages): admins write to one user; the user reads them on /account ----------
-const messageRow = (r) => ({ id: r.id, body: r.body, createdAt: r.created_at, readAt: r.read_at || null });
+const messageRow = (r) => ({ id: r.id, body: r.body, createdAt: r.created_at, readAt: r.read_at || null, fromUser: !!r.from_user });
+const idList = (v) => (Array.isArray(v) ? v.map(Number).filter((n) => Number.isInteger(n) && n > 0).slice(0, 200) : null);
+const marks = (ids) => ids.map(() => "?").join(",");
+// Threads: each admin message (reply_to NULL) with the rows answering it, oldest first.
+async function withReplies(d, roots) {
+  if (!roots.length) return [];
+  const ids = roots.map((r) => r.id);
+  const replies = (await d.prepare(`SELECT * FROM messages WHERE reply_to IN (${marks(ids)}) ORDER BY created_at, id`).bind(...ids).all()).results || [];
+  return roots.map((r) => ({ ...messageRow(r), replies: replies.filter((x) => x.reply_to === r.id).map(messageRow) }));
+}
 async function messagesGet(request, env) {
   const row = await sessionUser(request, env);
   if (!row) return json({ error: "signed_out" }, 401);
-  const list = (await (await db(env)).prepare("SELECT * FROM messages WHERE user_id = ? ORDER BY created_at DESC, id DESC LIMIT 50").bind(row.id).all()).results || [];
-  return json({ messages: list.map(messageRow) });
+  const d = await db(env);
+  const roots = (await d.prepare("SELECT * FROM messages WHERE user_id = ? AND reply_to IS NULL ORDER BY created_at DESC, id DESC LIMIT 50").bind(row.id).all()).results || [];
+  return json({ messages: await withReplies(d, roots), replyMax: REPLY_MAX_CHARS });
 }
-// { ids: [..] } marks those (the user's own only); without ids, all of the user's unread messages.
+// { ids: [thread ids] } marks the admin's rows of those threads read (the user's own only); without ids, all of them.
 async function messagesRead(request, env, body) {
   const row = await sessionUser(request, env);
   if (!row) return json({ error: "signed_out" }, 401);
-  const d = await db(env), at = iso(now());
-  const ids = Array.isArray(body && body.ids) ? body.ids.map(Number).filter((n) => Number.isInteger(n) && n > 0).slice(0, 200) : null;
-  if (ids && ids.length) await d.prepare(`UPDATE messages SET read_at = ? WHERE user_id = ? AND read_at IS NULL AND id IN (${ids.map(() => "?").join(",")})`).bind(at, row.id, ...ids).run();
-  else if (!ids) await d.prepare("UPDATE messages SET read_at = ? WHERE user_id = ? AND read_at IS NULL").bind(at, row.id).run();
+  const d = await db(env), at = iso(now()), ids = idList(body && body.ids);
+  if (ids && ids.length) await d.prepare(`UPDATE messages SET read_at = ? WHERE user_id = ? AND from_user = 0 AND read_at IS NULL AND (id IN (${marks(ids)}) OR reply_to IN (${marks(ids)}))`).bind(at, row.id, ...ids, ...ids).run();
+  else if (!ids) await d.prepare("UPDATE messages SET read_at = ? WHERE user_id = ? AND from_user = 0 AND read_at IS NULL").bind(at, row.id).run();
   return json({ ok: true });
+}
+// A user answers an admin message of theirs (any status may answer; nobody can start a thread). At most
+// REPLY_MAX_CHARS characters and REPLIES_PER_DAY replies in 24 hours. Answering also marks the thread read.
+async function messagesReply(request, env, body) {
+  const row = await sessionUser(request, env);
+  if (!row) return json({ error: "signed_out" }, 401);
+  const d = await db(env), text = String(body.body || "").trim();
+  const root = await d.prepare("SELECT * FROM messages WHERE id = ? AND user_id = ? AND reply_to IS NULL AND from_user = 0").bind(Number(body.id) || 0, row.id).first();
+  if (!root) return json({ error: "not_found" }, 404);
+  if (!text) return json({ error: "empty" }, 400);
+  if (text.length > REPLY_MAX_CHARS) return json({ error: "too_long" }, 400);
+  const today = Number(((await d.prepare("SELECT COUNT(*) AS n FROM messages WHERE user_id = ? AND from_user = 1 AND created_at > ?").bind(row.id, iso(now() - 86400)).first()) || {}).n) || 0;
+  if (today >= REPLIES_PER_DAY) return json({ error: "too_many_today" }, 429);
+  const total = Number(((await d.prepare("SELECT COUNT(*) AS n FROM messages WHERE user_id = ?").bind(row.id).first()) || {}).n) || 0;
+  if (total >= MESSAGE_MAX_PER_USER) return json({ error: "too_many" }, 409);
+  const at = iso(now());
+  const r = await d.prepare("INSERT INTO messages (user_id, body, created_at, from_user, reply_to) VALUES (?, ?, ?, 1, ?)").bind(row.id, text, at, root.id).run();
+  await d.prepare("UPDATE messages SET read_at = ? WHERE user_id = ? AND from_user = 0 AND read_at IS NULL AND (id = ? OR reply_to = ?)").bind(at, row.id, root.id, root.id).run();
+  return json({ message: { id: r.meta.last_row_id, body: text, createdAt: at, readAt: null, fromUser: true } });
 }
 async function adminMessages(request, env) {
   if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
-  const id = Number(new URL(request.url).searchParams.get("userId")) || 0;
-  const list = (await (await db(env)).prepare("SELECT * FROM messages WHERE user_id = ? ORDER BY created_at DESC, id DESC LIMIT 50").bind(id).all()).results || [];
-  return json({ messages: list.map(messageRow) });
+  const d = await db(env), id = Number(new URL(request.url).searchParams.get("userId")) || 0;
+  const roots = (await d.prepare("SELECT * FROM messages WHERE user_id = ? AND reply_to IS NULL ORDER BY created_at DESC, id DESC LIMIT 50").bind(id).all()).results || [];
+  return json({ messages: await withReplies(d, roots) });
 }
-// Every message sent to any user, newest first, with its recipient; q searches the text and the recipient's name,
-// e-mail, X username and code.
+// Every thread with any user, with its recipient: threads with replies no admin has read first, then by the latest
+// message. q searches the messages (replies included) and the recipient's name, e-mail, X username and code.
 async function adminMessagesSent(request, env) {
   if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
-  const q = String(new URL(request.url).searchParams.get("q") || "").trim().toLowerCase().slice(0, 80);
+  const d = await db(env), q = String(new URL(request.url).searchParams.get("q") || "").trim().toLowerCase().slice(0, 80);
   const args = [];
-  let where = "";
+  let where = " WHERE m.reply_to IS NULL";
   if (q) {
-    where = " WHERE (lower(m.body) LIKE ? OR lower(u.name) LIKE ? OR lower(u.email) LIKE ? OR u.x_handle_lc LIKE ? OR lower(replace(u.code, '-', '')) LIKE ?)";
-    args.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q.replace(/^@?/, "@")}%`, `%${q.replace(/[^a-z0-9]/g, "")}%`);
+    where += " AND (lower(m.body) LIKE ? OR EXISTS (SELECT 1 FROM messages r WHERE r.reply_to = m.id AND lower(r.body) LIKE ?) OR lower(u.name) LIKE ? OR lower(u.email) LIKE ? OR u.x_handle_lc LIKE ? OR lower(replace(u.code, '-', '')) LIKE ?)";
+    args.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q.replace(/^@?/, "@")}%`, `%${q.replace(/[^a-z0-9]/g, "")}%`);
   }
-  const rows = (await (await db(env)).prepare(`SELECT m.*, u.name AS u_name, u.email AS u_email, u.x_handle AS u_x, u.status AS u_status FROM messages m JOIN users u ON u.id = m.user_id${where} ORDER BY m.created_at DESC, m.id DESC LIMIT 200`).bind(...args).all()).results || [];
-  return json({ messages: rows.map((r) => ({ ...messageRow(r), user: { id: r.user_id, name: r.u_name || "", email: r.u_email, xHandle: r.u_x || "", status: r.u_status } })) });
+  const rows = (await d.prepare(`SELECT m.*, u.name AS u_name, u.email AS u_email, u.x_handle AS u_x, u.status AS u_status FROM messages m JOIN users u ON u.id = m.user_id${where} ORDER BY m.created_at DESC, m.id DESC LIMIT 200`).bind(...args).all()).results || [];
+  const list = (await withReplies(d, rows)).map((t, i) => {
+    const r = rows[i], last = t.replies.length ? t.replies[t.replies.length - 1].createdAt : t.createdAt;
+    return { ...t, lastAt: last, newReplies: t.replies.filter((x) => x.fromUser && !x.readAt).length,
+      user: { id: r.user_id, name: r.u_name || "", email: r.u_email, xHandle: r.u_x || "", status: r.u_status } };
+  });
+  list.sort((a, b) => (b.newReplies > 0) - (a.newReplies > 0) || b.lastAt.localeCompare(a.lastAt));
+  return json({ messages: list });
 }
+// { userId, body } starts a thread; with replyTo (that user's thread) it answers in it and marks the user's replies
+// there read.
 async function adminMessageSend(request, env, body) {
   if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
-  const d = await db(env), id = Number(body.userId) || 0, text = String(body.body || "").trim();
+  const d = await db(env), id = Number(body.userId) || 0, text = String(body.body || "").trim(), replyTo = Number(body.replyTo) || 0;
   if (!text) return json({ error: "empty" }, 400);
   if (text.length > MESSAGE_MAX_CHARS) return json({ error: "too_long" }, 400);
   if (!(await d.prepare("SELECT id FROM users WHERE id = ?").bind(id).first())) return json({ error: "not_found" }, 404);
+  if (replyTo && !(await d.prepare("SELECT id FROM messages WHERE id = ? AND user_id = ? AND reply_to IS NULL").bind(replyTo, id).first())) return json({ error: "not_found" }, 404);
   const n = Number(((await d.prepare("SELECT COUNT(*) AS n FROM messages WHERE user_id = ?").bind(id).first()) || {}).n) || 0;
   if (n >= MESSAGE_MAX_PER_USER) return json({ error: "too_many" }, 409);
-  const at = iso(now()), r = await d.prepare("INSERT INTO messages (user_id, body, created_at) VALUES (?, ?, ?)").bind(id, text, at).run();
-  return json({ message: { id: r.meta.last_row_id, body: text, createdAt: at, readAt: null } });
+  const at = iso(now());
+  const r = await d.prepare("INSERT INTO messages (user_id, body, created_at, from_user, reply_to) VALUES (?, ?, ?, 0, ?)").bind(id, text, at, replyTo || null).run();
+  if (replyTo) await d.prepare("UPDATE messages SET read_at = ? WHERE reply_to = ? AND from_user = 1 AND read_at IS NULL").bind(at, replyTo).run();
+  return json({ message: { id: r.meta.last_row_id, body: text, createdAt: at, readAt: null, fromUser: false, replyTo: replyTo || null } });
 }
+// { ids: [thread ids] }: the users' replies in those threads are marked read by the admins.
+async function adminMessagesRead(request, env, body) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  const ids = idList(body && body.ids);
+  if (ids && ids.length) await (await db(env)).prepare(`UPDATE messages SET read_at = ? WHERE from_user = 1 AND read_at IS NULL AND reply_to IN (${marks(ids)})`).bind(iso(now()), ...ids).run();
+  return json({ ok: true });
+}
+// Deleting a thread's first message deletes its replies too.
 async function adminMessageRemove(request, env, body) {
   if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
-  await (await db(env)).prepare("DELETE FROM messages WHERE id = ?").bind(Number(body.id) || 0).run();
+  const id = Number(body.id) || 0;
+  await (await db(env)).prepare("DELETE FROM messages WHERE id = ? OR reply_to = ?").bind(id, id).run();
   return json({ ok: true });
 }
 
@@ -782,6 +845,8 @@ export async function onRequest(context) {
     if (route === "push/test") return await pushTest(request, env, body);
     if (route === "admin/action") return await adminAction(request, env, body);
     if (route === "messages/read") return await messagesRead(request, env, body);
+    if (route === "messages/reply") return await messagesReply(request, env, body);
+    if (route === "admin/messages/read") return await adminMessagesRead(request, env, body);
     if (route === "admin/message") return await adminMessageSend(request, env, body);
     if (route === "admin/message/remove") return await adminMessageRemove(request, env, body);
     if (route === "admin/social/plan") return await adminSocialPlan(request, env, body);
