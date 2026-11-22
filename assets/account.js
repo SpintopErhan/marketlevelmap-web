@@ -13,7 +13,10 @@
   var ready = new Promise(function (r) { resolveReady = r; });
   // setUnread: the messages page updates the badge as messages are read, without asking the server again.
   window.MLMAccount = { ready: ready, user: function () { return user; }, setUnread: function (n) { if (user) { user.unread = n; render(); } },
-    setReplies: function (n) { if (user) { user.replyCount = n; render(); } } };
+    setReplies: function (n) { if (user) { user.replyCount = n; render(); } },
+    // Asks the server again (after a change elsewhere on the page, e.g. a deleted message) and redraws the button.
+    refresh: function () { return fetch("/api/auth/me", { credentials: "same-origin", cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { if (d && d.user) { user = d.user; render(); } return user; }).catch(function () { return user; }); } };
 
   function lang() {
     var sel = document.getElementById("lang");
