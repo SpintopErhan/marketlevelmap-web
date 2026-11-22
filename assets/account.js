@@ -3,15 +3,16 @@
    session exists, so guests cost no extra requests. window.MLMAccount.ready resolves with the user or null. */
 (function () {
   var WORDS = {
-    en: { signIn: "Sign in", profile: "Profile", admin: "Admin panel", signOut: "Sign out", menu: "Account menu", pending: "{n} applications waiting",
+    en: { signIn: "Sign in", profile: "Profile", admin: "Admin panel", signOut: "Sign out", menu: "Account menu", pending: "{n} applications waiting", messages: "Messages", unread: "{n} unread messages",
       status: { registered: "Registered", pending: "Waiting for verification", approved: "Approved", rejected: "Rejected", suspended: "Suspended" } },
-    tr: { signIn: "Giriş yap", profile: "Profil", admin: "Admin paneli", signOut: "Çıkış yap", menu: "Hesap menüsü", pending: "{n} başvuru bekliyor",
+    tr: { signIn: "Giriş yap", profile: "Profil", admin: "Admin paneli", signOut: "Çıkış yap", menu: "Hesap menüsü", pending: "{n} başvuru bekliyor", messages: "Mesajlar", unread: "{n} okunmamış mesaj",
       status: { registered: "Kayıtlı", pending: "Doğrulama bekliyor", approved: "Onaylı", rejected: "Reddedildi", suspended: "Askıda" } }
   };
   var hinted = /(?:^|;\s*)mlm_li=1/.test(document.cookie);
   var user = null, box = null, resolveReady, drawn = "";
   var ready = new Promise(function (r) { resolveReady = r; });
-  window.MLMAccount = { ready: ready, user: function () { return user; } };
+  // setUnread: the account page marks the messages read and clears the badge without asking the server again.
+  window.MLMAccount = { ready: ready, user: function () { return user; }, setUnread: function (n) { if (user) { user.unread = n; render(); } } };
 
   function lang() {
     var sel = document.getElementById("lang");
@@ -48,7 +49,7 @@
 
   function render() {
     if (!box) return;
-    var key = lang() + "|" + (user ? user.email + user.status + user.picture + user.isAdmin + "|" + (user.pendingCount || 0) : hinted ? "hint" : "guest");
+    var key = lang() + "|" + (user ? user.email + user.status + user.picture + user.isAdmin + "|" + (user.pendingCount || 0) + "|" + (user.unread || 0) : hinted ? "hint" : "guest");
     if (key === drawn) return; // the analysis page sets <html lang> often; redraw only on a real change
     drawn = key;
     var t = w();
@@ -74,6 +75,9 @@
       who.appendChild(n); who.appendChild(e); who.appendChild(st); menu.appendChild(who);
     }
     var prof = document.createElement("a"); prof.href = "/account"; prof.textContent = t.profile; menu.appendChild(prof);
+    var unread = user ? Number(user.unread) || 0 : 0;
+    if (unread) { var msgs = document.createElement("a"); msgs.href = "/account#messages"; msgs.textContent = t.messages;
+      var mc = document.createElement("span"); mc.className = "acct-count"; mc.textContent = String(unread); msgs.appendChild(mc); menu.appendChild(msgs); }
     var pending = user && user.isAdmin ? Number(user.pendingCount) || 0 : 0;
     if (user && user.isAdmin) { var adm = document.createElement("a"); adm.href = "/admin"; adm.textContent = t.admin;
       if (pending) { var cnt = document.createElement("span"); cnt.className = "acct-count"; cnt.textContent = String(pending); adm.appendChild(cnt); }
@@ -85,8 +89,10 @@
     menu.appendChild(out);
     btn.addEventListener("click", function (ev) { ev.stopPropagation(); menu.hidden = !menu.hidden; btn.setAttribute("aria-expanded", String(!menu.hidden)); });
     box.appendChild(btn); box.appendChild(menu);
-    if (pending) { var badge = document.createElement("span"); badge.className = "acct-badge"; badge.textContent = pending > 9 ? "9+" : String(pending); badge.setAttribute("aria-hidden", "true"); box.appendChild(badge);
-      btn.setAttribute("aria-label", t.menu + " · " + t.pending.replace("{n}", pending)); }
+    // One badge: unread messages plus, for admins, applications waiting.
+    var total = pending + unread;
+    if (total) { var badge = document.createElement("span"); badge.className = "acct-badge"; badge.textContent = total > 9 ? "9+" : String(total); badge.setAttribute("aria-hidden", "true"); box.appendChild(badge);
+      btn.setAttribute("aria-label", t.menu + (unread ? " · " + t.unread.replace("{n}", unread) : "") + (pending ? " · " + t.pending.replace("{n}", pending) : "")); }
   }
 
   function mount() {
