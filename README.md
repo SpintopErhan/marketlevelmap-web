@@ -1144,10 +1144,13 @@ Sign-in with Google, the profile, membership verification, the admin panel and t
   After approval the X username field moves to the "Usernames" card (locked) and the steps go away.
 - **Messages** (admins → one user): the admin panel's "Message" button on a user opens their earlier messages (date,
   read or not, delete) and a box to write a new one (at most 2000 characters, 200 per user). The user reads them on
-  their own page, `messages.html` (`/messages`, noindex): "All" / "Unread" tabs with counts; unread messages have an
+  their own page, `messages.html` (`/messages`, noindex): "Unread" (first, the page opens on it) and "All" tabs with
+  counts; when nothing is unread a "Show all messages" link leads to "All"; unread messages have an
   accent edge, bold text, an "Unread" tag and a "Mark as read" button; a message stays unread until the user clicks it
   (or that button), and "Mark all as read" marks the rest; read ones are muted and tagged "Read". Opening the page
-  marks nothing. The header account button shows the unread count as a badge (added to the admins'
+  marks nothing. Admins get a third tab, "Sent": every message sent to any user, newest first (at most 200), with the
+  recipient (name · X username · e-mail), the date, read or not yet, and Delete; a search box filters by the text or
+  the recipient's name, e-mail, X username or code (`GET admin/messages/sent?q=`). The header account button shows the unread count as a badge (added to the admins'
   waiting-applications count), its menu always has "Messages" (with the count); the account page shows "You have n
   unread message(s) → Messages" under the status. Table `messages` (`id, user_id, body, created_at, read_at`),
   deleted with the account; API `GET messages`, `POST messages/read { ids? }` (the user's own only; all without ids),

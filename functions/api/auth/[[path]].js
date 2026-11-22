@@ -21,7 +21,7 @@
 //   POST alarms/remove { id } · alarms/rearm { id } → members: delete, or switch a fired alarm on again
 //   POST push/subscribe { subscription } · push/unsubscribe { endpoint } · push/test → members: this device's web push
 //   GET  messages · POST messages/read { ids? }     → signed in: messages from the admins (newest 50); mark read (all without ids)
-//   GET  admin/messages?userId= · POST admin/message { userId, body } · admin/message/remove { id } → admin only
+//   GET  admin/messages?userId= · admin/messages/sent?q= · POST admin/message { userId, body } · admin/message/remove { id } → admin only
 //
 // Bindings and variables (Cloudflare Pages settings): USERS_DB (D1), GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
 // SESSION_SECRET, ADMIN_EMAILS (comma separated). Secrets are never sent to the browser. Alarms: VAPID_PUBLIC_KEY,
@@ -569,6 +569,20 @@ async function adminMessages(request, env) {
   const list = (await (await db(env)).prepare("SELECT * FROM messages WHERE user_id = ? ORDER BY created_at DESC, id DESC LIMIT 50").bind(id).all()).results || [];
   return json({ messages: list.map(messageRow) });
 }
+// Every message sent to any user, newest first, with its recipient; q searches the text and the recipient's name,
+// e-mail, X username and code.
+async function adminMessagesSent(request, env) {
+  if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
+  const q = String(new URL(request.url).searchParams.get("q") || "").trim().toLowerCase().slice(0, 80);
+  const args = [];
+  let where = "";
+  if (q) {
+    where = " WHERE (lower(m.body) LIKE ? OR lower(u.name) LIKE ? OR lower(u.email) LIKE ? OR u.x_handle_lc LIKE ? OR lower(replace(u.code, '-', '')) LIKE ?)";
+    args.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q.replace(/^@?/, "@")}%`, `%${q.replace(/[^a-z0-9]/g, "")}%`);
+  }
+  const rows = (await (await db(env)).prepare(`SELECT m.*, u.name AS u_name, u.email AS u_email, u.x_handle AS u_x, u.status AS u_status FROM messages m JOIN users u ON u.id = m.user_id${where} ORDER BY m.created_at DESC, m.id DESC LIMIT 200`).bind(...args).all()).results || [];
+  return json({ messages: rows.map((r) => ({ ...messageRow(r), user: { id: r.user_id, name: r.u_name || "", email: r.u_email, xHandle: r.u_x || "", status: r.u_status } })) });
+}
 async function adminMessageSend(request, env, body) {
   if (!(await adminUser(request, env))) return json({ error: "forbidden" }, 403);
   const d = await db(env), id = Number(body.userId) || 0, text = String(body.body || "").trim();
@@ -746,6 +760,7 @@ export async function onRequest(context) {
       if (route === "alarms") return await alarmsGet(request, env);
       if (route === "messages") return await messagesGet(request, env);
       if (route === "admin/messages") return await adminMessages(request, env);
+      if (route === "admin/messages/sent") return await adminMessagesSent(request, env);
       return json({ error: "not_found" }, 404);
     }
     if (request.method !== "POST") return json({ error: "method" }, 405);
