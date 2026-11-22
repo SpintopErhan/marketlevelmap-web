@@ -20,7 +20,7 @@
 //   POST alarms { kind, cond, asset, price | zone, tf, lang } → members: a new alarm (README "Alarms")
 //   POST alarms/remove { id } · alarms/rearm { id } → members: delete, or switch a fired alarm on again
 //   POST push/subscribe { subscription } · push/unsubscribe { endpoint } · push/test → members: this device's web push
-//   GET  messages · POST messages/read              → signed in: messages from the admins (newest 50), mark all read
+//   GET  messages · POST messages/read { ids? }     → signed in: messages from the admins (newest 50); mark read (all without ids)
 //   GET  admin/messages?userId= · POST admin/message { userId, body } · admin/message/remove { id } → admin only
 //
 // Bindings and variables (Cloudflare Pages settings): USERS_DB (D1), GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
@@ -553,10 +553,14 @@ async function messagesGet(request, env) {
   const list = (await (await db(env)).prepare("SELECT * FROM messages WHERE user_id = ? ORDER BY created_at DESC, id DESC LIMIT 50").bind(row.id).all()).results || [];
   return json({ messages: list.map(messageRow) });
 }
-async function messagesRead(request, env) {
+// { ids: [..] } marks those (the user's own only); without ids, all of the user's unread messages.
+async function messagesRead(request, env, body) {
   const row = await sessionUser(request, env);
   if (!row) return json({ error: "signed_out" }, 401);
-  await (await db(env)).prepare("UPDATE messages SET read_at = ? WHERE user_id = ? AND read_at IS NULL").bind(iso(now()), row.id).run();
+  const d = await db(env), at = iso(now());
+  const ids = Array.isArray(body && body.ids) ? body.ids.map(Number).filter((n) => Number.isInteger(n) && n > 0).slice(0, 200) : null;
+  if (ids && ids.length) await d.prepare(`UPDATE messages SET read_at = ? WHERE user_id = ? AND read_at IS NULL AND id IN (${ids.map(() => "?").join(",")})`).bind(at, row.id, ...ids).run();
+  else if (!ids) await d.prepare("UPDATE messages SET read_at = ? WHERE user_id = ? AND read_at IS NULL").bind(at, row.id).run();
   return json({ ok: true });
 }
 async function adminMessages(request, env) {
@@ -762,7 +766,7 @@ export async function onRequest(context) {
     if (route === "push/unsubscribe") return await pushUnsubscribe(request, env, body);
     if (route === "push/test") return await pushTest(request, env, body);
     if (route === "admin/action") return await adminAction(request, env, body);
-    if (route === "messages/read") return await messagesRead(request, env);
+    if (route === "messages/read") return await messagesRead(request, env, body);
     if (route === "admin/message") return await adminMessageSend(request, env, body);
     if (route === "admin/message/remove") return await adminMessageRemove(request, env, body);
     if (route === "admin/social/plan") return await adminSocialPlan(request, env, body);
