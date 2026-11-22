@@ -3,16 +3,17 @@
    session exists, so guests cost no extra requests. window.MLMAccount.ready resolves with the user or null. */
 (function () {
   var WORDS = {
-    en: { signIn: "Sign in", profile: "Profile", admin: "Admin panel", signOut: "Sign out", menu: "Account menu", pending: "{n} applications waiting", messages: "Messages", unread: "{n} unread messages",
+    en: { signIn: "Sign in", profile: "Profile", admin: "Admin panel", signOut: "Sign out", menu: "Account menu", pending: "{n} applications waiting", messages: "Messages", unread: "{n} unread messages", replies: "{n} new replies",
       status: { registered: "Registered", pending: "Waiting for verification", approved: "Approved", rejected: "Rejected", suspended: "Suspended" } },
-    tr: { signIn: "Giriş yap", profile: "Profil", admin: "Admin paneli", signOut: "Çıkış yap", menu: "Hesap menüsü", pending: "{n} başvuru bekliyor", messages: "Mesajlar", unread: "{n} okunmamış mesaj",
+    tr: { signIn: "Giriş yap", profile: "Profil", admin: "Admin paneli", signOut: "Çıkış yap", menu: "Hesap menüsü", pending: "{n} başvuru bekliyor", messages: "Mesajlar", unread: "{n} okunmamış mesaj", replies: "{n} yeni cevap",
       status: { registered: "Kayıtlı", pending: "Doğrulama bekliyor", approved: "Onaylı", rejected: "Reddedildi", suspended: "Askıda" } }
   };
   var hinted = /(?:^|;\s*)mlm_li=1/.test(document.cookie);
   var user = null, box = null, resolveReady, drawn = "";
   var ready = new Promise(function (r) { resolveReady = r; });
   // setUnread: the messages page updates the badge as messages are read, without asking the server again.
-  window.MLMAccount = { ready: ready, user: function () { return user; }, setUnread: function (n) { if (user) { user.unread = n; render(); } } };
+  window.MLMAccount = { ready: ready, user: function () { return user; }, setUnread: function (n) { if (user) { user.unread = n; render(); } },
+    setReplies: function (n) { if (user) { user.replyCount = n; render(); } } };
 
   function lang() {
     var sel = document.getElementById("lang");
@@ -49,7 +50,7 @@
 
   function render() {
     if (!box) return;
-    var key = lang() + "|" + (user ? user.email + user.status + user.picture + user.isAdmin + "|" + (user.pendingCount || 0) + "|" + (user.unread || 0) : hinted ? "hint" : "guest");
+    var key = lang() + "|" + (user ? user.email + user.status + user.picture + user.isAdmin + "|" + (user.pendingCount || 0) + "|" + (user.unread || 0) + "|" + (user.replyCount || 0) : hinted ? "hint" : "guest");
     if (key === drawn) return; // the analysis page sets <html lang> often; redraw only on a real change
     drawn = key;
     var t = w();
@@ -76,9 +77,10 @@
     }
     var prof = document.createElement("a"); prof.href = "/account"; prof.textContent = t.profile; menu.appendChild(prof);
     // Messages page: always in the menu for a signed-in user, with the unread count when there is one.
-    var unread = user ? Number(user.unread) || 0 : 0;
+    // Admins: users' replies not read yet count too.
+    var unread = user ? Number(user.unread) || 0 : 0, replies = user && user.isAdmin ? Number(user.replyCount) || 0 : 0;
     if (user) { var msgs = document.createElement("a"); msgs.href = "/messages"; msgs.textContent = t.messages;
-      if (unread) { var mc = document.createElement("span"); mc.className = "acct-count"; mc.textContent = String(unread); msgs.appendChild(mc); }
+      if (unread + replies) { var mc = document.createElement("span"); mc.className = "acct-count"; mc.textContent = String(unread + replies); msgs.appendChild(mc); }
       menu.appendChild(msgs); }
     var pending = user && user.isAdmin ? Number(user.pendingCount) || 0 : 0;
     if (user && user.isAdmin) { var adm = document.createElement("a"); adm.href = "/admin"; adm.textContent = t.admin;
@@ -92,9 +94,9 @@
     btn.addEventListener("click", function (ev) { ev.stopPropagation(); menu.hidden = !menu.hidden; btn.setAttribute("aria-expanded", String(!menu.hidden)); });
     box.appendChild(btn); box.appendChild(menu);
     // One badge: unread messages plus, for admins, applications waiting.
-    var total = pending + unread;
+    var total = pending + unread + replies;
     if (total) { var badge = document.createElement("span"); badge.className = "acct-badge"; badge.textContent = total > 9 ? "9+" : String(total); badge.setAttribute("aria-hidden", "true"); box.appendChild(badge);
-      btn.setAttribute("aria-label", t.menu + (unread ? " · " + t.unread.replace("{n}", unread) : "") + (pending ? " · " + t.pending.replace("{n}", pending) : "")); }
+      btn.setAttribute("aria-label", t.menu + (unread ? " · " + t.unread.replace("{n}", unread) : "") + (replies ? " · " + t.replies.replace("{n}", replies) : "") + (pending ? " · " + t.pending.replace("{n}", pending) : "")); }
   }
 
   function mount() {

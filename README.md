@@ -1142,20 +1142,30 @@ Sign-in with Google, the profile, membership verification, the admin panel and t
   that do not follow are not approved and that our replies would otherwise land in X "Message requests"); 3. send the
   code by DM from that X account (code with Copy). Under them: approval after a manual check, usually within 24 hours.
   After approval the X username field moves to the "Usernames" card (locked) and the steps go away.
-- **Messages** (admins → one user): the admin panel's "Message" button on a user opens their earlier messages (date,
-  read or not, delete) and a box to write a new one (at most 2000 characters, 200 per user). The user reads them on
-  their own page, `messages.html` (`/messages`, noindex): "Unread" (first, the page opens on it) and "All" tabs with
-  counts; when nothing is unread a "Show all messages" link leads to "All"; unread messages have an
-  accent edge, bold text, an "Unread" tag and a "Mark as read" button; a message stays unread until the user clicks it
-  (or that button), and "Mark all as read" marks the rest; read ones are muted and tagged "Read". Opening the page
-  marks nothing. Admins get a third tab, "Sent": every message sent to any user, newest first (at most 200), with the
-  recipient (name · X username · e-mail), the date, read or not yet, and Delete; a search box filters by the text or
-  the recipient's name, e-mail, X username or code (`GET admin/messages/sent?q=`). The header account button shows the unread count as a badge (added to the admins'
-  waiting-applications count), its menu always has "Messages" (with the count); the account page shows "You have n
-  unread message(s) → Messages" under the status. Table `messages` (`id, user_id, body, created_at, read_at`),
-  deleted with the account; API `GET messages`, `POST messages/read { ids? }` (the user's own only; all without ids),
-  `GET admin/messages?userId=`, `POST admin/message`, `POST admin/message/remove`; `me` carries `unread`. No e-mail
-  or push yet (planned: e-mail second, push in December).
+- **Messages** (admins → one user, and the user's replies): the admin panel's "Message" button on a user opens their
+  earlier messages (date, read or not, delete; replies under each) and a box to start a new one (at most 2000
+  characters, 200 rows per user). The user reads them on `messages.html` (`/messages`, noindex) as threads: the admin
+  message, then its replies oldest first ("You" / "MarketLevelMap"). Tabs "Unread" (first, the page opens on it) and
+  "All", with counts; with nothing unread a "Show all messages" link leads to "All". A thread is unread while the
+  admin message or an admin answer in it is unread (accent edge, bold, "Unread", "Mark as read"); a click on it marks
+  it read, "Mark all as read" marks the rest; opening the page marks nothing.
+  - **Replies:** every user (applicants included) can answer an admin message with "Reply" — no new threads, no
+    reply to a reply; at most 1000 characters and 10 replies in 24 hours. Replying marks the thread read.
+  - **Admins** get a third tab, "Sent": every thread with any user (at most 200), the ones with replies no admin has
+    read first ("n new replies", the reply tagged "New", "Seen" once read), then by the latest message; recipient
+    (name · X username · e-mail), date, read state, Delete (the thread with its replies), and "Answer" to write in the
+    thread. A click on a thread with new replies marks them read; answering does too. Search covers the messages,
+    replies included, and the recipient's name, e-mail, X username or code.
+  - **Badges:** the header account button counts the user's unread admin messages, plus for admins the unread replies
+    and the waiting applications; its menu always has "Messages" (with the count). The account page shows "You have n
+    unread message(s) → Messages" under the status.
+  - **Data:** table `messages` (`id, user_id, body, created_at, read_at, from_user, reply_to`; `from_user` 1 = the
+    user's reply, `reply_to` = the admin message it answers; `read_at` = read by the other side; the two columns are
+    added to an older table by `ALTER TABLE` on first use), deleted with the account. API: `GET messages` (threads),
+    `POST messages/read { ids? }`, `POST messages/reply { id, body }`, `GET admin/messages?userId=`,
+    `GET admin/messages/sent?q=`, `POST admin/message { userId, body, replyTo? }`, `POST admin/messages/read { ids }`,
+    `POST admin/message/remove { id }`; `me` carries `unread` (and `replyCount` for admins). No e-mail or push yet
+    (planned: e-mail second, push in December).
 - **Deletion:** removes the account; the X username stays reserved for 30 days (`x_locks`).
 - **Header:** `assets/account.js` (on every page, library pages included) shows "Sign in" or the profile menu;
   admins also get an "Admin panel" link.
