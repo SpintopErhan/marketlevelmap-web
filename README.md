@@ -394,25 +394,33 @@ the same six tiles under the crypto ones.
 
 ## ETF flows
 
-`etf.html` (`/etf`): daily net inflows and outflows of the US spot Bitcoin and Ethereum ETFs (Bitcoin / Ethereum
-tabs; Daily / Weekly / Monthly). Tiles: the latest day's net flow, the last five trading days, total net assets,
+`etf.html` (`/etf`): daily net inflows and outflows of the US spot crypto ETFs of ten assets (BTC, ETH, SOL, XRP, LTC,
+HBAR, DOGE, LINK, AVAX, DOT: every US asset SoSoValue lists; buttons that wrap on phones; `?a=SOL` opens one; Daily /
+Weekly / Monthly). Tiles: the latest day's net flow, the last five trading days, total net assets,
 cumulative net inflow. Chart (Lightweight Charts): net flow bars (green in, red out; left scale), total net assets
-(line; right scale) and the asset's daily close from the public candle files (orange; own hidden scale), on US trading
+(line; right scale) and the asset's daily close from the public candle files (orange; own hidden scale; LTC, HBAR, LINK and DOT have no candle files, so no price line), on US trading
 days only; weekly and monthly views add the flows up and take the bucket's last assets and price; the legend follows
 the crosshair. Under it, each fund's latest day (net flow, net assets, premium/discount, total), sorted by assets; a
-fund that has not reported that day shows "–". Credited "Data: SoSoValue"; descriptive only.
+fund that has not reported that day shows "–"; while an asset's fund table is not fetched yet a short note says so.
+An asset that cannot be loaded hides the previous asset's figures and shows the error. Credited "Data: SoSoValue"; descriptive only.
 
 - **Links:** "ETF flows" / "ETF akışları" in the site header after "Multi view" (every page, the library generator
   included), and on the home page a small "ETF flows" card beside the weekly outlook card on screens at least 1200 px wide (same
-  height, `.hero-side` as a row), under it on narrower ones (on phones above the topic card): the latest US trading day's net flow of the BTC and ETH ETFs, each
-  with the last five trading days, linking to `/etf`. The card shows when at least one asset answers; the column is
+  height, `.hero-side` as a row), under it on narrower ones (on phones above the topic card): the latest US trading day's net flow of the BTC and ETH ETFs and an "Other coins" / "Diğer coinler" row
+  (the other eight added up for that day; tooltip lists them), each with the last five trading days, linking to `/etf`.
+  One request (`?asset=ALL`). The card shows when BTC or ETH answers; the column is
   there when either card is.
 
-- **Data:** `GET /api/etf-flows?asset=BTC|ETH` (`functions/api/etf-flows.js`) from the SoSoValue API
+- **Data:** `GET /api/etf-flows?asset=BTC|ETH|SOL|…` (one asset with its funds) or `?asset=ALL` (every asset's last five
+  days, no funds) (`functions/api/etf-flows.js`) from the SoSoValue API
   (`https://openapi.sosovalue.com/openapi/v1`, header `x-soso-api-key`, Pages secret `SOSOVALUE_API_KEY`):
   `/etfs/summary-history?symbol=&country_code=US` (300 days the first time, then 30), `/etfs` (the funds) and
   `/etfs/{ticker}/history?limit=5`. Their API terms allow use in products (no attribution rule; we credit anyway).
-  Limits: 20 requests a minute, 100,000 a month; a refresh costs 2 + one per fund.
+  Limits: 20 requests a minute, 100,000 a month (per key). The totals cost one request and are refreshed by either
+  answer; the funds cost 2 + one per fund and are refreshed only by the one-asset answer. Every refresh first takes its
+  requests from a shared minute budget of 18 (D1 `snapshots` key `etf:v1:rate`); what does not fit waits for a later
+  visitor. If any fund fails the old fund table stays (`fundsAt` unchanged) and is tried again after ten minutes.
+  Estimated use: about 20,000 requests a month.
 - **Storage:** D1 `snapshots`, key `etf:v1:<ASSET>`; days already fetched are kept and new ones merged in (a later
   value for a day replaces the earlier one), so the history grows past the 300 days one call returns. A visitor gets
   the stored copy at once; older than three hours it is refreshed in the background (no Worker needed); after a

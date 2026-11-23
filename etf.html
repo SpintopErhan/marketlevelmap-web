@@ -10,6 +10,7 @@ main{padding:0 0 70px}
 [hidden]{display:none!important}
 .ef-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:0 0 14px}
 .seg{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.ef-assets{flex-wrap:wrap}.ef-assets button{padding:0 10px}@media(max-width:520px){.ef-assets button{padding:0 8px;font-size:12px}}
 .seg button{height:32px;padding:0 14px;border:0;border-radius:8px;background:none;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer}.seg button[aria-pressed="true"]{background:var(--raise);color:var(--fg)}
 .ef-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 14px}
 .ef-tile{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.ef-tile small{display:block;color:var(--muted);font-size:12px}.ef-tile b{display:block;margin-top:3px;font-size:20px;font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-weight:700}
@@ -32,7 +33,7 @@ main{padding:0 0 70px}
 </script>
 <main class="shell">
 <div class="page-head"><div><h1 data-i18n="heading">ETF flows</h1><p class="meta" data-i18n="lead">Daily net inflows and outflows of the US spot crypto ETFs.</p></div></div>
-<div class="ef-bar"><div class="seg" id="ef-asset"><button type="button" data-a="BTC" aria-pressed="true">Bitcoin</button><button type="button" data-a="ETH" aria-pressed="false">Ethereum</button></div>
+<div class="ef-bar"><div class="seg ef-assets" id="ef-asset"><button type="button" data-a="BTC" title="Bitcoin" aria-pressed="true">BTC</button><button type="button" data-a="ETH" title="Ethereum" aria-pressed="false">ETH</button><button type="button" data-a="SOL" title="Solana" aria-pressed="false">SOL</button><button type="button" data-a="XRP" title="XRP" aria-pressed="false">XRP</button><button type="button" data-a="LTC" title="Litecoin" aria-pressed="false">LTC</button><button type="button" data-a="HBAR" title="Hedera" aria-pressed="false">HBAR</button><button type="button" data-a="DOGE" title="Dogecoin" aria-pressed="false">DOGE</button><button type="button" data-a="LINK" title="Chainlink" aria-pressed="false">LINK</button><button type="button" data-a="AVAX" title="Avalanche" aria-pressed="false">AVAX</button><button type="button" data-a="DOT" title="Polkadot" aria-pressed="false">DOT</button></div>
 <div class="seg" id="ef-period"><button type="button" data-p="d" aria-pressed="true" data-i18n="daily">Daily</button><button type="button" data-p="w" aria-pressed="false" data-i18n="weekly">Weekly</button><button type="button" data-p="m" aria-pressed="false" data-i18n="monthly">Monthly</button></div></div>
 <div class="ef-state" id="ef-state" data-i18n="loading">Loading…</div>
 <section id="ef-body" hidden>
@@ -49,11 +50,11 @@ var copy={
   en:{title:"ETF flows",heading:"ETF flows",lead:"Daily net inflows and outflows of the US spot crypto ETFs.",loading:"Loading…",failed:"The ETF flows could not be loaded. Please try again later.",daily:"Daily",weekly:"Weekly",monthly:"Monthly",
     lastDay:"Net flow · {d}",last5:"Last 5 trading days",assets:"Total net assets",cum:"Cumulative net inflow",flow:"Net flow",netAssets:"Net assets",price:"{a} price",
     note:"Data: {src} · US trading days (no weekends or holidays). A day's figures come after the US close; some funds report the next morning, so the latest day can still change.",
-    fundsTitle:"By fund",fundsSub:"{d} · sorted by net assets; a fund without a figure has not reported that day yet.",colFund:"Fund",colName:"Name",colFlow:"Net flow",colAssets:"Net assets",colPrem:"Premium / discount",total:"Total"},
+    fundsTitle:"By fund",fundsSub:"{d} · sorted by net assets; a fund without a figure has not reported that day yet.",colFund:"Fund",colName:"Name",colFlow:"Net flow",colAssets:"Net assets",colPrem:"Premium / discount",total:"Total",fundsWait:"The fund table is being prepared; please check back in a few minutes."},
   tr:{title:"ETF akışları",heading:"ETF akışları",lead:"ABD spot kripto ETF'lerinin günlük net giriş ve çıkışları.",loading:"Yükleniyor…",failed:"ETF akışları yüklenemedi. Lütfen daha sonra yeniden deneyin.",daily:"Günlük",weekly:"Haftalık",monthly:"Aylık",
     lastDay:"Net akış · {d}",last5:"Son 5 işlem günü",assets:"Toplam net varlık",cum:"Birikimli net giriş",flow:"Net akış",netAssets:"Net varlık",price:"{a} fiyatı",
     note:"Veri: {src} · ABD işlem günleri (hafta sonu ve tatiller yok). Bir günün rakamları ABD kapanışından sonra gelir; bazı fonlar ertesi sabah bildirir, bu yüzden son gün değişebilir.",
-    fundsTitle:"Fon bazında",fundsSub:"{d} · net varlığa göre sıralı; rakamı olmayan fon o günü henüz bildirmedi.",colFund:"Fon",colName:"Ad",colFlow:"Net akış",colAssets:"Net varlık",colPrem:"Prim / iskonto",total:"Toplam"}
+    fundsTitle:"Fon bazında",fundsSub:"{d} · net varlığa göre sıralı; rakamı olmayan fon o günü henüz bildirmedi.",colFund:"Fon",colName:"Ad",colFlow:"Net akış",colAssets:"Net varlık",colPrem:"Prim / iskonto",total:"Toplam",fundsWait:"Fon tablosu hazırlanıyor; birkaç dakika sonra yeniden bakın."}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 function applyLanguage(value){
@@ -76,7 +77,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
    daily close from the public candle files (orange line, own hidden scale), on US trading days only. Weekly and
    monthly views add the flows up and take the last day's assets and price. */
 (function(){
-  var LC=window.LightweightCharts,state={asset:"BTC",period:"d",data:{},prices:{}},chart=null,s={},rowsShown=[];
+  var LC=window.LightweightCharts,ASSETS=["BTC","ETH","SOL","XRP","LTC","HBAR","DOGE","LINK","AVAX","DOT"],q=(new URLSearchParams(location.search).get("a")||"").toUpperCase(),state={asset:ASSETS.indexOf(q)>=0?q:"BTC",period:"d",data:{},prices:{}},chart=null,s={},rowsShown=[];
   function el(id){return document.getElementById(id)}
   function L(){return MarketUI.lang()}
   function css(v,f){var x=getComputedStyle(document.documentElement).getPropertyValue(v).trim();return x||f}
@@ -139,7 +140,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
       var tot=0,ta=0;f.rows.forEach(function(r){if(r.netInflow!=null)tot+=r.netInflow;if(r.netAssets!=null)ta+=r.netAssets});
       tb.innerHTML=f.rows.map(function(r){var p=r.premDsc;return"<tr><td><b>"+MarketUI.escape(r.ticker)+'</b></td><td class="name">'+MarketUI.escape(r.name)+'</td><td class="r '+(r.netInflow==null?"":r.netInflow>=0?"up":"down")+'">'+usd(r.netInflow,true)+'</td><td class="r">'+usd(r.netAssets)+'</td><td class="r">'+(p==null?"–":MarketUI.pct(p))+"</td></tr>"}).join("")+
         '<tr class="total"><td>'+w.total+'</td><td class="name"></td><td class="r '+(tot>=0?"up":"down")+'">'+usd(tot,true)+'</td><td class="r">'+usd(ta)+'</td><td></td></tr>'}
-    else el("ef-funds-sub").textContent="";
+    else el("ef-funds-sub").textContent=w.fundsWait;
   }
   // The asset's daily closes (USDT pair) from the public candle files: the two newest yearly archives and latest.json.
   function loadPrices(asset){
@@ -150,14 +151,14 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     }).then(function(files){var m={};(files||[]).forEach(function(f){(f&&f.candles||[]).forEach(function(c){m[new Date(c[0]*1000).toISOString().slice(0,10)]=Number(c[4])})});state.prices[asset]=m}).catch(function(){state.prices[asset]={}});
   }
   function load(asset){
-    if(state.data[asset]){render();return}
-    el("ef-state").hidden=false;el("ef-state").textContent=(MarketUI.lang()==="tr"?copy.tr:copy.en).loading;
+    if(state.data[asset]){el("ef-state").hidden=true;el("ef-body").hidden=false;render();return}
+    el("ef-body").hidden=true;el("ef-state").hidden=false;el("ef-state").textContent=(MarketUI.lang()==="tr"?copy.tr:copy.en).loading;
     Promise.all([fetch("/api/etf-flows?asset="+asset).then(function(r){return r.ok?r.json():null}),loadPrices(asset)]).then(function(res){
       var d=res[0];if(!d||!Array.isArray(d.days)||!d.days.length)throw new Error("no data");
-      state.data[asset]=d;el("ef-state").hidden=true;el("ef-body").hidden=false;if(asset===state.asset)render();
-    }).catch(function(){el("ef-state").hidden=false;el("ef-state").textContent=(MarketUI.lang()==="tr"?copy.tr:copy.en).failed});
+      state.data[asset]=d;if(asset===state.asset){el("ef-state").hidden=true;el("ef-body").hidden=false;render()}
+    }).catch(function(){if(asset!==state.asset)return;el("ef-body").hidden=true;el("ef-state").hidden=false;el("ef-state").textContent=(MarketUI.lang()==="tr"?copy.tr:copy.en).failed});
   }
-  document.querySelectorAll("#ef-asset button").forEach(function(b){b.addEventListener("click",function(){state.asset=b.dataset.a;render();load(state.asset)})});
+  document.querySelectorAll("#ef-asset button").forEach(function(b){b.addEventListener("click",function(){state.asset=b.dataset.a;try{var u=new URL(location.href);if(state.asset==="BTC")u.searchParams.delete("a");else u.searchParams.set("a",state.asset);history.replaceState(null,"",u)}catch(e){}render();load(state.asset)})});
   document.querySelectorAll("#ef-period button").forEach(function(b){b.addEventListener("click",function(){state.period=b.dataset.p;render()})});
   new MutationObserver(function(){render()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
   load(state.asset);
