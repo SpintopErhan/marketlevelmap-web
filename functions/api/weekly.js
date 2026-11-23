@@ -96,6 +96,20 @@ async function weeklyCandles(symbol, start, index) {
   return last ? rows.concat(await getCandles(base + encodeURIComponent(last) + ".json")) : rows;
 }
 
+// Fallback when the public candle files do not have last week yet (the local program uploads them now and then):
+// OKX's UTC weekly candle (1Wutc, opens Monday 00:00 UTC like Binance's), closed ("confirm" 1) and exactly the week
+// before `start`. Cloudflare can reach OKX (Binance refuses it). Rows: [ts ms, open, high, low, close, …, confirm].
+export function okxWeekFrom(body, start) {
+  const rows = body && body.code === "0" && Array.isArray(body.data) ? body.data : [];
+  const r = rows.find((x) => Array.isArray(x) && Number(x[0]) === (start - WEEK) * 1000 && String(x[8]) === "1" && Number(x[1]) > 0 && Number(x[4]) > 0);
+  return r ? { openTime: start - WEEK, open: Number(r[1]), close: Number(r[4]), source: "okx" } : null;
+}
+async function okxWeek(symbol, start) {
+  if (!/USDT$/.test(symbol)) return null;
+  const id = `${symbol.slice(0, -4)}-USDT`;
+  return okxWeekFrom(await getJson(`https://www.okx.com/api/v5/market/candles?instId=${encodeURIComponent(id)}&bar=1Wutc&limit=3`), start);
+}
+
 // Yahoo weekly candles: the bar of the week before `start` (its time is that Monday, or the Sunday evening before
 // for futures), never the current week's.
 export const MACRO = [["dxy", "DX-Y.NYB"], ["us10y", "^TNX"], ["spx", "ES=F"], ["ndx", "NQ=F"], ["gold", "GC=F"], ["silver", "SI=F"]];
@@ -161,7 +175,7 @@ export async function buildWeekly(env, nowMs) {
       s.cz1d ? readJson(bucket, s.cz1d.report.objectKey) : null,
       ...ALIGN_TFS.map((tf) => (s.pa[tf] ? readJson(bucket, s.pa[tf].report.objectKey) : null)),
     ]);
-    const week = lastClosedWeek(rows, start);
+    const week = lastClosedWeek(rows, start) || await okxWeek(symbol, start);
     const levels = {}, key = keyLevelMap(file, symbol);
     if (key) {
       // Only levels whose period had begun when last week closed.
@@ -178,7 +192,7 @@ export async function buildWeekly(env, nowMs) {
     });
     return {
       symbol,
-      lastWeek: week ? { openTime: new Date(week.openTime * 1000).toISOString(), change: pct(week.close, week.open) } : null,
+      lastWeek: week ? { openTime: new Date(week.openTime * 1000).toISOString(), change: pct(week.close, week.open), ...(week.source ? { source: week.source } : {}) } : null,
       vsMonthlyOpen: pct(price, levels.MO),
       vsYearlyOpen: pct(price, levels.YO),
       vsAth: pct(price, levels.ATH),
