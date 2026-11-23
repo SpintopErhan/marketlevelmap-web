@@ -421,6 +421,10 @@ An asset that cannot be loaded hides the previous asset's figures and shows the 
   requests from a shared minute budget of 18 (D1 `snapshots` key `etf:v1:rate`); what does not fit waits for a later
   visitor. If any fund fails the old fund table stays (`fundsAt` unchanged) and is tried again after ten minutes.
   Estimated use: about 20,000 requests a month.
+- **Access check (admin only):** `GET /api/soso-probe?part=1|2|3` (`functions/api/soso-probe.js`) asks a fixed list of
+  SoSoValue endpoints (analysis charts, macro, treasuries, news, v3 stocks and perps; at most 12 requests a part, from
+  the same minute budget) and answers only the status, SoSoValue's code and message, row count, date range and field
+  names, never the data. Run the parts a minute apart while signed in as an admin.
 - **Storage:** D1 `snapshots`, key `etf:v1:<ASSET>`; days already fetched are kept and new ones merged in (a later
   value for a day replaces the earlier one), so the history grows past the 300 days one call returns. A visitor gets
   the stored copy at once; older than three hours it is refreshed in the background (no Worker needed); after a
