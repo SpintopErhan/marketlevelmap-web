@@ -1,0 +1,166 @@
+<!doctype html>
+<!-- ETF flows (README "ETF flows"). Data: /api/etf-flows (SoSoValue). -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#10161d" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)"><link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="MLMap"><script src="/assets/pwa.js?v=b0dd56f5" defer></script><meta name="color-scheme" content="dark light"><title>MarketLevelMap — ETF flows</title><link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png"><link rel="stylesheet" href="assets/site.css?v=22a8f464"><style>*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.45}
+button,select,input{font:inherit}button{color:inherit}
+main{padding:0 0 70px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:34px 0 18px}
+.page-head h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.5px}
+.meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:8px 0 0;color:var(--muted);font-size:13px}
+[hidden]{display:none!important}
+.ef-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:0 0 14px}
+.seg{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.seg button{height:32px;padding:0 14px;border:0;border-radius:8px;background:none;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer}.seg button[aria-pressed="true"]{background:var(--raise);color:var(--fg)}
+.ef-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.ef-tile{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.ef-tile small{display:block;color:var(--muted);font-size:12px}.ef-tile b{display:block;margin-top:3px;font-size:20px;font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;font-weight:700}
+.up{color:var(--up)}.down{color:var(--down)}
+.ef-chart-wrap{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:10px 8px 4px}
+.ef-legend{display:flex;flex-wrap:wrap;gap:4px 14px;padding:2px 6px 8px;font-size:12px;color:var(--muted)}.ef-legend b{color:var(--fg);font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}.ef-legend i{display:inline-block;width:10px;height:3px;margin-right:5px;vertical-align:middle;border-radius:2px}
+#ef-chart{height:clamp(300px,52vh,520px)}
+.ef-note{margin:8px 2px 0;color:var(--muted);font-size:12px;line-height:1.5}.ef-note a{color:var(--accent)}
+.ef-funds{margin:22px 0 0}.ef-funds h2{margin:0 0 4px;font-size:18px}.ef-funds p{margin:0 0 10px;color:var(--muted);font-size:13px}
+.ef-table{width:100%;border-collapse:collapse;font-size:13px}.ef-table th{padding:8px 10px;border-bottom:1px solid var(--line);color:var(--muted);font-weight:600;text-align:left}.ef-table td{padding:8px 10px;border-bottom:1px solid var(--line)}.ef-table .r{text-align:right;font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+.ef-table tr.total td{font-weight:700}.ef-table td.name{color:var(--muted)}
+.ef-state{padding:30px 16px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center}
+@media(max-width:700px){.ef-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.ef-tile b{font-size:17px}.ef-table td.name,.ef-table th.name{display:none}}
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}</style><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c70364fc" defer></script><script src="assets/market-ui.js?v=b3d12b8a"></script></head><body><div class="shell"><header>
+<a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
+<nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="multi" data-tr="Çoklu izleme">Multi view</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
+</header></div>
+<script>/* Keep the header in the saved language before the first paint. */
+(function(){var lang;try{lang=localStorage.getItem("mlm-lang")}catch(e){}if(lang!=="tr")return;document.documentElement.lang="tr";document.querySelectorAll("header [data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=el.dataset.tr});document.querySelectorAll("header [data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",el.dataset.hrefTr)});var sel=document.getElementById("lang");if(sel)sel.value="tr"})();
+</script>
+<main class="shell">
+<div class="page-head"><div><h1 data-i18n="heading">ETF flows</h1><p class="meta" data-i18n="lead">Daily net inflows and outflows of the US spot crypto ETFs.</p></div></div>
+<div class="ef-bar"><div class="seg" id="ef-asset"><button type="button" data-a="BTC" aria-pressed="true">Bitcoin</button><button type="button" data-a="ETH" aria-pressed="false">Ethereum</button></div>
+<div class="seg" id="ef-period"><button type="button" data-p="d" aria-pressed="true" data-i18n="daily">Daily</button><button type="button" data-p="w" aria-pressed="false" data-i18n="weekly">Weekly</button><button type="button" data-p="m" aria-pressed="false" data-i18n="monthly">Monthly</button></div></div>
+<div class="ef-state" id="ef-state" data-i18n="loading">Loading…</div>
+<section id="ef-body" hidden>
+<div class="ef-tiles" id="ef-tiles"></div>
+<div class="ef-chart-wrap"><div class="ef-legend" id="ef-legend"></div><div id="ef-chart"></div></div>
+<p class="ef-note" id="ef-note"></p>
+<section class="ef-funds"><h2 data-i18n="fundsTitle">By fund</h2><p id="ef-funds-sub"></p><div style="overflow-x:auto"><table class="ef-table"><thead><tr><th data-i18n="colFund">Fund</th><th class="name" data-i18n="colName">Name</th><th class="r" data-i18n="colFlow">Net flow</th><th class="r" data-i18n="colAssets">Net assets</th><th class="r" data-i18n="colPrem">Premium / discount</th></tr></thead><tbody id="ef-funds"></tbody></table></div></section>
+</section>
+</main>
+<div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
+<script src="https://unpkg.com/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js"></script>
+<script>
+var copy={
+  en:{title:"ETF flows",heading:"ETF flows",lead:"Daily net inflows and outflows of the US spot crypto ETFs.",loading:"Loading…",failed:"The ETF flows could not be loaded. Please try again later.",daily:"Daily",weekly:"Weekly",monthly:"Monthly",
+    lastDay:"Net flow · {d}",last5:"Last 5 trading days",assets:"Total net assets",cum:"Cumulative net inflow",flow:"Net flow",netAssets:"Net assets",price:"{a} price",
+    note:"Data: {src} · US trading days (no weekends or holidays). A day's figures come after the US close; some funds report the next morning, so the latest day can still change.",
+    fundsTitle:"By fund",fundsSub:"{d} · sorted by net assets; a fund without a figure has not reported that day yet.",colFund:"Fund",colName:"Name",colFlow:"Net flow",colAssets:"Net assets",colPrem:"Premium / discount",total:"Total"},
+  tr:{title:"ETF akışları",heading:"ETF akışları",lead:"ABD spot kripto ETF'lerinin günlük net giriş ve çıkışları.",loading:"Yükleniyor…",failed:"ETF akışları yüklenemedi. Lütfen daha sonra yeniden deneyin.",daily:"Günlük",weekly:"Haftalık",monthly:"Aylık",
+    lastDay:"Net akış · {d}",last5:"Son 5 işlem günü",assets:"Toplam net varlık",cum:"Birikimli net giriş",flow:"Net akış",netAssets:"Net varlık",price:"{a} fiyatı",
+    note:"Veri: {src} · ABD işlem günleri (hafta sonu ve tatiller yok). Bir günün rakamları ABD kapanışından sonra gelir; bazı fonlar ertesi sabah bildirir, bu yüzden son gün değişebilir.",
+    fundsTitle:"Fon bazında",fundsSub:"{d} · net varlığa göre sıralı; rakamı olmayan fon o günü henüz bildirmedi.",colFund:"Fon",colName:"Ad",colFlow:"Net akış",colAssets:"Net varlık",colPrem:"Prim / iskonto",total:"Toplam"}
+};
+function words(){return copy[document.getElementById("lang").value]||copy.en}
+function applyLanguage(value){
+  var t=copy[value]||copy.en;document.documentElement.lang=value;document.title="MarketLevelMap — "+t.title;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){if(t[el.dataset.i18n])el.textContent=t[el.dataset.i18n]});
+  document.querySelectorAll("[data-tr]").forEach(function(el){if(!el.dataset.en)el.dataset.en=el.textContent;el.textContent=value==="tr"?el.dataset.tr:el.dataset.en});
+  document.querySelectorAll("[data-href-tr]").forEach(function(el){if(!el.dataset.hrefEn)el.dataset.hrefEn=el.getAttribute("href");el.setAttribute("href",value==="tr"?el.dataset.hrefTr:el.dataset.hrefEn)});
+  try{localStorage.setItem("mlm-lang",value)}catch(e){}
+}
+var lang=document.getElementById("lang"),savedLang;try{savedLang=localStorage.getItem("mlm-lang")}catch(e){}
+lang.value=savedLang==="tr"?"tr":"en";applyLanguage(lang.value);lang.addEventListener("change",function(){applyLanguage(this.value)});
+var toggle=document.getElementById("theme-toggle");
+function dark(){return document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
+function syncTheme(){var d=dark();toggle.setAttribute("aria-pressed",String(d));toggle.setAttribute("aria-label",d?"Switch to light theme":"Switch to dark theme")}
+toggle.addEventListener("click",function(){document.documentElement.dataset.theme=dark()?"light":"dark";try{localStorage.setItem("mlm-theme",document.documentElement.dataset.theme)}catch(e){}syncTheme()});syncTheme();
+</script>
+<script>
+/* ETF flows (README "ETF flows"): /api/etf-flows gives the daily totals (oldest first) and each fund's latest day.
+   The chart: net flow bars (green in, red out; left scale), total net assets (line; right scale) and the asset's
+   daily close from the public candle files (orange line, own hidden scale), on US trading days only. Weekly and
+   monthly views add the flows up and take the last day's assets and price. */
+(function(){
+  var LC=window.LightweightCharts,state={asset:"BTC",period:"d",data:{},prices:{}},chart=null,s={},rowsShown=[];
+  function el(id){return document.getElementById(id)}
+  function L(){return MarketUI.lang()}
+  function css(v,f){var x=getComputedStyle(document.documentElement).getPropertyValue(v).trim();return x||f}
+  // $ amounts: compact, signed when asked ("+1,2 Mr $" / "+$1.2B").
+  function usd(v,signed){if(v==null||!isFinite(v))return"–";var a=Math.abs(v),tr=L()==="tr",u=tr?[[1e12," Tn"],[1e9," Mr"],[1e6," Mn"],[1e3," B"]]:[[1e12,"T"],[1e9,"B"],[1e6,"M"],[1e3,"K"]],t=null;
+    for(var i=0;i<u.length;i++)if(a>=u[i][0]){t=(a/u[i][0]).toLocaleString(MarketUI.locale(),{maximumFractionDigits:a/u[i][0]>=100?0:a/u[i][0]>=10?1:2})+u[i][1];break}
+    if(t==null)t=a.toLocaleString(MarketUI.locale(),{maximumFractionDigits:0});var sg=signed?(v>0?"+":v<0?"−":""):(v<0?"−":"");return tr?sg+t+" $":sg+"$"+t}
+  function fmtDay(d,o){return new Date(d+"T00:00:00Z").toLocaleDateString(MarketUI.locale(),Object.assign({timeZone:"UTC",day:"numeric",month:"short",year:"numeric"},o||{}))}
+  // Weekly (Monday) or monthly buckets: flows added up, assets and price from the bucket's last day.
+  function bucket(days,p){
+    if(p==="d")return days.map(function(d){return{time:d.date,flow:d.netInflow,assets:d.netAssets,price:d.price}});
+    var out=[],cur=null;
+    days.forEach(function(d){var t=new Date(d.date+"T00:00:00Z"),k;
+      if(p==="w"){t.setUTCDate(t.getUTCDate()-((t.getUTCDay()+6)%7));k=t.toISOString().slice(0,10)}else k=d.date.slice(0,7)+"-01";
+      if(!cur||cur.time!==k){cur={time:k,flow:0,assets:null,price:null};out.push(cur)}
+      cur.flow+=d.netInflow||0;if(d.netAssets!=null)cur.assets=d.netAssets;if(d.price!=null)cur.price=d.price});
+    return out;
+  }
+  function ensureChart(){
+    if(chart||!LC)return;
+    var fg=css("--fg","#e6ebf2"),muted=css("--muted","#9aa6b8"),line=css("--line","#26303c");
+    chart=LC.createChart(el("ef-chart"),{autoSize:true,layout:{background:{color:"transparent"},textColor:muted,fontFamily:"Inter, system-ui, sans-serif",attributionLogo:false},
+      grid:{vertLines:{color:line},horzLines:{color:line}},leftPriceScale:{visible:true,borderVisible:false},rightPriceScale:{visible:true,borderVisible:false},
+      timeScale:{borderVisible:false},crosshair:{mode:0},localization:{priceFormatter:function(v){return usd(v)}}});
+    var fmt={type:"custom",formatter:function(v){return usd(v)},minMove:1};
+    s.flow=chart.addSeries(LC.HistogramSeries,{priceScaleId:"left",priceFormat:fmt,priceLineVisible:false,lastValueVisible:false});
+    s.assets=chart.addSeries(LC.LineSeries,{priceScaleId:"right",color:fg,lineWidth:2,priceFormat:fmt,priceLineVisible:false,lastValueVisible:true,crosshairMarkerVisible:false});
+    s.price=chart.addSeries(LC.LineSeries,{priceScaleId:"price",color:"#e8a765",lineWidth:2,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false,
+      priceFormat:{type:"custom",formatter:function(v){return MarketUI.price(v,v>=1000?1:2)}}});
+    chart.priceScale("price").applyOptions({visible:false,scaleMargins:{top:0.12,bottom:0.12}});
+    chart.subscribeCrosshairMove(function(p){var r=null;if(p&&p.time){var t=typeof p.time==="string"?p.time:null;r=rowsShown.find(function(x){return x.time===t})}legend(r||rowsShown[rowsShown.length-1])});
+  }
+  function legend(r){
+    var w=MarketUI.lang()==="tr"?copy.tr:copy.en;if(!r){el("ef-legend").textContent="";return}
+    var lbl=state.period==="d"?fmtDay(r.time):state.period==="w"?fmtDay(r.time)+" –":new Date(r.time+"T00:00:00Z").toLocaleDateString(MarketUI.locale(),{timeZone:"UTC",month:"long",year:"numeric"});
+    el("ef-legend").innerHTML='<span><b>'+MarketUI.escape(lbl)+'</b></span><span><i style="background:'+(r.flow>=0?"var(--up)":"var(--down)")+'"></i>'+w.flow+' <b class="'+(r.flow>=0?"up":"down")+'">'+usd(r.flow,true)+'</b></span><span><i style="background:var(--fg)"></i>'+w.netAssets+' <b>'+usd(r.assets)+'</b></span>'+
+      (r.price!=null?'<span><i style="background:#e8a765"></i>'+w.price.replace("{a}",state.asset)+' <b>'+MarketUI.price(r.price,r.price>=1000?1:2)+'</b></span>':"");
+  }
+  function render(){
+    var w=MarketUI.lang()==="tr"?copy.tr:copy.en,d=state.data[state.asset];
+    document.querySelectorAll("#ef-asset button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.a===state.asset))});
+    document.querySelectorAll("#ef-period button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.p===state.period))});
+    if(!d)return;
+    var prices=state.prices[state.asset]||{},days=d.days.map(function(x){return Object.assign({},x,{price:prices[x.date]!=null?prices[x.date]:null})});
+    var last=days[days.length-1],five=days.slice(-5).reduce(function(a,x){return a+(x.netInflow||0)},0);
+    el("ef-tiles").innerHTML=[[w.lastDay.replace("{d}",fmtDay(last.date,{year:undefined})),usd(last.netInflow,true),last.netInflow],[w.last5,usd(five,true),five],[w.assets,usd(last.netAssets),null],[w.cum,usd(last.cumInflow,true),last.cumInflow]]
+      .map(function(t){return'<div class="ef-tile"><small>'+MarketUI.escape(t[0])+'</small><b class="'+(t[2]==null?"":t[2]>=0?"up":"down")+'">'+t[1]+"</b></div>"}).join("");
+    ensureChart();rowsShown=bucket(days,state.period);
+    if(chart){
+      var up=css("--up","#3ccf91"),down=css("--down","#ef6b73");
+      s.flow.setData(rowsShown.map(function(r){return{time:r.time,value:r.flow,color:r.flow>=0?up:down}}));
+      s.assets.setData(rowsShown.filter(function(r){return r.assets!=null}).map(function(r){return{time:r.time,value:r.assets}}));
+      s.price.setData(rowsShown.filter(function(r){return r.price!=null}).map(function(r){return{time:r.time,value:r.price}}));
+      chart.timeScale().fitContent();
+    }
+    legend(rowsShown[rowsShown.length-1]);
+    el("ef-note").innerHTML=MarketUI.escape(w.note).replace("{src}",'<a href="https://sosovalue.com" target="_blank" rel="noopener">SoSoValue</a>');
+    var f=d.funds,tb=el("ef-funds");tb.textContent="";
+    if(f&&f.rows&&f.rows.length){el("ef-funds-sub").textContent=w.fundsSub.replace("{d}",fmtDay(f.date));
+      var tot=0,ta=0;f.rows.forEach(function(r){if(r.netInflow!=null)tot+=r.netInflow;if(r.netAssets!=null)ta+=r.netAssets});
+      tb.innerHTML=f.rows.map(function(r){var p=r.premDsc;return"<tr><td><b>"+MarketUI.escape(r.ticker)+'</b></td><td class="name">'+MarketUI.escape(r.name)+'</td><td class="r '+(r.netInflow==null?"":r.netInflow>=0?"up":"down")+'">'+usd(r.netInflow,true)+'</td><td class="r">'+usd(r.netAssets)+'</td><td class="r">'+(p==null?"–":MarketUI.pct(p))+"</td></tr>"}).join("")+
+        '<tr class="total"><td>'+w.total+'</td><td class="name"></td><td class="r '+(tot>=0?"up":"down")+'">'+usd(tot,true)+'</td><td class="r">'+usd(ta)+'</td><td></td></tr>'}
+    else el("ef-funds-sub").textContent="";
+  }
+  // The asset's daily closes (USDT pair) from the public candle files: the two newest yearly archives and latest.json.
+  function loadPrices(asset){
+    if(state.prices[asset])return Promise.resolve();var sym=asset+"USDT",base="https://data.marketlevelmap.com/candles/"+sym+"/1d/";
+    return fetch("https://data.marketlevelmap.com/candles/index.json").then(function(r){return r.json()}).then(function(ix){
+      var arch=((ix.pairs||{})[sym]||{})["1d"];arch=arch&&arch.archives?arch.archives.slice(-2):[];
+      return Promise.all(arch.concat(["latest"]).map(function(n){return fetch(base+n+".json").then(function(r){return r.ok?r.json():null}).catch(function(){return null})}));
+    }).then(function(files){var m={};(files||[]).forEach(function(f){(f&&f.candles||[]).forEach(function(c){m[new Date(c[0]*1000).toISOString().slice(0,10)]=Number(c[4])})});state.prices[asset]=m}).catch(function(){state.prices[asset]={}});
+  }
+  function load(asset){
+    if(state.data[asset]){render();return}
+    el("ef-state").hidden=false;el("ef-state").textContent=(MarketUI.lang()==="tr"?copy.tr:copy.en).loading;
+    Promise.all([fetch("/api/etf-flows?asset="+asset).then(function(r){return r.ok?r.json():null}),loadPrices(asset)]).then(function(res){
+      var d=res[0];if(!d||!Array.isArray(d.days)||!d.days.length)throw new Error("no data");
+      state.data[asset]=d;el("ef-state").hidden=true;el("ef-body").hidden=false;if(asset===state.asset)render();
+    }).catch(function(){el("ef-state").hidden=false;el("ef-state").textContent=(MarketUI.lang()==="tr"?copy.tr:copy.en).failed});
+  }
+  document.querySelectorAll("#ef-asset button").forEach(function(b){b.addEventListener("click",function(){state.asset=b.dataset.a;render();load(state.asset)})});
+  document.querySelectorAll("#ef-period button").forEach(function(b){b.addEventListener("click",function(){state.period=b.dataset.p;render()})});
+  new MutationObserver(function(){render()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  load(state.asset);
+})();
+</script>
+</body></html>

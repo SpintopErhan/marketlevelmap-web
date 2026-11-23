@@ -392,6 +392,26 @@ The page shows a heat map (BTC on top, then the usual market order) and one row 
 "Download image" draws the same as a 1600×900 PNG (dark look, page language) for X. The home page's weekly card shows
 the same six tiles under the crypto ones.
 
+## ETF flows
+
+`etf.html` (`/etf`): daily net inflows and outflows of the US spot Bitcoin and Ethereum ETFs (Bitcoin / Ethereum
+tabs; Daily / Weekly / Monthly). Tiles: the latest day's net flow, the last five trading days, total net assets,
+cumulative net inflow. Chart (Lightweight Charts): net flow bars (green in, red out; left scale), total net assets
+(line; right scale) and the asset's daily close from the public candle files (orange; own hidden scale), on US trading
+days only; weekly and monthly views add the flows up and take the bucket's last assets and price; the legend follows
+the crosshair. Under it, each fund's latest day (net flow, net assets, premium/discount, total), sorted by assets; a
+fund that has not reported that day shows "–". Credited "Data: SoSoValue"; descriptive only.
+
+- **Data:** `GET /api/etf-flows?asset=BTC|ETH` (`functions/api/etf-flows.js`) from the SoSoValue API
+  (`https://openapi.sosovalue.com/openapi/v1`, header `x-soso-api-key`, Pages secret `SOSOVALUE_API_KEY`):
+  `/etfs/summary-history?symbol=&country_code=US` (300 days the first time, then 30), `/etfs` (the funds) and
+  `/etfs/{ticker}/history?limit=5`. Their API terms allow use in products (no attribution rule; we credit anyway).
+  Limits: 20 requests a minute, 100,000 a month; a refresh costs 2 + one per fund.
+- **Storage:** D1 `snapshots`, key `etf:v1:<ASSET>`; days already fetched are kept and new ones merged in (a later
+  value for a day replaces the earlier one), so the history grows past the 300 days one call returns. A visitor gets
+  the stored copy at once; older than three hours it is refreshed in the background (no Worker needed); after a
+  failed refresh the next try waits ten minutes and the old data keeps being served. Public cache ten minutes.
+
 ## Price Action view
 
 Price Action (PA) is a separate discipline from Critical Zones (CZ), so the analysis page shows it as its own
