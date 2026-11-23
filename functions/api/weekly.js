@@ -203,9 +203,10 @@ export async function buildWeekly(env, nowMs) {
   return { schemaVersion: "marketlevelmap-weekly-v1", weekStart: new Date(start * 1000).toISOString(), generatedAt: new Date(nowMs).toISOString(), assets, macro: await macroPromise };
 }
 
-// Complete: every asset has last week's candle and the macro sources answered (a snapshot missing either is
-// rebuilt every two minutes until they are in, and is not kept at the edge).
-export const isComplete = (data) => !!(data && data.assets && data.assets.length > 0 && data.assets.every((a) => a.lastWeek) &&
+// Complete: every asset has last week's candle from the public (Binance) candle files and the macro sources answered.
+// A snapshot missing either, or with a week taken from OKX, is rebuilt every two minutes and is not kept at the edge,
+// so the Binance candles show within minutes of their upload.
+export const isComplete = (data) => !!(data && data.assets && data.assets.length > 0 && data.assets.every((a) => a.lastWeek && !a.lastWeek.source) &&
   data.macro && Object.values(data.macro).some((v) => v));
 const FRESH_MS = 3600 * 1000, FRESH_INCOMPLETE_MS = 120 * 1000;
 
