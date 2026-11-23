@@ -370,8 +370,9 @@ a source that does not answer leaves its item empty. Every analysed asset except
   (`/api/v5/market/candles?instId=<BASE>-USDT&bar=1Wutc`, closed and exactly that week; Cloudflare can reach OKX,
   Binance refuses it) and is marked `lastWeek.source: "okx"`; the home card and the weekly page then say
   "Source: OKX (the Binance candles are not uploaded yet)" (or which assets). Checked on 16 Nov 2026: OKX open/close
-  74,850.1 → 65,348.3, Binance 74,851.44 → 65,351.05, both −12.69 %. Once the Binance candle is uploaded the next
-  rebuild (within the hour) uses it again. If OKX has no closed candle either, the asset shows "–"; an older week is
+  74,850.1 → 65,348.3, Binance 74,851.44 → 65,351.05, both −12.69 %. A snapshot with a week from OKX counts as
+  incomplete: it is not kept at the edge and is rebuilt every two minutes, so the Binance candles show within a few
+  minutes of their upload (the candle files themselves are cached up to five minutes). If OKX has no closed candle either, the asset shows "–"; an older week is
   never used in its place.
 - **Levels and structure** — last week's close against the monthly open, yearly open and ATH: `keyLevels` of
   `levels.json` (a level whose period began after the week closed is left out); until an asset's file has
