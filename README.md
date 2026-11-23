@@ -402,6 +402,12 @@ days only; weekly and monthly views add the flows up and take the bucket's last 
 the crosshair. Under it, each fund's latest day (net flow, net assets, premium/discount, total), sorted by assets; a
 fund that has not reported that day shows "–". Credited "Data: SoSoValue"; descriptive only.
 
+- **Links:** "ETF flows" / "ETF akışları" in the site header after "Multi view" (every page, the library generator
+  included), and on the home page a small "ETF flows" card under the weekly outlook card (same right-hand column,
+  `.hero-side`; on phones above the topic card): the latest US trading day's net flow of the BTC and ETH ETFs, each
+  with the last five trading days, linking to `/etf`. The card shows when at least one asset answers; the column is
+  there when either card is.
+
 - **Data:** `GET /api/etf-flows?asset=BTC|ETH` (`functions/api/etf-flows.js`) from the SoSoValue API
   (`https://openapi.sosovalue.com/openapi/v1`, header `x-soso-api-key`, Pages secret `SOSOVALUE_API_KEY`):
   `/etfs/summary-history?symbol=&country_code=US` (300 days the first time, then 30), `/etfs` (the funds) and
