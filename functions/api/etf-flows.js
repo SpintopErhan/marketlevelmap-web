@@ -68,6 +68,70 @@ export function fundsDay(list, histories) {
   };
 }
 
+// Older history (README "ETF flows"): the summary endpoint gives the free key about a month, but SoSoValue's analysis
+// charts carry the daily BTC and ETH totals for about 500 days. They give only the net flow, with no documented unit
+// or time zone, so a chart is used only when it agrees with the days we already have (unit and date shift are found by
+// matching), and only days we do not have are added. Tried once per asset (again a day later if it failed).
+export const HISTORY_CHARTS = {
+  BTC: [["total_crypto_spot_btc_eth_etf_fund_flow_1d", "bitcoin_daily_total_net_inflow"], ["total_crypto_eth_etf_fund_flow", "bitcoin_etf"]],
+  ETH: [["total_crypto_spot_btc_eth_etf_fund_flow_1d", "ethereum_daily_total_net_inflow"], ["total_crypto_eth_etf_fund_flow", "ethereum_etf"]],
+};
+const shiftDay = (d, n) => new Date(Date.parse(d + "T00:00:00Z") + n * 86400000).toISOString().slice(0, 10);
+// The chart's rows that agree with `known` (days with netInflow): { days (only new dates, oldest first), matched,
+// overlap, scale, shift } or null when they do not agree well enough.
+export function chartDays(body, key, known) {
+  const pts = rows(body).filter((r) => r && r[key] !== undefined && r[key] !== null && r[key] !== "" && Number.isFinite(Number(r[key])))
+    .map((r) => ({ date: day(r.timestamp), v: Number(r[key]) })).filter((p) => p.date);
+  const have = new Map((known || []).filter((d) => d.netInflow !== null && d.netInflow !== undefined).map((d) => [d.date, d.netInflow]));
+  if (!pts.length || have.size < 5) return null;
+  let best = null;
+  for (const scale of [1, 1e6]) for (const shift of [0, 1, -1]) {
+    let overlap = 0, matched = 0;
+    for (const p of pts) {
+      const k = have.get(shiftDay(p.date, shift));
+      if (k === undefined) continue;
+      overlap++;
+      if (Math.abs(p.v * scale - k) <= Math.max(1e5, 0.02 * Math.abs(k))) matched++;
+    }
+    if (!best || matched > best.matched) best = { scale, shift, overlap, matched };
+  }
+  if (best.matched < Math.max(5, 0.7 * best.overlap)) return null;
+  const seen = new Set(), days = [];
+  for (const p of pts) {
+    const date = shiftDay(p.date, best.shift);
+    if (have.has(date) || seen.has(date)) continue;
+    seen.add(date);
+    days.push({ date, netInflow: p.v * best.scale, netAssets: null, valueTraded: null, cumInflow: null });
+  }
+  days.sort((a, b) => a.date.localeCompare(b.date));
+  return { days, matched: best.matched, overlap: best.overlap, scale: best.scale, shift: best.shift };
+}
+// Old days added under the stored ones; their cumulative inflow is worked back from the oldest known one.
+export function addHistory(days, older) {
+  const have = new Set(days.map((d) => d.date));
+  const all = days.concat(older.filter((d) => !have.has(d.date))).sort((a, b) => a.date.localeCompare(b.date));
+  for (let i = all.length - 2; i >= 0; i--) {
+    const next = all[i + 1];
+    if (all[i].cumInflow === null && next.cumInflow !== null && next.netInflow !== null) all[i] = { ...all[i], cumInflow: next.cumInflow - next.netInflow };
+  }
+  return all;
+}
+async function backfill(env, asset, days, prev, now) {
+  const charts = HISTORY_CHARTS[asset];
+  if (!charts) return { days, history: prev || null };
+  if (prev && (prev.ok || now - Date.parse(prev.at) < 86400000)) return { days, history: prev };
+  for (const [chart, key] of charts) {
+    if (!(await reserve(env.USERS_DB, 1, now))) return { days, history: prev || null }; // next refresh tries again
+    let got = null;
+    try { got = chartDays(await api(env, `/analyses/${chart}?limit=500`), key, days); } catch (_) { /* try the next chart */ }
+    if (got) {
+      const all = addHistory(days, got.days);
+      return { days: all, history: { ok: true, at: new Date(now).toISOString(), chart, from: all[0].date, added: got.days.length, matched: got.matched, overlap: got.overlap } };
+    }
+  }
+  return { days, history: { ok: false, at: new Date(now).toISOString() } };
+}
+
 // Takes n requests from this minute's budget; false when they do not fit. Best effort: two refreshes starting at the same
 // instant can both pass, and SoSoValue then refuses one (429), which is handled like any failed refresh.
 export async function reserve(db, n, now = Date.now()) {
@@ -102,7 +166,9 @@ export async function refresh(env, asset, stored, { withFunds = true, now = Date
       } catch (_) { /* the totals still update */ }
     }
   }
-  const out = { schemaVersion: "marketlevelmap-etf-flows-v1", asset, source: "SoSoValue", fetchedAt: new Date(now).toISOString(), fundsAt, days: mergeDays(stored && stored.days, summary), funds };
+  const hist = await backfill(env, asset, mergeDays(stored && stored.days, summary), stored && stored.history, now);
+  const out = { schemaVersion: "marketlevelmap-etf-flows-v1", asset, source: "SoSoValue", fetchedAt: new Date(now).toISOString(), fundsAt, days: hist.days, funds };
+  if (hist.history) out.history = hist.history;
   if (fundsSkipped) out.triedAt = new Date(now).toISOString(); // the funds wait RETRY_MS, like a failed refresh
   return out;
 }
