@@ -1,3 +1,4 @@
 User-agent: *
+Allow: /api/events
 Disallow: /api/
 Sitemap: https://marketlevelmap.com/sitemap.xml
