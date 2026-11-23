@@ -1,7 +1,7 @@
 # Yerel Claude Code oturumu için prompt (iş bilgisayarı, 23 Kasım 2026)
 
 Aşağıdaki metni iş bilgisayarında, analiz motorunun (CryptoMarketMap) reposunda açılan Claude Code oturumuna
-olduğu gibi yapıştırın.
+olduğu gibi yapıştırın. Önce `onchain-olcum.zip` dosyasını o reponun kök klasörüne açın (`onchain-olcum/` klasörü).
 
 ---
 
@@ -16,8 +16,9 @@ Sırları (RPC anahtarı vb.) hiçbir dosyaya commit'leme, sohbete yazdırma.
 - Amaç: tokenize hisselerin mumlarını **hiçbir servise / lisansa bağlı olmadan** doğrudan blokzincirdeki Swap
   kayıtlarından üretmek ve aynı biçimde yazmak. GeckoTerminal/CoinGecko kullanılmayacak (yeniden yayın şartları
   belirsiz); onları yalnız doğrulama için kullanabilirsin.
-- Önceki ölçümün betikleri ve bulguları marketlevelmap-web reposunda: `research/onchain-candles/` (README.md,
-  rpc.py, clock.py, fetch.py, clean.py, analyze.py). Önce onları oku; oradaki yaklaşımı temel al.
+- Önceki ölçümün betikleri ve bulguları bu reponun içine kopyaladığım `onchain-olcum/` klasöründe (README.md,
+  rpc.py, clock.py, fetch.py, clean.py, analyze.py, bir grafik). Önce onları oku; oradaki yaklaşımı temel al. Bu
+  klasör yalnız başvuru içindir: kendi kodunu ayrı bir yere yaz, bu klasörü commit'leme (gerekirse .gitignore'a ekle).
 
 ## Ölçümden bilinenler (20–22 Kasım)
 
