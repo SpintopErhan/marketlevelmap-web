@@ -403,8 +403,8 @@ the crosshair. Under it, each fund's latest day (net flow, net assets, premium/d
 fund that has not reported that day shows "–". Credited "Data: SoSoValue"; descriptive only.
 
 - **Links:** "ETF flows" / "ETF akışları" in the site header after "Multi view" (every page, the library generator
-  included), and on the home page a small "ETF flows" card under the weekly outlook card (same right-hand column,
-  `.hero-side`; on phones above the topic card): the latest US trading day's net flow of the BTC and ETH ETFs, each
+  included), and on the home page a small "ETF flows" card beside the weekly outlook card on screens at least 1200 px wide (same
+  height, `.hero-side` as a row), under it on narrower ones (on phones above the topic card): the latest US trading day's net flow of the BTC and ETH ETFs, each
   with the last five trading days, linking to `/etf`. The card shows when at least one asset answers; the column is
   there when either card is.
 

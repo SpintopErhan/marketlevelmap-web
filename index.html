@@ -50,7 +50,11 @@ main{padding:0 0 72px}
 .hero-text{margin:14px 0 0;max-width:none;color:var(--muted);font-size:16px;white-space:nowrap}
 .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
 .hero.has-wk{display:grid;grid-template-columns:minmax(0,1fr) 340px;grid-template-areas:"copy wk" "topic wk";column-gap:32px;row-gap:22px;align-items:start}
-.hero.has-wk .hero-copy{grid-area:copy}.hero.has-wk .hero-side{grid-area:wk;display:flex;flex-direction:column;gap:14px;min-width:0}.hero.has-wk .hero-side .wk-card{flex:1 1 auto}.hero.has-wk .topic-card{grid-area:topic;margin-top:0}
+.hero.has-wk .hero-copy{grid-area:copy}.hero.has-wk .hero-side{grid-area:wk;display:flex;flex-direction:column;gap:14px;min-width:0}.hero.has-wk .hero-side .wk-card{flex:1 1 auto}
+/* Wide screens: the ETF card sits beside the weekly outlook card (same height, its link at the bottom). */
+@media(min-width:1200px){.hero.has-wk{grid-template-columns:minmax(0,1fr) auto}.hero.has-wk .hero-side{flex-direction:row;align-items:stretch}
+  .hero.has-wk .hero-side .wk-card{flex:0 0 340px;width:340px}.hero.has-wk .hero-side .etf-card:not([hidden]){flex:0 0 270px;width:270px;display:flex;flex-direction:column}
+  .hero.has-wk .hero-side .etf-card .wk-go{margin-top:auto;padding-top:10px;align-self:flex-start}.hero-side .etf-rows a{grid-template-columns:auto 1fr}.hero-side .etf-rows .s{grid-column:1/-1;text-align:left}}.hero.has-wk .topic-card{grid-area:topic;margin-top:0}
 /* The weekly outlook and the topic card end on the same line: both stretch to the taller side, the spare room goes
    above the weekly card's link and the topic card's "Read the page". */
 .hero.has-wk{align-items:stretch}.hero.has-wk .hero-copy{align-self:start}
