@@ -507,7 +507,7 @@ export function guestReport(report) {
 }
 
 // ---------- admin (ADMIN_EMAILS only) ----------
-async function adminUser(request, env) {
+export async function adminUser(request, env) {
   const row = await sessionUser(request, env);
   return row && adminEmails(env).includes(String(row.email).toLowerCase()) ? row : null;
 }
