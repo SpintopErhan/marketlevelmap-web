@@ -421,6 +421,14 @@ An asset that cannot be loaded hides the previous asset's figures and shows the 
   requests from a shared minute budget of 18 (D1 `snapshots` key `etf:v1:rate`); what does not fit waits for a later
   visitor. If any fund fails the old fund table stays (`fundsAt` unchanged) and is tried again after ten minutes.
   Estimated use: about 20,000 requests a month.
+- **Older history (BTC, ETH):** the free key's summary gives about a month, so once per asset (again a day later if it
+  failed) the refresh also reads SoSoValue's analysis chart `total_crypto_spot_btc_eth_etf_fund_flow_1d` (fallback
+  `total_crypto_eth_etf_fund_flow`; one request each, from the minute budget; about 500 calendar days). The chart has
+  no documented unit or time zone, so it is used only when it agrees with the stored days (unit $ or $ millions and a
+  date shift of −1/0/+1 day found by matching; at least 70% and 5 days within 2%); only days we do not have are added,
+  with the net flow alone (no net assets or value traded) and the cumulative inflow worked back from the oldest known
+  day. `history` in the stored answer records the chart, first date, days added and the match. The page notes from
+  which date net assets exist. The other eight assets have no such chart.
 - **Access check (admin only):** `GET /api/soso-probe?part=1|2|3` (`functions/api/soso-probe.js`) asks a fixed list of
   SoSoValue endpoints (analysis charts, macro, treasuries, news, v3 stocks and perps; at most 12 requests a part, from
   the same minute budget) and answers only the status, SoSoValue's code and message, row count, date range and field
