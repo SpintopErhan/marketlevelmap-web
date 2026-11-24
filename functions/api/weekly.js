@@ -19,6 +19,9 @@
 const ACTIVE_POINTER_KEY = "site-publication/active.json";
 const CANDLES = "https://data.marketlevelmap.com/candles/";
 const LEFT_OUT = new Set(["PAXGUSDT"]);
+// Tokenized stocks (README "Tokenized stocks"): in the outlook as their own group; their data starts in August 2026, so
+// no yearly open or ATH distance, and no Price Action reports yet (alignment stays empty).
+const isStock = (symbol) => /^[A-Z]{1,6}CUSDC$/.test(symbol);
 const ALIGN_TFS = ["1w", "1d", "4h"];
 const WEEK = 7 * 86400;
 
@@ -179,7 +182,7 @@ export async function buildWeekly(env, nowMs) {
     const levels = {}, key = keyLevelMap(file, symbol);
     if (key) {
       // Only levels whose period had begun when last week closed.
-      for (const code of ["MO", "YO", "ATH"]) if (key[code] && !(key[code].periodStart >= start)) levels[code] = key[code].price;
+      for (const code of isStock(symbol) ? ["MO"] : ["MO", "YO", "ATH"]) if (key[code] && !(key[code].periodStart >= start)) levels[code] = key[code].price;
     } else {
       for (const l of (cz && Array.isArray(cz.levels) ? cz.levels : [])) if (l && l.code && Number(l.price) > 0) levels[String(l.code).toUpperCase()] = Number(l.price);
       if (!levels.ATH && levels.OATH) levels.ATH = levels.OATH;
@@ -192,6 +195,7 @@ export async function buildWeekly(env, nowMs) {
     });
     return {
       symbol,
+      category: isStock(symbol) ? "stock" : "crypto",
       lastWeek: week ? { openTime: new Date(week.openTime * 1000).toISOString(), change: pct(week.close, week.open), ...(week.source ? { source: week.source } : {}) } : null,
       vsMonthlyOpen: pct(price, levels.MO),
       vsYearlyOpen: pct(price, levels.YO),
