@@ -272,7 +272,8 @@
   // Candle list indices match host.times() (the forming candle, if any, comes after them).
   function chartCandles(range) {
     var rows = host.rows ? host.rows() : [], out = [];
-    for (var j = range.i0; j <= Math.min(range.i1, rows.length - 1); j++) { var r = rows[j]; out.push([r[3], r[2], r[5] * r[4], null]); }
+    // Files that carry the dollar (quote) volume as field 9 (the tokenized stocks' USDC volume) give it exactly.
+    for (var j = range.i0; j <= Math.min(range.i1, rows.length - 1); j++) { var r = rows[j]; out.push([r[3], r[2], r[9] != null ? +r[9] : r[5] * r[4], null]); }
     return out;
   }
   function binProfile(cs, approx) {
@@ -312,11 +313,12 @@
     if (drag && drag.d === d) return c || { state: "loading" };
     var keep = c && c.prof ? c : null;
     c = profileCache[k] = { state: "loading", at: Date.now(), stale: keep };
-    var approx = false;
-    fetchCandles(pair, iv, range.start, range.end)
+    var approx = false, onchain = /^[A-Z]{1,6}CUSDC$/.test(pair);
+    // Tokenized stocks (README "Tokenized stocks") are not on Binance: their own candles, with the real USDC volume.
+    (onchain ? Promise.resolve([]) : fetchCandles(pair, iv, range.start, range.end))
       .then(function (cs) { return cs; }, function () { return []; })
       .then(function (cs) {
-        if (!cs.length) { approx = true; cs = chartCandles(range); }
+        if (!cs.length) { var rs = host.rows ? host.rows() : []; approx = !(onchain && rs.length && rs[rs.length - 1][9] != null); cs = chartCandles(range); }
         var prof = binProfile(cs, approx);
         profileCache[k] = { state: prof ? "ok" : "fail", at: Date.now(), prof: prof }; redraw();
       });

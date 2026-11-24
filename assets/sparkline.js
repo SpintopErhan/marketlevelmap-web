@@ -55,7 +55,8 @@ var Sparkline = (function () {
     var cached = readCache(symbol);
     if (cached) return Promise.resolve(cached);
     if (!pending[symbol]) {
-      pending[symbol] = fromBinance(symbol).catch(function () { return fromR2(symbol); }).then(function (closes) {
+      // Tokenized stocks (…CUSDC) are not on Binance: straight to the candle files.
+      pending[symbol] = (/CUSDC$/.test(symbol) ? fromR2(symbol) : fromBinance(symbol).catch(function () { return fromR2(symbol); })).then(function (closes) {
         closes = closes.filter(function (value) { return value > 0 && isFinite(value); });
         if (closes.length < MIN_POINTS) throw new Error("not enough candles");
         writeCache(symbol, closes);

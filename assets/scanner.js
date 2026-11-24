@@ -452,6 +452,7 @@
       ((body && body.entries) || []).forEach(function (e) {
         if (MarketUI.methodOf(e) !== "cz" || !e.report) return;
         var a = MarketUI.assetOf(e), f = MarketUI.timeframeOf(e).toLowerCase(); if (!/^[A-Z0-9]{2,20}$/.test(a) || TF_ORDER.indexOf(f) < 0) return;
+        if (MarketUI.isTokenized && MarketUI.isTokenized(a)) return; // tokenized stocks have no exchange stream (README "Tokenized stocks")
         (entries[a] || (entries[a] = {}))[f] = e;
       });
       assets = Object.keys(entries).sort(MarketUI.byPopularity);

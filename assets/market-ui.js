@@ -18,8 +18,15 @@ var MarketUI=(function(){
   function pct(ratio){if(!isFinite(ratio))return"—";var v=nf("fixed",2).format(Math.abs(ratio*100));return(ratio>0?"+":ratio<0?"−":"")+v+"%"}
   function signClass(ratio){return ratio>0?"up":ratio<0?"down":""}
   function compact(value){var n=Number(value);return n>0?nf("compact",0).format(n):"—"}
-  function baseOf(symbol){return String(symbol).replace(/USDT$/,"")}
-  function nameOf(symbol){var b=baseOf(symbol);return NAMES[b]||b}
+  // Tokenized US stocks (README "Tokenized stocks"): Coinbase's tokens on Base (NVDAc, AAPLc…) traded against USDC; candles
+  // from on-chain swaps. A pair "<TICKER>CUSDC" is one; names for the known ones, the stock ticker otherwise.
+  var STOCKS={NVDA:"NVIDIA",AAPL:"Apple",TSLA:"Tesla",MSFT:"Microsoft",AMZN:"Amazon",GOOGL:"Alphabet",META:"Meta",COIN:"Coinbase",MSTR:"Strategy",SPY:"SPDR S&P 500 ETF",QQQ:"Invesco QQQ"};
+  function stockOf(symbol){var m=/^([A-Z]{1,6})CUSDC$/.exec(String(symbol));return m?m[1]:""}
+  function isTokenized(symbol){return!!stockOf(symbol)}
+  function category(symbol){return isTokenized(symbol)?"stock":"crypto"}
+  // Ticker shown for a pair: BTC for BTCUSDT, NVDAc for NVDACUSDC (Coinbase's own spelling, so it is not taken for the stock).
+  function baseOf(symbol){var st=stockOf(symbol);return st?st+"c":String(symbol).replace(/USDT$/,"")}
+  function nameOf(symbol){var st=stockOf(symbol);if(st)return STOCKS[st]||st;var b=baseOf(symbol);return NAMES[b]||b}
   function dateTime(iso,withYear){var d=new Date(iso);if(isNaN(d))return"";return d.toLocaleString(locale(),{day:"numeric",month:"short",year:withYear===false?undefined:"numeric",hour:"2-digit",minute:"2-digit",hour12:false,timeZone:"UTC"})+" UTC"}
   function date(iso){var d=new Date(iso);if(isNaN(d))return"";return d.toLocaleDateString(locale(),{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"})}
   function methodOf(entry){
@@ -33,7 +40,9 @@ var MarketUI=(function(){
   function byTimeframe(a,b){return tfRank(timeframeOf(a))-tfRank(timeframeOf(b))||String(a.graphicKey).localeCompare(String(b.graphicKey))}
   // Assets in the usual market order (BTC, ETH, SOL, XRP, …), unknown ones alphabetically after them.
   var POPULAR=["BTC","ETH","SOL","XRP","BNB","AVAX","DOGE","ADA","LINK","DOT","LTC","TRX"];
-  function byPopularity(a,b){var i=POPULAR.indexOf(baseOf(a)),j=POPULAR.indexOf(baseOf(b));return(i<0?99:i)-(j<0?99:j)||String(a).localeCompare(String(b))}
+  // Crypto first (popular ones in that order, other coins alphabetically, PAXG last), then tokenized stocks alphabetically.
+  function rankOf(s){if(isTokenized(s))return 200;var b=baseOf(s);if(b==="PAXG")return 150;var i=POPULAR.indexOf(b);return i<0?100:i}
+  function byPopularity(a,b){return rankOf(a)-rankOf(b)||baseOf(a).localeCompare(baseOf(b))}
   function escape(text){return String(text).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-  return{lang:lang,locale:locale,digitsFor:digitsFor,price:price,pct:pct,signClass:signClass,compact:compact,baseOf:baseOf,nameOf:nameOf,dateTime:dateTime,date:date,methodOf:methodOf,assetOf:assetOf,timeframeOf:timeframeOf,tfRank:tfRank,byTimeframe:byTimeframe,byPopularity:byPopularity,escape:escape};
+  return{lang:lang,locale:locale,digitsFor:digitsFor,price:price,pct:pct,signClass:signClass,compact:compact,baseOf:baseOf,nameOf:nameOf,isTokenized:isTokenized,category:category,stockOf:stockOf,dateTime:dateTime,date:date,methodOf:methodOf,assetOf:assetOf,timeframeOf:timeframeOf,tfRank:tfRank,byTimeframe:byTimeframe,byPopularity:byPopularity,escape:escape};
 })();

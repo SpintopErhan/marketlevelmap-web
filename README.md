@@ -392,6 +392,39 @@ The page shows a heat map (BTC on top, then the usual market order) and one row 
 "Download image" draws the same as a 1600×900 PNG (dark look, page language) for X. The home page's weekly card shows
 the same six tiles under the crypto ones.
 
+## Tokenized stocks
+
+Coinbase's tokenized US stocks on Base (NVDAc, AAPLc…), candles made by the local program from on-chain swaps
+(`source: "ONCHAIN_BASE_DEX"`, `calendar: "XNYS"`, field 9 of every row = USDC volume). A pair `<TICKER>CUSDC` (e.g.
+`NVDACUSDC`) is a tokenized stock everywhere on the site (`MarketUI.isTokenized`, `category`): shown as `NVDAc`, named
+after the company (`MarketUI` `STOCKS`), listed after crypto (crypto by popularity, PAXG last, then tokens
+alphabetically). Analyses: Critical Zones only, 1H and 4H, published as `CZ_MIN:<PAIR>:<tf>` (read as `cz`).
+Descriptive wording: the price is the token's on-chain price, not the exchange price.
+
+- **Live price:** `GET /api/onchain-price?symbols=NVDACUSDC,AAPLCUSDC` (`functions/api/onchain-price.js`) reads the
+  main pool's `slot0` on Base (mainnet.base.org, else publicnode; no data licence needed). Pools come from
+  `candles/<PAIR>/pools.json` (local program; schema below); without it, when no pool answers, or when the pool price
+  is more than 15% from a candle younger than 6 hours, the price is the last 1H close (`source: "candle"`). 24 h open,
+  high, low and USDC volume from the 1H files. Edge cache 20 s. `assets/onchain-feed.js` polls it every 30 s while
+  the page is visible and gives MarketFeed-shaped data.
+- **Market table:** Crypto / Tokenized stocks filters; a "Tokenized stock" tag; opens from `levels.json` keyLevels;
+  yearly open and ATH shown as "–" for tokens (data starts Aug 2026); a note under the table; the price's title says
+  pool price or last candle close and when.
+- **Weekly outlook:** tokens are their own group (tiles under "Tokenized stocks", rows after a heading), monthly-open
+  distance only, link to 4H; the home card lists them last.
+- **Analysis page:** search window and watchlist get All / Crypto / Tokenized stocks chips (shared) and a tag on token
+  rows; a note under the title; the chart takes no Binance klines or stream for tokens (status `onchain`): the page's
+  on-chain price draws the price line and, when it follows the last uploaded candle directly, the forming candle;
+  volume bars and the volume profile use the real USDC volume (field 9); faint full-height bands mark candles outside
+  the NYSE session (`candles/_sessions/XNYS.json`). Flow summary and the live-flow link stay hidden (USDT only);
+  alarms and the monthly-returns link are off for tokens.
+- **Left out for now:** live flow, zone scanner, alarms, monthly returns, the social planner (method `cz_min`).
+  Multi view shows them (chart only, on-chain price).
+- **pools.json** (local program, next to the candles):
+  `{ "schemaVersion": "marketlevelmap-onchain-pools-v1", "pair": "NVDACUSDC", "chainId": 8453, "token": { "address", "decimals" },
+  "quote": { "address", "decimals", "symbol": "USDC" }, "pools": [ { "address", "kind": "v3" } ], "updatedAt" }` — main
+  pool first (at most 3 are tried); only `kind: "v3"` (Uniswap v3 and its forks, Aerodrome Slipstream) is read.
+
 ## ETF flows
 
 `etf.html` (`/etf`): daily net inflows and outflows of the US spot crypto ETFs of ten assets (BTC, ETH, SOL, XRP, LTC,
