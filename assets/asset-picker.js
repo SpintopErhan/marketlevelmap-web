@@ -11,11 +11,13 @@
 (function () {
   "use strict";
   var WORDS = {
-    en: { search: "Search an asset", choose: "Choose an asset", watch: "Watchlist", close: "Close", none: "No asset matches", hint: "↑ ↓ to move · Enter to open · Esc to close" },
-    tr: { search: "Varlık ara", choose: "Varlık seç", watch: "İzleme listesi", close: "Kapat", none: "Eşleşen varlık yok", hint: "↑ ↓ ile gez · Enter ile aç · Esc ile kapat" }
+    en: { search: "Search an asset", choose: "Choose an asset", watch: "Watchlist", close: "Close", none: "No asset matches", hint: "↑ ↓ to move · Enter to open · Esc to close", all: "All", crypto: "Crypto", stock: "Tokenized stocks", stockTag: "Tokenized stock" },
+    tr: { search: "Varlık ara", choose: "Varlık seç", watch: "İzleme listesi", close: "Kapat", none: "Eşleşen varlık yok", hint: "↑ ↓ ile gez · Enter ile aç · Esc ile kapat", all: "Tümü", crypto: "Kripto", stock: "Tokenize hisseler", stockTag: "Tokenize hisse" }
   };
   function w() { return WORDS[document.documentElement.lang === "tr" ? "tr" : "en"]; }
-  var assets = [], current = null, quotes = {}, cells = {}, modal = null, panel = null, sel = 0, shown = [];
+  var assets = [], current = null, quotes = {}, cells = {}, modal = null, panel = null, sel = 0, shown = [], cat = "all";
+  // Category of an asset: "crypto" or "stock" (tokenized stocks, README "Tokenized stocks").
+  function catOf(sym) { return MarketUI.category ? MarketUI.category(sym) : "crypto"; }
   function favs() { try { var v = JSON.parse(localStorage.getItem("mlm-favorites") || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
   function ordered() { var f = favs(); return assets.filter(function (s) { return f.indexOf(s) > -1; }).concat(assets.filter(function (s) { return f.indexOf(s) < 0; })); }
   function hue(sym) { var base = sym.replace(/(USDT|USDC|FDUSD|BUSD|USD|TRY|EUR)$/, "") || sym, h = 0; for (var i = 0; i < base.length; i++) h = (h * 31 + base.charCodeAt(i)) % 360; return h; }
@@ -42,7 +44,7 @@
     var a = document.createElement("a"); a.className = "ap-row"; a.href = href(sym); a.dataset.sym = sym;
     if (sym === current) a.setAttribute("aria-current", "page");
     var base = MarketUI.baseOf(sym), ic = document.createElement("span"); ic.className = "ap-ic"; ic.textContent = base.slice(0, 4); ic.style.background = "hsl(" + hue(sym) + " 62% 64%)";
-    var nm = document.createElement("span"); nm.className = "ap-nm"; nm.innerHTML = "<b></b><small></small>"; nm.firstChild.textContent = base + (isFav ? " ★" : ""); nm.lastChild.textContent = MarketUI.nameOf(sym);
+    var nm = document.createElement("span"); nm.className = "ap-nm"; nm.innerHTML = "<b></b><small></small>"; nm.firstChild.textContent = base + (isFav ? " ★" : ""); nm.lastChild.textContent = MarketUI.nameOf(sym) + (catOf(sym) === "stock" ? " · " + w().stockTag : "");
     var pr = document.createElement("span"), ch = document.createElement("span"); pr.className = "ap-pr num"; ch.className = "ap-ch num";
     a.appendChild(ic); a.appendChild(nm); a.appendChild(pr); a.appendChild(ch);
     a.addEventListener("click", function (e) { if (e.ctrlKey || e.metaKey || e.shiftKey || e.button) return; e.preventDefault(); go(sym); });
@@ -63,9 +65,23 @@
   }
   function fill(box, filter) {
     box.textContent = ""; var f = favs(), q = String(filter || "").trim().toUpperCase();
-    shown = ordered().filter(function (s) { return !q || s.indexOf(q) > -1 || MarketUI.nameOf(s).toUpperCase().indexOf(q) > -1; });
+    shown = ordered().filter(function (s) { return (cat === "all" || catOf(s) === cat) && (!q || s.indexOf(q) > -1 || MarketUI.nameOf(s).toUpperCase().indexOf(q) > -1 || MarketUI.baseOf(s).toUpperCase().indexOf(q) > -1); });
     if (!shown.length) { var e = document.createElement("p"); e.className = "ap-none"; e.textContent = w().none; box.appendChild(e); }
     shown.forEach(function (s) { box.appendChild(row(s, f.indexOf(s) > -1)); });
+  }
+
+  // Category chips (All · Crypto · Tokenized stocks) above a list, shown only when both kinds are listed. The choice
+  // is shared by the search window and the watchlist.
+  function chips(onChange) {
+    var kinds = {}; assets.forEach(function (s) { kinds[catOf(s)] = 1; });
+    var box = document.createElement("div"); box.className = "ap-cats"; box.setAttribute("role", "group");
+    if (!(kinds.crypto && kinds.stock)) { box.hidden = true; return box; }
+    ["all", "crypto", "stock"].forEach(function (k) {
+      var b = document.createElement("button"); b.type = "button"; b.dataset.cat = k; b.textContent = w()[k]; b.setAttribute("aria-pressed", String(cat === k));
+      b.addEventListener("click", function () { cat = k; [].forEach.call(document.querySelectorAll(".ap-cats button"), function (x) { x.setAttribute("aria-pressed", String(x.dataset.cat === cat)); }); onChange(); if (modal) modal.input.focus(); if (panel && panel.refresh) panel.refresh(); });
+      box.appendChild(b);
+    });
+    return box;
   }
 
   // ---- search window ----
@@ -80,7 +96,7 @@
     head.appendChild(input); head.appendChild(x);
     var list = document.createElement("div"); list.className = "ap-list"; list.setAttribute("role", "listbox");
     var hint = document.createElement("p"); hint.className = "ap-hint"; hint.textContent = t.hint;
-    box.appendChild(head); box.appendChild(list); box.appendChild(hint); back.appendChild(box);
+    box.appendChild(head); box.appendChild(chips(function () { fill(list, input.value); sel = 0; mark(); })); box.appendChild(list); box.appendChild(hint); back.appendChild(box);
     // Inside a full-screen element (the expanded chart) only that element is shown, so the window goes there.
     (document.fullscreenElement || document.body).appendChild(back);
     modal = { back: back, input: input, list: list };
@@ -118,7 +134,8 @@
       var input = document.createElement("input"); input.type = "search"; input.className = "ap-input ap-pinput"; input.placeholder = t.search; input.setAttribute("aria-label", t.search); input.autocomplete = "off";
       var list = document.createElement("div"); list.className = "ap-list ap-plist";
       input.addEventListener("input", function () { fill(list, input.value); });
-      panel.appendChild(head); panel.appendChild(input); panel.appendChild(list); document.body.appendChild(panel);
+      panel.appendChild(head); panel.appendChild(input); panel.appendChild(chips(function () { fill(list, input.value); })); panel.appendChild(list); document.body.appendChild(panel);
+      panel.refresh = function () { fill(list, input.value); };
       fill(list, "");
       var cur = list.querySelector('[aria-current="page"]'); if (cur) cur.scrollIntoView({ block: "center" });
     } else if (!open && panel) { panel.remove(); panel = null; }
@@ -162,6 +179,7 @@
     ".ap-head{display:flex;align-items:center;gap:8px;padding:12px;border-bottom:1px solid var(--line)}" +
     ".ap-input{flex:1;min-width:0;height:38px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px;outline:none}.ap-input:focus{border-color:var(--accent)}" +
     ".ap-x{flex:none;width:32px;height:32px;padding:0;border:0;border-radius:8px;background:none;color:var(--muted);font-size:22px;line-height:1;cursor:pointer}.ap-x:hover{color:var(--fg);background:var(--bg)}" +
+    ".ap-cats{display:flex;gap:4px;padding:8px 12px 2px}.ap-cats[hidden]{display:none}.ap-cats button{height:28px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:none;color:var(--muted);font:inherit;font-size:12px;font-weight:600;cursor:pointer}.ap-cats button[aria-pressed=true]{border-color:var(--accent);color:var(--fg);background:var(--bg)}.ap-panel .ap-cats{padding:0 12px 6px}" +
     ".ap-list{overflow-y:auto;padding:6px}.ap-modal .ap-list{flex:1}" +
     ".ap-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto 72px;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;color:var(--fg);text-decoration:none}" +
     ".ap-row:hover,.ap-row.sel{background:var(--bg)}.ap-row[aria-current=page]{box-shadow:inset 3px 0 0 var(--accent)}" +

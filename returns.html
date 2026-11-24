@@ -155,7 +155,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   sel.addEventListener("change",function(){var u=new URL(location.href);u.searchParams.set("asset",sel.value);history.replaceState(null,"",u.toString());load(sel.value)});
   new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
   getJson(DATA+"index.json").then(function(idx){
-    index=idx;var syms=Object.keys(idx.pairs||{}).filter(function(s){return idx.pairs[s]["1d"]}).sort(MarketUI.byPopularity);
+    index=idx;var syms=Object.keys(idx.pairs||{}).filter(function(s){return idx.pairs[s]["1d"]&&!MarketUI.isTokenized(s)}).sort(MarketUI.byPopularity);
     if(!syms.length)throw new Error("none");
     var want=(new URLSearchParams(location.search).get("asset")||"BTCUSDT").toUpperCase();
     var w=words();

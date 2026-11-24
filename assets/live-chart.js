@@ -52,6 +52,26 @@ var LiveChart = (function () {
     return indexPromise;
   }
 
+  // Exchange sessions (README "Tokenized stocks"): candles/_sessions/<CALENDAR>.json, { sessions: [{ open, close }] } in
+  // epoch seconds, oldest first; written by the local program with the tokenized stocks' candles.
+  var sessionsPromise = {};
+  function loadSessions(calendar) {
+    if (!sessionsPromise[calendar]) sessionsPromise[calendar] = getJson(DATA + "_sessions/" + calendar + ".json")
+      .then(function (f) { return (f && Array.isArray(f.sessions) ? f.sessions : []).filter(function (x) { return x && x.close > x.open; }); })
+      .catch(function () { delete sessionsPromise[calendar]; return []; });
+    return sessionsPromise[calendar];
+  }
+  // Open times of the candles that do not overlap any session ([t, t + step) against [open, close)).
+  function offSession(times, step, sessions) {
+    var out = [], j = 0;
+    for (var i = 0; i < times.length; i++) {
+      var t = times[i];
+      while (j < sessions.length && sessions[j].close <= t) j++;
+      if (!(j < sessions.length && sessions[j].open < t + step)) out.push(t);
+    }
+    return out;
+  }
+
   var fileCache = {};
   function loadPeriods(pair, tf, names) {
     return Promise.all(names.map(function (name) {
@@ -263,6 +283,38 @@ var LiveChart = (function () {
               prev = { x: x, y: y, dir: p.dir };
             }
             flush();
+          });
+        } };
+      }
+    }];
+  };
+
+  // Off-session bands (tokenized stocks, README "Tokenized stocks"): full-height faint bands behind the candles over every
+  // run of candles outside the exchange session, by logical index (row i is logical index i). data.off[i] true = closed.
+  function SessionPrimitive() { this.data = null; this.chart = null; this.series = null; this.requestUpdate = null; }
+  SessionPrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
+  SessionPrimitive.prototype.detached = function () { this.chart = null; this.series = null; this.requestUpdate = null; };
+  SessionPrimitive.prototype.set = function (data) { this.data = data; if (this.requestUpdate) this.requestUpdate(); };
+  SessionPrimitive.prototype.updateAllViews = function () {};
+  SessionPrimitive.prototype.paneViews = function () {
+    var self = this;
+    return [{
+      zOrder: function () { return "bottom"; },
+      renderer: function () {
+        return { draw: function (target) {
+          var d = self.data; if (!self.chart || !d || !d.off || !d.off.length) return;
+          var ts = self.chart.timeScale(), vl = ts.getVisibleLogicalRange(); if (!vl) return;
+          var lo = Math.max(0, Math.floor(vl.from) - 1), hi = Math.min(d.off.length - 1, Math.ceil(vl.to) + 1);
+          var half = (ts.options().barSpacing || 6) / 2;
+          target.useMediaCoordinateSpace(function (scope) {
+            var ctx = scope.context, h = scope.mediaSize.height; ctx.fillStyle = d.color;
+            for (var i = lo; i <= hi; i++) {
+              if (!d.off[i]) continue;
+              var j = i; while (j + 1 <= hi && d.off[j + 1]) j++;
+              var x0 = ts.logicalToCoordinate(i), x1 = ts.logicalToCoordinate(j);
+              if (x0 !== null && x1 !== null) ctx.fillRect(x0 - half, 0, x1 - x0 + 2 * half, h);
+              i = j;
+            }
           });
         } };
       }
@@ -644,6 +696,21 @@ var LiveChart = (function () {
       if (!options.priceFormat || options.priceFormat.type !== "custom") options.priceFormat = localFormat(options.priceFormat);
       return addSeriesRaw(type, options, pane);
     };
+    // Off-session shading for the tokenized stocks: faint full-height bands over the candles outside the NYSE session
+    // (nights, weekends, holidays). Nothing for crypto.
+    var sessionShade = new SessionPrimitive(), sessionList = null, SESSION_FILL = "rgba(128,140,155,0.12)";
+    function paintSessions() {
+      if (!onchain()) { sessionList = null; sessionShade.set(null); return; }
+      var pair = state.pair, tf = state.tf;
+      loadSessions("XNYS").then(function (list) {
+        if (destroyed || state.pair !== pair || state.tf !== tf) return;
+        sessionList = list;
+        var t = allRows().map(function (r) { return r[0]; });
+        if (forming) t.push(forming[0]);
+        var off = {}; if (list.length) offSession(t, STEP[tf], list).forEach(function (x) { off[x] = 1; });
+        sessionShade.set(list.length ? { off: t.map(function (x) { return !!off[x]; }), color: SESSION_FILL } : null);
+      });
+    }
     var candles = chart.addSeries(LC.CandlestickSeries, {
       upColor: "#55d99c", downColor: "#ef6e76", borderVisible: false, wickUpColor: "#55d99c", wickDownColor: "#ef6e76",
       priceLineVisible: false
@@ -653,7 +720,8 @@ var LiveChart = (function () {
     // Volume in US dollars (README "Chart volume"): the candle files carry the coin volume, so each bar is that times the
     // candle's close, an approximation of the dollar volume. Only the bars and the legend use it; VWAP, OBV and the
     // indicator card keep the coin volume, as their definitions use.
-    function usdVolume(r) { return (Number(r[5]) || 0) * (Number(r[4]) || 0); }
+    // Files that carry the dollar (quote) volume as field 9 (the tokenized stocks' USDC volume) give it exactly.
+    function usdVolume(r) { return r[9] != null ? Number(r[9]) || 0 : (Number(r[5]) || 0) * (Number(r[4]) || 0); }
     var volume = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "custom", minMove: 1, formatter: function (v) { return cachedFormat("num", pageLocale(), { notation: "compact", maximumFractionDigits: 1 }).format(Number(v)); } },
       priceLineVisible: false, lastValueVisible: false }, 1);
     volume.priceScale().applyOptions({ scaleMargins: { top: 0.15, bottom: 0 } });
@@ -722,6 +790,7 @@ var LiveChart = (function () {
     var avwap = chart.addSeries(LC.LineSeries, { color: "#f2f4f8", lineWidth: 2, lineStyle: LC.LineStyle.LargeDashed, priceLineVisible: false,
       lastValueVisible: true, title: "AVWAP", crosshairMarkerVisible: false, visible: false }), avwapPoints = [];
     var zones = new ZonesPrimitive(), zoneList = [], baseZones = [], fvgZones = [], structureZones = [], lastValidZones = [], fibZones = [];
+    candles.attachPrimitive(sessionShade);
     candles.attachPrimitive(zones);
     var eventMarks = new EventsPrimitive();
     var stLine = new TrendLinePrimitive(), sarDots = new SarPrimitive(), ichi = new IchimokuPrimitive(), vwapLine = new TrendLinePrimitive();
@@ -1139,6 +1208,7 @@ var LiveChart = (function () {
         series.setData(rows.filter(function (r) { return r[6 + i] != null; }).map(function (r) { return { time: r[0], value: r[6 + i] }; }));
       });
       zones.set(zoneList, rows.map(function (r) { return r[0]; }));
+      paintSessions();
       drawAvwap();
       drawForming();
       drawIndicators();
@@ -1150,6 +1220,7 @@ var LiveChart = (function () {
       var up = forming[4] >= forming[1], tone = up ? "rgba(85,217,156,0.38)" : "rgba(239,110,118,0.38)";
       candles.update({ time: forming[0], open: forming[1], high: forming[2], low: forming[3], close: forming[4], color: tone, wickColor: tone, borderColor: tone });
       volume.update({ time: forming[0], value: usdVolume(forming), color: up ? "rgba(59,158,112,0.25)" : "rgba(169,83,91,0.25)" });
+      if (sessionList && sessionList.length && sessionShade.data && sessionShade.data.off.length === allRows().length) paintSessions();
       refreshLegend();
       drawIndicatorsSoon();
     }
@@ -1176,7 +1247,12 @@ var LiveChart = (function () {
       return true;
     }
 
+    // Tokenized stocks (README "Tokenized stocks", pairs …CUSDC) are not on Binance: no klines and no stream. Their
+    // live price comes from the page (setLivePrice, the on-chain pool price every 30 s), drawn as the price line and as
+    // the forming candle when it directly follows the last uploaded one. Their status is "onchain", never "live".
+    function onchain() { return /^[A-Z]{1,6}CUSDC$/.test(state.pair); }
     function setLiveStatus(status) {
+      if (status === "live" && onchain()) status = "onchain";
       if (status === liveStatus) return;
       liveStatus = status;
       // Live: the series' own last-price label is the live price, so the separate line goes away.
@@ -1187,6 +1263,7 @@ var LiveChart = (function () {
 
     // Missing closed candles + the forming one, straight after the last known candle.
     function fillTail() {
+      if (onchain()) return Promise.resolve();
       var step = STEP[state.tf] * 1000, requests = 0, epoch = generation;
       function next(startMs) {
         if (destroyed || epoch !== generation) return;
@@ -1212,7 +1289,7 @@ var LiveChart = (function () {
     }
 
     function openStream() {
-      if (destroyed || document.hidden || socket) return;
+      if (destroyed || document.hidden || socket || onchain()) return;
       var ws, received = false;
       try { ws = socket = new WebSocket(BINANCE_WS + state.pair.toLowerCase() + "@kline_" + state.tf); }
       catch (error) { socket = null; setLiveStatus("unavailable"); return; }
@@ -1487,6 +1564,15 @@ var LiveChart = (function () {
       setLivePrice: function (price) {
         var p = Number(price);
         if (!(p > 0) || destroyed || liveStatus === "live") return;
+        if (onchain()) {
+          // The candle after the last uploaded one: opened at that close, high/low/close from the prices seen here.
+          var rows = allRows(), last = rows[rows.length - 1], step = STEP[state.tf], t = Math.floor(Date.now() / 1000 / step) * step;
+          if (last && t === last[0] + step) {
+            if (!forming || forming[0] !== t) forming = [t, last[4], Math.max(last[4], p), Math.min(last[4], p), p, 0];
+            else { forming[2] = Math.max(forming[2], p); forming[3] = Math.min(forming[3], p); forming[4] = p; }
+            drawForming();
+          }
+        }
         if (!liveLine) liveLine = candles.createPriceLine({ price: p, color: "#f0c040", lineWidth: 1, lineStyle: LC.LineStyle.Dashed, axisLabelVisible: true, title: "" });
         else liveLine.applyOptions({ price: p });
       },
