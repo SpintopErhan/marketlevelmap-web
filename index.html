@@ -163,6 +163,11 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .table-note{margin:10px 4px 0;color:var(--muted);font-size:12px}.table-note p+p{margin-top:6px}
 .lh-tag{padding:0 4px;border:1px solid var(--line);border-radius:4px;color:var(--muted);font-size:9.5px;font-weight:700;vertical-align:1px}
 .na-tag{border-style:dashed}
+/* Name and its tags: side by side on wide screens; on phones the tags go under the name, so the first column stays
+   narrow and the price columns stay in view. */
+.asset-name{display:inline-flex;align-items:center;gap:6px;min-width:0}.asset-tags{display:inline-flex;gap:4px}.asset-tags:empty{display:none}.asset-tags .stock-tag{margin-left:0}
+@media(max-width:700px){.asset-name{flex-direction:column;align-items:flex-start;gap:3px}.asset-tags .stock-tag{font-size:9px;padding:0 5px}}
+@media(max-width:380px){.asset-tags{flex-direction:column;align-items:flex-start;gap:2px}}
 .stock-tag{margin-left:6px;padding:1px 6px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:10px;font-weight:600;white-space:nowrap}
 
 /* Market table on the left. This week's events beside it, topic of the week under the events. */
@@ -442,12 +447,12 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
 
   function build(sym,href){
     var tr=document.createElement("tr");tr.dataset.symbol=sym;
-    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><span class="asset-icon" aria-hidden="true"></span><strong></strong></div></td><td class="num"><span class="price">—</span></td><td class="num"><span class="chg">—</span></td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="analysis-col"><a class="analysis-link"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><span class="spark"></span></a></td>';
+    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><span class="asset-icon" aria-hidden="true"></span><span class="asset-name"><strong></strong><span class="asset-tags"></span></span></div></td><td class="num"><span class="price">—</span></td><td class="num"><span class="chg">—</span></td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="analysis-col"><a class="analysis-link"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><span class="spark"></span></a></td>';
     var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1].firstChild,change:c[2].firstChild,volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[9].firstChild,spark:c[9].querySelector(".spark"),data:null,levels:null,digits:null,last:null,closes:null,sparkChange:null,sparkAt:0};
     c[0].querySelector("strong").textContent=MarketUI.nameOf(sym)||sym;r.link.href=href;
     // V2: a coloured badge with the asset's ticker (BTC, XRP, DOGE…) and its name instead of the pair.
     var icon=c[0].querySelector(".asset-icon"),base=MarketUI.baseOf(sym)||sym,hue=0;r.stock=MarketUI.isTokenized(sym);
-    if(r.stock){var tag=document.createElement("span");tag.className="stock-tag";tag.dataset.i18n="stockTag";tag.textContent=words().stockTag;c[0].querySelector(".asset-cell").appendChild(tag)}for(var i=0;i<base.length;i++)hue=(hue*31+base.charCodeAt(i))%360;
+    if(r.stock){var tag=document.createElement("span");tag.className="stock-tag";tag.dataset.i18n="stockTag";tag.textContent=words().stockTag;c[0].querySelector(".asset-tags").appendChild(tag)}for(var i=0;i<base.length;i++)hue=(hue*31+base.charCodeAt(i))%360;
     icon.textContent=base;icon.className="asset-icon"+(base.length>3?" long":"");icon.style.background="hsl("+hue+" 62% 64%)";
     function paintStar(){var on=favorites.indexOf(sym)>-1;r.star.classList.toggle("active",on);r.star.textContent=on?"★":"☆";r.star.setAttribute("aria-pressed",String(on))}
     r.star.addEventListener("click",function(e){e.stopPropagation();var i=favorites.indexOf(sym);if(i>-1)favorites.splice(i,1);else favorites.push(sym);saveFavorites();paintStar();labels();applyFilter()});
@@ -467,7 +472,7 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
       var entries=byAsset[sym].sort(MarketUI.byTimeframe),main=entries.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||entries[0];
       body.appendChild(build(sym,"bulletin.html?asset="+encodeURIComponent(sym)+(main?"&method="+MarketUI.methodOf(main):"")));
       // Marked only when the list of analyses was read (a failed request must not mark every asset).
-      if(!main&&publication){rows[sym].noAnalysis=true;var na=document.createElement("span");na.className="stock-tag na-tag";na.dataset.i18n="noAnalysisTag";na.textContent=words().noAnalysisTag;rows[sym].tr.querySelector(".asset-cell").appendChild(na)}
+      if(!main&&publication){rows[sym].noAnalysis=true;var na=document.createElement("span");na.className="stock-tag na-tag";na.dataset.i18n="noAnalysisTag";na.textContent=words().noAnalysisTag;rows[sym].tr.querySelector(".asset-tags").appendChild(na)}
       // YO and ATH are the same on every timeframe: read them from a report this visitor may open (1D for guests;
       // members-only timeframes come back without levels, README "Accounts").
       var open=entries.filter(function(e){return e.report&&!e.locked}),levelsFrom=open.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||open[0]||main||{};
