@@ -64,3 +64,5 @@ body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-i
 /* Narrow phones (≤ 420 px, e.g. 412 px wide): the logo, the language and theme switches and "Sign in" did not fit on
    one row and the page could be scrolled sideways by a few pixels. A slightly smaller logo and gap make them fit. */
 @media(max-width:420px){header{column-gap:12px}.logo-header{height:24px;width:160px}}
+/* Small phones (360 px): logo, language and theme controls and the sign-in button fit on one row (they were 25 px too wide). */
+@media(max-width:380px){header{column-gap:8px}.logo-header{height:18px;width:120px}.controls{gap:4px;margin-left:0}.lang select{padding:0 18px 0 8px}}
