@@ -415,8 +415,10 @@ Descriptive wording: the price is the token's on-chain price, not the exchange p
 - **Analysis page:** search window and watchlist get All / Crypto / Tokenized stocks chips (shared) and a tag on token
   rows; a note under the title; the chart takes no Binance klines or stream for tokens (status `onchain`): the page's
   on-chain price draws the price line and, when it follows the last uploaded candle directly, the forming candle;
-  volume bars and the volume profile use the real USDC volume (field 9); faint full-height bands mark candles outside
-  the NYSE session (`candles/_sessions/XNYS.json`). Flow summary and the live-flow link stay hidden (USDT only);
+  volume bars and the volume profile use the real USDC volume (field 9); faint full-height bands mark the candles that
+  overlap the NYSE session (`candles/_sessions/XNYS.json`; nights, weekends and holidays stay plain), labelled "Shaded:
+  NYSE open" in the price pane, switchable under Indicators ("NYSE session hours", `sess` in `mlm-indicators-v1`,
+  default on, also for guests). Flow summary and the live-flow link stay hidden (USDT only);
   alarms and the monthly-returns link are off for tokens.
 - **Left out for now:** live flow, zone scanner, alarms, monthly returns, the social planner (method `cz_min`).
   Multi view shows them (chart only, on-chain price).
