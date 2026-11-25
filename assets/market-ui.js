@@ -43,6 +43,12 @@ var MarketUI=(function(){
   // Crypto first (popular ones in that order, other coins alphabetically, PAXG last), then tokenized stocks alphabetically.
   function rankOf(s){if(isTokenized(s))return 200;var b=baseOf(s);if(b==="PAXG")return 150;var i=POPULAR.indexOf(b);return i<0?100:i}
   function byPopularity(a,b){return rankOf(a)-rankOf(b)||baseOf(a).localeCompare(baseOf(b))}
+  // Turkish ablative suffix after a date ending in a year: "18 Ağu 2026'dan", "2027'den" (by how the year is read).
+  function fromSuffixTr(year){var n=Number(year)%100,u=n%10,t=Math.floor(n/10)%10;
+    var unit=["","den","den","ten","ten","ten","dan","den","den","dan"],tens=["","dan","den","dan","tan","den","tan","ten","den","dan"];
+    return"\u2019"+(u?unit[u]:t?tens[t]:"den")}
+  // "18 Aug 2026" in English, "18 Ağu 2026'dan" in Turkish: the date something has run from.
+  function since(iso){var d=date(iso);if(!d)return"";return lang()==="tr"?d+fromSuffixTr(new Date(iso).getUTCFullYear()):d}
   function escape(text){return String(text).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-  return{lang:lang,locale:locale,digitsFor:digitsFor,price:price,pct:pct,signClass:signClass,compact:compact,baseOf:baseOf,nameOf:nameOf,isTokenized:isTokenized,category:category,stockOf:stockOf,dateTime:dateTime,date:date,methodOf:methodOf,assetOf:assetOf,timeframeOf:timeframeOf,tfRank:tfRank,byTimeframe:byTimeframe,byPopularity:byPopularity,escape:escape};
+  return{lang:lang,locale:locale,digitsFor:digitsFor,price:price,pct:pct,signClass:signClass,compact:compact,baseOf:baseOf,nameOf:nameOf,isTokenized:isTokenized,since:since,category:category,stockOf:stockOf,dateTime:dateTime,date:date,methodOf:methodOf,assetOf:assetOf,timeframeOf:timeframeOf,tfRank:tfRank,byTimeframe:byTimeframe,byPopularity:byPopularity,escape:escape};
 })();
