@@ -408,8 +408,10 @@ the same for crypto and tokenized stocks: uploading an asset's candles is enough
 have an analysis.
 
 - **Market table:** all of them in today's order (crypto by popularity, PAXG last, then tokenized stocks
-  alphabetically); a dashed "No analysis" / "Analiz yok" tag (only when the list of analyses was read); a "With
-  analysis" / "Analizli" filter. The filter row scrolls inside itself on phones.
+  alphabetically); a "With analysis" / "Analizli" filter (the filter row scrolls inside itself on phones). Wide
+  screens: "Tokenized stock" and a dashed "No analysis" tag beside the name (only when the list of analyses was read).
+  Phones (≤ 700 px): no tags; the analysis icon at the end of the row is there only for assets with an analysis
+  (`tr.no-analysis`), the row still opens the chart.
 - **Analysis page, chart only:** an asset with candles but no analysis opens with one row per timeframe with candles
   (`chartOnlyRows`): chart, key levels, volume profile, indicators, live price, a "No analysis has been published for
   this asset yet" line; no method switch, no analysis date. Guests keep today's rules (decided: no change for now):

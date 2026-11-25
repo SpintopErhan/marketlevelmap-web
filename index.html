@@ -166,8 +166,9 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 /* Name and its tags: side by side on wide screens; on phones the tags go under the name, so the first column stays
    narrow and the price columns stay in view. */
 .asset-name{display:inline-flex;align-items:center;gap:6px;min-width:0}.asset-tags{display:inline-flex;gap:4px}.asset-tags:empty{display:none}.asset-tags .stock-tag{margin-left:0}
-@media(max-width:700px){.asset-name{flex-direction:column;align-items:flex-start;gap:3px}.asset-tags .stock-tag{font-size:9px;padding:0 5px}}
-@media(max-width:380px){.asset-tags{flex-direction:column;align-items:flex-start;gap:2px}}
+/* Phones: no tags under the name; the analysis icon at the end of the row shows which assets have an analysis
+   (none on an asset without one; the row still opens its chart). Wide screens keep the tags beside the name. */
+@media(max-width:700px){.asset-tags{display:none}tr.no-analysis .analysis-link{visibility:hidden}}
 .stock-tag{margin-left:6px;padding:1px 6px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:10px;font-weight:600;white-space:nowrap}
 
 /* Market table on the left. This week's events beside it, topic of the week under the events. */
@@ -472,7 +473,7 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
       var entries=byAsset[sym].sort(MarketUI.byTimeframe),main=entries.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||entries[0];
       body.appendChild(build(sym,"bulletin.html?asset="+encodeURIComponent(sym)+(main?"&method="+MarketUI.methodOf(main):"")));
       // Marked only when the list of analyses was read (a failed request must not mark every asset).
-      if(!main&&publication){rows[sym].noAnalysis=true;var na=document.createElement("span");na.className="stock-tag na-tag";na.dataset.i18n="noAnalysisTag";na.textContent=words().noAnalysisTag;rows[sym].tr.querySelector(".asset-tags").appendChild(na)}
+      if(!main&&publication){rows[sym].noAnalysis=true;rows[sym].tr.classList.add("no-analysis");var na=document.createElement("span");na.className="stock-tag na-tag";na.dataset.i18n="noAnalysisTag";na.textContent=words().noAnalysisTag;rows[sym].tr.querySelector(".asset-tags").appendChild(na)}
       // YO and ATH are the same on every timeframe: read them from a report this visitor may open (1D for guests;
       // members-only timeframes come back without levels, README "Accounts").
       var open=entries.filter(function(e){return e.report&&!e.locked}),levelsFrom=open.filter(function(e){return MarketUI.methodOf(e)==="cz"})[0]||open[0]||main||{};
