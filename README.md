@@ -413,6 +413,9 @@ have an analysis.
   width), badge (all the same width, so the names line up), name. The last two columns are "7 days" (the sparkline;
   not on phones) and "Analysis": its icon is there only for assets with an analysis (`tr.no-analysis` hides it; marked
   only when the list of analyses was read); every row still opens the asset's page.
+- **Height:** the table's box is as tall as its header and ten rows (`fitHeight`, measured after the rows and their
+  figures are in, on filters, searches and resizes); the header stays at the top while the rows scroll inside; ten
+  rows or fewer and the box fits them. Phones keep the sideways scroll (the asset column stays at the left).
 - **Analysis page, chart only:** an asset with candles but no analysis opens with one row per timeframe with candles
   (`chartOnlyRows`): chart, key levels, volume profile, indicators, live price, a "No analysis has been published for
   this asset yet" line; no method switch, no analysis date. Guests keep today's rules (decided: no change for now):

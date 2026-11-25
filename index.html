@@ -116,6 +116,11 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .market-table th:first-child,.market-table td:first-child{padding-left:20px}
 .market-table th:last-child,.market-table td:last-child{padding-right:20px}
 .market-table .asset{position:sticky;left:0;z-index:1;text-align:left;background:var(--panel)}
+/* Ten rows in view (README "Market table"): the box is as tall as the header and ten rows, the header stays at the
+   top while the rows scroll inside; fewer rows (a filter, a search) and the box shrinks to them. */
+.mt-wrap{overflow:auto}
+.market-table thead th{position:sticky;top:0;z-index:2;background:var(--panel)}
+.market-table thead th.asset{z-index:3}
 .market-table tbody tr{cursor:pointer}
 .market-table tbody td{transition:background .2s ease}
 .market-table tbody tr:hover td{background:var(--raise)}
@@ -263,7 +268,7 @@ tr.no-analysis .analysis-link{visibility:hidden}
 <script>
 try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||savedTheme==="dark")document.documentElement.dataset.theme=savedTheme}catch(e){}
 </script>
-<script src="assets/market-context.js?v=7ae56172" defer></script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c70364fc" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=a871619e"></script><script src="assets/event-links.js?v=39e55a33"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/onchain-feed.js?v=a58f5938"></script><script src="assets/info-tip.js?v=99a5c153" defer></script><script src="assets/sparkline.js?v=3eff7e9d"></script><!-- Site name and logo for search results (README "Search results"). --><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MarketLevelMap","alternateName":["MLMap","marketlevelmap.com"],"url":"https://marketlevelmap.com/","inLanguage":["en","tr"]}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MarketLevelMap","url":"https://marketlevelmap.com/","logo":"https://marketlevelmap.com/assets/icons/icon-512.png","sameAs":["https://x.com/marketlevelmap"]}</script></head>
+<script src="assets/market-context.js?v=7ae56172" defer></script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c70364fc" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=338a4bf3"></script><script src="assets/event-links.js?v=39e55a33"></script><script src="assets/demo-data.js?v=80bb7d01"></script><script src="assets/onchain-feed.js?v=a58f5938"></script><script src="assets/info-tip.js?v=99a5c153" defer></script><script src="assets/sparkline.js?v=3eff7e9d"></script><!-- Site name and logo for search results (README "Search results"). --><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MarketLevelMap","alternateName":["MLMap","marketlevelmap.com"],"url":"https://marketlevelmap.com/","inLanguage":["en","tr"]}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"MarketLevelMap","url":"https://marketlevelmap.com/","logo":"https://marketlevelmap.com/assets/icons/icon-512.png","sameAs":["https://x.com/marketlevelmap"]}</script></head>
 <body>
 <div class="page-bg" aria-hidden="true"><div class="page-bg-in"><svg class="page-bg-art" viewBox="0 0 720 460" fill="none">
 <line class="bg-guide" x1="20" y1="78" x2="700" y2="78"/><line class="bg-guide" x1="20" y1="168" x2="700" y2="168"/><line class="bg-guide" x1="20" y1="262" x2="700" y2="262"/><line class="bg-guide" x1="20" y1="348" x2="700" y2="348"/>
@@ -294,7 +299,7 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <div class="page-head rise rise-5"><div><h2 id="table-title"><span data-i18n="tableTitle">Market table</span></h2>
 <p data-i18n="tableNote" data-tip="#table-title">The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.</p><p id="stock-short" hidden><span data-i18n="stockShort">Tokenized stock prices are on-chain prices, not stock exchange prices.</span></p><p id="stock-note" data-i18n="stockNote" data-tip="#stock-short" hidden></p></div>
 <div class="filters"><span class="demo-badge" id="table-demo" data-i18n="demo" hidden>Sample data</span><div class="search"><input id="search" type="search" autocomplete="off"></div><div class="segmented" role="group" aria-label="Filter"><button class="filter-btn active" type="button" data-filter="all" data-i18n="all">All</button><button class="filter-btn" type="button" data-filter="crypto" data-i18n="fCrypto">Crypto</button><button class="filter-btn" type="button" data-filter="stock" data-i18n="fStocks">Tokenized stocks</button><button class="filter-btn" type="button" data-filter="analysed" data-i18n="fAnalysed">With analysis</button><button class="filter-btn" type="button" data-filter="favorites" data-i18n="fav">Favorites</button></div></div></div>
-<div class="table-wrap rise rise-6"><table class="market-table"><thead><tr>
+<div class="table-wrap mt-wrap rise rise-6" id="market-wrap"><table class="market-table"><thead><tr>
 <th class="asset" data-i18n="colAsset">Asset</th><th data-i18n="colPrice">Price</th><th data-i18n="col24h">24h %</th><th data-i18n="colVolume">24h volume</th><th data-i18n="colDay">Daily open</th><th data-i18n="colWeek">Weekly open</th><th data-i18n="colMonth">Monthly open</th><th data-i18n="colYear">Yearly open</th><th>ATH</th><th class="spark-col" data-i18n="spark7d">7 days</th><th class="analysis-col" data-i18n="colAnalysis">Analysis</th>
 </tr></thead><tbody id="market-rows"><tr class="status-row"><td colspan="11" data-i18n="loading">Loading live market…</td></tr></tbody></table></div>
 </section>
@@ -396,7 +401,7 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
     td.innerHTML='<b></b><small></small>';td.firstChild.textContent=MarketUI.price(lv,digits);td.lastChild.textContent=p>0?MarketUI.pct(r):"";td.lastChild.className=MarketUI.signClass(r);
   }
   function paint(sym){
-    var r=rows[sym],d=r.data,lv=r.levels||{};if(!d)return;
+    var r=rows[sym],d=r.data,lv=r.levels||{};if(!d)return;if(!r.fitted){r.fitted=true;fitSoon()}
     if(r.digits==null&&Number(d.c)>0)r.digits=MarketUI.digitsFor(d.c);
     var price=Number(d.c),change=Number(d.o)>0?price/Number(d.o)-1:NaN;
     if(r.last&&price!==r.last){var cls=price>r.last?"tick-up":"tick-down";r.price.classList.remove("tick-up","tick-down");void r.price.offsetWidth;r.price.classList.add(cls);setTimeout(function(){r.price.classList.remove(cls)},900)}
@@ -441,9 +446,22 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
     var q=search.value.trim().toUpperCase(),shown=0;
     order.forEach(function(sym){var ok=sym.indexOf(q)>-1||MarketUI.nameOf(sym).toUpperCase().indexOf(q)>-1||MarketUI.baseOf(sym).toUpperCase().indexOf(q)>-1;if(filter==="favorites"&&favorites.indexOf(sym)<0)ok=false;if((filter==="crypto"||filter==="stock")&&MarketUI.category(sym)!==filter)ok=false;if(filter==="analysed"&&rows[sym].noAnalysis)ok=false;rows[sym].tr.hidden=!ok;if(ok)shown++});
     var msg=body.querySelector(".status-row.filter");if(msg)msg.remove();
+    if(order.length)fitHeight();
     if(order.length&&!shown){var tr=document.createElement("tr");tr.className="status-row filter";tr.innerHTML='<td colspan="11" data-i18n="noMatch"></td>';tr.firstChild.textContent=words().noMatch;body.appendChild(tr)}
   }
   search.addEventListener("input",applyFilter);
+  // Box height: header + the first ten visible rows; no limit with ten rows or fewer.
+  var wrapBox=document.getElementById("market-wrap"),ROWS_IN_VIEW=10;
+  function fitHeight(){
+    var vis=order.map(function(sym){return rows[sym].tr}).filter(function(tr){return!tr.hidden});
+    if(vis.length<=ROWS_IN_VIEW){wrapBox.style.maxHeight="";return}
+    var h=wrapBox.querySelector("thead").getBoundingClientRect().height;
+    for(var i=0;i<ROWS_IN_VIEW;i++)h+=vis[i].getBoundingClientRect().height;
+    wrapBox.style.maxHeight=Math.ceil(h)+1+"px";
+  }
+  window.addEventListener("resize",function(){if(order.length)fitHeight()});
+  // Rows grow a little once their figures arrive (two-line level cells): measured again shortly after.
+  var fitTimer=null;function fitSoon(){if(!fitTimer)fitTimer=setTimeout(function(){fitTimer=null;fitHeight()},400)}
   document.querySelectorAll("[data-filter]").forEach(function(b){b.addEventListener("click",function(){filter=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(function(x){x.classList.toggle("active",x===b)});applyFilter()})});
 
   // Type column: KR / TH (CR / TS) with the full name as its title (README "Assets without analysis").
