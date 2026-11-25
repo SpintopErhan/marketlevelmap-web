@@ -496,7 +496,12 @@ export async function viewerAccess(request, env) {
 // The timeframe open to guests; every other timeframe needs an approved membership.
 export const OPEN_TIMEFRAME = "1d";
 export function timeframeOfKey(graphicKey) { return String(graphicKey || "").split(":")[2]?.toLowerCase() || ""; }
-export function isOpenEntry(item) { return timeframeOfKey(item && item.graphicKey) === OPEN_TIMEFRAME; }
+// Tokenized stocks (pairs <TICKER>CUSDC, README "Tokenized stocks") are members-only on every timeframe.
+export const isTokenizedPair = (symbol) => /^[A-Z]{1,6}CUSDC$/.test(String(symbol || ""));
+export function isOpenEntry(item) {
+  const key = String(item && item.graphicKey || "");
+  return timeframeOfKey(key) === OPEN_TIMEFRAME && !isTokenizedPair(key.split(":")[1]);
+}
 // What a guest receives instead of a members-only report: only what names the chart, and locked: true.
 // Zones, range, FVG, structure, key levels, note and the no-range card are left out on the server.
 export function guestReport(report) {
@@ -711,7 +716,7 @@ async function activeByAsset(env) {
   for (const e of (active && Array.isArray(active.entries) ? active.entries : [])) {
     const [source, symbol, tf] = String(e && e.graphicKey || "").split(":");
     const method = String(source || "").toLowerCase();
-    if (!/^[A-Z0-9]{2,20}$/.test(symbol || "") || SOCIAL_LEFT_OUT.has(symbol) || !["cz", "pa"].includes(method) || !e.report || !e.report.objectKey) continue;
+    if (!/^[A-Z0-9]{2,20}$/.test(symbol || "") || SOCIAL_LEFT_OUT.has(symbol) || isTokenizedPair(symbol) || !["cz", "pa"].includes(method) || !e.report || !e.report.objectKey) continue;
     ((out[symbol] ||= { cz: {}, pa: {} })[method])[String(tf).toLowerCase()] = e;
   }
   return out;

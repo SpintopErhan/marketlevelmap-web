@@ -164,7 +164,8 @@ export async function buildWeekly(env, nowMs) {
     const s = (bySymbol[symbol] ||= { cz1d: null, pa: {} });
     const method = String(source).toUpperCase();
     if (method === "CZ" && String(tf).toLowerCase() === "1d") s.cz1d = e;
-    if (method === "PA" && ALIGN_TFS.includes(String(tf).toLowerCase())) s.pa[String(tf).toLowerCase()] = e;
+    // Tokenized stocks are members-only: their Price Action structure does not reach the public outlook.
+    if (method === "PA" && ALIGN_TFS.includes(String(tf).toLowerCase()) && !isStock(symbol)) s.pa[String(tf).toLowerCase()] = e;
   }
   const start = weekStart(nowMs);
   let indexPromise = null;

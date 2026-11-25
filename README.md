@@ -420,11 +420,14 @@ Descriptive wording: the price is the token's on-chain price, not the exchange p
   rows; a note under the title; the chart takes no Binance klines or stream for tokens (status `onchain`): the page's
   on-chain price draws the price line and, when it follows the last uploaded candle directly, the forming candle;
   volume bars and the volume profile use the real USDC volume (field 9); faint full-height bands mark the candles that
-  overlap the NYSE session (`candles/_sessions/XNYS.json`; nights, weekends and holidays stay plain), labelled "Shaded:
-  NYSE open" in the price pane, switchable under Indicators ("NYSE session hours", `sess` in `mlm-indicators-v1`,
+  overlap the US market session (NYSE and Nasdaq keep the same hours; `candles/_sessions/XNYS.json`; nights, weekends and holidays stay plain), labelled "Shaded:
+  US market open" in the price pane, switchable under Indicators ("US market session hours", `sess` in `mlm-indicators-v1`,
   default on, also for guests). Flow summary and the live-flow link stay hidden (USDT only);
   alarms and the monthly-returns link are off for tokens.
-- **Left out for now:** live flow, zone scanner, alarms, monthly returns, the social planner (method `cz_min`).
+- **Members only on every timeframe** (1D included, Price Action too): `isOpenEntry` is false for a tokenized pair
+  (`isTokenizedPair`, functions/api/auth), so guests get them locked and their reports without zones; their Price Action
+  structure is not used in the public weekly outlook; the social planner leaves them out.
+- **Left out for now:** live flow, zone scanner, alarms, monthly returns, the social planner.
   Multi view shows them (chart only, on-chain price).
 - **pools.json** (local program, next to the candles):
   `{ "schemaVersion": "marketlevelmap-onchain-pools-v1", "pair": "NVDACUSDC", "chainId": 8453, "token": { "address", "decimals" },
