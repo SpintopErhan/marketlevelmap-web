@@ -338,6 +338,8 @@ table{font-size:14px}
 }
 @media(max-width:800px){.asset-head{flex-wrap:wrap}.price-band{flex-basis:100%;margin-left:0;transform:none;border-top:1px solid var(--line);padding-top:6px}}
 @media(max-width:900px){.selectors-chart{flex-basis:100%}.glance div{flex:1 1 40%}}
+/* Small phones: the method switch and the timeframe tabs share one row only while they fit (four timeframes did not at 360 px). */
+@media(max-width:400px){.selectors-chart{flex-wrap:wrap;row-gap:8px}}
 /* ---- V2.1: side sections as self-contained cards like the design (appearance only; all columns, texts and eyes stay). ---- */
 .side-col>.block{padding:18px 20px;border-radius:16px;background:var(--panel)}
 .side-col>.block .block-head{margin-bottom:8px}
