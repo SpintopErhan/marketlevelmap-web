@@ -20,7 +20,7 @@ const ACTIVE_POINTER_KEY = "site-publication/active.json";
 const CANDLES = "https://data.marketlevelmap.com/candles/";
 const LEFT_OUT = new Set(["PAXGUSDT"]);
 // Tokenized stocks (README "Tokenized stocks"): in the outlook as their own group; their data starts in August 2026, so
-// no yearly open or ATH distance, and no Price Action reports yet (alignment stays empty).
+// no yearly open, and their "ATH" is LH (highest since listing; athCode "LH"); no Price Action reports yet.
 const isStock = (symbol) => /^[A-Z]{1,6}CUSDC$/.test(symbol);
 const ALIGN_TFS = ["1w", "1d", "4h"];
 const WEEK = 7 * 86400;
@@ -183,6 +183,8 @@ export async function buildWeekly(env, nowMs) {
     if (key) {
       // Only levels whose period had begun when last week closed.
       for (const code of isStock(symbol) ? ["MO"] : ["MO", "YO", "ATH"]) if (key[code] && !(key[code].periodStart >= start)) levels[code] = key[code].price;
+      // Tokenized stocks: LH (highest since listing) in the ATH place.
+      if (isStock(symbol) && key.LH) levels.ATH = key.LH.price;
     } else {
       for (const l of (cz && Array.isArray(cz.levels) ? cz.levels : [])) if (l && l.code && Number(l.price) > 0) levels[String(l.code).toUpperCase()] = Number(l.price);
       if (!levels.ATH && levels.OATH) levels.ATH = levels.OATH;
@@ -196,6 +198,7 @@ export async function buildWeekly(env, nowMs) {
     return {
       symbol,
       category: isStock(symbol) ? "stock" : "crypto",
+      ...(isStock(symbol) && levels.ATH ? { athCode: "LH" } : {}),
       lastWeek: week ? { openTime: new Date(week.openTime * 1000).toISOString(), change: pct(week.close, week.open), ...(week.source ? { source: week.source } : {}) } : null,
       vsMonthlyOpen: pct(price, levels.MO),
       vsYearlyOpen: pct(price, levels.YO),
@@ -252,9 +255,12 @@ export async function onRequestGet({ request, env, waitUntil }) {
     if (hit) return hit;
   }
   const later = (p) => { if (p && waitUntil) waitUntil(p); };
-  const edge = (data) => {
+  // Kept at the edge only until the snapshot is due for a rebuild (an hour after it was made, not an hour after this
+  // visit): re-putting a fresh copy with a full hour on every visit kept an old snapshot out for up to two hours.
+  const edge = (data, madeAt = Date.now()) => {
     if (!cache || !isComplete(data)) return null;
-    return cache.put(cacheKey, new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=3600" } }));
+    const maxAge = Math.max(60, Math.round((madeAt + FRESH_MS - Date.now()) / 1000));
+    return cache.put(cacheKey, new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": `public, max-age=${maxAge}` } }));
   };
   const rebuild = async () => {
     const data = await buildWeekly(env, Date.now());
@@ -265,7 +271,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
   const stored = await readSnapshot(env.USERS_DB, storeKey);
   if (stored) {
     if (isStale(stored, now)) later(rebuild().catch(() => null));
-    else if (isComplete(stored.data)) later(edge(stored.data));
+    else if (isComplete(stored.data)) later(edge(stored.data, stored.at));
     return json(stored.data, isComplete(stored.data) ? 600 : 120);
   }
   const data = await buildWeekly(env, now);
