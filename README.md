@@ -108,6 +108,14 @@ the jobs below. Nothing here is built yet.
    the chart times; `/api/publication` took 0.8–1 s per call (19 Nov). Part of its answer depends on the viewer
    (member or guest), so not all of it can be prepared. Decide after measuring.
 
+6. **Tokenized stocks' recent candles** (to be planned separately; decided 25 Nov 2026): today their candles come only
+   from the local program, so while the computer is off the chart's last candle is the last uploaded one and the
+   faded forming candle is drawn only right after it (the on-chain price line stays live). The Worker reads the main
+   pools' swaps from Base (publicnode; one getLogs call covers about 2–3 hours of blocks) and fills the missing 1H/4H
+   candles and the forming one, with the local program's outlier rule so its candles match what is uploaded later
+   (the uploaded file always wins). Measure first: compute the last hours on chain and compare with the uploaded
+   candles. Also: pool discovery for new tokens stays local (`pools.json`).
+
 Not for the Worker: the price strip (refreshed every 3 s; a cron runs at most once a minute), anything that needs
 Binance, the events list (already fast).
 
