@@ -400,6 +400,28 @@ The page shows a heat map (BTC on top, then the usual market order) and one row 
 "Download image" draws the same as a 1600×900 PNG (dark look, page language) for X. The home page's weekly card shows
 the same six tiles under the crypto ones.
 
+## Assets without analysis
+
+Every asset with candles on the data host is on the site, with or without a published analysis (decided 25 Nov 2026;
+the same for crypto and tokenized stocks: uploading an asset's candles is enough). The list comes from
+`candles/index.json` (`MarketUI.catalog()`: pair → its 1H/4H/1D/1W timeframes); the active publication only says which
+have an analysis.
+
+- **Market table:** all of them in today's order (crypto by popularity, PAXG last, then tokenized stocks
+  alphabetically); a "With analysis" / "Analizli" filter (the filter row scrolls inside itself on phones). No tags
+  beside the names. In the asset cell: star, type (KR / TH, in English CR / TS, the full name as the title, fixed
+  width), badge (all the same width, so the names line up), name. The last two columns are "7 days" (the sparkline;
+  not on phones) and "Analysis": its icon is there only for assets with an analysis (`tr.no-analysis` hides it; marked
+  only when the list of analyses was read); every row still opens the asset's page.
+- **Analysis page, chart only:** an asset with candles but no analysis opens with one row per timeframe with candles
+  (`chartOnlyRows`): chart, key levels, volume profile, indicators, live price, a "No analysis has been published for
+  this asset yet" line; no method switch, no analysis date. Guests keep today's rules (decided: no change for now):
+  tokenized stocks locked, crypto open on 1D only. Search, watchlist, price band and in-place asset switch list them.
+- **Weekly outlook:** every pair with weekly candles (PAXG still left out), `noAnalysis: true` on those without one;
+  a pair whose daily candles start after last week began is `newListing` (no last-week change: its weekly candle would
+  cover only a few days) and does not keep the snapshot "incomplete".
+- Not for them: multi view, zone scanner, social planner (they need zones).
+
 ## Info tips
 
 Explanatory notes are folded behind a small ⓘ button (`assets/info-tip.js`): tap or click opens a box (on a mouse also
@@ -429,8 +451,9 @@ Descriptive wording: the price is the token's on-chain price, not the exchange p
   main pool's `slot0` on Base (mainnet.base.org, else publicnode; no data licence needed). Pools come from
   `candles/<PAIR>/pools.json` (local program; schema below); without it, when no pool answers, or when the pool price
   is more than 15% from a candle younger than 6 hours, the price is the last 1H close (`source: "candle"`). All pools of
-  all requested pairs are read in batched JSON-RPC requests (10 calls each, sent together; what one endpoint misses
-  goes to the next): separate calls from Cloudflare were partly refused. Up to 20 pairs a request. 24 h open,
+  all requested pairs are read in ONE `eth_call` through Multicall3 (`0xcA11…CA11`, `aggregate3`, failures allowed per
+  pool; the next endpoint only when the whole call fails): separate and batched calls from Cloudflare were partly
+  refused. Up to 20 pairs a request. 24 h open,
   high, low and USDC volume from the 1H files. Edge cache 20 s. `assets/onchain-feed.js` polls it every 30 s while
   the page is visible and gives MarketFeed-shaped data.
 - **Market table:** Crypto / Tokenized stocks filters; a "Tokenized stock" tag; opens from `levels.json` keyLevels;
