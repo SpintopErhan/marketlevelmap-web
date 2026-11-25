@@ -408,7 +408,7 @@ Descriptive wording: the price is the token's on-chain price, not the exchange p
   high, low and USDC volume from the 1H files. Edge cache 20 s. `assets/onchain-feed.js` polls it every 30 s while
   the page is visible and gives MarketFeed-shaped data.
 - **Market table:** Crypto / Tokenized stocks filters; a "Tokenized stock" tag; opens from `levels.json` keyLevels;
-  yearly open and ATH shown as "–" for tokens (data starts Aug 2026); a note under the table; the price's title says
+  yearly open and ATH shown as "–" for tokens (data starts Aug 2026; also left out of the analysis page's key levels and chart lines); a note under the table; the price's title says
   pool price or last candle close and when.
 - **Weekly outlook:** tokens are their own group (tiles under "Tokenized stocks", rows after a heading), monthly-open
   distance only, link to 4H; the home card lists them last.
