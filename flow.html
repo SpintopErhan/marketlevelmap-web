@@ -152,7 +152,7 @@ dialog.help[open]{display:flex;flex-direction:column}dialog.help::backdrop{backg
 .vp span{padding-left:7px}.vp span.z-support{box-shadow:inset 3px 0 0 var(--up)}.vp span.z-resistance{box-shadow:inset 3px 0 0 var(--down)}
 @media(max-width:1100px){.fl-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.fl-grid .center{grid-column:1/-1;order:-1}}
 @media(max-width:640px){#fl-depth{height:170px}#fl-heat{height:260px}.heat-ctl .sub{display:none}.fl-grid,.fl-grid2,.fl-mid{grid-template-columns:minmax(0,1fr)}.kpis.four{grid-template-columns:repeat(2,minmax(0,1fr))}.ctx .src{margin-left:0}.fl-ctl,.fl-venues{justify-content:flex-start}.fl-head h1 small{display:block;margin:4px 0 0}}
-</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="/assets/account.js?v=c70364fc" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=ff265f30"></script><script src="assets/market-context.js?v=7ae56172" defer></script><script src="assets/scanner.js?v=dfd181c1" defer></script><script src="assets/flow.js?v=2dac54d0" defer></script></head><body><div class="shell"><header>
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/info-tip.js?v=99a5c153" defer></script><script src="/assets/account.js?v=c70364fc" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/market-ui.js?v=ff265f30"></script><script src="assets/market-context.js?v=7ae56172" defer></script><script src="assets/scanner.js?v=dfd181c1" defer></script><script src="assets/flow.js?v=2dac54d0" defer></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış" aria-current="page">Live flow</a><a href="multi" data-tr="Çoklu izleme">Multi view</a><a href="etf" data-tr="ETF akışları">ETF flows</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
@@ -174,12 +174,12 @@ dialog.help[open]{display:flex;flex-direction:column}dialog.help::backdrop{backg
 <div class="sc-body"><table class="sc-table"><thead><tr id="sc-head-row"></tr></thead><tbody id="sc-rows"></tbody></table>
 <div class="wait" id="sc-empty" hidden data-sc="noAnalysis"></div>
 <div class="alarm-bar"><b>🔔 <span data-sc="alarms">Alarms</span></b><span id="sc-alarms"></span></div>
-<p class="sc-note" id="sc-fsrc" hidden></p><p class="sc-note" data-sc="flowNote"></p><p class="sc-note" id="sc-fnote" hidden data-sc="fNote"></p><p class="sc-note" data-sc="alarmsNote"></p><p class="sc-note" id="sc-notify" hidden data-sc="notifyOff"></p></div>
+<p class="sc-note" id="sc-fsrc" hidden></p><p class="sc-note" data-sc="flowNote" data-tip=""></p><p class="sc-note" id="sc-fnote" hidden data-sc="fNote"></p><p class="sc-note" data-sc="alarmsNote" data-tip=""></p><p class="sc-note" id="sc-notify" hidden data-sc="notifyOff"></p></div>
 </section>
 <section class="card" id="c-big"><h2><span data-sc="big">Big trades</span><span class="seg" id="sc-mult"><button type="button" data-x="5" aria-pressed="false">≥5×</button><button type="button" data-x="10" aria-pressed="true">≥10×</button><button type="button" data-x="20" aria-pressed="false">≥20×</button></span></h2>
 <p class="sc-note" style="margin:-2px 0 6px" data-sc="bigSub"></p>
 <div class="big" id="sc-big"></div><div class="wait" id="sc-big-wait" data-sc="bigWait"></div>
-<p class="sc-note" data-sc="bigNote"></p>
+<p class="sc-note" data-sc="bigNote" data-tip=""></p>
 </section>
 <section class="card" id="c-mkt"><h2><span data-fl="mctx">Market context</span></h2><div class="mctx-panel" data-mctx="panel"></div></section>
 <div id="sc-toasts" aria-live="polite"></div>
@@ -192,14 +192,14 @@ dialog.help[open]{display:flex;flex-direction:column}dialog.help::backdrop{backg
 <section class="card" id="c-liq"><h2><span data-fl="liq">Liquidations</span><span class="sub">Binance · OKX · Bybit</span></h2>
 <div class="meter" style="margin:0"><div class="bar"><i class="s" id="ff-lb"></i><i class="b" id="ff-sb"></i></div><div class="lab"><span id="ff-lt"></span><span data-fl="liq15"></span><span id="ff-st"></span></div></div>
 <div class="tape liq" id="ff-liq"></div><div class="wait" id="ff-liq-wait" data-fl="liqWait"></div>
-<p class="note" data-fl="liqNote"></p></section>
+<p class="note" data-fl="liqNote" data-tip=""></p></section>
 </div>
 <div class="fl-grid">
 <section class="card" id="c-book"><h2><span data-fl="book">Order book</span><label><span data-fl="grouping">Grouping</span><select id="fl-group"></select></label></h2>
 <div id="fl-book-rows"><div class="mid" id="fl-mid" hidden><span><span data-fl="spread">Spread</span> <span class="num" id="fl-spread"></span></span><b class="num" id="fl-midp"></b></div></div>
 <div class="wait" id="fl-book-wait" data-fl="waiting">Waiting for data…</div>
 <div class="meter"><div class="bar"><i class="b" id="fl-bal-b"></i><i class="s" id="fl-bal-a"></i></div><div class="lab"><span id="fl-bal-bt"></span><span id="fl-bal-l"></span><span id="fl-bal-at"></span></div></div>
-<p class="note" data-fl="bookNote"></p></section>
+<p class="note" data-fl="bookNote" data-tip=""></p></section>
 <div class="center fl-mid">
 <section class="card" id="c-cvd"><h2><span>CVD</span><span class="seg" id="fl-int"><button type="button" data-s="1" aria-pressed="false">1s</button><button type="button" data-s="5" aria-pressed="true">5s</button><button type="button" data-s="15" aria-pressed="false">15s</button><button type="button" data-s="60" aria-pressed="false">1m</button></span></h2>
 <canvas id="fl-cvd"></canvas>
@@ -217,7 +217,7 @@ dialog.help[open]{display:flex;flex-direction:column}dialog.help::backdrop{backg
 <div class="kpis four"><div><span data-fl="zfBuy"></span><b class="num up" id="fl-zf-b">—</b></div><div><span data-fl="zfSell"></span><b class="num down" id="fl-zf-s">—</b></div><div><span data-fl="zfCvd"></span><b class="num" id="fl-zf-c">—</b></div><div><span id="fl-zf-rl"></span><b class="num" id="fl-zf-r">—</b><small data-fl="zfBook"></small></div></div>
 <div class="meter"><div class="bar"><i class="b" id="fl-zf-bar-b"></i><i class="s" id="fl-zf-bar-s"></i></div><div class="lab"><span id="fl-zf-bt"></span><span id="fl-zf-st"></span></div></div>
 <p class="read" id="fl-zf-read" hidden></p>
-<p class="note" data-fl="zfNote"></p></div>
+<p class="note" data-fl="zfNote" data-tip=""></p></div>
 </section>
 <section class="card" id="c-depth"><h2><span data-fl="depth">Depth</span><span class="sub" id="fl-depth-sub"></span></h2>
 <canvas id="fl-depth"></canvas>
@@ -229,7 +229,7 @@ dialog.help[open]{display:flex;flex-direction:column}dialog.help::backdrop{backg
 <div class="tape" id="fl-tape"></div><div class="wait" id="fl-tape-wait" data-fl="waiting">Waiting for data…</div>
 </section>
 </div>
-<p class="fl-foot" data-fl="note"></p><p class="fl-foot" data-fl="hiddenNote"></p>
+<p class="fl-foot" data-fl="note" data-tip=""></p><p class="fl-foot" data-fl="hiddenNote" data-tip=""></p>
 </div>
 <dialog class="help" id="fl-help" aria-labelledby="fl-help-title"><div class="help-head"><h2 id="fl-help-title"></h2><button type="button" class="fs-btn" id="fl-help-close">Close</button></div><div class="help-body" id="fl-help-body"></div><p class="help-foot" id="fl-help-foot"></p></dialog>
 </main>

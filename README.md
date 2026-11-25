@@ -400,6 +400,22 @@ The page shows a heat map (BTC on top, then the usual market order) and one row 
 "Download image" draws the same as a 1600×900 PNG (dark look, page language) for X. The home page's weekly card shows
 the same six tiles under the crypto ones.
 
+## Info tips
+
+Explanatory notes are folded behind a small ⓘ button (`assets/info-tip.js`): tap or click opens a box (on a mouse also
+hover), tap again, outside or Escape closes it. A note marked `data-tip` is moved into the box; `data-tip="<selector>"`
+puts the button at the end of that element (headings whose text sits in a `<span data-i18n>` so a language switch
+keeps the button), an empty `data-tip` puts the button (with "Explanation" / "Açıklama") in the note's place. The open
+box is moved to the top of the page (a transformed ancestor would misplace a fixed box) and back when closed, so the
+pages' own code still finds the note; a hidden note hides its button.
+
+- Folded: market table note (beside "Market table"), tokenized stock note (behind a one-line summary that stays in
+  view, home and analysis page), the analysis page's Structure, Indicators and Volume profile explanations (beside
+  their titles), the ETF page's note (the source "Data: SoSoValue" stays in view), the table notes of the weekly
+  outlook, multi view, monthly returns and weekly events, and the live flow page's explanations.
+- Left in view: legal notices (footers, the disclaimer), lines with an as-of date or data state (key levels, FVG,
+  structure state), warnings (notifications off), live values.
+
 ## Tokenized stocks
 
 Coinbase's tokenized US stocks on Base (NVDAc, AAPLc…), candles made by the local program from on-chain swaps
