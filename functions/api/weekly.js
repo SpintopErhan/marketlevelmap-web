@@ -171,6 +171,11 @@ export async function buildWeekly(env, nowMs) {
   let indexPromise = null;
   const index = () => (indexPromise ||= fetch(CANDLES + "index.json", { cf: { cacheTtl: 300 } }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
   const macroPromise = buildMacro(start).catch(() => null);
+  // Assets without analysis (README "Assets without analysis"): every pair with weekly candles is in the outlook.
+  const idx = await index();
+  for (const symbol of Object.keys((idx && idx.pairs) || {})) {
+    if (/^[A-Z0-9]{2,20}$/.test(symbol) && !LEFT_OUT.has(symbol) && idx.pairs[symbol]["1w"]) bySymbol[symbol] ||= { cz1d: null, pa: {}, noAnalysis: true };
+  }
   const assets = await Promise.all(Object.keys(bySymbol).map(async (symbol) => {
     const s = bySymbol[symbol];
     const [rows, file, cz, ...pa] = await Promise.all([
@@ -179,7 +184,12 @@ export async function buildWeekly(env, nowMs) {
       s.cz1d ? readJson(bucket, s.cz1d.report.objectKey) : null,
       ...ALIGN_TFS.map((tf) => (s.pa[tf] ? readJson(bucket, s.pa[tf].report.objectKey) : null)),
     ]);
-    const week = lastClosedWeek(rows, start) || await okxWeek(symbol, start);
+    // A pair whose daily candles start after last week began (a new listing) has no full last week: its weekly
+    // candle would cover only a few days, so it is left out, and its absence is not a missing upload.
+    const tfs = idx && idx.pairs && idx.pairs[symbol];
+    const firstDay = Number((tfs && tfs["1d"] && tfs["1d"].firstOpenTime) || (tfs && tfs["1w"] && tfs["1w"].firstOpenTime) || 0);
+    const newListing = firstDay > start - WEEK;
+    const week = newListing ? null : lastClosedWeek(rows, start) || await okxWeek(symbol, start);
     const levels = {}, key = keyLevelMap(file, symbol);
     if (key) {
       // Only levels whose period had begun when last week closed.
@@ -199,6 +209,8 @@ export async function buildWeekly(env, nowMs) {
     return {
       symbol,
       category: isStock(symbol) ? "stock" : "crypto",
+      ...(s.noAnalysis ? { noAnalysis: true } : {}),
+      ...(newListing ? { newListing: true } : {}),
       ...(isStock(symbol) && levels.ATH ? { athCode: "LH" } : {}),
       lastWeek: week ? { openTime: new Date(week.openTime * 1000).toISOString(), change: pct(week.close, week.open), ...(week.source ? { source: week.source } : {}) } : null,
       vsMonthlyOpen: pct(price, levels.MO),
@@ -214,7 +226,7 @@ export async function buildWeekly(env, nowMs) {
 // Complete: every asset has last week's candle from the public (Binance) candle files and the macro sources answered.
 // A snapshot missing either, or with a week taken from OKX, is rebuilt every two minutes and is not kept at the edge,
 // so the Binance candles show within minutes of their upload.
-export const isComplete = (data) => !!(data && data.assets && data.assets.length > 0 && data.assets.every((a) => a.lastWeek && !a.lastWeek.source) &&
+export const isComplete = (data) => !!(data && data.assets && data.assets.length > 0 && data.assets.every((a) => a.newListing || (a.lastWeek && !a.lastWeek.source)) &&
   data.macro && Object.values(data.macro).some((v) => v));
 const FRESH_MS = 3600 * 1000, FRESH_INCOMPLETE_MS = 120 * 1000;
 

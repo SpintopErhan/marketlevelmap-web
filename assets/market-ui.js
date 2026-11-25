@@ -49,6 +49,17 @@ var MarketUI=(function(){
     return"\u2019"+(u?unit[u]:t?tens[t]:"den")}
   // "18 Aug 2026" in English, "18 Ağu 2026'dan" in Turkish: the date something has run from.
   function since(iso){var d=date(iso);if(!d)return"";return lang()==="tr"?d+fromSuffixTr(new Date(iso).getUTCFullYear()):d}
+  // Every asset with candles on the data host (README "Assets without analysis"): { PAIR: ["1h","4h","1d","1w"] } from
+  // candles/index.json, asked once per page. The published analyses only say which of them have an analysis.
+  var CHART_TFS=["1h","4h","1d","1w"],catalogPromise=null;
+  function catalog(){
+    if(!catalogPromise)catalogPromise=fetch("https://data.marketlevelmap.com/candles/index.json").then(function(r){return r.ok?r.json():null}).then(function(ix){
+      var out={},pairs=(ix&&ix.pairs)||{};
+      Object.keys(pairs).forEach(function(p){if(!/^[A-Z0-9]{2,20}$/.test(p))return;var tfs=CHART_TFS.filter(function(tf){return pairs[p]&&pairs[p][tf]});if(tfs.length)out[p]=tfs});
+      return out;
+    }).catch(function(){catalogPromise=null;return{}});
+    return catalogPromise;
+  }
   function escape(text){return String(text).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-  return{lang:lang,locale:locale,digitsFor:digitsFor,price:price,pct:pct,signClass:signClass,compact:compact,baseOf:baseOf,nameOf:nameOf,isTokenized:isTokenized,since:since,category:category,stockOf:stockOf,dateTime:dateTime,date:date,methodOf:methodOf,assetOf:assetOf,timeframeOf:timeframeOf,tfRank:tfRank,byTimeframe:byTimeframe,byPopularity:byPopularity,escape:escape};
+  return{lang:lang,locale:locale,digitsFor:digitsFor,price:price,pct:pct,signClass:signClass,compact:compact,baseOf:baseOf,nameOf:nameOf,isTokenized:isTokenized,since:since,catalog:catalog,category:category,stockOf:stockOf,dateTime:dateTime,date:date,methodOf:methodOf,assetOf:assetOf,timeframeOf:timeframeOf,tfRank:tfRank,byTimeframe:byTimeframe,byPopularity:byPopularity,escape:escape};
 })();

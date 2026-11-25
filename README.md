@@ -400,6 +400,25 @@ The page shows a heat map (BTC on top, then the usual market order) and one row 
 "Download image" draws the same as a 1600×900 PNG (dark look, page language) for X. The home page's weekly card shows
 the same six tiles under the crypto ones.
 
+## Assets without analysis
+
+Every asset with candles on the data host is on the site, with or without a published analysis (decided 25 Nov 2026;
+the same for crypto and tokenized stocks: uploading an asset's candles is enough). The list comes from
+`candles/index.json` (`MarketUI.catalog()`: pair → its 1H/4H/1D/1W timeframes); the active publication only says which
+have an analysis.
+
+- **Market table:** all of them in today's order (crypto by popularity, PAXG last, then tokenized stocks
+  alphabetically); a dashed "No analysis" / "Analiz yok" tag (only when the list of analyses was read); a "With
+  analysis" / "Analizli" filter. The filter row scrolls inside itself on phones.
+- **Analysis page, chart only:** an asset with candles but no analysis opens with one row per timeframe with candles
+  (`chartOnlyRows`): chart, key levels, volume profile, indicators, live price, a "No analysis has been published for
+  this asset yet" line; no method switch, no analysis date. Guests keep today's rules (decided: no change for now):
+  tokenized stocks locked, crypto open on 1D only. Search, watchlist, price band and in-place asset switch list them.
+- **Weekly outlook:** every pair with weekly candles (PAXG still left out), `noAnalysis: true` on those without one;
+  a pair whose daily candles start after last week began is `newListing` (no last-week change: its weekly candle would
+  cover only a few days) and does not keep the snapshot "incomplete".
+- Not for them: multi view, zone scanner, social planner (they need zones).
+
 ## Info tips
 
 Explanatory notes are folded behind a small ⓘ button (`assets/info-tip.js`): tap or click opens a box (on a mouse also
