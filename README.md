@@ -409,9 +409,10 @@ have an analysis.
 
 - **Market table:** all of them in today's order (crypto by popularity, PAXG last, then tokenized stocks
   alphabetically); a "With analysis" / "Analizli" filter (the filter row scrolls inside itself on phones). No tags
-  beside the names; the last three columns are "7 days" (the sparkline; not on phones), "Type" (KR / TH, in English
-  CR / TS, the full name as the title) and "Analysis": its icon is there only for assets with an analysis
-  (`tr.no-analysis` hides it; marked only when the list of analyses was read); every row still opens the asset's page.
+  beside the names. In the asset cell: star, type (KR / TH, in English CR / TS, the full name as the title, fixed
+  width), badge (all the same width, so the names line up), name. The last two columns are "7 days" (the sparkline;
+  not on phones) and "Analysis": its icon is there only for assets with an analysis (`tr.no-analysis` hides it; marked
+  only when the list of analyses was read); every row still opens the asset's page.
 - **Analysis page, chart only:** an asset with candles but no analysis opens with one row per timeframe with candles
   (`chartOnlyRows`): chart, key levels, volume profile, indicators, live price, a "No analysis has been published for
   this asset yet" line; no method switch, no analysis date. Guests keep today's rules (decided: no change for now):

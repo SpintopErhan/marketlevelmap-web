@@ -112,7 +112,7 @@ main{padding:0 0 72px}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px}
 th{padding:14px;color:var(--muted);font-size:12px;font-weight:500;text-align:right;white-space:nowrap;vertical-align:bottom}
 td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
-.market-table{min-width:1140px}
+.market-table{min-width:1100px}
 .market-table th:first-child,.market-table td:first-child{padding-left:20px}
 .market-table th:last-child,.market-table td:last-child{padding-right:20px}
 .market-table .asset{position:sticky;left:0;z-index:1;text-align:left;background:var(--panel)}
@@ -123,7 +123,9 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .asset-cell strong{display:block;font-size:14px;font-weight:600}
 .asset-icon{flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;color:#0b1a17;font-size:10px;font-weight:700;letter-spacing:-.2px;transform-style:preserve-3d}
 .asset-icon.spin{animation:iconFlip 1.25s cubic-bezier(.33,.02,.2,1) forwards}
-.asset-icon.long{width:auto;min-width:36px;padding:0 7px;border-radius:18px}
+/* Every badge the same width (tickers from BTC to GOOGLc), so the names line up. */
+.asset-icon{width:54px;border-radius:18px}.asset-icon.long{font-size:9px;letter-spacing:-.3px}
+@media(max-width:400px){.asset-cell{gap:6px}.asset-icon{width:46px;height:32px}.asset-icon.long{font-size:8.5px}.type-abbr{width:18px;font-size:9px}}
 .chg{display:inline-block;min-width:68px;padding:3px 8px;border-radius:6px;font-size:13px;text-align:right}
 .chg.up{background:color-mix(in srgb,var(--up) 14%,transparent)}.chg.down{background:color-mix(in srgb,var(--down) 14%,transparent)}
 .asset-cell small{display:block;color:var(--muted);font-size:12px}
@@ -143,7 +145,8 @@ td{padding:12px 14px;border-top:1px solid var(--line);text-align:right;white-spa
 .analysis-link:hover{background:var(--chip)}
 .analysis-link svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
 .spark-col{width:132px;text-align:center}.spark-link{display:inline-block;padding:3px 6px;border-radius:10px;color:inherit}.spark-link:hover{background:var(--raise)}
-.type-col{width:56px;text-align:center}.type-abbr{text-decoration:none;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.4px;cursor:help}
+/* Type (KR / TH) between the star and the badge, in a fixed width so the badges and names line up. */
+.type-abbr{flex:none;width:22px;text-align:center;text-decoration:none;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.3px;cursor:help}
 /* The analysis icon is there only for assets with an analysis (README "Assets without analysis"). */
 tr.no-analysis .analysis-link{visibility:hidden}
 .spark svg{display:block;width:112px;height:32px}
@@ -292,8 +295,8 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <p data-i18n="tableNote" data-tip="#table-title">The percentage under the opens and ATH is how far the current price is from that level. Click a row to open the asset's analysis.</p><p id="stock-short" hidden><span data-i18n="stockShort">Tokenized stock prices are on-chain prices, not stock exchange prices.</span></p><p id="stock-note" data-i18n="stockNote" data-tip="#stock-short" hidden></p></div>
 <div class="filters"><span class="demo-badge" id="table-demo" data-i18n="demo" hidden>Sample data</span><div class="search"><input id="search" type="search" autocomplete="off"></div><div class="segmented" role="group" aria-label="Filter"><button class="filter-btn active" type="button" data-filter="all" data-i18n="all">All</button><button class="filter-btn" type="button" data-filter="crypto" data-i18n="fCrypto">Crypto</button><button class="filter-btn" type="button" data-filter="stock" data-i18n="fStocks">Tokenized stocks</button><button class="filter-btn" type="button" data-filter="analysed" data-i18n="fAnalysed">With analysis</button><button class="filter-btn" type="button" data-filter="favorites" data-i18n="fav">Favorites</button></div></div></div>
 <div class="table-wrap rise rise-6"><table class="market-table"><thead><tr>
-<th class="asset" data-i18n="colAsset">Asset</th><th data-i18n="colPrice">Price</th><th data-i18n="col24h">24h %</th><th data-i18n="colVolume">24h volume</th><th data-i18n="colDay">Daily open</th><th data-i18n="colWeek">Weekly open</th><th data-i18n="colMonth">Monthly open</th><th data-i18n="colYear">Yearly open</th><th>ATH</th><th class="spark-col" data-i18n="spark7d">7 days</th><th class="type-col" data-i18n="colType">Type</th><th class="analysis-col" data-i18n="colAnalysis">Analysis</th>
-</tr></thead><tbody id="market-rows"><tr class="status-row"><td colspan="12" data-i18n="loading">Loading live market…</td></tr></tbody></table></div>
+<th class="asset" data-i18n="colAsset">Asset</th><th data-i18n="colPrice">Price</th><th data-i18n="col24h">24h %</th><th data-i18n="colVolume">24h volume</th><th data-i18n="colDay">Daily open</th><th data-i18n="colWeek">Weekly open</th><th data-i18n="colMonth">Monthly open</th><th data-i18n="colYear">Yearly open</th><th>ATH</th><th class="spark-col" data-i18n="spark7d">7 days</th><th class="analysis-col" data-i18n="colAnalysis">Analysis</th>
+</tr></thead><tbody id="market-rows"><tr class="status-row"><td colspan="11" data-i18n="loading">Loading live market…</td></tr></tbody></table></div>
 </section>
 <section class="home-pair" aria-label="This week">
 <section class="events-card card rise rise-7" aria-labelledby="events-title">
@@ -381,7 +384,7 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
   var rows={},order=[],filter="all",feed=null;
   var favorites=[];try{favorites=JSON.parse(localStorage.getItem("mlm-favorites")||"[]");if(!Array.isArray(favorites))favorites=[]}catch(e){favorites=[]}
   function saveFavorites(){try{localStorage.setItem("mlm-favorites",JSON.stringify(favorites))}catch(e){}}
-  function status(key){body.innerHTML='<tr class="status-row"><td colspan="12"></td></tr>';body.firstChild.firstChild.dataset.i18n=key;body.firstChild.firstChild.textContent=words()[key]}
+  function status(key){body.innerHTML='<tr class="status-row"><td colspan="11"></td></tr>';body.firstChild.firstChild.dataset.i18n=key;body.firstChild.firstChild.textContent=words()[key]}
   function labels(){var w=words();
     order.forEach(function(sym){var r=rows[sym];paintType(r,sym);r.star.setAttribute("aria-label",favorites.indexOf(sym)>-1?w.removeFav:w.addFav);r.link.setAttribute("aria-label",w.openAnalysis+" — "+sym+(r.sparkChange!=null?" · "+w.spark7d+" "+MarketUI.pct(r.sparkChange):""));r.link.title=w.openAnalysis;paint(sym)})}
   new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
@@ -438,7 +441,7 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
     var q=search.value.trim().toUpperCase(),shown=0;
     order.forEach(function(sym){var ok=sym.indexOf(q)>-1||MarketUI.nameOf(sym).toUpperCase().indexOf(q)>-1||MarketUI.baseOf(sym).toUpperCase().indexOf(q)>-1;if(filter==="favorites"&&favorites.indexOf(sym)<0)ok=false;if((filter==="crypto"||filter==="stock")&&MarketUI.category(sym)!==filter)ok=false;if(filter==="analysed"&&rows[sym].noAnalysis)ok=false;rows[sym].tr.hidden=!ok;if(ok)shown++});
     var msg=body.querySelector(".status-row.filter");if(msg)msg.remove();
-    if(order.length&&!shown){var tr=document.createElement("tr");tr.className="status-row filter";tr.innerHTML='<td colspan="12" data-i18n="noMatch"></td>';tr.firstChild.textContent=words().noMatch;body.appendChild(tr)}
+    if(order.length&&!shown){var tr=document.createElement("tr");tr.className="status-row filter";tr.innerHTML='<td colspan="11" data-i18n="noMatch"></td>';tr.firstChild.textContent=words().noMatch;body.appendChild(tr)}
   }
   search.addEventListener("input",applyFilter);
   document.querySelectorAll("[data-filter]").forEach(function(b){b.addEventListener("click",function(){filter=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(function(x){x.classList.toggle("active",x===b)});applyFilter()})});
@@ -447,8 +450,8 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
   function paintType(r,sym){var w=words(),st=MarketUI.isTokenized(sym);r.type.textContent=st?w.typeStock:w.typeCrypto;r.type.title=st?w.typeStockFull:w.typeCryptoFull}
   function build(sym,href){
     var tr=document.createElement("tr");tr.dataset.symbol=sym;
-    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><span class="asset-icon" aria-hidden="true"></span><span class="asset-name"><strong></strong><span class="asset-tags"></span></span></div></td><td class="num"><span class="price">—</span></td><td class="num"><span class="chg">—</span></td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="spark-col"><a class="spark-link" tabindex="-1" aria-hidden="true"><span class="spark"></span></a></td><td class="type-col"><abbr class="type-abbr"></abbr></td><td class="analysis-col"><a class="analysis-link"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg></a></td>';
-    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1].firstChild,change:c[2].firstChild,volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[11].firstChild,spark:c[9].querySelector(".spark"),sparkLink:c[9].firstChild,type:c[10].firstChild,data:null,levels:null,digits:null,last:null,closes:null,sparkChange:null,sparkAt:0};
+    tr.innerHTML='<td class="asset"><div class="asset-cell"><button class="star" type="button"></button><abbr class="type-abbr"></abbr><span class="asset-icon" aria-hidden="true"></span><span class="asset-name"><strong></strong><span class="asset-tags"></span></span></div></td><td class="num"><span class="price">—</span></td><td class="num"><span class="chg">—</span></td><td class="num">—</td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="num lvl"><b>—</b></td><td class="spark-col"><a class="spark-link" tabindex="-1" aria-hidden="true"><span class="spark"></span></a></td><td class="analysis-col"><a class="analysis-link"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg></a></td>';
+    var c=tr.children,r={tr:tr,star:c[0].querySelector(".star"),price:c[1].firstChild,change:c[2].firstChild,volume:c[3],day:c[4],week:c[5],month:c[6],year:c[7],ath:c[8],link:c[10].firstChild,spark:c[9].querySelector(".spark"),sparkLink:c[9].firstChild,type:c[0].querySelector(".type-abbr"),data:null,levels:null,digits:null,last:null,closes:null,sparkChange:null,sparkAt:0};
     c[0].querySelector("strong").textContent=MarketUI.nameOf(sym)||sym;r.link.href=href;r.sparkLink.href=href;
     // V2: a coloured badge with the asset's ticker (BTC, XRP, DOGE…) and its name instead of the pair.
     var icon=c[0].querySelector(".asset-icon"),base=MarketUI.baseOf(sym)||sym,hue=0;r.stock=MarketUI.isTokenized(sym);
