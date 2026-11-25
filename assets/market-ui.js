@@ -1,14 +1,14 @@
 /* Formatting and publication helpers shared by the market table (index.html), the analysis page
    (bulletin.html) and the weekly events page. Numbers follow the page language (html[lang]). */
 var MarketUI=(function(){
-  var NAMES={BTC:"Bitcoin",ETH:"Ethereum",SOL:"Solana",XRP:"XRP",AVAX:"Avalanche",BNB:"BNB",DOGE:"Dogecoin",PAXG:"PAX Gold",ADA:"Cardano",LINK:"Chainlink",DOT:"Polkadot",LTC:"Litecoin",TRX:"TRON"};
+  var NAMES={BTC:"Bitcoin",ETH:"Ethereum",SOL:"Solana",XRP:"XRP",AVAX:"Avalanche",BNB:"BNB",DOGE:"Dogecoin",PAXG:"PAX Gold",ADA:"Cardano",LINK:"Chainlink",DOT:"Polkadot",LTC:"Litecoin",TRX:"TRON",ZEC:"Zcash",NEAR:"NEAR Protocol",HYPE:"Hyperliquid",PEPE:"Pepe",UNI:"Uniswap",ENA:"Ethena",SUI:"Sui",TAO:"Bittensor",INJ:"Injective",AAVE:"Aave"};
   var TF_ORDER=["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","12h","1d","3d","1w","1M"];
   function lang(){return document.documentElement.lang==="tr"?"tr":"en"}
   function locale(){return lang()==="tr"?"tr-TR":"en-US"}
   // Decimals by price size, chosen once per asset by the caller so they do not flip on every tick.
   // Decimals by price size: >= $100 → 1, $1–100 → 2, below $1 → 3.
   // Decimals by price size: 100+ → 1, 1+ → 2, below 1 (e.g. DOGE 0,1834) → 4, below 0,01 → 6.
-  function digitsFor(value){var n=Number(value);return n>=100?1:n>=1?2:n>=0.01?4:6}
+  function digitsFor(value){var n=Number(value);return n>=100?1:n>=1?2:n>=0.01?4:n>=0.0001?6:8} // 8 for PEPE-like prices (0,00000412)
   // Number formats are built once per locale and option set and reused: toLocaleString builds a new one on every
   // call, and these run for every price on every live tick.
   var formats={};
