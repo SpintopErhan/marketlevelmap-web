@@ -10,7 +10,6 @@ const CANDLES = "https://data.marketlevelmap.com/candles/";
 const RPCS = ["https://mainnet.base.org", "https://base-rpc.publicnode.com"];
 const SYMBOL = /^[A-Z]{1,6}CUSDC$/;
 const MAX_SYMBOLS = 20;
-const BATCH = 10;
 const CACHE_SECONDS = 20;
 const SLOT0 = "0x3850c7bd"; // slot0(): Uniswap v3 and its forks (Aerodrome Slipstream…); the first word is sqrtPriceX96
 const MAX_GAP = 0.15; // pool price further than this from a candle younger than FRESH_CANDLE_MS is not used
@@ -34,25 +33,45 @@ export function poolPrice(sqrtHex, token, quote) {
   const p = quoteIs0 ? 10 ** (token.decimals - quote.decimals) / r : r * 10 ** (token.decimals - quote.decimals);
   return Number.isFinite(p) && p > 0 ? p : null;
 }
-// Every pool's slot0 in one batched JSON-RPC request per endpoint (many separate calls from Cloudflare were partly
-// refused): { address(lower case): first 32-byte word }. What the first endpoint does not answer goes to the next.
+// Every pool's slot0 in ONE eth_call through Multicall3 (the same address on every EVM chain, Base included):
+// separate or batched calls from Cloudflare were partly refused, one call is not. Returns { address(lower case): first
+// 32-byte word of its slot0 }. Pools that fail inside the multicall are simply missing; the next endpoint is asked
+// only when the whole call fails.
+const MULTICALL3 = "0xca11bde05977b3631167028862be2a173976ca11";
+const AGGREGATE3 = "0x82ad56cb"; // aggregate3((address target, bool allowFailure, bytes callData)[])
+const word = (hex) => hex.padStart(64, "0");
+export function encodeAggregate3(addresses) {
+  const n = addresses.length, parts = [word("20"), word(n.toString(16))];
+  for (let i = 0; i < n; i++) parts.push(word((n * 32 + i * 160).toString(16))); // offsets of the tuples
+  for (const a of addresses) {
+    parts.push(word(a.toLowerCase().replace(/^0x/, "")), word("1"), word("60"), word("4"), SLOT0.slice(2).padEnd(64, "0"));
+  }
+  return AGGREGATE3 + parts.join("");
+}
+// (bool success, bytes returnData)[] → the first word of each successful returnData (or null).
+export function decodeAggregate3(hex, n) {
+  const d = hex.replace(/^0x/, ""), at = (pos) => parseInt(d.slice(pos * 2, pos * 2 + 64), 16);
+  const arr = at(0), len = at(arr), out = [];
+  if (len !== n) return null;
+  for (let i = 0; i < n; i++) {
+    const t = arr + 32 + at(arr + 32 + i * 32), ok = at(t) === 1, b = t + at(t + 32), blen = at(b);
+    out.push(ok && blen >= 32 ? "0x" + d.slice((b + 32) * 2, (b + 64) * 2) : null);
+  }
+  return out;
+}
 export async function slot0Batch(addresses) {
   const out = {}, list = [...new Set(addresses.map((a) => a.toLowerCase()))];
-  let left = list;
+  if (!list.length) return out;
+  const data = encodeAggregate3(list);
   for (const url of RPCS) {
-    if (!left.length) break;
-    // Batches of BATCH calls (public endpoints cap a batch), sent together.
-    const chunks = [];
-    for (let k = 0; k < left.length; k += BATCH) chunks.push(left.slice(k, k + BATCH));
-    await Promise.all(chunks.map(async (chunk) => {
-      try {
-        const body = chunk.map((to, id) => ({ jsonrpc: "2.0", id, method: "eth_call", params: [{ to, data: SLOT0 }, "latest"] }));
-        const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", "User-Agent": "marketlevelmap-site" }, body: JSON.stringify(body), signal: AbortSignal.timeout(6000) });
-        const answers = r.ok ? await r.json() : null;
-        (Array.isArray(answers) ? answers : []).forEach((a) => { if (a && typeof a.result === "string" && a.result.length >= 66 && chunk[a.id]) out[chunk[a.id]] = a.result.slice(0, 66); });
-      } catch (_) { /* next endpoint */ }
-    }));
-    left = left.filter((a) => !out[a]);
+    try {
+      const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", "User-Agent": "marketlevelmap-site" },
+        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_call", params: [{ to: MULTICALL3, data }, "latest"] }), signal: AbortSignal.timeout(6000) });
+      const b = r.ok ? await r.json() : null, words = b && typeof b.result === "string" ? decodeAggregate3(b.result, list.length) : null;
+      if (!words) continue;
+      list.forEach((a, i) => { if (words[i]) out[a] = words[i]; });
+      return out;
+    } catch (_) { /* next endpoint */ }
   }
   return out;
 }
