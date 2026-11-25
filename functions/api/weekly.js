@@ -255,9 +255,12 @@ export async function onRequestGet({ request, env, waitUntil }) {
     if (hit) return hit;
   }
   const later = (p) => { if (p && waitUntil) waitUntil(p); };
-  const edge = (data) => {
+  // Kept at the edge only until the snapshot is due for a rebuild (an hour after it was made, not an hour after this
+  // visit): re-putting a fresh copy with a full hour on every visit kept an old snapshot out for up to two hours.
+  const edge = (data, madeAt = Date.now()) => {
     if (!cache || !isComplete(data)) return null;
-    return cache.put(cacheKey, new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=3600" } }));
+    const maxAge = Math.max(60, Math.round((madeAt + FRESH_MS - Date.now()) / 1000));
+    return cache.put(cacheKey, new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": `public, max-age=${maxAge}` } }));
   };
   const rebuild = async () => {
     const data = await buildWeekly(env, Date.now());
@@ -268,7 +271,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
   const stored = await readSnapshot(env.USERS_DB, storeKey);
   if (stored) {
     if (isStale(stored, now)) later(rebuild().catch(() => null));
-    else if (isComplete(stored.data)) later(edge(stored.data));
+    else if (isComplete(stored.data)) later(edge(stored.data, stored.at));
     return json(stored.data, isComplete(stored.data) ? 600 : 120);
   }
   const data = await buildWeekly(env, now);
