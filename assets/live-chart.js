@@ -289,8 +289,8 @@ var LiveChart = (function () {
     }];
   };
 
-  // Off-session bands (tokenized stocks, README "Tokenized stocks"): full-height faint bands behind the candles over every
-  // run of candles outside the exchange session, by logical index (row i is logical index i). data.off[i] true = closed.
+  // Session bands (tokenized stocks, README "Tokenized stocks"): full-height faint bands behind the candles over every
+  // run of marked candles, by logical index (row i is logical index i). data.off[i] true = marked (the session is open).
   function SessionPrimitive() { this.data = null; this.chart = null; this.series = null; this.requestUpdate = null; }
   SessionPrimitive.prototype.attached = function (p) { this.chart = p.chart; this.series = p.series; this.requestUpdate = p.requestUpdate; };
   SessionPrimitive.prototype.detached = function () { this.chart = null; this.series = null; this.requestUpdate = null; };
@@ -696,19 +696,29 @@ var LiveChart = (function () {
       if (!options.priceFormat || options.priceFormat.type !== "custom") options.priceFormat = localFormat(options.priceFormat);
       return addSeriesRaw(type, options, pane);
     };
-    // Off-session shading for the tokenized stocks: faint full-height bands over the candles outside the NYSE session
-    // (nights, weekends, holidays). Nothing for crypto.
-    var sessionShade = new SessionPrimitive(), sessionList = null, SESSION_FILL = "rgba(128,140,155,0.12)";
+    // NYSE session hours for the tokenized stocks: faint full-height bands over the candles that overlap the session
+    // (the short part of the day; nights, weekends and holidays stay plain), with a small "Shaded: NYSE open" label
+    // in the price pane. Off with setSessions(false) (the page's Indicators menu). Nothing for crypto.
+    var sessionShade = new SessionPrimitive(), sessionList = null, showSessions = true, SESSION_FILL = "rgba(96,165,250,0.10)";
+    var sessionNote = document.createElement("div");
+    sessionNote.style.cssText = "position:absolute;top:6px;z-index:3;padding:1px 6px;border-radius:4px;background:rgba(96,165,250,0.14);color:#9fb8d6;font:500 11px Inter,system-ui,sans-serif;pointer-events:none;white-space:nowrap";
+    sessionNote.hidden = true; container.appendChild(sessionNote);
+    function placeSessionNote() {
+      sessionNote.textContent = pageLocale() === "tr-TR" ? "Gölgeli alan: NYSE açık" : "Shaded: NYSE open";
+      var w = 0; try { w = chart.priceScale("right").width(); } catch (e) {}
+      sessionNote.style.right = (w + 8) + "px";
+    }
     function paintSessions() {
-      if (!onchain()) { sessionList = null; sessionShade.set(null); return; }
+      if (!onchain() || !showSessions) { sessionList = null; sessionShade.set(null); sessionNote.hidden = true; return; }
       var pair = state.pair, tf = state.tf;
       loadSessions("XNYS").then(function (list) {
-        if (destroyed || state.pair !== pair || state.tf !== tf) return;
+        if (destroyed || state.pair !== pair || state.tf !== tf || !showSessions) return; // turned off meanwhile
         sessionList = list;
         var t = allRows().map(function (r) { return r[0]; });
         if (forming) t.push(forming[0]);
         var off = {}; if (list.length) offSession(t, STEP[tf], list).forEach(function (x) { off[x] = 1; });
-        sessionShade.set(list.length ? { off: t.map(function (x) { return !!off[x]; }), color: SESSION_FILL } : null);
+        sessionShade.set(list.length ? { off: t.map(function (x) { return !off[x]; }), color: SESSION_FILL } : null);
+        sessionNote.hidden = !list.length; if (list.length) placeSessionNote();
       });
     }
     var candles = chart.addSeries(LC.CandlestickSeries, {
@@ -1451,6 +1461,8 @@ var LiveChart = (function () {
       setZonesVisible: function (on) { zones.hidden = on === false; if (zones.hidden) hideZoneTip(); if (zones.requestUpdate) zones.requestUpdate(); },
       zonesVisible: function () { return !zones.hidden; },
       compareInfo: function () { return cmp ? { pair: cmp.pair, loaded: !!cmp.map } : null; },
+      // NYSE session bands of the tokenized stocks on (default) or off.
+      setSessions: function (on) { if (destroyed || showSessions === !!on) return; showSessions = !!on; paintSessions(); },
       setIndicators: function (prefs) {
         // EMA 20/50/200 stay on unless turned off explicitly.
         var showEma = !(prefs && prefs.ema === false);
@@ -1576,7 +1588,7 @@ var LiveChart = (function () {
         if (!liveLine) liveLine = candles.createPriceLine({ price: p, color: "#f0c040", lineWidth: 1, lineStyle: LC.LineStyle.Dashed, axisLabelVisible: true, title: "" });
         else liveLine.applyOptions({ price: p });
       },
-      setLocale: function () { if (!destroyed) { chart.applyOptions({ localization: localization() }); refreshLegend(); if (cmp) drawIndicators(); } },
+      setLocale: function () { if (!destroyed) { chart.applyOptions({ localization: localization() }); refreshLegend(); if (cmp) drawIndicators(); if (!sessionNote.hidden) placeSessionNote(); } },
       // Change timeframe without tearing the chart down. 1H in particular is a lot of candles;
       // rebuilding the widget blanked the panel and redrew it.
       // Also another asset in the same chart (opts.pair, with opts.decimalsFor for its price-axis decimals): the analysis
