@@ -696,15 +696,15 @@ var LiveChart = (function () {
       if (!options.priceFormat || options.priceFormat.type !== "custom") options.priceFormat = localFormat(options.priceFormat);
       return addSeriesRaw(type, options, pane);
     };
-    // NYSE session hours for the tokenized stocks: faint full-height bands over the candles that overlap the session
-    // (the short part of the day; nights, weekends and holidays stay plain), with a small "Shaded: NYSE open" label
+    // US market session hours (NYSE/Nasdaq, same hours; XNYS calendar) for the tokenized stocks: faint full-height bands over the candles that overlap the session
+    // (the short part of the day; nights, weekends and holidays stay plain), with a small "Shaded: US market open" label
     // in the price pane. Off with setSessions(false) (the page's Indicators menu). Nothing for crypto.
     var sessionShade = new SessionPrimitive(), sessionList = null, showSessions = true, SESSION_FILL = "rgba(96,165,250,0.10)";
     var sessionNote = document.createElement("div");
     sessionNote.style.cssText = "position:absolute;top:6px;z-index:3;padding:1px 6px;border-radius:4px;background:rgba(96,165,250,0.14);color:#9fb8d6;font:500 11px Inter,system-ui,sans-serif;pointer-events:none;white-space:nowrap";
     sessionNote.hidden = true; container.appendChild(sessionNote);
     function placeSessionNote() {
-      sessionNote.textContent = pageLocale() === "tr-TR" ? "Gölgeli alan: NYSE açık" : "Shaded: NYSE open";
+      sessionNote.textContent = pageLocale() === "tr-TR" ? "Gölgeli alan: ABD borsası açık" : "Shaded: US market open";
       var w = 0; try { w = chart.priceScale("right").width(); } catch (e) {}
       sessionNote.style.right = (w + 8) + "px";
     }
@@ -1461,7 +1461,7 @@ var LiveChart = (function () {
       setZonesVisible: function (on) { zones.hidden = on === false; if (zones.hidden) hideZoneTip(); if (zones.requestUpdate) zones.requestUpdate(); },
       zonesVisible: function () { return !zones.hidden; },
       compareInfo: function () { return cmp ? { pair: cmp.pair, loaded: !!cmp.map } : null; },
-      // NYSE session bands of the tokenized stocks on (default) or off.
+      // US market session bands of the tokenized stocks on (default) or off.
       setSessions: function (on) { if (destroyed || showSessions === !!on) return; showSessions = !!on; paintSessions(); },
       setIndicators: function (prefs) {
         // EMA 20/50/200 stay on unless turned off explicitly.
