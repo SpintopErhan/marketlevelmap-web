@@ -20,7 +20,7 @@ var MarketUI=(function(){
   function compact(value){var n=Number(value);return n>0?nf("compact",0).format(n):"—"}
   // Tokenized US stocks (README "Tokenized stocks"): Coinbase's tokens on Base (NVDAc, AAPLc…) traded against USDC; candles
   // from on-chain swaps. A pair "<TICKER>CUSDC" is one; names for the known ones, the stock ticker otherwise.
-  var STOCKS={NVDA:"NVIDIA",AAPL:"Apple",TSLA:"Tesla",MSFT:"Microsoft",AMZN:"Amazon",GOOGL:"Alphabet",META:"Meta",COIN:"Coinbase",MSTR:"Strategy",SPY:"SPDR S&P 500 ETF",QQQ:"Invesco QQQ"};
+  var STOCKS={NVDA:"NVIDIA",AAPL:"Apple",TSLA:"Tesla",MSFT:"Microsoft",AMZN:"Amazon",GOOGL:"Alphabet",META:"Meta",COIN:"Coinbase",MSTR:"Strategy",AMD:"AMD",ANT:"Anthropic",SPCX:"SpaceX",SPY:"SPDR S&P 500 ETF",QQQ:"Invesco QQQ"};
   function stockOf(symbol){var m=/^([A-Z]{1,6})CUSDC$/.exec(String(symbol));return m?m[1]:""}
   function isTokenized(symbol){return!!stockOf(symbol)}
   function category(symbol){return isTokenized(symbol)?"stock":"crypto"}

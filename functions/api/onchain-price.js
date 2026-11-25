@@ -9,7 +9,8 @@
 const CANDLES = "https://data.marketlevelmap.com/candles/";
 const RPCS = ["https://mainnet.base.org", "https://base-rpc.publicnode.com"];
 const SYMBOL = /^[A-Z]{1,6}CUSDC$/;
-const MAX_SYMBOLS = 10;
+const MAX_SYMBOLS = 20;
+const BATCH = 10;
 const CACHE_SECONDS = 20;
 const SLOT0 = "0x3850c7bd"; // slot0(): Uniswap v3 and its forks (Aerodrome Slipstream…); the first word is sqrtPriceX96
 const MAX_GAP = 0.15; // pool price further than this from a candle younger than FRESH_CANDLE_MS is not used
@@ -33,16 +34,27 @@ export function poolPrice(sqrtHex, token, quote) {
   const p = quoteIs0 ? 10 ** (token.decimals - quote.decimals) / r : r * 10 ** (token.decimals - quote.decimals);
   return Number.isFinite(p) && p > 0 ? p : null;
 }
-async function rpc(call) {
+// Every pool's slot0 in one batched JSON-RPC request per endpoint (many separate calls from Cloudflare were partly
+// refused): { address(lower case): first 32-byte word }. What the first endpoint does not answer goes to the next.
+export async function slot0Batch(addresses) {
+  const out = {}, list = [...new Set(addresses.map((a) => a.toLowerCase()))];
+  let left = list;
   for (const url of RPCS) {
-    try {
-      const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", "User-Agent": "marketlevelmap-site" }, body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_call", params: [call, "latest"] }), signal: AbortSignal.timeout(5000) });
-      if (!r.ok) continue;
-      const b = await r.json();
-      if (b && typeof b.result === "string" && b.result.length >= 66) return b.result.slice(0, 66);
-    } catch (_) { /* next RPC */ }
+    if (!left.length) break;
+    // Batches of BATCH calls (public endpoints cap a batch), sent together.
+    const chunks = [];
+    for (let k = 0; k < left.length; k += BATCH) chunks.push(left.slice(k, k + BATCH));
+    await Promise.all(chunks.map(async (chunk) => {
+      try {
+        const body = chunk.map((to, id) => ({ jsonrpc: "2.0", id, method: "eth_call", params: [{ to, data: SLOT0 }, "latest"] }));
+        const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", "User-Agent": "marketlevelmap-site" }, body: JSON.stringify(body), signal: AbortSignal.timeout(6000) });
+        const answers = r.ok ? await r.json() : null;
+        (Array.isArray(answers) ? answers : []).forEach((a) => { if (a && typeof a.result === "string" && a.result.length >= 66 && chunk[a.id]) out[chunk[a.id]] = a.result.slice(0, 66); });
+      } catch (_) { /* next endpoint */ }
+    }));
+    left = left.filter((a) => !out[a]);
   }
-  return null;
+  return out;
 }
 // The pools file's usable part: { token, quote, pools: [address…] } (main pool first), or null.
 export function readPools(f, pair) {
@@ -70,24 +82,31 @@ async function candles(pair, index) {
   files.forEach((f) => (f && Array.isArray(f.candles) ? f.candles : []).forEach((r) => { if (Array.isArray(r) && r.length >= 5) byTime.set(r[0], r); }));
   return [...byTime.values()].sort((a, b) => a[0] - b[0]);
 }
-export async function priceOf(pair, index, now = Date.now()) {
+// What a pair needs before the pools are read: its 24 h figures from the candles and its pools.
+async function pairInfo(pair, index) {
   const [rows, poolsFile] = await Promise.all([candles(pair, index), getJson(`${CANDLES}${encodeURIComponent(pair)}/pools.json`, 300)]);
   const st = dayStats(rows);
-  if (!st) return null;
+  return st ? { pair, st, cfg: readPools(poolsFile, pair) } : null;
+}
+// The answer for one pair from its candles and the pools' words: the first pool (main first) with a sane price.
+export function priceFrom(info, words, now = Date.now()) {
+  const { pair, st, cfg } = info;
   const out = { s: pair, o: st.o, h: st.h, l: st.l, q: st.q, quote: "USDC", c: st.last, source: "candle", priceAt: st.candleAt, candleAt: st.candleAt };
-  const cfg = readPools(poolsFile, pair);
-  if (cfg) {
-    for (const address of cfg.pools) {
-      const word = await rpc({ to: address, data: SLOT0 });
-      const p = word ? poolPrice(word, cfg.token, cfg.quote) : null;
-      if (!p) continue;
-      if (now - st.candleAt < FRESH_CANDLE_MS && Math.abs(p / st.last - 1) > MAX_GAP) continue;
-      Object.assign(out, { c: p, source: "pool", priceAt: now, h: Math.max(st.h, p), l: Math.min(st.l, p) });
-      break;
-    }
+  for (const address of cfg ? cfg.pools : []) {
+    const word = words[address.toLowerCase()], p = word ? poolPrice(word, cfg.token, cfg.quote) : null;
+    if (!p) continue;
+    if (now - st.candleAt < FRESH_CANDLE_MS && Math.abs(p / st.last - 1) > MAX_GAP) continue;
+    Object.assign(out, { c: p, source: "pool", priceAt: now, h: Math.max(st.h, p), l: Math.min(st.l, p) });
+    break;
   }
   return out;
 }
+export async function pricesOf(pairs, index, now = Date.now()) {
+  const infos = (await Promise.all(pairs.map((p) => pairInfo(p, index)))).filter(Boolean);
+  const words = await slot0Batch(infos.flatMap((i) => (i.cfg ? i.cfg.pools : [])));
+  return infos.map((i) => priceFrom(i, words, now));
+}
+export async function priceOf(pair, index, now = Date.now()) { return (await pricesOf([pair], index, now))[0] || null; }
 
 export async function onRequestGet(context) {
   const url = new URL(context.request.url);
@@ -97,7 +116,7 @@ export async function onRequestGet(context) {
   const key = new Request(`${url.origin}/api/onchain-price?symbols=${symbols.join(",")}`);
   if (cache) { const hit = await cache.match(key); if (hit) return hit; }
   const index = await getJson(CANDLES + "index.json", 120);
-  const prices = (await Promise.all(symbols.map((s) => priceOf(s, index)))).filter(Boolean);
+  const prices = await pricesOf(symbols, index);
   const response = json({ at: new Date().toISOString(), prices }, CACHE_SECONDS);
   if (cache && context.waitUntil) context.waitUntil(cache.put(key, response.clone()));
   return response;

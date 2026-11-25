@@ -428,7 +428,9 @@ Descriptive wording: the price is the token's on-chain price, not the exchange p
 - **Live price:** `GET /api/onchain-price?symbols=NVDACUSDC,AAPLCUSDC` (`functions/api/onchain-price.js`) reads the
   main pool's `slot0` on Base (mainnet.base.org, else publicnode; no data licence needed). Pools come from
   `candles/<PAIR>/pools.json` (local program; schema below); without it, when no pool answers, or when the pool price
-  is more than 15% from a candle younger than 6 hours, the price is the last 1H close (`source: "candle"`). 24 h open,
+  is more than 15% from a candle younger than 6 hours, the price is the last 1H close (`source: "candle"`). All pools of
+  all requested pairs are read in batched JSON-RPC requests (10 calls each, sent together; what one endpoint misses
+  goes to the next): separate calls from Cloudflare were partly refused. Up to 20 pairs a request. 24 h open,
   high, low and USDC volume from the 1H files. Edge cache 20 s. `assets/onchain-feed.js` polls it every 30 s while
   the page is visible and gives MarketFeed-shaped data.
 - **Market table:** Crypto / Tokenized stocks filters; a "Tokenized stock" tag; opens from `levels.json` keyLevels;
