@@ -204,11 +204,11 @@ cache previews per link, so a link shared before a change keeps its old card for
 ## Pages
 
 - `index.html` — top: the title on one line with "How to read them" on the right; under it the **Market heat map**
-  across the page with the ETF flows card beside it; the **Topic of the week** as one strip under them;
+  across the page with the **Topic of the week** card beside it (one column; under the map below 900 px);
   then the market table at full width (live price, 24h change and volume, daily/weekly/monthly/yearly opens, ATH);
   then this week's events (one third) beside the market context card (crypto on the left, macro with commodities
   under it on the right); then the members' live tools. Phones stack them: title, weekly outlook, topic, table,
-  market context, events (the top: title, heat map, ETF card, topic). The **Topic of the week** card links one library page: name, first
+  market context, events (the top: title, heat map, topic). The **Topic of the week** card links one library page: name, first
   summary sentence, track, "Next week: …". The list is `content/library/weekly-topics.json` (page ids in week
   order from a Monday 00:00 UTC anchor; it repeats); `scripts/build-library.mjs` checks it and writes
   `assets/weekly-topics.json`, and the page picks the week in the browser (before the anchor: the first topic).
@@ -370,25 +370,31 @@ by its change, in three blocks: crypto (left, the tallest), tokenized stocks and
 above the other; macro alone when there are no tokens). Phones stack the three blocks. PAXG is left out (gold is in
 the macro block).
 
-- **Views (tabs):** "Live / Canlı" (the default), "Daily / Günlük", "Weekly / Haftalık", "Monthly / Aylık"; the choice
-  is kept in this browser (`mlm-heatmap-view`). All four are current and update live (at most once a second).
-  - Crypto and tokenized stocks, from the market table's own feeds (`window.MLMQuotes`, filled by the table script):
-    Live = the last 24 hours (the feed's 24 h open); Daily / Weekly / Monthly = since today's 00:00 UTC, this week's
-    (Monday) and this month's open (MarketFeed's `day` / `week` / `month`, else the `DO` / `WO` / `MO` key levels of
-    levels.json; tokens: `/api/onchain-price` returns `day`, the open of today's first 1H candle, and their WO / MO
-    come from the key levels).
-  - Macro and commodities: `GET /api/macro-change` (`functions/api/macro-change.js`): the six Yahoo symbols of the
-    weekly outlook, three months of daily candles: `day` = the last session's price (live while it trades) against
-    the session before's close (Friday against Thursday over a weekend; used for Live and Daily), `week` / `month` =
-    against the open of this week's / month's first session (a futures session dated Sunday counts to the next week).
-    The yield in basis points. Edge cache 5 minutes; the page asks again every 5 minutes while visible.
-  - Last week's closed change stays on the weekly outlook page (`weekly.html`), linked under the map.
+- **Views (tabs):** "Live / Canlı", "Yesterday / Dün" (the default), "Last week / Geçen hafta", "Last month /
+  Geçen ay"; the choice is kept in this browser (`mlm-heatmap-view`). The range is written out: "Dün · 27 Kas (UTC
+  günü, açılıştan kapanışa)", "47. hafta · 16 Kas – 22 Kas" (ISO week number), "Ekim 2026".
+  - Live: crypto and tokenized stocks against their price 24 hours ago, from the market table's own feeds
+    (`window.MLMQuotes`, filled by the table script); macro from `GET /api/macro-change` (the current session against
+    the previous close; edge cache 5 minutes, asked again every 5 minutes). Updated at most once a second.
+  - Yesterday, last week, last month: the last CLOSED UTC day, week (Monday–Sunday) and month, open to close, from
+    `GET /api/closed-changes?part=0|1|2|macro` (`functions/api/closed-changes.js`). The same for everyone all day:
+    kept at the edge until the next UTC midnight once complete (else 10 minutes) and in this browser for the day
+    (`mlm-heatmap-closed`), so the tabs show at once. Crypto and tokens from the public daily candles (a period
+    counts only when its first and last day are there; crypto falls back to OKX's closed UTC candle, tokens show "–"
+    until the upload; a pair listed after a period began has no value for it). The pairs come in three parts
+    (i % 3 of the name-sorted list) because a Function may make only about 50 outside requests. Macro: Yahoo daily
+    candles: the last session finished before today (over a weekend Friday; the tile's title names the day), and the
+    sessions of last week and last month, first open to last close; the yield in basis points.
+  - **At once:** until the feeds answer, Live is drawn from the figures it showed last in this browser
+    (`mlm-heatmap-last`: the quotes and the macro figures, saved at most every 10 seconds; used when at most an hour
+    old and of the same UTC day).
+  - The weekly outlook page (`weekly.html`) is linked under the map.
 - **Tile size:** square root of the asset's 24-hour USD volume (USDC volume for tokens), so BTC and ETH are the big
   tiles and the small coins stay readable; an asset without volume yet gets a third of the median's size. The sizes
   are measured again at most once a minute (at once when a volume first arrives) so the tiles do not jump; both
   views use the same sizes. Macro tiles are all the same size. Layout: squarified treemap (`assets/treemap.js`,
   `Treemap.layout(weights, width, height)`).
-- **Colours:** green / red, full at 5 % (Live, Daily), 10 % (Weekly), 20 % (Monthly) for assets, a fifth of that for
+- **Colours:** green / red, full at 5 % (Live, Yesterday), 10 % (Last week), 20 % (Last month) for assets, a fifth of that for
   macro, 10 / 10 / 25 / 50 bp for the yield.
   The label and the value are sized to the tile and dropped when they do not fit; the tile's title has the name, the
   change and the 24 h volume. A tile opens the asset's analysis page (1D; tokens 4H). The ⓘ beside the title explains
@@ -399,6 +405,12 @@ the macro block).
 `weekly.html` (`/weekly`) and the Weekly view of the home page's heat map (README "Market heat map"). Data: `GET /api/weekly`
 (`functions/api/weekly.js`), one snapshot per week (Monday 00:00 UTC). The snapshot is stored in D1 (`USERS_DB`,
 table `snapshots`, key `weekly:<weekStart>:v2`) and kept at the edge for an hour once complete (every asset has
+**Outside-request limit (fixed 28 Nov 2026):** a Pages Function may make only about 50 outside requests (free plan),
+and each asset costs two or more (weekly candles, levels.json, sometimes an archive or OKX). With 33 assets the build
+ran out and the last assets showed "–" although their candles were there. Now one build fetches at most 12 assets;
+the others keep what the stored snapshot of the same week has (an asset with last week from the Binance candle files
+and levels from levels.json is final for the week), and last week's macro is kept once every item answered. An
+incomplete snapshot is rebuilt every two minutes, so the full outlook builds up within a few rebuilds.
 last week's candle and Yahoo answered). A visitor always gets the stored snapshot at once; when it is older than an
 hour (two minutes while incomplete) it is rebuilt in the background for the next visitor, so only the first request
 of a week waits for the build. Each source request gives up after a few seconds (Yahoo 3 s per host, candles 8 s);
@@ -533,8 +545,8 @@ fund that has not reported that day shows "–"; while an asset's fund table is 
 An asset that cannot be loaded hides the previous asset's figures and shows the error. Credited "Data: SoSoValue"; descriptive only.
 
 - **Links:** "ETF flows" / "ETF akışları" in the site header after "Multi view" (every page, the library generator
-  included), and on the home page a small "ETF flows" card beside the market heat map (same height, `.hero-board`; under it
-  below 900 px): the latest US trading day's net flow of the BTC and ETH ETFs and an "Other coins" / "Diğer coinler" row
+  included), and, until 28 Nov 2026, on the home page a small "ETF flows" card (removed from the home page at the owner's
+  request; the `/etf` page is unchanged): the latest US trading day's net flow of the BTC and ETH ETFs and an "Other coins" / "Diğer coinler" row
   (the other eight added up for that day; tooltip lists them), each with the last five trading days, linking to `/etf`.
   One request (`?asset=ALL`). The card shows when BTC or ETH answers; the column is
   there when either card is.
@@ -565,6 +577,15 @@ An asset that cannot be loaded hides the previous asset's figures and shows the 
   value for a day replaces the earlier one), so the history grows past the 300 days one call returns. A visitor gets
   the stored copy at once; older than three hours it is refreshed in the background (no Worker needed); after a
   failed refresh the next try waits ten minutes and the old data keeps being served. Public cache ten minutes.
+
+## Fed meetings
+
+Planned (28 Nov 2026): SoSoValue allows republishing its API data with credit. The first item is the Fed (FOMC)
+meetings: the rate probabilities of the coming meetings (`/v1/macro/fomc-probabilities`: `meeting_date`,
+`probabilities`) and, if SoSoValue has it, the past rate decisions, possibly as a chart. Before building, the admin
+probe's part 4 (`/api/soso-probe?part=4`) answers a short sample of the FOMC, rates and macro event endpoints and the
+names of the analysis charts, to learn their shapes. Everything else from SoSoValue waits for the Worker plan
+(December 2026).
 
 ## Price Action view
 

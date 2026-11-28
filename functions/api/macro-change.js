@@ -16,8 +16,8 @@ function json(body, maxAge) {
   return new Response(JSON.stringify(body), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": maxAge ? `public, max-age=${maxAge}` : "no-store" } });
 }
 // Monday 00:00 UTC of the week a bar belongs to (a Sunday-dated bar belongs to the week after).
-const weekOf = (t) => { const s = t + DAY, d = Math.floor(s / DAY); return (d - ((d + 3) % 7)) * DAY; };
-const monthOf = (t) => { const d = new Date(t * 1000); return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1) / 1000; };
+export const weekOf = (t) => { const s = t + DAY, d = Math.floor(s / DAY); return (d - ((d + 3) % 7)) * DAY; };
+export const monthOf = (t) => { const d = new Date(t * 1000); return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1) / 1000; };
 // Yahoo chart body (range=3mo, interval=1d) → { close, date, prev, weekOpen, monthOpen }, or null.
 export function yahooBars(body) {
   const r = body && body.chart && body.chart.result && body.chart.result[0];
@@ -45,16 +45,18 @@ export function macroItem(key, b) {
   const pc = (from) => (from > 0 ? Math.round((b.close / from - 1) * 10000) / 100 : null);
   return { close: b.close, date: b.date, day: pc(b.prev), week: pc(b.weekOpen), month: pc(b.monthOpen), unit: "%" };
 }
-async function bars(symbol) {
+// Three months of Yahoo daily candles (query1, else query2), read by `parse`; null when neither answers usefully.
+export async function yahooDaily(symbol, parse) {
   for (const host of ["query1", "query2"]) {
     try {
       const r = await fetch(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=3mo&interval=1d`, { headers: YAHOO_HEADERS, signal: AbortSignal.timeout(3000) });
-      const b = yahooBars(r.ok ? await r.json() : null);
+      const b = parse(r.ok ? await r.json() : null);
       if (b) return b;
     } catch (_) { /* next host */ }
   }
   return null;
 }
+const bars = (symbol) => yahooDaily(symbol, yahooBars);
 export async function onRequestGet(context) {
   const url = new URL(context.request.url);
   const cache = typeof caches !== "undefined" ? caches.default : null;

@@ -151,7 +151,15 @@ export async function buildMacro(start) {
   return out;
 }
 
-export async function buildWeekly(env, nowMs) {
+// Cloudflare allows a Function about 50 outside requests (free plan). Each asset costs two or more (its weekly
+// candles and levels.json, sometimes an archive or OKX), so one build fetches at most FETCH_PER_BUILD assets; the
+// others keep what the stored snapshot of the same week already has (an asset with last week from the Binance candle
+// files and levels from levels.json is final for the week). An incomplete snapshot is rebuilt every two minutes, so
+// a full outlook builds up over a few rebuilds.
+const FETCH_PER_BUILD = 12;
+const isFinal = (a) => !!(a && (a.newListing || (a.lastWeek && !a.lastWeek.source && a.levelsFrom === "candles")));
+
+export async function buildWeekly(env, nowMs, previous = null) {
   const bucket = env.MARKETLEVELMAP_PUBLIC;
   const active = await readJson(bucket, ACTIVE_POINTER_KEY);
   const entries = (active && Array.isArray(active.entries) ? active.entries : []).filter((e) => {
@@ -170,14 +178,32 @@ export async function buildWeekly(env, nowMs) {
   const start = weekStart(nowMs);
   let indexPromise = null;
   const index = () => (indexPromise ||= fetch(CANDLES + "index.json", { cf: { cacheTtl: 300 } }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
-  const macroPromise = buildMacro(start).catch(() => null);
+  const sameWeek = previous && previous.weekStart === new Date(start * 1000).toISOString() && Array.isArray(previous.assets) ? previous : null;
+  const prevBy = {};
+  for (const a of (sameWeek ? sameWeek.assets : [])) if (a && a.symbol) prevBy[a.symbol] = a;
+  // Last week's macro does not change once every item answered.
+  const macroDone = sameWeek && sameWeek.macro && MACRO.every(([k]) => sameWeek.macro[k]);
+  const macroPromise = macroDone ? Promise.resolve(sameWeek.macro) : buildMacro(start).catch(() => null);
   // Assets without analysis (README "Assets without analysis"): every pair with weekly candles is in the outlook.
   const idx = await index();
   for (const symbol of Object.keys((idx && idx.pairs) || {})) {
     if (/^[A-Z0-9]{2,20}$/.test(symbol) && !LEFT_OUT.has(symbol) && idx.pairs[symbol]["1w"]) bySymbol[symbol] ||= { cz1d: null, pa: {}, noAnalysis: true };
   }
+  const fetchNow = new Set(Object.keys(bySymbol).filter((sym) => !isFinal(prevBy[sym])).slice(0, FETCH_PER_BUILD));
   const assets = await Promise.all(Object.keys(bySymbol).map(async (symbol) => {
     const s = bySymbol[symbol];
+    if (!fetchNow.has(symbol)) {
+      // Kept from the stored snapshot (or empty until a later rebuild); the alignment is read again (R2, no limit).
+      const pa = await Promise.all(ALIGN_TFS.map((tf) => (s.pa[tf] ? readJson(bucket, s.pa[tf].report.objectKey) : null)));
+      const alignment = {};
+      ALIGN_TFS.forEach((tf, i) => { const st = pa[i] && pa[i].structure && pa[i].structure.state; alignment[tf] = st === "bullish" || st === "bearish" ? st : null; });
+      const p = prevBy[symbol];
+      const { noAnalysis: _was, ...kept } = p || {};
+      return p ? { ...kept, ...(s.noAnalysis ? { noAnalysis: true } : {}), alignment } : {
+        symbol, category: isStock(symbol) ? "stock" : "crypto", ...(s.noAnalysis ? { noAnalysis: true } : {}),
+        lastWeek: null, vsMonthlyOpen: null, vsYearlyOpen: null, vsAth: null, levelsFrom: null, alignment,
+      };
+    }
     const [rows, file, cz, ...pa] = await Promise.all([
       weeklyCandles(symbol, start, index),
       getJson(`${CANDLES}${encodeURIComponent(symbol)}/levels.json`),
@@ -276,7 +302,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
     return cache.put(cacheKey, new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": `public, max-age=${maxAge}` } }));
   };
   const rebuild = async () => {
-    const data = await buildWeekly(env, Date.now());
+    const data = await buildWeekly(env, Date.now(), stored && stored.data);
     await writeSnapshot(env.USERS_DB, storeKey, data, Date.now());
     await edge(data);
     return data;
