@@ -9,13 +9,13 @@
   "use strict";
   var W = {
     en: { title: "Fed and inflation", now: "Current target range {r} · since {d}", meetings: "Coming FOMC meetings · probabilities priced by the market",
-      likely: "most likely", same: "no change", chart: "Target range and inflation", target: "Fed target range", path: "Path implied by the probabilities",
-      cpi: "CPI (YoY)", pce: "Core PCE (YoY)", today: "today", src: "Probabilities and inflation: SoSoValue · Target range: FRED (St. Louis Fed)",
+      likely: "most likely", same: "no change", chart: "Target range and inflation", target: "Fed target range (actual)", path: "Average priced by the market (from the probabilities)",
+      cpi: "CPI (YoY, released)", pce: "Core PCE (YoY, released)", today: "today", src: "Probabilities and inflation: SoSoValue · Target range: FRED (St. Louis Fed)",
       note: "For each coming meeting of the US Federal Reserve (FOMC), the probability that the market (fed funds futures) prices for each target range; the first range is the current one, each next one 25 basis points higher. The dashed line is the average of those probabilities for the upper bound. CPI: US consumer prices, year on year; core PCE: the measure the Fed follows, without food and energy. These figures describe what the market prices; they are not a forecast of this site.",
       next: "Next Fed meeting: {d} · most likely {r} ({c}) · {p}", more: "Fed and inflation →", unavailable: "The Fed data could not be loaded." },
     tr: { title: "Fed ve enflasyon", now: "Mevcut hedef aralık {r} · {d} tarihinden beri", meetings: "Gelecek Fed (FOMC) toplantıları · piyasanın fiyatladığı olasılıklar",
-      likely: "en olası", same: "değişiklik yok", chart: "Hedef faiz ve enflasyon", target: "Fed hedef aralığı", path: "Olasılıkların işaret ettiği yol",
-      cpi: "TÜFE (CPI, yıllık)", pce: "Çekirdek PCE (yıllık)", today: "bugün", src: "Olasılıklar ve enflasyon: SoSoValue · Hedef faiz: FRED (St. Louis Fed)",
+      likely: "en olası", same: "değişiklik yok", chart: "Hedef faiz ve enflasyon", target: "Fed hedef aralığı (gerçekleşen)", path: "Piyasanın fiyatladığı ortalama (olasılıklardan)",
+      cpi: "TÜFE (CPI, yıllık, açıklanan)", pce: "Çekirdek PCE (yıllık, açıklanan)", today: "bugün", src: "Olasılıklar ve enflasyon: SoSoValue · Hedef faiz: FRED (St. Louis Fed)",
       note: "ABD Merkez Bankası'nın (Fed, FOMC) her gelecek toplantısı için piyasanın (fed funds vadeli işlemleri) her hedef faiz aralığına verdiği olasılık; ilk aralık bugünkü aralıktır, sonrakiler 25'er baz puan yukarıdadır. Kesikli çizgi bu olasılıkların üst sınır için ortalamasıdır. TÜFE (CPI): ABD tüketici fiyatlarının yıllık değişimi; çekirdek PCE: gıda ve enerji hariç, Fed'in izlediği ölçü. Bu sayılar piyasanın fiyatladığı durumu anlatır; bu sitenin tahmini değildir.",
       next: "Sonraki Fed toplantısı: {d} · en olası {r} ({c}) · {p}", more: "Fed ve enflasyon →", unavailable: "Fed verisi yüklenemedi." }
   };
