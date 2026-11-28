@@ -370,23 +370,26 @@ by its change, in three blocks: crypto (left, the tallest), tokenized stocks and
 above the other; macro alone when there are no tokens). Phones stack the three blocks. PAXG is left out (gold is in
 the macro block).
 
-- **Views:** "Daily / Günlük" (the default) and "Weekly / Haftalık"; the choice is kept in this browser
-  (`mlm-heatmap-view`).
-  - Daily, crypto and tokenized stocks: the live price against today's 00:00 UTC open, from the market table's own
-    feeds (`window.MLMQuotes`, filled by the table script: MarketFeed's `day`, else the `DO` key level; for tokens
-    `/api/onchain-price` now returns `day`, the open of today's first 1H candle). Updated live (at most once a second).
-  - Daily, macro: `GET /api/macro-day` (`functions/api/macro-day.js`): the same six Yahoo symbols as the weekly
-    outlook, daily candles, the last session's price (the live price while it trades) against the session before's
-    close; Friday against Thursday over a weekend. The yield in basis points. Edge cache 5 minutes; the page asks
-    again every 5 minutes while visible.
-  - Weekly: last week, open to close, from `/api/weekly` (the assets without last week show "–"); the OKX source
-    line as before.
+- **Views (tabs):** "Live / Canlı" (the default), "Daily / Günlük", "Weekly / Haftalık", "Monthly / Aylık"; the choice
+  is kept in this browser (`mlm-heatmap-view`). All four are current and update live (at most once a second).
+  - Crypto and tokenized stocks, from the market table's own feeds (`window.MLMQuotes`, filled by the table script):
+    Live = the last 24 hours (the feed's 24 h open); Daily / Weekly / Monthly = since today's 00:00 UTC, this week's
+    (Monday) and this month's open (MarketFeed's `day` / `week` / `month`, else the `DO` / `WO` / `MO` key levels of
+    levels.json; tokens: `/api/onchain-price` returns `day`, the open of today's first 1H candle, and their WO / MO
+    come from the key levels).
+  - Macro and commodities: `GET /api/macro-change` (`functions/api/macro-change.js`): the six Yahoo symbols of the
+    weekly outlook, three months of daily candles: `day` = the last session's price (live while it trades) against
+    the session before's close (Friday against Thursday over a weekend; used for Live and Daily), `week` / `month` =
+    against the open of this week's / month's first session (a futures session dated Sunday counts to the next week).
+    The yield in basis points. Edge cache 5 minutes; the page asks again every 5 minutes while visible.
+  - Last week's closed change stays on the weekly outlook page (`weekly.html`), linked under the map.
 - **Tile size:** square root of the asset's 24-hour USD volume (USDC volume for tokens), so BTC and ETH are the big
   tiles and the small coins stay readable; an asset without volume yet gets a third of the median's size. The sizes
   are measured again at most once a minute (at once when a volume first arrives) so the tiles do not jump; both
   views use the same sizes. Macro tiles are all the same size. Layout: squarified treemap (`assets/treemap.js`,
   `Treemap.layout(weights, width, height)`).
-- **Colours:** green / red, full at a 5 % day or an 8 % week (assets), 1 % / 2 % (macro), 10 / 25 bp (the yield).
+- **Colours:** green / red, full at 5 % (Live, Daily), 10 % (Weekly), 20 % (Monthly) for assets, a fifth of that for
+  macro, 10 / 10 / 25 / 50 bp for the yield.
   The label and the value are sized to the tile and dropped when they do not fit; the tile's title has the name, the
   change and the 24 h volume. A tile opens the asset's analysis page (1D; tokens 4H). The ⓘ beside the title explains
   all this.
