@@ -401,6 +401,14 @@ the DO / WO / MO / ATH key levels).
 The home page no longer has the market context card or a weekly outlook link; its events card is full width.
 Header: the two-row header now starts below 1320 px (was 1180), so the longer menu never overflows.
 
+## Back to top
+
+`assets/to-top.js` (28 Nov 2026): a round ↑ button at the bottom right that appears once a page has been scrolled
+more than about one and a half screens and brings it back to the top (smoothly, unless the visitor prefers reduced
+motion; focus goes to the page's first heading). Label "Sayfanın başına dön" / "Back to top" with the page language;
+not in embedded pages (`html.embed`). On the market map, home, analysis, weekly events, ETF, archive and monthly
+returns pages and every library page (the generator adds it).
+
 ## Market heat map
 
 The top of the home page (`index.html`, `#hm-card`), Turkish name "Piyasa haritası": every asset as a tile coloured
