@@ -1,7 +1,7 @@
 // Admin-only check of which SoSoValue API data the site's key can read (README "ETF flows"). GET
-// /api/soso-probe?part=1|2|3|4: each part sends at most 12 requests, taken from the ETF flows minute budget, and answers
+// /api/soso-probe?part=1|2|3|4|5: each part sends at most 12 requests, taken from the ETF flows minute budget, and answers
 // per endpoint only the HTTP status, SoSoValue's code and message, the row count, the date range and the field names —
-// never the data itself (part 4 also a short sample: README "Fed meetings"). Run the parts a minute apart.
+// never the data itself (parts 4 and 5 also a short sample: README "Fed meetings"). Run the parts a minute apart.
 import { adminUser } from "./auth/[[path]].js";
 import { reserve } from "./etf-flows.js";
 
@@ -62,12 +62,26 @@ export const PARTS = {
     ["Rate history (FEDFUNDS)", V1 + "/macro/rates/FEDFUNDS/history?limit=50"],
     ["Chart names", V1 + "/analyses"],
   ],
+  // Names as SoSoValue's macro page shows them ("CPI (YoY)"), the full list of coming events (the Fed meeting's own
+  // name should be on 9 Dec) and a few likely names of the Fed's rate decision.
+  5: [
+    ["Macro events (all)", V1 + "/macro/events"],
+    ["CPI (YoY) history", V1 + "/macro/events/" + encodeURIComponent("CPI (YoY)") + "/history?limit=60"],
+    ["Core PCE (YoY) history", V1 + "/macro/events/" + encodeURIComponent("Core PCE Price Index (YoY)") + "/history?limit=60"],
+    ["Fed decision: Fed Funds Rate", V1 + "/macro/events/" + encodeURIComponent("Fed Funds Rate") + "/history?limit=60"],
+    ["Fed decision: FOMC Rate Decision", V1 + "/macro/events/" + encodeURIComponent("FOMC Rate Decision") + "/history?limit=60"],
+    ["Fed decision: Interest Rate Decision (Fed)", V1 + "/macro/events/" + encodeURIComponent("Fed Interest Rate Decision (Upper Bound)") + "/history?limit=60"],
+    ["Fed decision: FOMC Meeting", V1 + "/macro/events/" + encodeURIComponent("FOMC Meeting") + "/history?limit=60"],
+    ["Fed decision: Federal Funds Target Rate", V1 + "/macro/events/" + encodeURIComponent("Federal Funds Target Rate") + "/history?limit=60"],
+    ["SOFR history", V1 + "/macro/rates/sofr/history?limit=60"],
+  ],
 };
-const SAMPLE_PARTS = new Set([4]);
+const SAMPLE_PARTS = new Set([4, 5]);
 // A short look at the data itself: the chart list's names in full, else the first rows (or the object), cut short.
 export function sample(body, name) {
   const rows = rowsOf(body);
   if (name === "Chart names" && rows) return rows.map((r) => r && r.chart_name).filter(Boolean);
+  if (name === "Macro events (all)" && rows) return rows; // the names are what is wanted: all of them
   const v = rows ? rows.slice(0, 3) : body && body.data !== undefined ? body.data : body;
   const t = JSON.stringify(v);
   return t && t.length > 2500 ? t.slice(0, 2500) + "…" : v;
