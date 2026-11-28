@@ -597,6 +597,11 @@ Drawn by `assets/fed-card.js` (`[data-fed="card"]`, `[data-fed="line"]`) from `G
   why both failed; tried again every 10 minutes while missing), the path implied by the probabilities (the probability-weighted upper bound at
   each meeting, dashed), and US inflation year on year: CPI and core PCE (SoSoValue macro history "CPI (YoY)",
   "Core PCE Price Index (YoY)", last 72 releases, so from 2021). A "today" line.
+- **Hover (mouse or finger):** a dashed vertical line snaps to one point per month (2021 to today; the month's end,
+  or today) and, after today, to each coming meeting; dots on the series and one row of values above the chart:
+  "Oct 2022 · Fed target 3.00–3.25% · CPI 8.2% · Core PCE 5.1%" (the target in force, the latest CPI / core PCE
+  release by that date), or for a meeting "15 Sep 2027 · Market average 4.72% · most likely 4.50–4.75% (40.4%)".
+  Without hover the row shows the current month.
 - **Words:** descriptive only ("probabilities priced by the market"; "not a forecast of this site"), explained behind
   the ⓘ. Credit line: "Probabilities and inflation: SoSoValue · Target range: FRED (St. Louis Fed)".
 - **Refresh:** stored in D1 (`snapshots`, key `fed:v2`), refreshed in the background when older than 3 hours (10
