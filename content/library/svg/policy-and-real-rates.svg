@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320">
+  <g class="s-guide" stroke-width="1" stroke-dasharray="3 5">
+    <line x1="60" y1="60" x2="520" y2="60"/><line x1="60" y1="120" x2="520" y2="120"/><line x1="60" y1="180" x2="520" y2="180"/><line x1="60" y1="240" x2="520" y2="240"/>
+  </g>
+  <g class="t-mono t-label" text-anchor="end">
+    <text x="52" y="64">8</text><text x="52" y="124">6</text><text x="52" y="184">4</text><text x="52" y="244">2</text><text x="52" y="296">0</text>
+  </g>
+  <line class="s-guide" x1="60" y1="292" x2="520" y2="292" stroke-width="1.2"/>
+  <!-- target range: a band stepping at each decision -->
+  <path class="f-up" opacity="0.28" d="M60 285 H170 V255 H230 V210 H290 V150 H520 V142.5 H290 V202.5 H230 V247.5 H170 V277.5 H60 Z"/>
+  <path class="s-up" fill="none" stroke-width="1.4" d="M60 277.5 H170 V247.5 H230 V202.5 H290 V142.5 H520 M60 285 H170 V255 H230 V210 H290 V150 H520"/>
+  <!-- effective rate: inside the band -->
+  <path class="s-line" fill="none" stroke-width="1.6" d="M60 282 H172 V251 H232 V206 H292 V146 H520"/>
+  <!-- inflation (CPI) -->
+  <path class="s-accent" fill="none" stroke-width="2" d="M60 250 C120 200, 160 60, 220 50 S300 150, 350 200 S440 222, 520 214"/>
+  <!-- real rate arrows: negative early, positive late -->
+  <g class="s-guide" stroke-width="1.4">
+    <line x1="200" y1="62" x2="200" y2="250"/><line x1="470" y1="150" x2="470" y2="214"/>
+  </g>
+  <g class="f-point"><circle cx="200" cy="62" r="3.5"/><circle cx="200" cy="250" r="3.5"/><circle cx="470" cy="146" r="3.5"/><circle cx="470" cy="214" r="3.5"/></g>
+  <g class="t-mono" text-anchor="middle">
+    <text class="t-down" x="150" y="40">{{negative}}</text>
+    <text class="t-up" x="470" y="128">{{positive}}</text>
+  </g>
+  <rect class="f-up" opacity="0.28" x="330" y="10" width="22" height="10"/><rect class="s-up" fill="none" stroke-width="1.2" x="330" y="10" width="22" height="10"/>
+  <line class="s-line" x1="330" y1="33" x2="352" y2="33" stroke-width="1.6"/>
+  <line class="s-accent" x1="330" y1="49" x2="352" y2="49" stroke-width="2"/>
+  <g class="t-label">
+    <text x="360" y="19">{{band}}</text>
+    <text x="360" y="37">{{effective}}</text>
+    <text x="360" y="53">{{cpi}}</text>
+  </g>
+</svg>

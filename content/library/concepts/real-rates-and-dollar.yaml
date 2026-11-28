@@ -1,7 +1,7 @@
 id: real-rates-and-dollar
 kind: gold-silver
 order: 20
-related: [bond-yields, dollar-index, inflation-cpi-pce, gold-silver-ratio]
+related: [bond-yields, dollar-index, inflation-cpi-pce, gold-silver-ratio, policy-and-real-rates]
 example: null
 updated: 2026-10-23
 

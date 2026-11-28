@@ -1,7 +1,7 @@
 id: fed-rate-decisions
 kind: macro
 order: 30
-related: [priced-in, inflation-cpi-pce, economic-calendar, bond-yields]
+related: [priced-in, policy-and-real-rates, inflation-cpi-pce, economic-calendar, bond-yields]
 example: null
 updated: 2026-10-23
 event_keywords: [FOMC, Fed, "faiz kararı", "rate decision", "Fed tutanakları", "FOMC minutes"]
