@@ -418,8 +418,10 @@ have an analysis.
   rows or fewer and the box fits them. Phones keep the sideways scroll (the asset column stays at the left).
 - **Analysis page, chart only:** an asset with candles but no analysis opens with one row per timeframe with candles
   (`chartOnlyRows`): chart, key levels, volume profile, indicators, live price, a "No analysis has been published for
-  this asset yet" line; no method switch, no analysis date. Guests keep today's rules (decided: no change for now):
-  tokenized stocks locked, crypto open on 1D only. Search, watchlist, price band and in-place asset switch list them.
+  this asset yet" line; no method switch, no analysis date. Every asset shows every timeframe with candles: an
+  analysed asset gets chart-only rows for the timeframes without a Critical Zones analysis ("No analysis has been
+  published for this timeframe"). Price Action only where a PA analysis exists and the viewer may see it. Search,
+  watchlist, price band, in-place asset switch and the live flow's asset list (crypto only) list them.
 - **Weekly outlook:** every pair with weekly candles (PAXG still left out), `noAnalysis: true` on those without one;
   a pair whose daily candles start after last week began is `newListing` (no last-week change: its weekly candle would
   cover only a few days) and does not keep the snapshot "incomplete".
@@ -708,8 +710,8 @@ the chart's closed candles through `liveChart.indicatorData()` (RSI 14, MACD 12/
 At the top of the card, **By timeframe**: RSI 14 (value), MACD against its signal, price against EMA 20/50/200, the
 Supertrend direction and price against the Ichimoku cloud, on the last closed candle of 1H, 4H, 1D and 1W (↑ / ↓,
 – in between). The candles come from the public candle files (`index.json`, the newest archive for 1H and 1D, the
-two newest for 4H, all for 1W, plus `latest.json`), once per asset and again after 15 minutes. Guests see the 1D
-column; the other timeframes show a lock, like the rest of the members-only timeframes.
+two newest for 4H, all for 1W, plus `latest.json`), once per asset and again after 15 minutes. Every
+timeframe for everyone (market data, access rule of 28 Nov 2026).
 
 Each row links to its library page.
 The "Göstergeler / Indicators" menu above the chart draws them too: Supertrend (green under the candles, red above;
@@ -751,7 +753,7 @@ chart (that asset and the compared one, else BTC, on the same timeframe).
   (`LiveChart.reload(tf, { pair })`). Candles, the zones of the asset's Critical Zones report for that timeframe, the
   live price (dashed line and the price at the top, from the shared price stream) and "Analysis →" to that analysis.
   No indicators, to keep the small charts readable.
-- Same access rule as the analysis page: guests see 1D; other timeframes show "for members" with a sign-in link.
+- Same access rule as the analysis page: guests see the candles of every timeframe; the zones are for members.
 - The layout (2 or 4, and each chart's asset and timeframe) is kept in this browser (`mlm-multi-v1`);
   `?assets=ETHUSDT,BTCUSDT&tf=4h` opens with those charts.
 
@@ -1263,6 +1265,13 @@ alternating Critical Zones and Price Action, and skip analyses that are not publ
   `social_settings (key, value)` in `USERS_DB`, created on first use.
 
 ## Accounts
+
+**Access rule (28 Nov 2026):** guests see the candles of every asset and timeframe and the market data (indicators,
+multi-timeframe indicator table, key levels, volume profile, events, comparison). The analysis (support and
+resistance zones, Price Action range, FVG, structure, timeframe alignment, the note) is for approved members only, on
+every timeframe, 1D included (`isOpenEntry` is always false; guests get `guestReport`). No blurred band over the
+chart any more: a side card "Analysis for members" with the sign-in link. Live flow and the flow summary stay
+members only. Price Action is never shown without a PA analysis.
 
 Sign-in with Google, the profile, membership verification, the admin panel and the guest / member split
 (steps 1–3 of the membership plan; Telegram comes later).
