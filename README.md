@@ -584,7 +584,10 @@ Planned (28 Nov 2026): SoSoValue allows republishing its API data with credit. T
 meetings: the rate probabilities of the coming meetings (`/v1/macro/fomc-probabilities`: `meeting_date`,
 `probabilities`) and, if SoSoValue has it, the past rate decisions, possibly as a chart. Before building, the admin
 probe's part 4 (`/api/soso-probe?part=4`) answers a short sample of the FOMC, rates and macro event endpoints and the
-names of the analysis charts, to learn their shapes. Everything else from SoSoValue waits for the Worker plan
+names of the analysis charts, to learn their shapes. Part 4 (28 Nov): the probabilities come as six unlabeled numbers per meeting (which rate range each is
+is not stated) and no Fed decision history was found under the names tried. Part 5 tries the names as SoSoValue's
+macro page shows them ("CPI (YoY)"), the full list of coming events and more names for the Fed decision, and the SOFR
+history. Everything else from SoSoValue waits for the Worker plan
 (December 2026).
 
 ## Price Action view
