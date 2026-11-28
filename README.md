@@ -363,6 +363,26 @@ by it.
   switches to OKX USDT swaps and says so (`funding-rate`, `mark-price`, `trades`, `liquidation-orders`,
   `/api/v5/public/open-interest`, `rubik/stat/contracts/open-interest-history`). Assets without an OKX swap show "—".
 
+## Market map page
+
+`market-map.html` (`/market-map`), Turkish name "Piyasa haritası", in the site header right after "Market" on every
+page (the library generator and the static about, guide and privacy pages included) (28 Nov 2026). It replaced the
+weekly outlook page: `/weekly` and `/weekly.html` answer 301 to `/market-map#haftalik` (`functions/_middleware.js`,
+the query kept; the admin social desk embeds `market-map.html?embed=1`). Sections, with in-page links at the top:
+1. **Map and breadth** (`#harita`): the market heat map, taller (`hm-big`), with the market breadth under it.
+2. **Weekly outlook** (`#haftalik`): the former page's content unchanged (last week's tiles, levels and structure,
+   monthly returns link, "Download image").
+3. **Market context** (`#genel`): the card moved here from the home page (`data-mctx="card"`, two columns).
+
+The heat map and the breadth are one module, `assets/heatmap.js`, used by both pages: it fills the element with
+`data-heatmap` (optional `data-more-href`: a link at the bottom; the home page links this page there), brings its own
+styles and words and reads live figures from `window.MLMQuotes`. The home page's market table provides it; on this page
+`assets/quotes.js` does (every catalog asset: MarketFeed for crypto, OnchainFeed for tokenized stocks, levels.json for
+the DO / WO / MO / ATH key levels).
+
+The home page no longer has the market context card or a weekly outlook link; its events card is full width.
+Header: the two-row header now starts below 1320 px (was 1180), so the longer menu never overflows.
+
 ## Market heat map
 
 The top of the home page (`index.html`, `#hm-card`), Turkish name "Piyasa haritası": every asset as a tile coloured
@@ -418,7 +438,7 @@ range line says "· vs BTC". Kept in this browser (`mlm-heatmap-vsbtc`). The clo
 
 ## Weekly outlook
 
-`weekly.html` (`/weekly`) and the Weekly view of the home page's heat map (README "Market heat map"). Data: `GET /api/weekly`
+the weekly outlook section of the market map page (`/market-map#haftalik`, formerly `weekly.html`) (README "Market heat map"). Data: `GET /api/weekly`
 (`functions/api/weekly.js`), one snapshot per week (Monday 00:00 UTC). The snapshot is stored in D1 (`USERS_DB`,
 table `snapshots`, key `weekly:<weekStart>:v2`) and kept at the edge for an hour once complete (every asset has
 **Outside-request limit (fixed 28 Nov 2026):** a Pages Function may make only about 50 outside requests (free plan),

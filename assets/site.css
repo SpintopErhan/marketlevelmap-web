@@ -60,7 +60,7 @@ footer p{margin:0;line-height:1.75}
 body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 /* Six menu items: between phone and wide desktop the menu takes its own row under the logo (as on phones). */
 .nav-links a{white-space:nowrap}
-@media(min-width:521px) and (max-width:1180px){header{display:grid;grid-template-columns:1fr auto;align-items:center;height:auto;padding-top:16px;row-gap:10px}.nav{display:contents}.controls{grid-column:2;grid-row:1;margin-left:0}.nav-links{grid-column:1/-1;grid-row:2;gap:24px;overflow-x:auto}.nav .nav-links a{padding:2px 0 10px;border-bottom:2px solid transparent;font-size:13px}.nav .nav-links a[aria-current="page"]{border-bottom-color:var(--accent)}}
+@media(min-width:521px) and (max-width:1320px){header{display:grid;grid-template-columns:1fr auto;align-items:center;height:auto;padding-top:16px;row-gap:10px}.nav{display:contents}.controls{grid-column:2;grid-row:1;margin-left:0}.nav-links{grid-column:1/-1;grid-row:2;gap:24px;overflow-x:auto}.nav .nav-links a{padding:2px 0 10px;border-bottom:2px solid transparent;font-size:13px}.nav .nav-links a[aria-current="page"]{border-bottom-color:var(--accent)}}
 /* Narrow phones (≤ 420 px, e.g. 412 px wide): the logo, the language and theme switches and "Sign in" did not fit on
    one row and the page could be scrolled sideways by a few pixels. A slightly smaller logo and gap make them fit. */
 @media(max-width:420px){header{column-gap:12px}.logo-header{height:24px;width:160px}}
