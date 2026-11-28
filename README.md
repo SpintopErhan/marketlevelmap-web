@@ -592,7 +592,9 @@ Drawn by `assets/fed-card.js` (`[data-fed="card"]`, `[data-fed="line"]`) from `G
   colour per 25 bp step) and "most likely: range (change) · probability". The ranges are written from FRED's current
   lower bound; without FRED as "+25 bp" steps.
 - **Chart:** the Fed's target range since 2021 (a band stepping at each decision; FRED series DFEDTARL / DFEDTARU,
-  Federal Reserve Bank of St. Louis), the path implied by the probabilities (the probability-weighted upper bound at
+  Federal Reserve Bank of St. Louis; when FRED does not answer the site's server, the Federal Reserve Board's table of
+  decisions, federalreserve.gov/monetarypolicy/openmarket.htm, both public; `targetSource` says which, `targetProblem`
+  why both failed; tried again every 10 minutes while missing), the path implied by the probabilities (the probability-weighted upper bound at
   each meeting, dashed), and US inflation year on year: CPI and core PCE (SoSoValue macro history "CPI (YoY)",
   "Core PCE Price Index (YoY)", last 60 releases). A "today" line.
 - **Words:** descriptive only ("probabilities priced by the market"; "not a forecast of this site"), explained behind
