@@ -1,0 +1,239 @@
+id: policy-and-real-rates
+kind: macro
+order: 35
+related: [fed-rate-decisions, inflation-cpi-pce, real-rates-and-dollar, bond-yields]
+example: null
+updated: 2026-11-28
+
+tr:
+  slug: politika-faizi-efektif-faiz-ve-reel-faiz
+  name: Politika faizi, efektif faiz ve reel faiz
+  alt_name: Policy rate, effective rate and real rate
+  summary: >-
+    Fed tek bir faiz oranı değil, bir hedef aralık belirler. Bankaların fiilen ödediği oran, efektif
+    faiz, bu aralığın içinde oluşur. Reel faiz ise faizin enflasyonun ne kadar üstünde ya da altında
+    olduğunu gösterir: faizden enflasyon çıkarılır, çünkü paranın asıl kazancı fiyatlar yükseldikçe
+    eriyen alım gücüyle ölçülür.
+  sections:
+    - type: text
+      id: definition
+      title: Hedef aralık nedir?
+      paragraphs:
+        - >-
+          Fed'in para politikası komitesi (FOMC), bankaların birbirine gecelik borç verirken uyguladığı
+          faiz için bir **hedef aralık** belirler; örneğin %5,25–5,50. Aralık 25 baz puan (0,25 puan)
+          genişliğindedir ve her toplantıda aynı kalabilir, yükseltilebilir ya da indirilebilir.
+        - >-
+          Hedef aralık bir karardır, tek bir piyasa oranı değildir. "Fed faizi" denildiğinde çoğu zaman
+          bu aralık ya da onun üst sınırı kastedilir.
+    - type: text
+      id: effective
+      title: Efektif faiz nedir?
+      paragraphs:
+        - >-
+          **Efektif federal fon faizi**, bankaların o gün gecelik borçlanmada fiilen ödediği oranların
+          ortalamasıdır; New York Fed her iş günü yayımlar. Fed, araçlarıyla bu oranı hedef aralığın
+          içinde tutar. Bu yüzden efektif faiz genellikle aralığın biraz üstünde ya da ortasında seyreder;
+          örneğin aralık %5,25–5,50 iken yaklaşık %5,33.
+        - >-
+          Kısacası hedef aralık **kararlaştırılan**, efektif faiz **gerçekleşen** orandır. İkisi
+          birbirinden ancak birkaç baz puan ayrılır.
+    - type: text
+      id: real-rate
+      title: Reel faiz nedir, neden enflasyon çıkarılır?
+      paragraphs:
+        - >-
+          Faiz, paranın bir yılda kaç birim büyüdüğünü söyler. Ama aynı yıl fiyatlar da yükseliyorsa, o
+          paranın satın alabileceği şeyler o kadar artmaz. **Reel faiz**, bu ikisinin farkıdır: reel faiz ≈
+          faiz − enflasyon.
+        - >-
+          Örnek (yuvarlak rakamlar): Parayı %5,3 faizle bir yıl tutan, yıl sonunda 100 yerine 105,3
+          birime sahip olur. Aynı yıl fiyatlar %3,4 arttıysa, eskiden 100 birime alınan sepet artık 103,4
+          birimdir. Alım gücündeki gerçek artış yaklaşık %1,9'dur. Enflasyon %8,6, faiz %1,6 olsaydı
+          para nominal olarak büyür ama alım gücü yaklaşık %7 azalırdı: **negatif reel faiz**.
+        - >-
+          Bu yüzden faizi tek başına okumak yanıltıcı olabilir. %5 faiz, %2 enflasyonla birlikte sıkı;
+          %9 enflasyonla birlikte gevşek bir para politikası anlamına gelebilir.
+    - type: bullets
+      id: readings
+      title: Nasıl okunur?
+      items:
+        - text: "**Pozitif reel faiz:** faiz enflasyonun üstünde. Para politikası çoğu zaman sıkı (talebi yavaşlatıcı) olarak yorumlanır."
+          marker: neutral
+        - text: "**Negatif reel faiz:** faiz enflasyonun altında. Para politikası çoğu zaman gevşek (destekleyici) olarak yorumlanır; tasarruf edilen paranın alım gücü erir."
+          marker: neutral
+        - text: "**Sıfıra yakın:** faiz ile enflasyon birbirine yakın; politika ne belirgin sıkı ne belirgin gevşek kabul edilir."
+          marker: neutral
+        - text: Bu yorumlar **eğilimdir**. Ekonominin “nötr” faiz düzeyi tam bilinmez; aynı reel faiz farklı dönemlerde farklı etki yapabilir.
+          marker: accent
+    - type: text
+      id: which-inflation
+      title: Hangi enflasyon, hangi dönem?
+      paragraphs:
+        - >-
+          Reel faiz iki biçimde hesaplanır. **Geriye dönük** hesapta açıklanmış son enflasyon kullanılır
+          (faiz − son TÜFE). **İleriye dönük** hesapta piyasanın enflasyon beklentisi kullanılır; tahvil
+          piyasasında bunun ölçüsü enflasyona endeksli tahvillerin (TIPS) getirisidir.
+        - >-
+          Sitenin "Fed ve enflasyon" kartındaki reel faiz geriye dönüktür: o ayın ortalama efektif faizinden
+          o tarihe kadar açıklanmış son TÜFE (yıllık) çıkarılır. Açıklanan TÜFE bir önceki ayın fiyatlarını
+          anlatır. Bu basit bir farktır; bir tahmin ya da değerlendirme değildir.
+    - type: scenarios
+      id: periods
+      title: Aynı faiz, farklı tablolar
+      intro: Örnek dönemler (yuvarlanmış rakamlar).
+      items:
+        - title: 2022 ortası
+          tone: down
+          text: Efektif faiz yaklaşık %1,6, TÜFE yaklaşık %8,6. Reel faiz yaklaşık −%7. Fed artırımlara başlamıştı ama faiz enflasyonun çok altındaydı.
+        - title: 2024 başı
+          tone: up
+          text: Efektif faiz yaklaşık %5,3, TÜFE yaklaşık %3,4. Reel faiz yaklaşık +%1,9. Faiz enflasyonun belirgin biçimde üstündeydi.
+        - title: Faiz sabit, enflasyon değişirse
+          tone: neutral
+          text: Fed faizi hiç değiştirmese bile enflasyon düştükçe reel faiz yükselir; yani politika kendiliğinden sıkılaşmış olur.
+    - type: limits
+      shows:
+        - Faizin enflasyonun ne kadar üstünde ya da altında olduğunu
+        - Kararlaştırılan aralık ile fiilen oluşan faiz arasındaki ilişkiyi
+        - Para politikasının sıkı mı gevşek mi olduğuna dair kaba bir göstergeyi
+      not_proves:
+        - Fed'in bir sonraki toplantıda ne yapacağını
+        - Enflasyonun nereye gideceğini
+        - Varlık fiyatlarının hangi yöne hareket edeceğini
+  confusions:
+    - id: fed-rate-decisions
+      text: Fed karar günü hedef aralığı açıklar; efektif faiz ertesi günlerde bu aralığın içinde oluşur.
+    - id: real-rates-and-dollar
+      text: Altın sayfasındaki reel faiz çoğu zaman 10 yıllık TIPS getirisidir (ileriye dönük, uzun vade); burada anlatılan ise kısa vadeli politika faizinden geriye dönük farktır.
+  key_points:
+    - Fed bir hedef aralık belirler (ör. %5,25–5,50); efektif faiz bankaların fiilen ödediği orandır ve bu aralığın içindedir.
+    - Reel faiz ≈ faiz − enflasyon; paranın alım gücündeki gerçek değişimi anlatır.
+    - Pozitif reel faiz çoğu zaman sıkı, negatif reel faiz gevşek para politikası olarak yorumlanır.
+    - Sitedeki reel faiz geriye dönüktür (efektif faiz − son açıklanan TÜFE); bir tahmin değildir.
+  svg_labels:
+    band: Hedef aralık (kararlaştırılan)
+    effective: Efektif faiz (gerçekleşen)
+    cpi: Enflasyon (TÜFE)
+    negative: Negatif reel faiz
+    positive: Pozitif reel faiz
+  svg_alt: "Şematik çizim: basamak basamak yükselen bir hedef faiz bandı ve içinden geçen efektif faiz çizgisi; turuncu enflasyon eğrisi önce bandın çok üstüne çıkıp sonra altına iniyor; enflasyonun faizin üstünde olduğu bölge negatif, altında olduğu bölge pozitif reel faiz olarak işaretli"
+  svg_caption: >-
+    Şematiktir, rakamlar örnektir. Dikey çizgiler reel faizi gösterir: enflasyon faizin üstündeyken
+    reel faiz negatif, altındayken pozitiftir.
+
+en:
+  slug: policy-rate-and-real-rate
+  name: Policy rate, effective rate and real rate
+  summary: >-
+    The Fed does not set a single interest rate but a target range. The rate banks actually pay, the
+    effective rate, forms inside that range. The real rate shows how far the rate is above or below
+    inflation: inflation is subtracted because what money really earns is measured in purchasing power,
+    which shrinks as prices rise.
+  sections:
+    - type: text
+      id: definition
+      title: What is the target range?
+      paragraphs:
+        - >-
+          The Fed's policy committee (FOMC) sets a **target range** for the rate banks charge each other
+          on overnight loans, for example 5.25–5.50%. The range is 25 basis points (0.25 points) wide and
+          at each meeting it can stay the same, go up or go down.
+        - >-
+          The target range is a decision, not a single market rate. "The Fed rate" usually means this
+          range or its upper bound.
+    - type: text
+      id: effective
+      title: What is the effective rate?
+      paragraphs:
+        - >-
+          The **effective federal funds rate** is the average of the rates banks actually paid that day
+          on overnight loans; the New York Fed publishes it every business day. With its tools, the Fed
+          keeps this rate inside the target range, so it usually sits a little above the middle of it;
+          for example about 5.33% while the range is 5.25–5.50%.
+        - >-
+          In short, the target range is the **decided** rate and the effective rate the **actual** one.
+          They differ by only a few basis points.
+    - type: text
+      id: real-rate
+      title: What is the real rate, and why subtract inflation?
+      paragraphs:
+        - >-
+          An interest rate tells how much money grows in a year. But if prices rise in the same year,
+          what that money can buy does not grow as much. The **real rate** is the difference: real rate ≈
+          interest rate − inflation.
+        - >-
+          Example (round numbers): money kept for a year at 5.3% becomes 105.3 instead of 100. If prices
+          rose 3.4% that year, a basket that cost 100 now costs 103.4. The real gain in purchasing power
+          is about 1.9%. With inflation at 8.6% and the rate at 1.6%, the money would still grow in
+          nominal terms but its purchasing power would fall by about 7%: a **negative real rate**.
+        - >-
+          That is why a rate read on its own can mislead. A 5% rate with 2% inflation can mean tight
+          policy; with 9% inflation, loose policy.
+    - type: bullets
+      id: readings
+      title: How is it read?
+      items:
+        - text: "**Positive real rate:** the rate is above inflation. Policy is often read as tight (slowing demand)."
+          marker: neutral
+        - text: "**Negative real rate:** the rate is below inflation. Policy is often read as loose (supportive); the purchasing power of saved money erodes."
+          marker: neutral
+        - text: "**Near zero:** the rate and inflation are close; policy is seen as neither clearly tight nor clearly loose."
+          marker: neutral
+        - text: These readings are **tendencies**. The economy's "neutral" rate is not known exactly; the same real rate can work differently in different periods.
+          marker: accent
+    - type: text
+      id: which-inflation
+      title: Which inflation, which period?
+      paragraphs:
+        - >-
+          A real rate can be worked out in two ways. **Backward-looking**, with the latest released
+          inflation (rate − latest CPI). **Forward-looking**, with the market's expected inflation; in
+          the bond market its measure is the yield on inflation-protected bonds (TIPS).
+        - >-
+          The real rate on the site's "Fed and inflation" card is backward-looking: the month's average
+          effective rate minus the latest CPI (year on year) released by then. A CPI release describes
+          the month before. It is a simple difference, not a forecast or an assessment.
+    - type: scenarios
+      id: periods
+      title: The same rate, different pictures
+      intro: Example periods (rounded figures).
+      items:
+        - title: Mid-2022
+          tone: down
+          text: Effective rate about 1.6%, CPI about 8.6%. Real rate about −7%. The Fed had started raising, but the rate was far below inflation.
+        - title: Early 2024
+          tone: up
+          text: Effective rate about 5.3%, CPI about 3.4%. Real rate about +1.9%. The rate was clearly above inflation.
+        - title: Rate unchanged, inflation moving
+          tone: neutral
+          text: Even if the Fed never moves, the real rate rises as inflation falls; policy tightens by itself.
+    - type: limits
+      shows:
+        - How far the rate is above or below inflation
+        - The link between the decided range and the rate that actually forms
+        - A rough sign of whether policy is tight or loose
+      not_proves:
+        - What the Fed will do at its next meeting
+        - Where inflation will go
+        - Which way asset prices will move
+  confusions:
+    - id: fed-rate-decisions
+      text: On decision day the Fed announces the target range; the effective rate forms inside it in the days after.
+    - id: real-rates-and-dollar
+      text: The real rate on the gold page is usually the 10-year TIPS yield (forward-looking, long term); this page is about the backward-looking gap of the short-term policy rate.
+  key_points:
+    - The Fed sets a target range (e.g. 5.25–5.50%); the effective rate is what banks actually pay and sits inside it.
+    - Real rate ≈ rate − inflation; it describes the real change in purchasing power.
+    - A positive real rate is often read as tight, a negative one as loose policy.
+    - The site's real rate is backward-looking (effective rate − latest released CPI); it is not a forecast.
+  svg_labels:
+    band: Target range (decided)
+    effective: Effective rate (actual)
+    cpi: Inflation (CPI)
+    negative: Negative real rate
+    positive: Positive real rate
+  svg_alt: "Schematic drawing: a target rate band rising in steps with the effective rate line inside it; an orange inflation curve first rises far above the band, then falls below it; where inflation is above the rate is marked as a negative real rate, where it is below as a positive one"
+  svg_caption: >-
+    Schematic; the figures are illustrative. The vertical lines show the real rate: negative while
+    inflation is above the rate, positive while it is below.

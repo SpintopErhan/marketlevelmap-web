@@ -9,17 +9,17 @@
   "use strict";
   var W = {
     en: { title: "Fed and inflation", now: "Current target range {r} · since {d}", meetings: "Coming FOMC meetings · probabilities priced by the market",
-      likely: "most likely", same: "no change", chart: "Target range and inflation", target: "Fed target range (actual)", path: "Average priced by the market (from the probabilities)",
-      cpi: "CPI (YoY, released)", pce: "Core PCE (YoY, released)", today: "today", src: "Probabilities and inflation: SoSoValue · Target range: FRED (St. Louis Fed)",
-      note: "For each coming meeting of the US Federal Reserve (FOMC), the probability that the market (fed funds futures) prices for each target range; the first range is the current one, each next one 25 basis points higher. The dashed line is the average of those probabilities for the upper bound. CPI: US consumer prices, year on year; core PCE: the measure the Fed follows, without food and energy. These figures describe what the market prices; they are not a forecast of this site.",
-      rTarget: "Fed target", rCpi: "CPI", rPce: "Core PCE", rPath: "Market average", rLikely: "most likely", hover: "Move over the chart to read the values",
-      next: "Next Fed meeting: {d} · most likely {r} ({c}) · {p}", more: "Fed and inflation →", unavailable: "The Fed data could not be loaded." },
+      likely: "most likely", same: "no change", chart: "Target range and inflation", target: "Fed target range (decided)", eff: "Effective fed funds rate (actual)", path: "Average priced by the market (from the probabilities)",
+      cpi: "CPI (YoY, released)", pce: "Core PCE (YoY, released)", today: "today", src: "Probabilities and inflation: SoSoValue · Target range and effective rate: FRED (St. Louis Fed)",
+      note: "For each coming meeting of the US Federal Reserve (FOMC), the probability that the market (fed funds futures) prices for each target range; the first range is the current one, each next one 25 basis points higher. The band is the target range the Fed decided; the thin line inside it is the effective rate, what banks actually pay each other overnight (monthly average). The dashed line is the average of the probabilities for the upper bound. Real rate: the effective rate minus CPI. Inflation is subtracted because what money really earns is measured in purchasing power: at a 5.3% rate with prices up 3.4%, purchasing power grows by about 1.9%; at 1.6% with prices up 8.6%, it shrinks by about 7% (a negative real rate). CPI: US consumer prices, year on year; core PCE: the measure the Fed follows, without food and energy. These figures describe what the market prices; they are not a forecast of this site.",
+      rTarget: "Fed target", rEff: "Effective rate", rReal: "Real rate", rCpi: "CPI", rPce: "Core PCE", rPath: "Market average", rLikely: "most likely", hover: "Move over the chart to read the values",
+      next: "Next Fed meeting: {d} · most likely {r} ({c}) · {p}", more: "Fed and inflation →", unavailable: "The Fed data could not be loaded.", learn: "Target range, effective rate and real rate explained →", learnHref: "/en/library/policy-rate-and-real-rate/" },
     tr: { title: "Fed ve enflasyon", now: "Mevcut hedef aralık {r} · {d} tarihinden beri", meetings: "Gelecek Fed (FOMC) toplantıları · piyasanın fiyatladığı olasılıklar",
-      likely: "en olası", same: "değişiklik yok", chart: "Hedef faiz ve enflasyon", target: "Fed hedef aralığı (gerçekleşen)", path: "Piyasanın fiyatladığı ortalama (olasılıklardan)",
-      cpi: "TÜFE (CPI, yıllık, açıklanan)", pce: "Çekirdek PCE (yıllık, açıklanan)", today: "bugün", src: "Olasılıklar ve enflasyon: SoSoValue · Hedef faiz: FRED (St. Louis Fed)",
-      note: "ABD Merkez Bankası'nın (Fed, FOMC) her gelecek toplantısı için piyasanın (fed funds vadeli işlemleri) her hedef faiz aralığına verdiği olasılık; ilk aralık bugünkü aralıktır, sonrakiler 25'er baz puan yukarıdadır. Kesikli çizgi bu olasılıkların üst sınır için ortalamasıdır. TÜFE (CPI): ABD tüketici fiyatlarının yıllık değişimi; çekirdek PCE: gıda ve enerji hariç, Fed'in izlediği ölçü. Bu sayılar piyasanın fiyatladığı durumu anlatır; bu sitenin tahmini değildir.",
-      rTarget: "Fed hedef", rCpi: "TÜFE", rPce: "Çekirdek PCE", rPath: "Piyasa ortalaması", rLikely: "en olası", hover: "Değerleri okumak için grafiğin üzerinde gezinin",
-      next: "Sonraki Fed toplantısı: {d} · en olası {r} ({c}) · {p}", more: "Fed ve enflasyon →", unavailable: "Fed verisi yüklenemedi." }
+      likely: "en olası", same: "değişiklik yok", chart: "Hedef faiz ve enflasyon", target: "Fed hedef aralığı (kararlaştırılan)", eff: "Efektif faiz (gerçekleşen)", path: "Piyasanın fiyatladığı ortalama (olasılıklardan)",
+      cpi: "TÜFE (CPI, yıllık, açıklanan)", pce: "Çekirdek PCE (yıllık, açıklanan)", today: "bugün", src: "Olasılıklar ve enflasyon: SoSoValue · Hedef aralık ve efektif faiz: FRED (St. Louis Fed)",
+      note: "ABD Merkez Bankası'nın (Fed, FOMC) her gelecek toplantısı için piyasanın (fed funds vadeli işlemleri) her hedef faiz aralığına verdiği olasılık; ilk aralık bugünkü aralıktır, sonrakiler 25'er baz puan yukarıdadır. Bant, Fed'in kararlaştırdığı hedef aralıktır; içindeki ince çizgi efektif faizdir, yani bankaların birbirine gecelik borç verirken fiilen ödediği oran (aylık ortalama). Kesikli çizgi olasılıkların üst sınır için ortalamasıdır. Reel faiz: efektif faiz eksi TÜFE. Enflasyon çıkarılır, çünkü paranın asıl kazancı alım gücüyle ölçülür: faiz %5,3, fiyat artışı %3,4 ise alım gücü yaklaşık %1,9 artar; faiz %1,6, fiyat artışı %8,6 ise yaklaşık %7 azalır (negatif reel faiz). TÜFE (CPI): ABD tüketici fiyatlarının yıllık değişimi; çekirdek PCE: gıda ve enerji hariç, Fed'in izlediği ölçü. Bu sayılar piyasanın fiyatladığı durumu anlatır; bu sitenin tahmini değildir.",
+      rTarget: "Fed hedef", rEff: "Efektif faiz", rReal: "Reel faiz", rCpi: "TÜFE", rPce: "Çekirdek PCE", rPath: "Piyasa ortalaması", rLikely: "en olası", hover: "Değerleri okumak için grafiğin üzerinde gezinin",
+      next: "Sonraki Fed toplantısı: {d} · en olası {r} ({c}) · {p}", more: "Fed ve enflasyon →", unavailable: "Fed verisi yüklenemedi.", learn: "Hedef aralık, efektif faiz ve reel faiz nedir? →", learnHref: "/tr/kutuphane/politika-faizi-efektif-faiz-ve-reel-faiz/" }
   };
   var CSS = ".fed-card{margin:28px 0 0;padding:18px 20px;border-radius:16px;background:var(--panel);--fed-pce:#a78bfa}" +
     ":root[data-theme=light] .fed-card{--fed-pce:#6d4fd1}@media(prefers-color-scheme:light){:root:not([data-theme]) .fed-card{--fed-pce:#6d4fd1}}" +
@@ -32,10 +32,10 @@
     ".fed-legend{display:flex;flex-wrap:wrap;gap:4px 12px;margin:10px 0 0;color:var(--muted);font-size:11px}.fed-legend span{display:inline-flex;align-items:center;gap:5px}" +
     ".fed-legend i{display:inline-block;width:12px;height:8px;border-radius:2px}.fed-svg{display:block;width:100%;height:auto}" +
     ".fed-svg text{fill:var(--muted);font:10px Inter,system-ui,sans-serif}.fed-src{margin:14px 0 0;color:var(--muted);font-size:11.5px}" +
-    ".fed-read{display:flex;flex-wrap:wrap;align-items:center;gap:2px 12px;min-height:20px;margin:0 0 6px;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}" +
+    ".fed-read{display:flex;flex-wrap:wrap;align-content:flex-start;align-items:center;gap:2px 12px;min-height:38px;margin:0 0 6px;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}" +
     ".fed-read b{color:var(--fg);font-weight:600}.fed-read span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}.fed-read i{display:inline-block;width:9px;height:9px;border-radius:2px}" +
     ".fed-plot svg{cursor:crosshair;touch-action:pan-y}" +
-    ".fed-line{margin:10px 0 0;font-size:13px;color:var(--muted)}.fed-line a{color:var(--accent);font-weight:600;text-decoration:none}.fed-line[hidden],.fed-card[hidden]{display:none}";
+    ".fed-src a{color:var(--accent);font-weight:600;text-decoration:none}.fed-src a:hover{text-decoration:underline}.fed-line{margin:10px 0 0;font-size:13px;color:var(--muted)}.fed-line a{color:var(--accent);font-weight:600;text-decoration:none}.fed-line[hidden],.fed-card[hidden]{display:none}";
   function w() { return W[document.documentElement.lang === "tr" ? "tr" : "en"]; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function loc() { return document.documentElement.lang === "tr" ? "tr-TR" : "en-US"; }
@@ -61,8 +61,11 @@
     } else {
       parts.push("<b>" + esc(new Date(p.month).toLocaleDateString(loc(), { timeZone: "UTC", month: "short", year: "numeric" })) + "</b>");
       if (p.target) parts.push("<span>" + sw("color-mix(in srgb,var(--accent) 45%,transparent)") + esc(t.rTarget) + ": <b>" + esc(document.documentElement.lang === "tr" ? "%" + n2(p.target.lower) + "–" + n2(p.target.upper) : n2(p.target.lower) + "–" + n2(p.target.upper) + "%") + "</b></span>");
+      if (p.eff != null) parts.push("<span>" + sw("var(--fg)") + esc(t.rEff) + ": <b>" + esc(pctTxt(p.eff, 2)) + "</b></span>");
       if (p.cpi) parts.push("<span>" + sw("var(--cz)") + esc(t.rCpi) + ": <b>" + esc(pctTxt(p.cpi.actual)) + "</b></span>");
       if (p.pce) parts.push("<span>" + sw("var(--fed-pce)") + esc(t.rPce) + ": <b>" + esc(pctTxt(p.pce.actual)) + "</b></span>");
+      // Real rate: the effective rate minus CPI (descriptive: how far the rate is above or below inflation).
+      if (p.eff != null && p.cpi) { var rr = p.eff - p.cpi.actual; parts.push("<span>" + esc(t.rReal) + ": <b>" + esc((rr > 0 ? "+" : rr < 0 ? "−" : "") + pctTxt(Math.abs(rr))) + "</b></span>"); }
     }
     return parts.join("");
   }
@@ -73,7 +76,7 @@
     var G = geo, last = G.points.filter(function (p) { return !p.meeting; }).pop() || G.points[0], dots = g.querySelectorAll("circle"), ln = g.querySelector("line");
     function show(p) {
       var px = G.x(p.t); ln.setAttribute("x1", px); ln.setAttribute("x2", px);
-      var ys = p.meeting ? [p.implied, null, null] : [p.target ? p.target.upper : null, p.cpi ? p.cpi.actual : null, p.pce ? p.pce.actual : null];
+      var ys = p.meeting ? [p.implied, null, null, null] : [p.eff == null && p.target ? p.target.upper : null, p.cpi ? p.cpi.actual : null, p.pce ? p.pce.actual : null, p.eff];
       ys.forEach(function (v, i) { dots[i].setAttribute("visibility", v == null ? "hidden" : "visible"); if (v != null) { dots[i].setAttribute("cx", px); dots[i].setAttribute("cy", G.y(v)); } });
       g.setAttribute("visibility", "visible"); read.innerHTML = readout(p);
     }
@@ -88,7 +91,7 @@
   }
 
   function chart(d) {
-    var target = d.target || [], cpi = d.cpi || [], pce = d.corePce || [], meetings = d.meetings || [], cur = target[target.length - 1];
+    var target = d.target || [], cpi = d.cpi || [], pce = d.corePce || [], meetings = d.meetings || [], effective = d.effective || [], cur = target[target.length - 1];
     var X0 = Date.UTC(2021, 0, 1), last = meetings.length ? Date.parse(meetings[meetings.length - 1].date) : Date.now(), X1 = last + 30 * 864e5, now = Date.now();
     var vals = [6]; cpi.concat(pce).forEach(function (r) { vals.push(r.actual); }); target.forEach(function (r) { vals.push(r.upper); });
     var narrow = window.innerWidth < 600, Y1 = Math.ceil(Math.max.apply(null, vals) / 2) * 2, Wd = narrow ? 380 : 640, H = narrow ? 230 : 250, L = 34, R = 8, T = 10, B = 22;
@@ -97,7 +100,8 @@
     var points = [], at = function (rows, t) { var r = null; rows.forEach(function (x2) { if (Date.parse(x2.date) <= t) r = x2; }); return r; };
     for (var mo = X0; mo <= now; mo = Date.UTC(new Date(mo).getUTCFullYear(), new Date(mo).getUTCMonth() + 1, 1)) {
       var end = Math.min(now, Date.UTC(new Date(mo).getUTCFullYear(), new Date(mo).getUTCMonth() + 1, 1) - 1);
-      points.push({ t: end, month: mo, target: at(target, end), cpi: at(cpi, end), pce: at(pce, end) });
+      var ym = new Date(mo).toISOString().slice(0, 7), ef = effective.filter(function (r) { return r.month === ym; })[0];
+      points.push({ t: end, month: mo, target: at(target, end), cpi: at(cpi, end), pce: at(pce, end), eff: ef ? ef.value : null });
     }
     if (cur) meetings.forEach(function (m) { var e = cur.upper; m.probs.forEach(function (p, i) { e += p / 100 * 0.25 * i; }); points.push({ t: Date.parse(m.date), meeting: m, implied: e }); });
     geo = { x: x, y: y, Wd: Wd, T: T, B: B, H: H, points: points, cur: cur };
@@ -120,8 +124,12 @@
     }
     function line(rows, col) { var p = rows.filter(function (r) { return Date.parse(r.date) >= X0; }).map(function (r) { return x(Date.parse(r.date)).toFixed(1) + "," + y(r.actual).toFixed(1); }).join(" "); return p ? '<polyline points="' + p + '" fill="none" stroke="' + col + '" stroke-width="1.6" stroke-linejoin="round"/>' : ""; }
     s += line(cpi, "var(--cz)") + line(pce, "var(--fed-pce)");
+    // Effective rate: monthly averages, drawn at mid-month, thin, inside the band.
+    var ep = effective.map(function (r) { var t0 = Date.parse(r.month + "-15T00:00:00Z"); return t0 >= X0 && t0 <= now + 15 * 864e5 ? Math.min(t0, now) : null; });
+    var epts = effective.map(function (r, i) { return ep[i] == null ? null : x(ep[i]).toFixed(1) + "," + y(r.value).toFixed(1); }).filter(Boolean).join(" ");
+    if (epts) s += '<polyline points="' + epts + '" fill="none" stroke="var(--fg)" stroke-opacity=".85" stroke-width="1.1" stroke-linejoin="round"/>';
     s += '<g class="fed-hover" visibility="hidden"><line x1="0" x2="0" y1="' + T + '" y2="' + (H - B) + '" stroke="var(--fg)" stroke-opacity=".6" stroke-dasharray="3 3"/>' +
-      '<circle r="3.5" fill="var(--accent)" stroke="var(--panel)" stroke-width="1.5"/><circle r="3.5" fill="var(--cz)" stroke="var(--panel)" stroke-width="1.5"/><circle r="3.5" fill="var(--fed-pce)" stroke="var(--panel)" stroke-width="1.5"/></g>';
+      '<circle r="3.5" fill="var(--accent)" stroke="var(--panel)" stroke-width="1.5"/><circle r="3.5" fill="var(--cz)" stroke="var(--panel)" stroke-width="1.5"/><circle r="3.5" fill="var(--fed-pce)" stroke="var(--panel)" stroke-width="1.5"/><circle r="3" fill="var(--fg)" stroke="var(--panel)" stroke-width="1.5"/></g>';
     var tn2 = x(now); s += '<line x1="' + tn2 + '" x2="' + tn2 + '" y1="' + T + '" y2="' + (H - B) + '" stroke="var(--fg)" stroke-opacity=".35"/><text x="' + (tn2 + 3) + '" y="' + (T + 9) + '">' + esc(w().today) + "</text>";
     return s + "</svg>";
   }
@@ -141,8 +149,8 @@
     el.innerHTML = '<h2 id="fed-title">' + esc(t.title) + "</h2>" + '<p class="fed-sub">' + (cur ? esc(t.now.replace("{r}", rangeOf(cur, 0)).replace("{d}", day(cur.date, { year: "numeric" }))) : "") + "</p>" +
       '<p data-tip="#fed-title" id="fed-note">' + esc(t.note) + "</p>" +
       '<div class="fed-grid"><div><h3>' + esc(t.meetings) + "</h3>" + rows + legend(keys) + "</div>" +
-      "<div class=\"fed-plot\"><h3>" + esc(t.chart) + "</h3><div class=\"fed-read\" aria-live=\"polite\" title=\"" + esc(t.hover) + "\"></div>" + chart(data) + legend([[t.target, "color-mix(in srgb,var(--accent) 40%,transparent)"], [t.path, "var(--accent)", 1], [t.cpi, "var(--cz)", 1], [t.pce, "var(--fed-pce)", 1]]) + "</div></div>" +
-      '<p class="fed-src">' + esc(t.src) + "</p>";
+      "<div class=\"fed-plot\"><h3>" + esc(t.chart) + "</h3><div class=\"fed-read\" aria-live=\"polite\" title=\"" + esc(t.hover) + "\"></div>" + chart(data) + legend([[t.target, "color-mix(in srgb,var(--accent) 40%,transparent)"], [t.eff, "var(--fg)", 1], [t.path, "var(--accent)", 1], [t.cpi, "var(--cz)", 1], [t.pce, "var(--fed-pce)", 1]]) + "</div></div>" +
+      '<p class="fed-src">' + esc(t.src) + ' · <a href="' + t.learnHref + '">' + esc(t.learn) + "</a></p>";
     el.hidden = false;
     var plot = el.querySelector(".fed-plot"); if (plot) hover(plot);
     if (window.InfoTip) InfoTip.scan(el);

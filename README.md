@@ -597,6 +597,15 @@ Drawn by `assets/fed-card.js` (`[data-fed="card"]`, `[data-fed="line"]`) from `G
   why both failed; tried again every 10 minutes while missing), the path implied by the probabilities (the probability-weighted upper bound at
   each meeting, dashed), and US inflation year on year: CPI and core PCE (SoSoValue macro history "CPI (YoY)",
   "Core PCE Price Index (YoY)", last 72 releases, so from 2021). A "today" line.
+- **Effective rate (since 28 Nov 2026):** the band is the range the Fed decided ("decided / kararlaştırılan"); the
+  thin line inside it is the effective federal funds rate, what banks actually pay overnight (FRED DFF, daily,
+  shown as monthly averages at mid-month; key `fed:v3`). The hover row adds it and the **real rate** = effective
+  rate − CPI (the latest CPI release by then): "May 2024 · Fed target 5.25–5.50% · Effective 5.33% · CPI 3.4% ·
+  Core PCE 2.8% · Real rate +1.9%". In a month with a decision the average mixes the rates before and after it.
+- **Explained:** the ⓘ note says why inflation is subtracted (purchasing power, with the 2024 and 2022 examples) and
+  the credit line links the library page "Policy rate, effective rate and real rate" (`policy-and-real-rates`:
+  target range, effective rate, real rate, backward- vs forward-looking, example periods), linked also from the Fed
+  decisions, inflation and real-rates-and-dollar pages.
 - **Hover (mouse or finger):** a dashed vertical line snaps to one point per month (2021 to today; the month's end,
   or today) and, after today, to each coming meeting; dots on the series and one row of values above the chart:
   "Oct 2022 · Fed target 3.00–3.25% · CPI 8.2% · Core PCE 5.1%" (the target in force, the latest CPI / core PCE
