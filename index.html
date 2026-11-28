@@ -53,10 +53,8 @@ main{padding:0 0 72px}
    ETF card beside it, the topic of the week as a strip under them. */
 .hero{padding:22px 0 18px}.hero .kicker{margin-bottom:8px}
 .hero-copy{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
-.hero-board{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px;margin-top:18px;align-items:stretch}
-.hero-board:has(.etf-card[hidden]){grid-template-columns:minmax(0,1fr)}
-.hero-board .etf-card:not([hidden]){display:flex;flex-direction:column}.hero-board .etf-card .wk-go{margin-top:auto;padding-top:10px;align-self:flex-start}
-.hero-board .etf-rows a{grid-template-columns:auto 1fr}.hero-board .etf-rows .s{grid-column:1/-1;text-align:left}
+.hero-board{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;margin-top:18px;align-items:stretch}
+.hero-board:has(.topic-card[hidden]){grid-template-columns:minmax(0,1fr)}
 .hm-card:not([hidden]){display:flex;flex-direction:column;min-width:0}
 .hm-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:8px 16px;margin-bottom:10px}
 .hm-card .hm-head .wk-range{margin:4px 0 0}
@@ -74,20 +72,13 @@ main{padding:0 0 72px}
 .hm-foot .wk-src{margin:0}.hm-card .wk-go{margin-top:0}
 @media(max-width:900px){.hero-board{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:700px){.hm-board,.hm-board.no-stock{display:flex;flex-direction:column;height:auto}.hm-group[data-g=crypto] .hm-tiles{height:250px;flex:none}.hm-group[data-g=stock] .hm-tiles{height:160px;flex:none}.hm-group[data-g=macro] .hm-tiles{height:96px;flex:none}}
-/* Topic of the week: one strip (picture, title and summary, link and next week's topic). */
-.hero .topic-card{margin-top:14px;padding:12px 18px}
-@media(min-width:701px){.hero .topic-card{grid-template-columns:auto minmax(0,1fr) auto;column-gap:18px;row-gap:2px}
-  .hero .topic-card:has(.topic-thumb:empty){grid-template-columns:auto minmax(0,1fr) auto;column-gap:0}.hero .topic-card:has(.topic-thumb:empty) .topic-more,.hero .topic-card:has(.topic-thumb:empty) .topic-next{margin-left:18px}
-  .hero .topic-thumb{grid-column:1;grid-row:1/4;width:84px;padding:6px}.hero .topic-thumb svg{max-height:52px}
-  .hero .topic-head{grid-column:2;grid-row:1;margin:0}.hero .topic-title{grid-column:2;grid-row:2;font-size:16px}.hero .topic-summary{grid-column:2;grid-row:3;margin:0;font-size:13px}
-  .hero .topic-more{grid-column:3;grid-row:1/3;align-self:center;white-space:nowrap}.hero .topic-next{grid-column:3;grid-row:3;margin:0;padding:0;border:0;white-space:nowrap}}
+/* Topic of the week beside the heat map: one column (picture, label, title, summary, link; next week at the bottom). */
+.hero-board .topic-card:not([hidden]){display:flex;flex-direction:column;align-items:stretch;gap:0;margin:0;padding:16px 18px;border:1px solid var(--line);border-radius:14px}
+.hero-board .topic-body{display:flex;flex-direction:column;flex:1}.hero-board .topic-thumb{order:-1;margin:0 0 12px}.hero-board .topic-thumb svg{max-height:110px}
+.hero-board .topic-head{flex-direction:column;gap:2px;margin:0 0 6px}.hero-board .topic-title{font-size:17px}.hero-board .topic-summary{margin:6px 0 10px;font-size:13.5px}
+.hero-board .topic-more{align-self:flex-start}.hero-board .topic-next{margin:auto 0 0;padding-top:10px}.hero-board .topic-more+.topic-next{margin-top:auto}
+.hero-board .topic-card:hover{transform:none}
 .wk-card{padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}.wk-card[hidden]{display:none}
-/* ETF flows card (README "ETF flows"): the latest US trading day's net flow of the spot BTC and ETH ETFs. */
-.etf-card{padding:14px 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}.etf-card[hidden]{display:none}
-.etf-card .wk-eyebrow{margin:0;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}.etf-card .wk-range{margin:4px 0 10px;color:var(--muted);font-size:13px}
-.etf-rows{display:grid;gap:6px}.etf-rows a{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline;padding:7px 9px;border-radius:8px;background:var(--raise);color:var(--fg);text-decoration:none;font-size:12px}.etf-rows a:hover{outline:2px solid var(--accent);outline-offset:-2px}
-.etf-rows b{font-size:13px}.etf-rows .v{font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}.etf-rows .s{color:var(--muted);font-size:11px;text-align:right}.etf-rows .up{color:var(--up)}.etf-rows .down{color:var(--down)}
-.etf-card .wk-go{display:inline-block;margin-top:10px;color:var(--accent);font-size:14px;font-weight:600;text-decoration:none}
 .wk-card .wk-eyebrow{margin:0;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}
 .wk-card .wk-range{margin:4px 0 12px;color:var(--muted);font-size:13px}
 .wk-src{margin:6px 0 0;color:var(--muted);font-size:11px;line-height:1.4}
@@ -307,10 +298,10 @@ try{var savedTheme=localStorage.getItem("mlm-theme");if(savedTheme==="light"||sa
 <div class="segmented hm-view" role="group" aria-label="View" id="hm-view"><button class="filter-btn" type="button" data-view="live" data-i18n="hmLive">Live</button><button class="filter-btn" type="button" data-view="day" data-i18n="hmDay">Daily</button><button class="filter-btn" type="button" data-view="week" data-i18n="hmWeek">Weekly</button><button class="filter-btn" type="button" data-view="month" data-i18n="hmMonth">Monthly</button></div></div>
 <p data-i18n="hmNote" data-tip="#hm-title"></p>
 <div class="hm-board" id="hm-board"><div class="hm-group" data-g="crypto"><p class="hm-gt" data-i18n="fCrypto">Crypto</p><div class="hm-tiles"></div></div><div class="hm-group" data-g="stock" hidden><p class="hm-gt" data-i18n="fStocks">Tokenized stocks</p><div class="hm-tiles"></div></div><div class="hm-group" data-g="macro" hidden><p class="hm-gt" data-i18n="wkMacro">Macro and commodities</p><div class="hm-tiles"></div></div></div>
-<div class="hm-foot"><a class="wk-go" href="weekly.html" data-i18n="wkGo">See the weekly outlook →</a></div></section><aside class="etf-card rise rise-5" id="etf-card" hidden aria-labelledby="etf-card-title"><p class="wk-eyebrow" id="etf-card-title" data-i18n="etfTitle">ETF flows</p><p class="wk-range" id="etf-card-day"></p><div class="etf-rows" id="etf-rows"></div><a class="wk-go" href="etf" data-i18n="etfGo">See the ETF flows →</a></aside></div>
-<aside class="topic-card card rise rise-5" id="weekly-topic" aria-labelledby="topic-label" hidden><div class="topic-thumb" id="topic-thumb" aria-hidden="true"></div><div class="topic-body"><p class="topic-head"><span id="topic-label" data-i18n="topicLabel">Topic of the week</span><span class="topic-track" id="topic-track"></span></p>
+<div class="hm-foot"><a class="wk-go" href="weekly.html" data-i18n="wkGo">See the weekly outlook →</a></div></section><aside class="topic-card card rise rise-5" id="weekly-topic" aria-labelledby="topic-label" hidden><div class="topic-thumb" id="topic-thumb" aria-hidden="true"></div><div class="topic-body"><p class="topic-head"><span id="topic-label" data-i18n="topicLabel">Topic of the week</span><span class="topic-track" id="topic-track"></span></p>
 <a class="topic-title" id="topic-link" href="/en/library/"></a><p class="topic-summary" id="topic-summary"></p><a class="topic-more" id="topic-more" href="/en/library/" data-i18n="topicMore">Read the page →</a>
-<p class="topic-next"><span data-i18n="topicNext">Next week:</span> <span id="topic-next"></span></p></div></aside>
+<p class="topic-next"><span data-i18n="topicNext">Next week:</span> <span id="topic-next"></span></p></div></aside></div>
+
 </section>
 <section class="home-split" aria-labelledby="table-title">
 <div class="page-head rise rise-5"><div><h2 id="table-title"><span data-i18n="tableTitle">Market table</span></h2>
@@ -611,20 +602,29 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
    not jump; macro tiles all the same size. The view is kept in this browser. */
 (function(){
   var card=document.getElementById("hm-card"),board=document.getElementById("hm-board"),KEY="mlm-heatmap-view",DAY=86400000;
-  var VIEWS=["live","day","week","month"],view="live";try{var sv=localStorage.getItem(KEY);if(VIEWS.indexOf(sv)>-1)view=sv}catch(e){}
+  var VIEWS=["live","day","week","month"],view="day";try{var sv=localStorage.getItem(KEY);if(VIEWS.indexOf(sv)>-1)view=sv}catch(e){}
   var macro=null,sizes={},sizedAt=0,timer=null;
   var MACRO=[["dxy","wkDxy"],["us10y","wkUs10y"],["spx","wkSpx"],["ndx","wkNdx"],["gold","wkGold"],["silver","wkSilver"]];
   function txt(v){if(v==null||!isFinite(v))return"–";var n=Math.abs(v).toLocaleString(MarketUI.locale(),{minimumFractionDigits:1,maximumFractionDigits:1}),s=v>0?"+":v<0?"−":"";return MarketUI.lang()==="tr"?s+"%"+n:s+n+"%"}
   function bpTxt(v){return v==null?"–":(v>0?"+":v<0?"−":"")+Math.abs(v).toLocaleString(MarketUI.locale(),{maximumFractionDigits:1})+" bp"}
   function fill(v,full){if(v==null||!isFinite(v))return"var(--raise)";var a=(0.22+0.6*Math.min(Math.abs(v)/full,1)).toFixed(2);return v>=0?"rgba(60,207,145,"+a+")":"rgba(239,107,115,"+a+")"}
-  function assets(){return((window.MLMQuotes&&MLMQuotes.order)||[]).filter(function(s){return s!=="PAXGUSDT"})}
-  function change(sym){var q=MLMQuotes.get(sym),from=q&&q[view];return from?(q.price/from-1)*100:null}
+  // Until the table's feeds answer (a second or two after the page opens), the map is drawn from the figures it
+  // showed last in this browser (mlm-heatmap-last, at most an hour old, same UTC day), then follows the live ones.
+  var LAST="mlm-heatmap-last",saved=null,savedAt=0;
+  try{var sv0=JSON.parse(localStorage.getItem(LAST)||"null");if(sv0&&sv0.at>Date.now()-3600000&&new Date(sv0.at).toISOString().slice(0,10)===new Date().toISOString().slice(0,10)&&Array.isArray(sv0.order))saved=sv0}catch(e){}
+  function live(){return!!(window.MLMQuotes&&MLMQuotes.order.length&&MLMQuotes.order.some(function(s){return MLMQuotes.get(s)}))}
+  var Q={get order(){return live()?MLMQuotes.order:saved?saved.order:[]},get:function(s){var q=live()?MLMQuotes.get(s):null;return q||(saved&&saved.q[s])||null}};
+  function remember(){if(!live()||Date.now()-savedAt<10000)return;savedAt=Date.now();var q={};MLMQuotes.order.forEach(function(s){var x=MLMQuotes.get(s);if(x)q[s]=x});
+    try{localStorage.setItem(LAST,JSON.stringify({at:Date.now(),order:MLMQuotes.order,q:q,macro:macro}))}catch(e){}}
+  if(saved&&saved.macro)macro=saved.macro;
+  function assets(){return Q.order.filter(function(s){return s!=="PAXGUSDT"})}
+  function change(sym){var q=Q.get(sym),from=q&&q[view];return from?(q.price/from-1)*100:null}
   // Full colour at: assets 5 % (live, day), 10 % (week), 20 % (month); macro a fifth of that; the yield 10 / 10 / 25 / 50 bp.
   var FULL={live:5,day:5,week:10,month:20},BP={live:10,day:10,week:25,month:50};
-  function resize(){var now=Date.now(),list=assets(),have=list.filter(function(s){var q=MLMQuotes.get(s);return q&&q.volume>0});
+  function resize(){var now=Date.now(),list=assets(),have=list.filter(function(s){var q=Q.get(s);return q&&q.volume>0});
     // Measured again once a minute, or at once when a volume arrives that had none yet.
     if(now-sizedAt<60000&&have.every(function(s){return sizes[s]}))return;sizedAt=now;
-    have.forEach(function(s){sizes[s]=Math.sqrt(MLMQuotes.get(s).volume)})}
+    have.forEach(function(s){sizes[s]=Math.sqrt(Q.get(s).volume)})}
   // Tiles of one group: label and value sized to the tile, the full figures in its title.
   function tiles(box,items){
     var W=box.clientWidth,H=box.clientHeight;if(!W||!H)return;
@@ -651,9 +651,9 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
     if(view==="week"){var mon=Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate())-((now.getUTCDay()+6)%7)*DAY;return w.hmWeekRange.replace("{d}",new Date(mon).toLocaleDateString(loc,o))}
     return w.hmMonthRange.replace("{d}",now.toLocaleDateString(loc,{timeZone:"UTC",month:"long"}))}
   function render(){
-    if(!window.MLMQuotes||!MLMQuotes.order.length)return;card.hidden=false;resize();
+    if(!Q.order.length)return;card.hidden=false;resize();remember();
     var w=words(),list=assets(),full=FULL[view];
-    function item(s){var v=change(s),q=MLMQuotes.get(s),base=MarketUI.baseOf(s)||s;
+    function item(s){var v=change(s),q=Q.get(s),base=MarketUI.baseOf(s)||s;
       return{key:s,label:base,value:txt(v),bg:fill(v,full),weight:sizes[s]||0,href:"bulletin.html?asset="+encodeURIComponent(s)+"&tf="+(MarketUI.isTokenized(s)?"4h":"1d"),
         title:MarketUI.nameOf(s)+" ("+base+") · "+txt(v)+(q&&q.volume?" · "+w.hmVol+" "+MarketUI.compact(q.volume)+" $":"")}}
     var stocks=list.filter(MarketUI.isTokenized);
@@ -672,31 +672,7 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
   new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
   function loadMacro(){fetch("/api/macro-change").then(function(r){return r.ok?r.json():null}).then(function(d){if(d&&d.macro){macro=d.macro;render()}}).catch(function(){})}
   loadMacro();setInterval(function(){if(!document.hidden)loadMacro()},300000);
-})();
-/* ETF flows card (README "ETF flows"): /api/etf-flows?asset=ALL (every asset's last five days); the latest US
-   trading day's net flow of BTC, ETH and the other coins together, each with its last five trading days, linking to
-   /etf. Shown when BTC or ETH answers. */
-(function(){
-  var card=document.getElementById("etf-card"),got=null;
-  function usd(v,signed){if(v==null||!isFinite(v))return"–";var a=Math.abs(v),tr=MarketUI.lang()==="tr",u=tr?[[1e9," Mr"],[1e6," Mn"],[1e3," B"]]:[[1e9,"B"],[1e6,"M"],[1e3,"K"]],t=null;
-    for(var i=0;i<u.length;i++)if(a>=u[i][0]){t=(a/u[i][0]).toLocaleString(MarketUI.locale(),{maximumFractionDigits:a/u[i][0]>=100?0:a/u[i][0]>=10?1:2})+u[i][1];break}
-    if(t==null)t=a.toLocaleString(MarketUI.locale(),{maximumFractionDigits:0});var sg=signed?(v>0?"+":v<0?"−":""):"";return tr?sg+t+" $":sg+"$"+t}
-  function row(href,label,title,day,five,w){return'<a href="'+href+'"'+(title?' title="'+MarketUI.escape(title)+'"':"")+'><b>'+MarketUI.escape(label)+'</b><span class="v '+(day>=0?"up":"down")+'">'+usd(day,true)+'</span><span class="s">'+MarketUI.escape(w.etf5.replace("{v}",usd(five,true)))+"</span></a>"}
-  function render(){
-    if(!got)return;var w=words(),by={};got.forEach(function(a){by[a.asset]=a.days});
-    var main=["BTC","ETH"].filter(function(a){return by[a]&&by[a].length});if(!main.length)return;
-    var lastDay=main.map(function(a){return by[a][by[a].length-1].date}).sort().pop();
-    var dates=[];main.forEach(function(a){by[a].forEach(function(d){if(dates.indexOf(d.date)<0)dates.push(d.date)})});dates=dates.sort().slice(-5);
-    var html=main.map(function(a){var d=by[a],last=d[d.length-1],five=d.slice(-5).reduce(function(x,y){return x+(y.netInflow||0)},0);return row("etf"+(a==="BTC"?"":"?a="+a),a,"",last.netInflow,five,w)}).join("");
-    var others=got.filter(function(a){return a.asset!=="BTC"&&a.asset!=="ETH"&&a.days&&a.days.length}),day=0,five=0,seen=false;
-    others.forEach(function(a){a.days.forEach(function(d){if(d.date===lastDay){day+=d.netInflow||0;seen=true}if(dates.indexOf(d.date)>=0)five+=d.netInflow||0})});
-    if(seen)html+=row("etf?a="+others[0].asset,w.etfOthers,others.map(function(a){return a.asset}).join(", "),day,five,w);
-    document.getElementById("etf-card-day").textContent=w.etfDay.replace("{d}",new Date(lastDay+"T00:00:00Z").toLocaleDateString(MarketUI.locale(),{timeZone:"UTC",day:"numeric",month:"short"}));
-    document.getElementById("etf-rows").innerHTML=html;
-    card.hidden=false;
-  }
-  fetch("/api/etf-flows?asset=ALL").then(function(r){return r.ok?r.json():null}).then(function(d){if(d&&Array.isArray(d.assets)){got=d.assets;render()}}).catch(function(){});
-  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  if(saved)render(); // at once, from the last figures
 })();
 </script>
 </body></html>

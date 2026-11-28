@@ -204,11 +204,11 @@ cache previews per link, so a link shared before a change keeps its old card for
 ## Pages
 
 - `index.html` — top: the title on one line with "How to read them" on the right; under it the **Market heat map**
-  across the page with the ETF flows card beside it; the **Topic of the week** as one strip under them;
+  across the page with the **Topic of the week** card beside it (one column; under the map below 900 px);
   then the market table at full width (live price, 24h change and volume, daily/weekly/monthly/yearly opens, ATH);
   then this week's events (one third) beside the market context card (crypto on the left, macro with commodities
   under it on the right); then the members' live tools. Phones stack them: title, weekly outlook, topic, table,
-  market context, events (the top: title, heat map, ETF card, topic). The **Topic of the week** card links one library page: name, first
+  market context, events (the top: title, heat map, topic). The **Topic of the week** card links one library page: name, first
   summary sentence, track, "Next week: …". The list is `content/library/weekly-topics.json` (page ids in week
   order from a Monday 00:00 UTC anchor; it repeats); `scripts/build-library.mjs` checks it and writes
   `assets/weekly-topics.json`, and the page picks the week in the browser (before the anchor: the first topic).
@@ -370,7 +370,7 @@ by its change, in three blocks: crypto (left, the tallest), tokenized stocks and
 above the other; macro alone when there are no tokens). Phones stack the three blocks. PAXG is left out (gold is in
 the macro block).
 
-- **Views (tabs):** "Live / Canlı" (the default), "Daily / Günlük", "Weekly / Haftalık", "Monthly / Aylık"; the choice
+- **Views (tabs):** "Live / Canlı", "Daily / Günlük" (the default), "Weekly / Haftalık", "Monthly / Aylık"; the choice
   is kept in this browser (`mlm-heatmap-view`). All four are current and update live (at most once a second).
   - Crypto and tokenized stocks, from the market table's own feeds (`window.MLMQuotes`, filled by the table script):
     Live = the last 24 hours (the feed's 24 h open); Daily / Weekly / Monthly = since today's 00:00 UTC, this week's
@@ -382,6 +382,10 @@ the macro block).
     the session before's close (Friday against Thursday over a weekend; used for Live and Daily), `week` / `month` =
     against the open of this week's / month's first session (a futures session dated Sunday counts to the next week).
     The yield in basis points. Edge cache 5 minutes; the page asks again every 5 minutes while visible.
+  - **At once:** the map is drawn from the figures it showed last in this browser (`mlm-heatmap-last`: the quotes,
+    their opens and the macro figures, saved at most every 10 seconds; used when at most an hour old and of the same
+    UTC day) until the table's feeds answer, so it does not wait for them after a page change; each asset switches
+    to its live figures as they arrive.
   - Last week's closed change stays on the weekly outlook page (`weekly.html`), linked under the map.
 - **Tile size:** square root of the asset's 24-hour USD volume (USDC volume for tokens), so BTC and ETH are the big
   tiles and the small coins stay readable; an asset without volume yet gets a third of the median's size. The sizes
@@ -533,8 +537,8 @@ fund that has not reported that day shows "–"; while an asset's fund table is 
 An asset that cannot be loaded hides the previous asset's figures and shows the error. Credited "Data: SoSoValue"; descriptive only.
 
 - **Links:** "ETF flows" / "ETF akışları" in the site header after "Multi view" (every page, the library generator
-  included), and on the home page a small "ETF flows" card beside the market heat map (same height, `.hero-board`; under it
-  below 900 px): the latest US trading day's net flow of the BTC and ETH ETFs and an "Other coins" / "Diğer coinler" row
+  included), and, until 28 Nov 2026, on the home page a small "ETF flows" card (removed from the home page at the owner's
+  request; the `/etf` page is unchanged): the latest US trading day's net flow of the BTC and ETH ETFs and an "Other coins" / "Diğer coinler" row
   (the other eight added up for that day; tooltip lists them), each with the last five trading days, linking to `/etf`.
   One request (`?asset=ALL`). The card shows when BTC or ETH answers; the column is
   there when either card is.
