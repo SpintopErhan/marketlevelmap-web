@@ -707,6 +707,9 @@ var LiveChart = (function () {
       sessionNote.textContent = pageLocale() === "tr-TR" ? "Gölgeli alan: ABD borsası açık" : "Shaded: US market open";
       var w = 0; try { w = chart.priceScale("right").width(); } catch (e) {}
       sessionNote.style.right = (w + 8) + "px";
+      // A narrow chart (multi view, phones): the legend fills the top line, so the label sits at the bottom instead.
+      var narrow = container.clientWidth < 760, th = 0; try { th = chart.timeScale().height(); } catch (e) {}
+      sessionNote.style.top = narrow ? "auto" : "6px"; sessionNote.style.bottom = narrow ? (th + 6) + "px" : "auto";
     }
     function paintSessions() {
       if (!onchain() || !showSessions) { sessionList = null; sessionShade.set(null); sessionNote.hidden = true; return; }
