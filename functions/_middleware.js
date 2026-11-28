@@ -6,7 +6,7 @@ const DEFAULT_DESCRIPTION = "A data-driven analysis map for financial markets: s
 
 const PAGES = {
   "/": { title: "MarketLevelMap — Market table", description: DEFAULT_DESCRIPTION },
-  "/weekly": { title: "Weekly outlook · MarketLevelMap", description: "How the analysed assets closed last week and where they start this one: weekly change, monthly and yearly open, all-time high and timeframe alignment." },
+  "/market-map": { title: "Market map · MarketLevelMap", description: "The whole market on one page: a heat map of crypto, tokenized stocks and macro, market breadth, last week's outlook and market context." },
   "/weekly-events": { title: "Weekly events · MarketLevelMap", description: "Market-moving events of the week: macro data releases and central-bank decisions." },
   "/flow": { title: "Live flow · MarketLevelMap", description: "Members-only live order flow for crypto spot: combined order book, CVD, depth and Time & Sales from Binance, OKX and Coinbase." },
   "/messages": { title: "Messages · MarketLevelMap", description: "Messages from MarketLevelMap about your account." },
@@ -82,6 +82,11 @@ export function isPrivatePath(pathname) {
 }
 
 export async function onRequest(context) {
+  // The weekly outlook became a section of the market map page (README "Market map page"): old links go there.
+  const asked = new URL(context.request.url);
+  if (asked.pathname === "/weekly" || asked.pathname === "/weekly.html") {
+    return new Response(null, { status: 301, headers: { Location: "/market-map" + asked.search + "#haftalik" } });
+  }
   if (isPrivatePath(new URL(context.request.url).pathname)) {
     return new Response("Not found", { status: 404, headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex" } });
   }
