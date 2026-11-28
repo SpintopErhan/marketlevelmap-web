@@ -8,7 +8,7 @@ main{padding:0 0 70px}
 .page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:34px 0 18px}
 .page-head h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.5px}
 .meta{margin:8px 0 0;color:var(--muted);font-size:13px;max-width:760px}
-.mv-layout{display:inline-flex;padding:3px;border:1px solid var(--line);border-radius:11px;background:var(--panel)}
+.mv-layout[hidden]{display:none}.mv-layout{display:inline-flex;padding:3px;border:1px solid var(--line);border-radius:11px;background:var(--panel)}
 .mv-layout button{min-height:32px;padding:5px 14px;border:0;border-radius:8px;background:none;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)}
 .mv-layout button[aria-pressed=true]{background:var(--panel-2);color:var(--fg)}
 .mv-status{padding:40px 0;color:var(--muted);text-align:center}.mv-status[hidden]{display:none}
@@ -37,9 +37,11 @@ main{padding:0 0 70px}
 @keyframes lcPulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(3.2);opacity:0}}
 @media (prefers-reduced-motion:reduce){.live-chart.lc-reveal>div:first-child,.lc-pulse:after{animation:none!important}}
 .table-note{margin:14px 2px 0;color:var(--muted);font-size:12px;max-width:860px}
+.gate{max-width:560px;margin:40px auto;padding:28px;border:1px solid var(--line);border-radius:16px;background:var(--panel);text-align:center}.gate[hidden]{display:none}
+.gate p{margin:0 0 16px}.gate a{display:inline-flex;align-items:center;height:38px;padding:0 18px;border-radius:10px;background:var(--accent);color:#06221d;font-weight:700;text-decoration:none}
 @media(max-width:900px){.mv-grid{grid-template-columns:minmax(0,1fr)}.mv-chart,.mv-grid.n4 .mv-chart{height:min(380px,62vh)}}
 @media(max-width:640px){.page-head h1{font-size:24px}.mv-head{padding:8px 10px}.mv-price{font-size:13px}}
-</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}</style><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/info-tip.js?v=99a5c153" defer></script><script src="/assets/account.js?v=c70364fc" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/onchain-feed.js?v=a58f5938"></script><script src="assets/live-chart.js?v=af96d90d"></script><script src="assets/market-ui.js?v=338a4bf3"></script></head><body><div class="shell"><header>
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}</style><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/info-tip.js?v=99a5c153" defer></script><script src="/assets/account.js?v=c70364fc" defer></script><script src="assets/market-cache.js?v=e9c77ce2"></script><script src="assets/market-feed.js?v=bc2168f8"></script><script src="assets/onchain-feed.js?v=a58f5938"></script><script src="assets/live-chart.js?v=af96d90d"></script><script src="assets/market-ui.js?v=f289e3ca"></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="multi" data-tr="Çoklu izleme" aria-current="page">Multi view</a><a href="etf" data-tr="ETF akışları">ETF flows</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
@@ -50,14 +52,15 @@ main{padding:0 0 70px}
 <div class="page-head"><div><h1 data-i18n="heading">Multi view</h1><p class="meta" data-i18n="sub">Two or four analysis charts side by side, with their zones and live prices. Choose the asset and the timeframe of each chart.</p></div>
 <div class="mv-layout" role="group" aria-label="Layout" id="mv-layout"><button type="button" data-n="2" aria-pressed="true" data-i18n="two">2 charts</button><button type="button" data-n="4" aria-pressed="false" data-i18n="four">4 charts</button></div></div>
 <div id="mv-status" class="mv-status" data-i18n="loading">Loading…</div>
+<div class="gate" id="mv-gate" hidden><p id="mv-gate-msg"></p><a id="mv-gate-link" href="/account"></a></div>
 <div class="mv-grid" id="mv-grid"></div>
-<p class="table-note" data-i18n="note" data-tip="">Candles and the zones of each asset's Critical Zones analysis; the dashed line is the live price. Guests see the candles of every timeframe; the zones are for members. Your layout is kept in this browser.</p>
+<p class="table-note" data-i18n="note" data-tip="">Candles and the zones of each asset's Critical Zones analysis; the dashed line is the live price. Multi view is for members. Your layout is kept in this browser.</p>
 </main>
 <div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 <script>
 var copy={
-  en:{title:"Multi view",heading:"Multi view",sub:"Two or four analysis charts side by side, with their zones and live prices. Choose the asset and the timeframe of each chart.",two:"2 charts",four:"4 charts",loading:"Loading…",unavailable:"The analyses could not be loaded. Please try again later.",note:"Candles and the zones of each asset's Critical Zones analysis; the dashed line is the live price. Guests see the candles of every timeframe; the zones are for members. Your layout is kept in this browser.",asset:"Asset",open:"Analysis →",members:"This timeframe is for members.",signIn:"Sign in",chartFail:"The chart could not be loaded.",chartLoading:"Loading the chart…",tf:"Timeframe"},
-  tr:{title:"Çoklu izleme",heading:"Çoklu izleme",sub:"İki ya da dört analiz grafiği yan yana; bölgeleri ve canlı fiyatlarıyla. Her grafiğin varlığını ve zaman dilimini seç.",two:"2 grafik",four:"4 grafik",loading:"Yükleniyor…",unavailable:"Analizler yüklenemedi. Lütfen daha sonra tekrar deneyin.",note:"Mumlar ve her varlığın Kritik Bölgeler analizindeki bölgeler; kesikli çizgi canlı fiyat. Üye olmayanlar tüm zaman dilimlerinde mumları görür; bölgeler üyelere özel. Düzenin bu tarayıcıda saklanır.",asset:"Varlık",open:"Analiz →",members:"Bu zaman dilimi üyelere özel.",signIn:"Giriş yap",chartFail:"Grafik yüklenemedi.",chartLoading:"Grafik yükleniyor…",tf:"Zaman dilimi"}
+  en:{title:"Multi view",heading:"Multi view",sub:"Two or four analysis charts side by side, with their zones and live prices. Choose the asset and the timeframe of each chart.",two:"2 charts",four:"4 charts",loading:"Loading…",unavailable:"The analyses could not be loaded. Please try again later.",note:"Candles and the zones of each asset's Critical Zones analysis; the dashed line is the live price. Multi view is for members. Your layout is kept in this browser.",asset:"Asset",open:"Analysis →",members:"This timeframe is for members.",signIn:"Sign in",chartFail:"The chart could not be loaded.",chartLoading:"Loading the chart…",tf:"Timeframe",gateGuest:"Multi view is for members. Sign in with Google to apply for membership.",gateSignIn:"Sign in with Google",gatePending:"Multi view is for members. It opens once your membership is approved.",gateProfile:"Your profile"},
+  tr:{title:"Çoklu izleme",heading:"Çoklu izleme",sub:"İki ya da dört analiz grafiği yan yana; bölgeleri ve canlı fiyatlarıyla. Her grafiğin varlığını ve zaman dilimini seç.",two:"2 grafik",four:"4 grafik",loading:"Yükleniyor…",unavailable:"Analizler yüklenemedi. Lütfen daha sonra tekrar deneyin.",note:"Mumlar ve her varlığın Kritik Bölgeler analizindeki bölgeler; kesikli çizgi canlı fiyat. Çoklu izleme üyelere özeldir. Düzenin bu tarayıcıda saklanır.",asset:"Varlık",open:"Analiz →",members:"Bu zaman dilimi üyelere özel.",signIn:"Giriş yap",chartFail:"Grafik yüklenemedi.",chartLoading:"Grafik yükleniyor…",tf:"Zaman dilimi",gateGuest:"Çoklu izleme üyelere özeldir. Üyelik başvurusu için Google ile giriş yapın.",gateSignIn:"Google ile giriş yap",gatePending:"Çoklu izleme üyelere özeldir. Üyeliğiniz onaylandığında açılır.",gateProfile:"Profiliniz"}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 function applyLanguage(value){
@@ -76,8 +79,9 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
 </script>
 <script>
 /* Multi view (README "Multi view"): 2 or 4 analysis charts (assets/live-chart.js), each with its own asset and
-   timeframe, the zones of that asset's Critical Zones report and the live price. Layout kept in localStorage
-   ("mlm-multi-v1": { n, cells: [{ asset, tf }] }); ?assets=ETHUSDT,BTCUSDT&tf=4h opens with those. Guests: 1D only. */
+   timeframe, the zones of that asset's Critical Zones report and the live price. Members only (approved or admin):
+   others get the sign-in / pending card. Layout kept in localStorage
+   ("mlm-multi-v1": { n, cells: [{ asset, tf }] }); ?assets=ETHUSDT,BTCUSDT&tf=4h opens with those. */
 (function(){
   var KEY="mlm-multi-v1",TFS=["1h","4h","1d","1w"],el=function(id){return document.getElementById(id)};
   var grid=el("mv-grid"),status=el("mv-status"),pub=null,member=false,assets=[],cells=[],quotes={},reports={};
@@ -150,6 +154,20 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
   }
   el("mv-layout").addEventListener("click",function(e){var b=e.target.closest("button[data-n]");if(b)layout(Number(b.dataset.n))});
   new MutationObserver(function(){var w=words();cells.forEach(function(c){c.open.textContent=w.open;if(c.ctl)c.ctl.setLocale();paintPrice(c);if(!c.msg.hidden&&!allowed(c.tf))message(c,w.members,w.signIn)})}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  var gateUser;
+  function gate(){
+    var w=words(),g=el("mv-gate"),m=el("mv-gate-msg"),a=el("mv-gate-link");g.hidden=false;status.hidden=true;el("mv-layout").hidden=true;
+    if(!gateUser){m.textContent=w.gateGuest;a.textContent=w.gateSignIn;a.href="/api/auth/google/start?return="+encodeURIComponent(location.pathname+location.search)}
+    else{m.textContent=w.gatePending;a.textContent=w.gateProfile;a.href="/account"}
+  }
+  new MutationObserver(function(){if(!el("mv-gate").hidden)gate()}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+  // account.js is deferred: it has run by DOMContentLoaded.
+  function check(){(window.MLMAccount?MLMAccount.ready:Promise.resolve(null)).then(function(user){
+    if(!(user&&(user.status==="approved"||user.isAdmin))){gateUser=user;gate();return}
+    boot();
+  })}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",check);else check();
+  function boot(){
   fetch("/api/publication",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(body){
     if(!body){status.textContent=words().unavailable;status.dataset.i18n="unavailable";return}
     pub=body;member=!!(body.viewer&&body.viewer.member);
@@ -165,6 +183,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     MarketFeed.start(assets.filter(function(s){return!MarketUI.isTokenized(s)}),{onData:onData});
     var stocks=assets.filter(MarketUI.isTokenized);if(stocks.length&&window.OnchainFeed)OnchainFeed.start(stocks,{onData:onData});
   }).catch(function(){status.textContent=words().unavailable;status.dataset.i18n="unavailable"});
+  }
 })();
 </script>
 </body></html>
