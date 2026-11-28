@@ -16,13 +16,20 @@ import { readSnapshot, writeSnapshot } from "./weekly.js";
 const API = "https://openapi.sosovalue.com/openapi/v1";
 const FRED = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFEDTARL,DFEDTARU&cosd=2021-01-01";
 const KEY = "fed:v1";
-const FRESH_MS = 3 * 3600 * 1000, RETRY_MS = 10 * 60 * 1000;
+const FRESH_MS = 3 * 3600 * 1000, RETRY_MS = 10 * 60 * 1000, RETRY_EMPTY_MS = 60 * 1000; // sooner while nothing was ever loaded
 const num = (v) => { const n = parseFloat(String(v == null ? "" : v).replace("%", "")); return Number.isFinite(n) ? n : null; };
 
 function json(value, status = 200, maxAge = 0) {
   return new Response(JSON.stringify(value), { status, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": maxAge ? `public, max-age=${maxAge}` : "no-store" } });
 }
-const rowsOf = (b) => (b && Array.isArray(b.data) ? b.data : b && b.data && Array.isArray(b.data.list) ? b.data.list : Array.isArray(b) ? b : []);
+// The rows wherever SoSoValue puts them: the body, `data`, or a list inside `data` (as the admin probe reads them).
+function rowsOf(body) {
+  if (Array.isArray(body)) return body;
+  const d = body && typeof body === "object" ? (body.data !== undefined ? body.data : body) : null;
+  if (Array.isArray(d)) return d;
+  if (d && typeof d === "object") for (const k of ["list", "items", "rows", "meetings", "events", "data"]) if (Array.isArray(d[k])) return d[k];
+  return [];
+}
 
 // [{ meeting_date, probabilities: ["1.6", …] }] → [{ date, probs: [numbers] }], by date.
 export function meetingsFrom(body) {
@@ -59,10 +66,14 @@ const hist = (name) => `/macro/events/${encodeURIComponent(name)}/history?limit=
 export async function refresh(env, old, now = Date.now()) {
   const out = { ...(old || {}), schemaVersion: "marketlevelmap-fed-v1", triedAt: new Date(now).toISOString() };
   let ok = false;
-  if (env.SOSOVALUE_API_KEY && (await reserve(env.USERS_DB, 3, now))) {
-    const [m, cpi, pce] = await Promise.all([soso(env, "/macro/fomc-probabilities"), soso(env, hist("CPI (YoY)")), soso(env, hist("Core PCE Price Index (YoY)"))].map((p) => p.catch(() => null)));
+  out.problem = null; // why the last try gave no meetings (no data values), for checking from outside
+  if (!env.SOSOVALUE_API_KEY) out.problem = "no key";
+  else if (!(await reserve(env.USERS_DB, 3, now))) out.problem = "busy";
+  else {
+    const [m, cpi, pce] = await Promise.all([soso(env, "/macro/fomc-probabilities"), soso(env, hist("CPI (YoY)")), soso(env, hist("Core PCE Price Index (YoY)"))].map((p) => p.catch((e) => ({ failed: String(e && e.message || e).slice(0, 60) }))));
     const meetings = meetingsFrom(m), c = seriesFrom(cpi), p = seriesFrom(pce);
     if (meetings.length) { out.meetings = meetings; out.meetingsAt = new Date(now).toISOString(); ok = true; }
+    else out.problem = m && m.failed ? m.failed : "shape: " + (m && typeof m === "object" ? Object.keys(m.data && typeof m.data === "object" ? m.data : m).slice(0, 8).join(",") : typeof m);
     if (c.length) out.cpi = c;
     if (p.length) out.corePce = p;
   }
@@ -79,17 +90,17 @@ export async function onRequestGet({ env, waitUntil }) {
   const db = env.USERS_DB, now = Date.now();
   const stored = await readSnapshot(db, KEY), data = stored && stored.data;
   const tried = data && data.triedAt ? now - Date.parse(data.triedAt) : Infinity;
-  const due = (!stored || now - stored.at > FRESH_MS) && tried > RETRY_MS;
+  const due = (!stored || now - stored.at > FRESH_MS) && tried > (data && data.meetings ? RETRY_MS : RETRY_EMPTY_MS);
   const run = () => refresh(env, data, Date.now()).then(async (fresh) => { await writeSnapshot(db, KEY, fresh, fresh.fetchedAt ? Date.now() : (stored ? stored.at : 0)); return fresh; });
   if (data && data.meetings) {
     if (due && waitUntil) waitUntil(run().catch(() => null));
     const { triedAt, ...body } = data; // eslint-disable-line no-unused-vars
     return json({ source: "SoSoValue, FRED", ...body }, 200, 600);
   }
-  if (!due) return json({ error: "unavailable" }, 200, 0);
+  if (!due) return json({ error: "unavailable", problem: (data && data.problem) || null }, 200, 0);
   try {
     const fresh = await run();
     const { triedAt, ...body } = fresh; // eslint-disable-line no-unused-vars
-    return json(fresh.meetings ? { source: "SoSoValue, FRED", ...body } : { error: "unavailable" }, 200, fresh.meetings ? 600 : 0);
+    return json(fresh.meetings ? { source: "SoSoValue, FRED", ...body } : { error: "unavailable", problem: fresh.problem || null }, 200, fresh.meetings ? 600 : 0);
   } catch (_) { return json({ error: "unavailable" }, 200, 0); }
 }
