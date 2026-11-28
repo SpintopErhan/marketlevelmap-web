@@ -634,7 +634,10 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
   function tiles(box,items){
     var W=box.clientWidth,H=box.clientHeight;if(!W||!H)return;
     var known=items.map(function(it){return it.weight}).filter(function(v){return v>0}).sort(function(a,b){return a-b});
-    var floor=known.length?known[Math.floor(known.length/2)]*0.35:1;
+    // Smallest tile: a third of the median, and never smaller than about 46×34 px so its name and change still fit
+    // (the coins with the least volume would otherwise get a tile too small to label).
+    var floor=known.length?known[Math.floor(known.length/2)]*0.35:1,MIN_AREA=1600;
+    for(var pass=0;pass<3;pass++){var sum=items.reduce(function(a,it){return a+Math.max(it.weight||0,floor)},0);floor=Math.max(floor,sum*MIN_AREA/(W*H))}
     var rects=Treemap.layout(items.map(function(it){return Math.max(it.weight||0,floor)}),W,H);
     if(box.children.length!==items.length||box.dataset.keys!==items.map(function(it){return it.key}).join()){
       box.innerHTML=items.map(function(it){return it.href?'<a href="'+it.href+'"><b></b><span></span></a>':"<div><b></b><span></span></div>"}).join("");box.dataset.keys=items.map(function(it){return it.key}).join()}
@@ -646,6 +649,11 @@ if(marketRows&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
       var words2=it.label.split(" "),longest=Math.max.apply(null,words2.map(function(x){return x.length})),wrap=false;
       if(lw(fs)>r.w&&words2.length>1){fs=Math.max(9,Math.min(22,Math.sqrt(r.w*r.h)/5.5));while(fs>9&&fs*0.62*longest+6>r.w)fs-=1;wrap=fs*0.62*longest+6<=r.w}
       var lines=wrap?2:1,b=el.firstChild,sp=el.lastChild,fitsL=(wrap||lw(fs)<=r.w)&&r.h>=fs*1.15*lines+4,fitsV=fitsL&&r.h>=fs*(1.15*lines+1.15)+4&&fs*0.62*it.value.length*0.8+6<=r.w;
+      // A tall, narrow tile whose name does not fit across: the text runs upwards instead.
+      var vert=false;
+      if(!fitsL&&r.h>r.w*1.5){var vf=Math.max(9,Math.min(16,r.w*0.55));if(vf*0.62*it.label.length+6<=r.h&&vf+4<=r.w){vert=true;fs=vf;fitsL=true;wrap=false;
+        fitsV=r.w>=vf*2.3&&vf*0.62*(it.label.length+it.value.length)*0.9+12<=r.h}}
+      el.style.writingMode=vert?"vertical-rl":"";el.style.transform="";b.style.transform=sp.style.transform=vert?"rotate(180deg)":"";
       b.style.whiteSpace=wrap?"normal":"";
       b.textContent=fitsL?it.label:"";sp.textContent=fitsV?it.value:"";b.style.fontSize=fs+"px";sp.style.fontSize=Math.max(9,fs*0.8)+"px"});
   }
