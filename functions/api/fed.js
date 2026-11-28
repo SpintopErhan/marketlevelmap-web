@@ -5,6 +5,7 @@
 //   1.6 %, 400-425 98.4 %). Should the market ever price cuts below the current range, this has to be checked again
 //   (README "Fed meetings").
 // - Inflation: SoSoValue's macro event history of "CPI (YoY)" and "Core PCE Price Index (YoY)" (actual, forecast).
+// - The effective federal funds rate: FRED series DFF (daily), as monthly averages.
 // - The Fed's target range history: FRED (Federal Reserve Bank of St. Louis), series DFEDTARL / DFEDTARU, as the
 //   dates on which the range changed.
 // Stored in D1 (snapshots, key fed:v2) and refreshed in the background when older than 3 hours (10 minutes after a
@@ -16,7 +17,8 @@ import { readSnapshot, writeSnapshot } from "./weekly.js";
 const API = "https://openapi.sosovalue.com/openapi/v1";
 const FRED = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFEDTARL,DFEDTARU&cosd=2021-01-01";
 const FED_TABLE = "https://www.federalreserve.gov/monetarypolicy/openmarket.htm";
-const KEY = "fed:v2"; // v2: 72 inflation releases instead of 60
+const KEY = "fed:v3"; // v3: with the effective rate
+const FRED_EFFECTIVE = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFF&cosd=2021-01-01";
 const FRESH_MS = 3 * 3600 * 1000, RETRY_MS = 10 * 60 * 1000, RETRY_EMPTY_MS = 60 * 1000; // sooner while nothing was ever loaded
 const num = (v) => { const n = parseFloat(String(v == null ? "" : v).replace("%", "")); return Number.isFinite(n) ? n : null; };
 
@@ -82,6 +84,18 @@ export function fedTableSteps(html) {
   return steps.filter((r, i) => i === 0 || r.lower !== steps[i - 1].lower || r.upper !== steps[i - 1].upper);
 }
 
+// FRED daily effective federal funds rate (DFF) → monthly averages [{ month: "2024-05", value }] (the current month
+// so far), oldest first.
+export function monthlyAverages(csv) {
+  const sums = new Map();
+  for (const line of String(csv || "").split(/\r?\n/).slice(1)) {
+    const [d, v] = line.split(","), n = num(v);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d || "") || n == null) continue;
+    const k = d.slice(0, 7), a = sums.get(k) || [0, 0]; a[0] += n; a[1]++; sums.set(k, a);
+  }
+  return [...sums.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1)).map(([month, [sum, count]]) => ({ month, value: Math.round(sum / count * 100) / 100 }));
+}
+
 async function soso(env, path) {
   const r = await fetch(API + path, { headers: { "x-soso-api-key": env.SOSOVALUE_API_KEY, Accept: "application/json" }, signal: AbortSignal.timeout(8000) });
   if (!r.ok) throw new Error(`sosovalue ${r.status}`);
@@ -113,6 +127,13 @@ export async function refresh(env, old, now = Date.now()) {
       tries.push(name + " " + r.status + (r.ok ? " no rows" : ""));
     } catch (e) { tries.push(name + " " + String(e && e.message || e).slice(0, 40)); }
   }
+  // The effective rate (what banks actually pay overnight, kept inside the range by the Fed).
+  try {
+    const r = await fetch(FRED_EFFECTIVE, { headers: { "User-Agent": "Mozilla/5.0 (compatible; MarketLevelMap/1.0; +https://marketlevelmap.com)", Accept: "text/csv,*/*" }, signal: AbortSignal.timeout(8000) });
+    const months = r.ok ? monthlyAverages(await r.text()) : [];
+    if (months.length) { out.effective = months; out.effectiveAt = new Date(now).toISOString(); out.effectiveProblem = null; }
+    else out.effectiveProblem = "fred " + r.status;
+  } catch (e) { out.effectiveProblem = "fred " + String(e && e.message || e).slice(0, 40); }
   out.targetProblem = tries.length && !out.targetAt ? tries.join("; ") : out.target ? null : tries.join("; ");
   if (ok) out.fetchedAt = new Date(now).toISOString();
   return out;
@@ -123,7 +144,7 @@ export async function onRequestGet({ env, waitUntil }) {
   const stored = await readSnapshot(db, KEY), data = stored && stored.data;
   const tried = data && data.triedAt ? now - Date.parse(data.triedAt) : Infinity;
   // Also tried again (every 10 minutes) while the target range is missing.
-  const due = (!stored || now - stored.at > FRESH_MS || (data && !data.target)) && tried > (data && data.meetings ? RETRY_MS : RETRY_EMPTY_MS);
+  const due = (!stored || now - stored.at > FRESH_MS || (data && (!data.target || !data.effective))) && tried > (data && data.meetings ? RETRY_MS : RETRY_EMPTY_MS);
   const run = () => refresh(env, data, Date.now()).then(async (fresh) => { await writeSnapshot(db, KEY, fresh, fresh.fetchedAt ? Date.now() : (stored ? stored.at : 0)); return fresh; });
   if (data && data.meetings) {
     if (due && waitUntil) waitUntil(run().catch(() => null));
