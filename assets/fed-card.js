@@ -84,7 +84,7 @@
     var rows = meetings.map(function (m) {
       var k = top(m.probs), bar = m.probs.map(function (p, i) { return p > 0 ? '<i style="width:' + p + "%;background:" + color(i) + '" title="' + esc(rangeOf(cur, i) + " · " + pctTxt(p)) + '"></i>' : ""; }).join("");
       return '<div class="fed-row"><b>' + esc(day(m.date, { year: "2-digit" })) + '</b><div class="fed-bar" role="img" aria-label="' + esc(m.probs.map(function (p, i) { return rangeOf(cur, i) + " " + pctTxt(p); }).join(", ")) + '">' + bar +
-        "</div><small>" + esc(t.likely) + ": <strong>" + esc(rangeOf(cur, k)) + "</strong> (" + esc(change(k)) + ") · " + esc(pctTxt(m.probs[k])) + "</small></div>";
+        "</div><small>" + esc(t.likely) + ": <strong>" + esc(rangeOf(cur, k)) + "</strong>" + (cur ? " (" + esc(change(k)) + ")" : "") + " · " + esc(pctTxt(m.probs[k])) + "</small></div>";
     }).join("");
     var keys = []; for (var i = 0; i < Math.max(used, 1); i++) keys.push([rangeOf(cur, i), color(i)]);
     el.innerHTML = '<h2 id="fed-title">' + esc(t.title) + "</h2>" + '<p class="fed-sub">' + (cur ? esc(t.now.replace("{r}", rangeOf(cur, 0)).replace("{d}", day(cur.date, { year: "numeric" }))) : "") + "</p>" +
@@ -98,7 +98,7 @@
   function renderLine(el) {
     var m = data && data.meetings && data.meetings[0]; if (!m) { el.hidden = true; return; }
     var t = w(), target = data.target || [], cur = target[target.length - 1], k = top(m.probs);
-    el.innerHTML = esc(t.next.replace("{d}", day(m.date)).replace("{r}", rangeOf(cur, k)).replace("{c}", change(k)).replace("{p}", pctTxt(m.probs[k]))) + ' · <a href="weekly-events.html#fed">' + esc(t.more) + "</a>";
+    el.innerHTML = esc(t.next.replace("{d}", day(m.date)).replace(" ({c})", cur ? " ({c})" : "").replace("{r}", rangeOf(cur, k)).replace("{c}", change(k)).replace("{p}", pctTxt(m.probs[k]))) + ' · <a href="weekly-events.html#fed">' + esc(t.more) + "</a>";
     el.hidden = false;
   }
   function render() {
