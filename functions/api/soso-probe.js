@@ -1,7 +1,7 @@
 // Admin-only check of which SoSoValue API data the site's key can read (README "ETF flows"). GET
-// /api/soso-probe?part=1|2|3: each part sends at most 12 requests, taken from the ETF flows minute budget, and answers
+// /api/soso-probe?part=1|2|3|4: each part sends at most 12 requests, taken from the ETF flows minute budget, and answers
 // per endpoint only the HTTP status, SoSoValue's code and message, the row count, the date range and the field names —
-// never the data itself. Run the parts a minute apart.
+// never the data itself (part 4 also a short sample: README "Fed meetings"). Run the parts a minute apart.
 import { adminUser } from "./auth/[[path]].js";
 import { reserve } from "./etf-flows.js";
 
@@ -49,7 +49,29 @@ export const PARTS = {
     ["v3 ETF holdings (SPY)", V3 + "/instruments/SPY.US/holdings"],
     ["v3 earnings (NVDA)", V3 + "/parties/NVDA.US/earnings"],
   ],
+  // Fed meetings (28 Nov 2026, after SoSoValue allowed republishing with credit): this part also answers a short
+  // sample of each response, to learn the shapes before the feature is built.
+  4: [
+    ["FOMC probabilities", V1 + "/macro/fomc-probabilities"],
+    ["Macro rates", V1 + "/macro/rates"],
+    ["Macro events", V1 + "/macro/events"],
+    ["FOMC history", V1 + "/macro/events/FOMC/history?limit=50"],
+    ["Fed rate decision history", V1 + "/macro/events/" + encodeURIComponent("Fed Interest Rate Decision") + "/history?limit=50"],
+    ["Interest rate decision history", V1 + "/macro/events/" + encodeURIComponent("Interest Rate Decision") + "/history?limit=50"],
+    ["Fed funds rate history", V1 + "/macro/events/" + encodeURIComponent("Federal Funds Rate") + "/history?limit=50"],
+    ["Rate history (FEDFUNDS)", V1 + "/macro/rates/FEDFUNDS/history?limit=50"],
+    ["Chart names", V1 + "/analyses"],
+  ],
 };
+const SAMPLE_PARTS = new Set([4]);
+// A short look at the data itself: the chart list's names in full, else the first rows (or the object), cut short.
+export function sample(body, name) {
+  const rows = rowsOf(body);
+  if (name === "Chart names" && rows) return rows.map((r) => r && r.chart_name).filter(Boolean);
+  const v = rows ? rows.slice(0, 3) : body && body.data !== undefined ? body.data : body;
+  const t = JSON.stringify(v);
+  return t && t.length > 2500 ? t.slice(0, 2500) + "…" : v;
+}
 
 const DATE_KEYS = ["date", "timestamp", "time", "t", "ts", "open_time", "meeting_date", "release_time", "publish_time"];
 function toDay(v) {
@@ -106,7 +128,9 @@ export async function onRequestGet({ request, env }) {
       const r = await fetch(url, { headers: { "x-soso-api-key": env.SOSOVALUE_API_KEY, Accept: "application/json" }, signal: AbortSignal.timeout(10000) });
       let body = null;
       try { body = await r.json(); } catch (_) { /* not JSON */ }
-      results.push({ name, path: url.replace(/^https:\/\/openapi\.sosovalue\.com\/openapi/, ""), ...describe(r.status, body) });
+      const row = { name, path: url.replace(/^https:\/\/openapi\.sosovalue\.com\/openapi/, ""), ...describe(r.status, body) };
+      if (SAMPLE_PARTS.has(part)) row.sample = sample(body, name);
+      results.push(row);
     } catch (e) {
       results.push({ name, path: url.replace(/^https:\/\/openapi\.sosovalue\.com\/openapi/, ""), status: 0, ok: false, message: String(e && e.message || e).slice(0, 120) });
     }

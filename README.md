@@ -566,6 +566,15 @@ An asset that cannot be loaded hides the previous asset's figures and shows the 
   the stored copy at once; older than three hours it is refreshed in the background (no Worker needed); after a
   failed refresh the next try waits ten minutes and the old data keeps being served. Public cache ten minutes.
 
+## Fed meetings
+
+Planned (28 Nov 2026): SoSoValue allows republishing its API data with credit. The first item is the Fed (FOMC)
+meetings: the rate probabilities of the coming meetings (`/v1/macro/fomc-probabilities`: `meeting_date`,
+`probabilities`) and, if SoSoValue has it, the past rate decisions, possibly as a chart. Before building, the admin
+probe's part 4 (`/api/soso-probe?part=4`) answers a short sample of the FOMC, rates and macro event endpoints and the
+names of the analysis charts, to learn their shapes. Everything else from SoSoValue waits for the Worker plan
+(December 2026).
+
 ## Price Action view
 
 Price Action (PA) is a separate discipline from Critical Zones (CZ), so the analysis page shows it as its own
