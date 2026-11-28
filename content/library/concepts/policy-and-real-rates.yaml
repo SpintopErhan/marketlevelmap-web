@@ -85,7 +85,7 @@ tr:
       items:
         - title: 2022 ortası
           tone: down
-          text: Efektif faiz yaklaşık %1,6, TÜFE yaklaşık %8,6. Reel faiz yaklaşık −%7. Fed artırımlara başlamıştı ama faiz enflasyonun çok altındaydı.
+          text: Efektif faiz yaklaşık %1,2 (haziran ortalaması), TÜFE yaklaşık %8,6. Reel faiz yaklaşık −%7,4. Fed artırımlara başlamıştı ama faiz enflasyonun çok altındaydı.
         - title: 2024 başı
           tone: up
           text: Efektif faiz yaklaşık %5,3, TÜFE yaklaşık %3,4. Reel faiz yaklaşık +%1,9. Faiz enflasyonun belirgin biçimde üstündeydi.
@@ -201,7 +201,7 @@ en:
       items:
         - title: Mid-2022
           tone: down
-          text: Effective rate about 1.6%, CPI about 8.6%. Real rate about −7%. The Fed had started raising, but the rate was far below inflation.
+          text: Effective rate about 1.2% (June average), CPI about 8.6%. Real rate about −7.4%. The Fed had started raising, but the rate was far below inflation.
         - title: Early 2024
           tone: up
           text: Effective rate about 5.3%, CPI about 3.4%. Real rate about +1.9%. The rate was clearly above inflation.
