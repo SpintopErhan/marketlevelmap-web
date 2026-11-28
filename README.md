@@ -390,7 +390,8 @@ the macro block).
     old and of the same UTC day).
   - The weekly outlook page (`weekly.html`) is linked under the map.
 - **Tile size:** square root of the asset's 24-hour USD volume (USDC volume for tokens), so BTC and ETH are the big
-  tiles and the small coins stay readable; an asset without volume yet gets a third of the median's size. The sizes
+  tiles and the small coins stay readable; an asset without volume yet gets a third of the median's size, and no tile
+  is smaller than about 46×34 px (1600 px²) so its name always fits; a tall narrow tile writes its name upwards. The sizes
   are measured again at most once a minute (at once when a volume first arrives) so the tiles do not jump; both
   views use the same sizes. Macro tiles are all the same size. Layout: squarified treemap (`assets/treemap.js`,
   `Treemap.layout(weights, width, height)`).
