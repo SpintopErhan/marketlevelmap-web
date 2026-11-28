@@ -820,7 +820,8 @@ fed by the price band: the analysed assets and their live prices).
 Reached from the site header (next to "Live flow") and from the "Multi view" button beside "Live flow" above the analysis
 chart (that asset and the compared one, else BTC, on the same timeframe).
 
-- Each chart has its own asset (the analysed ones) and timeframe (zones from the asset's "CZ" report for 1D / 1W and
+- Each chart has its own asset (since 28 Nov 2026 every asset with candles, crypto and tokenized stocks, from the
+  candle index; the ones without a Critical Zones analysis are marked "no analysis" in the list and show candles only) and timeframe (zones from the asset's "CZ" report for 1D / 1W and
   "CZ_SHORT" for 1H / 4H, as on the analysis page); changing either reloads that chart in place
   (`LiveChart.reload(tf, { pair })`). Candles, the zones of the asset's Critical Zones report for that timeframe, the
   live price (dashed line and the price at the top, from the shared price stream) and "Analysis →" to that analysis.
