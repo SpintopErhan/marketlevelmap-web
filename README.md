@@ -580,15 +580,29 @@ An asset that cannot be loaded hides the previous asset's figures and shows the 
 
 ## Fed meetings
 
-Planned (28 Nov 2026): SoSoValue allows republishing its API data with credit. The first item is the Fed (FOMC)
-meetings: the rate probabilities of the coming meetings (`/v1/macro/fomc-probabilities`: `meeting_date`,
-`probabilities`) and, if SoSoValue has it, the past rate decisions, possibly as a chart. Before building, the admin
-probe's part 4 (`/api/soso-probe?part=4`) answers a short sample of the FOMC, rates and macro event endpoints and the
-names of the analysis charts, to learn their shapes. Part 4 (28 Nov): the probabilities come as six unlabeled numbers per meeting (which rate range each is
-is not stated) and no Fed decision history was found under the names tried. Part 5 tries the names as SoSoValue's
-macro page shows them ("CPI (YoY)"), the full list of coming events and more names for the Fed decision, and the SOFR
-history. Everything else from SoSoValue waits for the Worker plan
-(December 2026).
+"Fed and inflation / Fed ve enflasyon" (28 Nov 2026): a card on the weekly events page (`#fed`) and one line under the
+home page's events ("Next Fed meeting: 9 Dec · most likely 4.00–4.25% (+25 bp) · 98.4% · Fed and inflation →").
+Drawn by `assets/fed-card.js` (`[data-fed="card"]`, `[data-fed="line"]`) from `GET /api/fed` (`functions/api/fed.js`).
+
+- **Coming meetings:** SoSoValue `/v1/macro/fomc-probabilities` (republished with credit; SoSoValue allowed it on
+  28 Nov 2026): eight meetings, six numbers each, without labels. Checked against CME FedWatch on 28 Nov 2026
+  (9 Dec 2026: 375–400 = 1.6 %, 400–425 = 98.4 %, current target 375–400): **position 0 is the current target range,
+  each next position 25 bp higher.** If the market ever prices cuts below the current range, check this again
+  (CME FedWatch, the meeting's "Target Rate Probabilities"). Each meeting: a stacked bar (current range grey, one
+  colour per 25 bp step) and "most likely: range (change) · probability". The ranges are written from FRED's current
+  lower bound; without FRED as "+25 bp" steps.
+- **Chart:** the Fed's target range since 2021 (a band stepping at each decision; FRED series DFEDTARL / DFEDTARU,
+  Federal Reserve Bank of St. Louis), the path implied by the probabilities (the probability-weighted upper bound at
+  each meeting, dashed), and US inflation year on year: CPI and core PCE (SoSoValue macro history "CPI (YoY)",
+  "Core PCE Price Index (YoY)", last 60 releases). A "today" line.
+- **Words:** descriptive only ("probabilities priced by the market"; "not a forecast of this site"), explained behind
+  the ⓘ. Credit line: "Probabilities and inflation: SoSoValue · Target range: FRED (St. Louis Fed)".
+- **Refresh:** stored in D1 (`snapshots`, key `fed:v1`), refreshed in the background when older than 3 hours (10
+  minutes after a failed try), 3 requests from the SoSoValue minute budget shared with the ETF flows (`reserve`). A
+  part that fails keeps its previous copy; with no copy at all the card says the data could not be loaded and the
+  home line stays hidden.
+- No Fed decision history exists in SoSoValue (admin probe parts 4 and 5: "event not found" for every name tried),
+  hence FRED. Everything else from SoSoValue waits for the Worker plan (December 2026).
 
 ## Price Action view
 
