@@ -1159,8 +1159,18 @@
         var entries = (body && body.entries) || [], assets = {};
         entries.forEach(function (e) { var a = MarketUI.assetOf(e); if (/^[A-Z0-9]{2,15}USDT$/.test(a)) assets[a] = 1; });
         assets[asset] = 1;
-        var sel = $("fl-asset-sel"); sel.textContent = "";
-        Object.keys(assets).sort(MarketUI.byPopularity).forEach(function (a) { var o = document.createElement("option"); o.value = a; o.textContent = a; if (a === asset) o.selected = true; sel.appendChild(o); });
+        // Every crypto pair with candles too, with or without analysis (README "Assets without analysis"); tokenized
+        // stocks have no exchange stream and stay out.
+        MarketUI.catalog().then(function (cat) {
+          Object.keys(cat || {}).forEach(function (a) { if (/^[A-Z0-9]{2,15}USDT$/.test(a)) assets[a] = 1; });
+          fillAssets();
+        });
+        var sel = $("fl-asset-sel");
+        function fillAssets() {
+          sel.textContent = "";
+          Object.keys(assets).sort(MarketUI.byPopularity).forEach(function (a) { var o = document.createElement("option"); o.value = a; o.textContent = a; if (a === asset) o.selected = true; sel.appendChild(o); });
+        }
+        fillAssets();
         sel.onchange = function () { location.search = "?asset=" + encodeURIComponent(sel.value) + (MARKET === "futures" ? "&market=futures" : ""); };
         loadZones(entries.filter(function (e) { return MarketUI.assetOf(e) === asset; }));
       }).catch(function () {});

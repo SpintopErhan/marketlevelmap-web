@@ -498,9 +498,11 @@ export const OPEN_TIMEFRAME = "1d";
 export function timeframeOfKey(graphicKey) { return String(graphicKey || "").split(":")[2]?.toLowerCase() || ""; }
 // Tokenized stocks (pairs <TICKER>CUSDC, README "Tokenized stocks") are members-only on every timeframe.
 export const isTokenizedPair = (symbol) => /^[A-Z]{1,6}CUSDC$/.test(String(symbol || ""));
-export function isOpenEntry(item) {
-  const key = String(item && item.graphicKey || "");
-  return timeframeOfKey(key) === OPEN_TIMEFRAME && !isTokenizedPair(key.split(":")[1]);
+// Access rule of 28 Nov 2026 (README "Accounts"): no analysis is open to guests, on any timeframe. Guests see the
+// candles and the market data (indicators, key levels, volume profile) everywhere; the analysis (zones, Price Action,
+// note) is for approved members. Every report reaches a guest as guestReport (no zones).
+export function isOpenEntry(item) { // eslint-disable-line no-unused-vars
+  return false;
 }
 // What a guest receives instead of a members-only report: only what names the chart, and locked: true.
 // Zones, range, FVG, structure, key levels, note and the no-range card are left out on the server.
