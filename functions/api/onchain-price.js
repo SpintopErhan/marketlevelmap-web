@@ -4,7 +4,7 @@
 // change: a new one becomes the main pool). The 24-hour figures come from the 1H candle files: open 24 hours ago,
 // high, low and USDC volume (field 9) of the last 24 candles. Without pools.json, or when no pool answers, or when the
 // pool price is far from a recent candle (a broken or emptied pool), the price is the last candle's close and says so.
-// Answer: { at, prices: [ { s, c, o, h, l, q, quote: "USDC", source: "pool"|"candle", priceAt, candleAt } ] }; cached
+// Answer: { at, prices: [ { s, c, o, h, l, q, day (open of today's first 1H candle, UTC), quote: "USDC", source: "pool"|"candle", priceAt, candleAt } ] }; cached
 // 20 seconds at the edge.
 const CANDLES = "https://data.marketlevelmap.com/candles/";
 const RPCS = ["https://mainnet.base.org", "https://base-rpc.publicnode.com"];
@@ -87,7 +87,10 @@ export function readPools(f, pair) {
 export function dayStats(rows) {
   if (!rows.length) return null;
   const last = rows[rows.length - 1], from = last[0] - 23 * HOUR, day = rows.filter((r) => r[0] >= from);
+  // Today's open: the first candle of the last candle's UTC day (the market heat map's daily view).
+  const midnight = Math.floor(last[0] / 86400) * 86400, first = rows.find((r) => r[0] >= midnight);
   return {
+    dayOpen: first ? Number(first[1]) : null,
     o: Number(day[0][1]), h: Math.max(...day.map((r) => Number(r[2]))), l: Math.min(...day.map((r) => Number(r[3]))),
     q: day.reduce((a, r) => a + (Number(r[9]) || 0), 0), last: Number(last[4]), candleAt: (last[0] + HOUR) * 1000,
   };
@@ -110,7 +113,7 @@ async function pairInfo(pair, index) {
 // The answer for one pair from its candles and the pools' words: the first pool (main first) with a sane price.
 export function priceFrom(info, words, now = Date.now()) {
   const { pair, st, cfg } = info;
-  const out = { s: pair, o: st.o, h: st.h, l: st.l, q: st.q, quote: "USDC", c: st.last, source: "candle", priceAt: st.candleAt, candleAt: st.candleAt };
+  const out = { s: pair, o: st.o, h: st.h, l: st.l, q: st.q, day: st.dayOpen, quote: "USDC", c: st.last, source: "candle", priceAt: st.candleAt, candleAt: st.candleAt };
   for (const address of cfg ? cfg.pools : []) {
     const word = words[address.toLowerCase()], p = word ? poolPrice(word, cfg.token, cfg.quote) : null;
     if (!p) continue;

@@ -126,7 +126,7 @@ export function yahooWeek(body, start) {
   }
   return null;
 }
-const YAHOO_HEADERS = { "User-Agent": "Mozilla/5.0 (compatible; MarketLevelMap/1.0)", Accept: "application/json" };
+export const YAHOO_HEADERS = { "User-Agent": "Mozilla/5.0 (compatible; MarketLevelMap/1.0)", Accept: "application/json" };
 async function macroWeek(symbol, start) {
   for (const host of ["query1", "query2"]) {
     let body = null;
