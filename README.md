@@ -401,6 +401,21 @@ the macro block).
   change and the 24 h volume. A tile opens the asset's analysis page (1D; tokens 4H). The ⓘ beside the title explains
   all this.
 
+## Market breadth
+
+Under the home page's heat map (`#br`), Turkish name "Piyasa genişliği" (28 Nov 2026): of the crypto assets followed
+here (the heat map's, PAXG left out; tokenized stocks not counted), how many stand above each reference at the live
+price, as "n/of" with a bar: up over 24 hours; above the current day's, week's and month's open (UTC; the market
+table's feeds, else the DO / WO / MO key levels); above the EMA20, EMA50 and EMA200 of the last closed daily candle
+(`ema` from `/api/closed-changes`, read from the daily candle files it already fetches); within 25% of the ATH
+(levels.json). A row shows only when at least 60% of the assets (and 5) have the figure. Descriptive: whether a move
+is broad or carried by a few assets. The ⓘ explains it.
+
+**Heat map "vs BTC" / "BTC'ye göre"** (same day): a toggle beside the tabs; the crypto tiles then show
+(1 + change) / (1 + BTC's change) − 1 for the chosen tab (BTC is 0), tokenized stocks and macro stay in dollars; the
+range line says "· vs BTC". Kept in this browser (`mlm-heatmap-vsbtc`). The closed periods saved in the browser carry
+`v: 2` (with the EMAs); an older copy is fetched again.
+
 ## Weekly outlook
 
 `weekly.html` (`/weekly`) and the Weekly view of the home page's heat map (README "Market heat map"). Data: `GET /api/weekly`

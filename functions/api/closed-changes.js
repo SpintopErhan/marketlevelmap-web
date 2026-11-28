@@ -10,6 +10,7 @@
 //   ended before today (over a weekend Friday) against the session before's close; week and month are the sessions of
 //   last week (a futures session dated Sunday counts to the next week) and last month, first open to last close. The
 //   yield in basis points.
+// Each pair also carries `ema`: [EMA20, EMA50, EMA200] of its last closed daily candle (the market breadth card).
 // Answer: { at, periods: { day: {from, to}, week: {from, to, isoWeek}, month: {from, to} } (ISO dates, `to`
 // exclusive), assets: { PAIR: { day, week, month, source? } }, macro: { dxy: { day, week, month, dayDate } … } }.
 // Kept at the edge until the next UTC midnight once every value is there, else 10 minutes.
@@ -89,6 +90,9 @@ async function pairChanges(pair, index, P, budget) {
   if (Array.isArray(tf.archives) && tf.archives.includes(year) && String(tf.latest) !== year) rows = rows.concat(((await getJson(base + year + ".json", budget)) || {}).candles || []);
   const out = {};
   for (const k of ["day", "week", "month"]) out[k] = closedChange(rows, P[k]);
+  // The EMAs (20, 50, 200) of the last daily candle in the file, for the market breadth card (fields 6–8).
+  const lastRow = rows.filter((r) => Array.isArray(r) && Number(r[0]) < P.day.to).sort((a, b) => a[0] - b[0]).pop();
+  if (lastRow) out.ema = [6, 7, 8].map((i) => (Number(lastRow[i]) > 0 ? Number(lastRow[i]) : null));
   const m = /^([A-Z0-9]+)USDT$/.exec(pair);
   if (m) {
     const bars = { day: "1Dutc", week: "1Wutc", month: "1Mutc" };
@@ -106,7 +110,7 @@ export async function onRequestGet(context) {
   if (!["0", "1", "2", "macro"].includes(part)) return json({ error: "part" });
   const now = Date.now(), P = periods(now);
   const cache = typeof caches !== "undefined" ? caches.default : null;
-  const key = new Request(`${url.origin}/api/closed-changes?part=${part}&d=${iso(P.day.to)}`);
+  const key = new Request(`${url.origin}/api/closed-changes?part=${part}&d=${iso(P.day.to)}&v=2`);
   if (cache) { const hit = await cache.match(key); if (hit) return hit; }
   const budget = { left: 45 };
   const body = { at: new Date(now).toISOString(), periods: {
