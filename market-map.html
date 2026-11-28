@@ -11,7 +11,7 @@ main{padding:0 0 70px}
 .filter-btn{min-height:36px;padding:7px 16px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:13px;font-weight:600;cursor:pointer}
 .filter-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}.filter-btn:disabled{opacity:.5;cursor:default}
 .wk-status{padding:40px 0;color:var(--muted);text-align:center}.wk-status[hidden]{display:none}
-.wk{display:grid;grid-template-columns:340px minmax(0,1fr);gap:24px;align-items:start}.wk[hidden]{display:none}
+.wk{display:block}.wk[hidden]{display:none}
 .wk h2{margin:0 0 10px;font-size:15px;font-weight:600;color:var(--muted)}.wk-sub{font-weight:400}
 .wk-heat{display:grid;grid-template-columns:1fr 1fr;gap:5px}
 .wk-src{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.4}
@@ -50,6 +50,22 @@ main{padding:0 0 70px}
 /* Market map page (README "Market map page"): sections and the in-page links. */
 .mm-head{margin-bottom:10px}.mm-nav{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0 0 16px;font-size:13px}.mm-nav a{color:var(--accent);font-weight:600;text-decoration:none}.mm-nav a:hover{text-decoration:underline}
 .mm-sec{margin-top:36px;scroll-margin-top:16px}#harita{scroll-margin-top:16px}.mm-h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-.3px}.wk-head{margin-top:0}
+.mm-more{color:var(--accent);font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap}.mm-more:hover{text-decoration:underline}
+.mm-sec[hidden]{display:none}
+.etf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:800px){.etf-grid{grid-template-columns:minmax(0,1fr)}}
+.etf-box{padding:14px 16px;border-radius:14px;background:var(--panel);text-decoration:none;color:var(--fg);display:block}.etf-box:hover{outline:2px solid var(--accent);outline-offset:-2px}
+.etf-box h3{margin:0;font-size:14px}.etf-box .v{margin:6px 0 2px;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}.etf-box .s{color:var(--muted);font-size:12px}
+.etf-box .up{color:var(--up)}.etf-box .down{color:var(--down)}
+.etf-bars{display:flex;align-items:center;gap:4px;height:56px;margin-top:10px;position:relative}.etf-bars::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px solid var(--line)}
+.etf-bars span{position:relative;flex:1;height:100%}.etf-bars i{position:absolute;left:0;right:0;border-radius:3px}.etf-bars small{position:absolute;bottom:-16px;left:0;right:0;text-align:center;color:var(--muted);font-size:10px}
+.etf-box .bars-pad{height:14px}
+.pf-mode{display:inline-flex;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}.pf-mode button{min-height:30px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:var(--muted);font:600 12px Inter,system-ui,sans-serif;cursor:pointer}.pf-mode button[aria-pressed=true]{background:var(--raise);color:var(--fg)}
+.pf-wrap{overflow-x:auto;border-radius:14px;background:var(--panel)}.pf{width:100%;min-width:520px;border-collapse:collapse;font-size:13px}
+.pf th{padding:10px 12px;color:var(--muted);font-size:12px;font-weight:500;text-align:right;white-space:nowrap;cursor:pointer;user-select:none}.pf th:first-child{text-align:left;cursor:default}.pf th[aria-sort]{color:var(--fg)}
+.pf td{padding:7px 12px;border-top:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.pf td:first-child{text-align:left}
+.pf td a{color:var(--fg);font-weight:600;text-decoration:none}.pf td a:hover{color:var(--accent)}.pf td small{color:var(--muted);font-weight:400}
+.pf td.c{font-weight:600}.pf tr.ref td{background:var(--raise)}
+.mm-frame{display:block;width:100%;height:560px;border:0;background:transparent}
 #genel .mctx-card{padding:18px 20px;border-radius:16px;background:var(--panel)}
 @media(max-width:720px){.mctx-card.mctx-cols{grid-template-columns:1fr}}
 .mctx-card.mctx-cols{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px;align-items:start}.mctx-cols .mctx-grp{display:grid;gap:6px;min-width:0}.mctx-cols .mctx-grp .mctx-g:not(:first-child){margin-top:8px}.mctx-cols>.mctx-src{grid-column:1 / -1}
@@ -58,7 +74,7 @@ main{padding:0 0 70px}
 .mctx-card .mctx-l{color:var(--muted)}.mctx-card a.mctx-l{color:var(--muted);text-decoration:underline dotted;text-underline-offset:3px}.mctx-card .mctx-v{font-weight:700;font-variant-numeric:tabular-nums}.mctx-card .mctx-c{font-size:12px;min-width:70px;text-align:right}
 .mctx-card .mctx-g{margin:6px 0 0;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}.mctx-card .mctx-g:first-child{margin-top:0}.mctx-gn{font-weight:400;text-transform:none;letter-spacing:0}
 .mctx-src{margin:2px 0 0;color:var(--muted);font-size:11px}.mctx-item .up{color:var(--up)}.mctx-item .down{color:var(--down)}
-</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}</style><script src="assets/disclaimer.js?v=b31b4039" defer></script><script src="assets/info-tip.js?v=99a5c153" defer></script><script src="assets/quotes.js?v=6680cc05" defer></script><script src="assets/heatmap.js?v=41ecac7e" defer></script><script src="assets/market-context.js?v=a60d55ea" defer></script><script src="/assets/account.js?v=c70364fc" defer></script><script src="assets/market-cache.js?v=27e99bcb"></script><script src="assets/market-feed.js?v=514edd48"></script><script src="assets/onchain-feed.js?v=a58f5938"></script><script src="assets/treemap.js?v=0a9072ba"></script><script src="assets/market-ui.js?v=f289e3ca"></script></head><body><div class="shell"><header>
+</style><script>try{var t=localStorage.getItem("mlm-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script><script>/* embed=1: inside the admin social media desk, without the site header and footer. */if(/[?&]embed=1(&|$)/.test(location.search))document.documentElement.classList.add("embed")</script><style>html.embed body>.shell>header,html.embed footer{display:none!important}</style><script src="assets/disclaimer.js?v=df86e10f" defer></script><script src="assets/info-tip.js?v=99a5c153" defer></script><script src="assets/quotes.js?v=6680cc05" defer></script><script src="assets/fed-card.js?v=46b254b7" defer></script><script src="assets/heatmap.js?v=139b49ad" defer></script><script src="assets/market-context.js?v=a60d55ea" defer></script><script src="/assets/account.js?v=c70364fc" defer></script><script src="assets/market-cache.js?v=27e99bcb"></script><script src="assets/market-feed.js?v=514edd48"></script><script src="assets/onchain-feed.js?v=a58f5938"></script><script src="assets/treemap.js?v=0a9072ba"></script><script src="assets/market-ui.js?v=f289e3ca"></script></head><body><div class="shell"><header>
 <a href="index.html" aria-label="MarketLevelMap home"><picture class="logo-light"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-color.svg?v=3d9a4574"><img class="logo logo-header" src="assets/MarketLevelMap-full-color.svg?v=083238c5" alt="MarketLevelMap"></picture><picture class="logo-dark"><source media="(max-width:520px)" srcset="assets/MarketLevelMap-mark-reverse.svg?v=b884e3ca"><img class="logo logo-header" src="assets/MarketLevelMap-full-reverse.svg?v=16ce6cf9" alt="MarketLevelMap"></picture></a>
 <nav class="nav" aria-label="Primary navigation"><div class="nav-links"><a href="index.html" data-tr="Piyasa">Market</a><a href="market-map" data-tr="Piyasa haritası" aria-current="page">Market map</a><a href="weekly-events.html" data-tr="Haftalık olaylar">Weekly events</a><a href="flow" data-tr="Canlı akış">Live flow</a><a href="multi" data-tr="Çoklu izleme">Multi view</a><a href="etf" data-tr="ETF akışları">ETF flows</a><a href="/en/library/" data-tr="Kütüphane" data-href-tr="/tr/kutuphane/">Library</a><a href="/en/about/" data-tr="Hakkında" data-href-tr="/tr/hakkinda/">About</a></div><div class="controls" aria-label="Site preferences"><div class="lang"><label for="lang">Language</label><select id="lang"><option value="en">EN</option><option value="tr">TR</option></select></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><span class="toggle-thumb"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.7A8.5 8.5 0 0 1 8.3 3.4 8.5 8.5 0 1 0 20.6 15.7Z"></path></svg></button></div></nav>
 </header></div>
@@ -67,28 +83,32 @@ main{padding:0 0 70px}
 </script>
 <main class="shell">
 <div class="page-head mm-head"><div><h1 data-i18n="pageTitle">Market map</h1><p class="meta" data-i18n="pageSub">The whole market on one page: the heat map, market breadth, last week's outlook and market context.</p></div></div>
-<nav class="mm-nav" aria-label="On this page"><a href="#harita" data-i18n="navMap">Map</a><a href="#haftalik" data-i18n="navWeekly">Weekly outlook</a><a href="#genel" data-i18n="navCtx">Market context</a></nav>
+<nav class="mm-nav" aria-label="On this page"><a href="#harita" data-i18n="navMap">Map and breadth</a><a href="#seviyeler" data-i18n="navLevels">Levels and structure</a><a href="#getiriler" data-i18n="navReturns">Monthly returns</a><a href="#fed" data-i18n="navFed">Fed and inflation</a><a href="#etf" data-i18n="navEtf">ETF flows</a><a href="#performans" data-i18n="navPerf">Performance</a><a href="#genel" data-i18n="navCtx">Market context</a></nav>
 <section class="hm-card hm-big" id="harita" data-heatmap aria-labelledby="hm-title" hidden></section>
-<section class="mm-sec" id="haftalik" aria-labelledby="wk-title">
-<div class="page-head wk-head"><div><h2 class="mm-h2" id="wk-title" data-i18n="heading">Weekly outlook</h2><p class="meta"><span id="wk-range"></span><span>·</span><span id="wk-week"></span><span>·</span><span data-i18n="asOf">weekly close</span></p></div>
-<div class="wk-actions"><a class="filter-btn" href="returns.html" data-i18n="returnsLink" style="display:inline-flex;align-items:center;color:inherit;text-decoration:none">Monthly returns</a> <button class="filter-btn" type="button" id="wk-download" disabled data-i18n="download">Download image</button></div></div>
+<section class="mm-sec" id="seviyeler" aria-labelledby="wk-title">
+<div class="page-head wk-head"><div><h2 class="mm-h2" id="wk-title" data-i18n="stand">Levels and structure</h2><p class="meta"><span id="wk-range"></span><span>·</span><span id="wk-week"></span><span>·</span><span data-i18n="asOf">weekly close</span></p></div>
+<div class="wk-actions"> <button class="filter-btn" type="button" id="wk-download" disabled data-i18n="download">Download image</button></div></div>
 <div id="wk-status" class="wk-status" data-i18n="loading">Loading the weekly outlook…</div>
 <div class="wk" id="wk" hidden>
-<section class="wk-heat-wrap" aria-labelledby="wk-h-last"><h2 id="wk-h-last"><span data-i18n="lastWeek">Weekly change</span></h2><div class="wk-heat" id="wk-heat"></div><p class="wk-src" id="wk-src" hidden></p>
-<h2 class="wk-h-macro" id="wk-h-stocks" hidden data-i18n="stocks">Tokenized stocks</h2><div class="wk-heat wk-macro" id="wk-stocks" hidden></div>
-<h2 class="wk-h-macro" id="wk-h-macro" hidden data-i18n="macro">Macro and commodities</h2><div class="wk-heat wk-macro" id="wk-macro" hidden></div></section>
-<section class="wk-stand-wrap" aria-labelledby="wk-h-stand"><h2 id="wk-h-stand" data-i18n="stand">Levels and structure</h2>
+<section class="wk-stand-wrap">
 <div class="wk-panel"><div class="wk-row wk-hd"><span data-i18n="asset">Asset</span><span data-i18n="mo">Monthly open</span><span data-i18n="yo">Yearly open</span><span data-i18n="ath">All-time high</span><span data-i18n="align">Structure direction</span></div><div id="wk-rows"></div></div></section>
 </div>
 <p class="table-note" data-i18n="note" data-tip="">Weekly change is open to close of the weekly candle. Distances are measured from the weekly close. Structure direction is the trend of the latest 1W, 1D and 4H Price Action analyses.</p>
 </section>
+<section class="mm-sec" id="getiriler" aria-label="Monthly returns"><iframe class="mm-frame" id="rt-frame" src="returns.html?embed=1" title="Monthly returns" loading="lazy"></iframe></section>
+<section class="fed-card mm-sec" id="fed" data-fed="card" aria-labelledby="fed-title" hidden></section>
+<section class="mm-sec" id="etf" aria-labelledby="etf-title" hidden><div class="page-head"><div><h2 class="mm-h2" id="etf-title" data-i18n="etfTitle">ETF flows</h2><p class="meta" id="etf-day"></p></div><a class="mm-more" href="etf" data-i18n="etfMore">ETF flows page →</a></div>
+<div class="etf-grid" id="etf-grid"></div><p class="table-note" data-i18n="etfNote">Daily net flows of the US spot ETFs (all funds of an asset together), the latest trading day and the last five. Data: SoSoValue.</p></section>
+<section class="mm-sec" id="performans" aria-labelledby="pf-title" hidden><div class="page-head"><div><h2 class="mm-h2" id="pf-title" data-i18n="pfTitle">Performance</h2><p class="meta" data-i18n="pfSub">Crypto over 1 week, 1 month, 3 months and 1 year</p></div>
+<div class="pf-mode" role="group" id="pf-mode"><button type="button" data-mode="btc" data-i18n="pfBtc">vs BTC</button><button type="button" data-mode="usd" data-i18n="pfUsd">In dollars</button></div></div>
+<div class="pf-wrap"><table class="pf" id="pf-table"></table></div><p class="table-note" data-i18n="pfNote" data-tip="">Change from the close N days ago (00:00 UTC) to the live price. vs BTC: (1 + the asset's change) / (1 + BTC's change) − 1, so how much better or worse than BTC; BTC itself is shown in dollars. Click a column to sort. An asset listed later has no figure for the longer periods.</p></section>
 <section class="mm-sec" id="genel" aria-labelledby="ctx-title"><div class="page-head"><div><h2 class="mm-h2" id="ctx-title" data-i18n="ctxTitle">Market context</h2><p class="meta" data-i18n="ctxSub">Crypto, macro and commodities</p></div></div><div class="mctx-card mctx-cols" data-mctx="card" data-mctx-cols="1"></div></section>
 </main>
 <div class="shell"><footer><p>© 2026 MarketLevelMap<a href="https://x.com/marketlevelmap" target="_blank" rel="noopener" aria-label="MarketLevelMap on X" style="display:inline-flex;align-items:center;gap:5px;margin-left:10px;color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" style="fill:currentColor"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.12z"/></svg>@marketlevelmap</a></p><p class="footnote"><span data-tr="İçerikler genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Tablodaki fiyatlar ve grafikteki mumlar anlıktır; bölgeler, seviyeler ve analizler belirtilen analiz tarihine aittir ve canlı güncellenmez. Finansal piyasalarda işlem yapmak yüksek risk taşır; analizler getiri garantisi sunmaz.">Content is for general information only and is not investment advice. Prices in the table and the chart candles are live; zones, levels and analyses reflect the stated analysis date and are not updated live. Trading in financial markets carries high risk; analyses offer no guarantee of returns.</span><br><button class="disclaimer-link" type="button" data-disclaimer>Information and Risk Notice</button></p></footer></div>
 <script>
 var copy={
-  en:{pageTitle:"Market map",pageSub:"The whole market on one page: the heat map, market breadth, last week's outlook and market context.",navMap:"Map and breadth",navWeekly:"Weekly outlook",navCtx:"Market context",ctxTitle:"Market context",ctxSub:"Crypto, macro and commodities",returnsLink:"Monthly returns",title:"Market map",heading:"Weekly outlook",asOf:"weekly close",download:"Download image",loading:"Loading the weekly outlook…",failed:"The weekly outlook could not be loaded. Please try again later.",lastWeek:"Weekly change",okxAll:"Source: OKX (the Binance candles are not uploaded yet).",stocks:"Tokenized stocks",okxSome:"Source for {list}: OKX (the Binance candles are not uploaded yet).",stand:"Levels and structure",asset:"Asset",mo:"Monthly open",yo:"Yearly open",ath:"All-time high",lh:"LH · highest since listing",align:"Structure direction",week:"Week {n}",aligned:"Aligned {dir}",main:"Main {dir} · 4H against",conflict:"Conflict",unknown:"Not determined",note:"Weekly change is open to close of the weekly candle. Distances are measured from the weekly close. Structure direction is the trend of the latest 1W, 1D and 4H Price Action analyses. Macro and commodities: the Monday-to-Friday weekly candle from Yahoo Finance (DXY, S&P 500 and Nasdaq 100 futures, COMEX gold and silver futures); the 10-year yield's change in basis points (bp).",imgTitle:"Weekly outlook",imgSub:"How {n} assets closed the week and where they stand at the weekly close",imgFoot:"marketlevelmap.com · Charts, not signals",macro:"Macro and commodities",mDxy:"DXY",mUs10y:"US 10Y yield",mSpx:"S&P 500 fut.",mNdx:"Nasdaq 100 fut.",mGold:"Gold",mSilver:"Silver",mUs10yS:"US 10Y",mSpxS:"S&P 500",mNdxS:"Nasdaq 100"},
-  tr:{pageTitle:"Piyasa haritası",pageSub:"Piyasanın tamamı tek sayfada: ısı haritası, piyasa genişliği, geçen haftanın görünümü ve piyasa geneli.",navMap:"Harita ve genişlik",navWeekly:"Haftanın görünümü",navCtx:"Piyasa geneli",ctxTitle:"Piyasa geneli",ctxSub:"Kripto, makro ve emtia",returnsLink:"Aylık getiriler",title:"Piyasa haritası",heading:"Haftanın görünümü",asOf:"haftalık kapanış",download:"Görseli indir",loading:"Haftanın görünümü yükleniyor…",failed:"Haftanın görünümü yüklenemedi. Lütfen daha sonra tekrar deneyin.",lastWeek:"Haftalık değişim",okxAll:"Kaynak: OKX (Binance mumları henüz yüklenmedi).",stocks:"Tokenize hisseler",okxSome:"{list} için kaynak: OKX (Binance mumları henüz yüklenmedi).",stand:"Seviyeler ve yapı",asset:"Varlık",mo:"Aylık açılış",yo:"Yıllık açılış",ath:"Tüm zamanların zirvesi",lh:"LH · listelendiğinden beri zirve",align:"Yapı yönü",week:"{n}. hafta",aligned:"Uyumlu {dir}",main:"Ana yön {dir} · 4H ters",conflict:"Çelişkili",unknown:"Belirsiz",note:"Haftalık değişim, haftalık mumun açılışından kapanışına değişimdir. Uzaklıklar haftalık kapanışa göre ölçülür. Yapı yönü, en güncel 1W, 1D ve 4H Price Action analizlerindeki trendin yönüdür. Makro ve emtia: Yahoo Finance'ten pazartesi–cuma haftalık mumu (DXY, S&P 500 ve Nasdaq 100 vadelileri, COMEX altın ve gümüş vadelileri); 10 yıllık faizde değişim baz puan (bp) olarak.",imgTitle:"Haftanın görünümü",imgSub:"{n} varlık haftayı nasıl kapattı ve haftalık kapanışta nerede duruyor",imgFoot:"marketlevelmap.com · Sinyal değil, harita",macro:"Makro ve emtia",mDxy:"DXY",mUs10y:"ABD 10Y faiz",mSpx:"S&P 500 vadeli",mNdx:"Nasdaq 100 vadeli",mGold:"Altın",mSilver:"Gümüş",mUs10yS:"ABD 10Y",mSpxS:"S&P 500",mNdxS:"Nasdaq 100"}
+  en:{etfTitle:"ETF flows",etfMore:"ETF flows page →",etfNote:"Daily net flows of the US spot ETFs (all funds of an asset together), the latest trading day and the last five. Data: SoSoValue.",etfDay:"US spot ETFs · {d}",etf5:"5 days {v}",etfOthers:"Other coins",pfTitle:"Performance",pfSub:"Crypto over 1 week, 1 month, 3 months and 1 year",pfBtc:"vs BTC",pfUsd:"In dollars",pfNote:"Change from the close N days ago (00:00 UTC) to the live price. vs BTC: (1 + the asset's change) / (1 + BTC's change) − 1, so how much better or worse than BTC; BTC itself is shown in dollars. Click a column to sort. An asset listed later has no figure for the longer periods.",pfAsset:"Asset",pf7:"1 week",pf30:"1 month",pf90:"3 months",pf365:"1 year",pfUsdTag:"in dollars",pageTitle:"Market map",pageSub:"The whole market on one page: heat map and breadth, levels and structure, monthly returns, the Fed and inflation, ETF flows, performance and market context.",navMap:"Map and breadth",navLevels:"Levels and structure",navReturns:"Monthly returns",navFed:"Fed and inflation",navEtf:"ETF flows",navPerf:"Performance",navCtx:"Market context",ctxTitle:"Market context",ctxSub:"Crypto, macro and commodities",returnsLink:"Monthly returns",title:"Market map",heading:"Weekly outlook",asOf:"weekly close",download:"Download image",loading:"Loading the weekly outlook…",failed:"The weekly outlook could not be loaded. Please try again later.",lastWeek:"Weekly change",okxAll:"Source: OKX (the Binance candles are not uploaded yet).",stocks:"Tokenized stocks",okxSome:"Source for {list}: OKX (the Binance candles are not uploaded yet).",stand:"Levels and structure",asset:"Asset",mo:"Monthly open",yo:"Yearly open",ath:"All-time high",lh:"LH · highest since listing",align:"Structure direction",week:"Week {n}",aligned:"Aligned {dir}",main:"Main {dir} · 4H against",conflict:"Conflict",unknown:"Not determined",note:"Each asset where it closed last week against its monthly open, its yearly open and its all-time high (tokenized stocks: LH, their highest since listing). Distances are measured from last week's close. Structure direction is the trend of the latest 1W, 1D and 4H Price Action analyses.",imgTitle:"Weekly outlook",imgSub:"How {n} assets closed the week and where they stand at the weekly close",imgFoot:"marketlevelmap.com · Charts, not signals",macro:"Macro and commodities",mDxy:"DXY",mUs10y:"US 10Y yield",mSpx:"S&P 500 fut.",mNdx:"Nasdaq 100 fut.",mGold:"Gold",mSilver:"Silver",mUs10yS:"US 10Y",mSpxS:"S&P 500",mNdxS:"Nasdaq 100"},
+  tr:{etfTitle:"ETF akışları",etfMore:"ETF akışları sayfası →",etfNote:"ABD spot ETF'lerinin günlük net akışı (bir varlığın tüm fonları birlikte); son işlem günü ve son beş gün. Veri: SoSoValue.",etfDay:"ABD spot ETF'leri · {d}",etf5:"5 gün {v}",etfOthers:"Diğer coinler",pfTitle:"Performans",pfSub:"Kriptolar 1 hafta, 1 ay, 3 ay ve 1 yılda",pfBtc:"BTC'ye göre",pfUsd:"Dolar cinsinden",pfNote:"N gün önceki kapanıştan (UTC 00:00) canlı fiyata değişim. BTC'ye göre: (1 + varlığın değişimi) / (1 + BTC'nin değişimi) − 1; yani BTC'den ne kadar iyi ya da kötü. BTC'nin kendisi dolar cinsinden gösterilir. Sıralamak için sütuna tıklayın. Sonradan listelenen varlıkta uzun dönemler boştur.",pfAsset:"Varlık",pf7:"1 hafta",pf30:"1 ay",pf90:"3 ay",pf365:"1 yıl",pfUsdTag:"dolar",pageTitle:"Piyasa haritası",pageSub:"Piyasanın tamamı tek sayfada: harita ve genişlik, seviyeler ve yapı, aylık getiriler, Fed ve enflasyon, ETF akışları, performans ve piyasa geneli.",navMap:"Harita ve genişlik",navLevels:"Seviyeler ve yapı",navReturns:"Aylık getiriler",navFed:"Fed ve enflasyon",navEtf:"ETF akışları",navPerf:"Performans",navCtx:"Piyasa geneli",ctxTitle:"Piyasa geneli",ctxSub:"Kripto, makro ve emtia",returnsLink:"Aylık getiriler",title:"Piyasa haritası",heading:"Haftanın görünümü",asOf:"haftalık kapanış",download:"Görseli indir",loading:"Haftanın görünümü yükleniyor…",failed:"Haftanın görünümü yüklenemedi. Lütfen daha sonra tekrar deneyin.",lastWeek:"Haftalık değişim",okxAll:"Kaynak: OKX (Binance mumları henüz yüklenmedi).",stocks:"Tokenize hisseler",okxSome:"{list} için kaynak: OKX (Binance mumları henüz yüklenmedi).",stand:"Seviyeler ve yapı",asset:"Varlık",mo:"Aylık açılış",yo:"Yıllık açılış",ath:"Tüm zamanların zirvesi",lh:"LH · listelendiğinden beri zirve",align:"Yapı yönü",week:"{n}. hafta",aligned:"Uyumlu {dir}",main:"Ana yön {dir} · 4H ters",conflict:"Çelişkili",unknown:"Belirsiz",note:"Her varlığın geçen haftayı kapattığı yerin aylık açılışa, yıllık açılışa ve tüm zamanların zirvesine (tokenize hisselerde LH, listelendiğinden beri en yüksek) göre konumu. Uzaklıklar geçen haftanın kapanışına göre ölçülür. Yapı yönü, en güncel 1W, 1D ve 4H Price Action analizlerindeki trendin yönüdür.",imgTitle:"Haftanın görünümü",imgSub:"{n} varlık haftayı nasıl kapattı ve haftalık kapanışta nerede duruyor",imgFoot:"marketlevelmap.com · Sinyal değil, harita",macro:"Makro ve emtia",mDxy:"DXY",mUs10y:"ABD 10Y faiz",mSpx:"S&P 500 vadeli",mNdx:"Nasdaq 100 vadeli",mGold:"Altın",mSilver:"Gümüş",mUs10yS:"ABD 10Y",mSpxS:"S&P 500",mNdxS:"Nasdaq 100"}
 };
 function words(){return copy[document.getElementById("lang").value]||copy.en}
 function applyLanguage(value){
@@ -149,6 +169,8 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
       return'<a class="wk-tile'+(i===0?" big":"")+'" href="'+href(a.symbol)+'" style="background:'+tileFill(v)+'"><b>'+esc(MarketUI.baseOf(a.symbol))+'</b><span>'+pctText(v)+"</span></a>"}
     // Crypto in the main heatmap; tokenized stocks in their own row of tiles under it.
     var coins=list.filter(function(a){return!MarketUI.isTokenized(a.symbol)}),stocks=list.filter(function(a){return MarketUI.isTokenized(a.symbol)});
+    // The weekly tiles left the page (the heat map above shows the same); kept only where the elements exist.
+    if(el("wk-heat")){
     el("wk-heat").innerHTML=coins.map(tile).join("");
     el("wk-stocks").hidden=el("wk-h-stocks").hidden=!stocks.length;el("wk-stocks").innerHTML=stocks.map(function(a){return tile(a,1)}).join("");
     // Last week taken from OKX because the Binance candle files do not have it yet (README "Weekly outlook").
@@ -156,6 +178,7 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
     if(okx.length)el("wk-src").textContent=okx.length===list.filter(function(a){return a.lastWeek}).length?w.okxAll:w.okxSome.replace("{list}",okx.map(function(a){return MarketUI.baseOf(a.symbol)}).join(", "));
     var ml=macroList();el("wk-macro").hidden=el("wk-h-macro").hidden=!ml;
     if(ml)el("wk-macro").innerHTML=ml.map(function(x){return'<div class="wk-tile" style="background:'+tileFill(x.scaled)+'" title="'+esc(x.label)+'"><b>'+esc(x.short)+"</b><span>"+x.text+"</span></div>"}).join("");
+    }
     function cell(v,lo,hi,label,cls){var g=v==null?null:barGeom(v,lo,hi);
       return'<div class="wk-cell"><span class="wk-lbl">'+label+'</span><div class="wk-track"><i class="wk-zero" style="left:'+((g?g.zero:(0-lo)/(hi-lo))*100)+'%"></i>'+(g?'<i class="wk-bar '+(cls||(v>=0?"pos":"neg"))+'" style="left:'+g.left*100+"%;width:"+g.width*100+'%"></i>':"")+"</div><span>"+pctText(v)+"</span></div>"}
     el("wk-rows").innerHTML=list.map(function(a,i){var al=alignment(a.alignment||{});
@@ -241,4 +264,76 @@ toggle.addEventListener("click",function(){document.documentElement.dataset.them
 })();
 </script>
 
+<script>
+/* ETF flows summary (README "Market map page"): /api/etf-flows?asset=ALL; BTC, ETH and the other coins together:
+   the latest US trading day's net flow, the last five days' sum and bars. Shown when BTC or ETH answers. */
+(function(){
+  var sec=document.getElementById("etf"),got=null;
+  function W(){return copy[document.getElementById("lang").value]||copy.en}
+  function usd(v,signed){if(v==null||!isFinite(v))return"–";var a=Math.abs(v),tr=MarketUI.lang()==="tr",u=tr?[[1e9," Mr"],[1e6," Mn"],[1e3," B"]]:[[1e9,"B"],[1e6,"M"],[1e3,"K"]],t=null;
+    for(var i=0;i<u.length;i++)if(a>=u[i][0]){t=(a/u[i][0]).toLocaleString(MarketUI.locale(),{maximumFractionDigits:a/u[i][0]>=100?0:a/u[i][0]>=10?1:2})+u[i][1];break}
+    if(t==null)t=a.toLocaleString(MarketUI.locale(),{maximumFractionDigits:0});var sg=signed?(v>0?"+":v<0?"−":""):"";return tr?sg+t+" $":sg+"$"+t}
+  function render(){
+    if(!got)return;var w=W(),by={};got.forEach(function(a){by[a.asset]=a.days||[]});
+    var main=["BTC","ETH"].filter(function(a){return by[a]&&by[a].length});if(!main.length)return;
+    var dates=[];main.forEach(function(a){by[a].forEach(function(d){if(dates.indexOf(d.date)<0)dates.push(d.date)})});dates=dates.sort().slice(-5);
+    var others=got.filter(function(a){return a.asset!=="BTC"&&a.asset!=="ETH"&&a.days&&a.days.length});
+    function series(list){return dates.map(function(d){var v=0,seen=false;list.forEach(function(a){(by[a]||[]).forEach(function(x){if(x.date===d){v+=x.netInflow||0;seen=true}})});return seen?v:null})}
+    var groups=main.map(function(a){return{name:a,href:"etf"+(a==="BTC"?"":"?a="+a),vals:series([a])}});
+    if(others.length)groups.push({name:w.etfOthers,title:others.map(function(a){return a.asset}).join(", "),href:"etf?a="+others[0].asset,vals:series(others.map(function(a){return a.asset}))});
+    // Each box on its own scale (the other coins' flows are far smaller than BTC's).
+    var day=function(d){return new Date(d+"T00:00:00Z").toLocaleDateString(MarketUI.locale(),{timeZone:"UTC",day:"numeric",month:"short"})};
+    document.getElementById("etf-day").textContent=w.etfDay.replace("{d}",day(dates[dates.length-1]));
+    document.getElementById("etf-grid").innerHTML=groups.map(function(g){var last=g.vals[g.vals.length-1],five=g.vals.reduce(function(a,v){return a+(v||0)},0);
+      var max=0;g.vals.forEach(function(v){if(v!=null)max=Math.max(max,Math.abs(v))});
+      var bars=g.vals.map(function(v,i){var h=max&&v!=null?Math.abs(v)/max*50:0;return'<span title="'+MarketUI.escape(day(dates[i])+" · "+usd(v,true))+'"><i style="height:'+h.toFixed(1)+"%;"+(v>=0?"bottom:50%;background:var(--up)":"top:50%;background:var(--down)")+'"></i><small>'+MarketUI.escape(day(dates[i]).split(" ")[0])+"</small></span>"}).join("");
+      return'<a class="etf-box" href="'+g.href+'"'+(g.title?' title="'+MarketUI.escape(g.title)+'"':"")+"><h3>"+MarketUI.escape(g.name)+'</h3><div class="v '+(last>=0?"up":"down")+'">'+usd(last,true)+'</div><div class="s">'+MarketUI.escape(w.etf5.replace("{v}",usd(five,true)))+'</div><div class="etf-bars">'+bars+'</div><div class="bars-pad"></div></a>'}).join("");
+    sec.hidden=false;
+  }
+  fetch("/api/etf-flows?asset=ALL").then(function(r){return r.ok?r.json():null}).then(function(d){if(d&&Array.isArray(d.assets)){got=d.assets;render()}}).catch(function(){});
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+})();
+/* Performance (README "Market map page"): crypto over 1 week, 1 month, 3 months and 1 year: from the close N days
+   ago (/api/closed-changes `back`) to the live price (MLMQuotes, else the last close); in dollars or vs BTC. */
+(function(){
+  var sec=document.getElementById("performans"),table=document.getElementById("pf-table"),assets={},mode="btc",sortKey="d30",sortDir=-1;
+  try{var m0=localStorage.getItem("mlm-perf-mode");if(m0==="usd"||m0==="btc")mode=m0}catch(e){}
+  var COLS=[["d7","pf7",10],["d30","pf30",20],["d90","pf90",40],["d365","pf365",80]];
+  function W(){return copy[document.getElementById("lang").value]||copy.en}
+  function pct(v){if(v==null||!isFinite(v))return"–";var n=Math.abs(v).toLocaleString(MarketUI.locale(),{minimumFractionDigits:1,maximumFractionDigits:1}),s=v>0?"+":v<0?"−":"";return MarketUI.lang()==="tr"?s+"%"+n:s+n+"%"}
+  function bg(v,full){if(v==null||!isFinite(v))return"";var a=(0.12+0.5*Math.min(Math.abs(v)/full,1)).toFixed(2);return"background:"+(v>=0?"rgba(60,207,145,"+a+")":"rgba(239,107,115,"+a+")")}
+  function now(sym){var q=window.MLMQuotes&&MLMQuotes.get(sym);if(q&&q.price>0)return q.price;var a=assets[sym];return a&&a.last||null}
+  function raw(sym,k){var a=assets[sym],b=a&&a.back&&a.back[k],p=now(sym);return b&&p?(p/b-1)*100:null}
+  function val(sym,k){var v=raw(sym,k);if(mode==="usd"||sym==="BTCUSDT"||v==null)return v;var b=raw("BTCUSDT",k);return b==null?null:((1+v/100)/(1+b/100)-1)*100}
+  function render(){
+    var list=Object.keys(assets).filter(function(s){return!MarketUI.isTokenized(s)&&s!=="PAXGUSDT"});if(!list.length)return;
+    var w=W(),others=list.filter(function(s){return s!=="BTCUSDT"});
+    others.sort(function(a,b){var x=val(a,sortKey),y=val(b,sortKey);if(x==null&&y==null)return MarketUI.byPopularity(a,b);if(x==null)return 1;if(y==null)return-1;return(x-y)*sortDir});
+    var rows=(assets.BTCUSDT?["BTCUSDT"]:[]).concat(others);
+    table.innerHTML="<thead><tr><th>"+MarketUI.escape(w.pfAsset)+"</th>"+COLS.map(function(c){return'<th data-k="'+c[0]+'"'+(sortKey===c[0]?' aria-sort="'+(sortDir<0?"descending":"ascending")+'"':"")+">"+MarketUI.escape(w[c[1]])+(sortKey===c[0]?(sortDir<0?" ↓":" ↑"):"")+"</th>"}).join("")+"</tr></thead><tbody>"+
+      rows.map(function(s){var ref=s==="BTCUSDT"&&mode==="btc";return'<tr'+(ref?' class="ref"':"")+'><td><a href="bulletin.html?asset='+encodeURIComponent(s)+'&tf=1d">'+MarketUI.escape(MarketUI.baseOf(s))+"</a> <small>"+MarketUI.escape(MarketUI.nameOf(s)+(ref?" · "+w.pfUsdTag:""))+"</small></td>"+
+        COLS.map(function(c){var v=val(s,c[0]);return'<td class="c" style="'+(ref?"":bg(v,c[2]))+'">'+pct(v)+"</td>"}).join("")+"</tr>"}).join("")+"</tbody>";
+    document.querySelectorAll("#pf-mode button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.mode===mode))});
+    sec.hidden=false;
+  }
+  table.addEventListener("click",function(e){var th=e.target.closest("th[data-k]");if(!th)return;if(sortKey===th.dataset.k)sortDir=-sortDir;else{sortKey=th.dataset.k;sortDir=-1}render()});
+  document.getElementById("pf-mode").addEventListener("click",function(e){var b=e.target.closest("button[data-mode]");if(!b)return;mode=b.dataset.mode;try{localStorage.setItem("mlm-perf-mode",mode)}catch(_){}render()});
+  var n=0;["0","1","2"].forEach(function(part){fetch("/api/closed-changes?part="+part+"&v=3").then(function(r){return r.ok?r.json():null}).then(function(d){if(d&&d.assets)Object.keys(d.assets).forEach(function(k){assets[k]=d.assets[k]})}).catch(function(){}).then(function(){if(++n===3)render()})});
+  var t=null;document.addEventListener("mlm-quotes",function(){if(!t)t=setTimeout(function(){t=null;if(n===3)render()},2000)});
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+})();
+</script>
+<script>
+/* Monthly returns inside the page (README "Market map page"): returns.html?embed=1 in a frame that takes the height of
+   its content and follows this page's language and theme. */
+(function(){
+  var f=document.getElementById("rt-frame");if(!f)return;
+  function doc(){try{return f.contentDocument}catch(e){return null}}
+  function fit(){var d=doc();if(d&&d.documentElement)f.style.height=Math.max(200,d.documentElement.scrollHeight)+"px"}
+  function sync(){var d=doc();if(!d||!d.documentElement)return;var t=document.documentElement.dataset.theme;if(t)d.documentElement.dataset.theme=t;else delete d.documentElement.dataset.theme;
+    var mine=document.getElementById("lang"),theirs=d.getElementById("lang");if(mine&&theirs&&theirs.value!==mine.value){theirs.value=mine.value;theirs.dispatchEvent(new Event("change"))}fit()}
+  f.addEventListener("load",function(){var d=doc();sync();if(d&&window.ResizeObserver)new ResizeObserver(fit).observe(d.body);setTimeout(fit,800)});
+  new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:["lang","data-theme"]});
+})();
+</script>
 </body></html>

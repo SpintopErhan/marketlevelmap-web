@@ -10,7 +10,8 @@
 //   ended before today (over a weekend Friday) against the session before's close; week and month are the sessions of
 //   last week (a futures session dated Sunday counts to the next week) and last month, first open to last close. The
 //   yield in basis points.
-// Each pair also carries `ema`: [EMA20, EMA50, EMA200] of its last closed daily candle (the market breadth card).
+// Each pair also carries `last` (its last daily close), `back` ({ d7, d30, d90, d365 }: the closes N days ago, for the
+// market map page's performance table) and `ema`: [EMA20, EMA50, EMA200] of its last closed daily candle (the market breadth card).
 // Answer: { at, periods: { day: {from, to}, week: {from, to, isoWeek}, month: {from, to} } (ISO dates, `to`
 // exclusive), assets: { PAIR: { day, week, month, source? } }, macro: { dxy: { day, week, month, dayDate } … } }.
 // Kept at the edge until the next UTC midnight once every value is there, else 10 minutes.
@@ -50,6 +51,14 @@ export function closedChange(rows, p) {
   const first = byTime.get(p.from), last = byTime.get(p.to - DAY);
   return first && last ? pct(Number(last[4]), Number(first[1])) : null;
 }
+// { d7, d30, d90, d365 }: the close of the daily candle that ended at (today − N days) 00:00 UTC, or null.
+export function backCloses(rows, today) {
+  const byTime = new Map();
+  for (const r of rows) if (Array.isArray(r) && Number(r[4]) > 0) byTime.set(Number(r[0]), Number(r[4]));
+  const out = {};
+  for (const n of [7, 30, 90, 365]) out["d" + n] = byTime.get(today - (n + 1) * DAY) ?? null;
+  return out;
+}
 // OKX closed UTC candle starting at `from` (rows [ts ms, open, high, low, close, …, confirm]).
 export function okxClosed(body, from) {
   const rows = body && body.code === "0" && Array.isArray(body.data) ? body.data : [];
@@ -85,14 +94,16 @@ async function pairChanges(pair, index, P, budget) {
   if (!tf) return null;
   const base = `${CANDLES}${encodeURIComponent(pair)}/1d/`;
   let rows = ((await getJson(base + "latest.json", budget)) || {}).candles || [];
-  // January: last month (and maybe yesterday or last week) is in last year's file.
-  const year = String(new Date(P.month.from * 1000).getUTCFullYear());
+  // Last year's file: for the 1-year look-back (performance table), and in January for last month too.
+  const year = String(new Date((P.day.to - 366 * DAY) * 1000).getUTCFullYear());
   if (Array.isArray(tf.archives) && tf.archives.includes(year) && String(tf.latest) !== year) rows = rows.concat(((await getJson(base + year + ".json", budget)) || {}).candles || []);
   const out = {};
   for (const k of ["day", "week", "month"]) out[k] = closedChange(rows, P[k]);
   // The EMAs (20, 50, 200) of the last daily candle in the file, for the market breadth card (fields 6–8).
   const lastRow = rows.filter((r) => Array.isArray(r) && Number(r[0]) < P.day.to).sort((a, b) => a[0] - b[0]).pop();
-  if (lastRow) out.ema = [6, 7, 8].map((i) => (Number(lastRow[i]) > 0 ? Number(lastRow[i]) : null));
+  if (lastRow) { out.ema = [6, 7, 8].map((i) => (Number(lastRow[i]) > 0 ? Number(lastRow[i]) : null)); out.last = Number(lastRow[4]) || null; }
+  // Performance table: the close of the day that ended N days before today (00:00 UTC), N = 7, 30, 90, 365.
+  out.back = backCloses(rows, P.day.to);
   const m = /^([A-Z0-9]+)USDT$/.exec(pair);
   if (m) {
     const bars = { day: "1Dutc", week: "1Wutc", month: "1Mutc" };
@@ -110,7 +121,7 @@ export async function onRequestGet(context) {
   if (!["0", "1", "2", "macro"].includes(part)) return json({ error: "part" });
   const now = Date.now(), P = periods(now);
   const cache = typeof caches !== "undefined" ? caches.default : null;
-  const key = new Request(`${url.origin}/api/closed-changes?part=${part}&d=${iso(P.day.to)}&v=2`);
+  const key = new Request(`${url.origin}/api/closed-changes?part=${part}&d=${iso(P.day.to)}&v=3`);
   if (cache) { const hit = await cache.match(key); if (hit) return hit; }
   const budget = { left: 45 };
   const body = { at: new Date(now).toISOString(), periods: {

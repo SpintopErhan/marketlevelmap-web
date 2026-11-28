@@ -71,5 +71,5 @@
   function open(){if(!dialog.open){dialog.showModal();dialog.querySelector(".disclaimer-body").scrollTop=0}}
   document.querySelectorAll("[data-disclaimer]").forEach(function(el){el.addEventListener("click",open)});
   dialog.addEventListener("close",function(){try{localStorage.setItem(STORAGE_KEY,"accepted")}catch(e){}});
-  try{if(!localStorage.getItem(STORAGE_KEY))open()}catch(e){}
+  try{if(!localStorage.getItem(STORAGE_KEY)&&!document.documentElement.classList.contains("embed"))open()}catch(e){}
 })();

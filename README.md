@@ -370,9 +370,27 @@ page (the library generator and the static about, guide and privacy pages includ
 weekly outlook page: `/weekly` and `/weekly.html` answer 301 to `/market-map#haftalik` (`functions/_middleware.js`,
 the query kept; the admin social desk embeds `market-map.html?embed=1`). Sections, with in-page links at the top:
 1. **Map and breadth** (`#harita`): the market heat map, taller (`hm-big`), with the market breadth under it.
-2. **Weekly outlook** (`#haftalik`): the former page's content unchanged (last week's tiles, levels and structure,
-   monthly returns link, "Download image").
-3. **Market context** (`#genel`): the card moved here from the home page (`data-mctx="card"`, two columns).
+2. **Levels and structure** (`#seviyeler`): the weekly outlook's table (each asset's last weekly close against its
+   monthly open, yearly open and ATH, and the 1W·1D·4H structure direction) with "Download image" (the PNG and the
+   admin social desk unchanged). The weekly change tiles left the page on 28 Nov 2026: the heat map above shows the
+   same ("Last week" tab).
+3. **Monthly returns** (`#getiriler`): `returns.html?embed=1` in a frame that takes its content's height and follows
+   the page's language and theme (embed mode: no header, footer, side padding, background or risk notice dialog;
+   `disclaimer.js` skips the dialog in embed mode). `/returns` stays a page of its own.
+4. **Fed and inflation** (`#fed`): the card moved here from the weekly events page, which keeps the one-line summary;
+   the summary lines link `market-map#fed`.
+5. **ETF flows** (`#etf`): BTC, ETH and the other coins together: the latest US trading day's net flow, the five
+   days' sum and five bars (each box on its own scale), from `/api/etf-flows?asset=ALL`, linking to `/etf`.
+6. **Performance** (`#performans`): every crypto asset (PAXG and tokenized stocks left out) over 1 week, 1 month,
+   3 months and 1 year: from the close N days ago (`back.d7/d30/d90/d365` of `/api/closed-changes`, which now also
+   reads last year's daily file) to the live price (MLMQuotes, else the last close); "vs BTC" (default) or in dollars
+   (kept in `mlm-perf-mode`); BTC first, in dollars, as the reference; sortable by a column (1 month, descending, by
+   default); colour full at 10 / 20 / 40 / 80 %.
+7. **Market context** (`#genel`): the card moved here from the home page (`data-mctx="card"`, two columns).
+
+`/weekly` now lands on `#seviyeler`. The closed-period requests carry `&v=3` (a new URL each time their content grows,
+so a browser copy cached until midnight from before is not used: on 28 Nov the EMA rows of the breadth stayed hidden
+for a visitor whose browser held the morning's answer).
 
 The heat map and the breadth are one module, `assets/heatmap.js`, used by both pages: it fills the element with
 `data-heatmap` (optional `data-more-href`: a link at the bottom; the home page links this page there), brings its own
