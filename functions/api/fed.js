@@ -7,7 +7,7 @@
 // - Inflation: SoSoValue's macro event history of "CPI (YoY)" and "Core PCE Price Index (YoY)" (actual, forecast).
 // - The Fed's target range history: FRED (Federal Reserve Bank of St. Louis), series DFEDTARL / DFEDTARU, as the
 //   dates on which the range changed.
-// Stored in D1 (snapshots, key fed:v1) and refreshed in the background when older than 3 hours (10 minutes after a
+// Stored in D1 (snapshots, key fed:v2) and refreshed in the background when older than 3 hours (10 minutes after a
 // failed try), taking 3 requests from the SoSoValue minute budget shared with the ETF flows. A part that fails keeps
 // its previous copy.
 import { reserve } from "./etf-flows.js";
@@ -16,7 +16,7 @@ import { readSnapshot, writeSnapshot } from "./weekly.js";
 const API = "https://openapi.sosovalue.com/openapi/v1";
 const FRED = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFEDTARL,DFEDTARU&cosd=2021-01-01";
 const FED_TABLE = "https://www.federalreserve.gov/monetarypolicy/openmarket.htm";
-const KEY = "fed:v1";
+const KEY = "fed:v2"; // v2: 72 inflation releases instead of 60
 const FRESH_MS = 3 * 3600 * 1000, RETRY_MS = 10 * 60 * 1000, RETRY_EMPTY_MS = 60 * 1000; // sooner while nothing was ever loaded
 const num = (v) => { const n = parseFloat(String(v == null ? "" : v).replace("%", "")); return Number.isFinite(n) ? n : null; };
 
@@ -87,7 +87,7 @@ async function soso(env, path) {
   if (!r.ok) throw new Error(`sosovalue ${r.status}`);
   return r.json();
 }
-const hist = (name) => `/macro/events/${encodeURIComponent(name)}/history?limit=60`;
+const hist = (name) => `/macro/events/${encodeURIComponent(name)}/history?limit=72`; // six years: from 2021, the start of the chart
 
 export async function refresh(env, old, now = Date.now()) {
   const out = { ...(old || {}), schemaVersion: "marketlevelmap-fed-v1", triedAt: new Date(now).toISOString() };
