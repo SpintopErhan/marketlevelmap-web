@@ -15,6 +15,7 @@ import { readSnapshot, writeSnapshot } from "./weekly.js";
 
 const API = "https://openapi.sosovalue.com/openapi/v1";
 const FRED = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFEDTARL,DFEDTARU&cosd=2021-01-01";
+const FED_TABLE = "https://www.federalreserve.gov/monetarypolicy/openmarket.htm";
 const KEY = "fed:v1";
 const FRESH_MS = 3 * 3600 * 1000, RETRY_MS = 10 * 60 * 1000, RETRY_EMPTY_MS = 60 * 1000; // sooner while nothing was ever loaded
 const num = (v) => { const n = parseFloat(String(v == null ? "" : v).replace("%", "")); return Number.isFinite(n) ? n : null; };
@@ -56,6 +57,31 @@ export function rangeSteps(csv) {
   return out;
 }
 
+// The Board's "Open Market Operations" page: a table per year (a heading with the year, then rows "Month Day |
+// increase | decrease | level", the level "3.75-4.00"). → the same steps as rangeSteps, from 2021, oldest first.
+const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+const plain = (h) => h.replace(/<[^>]+>/g, " ").replace(/&nbsp;|&#160;/g, " ").replace(/\s+/g, " ").trim();
+export function fedTableSteps(html) {
+  const text = String(html || ""), out = [];
+  const years = [...text.matchAll(/<h[2-5][^>]*>\s*(\d{4})\s*<\/h[2-5]>/gi)].map((m) => ({ year: Number(m[1]), at: m.index }));
+  years.forEach((y, i) => {
+    const part = text.slice(y.at, i + 1 < years.length ? years[i + 1].at : undefined);
+    for (const row of part.match(/<tr[\s\S]*?<\/tr>/gi) || []) {
+      const cells = (row.match(/<t[dh][^>]*>[\s\S]*?<\/t[dh]>/gi) || []).map(plain);
+      if (cells.length < 2) continue;
+      const dm = /^([A-Za-z]+)\.?\s+(\d{1,2})/.exec(cells[0]), lv = /(\d+(?:\.\d+)?)\s*[-–]\s*(\d+(?:\.\d+)?)/.exec(cells[cells.length - 1]);
+      const mi = dm ? MONTHS.findIndex((m) => m.startsWith(dm[1].toLowerCase().slice(0, 3))) : -1;
+      if (mi < 0 || !lv) continue;
+      out.push({ date: new Date(Date.UTC(y.year, mi, Number(dm[2]))).toISOString().slice(0, 10), lower: Number(lv[1]), upper: Number(lv[2]) });
+    }
+  });
+  out.sort((a, b) => (a.date < b.date ? -1 : 1));
+  // From the range in force on 1 Jan 2021, like the FRED series.
+  const before = out.filter((r) => r.date < "2021-01-01").pop(), after = out.filter((r) => r.date >= "2021-01-01");
+  const steps = before ? [{ ...before, date: "2021-01-01" }].concat(after) : after;
+  return steps.filter((r, i) => i === 0 || r.lower !== steps[i - 1].lower || r.upper !== steps[i - 1].upper);
+}
+
 async function soso(env, path) {
   const r = await fetch(API + path, { headers: { "x-soso-api-key": env.SOSOVALUE_API_KEY, Accept: "application/json" }, signal: AbortSignal.timeout(8000) });
   if (!r.ok) throw new Error(`sosovalue ${r.status}`);
@@ -77,11 +103,17 @@ export async function refresh(env, old, now = Date.now()) {
     if (c.length) out.cpi = c;
     if (p.length) out.corePce = p;
   }
-  try {
-    const r = await fetch(FRED, { headers: { "User-Agent": "marketlevelmap-site", Accept: "text/csv" }, signal: AbortSignal.timeout(8000) });
-    const steps = r.ok ? rangeSteps(await r.text()) : [];
-    if (steps.length) { out.target = steps; out.targetAt = new Date(now).toISOString(); }
-  } catch (_) { /* keep the old copy */ }
+  // Target range: FRED, else the Federal Reserve Board's own table of decisions. Why both failed is kept.
+  const tries = [];
+  for (const [name, url, parse] of [["fred", FRED, rangeSteps], ["federalreserve.gov", FED_TABLE, fedTableSteps]]) {
+    try {
+      const r = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; MarketLevelMap/1.0; +https://marketlevelmap.com)", Accept: "text/csv,text/html,*/*" }, signal: AbortSignal.timeout(8000) });
+      const steps = r.ok ? parse(await r.text()) : [];
+      if (steps.length) { out.target = steps; out.targetAt = new Date(now).toISOString(); out.targetSource = name; break; }
+      tries.push(name + " " + r.status + (r.ok ? " no rows" : ""));
+    } catch (e) { tries.push(name + " " + String(e && e.message || e).slice(0, 40)); }
+  }
+  out.targetProblem = tries.length && !out.targetAt ? tries.join("; ") : out.target ? null : tries.join("; ");
   if (ok) out.fetchedAt = new Date(now).toISOString();
   return out;
 }
@@ -90,7 +122,8 @@ export async function onRequestGet({ env, waitUntil }) {
   const db = env.USERS_DB, now = Date.now();
   const stored = await readSnapshot(db, KEY), data = stored && stored.data;
   const tried = data && data.triedAt ? now - Date.parse(data.triedAt) : Infinity;
-  const due = (!stored || now - stored.at > FRESH_MS) && tried > (data && data.meetings ? RETRY_MS : RETRY_EMPTY_MS);
+  // Also tried again (every 10 minutes) while the target range is missing.
+  const due = (!stored || now - stored.at > FRESH_MS || (data && !data.target)) && tried > (data && data.meetings ? RETRY_MS : RETRY_EMPTY_MS);
   const run = () => refresh(env, data, Date.now()).then(async (fresh) => { await writeSnapshot(db, KEY, fresh, fresh.fetchedAt ? Date.now() : (stored ? stored.at : 0)); return fresh; });
   if (data && data.meetings) {
     if (due && waitUntil) waitUntil(run().catch(() => null));
