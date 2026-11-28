@@ -370,29 +370,31 @@ by its change, in three blocks: crypto (left, the tallest), tokenized stocks and
 above the other; macro alone when there are no tokens). Phones stack the three blocks. PAXG is left out (gold is in
 the macro block).
 
-- **Views (tabs):** "Live / Canlı", "Daily / Günlük" (the default), "Weekly / Haftalık", "Monthly / Aylık"; the choice
-  is kept in this browser (`mlm-heatmap-view`). All four are current and update live (at most once a second).
-  - Crypto and tokenized stocks, from the market table's own feeds (`window.MLMQuotes`, filled by the table script):
-    Live = the last 24 hours (the feed's 24 h open); Daily / Weekly / Monthly = since today's 00:00 UTC, this week's
-    (Monday) and this month's open (MarketFeed's `day` / `week` / `month`, else the `DO` / `WO` / `MO` key levels of
-    levels.json; tokens: `/api/onchain-price` returns `day`, the open of today's first 1H candle, and their WO / MO
-    come from the key levels).
-  - Macro and commodities: `GET /api/macro-change` (`functions/api/macro-change.js`): the six Yahoo symbols of the
-    weekly outlook, three months of daily candles: `day` = the last session's price (live while it trades) against
-    the session before's close (Friday against Thursday over a weekend; used for Live and Daily), `week` / `month` =
-    against the open of this week's / month's first session (a futures session dated Sunday counts to the next week).
-    The yield in basis points. Edge cache 5 minutes; the page asks again every 5 minutes while visible.
-  - **At once:** the map is drawn from the figures it showed last in this browser (`mlm-heatmap-last`: the quotes,
-    their opens and the macro figures, saved at most every 10 seconds; used when at most an hour old and of the same
-    UTC day) until the table's feeds answer, so it does not wait for them after a page change; each asset switches
-    to its live figures as they arrive.
-  - Last week's closed change stays on the weekly outlook page (`weekly.html`), linked under the map.
+- **Views (tabs):** "Live / Canlı", "Yesterday / Dün" (the default), "Last week / Geçen hafta", "Last month /
+  Geçen ay"; the choice is kept in this browser (`mlm-heatmap-view`). The range is written out: "Dün · 27 Kas (UTC
+  günü, açılıştan kapanışa)", "47. hafta · 16 Kas – 22 Kas" (ISO week number), "Ekim 2026".
+  - Live: crypto and tokenized stocks against their price 24 hours ago, from the market table's own feeds
+    (`window.MLMQuotes`, filled by the table script); macro from `GET /api/macro-change` (the current session against
+    the previous close; edge cache 5 minutes, asked again every 5 minutes). Updated at most once a second.
+  - Yesterday, last week, last month: the last CLOSED UTC day, week (Monday–Sunday) and month, open to close, from
+    `GET /api/closed-changes?part=0|1|2|macro` (`functions/api/closed-changes.js`). The same for everyone all day:
+    kept at the edge until the next UTC midnight once complete (else 10 minutes) and in this browser for the day
+    (`mlm-heatmap-closed`), so the tabs show at once. Crypto and tokens from the public daily candles (a period
+    counts only when its first and last day are there; crypto falls back to OKX's closed UTC candle, tokens show "–"
+    until the upload; a pair listed after a period began has no value for it). The pairs come in three parts
+    (i % 3 of the name-sorted list) because a Function may make only about 50 outside requests. Macro: Yahoo daily
+    candles: the last session finished before today (over a weekend Friday; the tile's title names the day), and the
+    sessions of last week and last month, first open to last close; the yield in basis points.
+  - **At once:** until the feeds answer, Live is drawn from the figures it showed last in this browser
+    (`mlm-heatmap-last`: the quotes and the macro figures, saved at most every 10 seconds; used when at most an hour
+    old and of the same UTC day).
+  - The weekly outlook page (`weekly.html`) is linked under the map.
 - **Tile size:** square root of the asset's 24-hour USD volume (USDC volume for tokens), so BTC and ETH are the big
   tiles and the small coins stay readable; an asset without volume yet gets a third of the median's size. The sizes
   are measured again at most once a minute (at once when a volume first arrives) so the tiles do not jump; both
   views use the same sizes. Macro tiles are all the same size. Layout: squarified treemap (`assets/treemap.js`,
   `Treemap.layout(weights, width, height)`).
-- **Colours:** green / red, full at 5 % (Live, Daily), 10 % (Weekly), 20 % (Monthly) for assets, a fifth of that for
+- **Colours:** green / red, full at 5 % (Live, Yesterday), 10 % (Last week), 20 % (Last month) for assets, a fifth of that for
   macro, 10 / 10 / 25 / 50 bp for the yield.
   The label and the value are sized to the tile and dropped when they do not fit; the tile's title has the name, the
   change and the 24 h volume. A tile opens the asset's analysis page (1D; tokens 4H). The ⓘ beside the title explains
@@ -403,6 +405,12 @@ the macro block).
 `weekly.html` (`/weekly`) and the Weekly view of the home page's heat map (README "Market heat map"). Data: `GET /api/weekly`
 (`functions/api/weekly.js`), one snapshot per week (Monday 00:00 UTC). The snapshot is stored in D1 (`USERS_DB`,
 table `snapshots`, key `weekly:<weekStart>:v2`) and kept at the edge for an hour once complete (every asset has
+**Outside-request limit (fixed 28 Nov 2026):** a Pages Function may make only about 50 outside requests (free plan),
+and each asset costs two or more (weekly candles, levels.json, sometimes an archive or OKX). With 33 assets the build
+ran out and the last assets showed "–" although their candles were there. Now one build fetches at most 12 assets;
+the others keep what the stored snapshot of the same week has (an asset with last week from the Binance candle files
+and levels from levels.json is final for the week), and last week's macro is kept once every item answered. An
+incomplete snapshot is rebuilt every two minutes, so the full outlook builds up within a few rebuilds.
 last week's candle and Yahoo answered). A visitor always gets the stored snapshot at once; when it is older than an
 hour (two minutes while incomplete) it is rebuilt in the background for the next visitor, so only the first request
 of a week waits for the build. Each source request gives up after a few seconds (Yahoo 3 s per host, candles 8 s);
