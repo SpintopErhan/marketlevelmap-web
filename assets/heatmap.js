@@ -32,7 +32,7 @@
   var TODAY=new Date().toISOString().slice(0,10);
   try{var sv0=JSON.parse(localStorage.getItem(LAST)||"null");if(sv0&&sv0.at>Date.now()-3600000&&new Date(sv0.at).toISOString().slice(0,10)===TODAY&&Array.isArray(sv0.order))saved=sv0}catch(e){}
   // The closed periods' figures are the same all day: kept for the day (mlm-heatmap-closed).
-  var CLOSED="mlm-heatmap-closed";try{var c0=JSON.parse(localStorage.getItem(CLOSED)||"null");if(c0&&c0.v===2&&c0.periods&&c0.periods.day.to===TODAY)closed=c0}catch(e){}
+  var CLOSED="mlm-heatmap-closed";try{var c0=JSON.parse(localStorage.getItem(CLOSED)||"null");if(c0&&c0.v===3&&c0.periods&&c0.periods.day.to===TODAY)closed=c0}catch(e){}
   function live(){return!!(window.MLMQuotes&&MLMQuotes.order.length&&MLMQuotes.order.some(function(s){return MLMQuotes.get(s)}))}
   var Q={get order(){return live()?MLMQuotes.order:saved?saved.order:[]},get:function(s){var q=live()?MLMQuotes.get(s):null;return q||(saved&&saved.q[s])||null}};
   function remember(){if(!live()||Date.now()-savedAt<10000)return;savedAt=Date.now();var q={};MLMQuotes.order.forEach(function(s){var x=MLMQuotes.get(s);if(x)q[s]=x});
@@ -127,9 +127,9 @@
   loadMacro();setInterval(function(){if(!document.hidden)loadMacro()},300000);
   // The closed periods: four parts (the pairs in three, macro) so that no request needs too many outside sources.
   function loadClosed(){
-    if(closed.v===2&&closed.periods&&closed.periods.day.to===new Date().toISOString().slice(0,10)&&closed.complete)return;
-    var got={v:2,assets:{},macro:null,periods:null},n=0;
-    ["0","1","2","macro"].forEach(function(part){fetch("/api/closed-changes?part="+part).then(function(r){return r.ok?r.json():null}).then(function(d){
+    if(closed.v===3&&closed.periods&&closed.periods.day.to===new Date().toISOString().slice(0,10)&&closed.complete)return;
+    var got={v:3,assets:{},macro:null,periods:null},n=0;
+    ["0","1","2","macro"].forEach(function(part){fetch("/api/closed-changes?part="+part+"&v=3").then(function(r){return r.ok?r.json():null}).then(function(d){
       if(d){got.periods=d.periods||got.periods;if(d.assets)Object.keys(d.assets).forEach(function(k){got.assets[k]=d.assets[k]});if(d.macro)got.macro=d.macro}
     }).catch(function(){}).then(function(){if(++n<4||!got.periods)return;
       got.complete=Object.keys(got.assets).length>0&&!!got.macro;closed=got;try{localStorage.setItem(CLOSED,JSON.stringify(closed))}catch(e){}render()})});

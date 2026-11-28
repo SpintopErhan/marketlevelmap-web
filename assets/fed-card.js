@@ -158,7 +158,7 @@
   function renderLine(el) {
     var m = data && data.meetings && data.meetings[0]; if (!m) { el.hidden = true; return; }
     var t = w(), target = data.target || [], cur = target[target.length - 1], k = top(m.probs);
-    el.innerHTML = esc(t.next.replace("{d}", day(m.date)).replace(" ({c})", cur ? " ({c})" : "").replace("{r}", rangeOf(cur, k)).replace("{c}", change(k)).replace("{p}", pctTxt(m.probs[k]))) + ' · <a href="weekly-events.html#fed">' + esc(t.more) + "</a>";
+    el.innerHTML = esc(t.next.replace("{d}", day(m.date)).replace(" ({c})", cur ? " ({c})" : "").replace("{r}", rangeOf(cur, k)).replace("{c}", change(k)).replace("{p}", pctTxt(m.probs[k]))) + ' · <a href="market-map#fed">' + esc(t.more) + "</a>";
     el.hidden = false;
   }
   function render() {

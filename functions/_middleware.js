@@ -85,7 +85,7 @@ export async function onRequest(context) {
   // The weekly outlook became a section of the market map page (README "Market map page"): old links go there.
   const asked = new URL(context.request.url);
   if (asked.pathname === "/weekly" || asked.pathname === "/weekly.html") {
-    return new Response(null, { status: 301, headers: { Location: "/market-map" + asked.search + "#haftalik" } });
+    return new Response(null, { status: 301, headers: { Location: "/market-map" + asked.search + "#seviyeler" } });
   }
   if (isPrivatePath(new URL(context.request.url).pathname)) {
     return new Response("Not found", { status: 404, headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex" } });
